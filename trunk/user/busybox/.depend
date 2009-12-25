@@ -1,0 +1,1065 @@
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/pidof.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/pidof.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/top.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/top.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/cpu/usage/percentage.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/use/termios.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/free.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/free.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/kill.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/kill.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/killall.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/uptime.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/uptime.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/renice.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/renice.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/sysctl.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/sysctl.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/ps.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/procps/ps.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/su.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/su.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/u/w/tmp.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/addgroup.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/addgroup.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/adduser.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/getty.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/getty.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/syslogd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/u/w/tmp.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/login.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/login.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/u/w/tmp.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/securetty.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/wheel/group.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/deluser.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/deluser.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/adduser.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/adduser.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/addgroup.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/sulogin.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/sulogin.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/vlock.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/vlock.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/delline.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/delline.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/delgroup.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/delgroup.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/deluser.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/passwd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/loginutils/passwd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/email.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/email.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/syslogd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/syslogd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/flatfsd/flatfsd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/remote/log.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/smtp/smtpclient.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipc/syslog.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/rotate/logfile.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/logger.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/logger.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/syslogd.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/logread.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/logread.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/logread/reduced/locking.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/klogd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/klogd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/local.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/local.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipc/syslog.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipc/syslog/buffer/size.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/rotate/logfile.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/remote.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/remote.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/config.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/sysklogd/config.c \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/remote/log.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/smtp/smtpclient.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/applets/busybox.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/applets/busybox.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/installer.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/init.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/autowidth.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/applets/applets.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/applets/applets.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/usage.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/usage.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/applets.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/applets.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/applets.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/applets.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/suid.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/suid/config.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/suid/config/quiet.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/file.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/init_shared.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/init_shared.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/initrd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/init.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/mesg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/mesg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/halt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/halt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/flatfsd/flatfsd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/init.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/poweroff.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/poweroff.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/init.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/reboot.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/reboot.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/flatfsd/flatfsd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/init.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/init/init.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/init/init.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/syslogd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/init/coredumps.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/flatfsd/flatfsd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/extra/quiet.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/use/inittab.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/inittab.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/initrd.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/rmmod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/rmmod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/2/6/modules.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/query/module/interface.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/insmod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/insmod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/2/4/modules.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/2/6/modules.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/insmod/loadinkmem.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/insmod/version/checking.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/use/list.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/list/archtype.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/use/single.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/use/plt/entries.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/use/got/entries.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/use/plt/list.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/got/entry/size.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/plt/entry/size.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/check/tainted/module.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/insmod/ksymoops/symbols.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/insmod/load/map.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/insmod/load/map/full.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/lsmod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/lsmod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/check/tainted/module.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/query/module/interface.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/modprobe.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/modutils/modprobe.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/2/6/modules.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/start_stop_daemon.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/start_stop_daemon.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/mktemp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/mktemp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/run_parts.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/run_parts.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/pipe_progress.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/pipe_progress.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/which.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/which.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/readlink.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/debianutils/readlink.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/tar.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/tar.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/create.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/from.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/gzip.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/compress.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/bzip2.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/long/options.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_skip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_skip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/archive_xread_all.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/archive_xread_all.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/find_list_entry.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/find_list_entry.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_list.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_list.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_skip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_skip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_list.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_list.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar_gz.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar_gz.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/init_handle.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/init_handle.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_align.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_align.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/archive_xread_all_eof.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/archive_xread_all_eof.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/unpack_ar_archive.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/unpack_ar_archive.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_bunzip2.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_bunzip2.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_unzip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_unzip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/seek_by_char.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/seek_by_char.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/open_transformer.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/open_transformer.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_list_reassign.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_list_reassign.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/bz2.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_to_buffer.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_to_buffer.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_all.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_all.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_to_stdout.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/data_extract_to_stdout.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_ar.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_ar.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ar/long/filenames.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_all.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_all.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/seek_by_jump.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/seek_by_jump.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/unarchive/tape.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/gnu/extensions.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tar/oldgnu/compatability.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_verbose_list.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/header_verbose_list.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_uncompress.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/decompress_uncompress.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar_bz2.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_tar_bz2.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/check_header_gzip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/check_header_gzip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_cpio.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/get_header_cpio.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_reject_list.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/libunarchive/filter_accept_reject_list.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/bunzip2.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/bunzip2.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/gunzip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/gunzip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/gunzip/uncompress.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/rpm2cpio.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/rpm2cpio.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/rpm.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/rpm.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/gzip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/gzip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/gunzip.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/cpio.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/cpio.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/unzip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/unzip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/ar.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/ar.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/uncompress.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/uncompress.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/dpkg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/dpkg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/bz2.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/dpkg_deb.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/archival/dpkg_deb.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/deb/tar/bz2.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/msh.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/msh.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/editing.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/standalone/shell.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/ash.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/ash.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/job/control.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/alias.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/optimize/for/size.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/math/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/cmdcmd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/getopts.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/mail.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/math/support/64.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash/random/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/savehistory.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/editing.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/tab/completion.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/lash.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/lash.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/lash/pipe/n/redirects.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/lash/job/control.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/editing.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/extra/quiet.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/cmdedit.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/cmdedit.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/../shell/cmdedit.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/../shell/cmdedit.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/tab/completion.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/editing.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/username/completion.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/getusername/and/homedir.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/history.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/nonprintable/inverse/put.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ash.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/savehistory.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/hush.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/shell/hush.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/command/editing.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/time.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/time.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/dc.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/dc.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/watchdog.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/watchdog.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/rx.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/rx.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/last.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/last.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/devfsd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/devfsd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/devfsd/modload.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/devfsd/verbose.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/debug.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/devfsd/fg/np.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/file.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/modules/devfs.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/hdparm.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/hdparm.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/get/identity.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/hdio/getset/dma.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/hdio/unregister/hwif.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/hdio/scan/hwif.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/hdio/tristate/hwif.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hdparm/hdio/drive/reset.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/adjtimex.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/adjtimex.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/crontab.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/crontab.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/strings.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/strings.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/makedevs.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/makedevs.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/mt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/mt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/crond.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/miscutils/crond.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/crond/call/sendmail.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/rdate.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/rdate.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/hwclock.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/hwclock.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/hwclock/longoptions.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/getopt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/getopt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mkfs_minix.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mkfs_minix.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/minix2.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/swaponoff.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/swaponoff.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/hexdump.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/hexdump.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/umount.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/umount.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mount/force.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mount/loop.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mtab/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fbset.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fbset.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fbset/fancy.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fbset/readmode.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdflush.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdflush.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mount.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mount.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/nfsmount.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mount/loop.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mtab/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/dmesg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/dmesg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/pivot_root.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/pivot_root.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdisk.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdisk.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sun/label.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sgi/label.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/aix/label.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/osf/label.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fdisk/writable.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fdisk/advanced.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/weird/partition/types.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fdisk/blksize.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/nfsmount.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/nfsmount.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdformat.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fdformat.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/losetup.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/losetup.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/freeramdisk.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/freeramdisk.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/more.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/more.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/use/termios.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mkswap.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/mkswap.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fsck_minix.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/util-linux/fsck_minix.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/minix2.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libpwdgrp/pwd_grp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libpwdgrp/pwd_grp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/shadow_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/shadow_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/patch.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/patch.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/sed.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/sed.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/awk.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/awk.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/awk/math.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/vi.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/editors/vi.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/optimize/cursor.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/use/signals.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/crashme.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/dot/cmd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/yankmark.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/readonly.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/search.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/colon.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/win/resize.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/setopts.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/vi/set.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_read.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_read.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getgrnam.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getgrnam.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/full_write.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/full_write.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/verror_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/verror_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_console.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_console.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/ask_confirmation.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/ask_confirmation.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/simplify_path.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/simplify_path.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/error_msg_and_die.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/error_msg_and_die.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getgrgid.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getgrgid.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getug.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getug.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xregcomp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xregcomp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/chomp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/chomp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xreadlink.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xreadlink.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/printf.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/printf.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/procps.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/procps.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/cpu/usage/percentage.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vfork_daemon_rexec.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vfork_daemon_rexec.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/interface.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/interface.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/run_shell.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/run_shell.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/create_icmp_socket.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/create_icmp_socket.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_mount_point.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_mount_point.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/warn_ignoring_args.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/warn_ignoring_args.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/wfopen.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/wfopen.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/inode_hash.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/inode_hash.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/herror_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/herror_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/full_read.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/full_read.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/default_error_retval.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/default_error_retval.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_nomsg_and_die.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_nomsg_and_die.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/inet_common.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/inet_common.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/copyfd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/copyfd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/run_parts.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/run_parts.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vdprintf.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vdprintf.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/loop.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/loop.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/bb_asprintf.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/bb_asprintf.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/parse_number.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/parse_number.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/skip_whitespace.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/skip_whitespace.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/messages.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/messages.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/process_escape_sequence.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/process_escape_sequence.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/create_icmp6_socket.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/create_icmp6_socket.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgethostbyname.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgethostbyname.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/speed_table.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/speed_table.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/error_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/error_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_root_device.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_root_device.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/devfs.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/login.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/login.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/obscure.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/obscure.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/print_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/print_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xfuncs.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xfuncs.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetcwd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetcwd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/setup_environment.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/setup_environment.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/isdirectory.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/isdirectory.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fclose_nonstdin.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fclose_nonstdin.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_pid_by_name.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/find_pid_by_name.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_nomsg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_nomsg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetularg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetularg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetlarg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgetlarg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/change_identity.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/change_identity.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/read_package_field.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/read_package_field.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/human_readable.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/human_readable.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/correct_password.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/correct_password.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/shadowpasswds.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_msg_and_die.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_msg_and_die.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/restricted_shell.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/restricted_shell.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/perror_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/qmodule.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/qmodule.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/kernel_version.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/kernel_version.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_strncpy.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_strncpy.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgethostbyname2.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xgethostbyname2.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/last_char_is.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/last_char_is.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/module_syscalls.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/module_syscalls.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/pw_encrypt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/pw_encrypt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/sha1/passwords.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/remove_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/remove_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getpwuid.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getpwuid.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/herror_msg_and_die.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/herror_msg_and_die.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vperror_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vperror_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fgets_str.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fgets_str.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/mtab.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/mtab.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/recursive_action.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/recursive_action.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/mtab_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/mtab_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mtab/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/mtab/filename.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/getopt_ulflags.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/getopt_ulflags.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/llist_add_to.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/llist_add_to.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/unarchive.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/dump.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/dump.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_write.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_write.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/parse_mode.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/parse_mode.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_strtol.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/safe_strtol.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fflush_stdout_and_exit.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/fflush_stdout_and_exit.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/hash_fd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/hash_fd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/sha1sum.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/md5sum.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/trim.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/trim.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/pwd2spwd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/pwd2spwd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/shadow_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/shadow_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/concat_path_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/concat_path_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xconnect.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/xconnect.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/concat_subpath_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/concat_subpath_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vherror_msg.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/vherror_msg.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getpwnam.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/my_getpwnam.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/grp_.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/copy_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/copy_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/preserve/hardlinks.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_line_from_file.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_line_from_file.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/device_open.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/device_open.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_terminal_width_height.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/get_terminal_width_height.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/autowidth.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/syscalls.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/syscalls.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/make_directory.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/make_directory.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/wfopen_input.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/libbb/wfopen_input.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/setkeycodes.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/setkeycodes.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/dumpkmap.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/dumpkmap.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/clear.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/clear.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/reset.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/reset.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/loadkmap.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/loadkmap.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/deallocvt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/deallocvt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/chvt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/chvt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/openvt.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/openvt.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/loadfont.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/console-tools/loadfont.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/who.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/who.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uuencode.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uuencode.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/rm.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/rm.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/whoami.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/whoami.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/head.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/head.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/head.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/ln.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/ln.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/md5_sha1_sum.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/md5_sha1_sum.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/md5/sha1/sum/check.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/md5sum.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/sha1sum.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/usleep.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/usleep.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/basename.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/basename.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/printf.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/printf.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cmp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cmp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/ls.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/ls.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/timestamps.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/sortfiles.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/followlinks.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/human/readable.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/filetypes.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/color.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/autowidth.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/recursive.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ls/username.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dirname.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dirname.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sync.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sync.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/user/flatfsd/flatfsd.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uname.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uname.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uudecode.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uudecode.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mkfifo.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mkfifo.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/logname.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/logname.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/touch.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/touch.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/od.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/od.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/dump.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mknod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mknod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/echo.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/echo.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/echo.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/false.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/false.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dos2unix.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/dos2unix.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/expr.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/expr.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sleep.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sleep.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/sleep.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/hostid.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/hostid.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tty.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tty.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cat.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cat.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chmod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chmod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tee.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tee.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tee/use/block/io.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/du.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/du.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/human/readable.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/du/defalt/blocksize/1k.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tr.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tr.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chgrp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chgrp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/watch.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/watch.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sort.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/sort.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/id.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/id.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/selinux.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/xgetoptfile_sort_uniq.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/xgetoptfile_sort_uniq.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/cp_mv_stat.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/cp_mv_stat.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/getopt_mk_fifo_nod.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/libcoreutils/getopt_mk_fifo_nod.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/install.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/install.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cal.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cal.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mkdir.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mkdir.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/env.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/env.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/test.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/test.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/test/64.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/realpath.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/realpath.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/wc.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/wc.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/locale/support.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/length.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/length.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cut.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/cut.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/df.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/df.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/human/readable.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chown.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chown.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/true.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/true.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/rmdir.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/rmdir.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tail.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/tail.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/tail.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chroot.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/chroot.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uniq.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/uniq.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/pwd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/pwd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/stty.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/stty.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/fold.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/fold.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/date.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/date.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/date/isofmt.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/yes.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/yes.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/seq.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/seq.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mv.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/coreutils/mv.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/find.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/find.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/type.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/perm.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/mtime.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/xdev.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/newer.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/find/inum.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/xargs.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/xargs.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/xargs/support/confirmation.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/xargs/support/quotes.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/xargs/support/termopt.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/xargs/support/zero/term.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/grep.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/findutils/grep.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/grep/context.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/grep/egrep/alias.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ping6.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ping6.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/ping6.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/ping.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/inetd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/inetd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/inetd/support/biltin/echo.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/inetd/support/biltin/discard.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/inetd/support/biltin/time.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/inetd/support/biltin/daytime.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/inetd/support/biltin/chargen.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/route.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/route.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/tftp.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/tftp.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tftp/blocksize.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tftp/debug.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tftp/get.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/tftp/put.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/arping.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/arping.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ifupdown.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ifupdown.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifupdown/mapping.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifupdown/ip.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifupdown/ipx.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifupdown/ipv6.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifupdown/ipv4.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/traceroute.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/traceroute.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/traceroute/verbose.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/traceroute.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/traceroute/so/debug.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/vconfig.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/vconfig.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nc.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nc.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nslookup.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nslookup.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ping.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ping.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/fancy/ping.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ip.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ip.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ip/address.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ip/route.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ip/link.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ip/tunnel.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ip_parse_common_args.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ip_parse_common_args.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iproute.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iproute.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iptunnel.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iptunnel.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/libnetlink.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/libnetlink.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ll_addr.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ll_addr.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ipaddress.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/ipaddress.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iplink.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/iplink.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/utils.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/libiproute/utils.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/libbb.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/hostname.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/hostname.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ipaddr.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ipaddr.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iproute.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iproute.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/telnetd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/telnetd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/login.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/telnetd/inetd.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/devpts.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iptunnel.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iptunnel.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ifconfig.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ifconfig.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifconfig/slip.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifconfig/broadcast/plus.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifconfig/hw.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifconfig/memstart/ioaddr/irq.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ifconfig/status.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ftpgetput.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ftpgetput.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ftpget.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/ftpput.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/wget.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/wget.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/wget/statusbar.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/wget/authentication.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/wget/ip6/literal.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iplink.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/iplink.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ipcalc.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/ipcalc.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipcalc/fancy.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/telnet.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/telnet.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/telnet/ttype.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/telnet/autologin.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/autowidth.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/netstat.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/netstat.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/inet_common.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/pwd_.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/route.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/ipv6.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nameif.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/nameif.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/clean/up.h)
+/home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/httpd.o: /home/ramen/mips_livecd/uClinux-dist/user/busybox/networking/httpd.c \
+ /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h $(dep_/home/ramen/mips_livecd/uClinux-dist/user/busybox/include/busybox.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/lfs.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/usage/from/inetd/only.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/basic/auth.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/cgi.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/config/with/mime/types.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/encode/url/str.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/set/remote/port/to/env.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/auth/md5.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/reload/config/sighup.h) \
+   $(wildcard /home/ramen/mips_livecd/uClinux-dist/user/busybox/include/config/feature/httpd/setuid.h)
