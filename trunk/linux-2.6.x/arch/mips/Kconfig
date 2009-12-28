@@ -1825,7 +1825,7 @@ config PCI_DOMAINS
 	bool
 	depends on PCI
 
-source "drivers/pci/Kconfig"
+#source "drivers/pci/Kconfig"
 
 #
 # ISA support is now enabled via select.  Too many systems still have the one
@@ -1855,7 +1855,7 @@ config EISA
 
 	  Otherwise, say N.
 
-source "drivers/eisa/Kconfig"
+#source "drivers/eisa/Kconfig"
 
 config TC
 	bool "TURBOchannel support"
@@ -1877,9 +1877,9 @@ config MMU
 config I8253
 	bool
 
-source "drivers/pcmcia/Kconfig"
+#source "drivers/pcmcia/Kconfig"
 
-source "drivers/pci/hotplug/Kconfig"
+#source "drivers/pci/hotplug/Kconfig"
 
 endmenu
 

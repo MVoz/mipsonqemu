@@ -650,9 +650,9 @@ config HVCS
 	  which will also be compiled when this driver is built as a
 	  module.
 
-source "drivers/char/ipmi/Kconfig"
+#source "drivers/char/ipmi/Kconfig"
 
-source "drivers/char/watchdog/Kconfig"
+#source "drivers/char/watchdog/Kconfig"
 
 config MCFWATCHDOG
 	tristate "Coldfire Watchdog"
@@ -725,7 +725,7 @@ config NWFLASH
 
 	  If you're not sure, say N.
 
-source "drivers/char/hw_random/Kconfig"
+#source "drivers/char/hw_random/Kconfig"
 
 config NVRAM
 	tristate "/dev/nvram support"
@@ -930,15 +930,15 @@ config FTAPE
 	  module. To compile this driver as a module, choose M here: the
 	  module will be called ftape.
 
-source "drivers/char/ftape/Kconfig"
+#source "drivers/char/ftape/Kconfig"
 
 endmenu
 
-source "drivers/char/agp/Kconfig"
+#source "drivers/char/agp/Kconfig"
 
-source "drivers/char/drm/Kconfig"
+#source "drivers/char/drm/Kconfig"
 
-source "drivers/char/pcmcia/Kconfig"
+#source "drivers/char/pcmcia/Kconfig"
 
 config MWAVE
 	tristate "ACP Modem (Mwave) support"
@@ -1080,7 +1080,7 @@ config MMTIMER
 	  The mmtimer device allows direct userspace access to the
 	  Altix system timer.
 
-source "drivers/char/tpm/Kconfig"
+#source "drivers/char/tpm/Kconfig"
 
 config MCF_QSPI
 	tristate "QSPI driver for Coldfire processors"

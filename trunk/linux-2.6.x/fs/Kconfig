@@ -423,8 +423,8 @@ config FS_POSIX_ACL
 	bool
 	default n
 
-source "fs/xfs/Kconfig"
-source "fs/gfs2/Kconfig"
+#source "fs/xfs/Kconfig"
+#source "fs/gfs2/Kconfig"
 
 config OCFS2_FS
 	tristate "OCFS2 file system support"
@@ -2113,7 +2113,7 @@ config NCP_FS
 	  To compile this as a module, choose M here: the module will be called
 	  ncpfs.  Say N unless you are connected to a Novell network.
 
-source "fs/ncpfs/Kconfig"
+#source "fs/ncpfs/Kconfig"
 
 config CODA_FS
 	tristate "Coda file system support (advanced network fs)"
@@ -2182,13 +2182,13 @@ endmenu
 if BLOCK
 menu "Partition Types"
 
-source "fs/partitions/Kconfig"
+#source "fs/partitions/Kconfig"
 
 endmenu
 endif
 
-source "fs/nls/Kconfig"
-source "fs/dlm/Kconfig"
+#source "fs/nls/Kconfig"
+#source "fs/dlm/Kconfig"
 
 menu "Debug"
 

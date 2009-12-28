@@ -250,7 +250,7 @@ config SCSI_SAS_ATTRS
 	  If you wish to export transport-specific information about
 	  each attached SAS device to sysfs, say Y.
 
-source "drivers/scsi/libsas/Kconfig"
+#source "drivers/scsi/libsas/Kconfig"
 
 endmenu
 
@@ -398,7 +398,7 @@ config SCSI_AACRAID
 	  will be called aacraid.
 
 
-source "drivers/scsi/aic7xxx/Kconfig.aic7xxx"
+#source "drivers/scsi/aic7xxx/Kconfig.aic7xxx"
 
 config SCSI_AIC7XXX_OLD
 	tristate "Adaptec AIC7xxx support (old driver)"
@@ -440,8 +440,8 @@ config SCSI_AIC7XXX_OLD
 	  To compile this driver as a module, choose M here: the
 	  module will be called aic7xxx_old.
 
-source "drivers/scsi/aic7xxx/Kconfig.aic79xx"
-source "drivers/scsi/aic94xx/Kconfig"
+#source "drivers/scsi/aic7xxx/Kconfig.aic79xx"
+#source "drivers/scsi/aic94xx/Kconfig"
 
 # All the I2O code and drivers do not seem to be 64bit safe.
 config SCSI_DPT_I2O
@@ -494,7 +494,7 @@ config SCSI_ARCMSR
 	  To compile this driver as a module, choose M here: the
 	  module will be called arcmsr (modprobe arcmsr).
 
-source "drivers/scsi/megaraid/Kconfig.megaraid"
+#source "drivers/scsi/megaraid/Kconfig.megaraid"
 
 config SCSI_HPTIOP
 	tristate "HighPoint RocketRAID 3xxx Controller support"
@@ -1245,8 +1245,8 @@ config SCSI_QLOGICPTI
 	  To compile this driver as a module, choose M here: the
 	  module will be called qlogicpti.
 
-source "drivers/scsi/qla2xxx/Kconfig"
-source "drivers/scsi/qla4xxx/Kconfig"
+#source "drivers/scsi/qla2xxx/Kconfig"
+#source "drivers/scsi/qla4xxx/Kconfig"
 
 config SCSI_LPFC
 	tristate "Emulex LightPulse Fibre Channel Support"
@@ -1482,7 +1482,7 @@ config SCSI_MAC53C94
 	  To compile this driver as a module, choose M here: the
 	  module will be called mac53c94.
 
-source "drivers/scsi/arm/Kconfig"
+#source "drivers/scsi/arm/Kconfig"
 
 config JAZZ_ESP
 	bool "MIPS JAZZ FAS216 SCSI support"
@@ -1736,6 +1736,6 @@ config ZFCP
 
 endmenu
 
-source "drivers/scsi/pcmcia/Kconfig"
+#source "drivers/scsi/pcmcia/Kconfig"
 
 endmenu

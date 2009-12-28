@@ -35,8 +35,8 @@ config NETDEBUG
 	  attacks.
 
 source "net/packet/Kconfig"
-source "net/unix/Kconfig"
-source "net/xfrm/Kconfig"
+#source "net/unix/Kconfig"
+#source "net/xfrm/Kconfig"
 
 config INET
 	bool "TCP/IP networking"
@@ -62,8 +62,8 @@ config INET
 
 if INET
 source "net/ipv4/Kconfig"
-source "net/ipv6/Kconfig"
-source "net/netlabel/Kconfig"
+#source "net/ipv6/Kconfig"
+#source "net/netlabel/Kconfig"
 
 endif # if INET
 
@@ -157,24 +157,24 @@ config BRIDGE_NETFILTER
 
 source "net/netfilter/Kconfig"
 source "net/ipv4/netfilter/Kconfig"
-source "net/ipv6/netfilter/Kconfig"
-source "net/decnet/netfilter/Kconfig"
+#source "net/ipv6/netfilter/Kconfig"
+#source "net/decnet/netfilter/Kconfig"
 source "net/bridge/netfilter/Kconfig"
 
 endif
 
-source "net/dccp/Kconfig"
-source "net/sctp/Kconfig"
-source "net/tipc/Kconfig"
-source "net/atm/Kconfig"
+#source "net/dccp/Kconfig"
+#source "net/sctp/Kconfig"
+#source "net/tipc/Kconfig"
+#source "net/atm/Kconfig"
 source "net/bridge/Kconfig"
 source "net/8021q/Kconfig"
-source "net/decnet/Kconfig"
+#source "net/decnet/Kconfig"
 source "net/llc/Kconfig"
-source "net/ipx/Kconfig"
-source "drivers/net/appletalk/Kconfig"
-source "net/x25/Kconfig"
-source "net/lapb/Kconfig"
+#source "net/ipx/Kconfig"
+#source "drivers/net/appletalk/Kconfig"
+#source "net/x25/Kconfig"
+#source "net/lapb/Kconfig"
 
 config NET_DIVERT
 	bool "Frame Diverter (EXPERIMENTAL)"
@@ -202,8 +202,8 @@ config NET_DIVERT
 
 	  If unsure, say N.
 
-source "net/econet/Kconfig"
-source "net/wanrouter/Kconfig"
+#source "net/econet/Kconfig"
+#source "net/wanrouter/Kconfig"
 source "net/sched/Kconfig"
 
 menu "Network testing"
@@ -242,11 +242,11 @@ endmenu
 
 endmenu
 
-source "net/ax25/Kconfig"
-source "net/irda/Kconfig"
-source "net/bluetooth/Kconfig"
-source "../openswan/linux/net/ipsec/Kconfig"
-source "net/ieee80211/Kconfig"
+#source "net/ax25/Kconfig"
+#source "net/irda/Kconfig"
+#source "net/bluetooth/Kconfig"
+#source "../openswan/linux/net/ipsec/Kconfig"
+#source "net/ieee80211/Kconfig"
 
 config WIRELESS_EXT
 	bool
