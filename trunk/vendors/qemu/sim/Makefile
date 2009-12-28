@@ -7,6 +7,7 @@ CONFIGPATH=$(shell pwd)
 include $(ROOTDIR)/$(LINUXDIR)/.config
 ROMFSIMG = $(IMAGEDIR)/romfs.img
 IMAGE    = $(IMAGEDIR)/image.bin
+KERNELIMAGE    = $(IMAGEDIR)/kernel.img
 ifdef CONFIG_ROMFS_FS
 	DEVCMD = for i in $(DEVICES); do \
 			touch $(ROMFSDIR)/dev/@$$i; \
@@ -156,4 +157,5 @@ image:
 			$(ROOTDIR)/$(LINUXDIR)/linux $(IMAGEDIR)/linux.text
 	cat $(IMAGEDIR)/linux.text $(IMAGEDIR)/linux.data $(ROMFSIMG) > $(IMAGE)
 	[ -n "$(NO_BUILD_INTO_TFTPBOOT)" ] || cp $(IMAGE) /tftpboot
+	$(CROSS_COMPILE)strip $(ROOTDIR)/$(LINUXDIR)/vmlinux -o $(KERNELIMAGE)
 
