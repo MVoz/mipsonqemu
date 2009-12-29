@@ -1,0 +1,27 @@
+mainmenu_name 'SnapGear Embedded Linux Configuration'
+mainmenu_option next_comment
+comment 'Vendor/Product Selection'
+comment 'Select the Vendor you wish to target'
+choice 'Vendor' "qemu CONFIG_DEFAULTS_QEMU \
+" SnapGear
+comment 'Select the Product you wish to target'
+if [ "$CONFIG_DEFAULTS_QEMU" = "y" ]; then
+choice 'qemu Products' "sim CONFIG_DEFAULTS_QEMU_SIM \
+" sim
+fi
+endmenu
+mainmenu_option next_comment
+comment 'Kernel/Library/Defaults Selection'
+choice 'Kernel Version' "linux-2.0.x CONFIG_DEFAULTS_KERNEL_2_0 \
+linux-2.4.x CONFIG_DEFAULTS_KERNEL_2_4 \
+linux-2.6.x CONFIG_DEFAULTS_KERNEL_2_6 \
+" linux-2.6.x
+choice 'Libc Version' "None CONFIG_DEFAULTS_LIBC_NONE \
+uC-libc CONFIG_DEFAULTS_LIBC_UC_LIBC \
+uClibc CONFIG_DEFAULTS_LIBC_UCLIBC \
+" uClibc
+bool 'Default all settings (lose changes)'	CONFIG_DEFAULTS_OVERRIDE
+bool 'Customize Kernel Settings'			CONFIG_DEFAULTS_KERNEL
+bool 'Customize Vendor/User Settings'		CONFIG_DEFAULTS_VENDOR
+bool 'Update Default Vendor Settings'		CONFIG_DEFAULTS_VENDOR_UPDATE
+endmenu
