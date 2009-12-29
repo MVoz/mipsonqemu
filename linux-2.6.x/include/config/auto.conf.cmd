@@ -1,0 +1,67 @@
+deps_config := \
+	lib/Kconfig \
+	crypto/Kconfig \
+	security/selinux/Kconfig \
+	security/Kconfig \
+	lib/Kconfig.debug \
+	arch/mips/Kconfig.debug \
+	arch/mips/oprofile/Kconfig \
+	fs/Kconfig \
+	drivers/dma/Kconfig \
+	drivers/video/logo/Kconfig \
+	drivers/video/console/Kconfig \
+	drivers/video/Kconfig \
+	drivers/serial/Kconfig \
+	drivers/char/Kconfig \
+	drivers/input/serio/Kconfig \
+	drivers/input/mouse/Kconfig \
+	drivers/input/keyboard/Kconfig \
+	drivers/input/Kconfig \
+	drivers/net/Kconfig \
+	drivers/scsi/Kconfig \
+	drivers/block/Kconfig \
+	drivers/mtd/onenand/Kconfig \
+	drivers/mtd/nand/Kconfig \
+	drivers/mtd/devices/Kconfig \
+	drivers/mtd/maps/Kconfig \
+	drivers/mtd/chips/Kconfig \
+	drivers/mtd/Kconfig \
+	drivers/base/Kconfig \
+	drivers/Kconfig \
+	net/sched/Kconfig \
+	net/llc/Kconfig \
+	net/8021q/Kconfig \
+	net/bridge/Kconfig \
+	net/bridge/netfilter/Kconfig \
+	net/ipv4/netfilter/Kconfig \
+	net/netfilter/Kconfig \
+	net/ipv4/ipvs/Kconfig \
+	net/ipv4/Kconfig \
+	net/packet/Kconfig \
+	net/Kconfig \
+	fs/Kconfig.binfmt \
+	block/Kconfig.iosched \
+	block/Kconfig \
+	usr/Kconfig \
+	init/Kconfig \
+	kernel/Kconfig.preempt \
+	mm/Kconfig \
+	arch/mips/cobalt/Kconfig \
+	arch/mips/philips/pnx8550/common/Kconfig \
+	arch/mips/vr41xx/Kconfig \
+	arch/mips/tx4938/Kconfig \
+	arch/mips/tx4927/Kconfig \
+	arch/mips/sibyte/Kconfig \
+	arch/mips/sgi-ip27/Kconfig \
+	arch/mips/pmc-sierra/Kconfig \
+	arch/mips/momentum/Kconfig \
+	arch/mips/lasat/Kconfig \
+	arch/mips/jazz/Kconfig \
+	arch/mips/gt64120/ev64120/Kconfig \
+	arch/mips/ddb5xxx/Kconfig \
+	arch/mips/Kconfig
+
+include/config/auto.conf: \
+	$(deps_config)
+
+$(deps_config): ;
