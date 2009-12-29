@@ -1,0 +1,4 @@
+OLD_VENDOR="qemu"
+OLD_PRODUCT="sim"
+OLD_LINUXDIR="linux-2.6.x"
+OLD_LIBCDIR="uClibc"
