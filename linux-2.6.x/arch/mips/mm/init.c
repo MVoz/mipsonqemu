@@ -332,7 +332,7 @@ void __init paging_init(void)
 	max_dma = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
 	low = max_low_pfn;
 	high = highend_pfn;
-
+	printk("%s max_low_pfn=%d highend_pfn=%d\n",__FUNCTION__,max_low_pfn,highend_pfn);
 #ifdef CONFIG_ISA
 	if (low < max_dma)
 		zones_size[ZONE_DMA] = low;
