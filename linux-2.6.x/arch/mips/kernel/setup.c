@@ -143,7 +143,7 @@ static void __init print_memory_map(void)
 static int __init rd_start_early(char *p)
 {
 	unsigned long start = memparse(p, &p);
-
+	printk("%s start=%08x\n",__FUNCTION__,start);
 #ifdef CONFIG_64BIT
 	/* HACK: Guess if the sign extension was forgotten */
 	if (start > 0x0000000080000000 && start < 0x00000000ffffffff)
@@ -176,6 +176,7 @@ static unsigned long __init init_initrd(void)
 	 * already set up initrd_start and initrd_end. In these cases
 	 * perfom sanity checks and use them if all looks good.
 	 */
+	printk("%s initrd_end=0x%08x initrd_start=0x%08x\n",__FUNCTION__,initrd_end,initrd_start);
 	size = initrd_end - initrd_start;
 	if (initrd_end == 0 || size == 0) {
 		initrd_start = 0;
@@ -260,8 +261,9 @@ static void __init bootmem_init(void)
 	 * of usable memory.
 	 */
 	reserved_end = init_initrd();
+	printk("%s reserved_end=0x%08x\n",__FUNCTION__,reserved_end);
 	reserved_end = PFN_UP(CPHYSADDR(max(reserved_end, (unsigned long)&_end)));
-
+	printk("%s reserved_end=0x%08x _end=0x%08x\n",__FUNCTION__,reserved_end,_end);
 	/*
 	 * Find the highest page frame number we have available.
 	 */
