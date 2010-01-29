@@ -40,7 +40,7 @@ ARCH_BIG_ENDIAN=y
 ARCH_HAS_MMU=y
 # UCLIBC_HAS_FLOATS is not set
 WARNINGS="-Wall"
-KERNEL_SOURCE="/home/ramen/mips_livecd/mipsonqemu/linux-2.6.x"
+KERNEL_SOURCE="/home/ramen/mips_livecd/trunk/linux-2.6.x"
 C_SYMBOL_PREFIX=""
 HAVE_DOT_CONFIG=y
 
