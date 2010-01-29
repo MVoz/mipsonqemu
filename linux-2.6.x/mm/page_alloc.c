@@ -1987,7 +1987,7 @@ __meminit int init_currently_empty_zone(struct zone *zone,
 	pgdat->nr_zones = zone_idx(zone) + 1;
 
 	zone->zone_start_pfn = zone_start_pfn;
-
+	printk("memmap_init zone_start_pfn=%d size=%d!\n",zone_start_pfn,size);
 	memmap_init(size, pgdat->node_id, zone_idx(zone), zone_start_pfn);
 
 	zone_init_free_lists(pgdat, zone, zone->spanned_pages);
