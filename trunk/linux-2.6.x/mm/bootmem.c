@@ -392,6 +392,7 @@ unsigned long __init init_bootmem(unsigned long start, unsigned long pages)
 {
 	max_low_pfn = pages;
 	min_low_pfn = start;
+	printk("%s min_low_pfn=0x%08x max_low_pfn=0x%08x\n",__FUNCTION__,min_low_pfn,max_low_pfn);
 	return init_bootmem_core(NODE_DATA(0), start, 0, pages);
 }
 
