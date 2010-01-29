@@ -1,9 +1,44 @@
+#include <stdio.h>
+unsigned short data[] = {
+  0x1, 0x2, 
+  0x3, 0x4,
+  0x55aa, 0x66bb,
+  0x77cc, 0x0000,
+};
+
+void unaligned_access(unsigned short * const row)
+{
+	int a[1024]={0};
+	printf("a[0]=%d\n",a[0]);
+  asm volatile
+    (
+        ".set mips3\n\t"
+        ".set noreorder\n\t"
+
+        //"lwr $10, 1(%1)\n\t"
+        //"lwl $11, 4(%1)\n\t"
+        //"or $10, $11\n\t"
+        "lw $10, 2(%1)\n\t"     /* %1 is double word aligned, %1+2 is double word unaligned */
+        "sw $10, %0\n\t"
+
+        ".set reorder\n\t"
+        ".set mips0\n\t"
+        : "=m"(*(row))
+        : "r"(row+4)
+        : "$8", "$9", "$10"
+    );
+}
 
 int main()
 {
-	printf("Accessing invalid pointer...\n");
+  printf("---------------------------------------------------------\n");
+  printf(" Testing mips unaligned access Instruction \n");
+  printf("---------------------------------------------------------\n\n");
 
-	*((volatile unsigned char *) 0xa0000000) = 0;
+  printf("&data[0]=%08x %08x %08x %08x %08x %08x\n",&data[0],&data[1],&data[2],&data[3],&data[4],&data[5]);
+  unaligned_access(data);
 
-	return(0);
+  printf("result is: 0x%04x %04x %04x %04x\n", data[3], data[2], data[1], data[0]);
+
 }
+
