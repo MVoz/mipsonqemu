@@ -386,8 +386,9 @@ void __init mem_init(void)
 	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
 
 	totalram_pages += free_all_bootmem();
+	printk("%s totalram_pages=%d\n",__FUNCTION__,totalram_pages);
 	totalram_pages -= setup_zero_pages();	/* Setup zeroed pages.  */
-
+	printk("%s totalram_pages=%d\n",__FUNCTION__,totalram_pages);
 	reservedpages = ram = 0;
 	for (tmp = 0; tmp < max_low_pfn; tmp++)
 		if (page_is_ram(tmp)) {
@@ -396,6 +397,7 @@ void __init mem_init(void)
 				reservedpages++;
 		}
 	num_physpages = ram;
+	printk("%s num_physpages=%d reservedpages=%d\n",__FUNCTION__,num_physpages,reservedpages);
 
 #ifdef CONFIG_HIGHMEM
 	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
