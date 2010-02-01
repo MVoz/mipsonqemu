@@ -104,7 +104,7 @@ static unsigned long __init init_bootmem_core(pg_data_t *pgdat,
 	 */
 	mapsize = get_mapsize(bdata);
 	memset(bdata->node_bootmem_map, 0xff, mapsize);
-
+	printk("%s %d bdata->node_bootmem_map=%08x mapsize=0x%08x\n",__FUNCTION__,__LINE__,bdata->node_bootmem_map,mapsize);
 	return mapsize;
 }
 
@@ -129,7 +129,7 @@ static void __init reserve_bootmem_core(bootmem_data_t *bdata, unsigned long add
 
 	sidx = PFN_DOWN(addr - bdata->node_boot_start);
 	eidx = PFN_UP(addr + size - bdata->node_boot_start);
-
+	printk("%s sidx=0x%08x,eidx=0x%08x\n",__FUNCTION__,sidx,eidx);
 	for (i = sidx; i < eidx; i++)
 		if (test_and_set_bit(i, bdata->node_bootmem_map)) {
 #ifdef CONFIG_DEBUG_BOOTMEM
@@ -159,7 +159,7 @@ static void __init free_bootmem_core(bootmem_data_t *bdata, unsigned long addr,
 	 */
 	sidx = PFN_UP(addr) - PFN_DOWN(bdata->node_boot_start);
 	eidx = PFN_DOWN(addr + size - bdata->node_boot_start);
-
+	printk("%s sidx=0x%08x,eidx=0x%08x\n",__FUNCTION__,sidx,eidx);
 	for (i = sidx; i < eidx; i++) {
 		if (unlikely(!test_and_clear_bit(i, bdata->node_bootmem_map)))
 			BUG();
@@ -319,6 +319,7 @@ static unsigned long __init free_all_bootmem_core(pg_data_t *pgdat)
 	if (bdata->node_boot_start == 0 ||
 	    ffs(bdata->node_boot_start) - PAGE_SHIFT > ffs(BITS_PER_LONG))
 		gofast = 1;
+	//printk("%s ffs(BITS_PER_LONG)=%d\n",__FUNCTION__,ffs(BITS_PER_LONG));
 	for (i = 0; i < idx; ) {
 		unsigned long v = ~map[i / BITS_PER_LONG];
 
@@ -405,6 +406,7 @@ void __init reserve_bootmem(unsigned long addr, unsigned long size)
 
 void __init free_bootmem(unsigned long addr, unsigned long size)
 {
+	printk("%s addr=0x%08x size=0x%08x\n",__FUNCTION__,addr,size);
 	free_bootmem_core(NODE_DATA(0)->bdata, addr, size);
 }
 
