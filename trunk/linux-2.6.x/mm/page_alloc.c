@@ -1949,7 +1949,7 @@ int zone_wait_table_init(struct zone *zone, unsigned long zone_size_pages)
 	}
 	if (!zone->wait_table)
 		return -ENOMEM;
-
+	printk("%s zone->wait_table=0x%08x",__FUNCTION__,zone->wait_table);
 	for(i = 0; i < zone->wait_table_hash_nr_entries; ++i)
 		init_waitqueue_head(zone->wait_table + i);
 
@@ -2449,10 +2449,12 @@ static void __init alloc_node_mem_map(struct pglist_data *pgdat)
 		end = pgdat->node_start_pfn + pgdat->node_spanned_pages;
 		end = ALIGN(end, MAX_ORDER_NR_PAGES);
 		size =  (end - start) * sizeof(struct page);
+		printk("%s start=%d end=%d size=%d\n",__FUNCTION__,start,end,size);
 		map = alloc_remap(pgdat->node_id, size);
 		if (!map)
-			map = alloc_bootmem_node(pgdat, size);
+			map = alloc_bootmem_node(pgdat, size);		
 		pgdat->node_mem_map = map + (pgdat->node_start_pfn - start);
+		printk("%s map=0x%08x node_mem_map=0x%08x\n",__FUNCTION__,map,pgdat->node_mem_map);
 	}
 #ifdef CONFIG_FLATMEM
 	/*
@@ -2476,7 +2478,7 @@ void __meminit free_area_init_node(int nid, struct pglist_data *pgdat,
 	pgdat->node_id = nid;
 	pgdat->node_start_pfn = node_start_pfn;
 	calculate_node_totalpages(pgdat, zones_size, zholes_size);
-
+	printk("%s pgdat:node_start_pfn=0x%08x node_spanned_pages=0x%08x\n node_mem_map=0x%08x\n",__FUNCTION__,pgdat->node_start_pfn,pgdat->node_spanned_pages,pgdat->node_mem_map);
 	alloc_node_mem_map(pgdat);
 
 	free_area_init_core(pgdat, zones_size, zholes_size);
