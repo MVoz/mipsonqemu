@@ -300,7 +300,7 @@ static void __init bootmem_init(void)
 	/*
 	 * Initialize the boot-time allocator with low memory only.
 	 */
-	bootmap_size = init_bootmem(mapstart, highest);
+	bootmap_size = init_bootmem(mapstart, highest);//bootmap_size=0x200
 
 	/*
 	 * Register fully available low RAM pages with the bootmem allocator.
