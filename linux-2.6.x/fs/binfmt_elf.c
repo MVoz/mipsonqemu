@@ -228,7 +228,7 @@ create_elf_tables(struct linux_binprm *bprm, struct elfhdr *exec,
 		items += 1; /* ELF interpreters only put argc on the stack */
 	}
 	bprm->p = STACK_ROUND(sp, items);
-
+	printk("%s bprm->p=0x%08x items=%d argc=%d envc=%d ei_index=%d t=%d\n",__FUNCTION__,bprm->p,items,argc,envc,ei_index,interp_aout);
 	/* Point sp at the lowest address on the stack */
 #ifdef CONFIG_STACK_GROWSUP
 	sp = (elf_addr_t __user *)bprm->p - items - ei_index;
@@ -254,7 +254,12 @@ create_elf_tables(struct linux_binprm *bprm, struct elfhdr *exec,
 	p = current->mm->arg_end = current->mm->arg_start;
 	while (argc-- > 0) {
 		size_t len;
-		__put_user((elf_addr_t)p, argv++);
+		__put_user((elf_addr_t)p, argv);
+		printk("%s p=0x%08x p=%s argv=%08x\n",__FUNCTION__,p,p,(*argv));
+		pgd_t pp=(*(pgd_offset(current->mm, (*argv))));
+		printk("%s pgd=%08x *pgd=0x%08x pfn=0x%08x\n",__FUNCTION__,current->mm->pgd,*(pgd_offset(current->mm, (*argv))),
+					*(unsigned int *)(pp.pgd+(4*__pte_offset(*argv))));
+		argv++;
 		len = strnlen_user((void __user *)p, PAGE_SIZE*MAX_ARG_PAGES);
 		if (!len || len > PAGE_SIZE*MAX_ARG_PAGES)
 			return 0;
@@ -1013,7 +1018,7 @@ static int load_elf_binary(struct linux_binprm *bprm, struct pt_regs *regs)
 	 */
 	ELF_PLAT_INIT(regs, reloc_func_desc);
 #endif
-
+	printk("%s bprm->p=0x%08x\n",__FUNCTION__,bprm->p);
 	start_thread(regs, elf_entry, bprm->p);
 	if (unlikely(current->ptrace & PT_PTRACED)) {
 		if (current->ptrace & PT_TRACE_EXEC)
