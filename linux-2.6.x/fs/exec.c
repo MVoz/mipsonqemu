@@ -240,6 +240,7 @@ static int copy_strings(int argc, char __user * __user * argv,
 			if (!page) {
 				page = alloc_page(GFP_HIGHUSER);
 				bprm->page[i] = page;
+				printk("%s bprm->page[%d]=0x%08x pfn=0x%08x\n",__FUNCTION__,i,bprm->page[i],page_to_pfn(page));
 				if (!page) {
 					ret = -ENOMEM;
 					goto out;
@@ -274,6 +275,7 @@ static int copy_strings(int argc, char __user * __user * argv,
 		}
 	}
 	ret = 0;
+	printk("%s bprm->p=0x%08x\n",__FUNCTION__,bprm->p);
 out:
 	if (kmapped_page)
 		kunmap(kmapped_page);
@@ -394,6 +396,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
 	stack_base = arch_align_stack(stack_top - MAX_ARG_PAGES*PAGE_SIZE);
 	stack_base = PAGE_ALIGN(stack_base);
 	bprm->p += stack_base;
+	printk("%s bprm->p=0x%08x stack_base=%08x\n",__FUNCTION__,bprm->p,stack_base);
 	mm->arg_start = bprm->p;
 	arg_size = stack_top - (PAGE_MASK & (unsigned long) mm->arg_start);
 #endif
@@ -1142,7 +1145,7 @@ int do_execve(char * filename,
 	sched_exec();
 
 	bprm->p = PAGE_SIZE*MAX_ARG_PAGES-sizeof(void *);
-
+	printk("%s bprm->p=0x%08x\n",__FUNCTION__,bprm->p);
 	bprm->file = file;
 	bprm->filename = filename;
 	bprm->interp = filename;
