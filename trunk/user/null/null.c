@@ -8,8 +8,6 @@ unsigned short data[] = {
 
 void unaligned_access(unsigned short * const row)
 {
-	int a[1024]={0};
-	printf("a[0]=%d\n",a[0]);
   asm volatile
     (
         ".set mips3\n\t"
@@ -35,7 +33,7 @@ int main()
   printf(" Testing mips unaligned access Instruction \n");
   printf("---------------------------------------------------------\n\n");
 
-  printf("&data[0]=%08x %08x %08x %08x %08x %08x\n",&data[0],&data[1],&data[2],&data[3],&data[4],&data[5]);
+  printf("orignal:0x%04x 0x%04x 0x%04x 0x%04x\n",data[3],data[2],data[1],data[0]);
   unaligned_access(data);
 
   printf("result is: 0x%04x %04x %04x %04x\n", data[3], data[2], data[1], data[0]);
