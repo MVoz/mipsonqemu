@@ -1,0 +1,112 @@
+<!--{template header}-->
+
+<!--{if $_GET[op] == 'delete'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>删除目录</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=blog&op=delete&blogid=$blogid">
+	<p>确定删除指定的收藏夹目录吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
+
+
+<!--{elseif $_GET[op] == 'edithot'}-->
+
+<h1>调整热度</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=blog&op=edithot&blogid=$blogid">
+	<p class="btn_line">
+		新的热度：<input type="text" name="hot" value="$blog[hot]" size="5"> 
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="hotsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+
+<!--{else}-->
+
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<!--{if $_GET[op] == 'edit'}-->
+<h1>编辑收藏</h1>
+<!--{else}-->
+<h1>增加收藏</h1>
+<!--{/if}-->
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<!--{if $_GET[op] == 'edit'}-->
+<form method="post" action="cp.php?ac=bmdir&op=edit&bmdirid=$bmdirid">
+<!--{else}-->
+<form method="post" action="cp.php?ac=bmdir&op=add&bmdirid=$bmdirid">
+<!--{/if}-->
+<table cellspacing="0" cellpadding="3">
+<tr>
+<th><label for="subject">名称：</label></th>
+<td>	
+<!--{if $_GET[op] == 'edit'}-->
+<input type="text" id="subject" name="subject" value="$bmdirname" style="width: 396px;" class="t_input" tabindex="1"  />
+<!--{else}-->
+<input type="text" id="subject" name="subject" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+<!--{/if}-->
+</td>
+</tr>
+<!--{if $_GET[op] == 'add'}-->
+<tr>
+<th><label for="category">分类：</label></th>
+<td>
+<select id="category" name="category" onchange="categoryShow(this.value);"/>
+		<option value="0">&nbsp;书签</option>
+		<option value="1">&nbsp;目录</option>
+</select>
+</td>
+</tr>
+<tbody id="tb_bookmark" >
+<tr>
+<th><label for="address">地址：</label></th>
+<td>
+<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="tag">标签：</label></th>
+<td>
+<input type="text" id="tag" name="tag" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+</tbody>
+<!--{/if}-->
+<tr>
+<th style="vertical-align: top;"><label for="description">描述：</label></th>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea></td>
+</tr>
+<tr>
+<th>&nbsp;</th>
+<td>
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<!--{if $_GET[op] == 'edit'}-->
+<input type="hidden" name="editsubmit" value="true" />
+<!--{else}-->
+<input type="hidden" name="addsubmit" value="true" />
+<!--{/if}-->
+<input type="submit" name="btnsubmit" value="确定" class="submit" />
+</td>
+</tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
+<!--{/if}-->
+<!--{template footer}-->
