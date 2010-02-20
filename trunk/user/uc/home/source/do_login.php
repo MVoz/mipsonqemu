@@ -20,7 +20,8 @@ if($ms) {
 	if($ms[1] != 'cp' || $ms[2] != 'sendmail') $refer = '';
 }
 if(empty($refer)) {
-	$refer = 'space.php?do=home';
+	//$refer = 'space.php?do=home';
+	$refer = 'space.php?do=bookmark';
 }
 
 //ºÃÓÑÑûÇë
@@ -152,7 +153,8 @@ if(submitcheck('loginsubmit')) {
 	}
 
 	if(empty($_POST['refer'])) {
-		$_POST['refer'] = 'space.php?do=home';
+		//$_POST['refer'] = 'space.php?do=home';
+		$_POST['refer'] = 'space.php?do=bookmark';
 	}
 	
 	realname_get();
