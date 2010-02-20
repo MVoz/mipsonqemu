@@ -1,4 +1,4 @@
-<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/space_blog_list|template/default/header|template/default/space_menu|template/default/footer', '1266416218', 'template/default/space_blog_list');?><?php $_TPL['titles'] = array('日志'); ?>
+<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/space_blog_list|template/default/header|template/default/space_menu|template/default/footer', '1266427840', 'template/default/space_blog_list');?><?php $_TPL['titles'] = array('日志'); ?>
 <?php $friendsname = array(1 => '仅好友可见',2 => '指定好友可见',3 => '仅自己可见',4 => '凭密码可见'); ?>
 
 <?php if(empty($_SGLOBAL['inajax'])) { ?>

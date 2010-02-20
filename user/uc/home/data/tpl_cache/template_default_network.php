@@ -1,4 +1,4 @@
-<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/network|template/default/header|template/default/footer', '1266422974', 'template/default/network');?><?php $_TPL['nosidebar']=1; ?>
+<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/network|template/default/header|template/default/footer', '1266509680', 'template/default/network');?><?php $_TPL['nosidebar']=1; ?>
 <?php if(empty($_SGLOBAL['inajax'])) { ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -284,7 +284,7 @@ tipBox.style.visibility = 'visible';
 <p><label for="password">密　码</label> <input type="password" name="password" id="password" class="t_input" value="<?=$password?>" /></p>
 <p class="checkrow"><input type="checkbox" id="cookietime" name="cookietime" value="315360000" <?=$cookiecheck?> style="margin-bottom: -2px;" /><label for="cookietime">下次自动登录</label></p>
 <p class="submitrow">
-<input type="hidden" name="refer" value="space.php?do=home" />
+<input type="hidden" name="refer" value="space.php?do=bookmark" />
 <input type="submit" id="loginsubmit" name="loginsubmit" value="登录" class="submit" />
 <a href="do.php?ac=lostpasswd">忘记密码?</a>
 <input type="hidden" name="formhash" value="<?php echo formhash(); ?>" />
@@ -678,4 +678,5 @@ showreward();
 <?php } ?>
 </body>
 </html>
-<?php } ?><?php ob_out();?>
+<?php } ?>
+<?php ob_out();?>

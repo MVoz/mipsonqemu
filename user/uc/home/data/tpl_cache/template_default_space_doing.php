@@ -1,4 +1,4 @@
-<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/space_doing|template/default/header|template/default/space_doing_li|template/default/space_menu|template/default/space_doing_form|template/default/space_doing_li|template/default/footer', '1266410960', 'template/default/space_doing');?><?php $_TPL['titles'] = array('记录'); ?>
+<?php if(!defined('IN_UCHOME')) exit('Access Denied');?><?php subtplcheck('template/default/space_doing|template/default/header|template/default/space_doing_li|template/default/space_menu|template/default/space_doing_form|template/default/space_doing_li|template/default/footer', '1266427330', 'template/default/space_doing');?><?php $_TPL['titles'] = array('记录'); ?>
 <?php if(empty($_SGLOBAL['inajax'])) { ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
