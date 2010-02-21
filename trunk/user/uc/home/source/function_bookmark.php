@@ -90,6 +90,7 @@ function bookmark_post($POST, $olds=array()) {
 				$bookmarkarr['linkid'] = $linkid;
 				$bookmarkarr['parentid'] = $olds['groupid'];
 				$bmid = inserttable('bookmark', $bookmarkarr, 1);
+				bookmark_tag_batch($bmid,$POST['tag']);
 				//显示对应的目录
 				$bookmarkarr['groupid']=$olds['groupid'];
 				break;
@@ -142,7 +143,7 @@ function getMaxGroupid($uid){
 	return (empty($values)?8000:$values['groupid']);
 }
 //处理tag
-function tag_batch($blogid, $tags) {
+function bookmark_tag_batch($bmid, $tags) {
 	global $_SGLOBAL;
 
 	$tagarr = array();
@@ -150,7 +151,7 @@ function tag_batch($blogid, $tags) {
 	if(empty($tagnames)) return $tagarr;
 
 	$vtags = array();
-	$query = $_SGLOBAL['db']->query("SELECT tagid, tagname, close FROM ".tname('tag')." WHERE tagname IN (".simplode($tagnames).")");
+	$query = $_SGLOBAL['db']->query("SELECT tagid, tagname, close FROM ".tname('linktag')." WHERE tagname IN (".simplode($tagnames).")");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['tagname'] = addslashes($value['tagname']);
 		$vkey = md5($value['tagname']);
@@ -166,9 +167,9 @@ function tag_batch($blogid, $tags) {
 				'tagname' => $tagname,
 				'uid' => $_SGLOBAL['supe_uid'],
 				'dateline' => $_SGLOBAL['timestamp'],
-				'blognum' => 1
+				'totalnum' => 1
 			);
-			$tagid = inserttable('tag', $setarr, 1);
+			$tagid = inserttable('linktag', $setarr, 1);
 			$tagarr[$tagid] = $tagname;
 		} else {
 			if(empty($vtags[$vkey]['close'])) {
@@ -178,13 +179,13 @@ function tag_batch($blogid, $tags) {
 			}
 		}
 	}
-	if($updatetagids) $_SGLOBAL['db']->query("UPDATE ".tname('tag')." SET blognum=blognum+1 WHERE tagid IN (".simplode($updatetagids).")");
+	if($updatetagids) $_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
 	$tagids = array_keys($tagarr);
 	$inserts = array();
 	foreach ($tagids as $tagid) {
-		$inserts[] = "('$tagid','$blogid')";
+		$inserts[] = "('$tagid','$bmid')";
 	}
-	if($inserts) $_SGLOBAL['db']->query("REPLACE INTO ".tname('tagblog')." (tagid,blogid) VALUES ".implode(',', $inserts));
+	if($inserts) $_SGLOBAL['db']->query("REPLACE INTO ".tname('linktagbookmark')." (tagid,bmid) VALUES ".implode(',', $inserts));
 
 	return $tagarr;
 }
