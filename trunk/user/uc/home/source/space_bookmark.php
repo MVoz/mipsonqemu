@@ -43,13 +43,18 @@ include_once(S_ROOT.'./data/data_network.php');
 	}
 	
 		
-	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* 
-		FROM ".tname('bookmark')." main
+	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
 		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.visitnums DESC limit ".$_SC['bookmark_show_maxnum']);
 	$bookmarklist = array();
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], 86, 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['subject'], 50, 0, 0, 0, 0, -1);
+		//get the bookmark tag 
+		$tag_query= $_SGLOBAL['db']->query("SELECT main.*,field.*  FROM ".tname('linktagbookmark')." main
+			LEFT JOIN ".tname('linktag')." field ON main.tagid=field.tagid where main.bmid=".$value['bmid']);
+		while($tagvalue=$_SGLOBAL['db']->fetch_array($tag_query)){
+			$value['taglist'][]=$tagvalue['tagname'];
+		}
 		$bookmarklist[] = $value;
 	}
 foreach($bookmarklist as $key => $value) {
