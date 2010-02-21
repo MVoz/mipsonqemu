@@ -18,7 +18,12 @@
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					<p class="message">$value[description] ...</p>
 					<p class="c_date"></p>
-          <p class=label><a href="#">足球</a><a href="#">英超</a><a href="#">欧冠</a></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+					<a href="#">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
 					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
 					<p class="c_date"></p>
 					<p class=ndate><span>2010年2月1日</span></p>
@@ -286,7 +291,12 @@ function getUserTip(obj) {
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					<p class="message">$value[description] ...</p>
 					<p class="c_date"></p>
-          <p class=label><a href="#">足球</a><a href="#">英超</a><a href="#">欧冠</a></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+					<a href="#">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
 					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
 					<p class="c_date"></p>
 					<p class=ndate><span>2010年2月1日</span></p>
