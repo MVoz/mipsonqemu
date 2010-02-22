@@ -85,8 +85,8 @@ else if(submitcheck('editsubmit')) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
-	if($newbmdir = bookmark_post($_POST, $bmdir)) {
-		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
+	if($newbmdir = bookmark_post($_POST, $bookmarkitem)) {
+		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid'];		
 		showmessage('do_success', $url, 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
