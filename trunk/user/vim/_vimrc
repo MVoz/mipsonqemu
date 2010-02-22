@@ -1,0 +1,264 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+" Basics {
+set nocompatible " get out of horrible vi-compatible mode
+set background=dark " we are using a dark background
+syntax on " syntax highlighting on
+" }
+ " General {
+ set history=1000 " How many lines of history to remember
+ set clipboard+=unnamed " turns out I do like is sharing windows clipboard
+ set fileformats=unix,dos,mac " support all three, in this order
+ set viminfo+=! " make sure it can save viminfo
+ set iskeyword+=_,$,@,%,# " none of these should be word dividers, so make them not be
+ set nostartofline " leave my cursor where it was
+ " }
+ 
+" Files/Backups {
+set nobackup
+"set backup " make backup file
+"set backupdir=c:\progra~1\vim\vimfiles\backup,~/.vim/backup " where to put backup file
+"set directory=c:\progra~1\vim\vimfiles\temp,~/.vim/temp " directory is the directory for temp file
+"set makeef=error.err " When using make, where should it dump the file
+"set sessionoptions+=globals " What should be saved during sessions being saved
+"set sessionoptions+=localoptions " What should be saved during sessions being saved
+"set sessionoptions+=resize " What should be saved during sessions being saved
+"set sessionoptions+=winpos " What should be saved during sessions being saved
+" }
+
+" Vim UI {
+set popt+=syntax:y " Syntax when printing
+set showcmd " show the command being typed
+set linespace=0 " space it out a little more (easier to read)
+set wildmenu " turn on wild menu
+set wildmode=list:longest " turn on wild menu in special format (long format)
+set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.swp,*.jpg,*.gif,*.png " ignore some formats
+set ruler " Always show current positions along the bottom
+set cmdheight=1 " the command bar is 1 high
+set number " turn on line numbers
+set numberwidth=4 " If we have over 9999 lines, ohh, boo-hoo
+set lazyredraw " do not redraw while running macros (much faster) (LazyRedraw)
+set hidden " you can change buffer without saving
+set backspace=2 " make backspace work normal
+set whichwrap+=<,>,[,],h,l  " backspace and cursor keys wrap to
+set mouse=a " use mouse everywhere
+set shortmess=atI " shortens messages to avoid 'press a key' prompt
+set report=0 " tell us when anything is changed via :...
+set noerrorbells " don't make noise
+"set list " we do what to show tabs, to ensure we get them out of my files
+"set listchars=tab:>-,trail:- " show tabs and trailing whitespace
+" }
+
+" Visual Cues {
+set showmatch " show matching brackets
+set matchtime=5 " how many tenths of a second to blink matching brackets for
+set hlsearch " do not highlight searched for phrases
+set incsearch " BUT do highlight as you type you search phrase
+set scrolloff=5 " Keep 5 lines (top/bottom) for scope
+set sidescrolloff=5 " Keep 5 lines at the size
+set novisualbell " don't blink
+" statusline demo: ~\myfile[+] [FORMAT=format] [TYPE=type] [ASCII=000] [HEX=00] [POS=0000,0000][00%] [LEN=000]
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+set laststatus=2 " always show the status line
+" }
+
+" Indent Related {
+set nosmartindent " smartindent (filetype indenting instead)
+set autoindent " autoindent (should be overwrote by cindent or filetype indent)
+set cindent " do c-style indenting
+set softtabstop=4 " unify
+set shiftwidth=4 " unify
+set tabstop=4 " real tabs should be 4, but they will show with set list on
+set copyindent " but above all -- follow the conventions laid before us
+filetype plugin indent on " load filetype plugins and indent settings
+" }
+
+" Text Formatting/Layout {
+set formatoptions=tcrq " See Help (complex)
+set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+set expandtab " no real tabs please!
+set nowrap " do not wrap line
+set preserveindent " but above all -- follow the conventions laid before us
+set ignorecase " case insensitive by default
+set smartcase " if there are caps, go case-sensitive
+set completeopt=menu,longest,preview " improve the way autocomplete works
+"set cursorcolumn " show the current column
+" }
+
+" Folding {
+set foldenable " Turn on folding
+set foldmarker={,} " Fold C style code (only use this as default if you use a high foldlevel)
+set foldcolumn=4 " Give 1 column for fold markers
+set foldmethod=marker " Fold on the marker
+set foldlevel=100 " Don't autofold anything (but I can still fold manually)
+set foldopen-=search " don't open folds when you search into them
+set foldopen-=undo " don't open folds when you undo stuff
+function MyFoldText()
+return getline(v:foldstart).' '
+endfunction
+set foldtext=MyFoldText() " Custom fold text
+" }
+
+" Plugin Settings {
+"let Tlist_Ctags_Cmd ='c:\ctags\ctags.exe' " Location of ctags
+let Tlist_Sort_Type = "name" " order by
+let Tlist_Auto_Open=1 " let the tag list open automagically
+let Tlist_Use_Right_Window = 1 " split to the right side of the screen
+let Tlist_Compact_Format = 1 " show small meny
+let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
+let Tlist_File_Fold_Auto_Close = 0 " Do not close tags for other files
+let Tlist_Enable_Fold_Column = 1 " Do show folding tree
+let Tlist_WinWidth = 40 " 40 cols wide, so I can (almost always) read my functions
+let tlist_php_settings = 'php;c:class;d:constant;f:function' " don't show variables in freaking php
+"let tlist_aspvbs_settings = 'asp;f:function;s:sub' " just functions and subs please
+"let tlist_aspjscript_settings = 'asp;f:function;c:class' " just functions and classes please
+"let tlist_vb_settings = 'asp;f:function;c:class' " just functions and classes please
+hi MyTagListFileName guibg=black guifg=yellow " Custom color for the taglist filename
+let b:match_ignorecase = 1 " case is stupid
+let perl_extended_vars=1 " highlight advanced perl vars inside strings
+" }
+
+" Mappings {
+"noremap <space> <C-f> " Make <space> in normal mode go down a page rather than left a character
+"map <up> <ESC>:bp<RETURN> " left arrow (normal mode) switches buffers
+"map <down> <ESC>:bn<RETURN> " right arrow (normal mode) switches buffers
+"map <right> <ESC>:Tlist<RETURN> " show taglist
+"map <left> <ESC>:NERDTreeToggle<RETURN> " moves left fa split
+"map <F12> ggVGg?  " apply rot13 for people snooping over shoulder, good fun
+" }
+
+" Useful abbrevs {
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr> 
+" }
+
+" Autocommands {
+"au BufRead,BufNewFile *.rb,*.rhtml set tabstop=2 " ruby standard 2 spaces
+"au BufRead,BufNewFile *.rb,*.rhtml set shiftwidth=2 " ruby standard 2 spaces
+"au BufRead,BufNewFile *.rb,*.rhtml set softtabstop=2 " ruby standard 2 spaces
+" }
+
+" GUI Settings {
+if has("gui")
+" Basics {
+set guifont=Consolas:h10 " Consolas is awesome
+set guioptions=amcgr " advanced, try help 'go
+set nomousehide " don't hide the mouse
+set cursorline " highlight current line
+set lines=25 " perfect size for me
+set columns=120 " perfect size for me
+"colorscheme metacosm " my color scheme (only works in GUI)
+colorscheme oceandeep
+" }
+
+
+
+
+
+
+
+" Always show syntax select menu {
+let do_syntax_sel_menu = 1|runtime! synmenu.vim
+" }
+
+endif
+" }
+"map <c-w><c-t> :WMToggle<cr>
+set bsdir=buffer
+"set autochdir
+set clipboard+=unnamed
+set wrap
+set noeb "turn off error bell
+set encoding=utf-8
+set termencoding=utf-8
+set fileencoding=utf-8
+"解决consle输出乱码  
+"language messages zh_CN.utf-8
+set hlsearch
+set nobackup
+set incsearch
+set smartindent
+set autoindent
+set number
+"自动检测文件类型
+filetype on 
+filetype plugin on
+filetype indent on
+syntax on
+" make it like windows
+"全选
+map <C-A> ggvG 
+imap <C-a> <Esc>ggVGi
+"复制到系统剪切板
+map <C-C> "+y 
+map <c-s> <ESC> :w <CR>
+imap <c-s> <ESC> :w <CR>
+map <F1> :Project<CR>
+map <F2> <C-w>w
+map <F4> :q!<CR>
+"buffer explore
+map <F5> \be
+map <F7>  <ESC>:s/^/\/\//g<CR>
+map <F8>  <ESC>:s/^\/\///g<CR> 
+map <F9>  <ESC>:bn<CR> 
+"show taglist
+map <F10> <ESC>:TlistToggle<CR> 
+" huge
+map <F11> <ESC>:set guifont=Consolas:h8<CR> 
+"maximum screen
+map <M-cr> :simalt ~x<CR> 
+"maximum screen
+imap <M-cr> <ESC> :simalt ~x<CR> 
+
+
+"""""""""""""""""""""""""""""""""""""
+"     about better use of cscope        "
+"""""""""""""""""""""""""""""""""""""
+"from :help cscope 如果文件夹下有cscope.out则自动加载
+if has("cscope")
+"    set csprg=/usr/bin/cscope
+map <F12> :cs add cscope.out<CR>
+    set csto=0
+    set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    endif
+    set csverb
+endif
+
+"解决菜单乱码
+set langmenu=zh_CN
+let $LANG = 'zh_CN.UTF-8'
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim 
+
+let g:proj_flags='b'
+
