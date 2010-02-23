@@ -30,15 +30,7 @@ function bookmark_post($POST, $olds=array()) {
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
 	} else {
-		$POST['description'] = checkhtml($POST['description']);
-		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 0, 1);
-		$POST['description'] = preg_replace(array(
-				"/\<div\>\<\/div\>/i",
-				"/\<a\s+href\=\"([^\>]+?)\"\>/i"
-			), array(
-				'',
-				'<a href="\\1" target="_blank">'
-			), $POST['description']);
+		$POST['description'] = getstr($POST['description'], 250, 1,1, 1);
 	}
 	$message = $POST['description'];
 	
@@ -54,8 +46,6 @@ function bookmark_post($POST, $olds=array()) {
 		return false;
 	}
 	*/
-	//添加slashes
-	$message = addslashes($message);
 		
 	if($olds['bmid']) {
 		if(!isset($POST['category'])){
@@ -85,12 +75,16 @@ function bookmark_post($POST, $olds=array()) {
 				$linkarr['username'] =$_SGLOBAL['supe_username'];
 				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 				$linkarr['url']=$POST['address'];
-				$linkid = inserttable('link', $linkarr, 1);
+                $linkarr['hashurl']=qhash($linkarr['url']);
+                $linkid=bookmark_link_process($linkarr);
+				//$linkid = inserttable('link', $linkarr, 1);
 				//插入bookmark
 				$bookmarkarr['linkid'] = $linkid;
 				$bookmarkarr['parentid'] = $olds['groupid'];
+                //tag
+               	$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
 				$bmid = inserttable('bookmark', $bookmarkarr, 1);
-				bookmark_tag_batch($bmid,$POST['tag']);
+				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
 				//显示对应的目录
 				$bookmarkarr['groupid']=$olds['groupid'];
 				break;
@@ -222,5 +216,32 @@ function checkhtml($html) {
 	$html = addslashes($html);
 	
 	return $html;
+}
+function bookmark_link_process($arr){
+    //检查此url是否已存在
+	global $_SGLOBAL,$_SC;
+    $link=array();
+	$query = $_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+    $link=$_SGLOBAL['db']->fetch_array($query);
+    if(empty($link)){
+        $arr['storenum']=1;
+		$linkid = inserttable('link', $arr, 1);
+        return $linkid;
+    }else
+    {
+        //update 总数
+	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum+1 WHERE linkid=".$link['linkid']);
+        return $link['linkid'];
+    }
+
+}
+function   updatevisitstat($bmid){
+//更新bookmark访问统计信息
+	    global $_SGLOBAL,$_SC;
+	    $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET visitnums=visitnums+1 WHERE bmid=".$bmid);
+	    $query=$_SGLOBAL['db']->query("SELECT * from ".tname('bookmark')." WHERE  bmid=".$bmid);
+        $link=$_SGLOBAL['db']->fetch_array($query);
+	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET viewnum=viewnum+1 WHERE linkid=".$link['linkid']);
+        
 }
 ?>

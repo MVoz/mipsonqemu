@@ -143,6 +143,10 @@ if($_GET['op'] == 'delete') {
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
+}elseif($_GET['op']=='updatevisitstat'){
+		include_once(S_ROOT.'./source/function_bookmark.php');
+        updatevisitstat($_GET['bmid']);
+
 } else {
 	//Ìí¼Ó±à¼­
 	$bmid=empty($_GET['bmid'])?0:intval($_GET['bmid']);
