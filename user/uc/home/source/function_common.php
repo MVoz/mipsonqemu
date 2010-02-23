@@ -2222,5 +2222,43 @@ function cond_parentid($groupid) {
 function cond_groupid($groupid) {
 	return (($groupid==-1)?' ':' and main.groupid='.$groupid);
 }
+function getUnicodeFromOneUTF8($word) {   
+  if (is_array( $word))   
+    $arr = $word;   
+  else     
+    $arr = str_split($word);    
+  $bin_str = '';   
+  foreach ($arr as $value)   
+    $bin_str .= decbin(ord($value));   
+  $bin_str = preg_replace('/^.{4}(.{4}).{2}(.{6}).{2}(.{6})$/','$1$2$3', $bin_str);   
+  return bindec($bin_str); 
+}
+function mbStringToArray ($string) {
+    $strlen = mb_strlen($string);
+    while ($strlen) {
+        $array[] = mb_substr($string,0,1,"UTF-8");
+        $string = mb_substr($string,1,$strlen,"UTF-8");
+        $strlen = mb_strlen($string);
+    }
+    return $array;
+}
+function _qhash($p, $n)
+{
+    $h = 0;
+    $g;
+	  $i=0;
+    while ($n--) {
+        $h = (($h) << 4) + getUnicodeFromOneUTF8($p[$i]);
+        if (($g = ($h & 0xf0000000)) != 0)
+            $h ^= $g >> 23;
+        $h &= ~$g;
+				$i++;
+    }
+    return $h;
+}
 
+function qhash($str){
+  $t=mbStringToArray($str);
+  return _qhash($t,count($t));
+}
 ?>
