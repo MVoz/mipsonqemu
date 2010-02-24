@@ -242,6 +242,7 @@ function   updatevisitstat($bmid){
 	    $query=$_SGLOBAL['db']->query("SELECT * from ".tname('bookmark')." WHERE  bmid=".$bmid);
         $link=$_SGLOBAL['db']->fetch_array($query);
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET viewnum=viewnum+1 WHERE linkid=".$link['linkid']);
-        
+//更新最后访问时间
+        $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
 ?>

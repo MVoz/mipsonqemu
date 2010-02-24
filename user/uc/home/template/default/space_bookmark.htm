@@ -179,10 +179,10 @@ function getUserTip(obj) {
                <ul class="login_menu">
                		<li><a href="space.php?do=bookmark">我的收藏</a></li>
                   <li class=login_menu_r><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出登录</a></li>
-                  <li><a href="space.php?do=bookmark&view=lastvisit">最近访问</a></li>
-                  <li class=login_menu_r"><a href="space.php?do=bookmark&view=lastadd">最近添加</a></li>
-                  <li><a href="space.php?do=bookmark&view=oftenvisit">经常访问</a></li>
-                  <li class=login_menu_r><a href="space.php?do=bookmark&view=lastrecommend">最新推荐</a></li>                 
+                  <li><a href="javascript:;" onclick="getbmview('lastvisit')">最近访问</a></li>
+                  <li class=login_menu_r"><a href="javascript:;" onclick="getbmview('lastadd')">最近添加</a></li>
+                  <li><a href="javascript:;" onclick="getbmview('oftenvisit')">经常访问</a></li>
+                  <li class=login_menu_r><a href="javascript:;" onclick="getbmview('lastrecommend')">最新推荐</a></li>                 
                </ul>
            </div>
            <div class="login_adv">
@@ -481,6 +481,9 @@ scrollShowNav($('spics'), 903, 7, 43);
 
 <!--{template footer}-->
 <script>
+function getbmview(type) {
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&see='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+}
 function getbmfromid(id) {
 	//var plus = '';
 	//if(type == 'event') plus = '&type=self';
