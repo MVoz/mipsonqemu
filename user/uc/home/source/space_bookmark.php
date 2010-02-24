@@ -25,10 +25,26 @@ if(!empty($ac)){
 include_once(S_ROOT.'./data/data_network.php');
 
 //日志
-
+     $viewstr=array(
+            'lastvisit'=>'lastvisit',
+                'lastadd'=>'dateline',
+                'oftenvisit'=>'visitnums',
+                'lastrecommend'=>'lastvisit'
+        );
 	//显示数量
 	$shownum = 6;
+    $view=empty($_GET['view'])?'':$_GET['view'];
 	$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):'-1';
+    if(!empty($view))//以$view为主
+    {
+        $groupid=-1;
+         
+        if(!in_array($view,array_keys($viewstr)))
+            $view='lastvisit';
+        else
+            $view=$viewstr[$view];
+            
+    }
 	$groupname='';
 	if($groupid==-1)
 		$groupname='';
@@ -41,10 +57,11 @@ include_once(S_ROOT.'./data/data_network.php');
 		if($value =$_SGLOBAL['db']->fetch_array($query))
 			$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
 	}
-	
+	if(empty($view)&&$groupid==-1)
+        $view=$viewstr['lastvisit'];
 		
 	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
-		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.visitnums DESC limit ".$_SC['bookmark_show_maxnum']);
+		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$view." DESC limit ".$_SC['bookmark_show_maxnum']);
 	$bookmarklist = array();
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], 86, 0, 0, 0, 0, -1);
