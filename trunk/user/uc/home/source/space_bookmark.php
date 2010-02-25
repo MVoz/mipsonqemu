@@ -30,10 +30,16 @@ include_once(S_ROOT.'./data/data_network.php');
                 'lastadd'=>'dateline',
                 'oftenvisit'=>'visitnums',
                 'lastrecommend'=>'lastvisit'
-        );
+            );
+;
 	//显示数量
 	$shownum = 6;
+    //显示类别如最近访问，最新添加etc...
     $see=empty($_GET['see'])?'':$_GET['see'];
+    //浏览器类型
+    $browserid=(empty($_GET['browserid']))?$browsertype['ie']:intval($_GET['browserid']);
+    if(!in_array($browserid,$browsertype))
+        $browserid=$browsertype['ie'];
 	$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):'-1';
     if(!empty($see))//以$see为主
     {
@@ -60,7 +66,7 @@ include_once(S_ROOT.'./data/data_network.php');
 	}
 
 	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
-		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$_SC['bookmark_show_maxnum']);
+		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$_SC['bookmark_show_maxnum']);
 	$bookmarklist = array();
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], 86, 0, 0, 0, 0, -1);

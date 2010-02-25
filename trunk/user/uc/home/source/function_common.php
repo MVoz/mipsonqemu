@@ -2210,11 +2210,26 @@ function createChildMenu($query,$idstr,$doshowit)
 	if(!$do_ul&&$idstr!="menu")
 			echo '</ul>'; 
 }
-function usermenu(){
+function usermenu($browserid){
 	global $_SGLOBAL;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=0");
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=0".' AND browserid='.$browserid);
 	createChildMenu($query,"menu");
+}
+    $browsertype=array(
+            'ie'=>1,
+            'firefox'=>2,
+            'opera'=>3
+        );
+function mkbrowsertab($id)
+{
+    global $_SGLOBAL,$browsertype;
+	if(empty($_SGLOBAL['supe_uid'])) echo '';
+    foreach($browsertype as $key=>$browserid){
+	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
+    }
+    
+    
 }
 function cond_parentid($groupid) {
 	return (($groupid==-1)?' ':' and main.parentid='.$groupid);

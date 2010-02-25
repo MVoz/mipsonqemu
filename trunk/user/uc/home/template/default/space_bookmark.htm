@@ -5,15 +5,15 @@
 		<span class="r_option" style="padding-right:150px;">
 		<ul>
 					<!--{if isset($_GET['groupid'])}-->
-        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
-            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
-           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
+        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
+            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
+           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
           <!--{/if}-->
         </ul>	
 			</span> $groupname &raquo;</h2>
 			<ul class="bloglist">
 			<!--{loop $bookmarklist $key $value}-->
-				<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+				<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					<p class="message">$value[description] ...</p>
@@ -28,8 +28,8 @@
 					<p class="c_date"></p>
 					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
 				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
-				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&op=edit" id="bookmark_edut_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
-					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&op=delete">删除</a></span>
+				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edut_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete">删除</a></span>
 				</li>
 				<!--{/loop}-->
 
@@ -177,7 +177,7 @@ function getUserTip(obj) {
            </div>
            <div class=p_menu>
                <ul class="login_menu">
-               		<li><a href="space.php?do=bookmark">我的收藏</a></li>
+               		<li><a href="space.php?do=bookmark&browserid=$browserid">我的收藏</a></li>
                   <li class=login_menu_r><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出登录</a></li>
                   <li><a href="javascript:;" onclick="getbmview('lastvisit')">最近访问</a></li>
                   <li class=login_menu_r"><a href="javascript:;" onclick="getbmview('lastadd')">最近添加</a></li>
@@ -286,7 +286,7 @@ function getUserTip(obj) {
 			</span> 日志 &raquo;</h2>
 			<ul class="bloglist">
 			<!--{loop $bookmarklist $key $value}-->
-				<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+				<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					<p class="message">$value[description] ...</p>
@@ -301,8 +301,8 @@ function getUserTip(obj) {
 					<p class="c_date"></p>
 					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>
 				  <span class=bvisit><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
-				      <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
-					 <span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
+				      <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					 <span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
 				</li>
 				<!--{/loop}-->
 
@@ -316,16 +316,12 @@ function getUserTip(obj) {
 				                            <div class="menu_item">
                             	<div class="tabs_header">
 															<ul class="tabs">
-																<li class="active">
-																		<a href="space.php?do=pm"><span>IE</span></a>																		
-																</li>
-																<li><a href="space.php?do=notice"><span>Firefox</span></a></li>
-																<li><a href="space.php?do=notice"><span>Opera</span></a></li>
+                                	                            <!--{eval mkbrowsertab($browserid)}-->
 															</ul>
 															</div>
                             	
                                 <ul id="menu" class="menu_list">
-                                	<!--{eval usermenu()}-->
+                                	<!--{eval usermenu($browserid)}-->
                                 </ul>
                                 
                             </div>
@@ -488,7 +484,7 @@ function getbmfromid(id) {
 	//var plus = '';
 	//if(type == 'event') plus = '&type=self';
 	//ajaxget('space.php?uid=$space[uid]&do='+type+'&view=me'+plus+'&ajaxdiv=maincontent', 'maincontent');
-	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&ajaxdiv=bmcontent', 'bmcontent');
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
 }
 function ajaxresponse(objname, data) {
 	var x = new Ajax('XML', objname);
