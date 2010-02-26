@@ -2276,4 +2276,15 @@ function qhash($str){
   $t=mbStringToArray($str);
   return _qhash($t,count($t));
 }
+function getuserbrowserarray(){
+        global $_SGLOBAL;
+        $userbrowser=array();
+        if(!$_SGLOBAL['supe_uid'])
+            return $userbrowser;
+	    $query=$_SGLOBAL['db']->query("SELECT DISTINCT(browserid) from ".tname('bookmark')." WHERE  uid=".$_SGLOBAL['supe_uid']);
+       	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+            $userbrowser[]=$value['browserid'];
+		}
+        return $userbrowser;
+}
 ?>

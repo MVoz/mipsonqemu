@@ -34,6 +34,7 @@ include_once(S_ROOT.'./data/data_network.php');
 ;
 	//显示数量
 	$shownum = 6;
+    //$userbrowertype=getuserbrowserarray();
     //显示类别如最近访问，最新添加etc...
     $see=empty($_GET['see'])?'':$_GET['see'];
     //浏览器类型
