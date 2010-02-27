@@ -45,11 +45,7 @@
 <!--{/if}-->
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<!--{if $_GET[op] == 'edit'}-->
-<form method="post" action="cp.php?ac=bmdir&op=edit&bmdirid=$bmdirid">
-<!--{else}-->
-<form method="post" action="cp.php?ac=bmdir&op=add&bmdirid=$bmdirid">
-<!--{/if}-->
+<form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
 <tr>
 <th><label for="subject">名称：</label></th>
