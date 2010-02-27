@@ -11,7 +11,7 @@ if(!defined('IN_UCHOME')) {
 //添加书签
 function bookmark_post($POST, $olds=array()) {
 	global $_SGLOBAL, $_SC, $space;
-	
+    global $browserid;	
 	//操作者角色切换
 	$isself = 1;
 	if(!empty($olds['uid']) && $olds['uid'] != $_SGLOBAL['supe_uid']) {
@@ -47,9 +47,11 @@ function bookmark_post($POST, $olds=array()) {
 	}
 	*/
 		
-	if($olds['bmid']) {
+//	if($olds['bmid']) {
 		if(!isset($POST['category'])){
 		//修改bookmark目录
+		if(empty($olds))
+            showmessage('error_operation');
 		$bmid = $olds['bmid'];
 		$bookmarkarr['uid'] = $olds['uid'];
 		$bookmarkarr['groupid']=$olds['groupid'];
@@ -68,6 +70,7 @@ function bookmark_post($POST, $olds=array()) {
 			$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 			$bookmarkarr['description'] = $message;
 			$bookmarkarr['type'] = $POST['category'];
+			$bookmarkarr['browserid']=empty($olds)?$browserid:$olds['browserid'];
 			switch($POST['category']){
 				case $_SC['bookmark_type_site']://增加一个bookmark
 				//link 表
@@ -80,29 +83,68 @@ function bookmark_post($POST, $olds=array()) {
 				//$linkid = inserttable('link', $linkarr, 1);
 				//插入bookmark
 				$bookmarkarr['linkid'] = $linkid;
-				$bookmarkarr['parentid'] = $olds['groupid'];
+				$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
                 //tag
                	$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
 				$bmid = inserttable('bookmark', $bookmarkarr, 1);
 				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
 				//显示对应的目录
-				$bookmarkarr['groupid']=$olds['groupid'];
+				$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
 				break;
 				case $_SC['bookmark_type_dir']://增加一个目录
 				$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
 				//插入bookmark
 				$bookmarkarr['groupid'] = ($maxGroupid+1);		
-				$bookmarkarr['parentid'] = $olds['groupid'];
+				$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 				$bmid = inserttable('bookmark', $bookmarkarr, 1);
 				break;
 			}
 		}
-	} else {
-		$bookmarkarr['uid'] = $_SGLOBAL['supe_uid'];
-		$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-		$bookmarkarr['description'] = $message;
-		$bmid = inserttable('bookmark', $bookmarkarr, 1);
-	}
+/*	} else {
+        //根目录
+			//增加bookmark或者bookmark目录
+			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
+			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//语词屏蔽
+
+			$POST['address'] = shtmlspecialchars(trim($POST['address']));
+			$POST['address'] = getstr($POST['address'], 500, 1, 1, 1);	//语词屏蔽
+			
+			$bookmarkarr['uid'] = $_SGLOBAL['supe_uid'];
+			$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+			$bookmarkarr['description'] = $message;
+			$bookmarkarr['type'] = $POST['category'];
+			$bookmarkarr['browserid']=$browserid;
+			switch($POST['category']){
+				case $_SC['bookmark_type_site']://增加一个bookmark
+				//link 表
+				$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
+				$linkarr['username'] =$_SGLOBAL['supe_username'];
+				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+				$linkarr['url']=$POST['address'];
+                $linkarr['hashurl']=qhash($linkarr['url']);
+                $linkid=bookmark_link_process($linkarr);
+				//$linkid = inserttable('link', $linkarr, 1);
+				//插入bookmark
+				$bookmarkarr['linkid'] = $linkid;
+				$bookmarkarr['parentid'] =0;
+                //tag
+               	$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+				$bmid = inserttable('bookmark', $bookmarkarr, 1);
+				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
+				//显示对应的目录
+				$bookmarkarr['groupid']=0;
+				$bookmarkarr['browserid']=$browserid;
+				break;
+				case $_SC['bookmark_type_dir']://增加一个目录
+				$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
+				//插入bookmark
+				$bookmarkarr['groupid'] = ($maxGroupid+1);		
+				$bookmarkarr['parentid'] = 0;
+				$bmid = inserttable('bookmark', $bookmarkarr, 1);
+				break;
+			}
+}
+ */
 	/*
 	$blogarr['blogid'] = $blogid;
 	
