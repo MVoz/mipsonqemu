@@ -9,9 +9,14 @@ if(!defined('IN_UCHOME')) {
 
 //检查信息
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
+$browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
+if(!$browserid){
+        showmessage('error parameters');
+}
 $op = empty($_GET['op'])?'':$_GET['op'];
 $bmdir = array();
 if($bmdirid) {
+    //找到父目录
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$_SGLOBAL['supe_uid']." AND type=".$_SC['bookmark_type_dir']." AND groupid=".$bmdirid);
 	$bmdir = $_SGLOBAL['db']->fetch_array($query);
 }
@@ -144,16 +149,20 @@ if($_GET['op'] == 'delete') {
 	
 } else {
 	//添加编辑
-	$bmdirid=empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
-	if(!$bmdirid){
+//	$bmdirid=empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
+//	if(!$bmdirid){
 		//error bmdir id
-			showmessage('failed_to_delete_operation');
-	}
+//			showmessage('failed_to_delete_operation');
+//	}
+    if($bmdirid){
 	$query = $_SGLOBAL['db']->query("SELECT main.subject 
 	FROM ".tname('bookmark')." main where uid=".$_GLOBAL['supe_uid']."main.type=".$_SC['bookmark_type_dir'].cond_groupid($bmdirid)."  limit 1");
 	if($value =$_SGLOBAL['db']->fetch_array($query))
 		$bmdirname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
-	
+	}else{
+        if($_GET['op']=='edit')
+            showmessage('Do_not_modify_the_dir_name');
+    }
 	
 }
 
