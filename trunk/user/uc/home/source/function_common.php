@@ -2179,6 +2179,13 @@ function createChildMenu($query,$idstr,$doshowit)
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	
 	$do_ul=1;
+    if($idstr=="menu"){
+	//		$childresult=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND parentid=0 AND	groupid=0");
+	//		if(!empty($childresult)){
+				echo '<li><a href="javascript:;" onclick="getbmfromid(\'0\');">根目录</a></li>';
+                echo '<ul id="menu">';
+	//		}
+	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {
 					$do_showit=0;
 					if(!empty($_GET['groupid'])&&($value[groupid]==intval($_GET['groupid'])))
@@ -2201,14 +2208,11 @@ function createChildMenu($query,$idstr,$doshowit)
 			  		$do_ul=0; 
 			  	//  break;			
 	}
-	if($idstr=="menu"){
-			$childresult=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND parentid=0 AND	groupid=0");
-			if(!empty($childresult)){
-				echo '<li><a href="javascript:;" onclick="getbmfromid(\'0\');"> 其它</a></li>';
-			}
-	}
+
 	if(!$do_ul&&$idstr!="menu")
-			echo '</ul>'; 
+		echo '</ul>';
+    if($idstr=="menu")
+       echo '</ul>'; 
 }
 function usermenu($browserid){
 	global $_SGLOBAL;
