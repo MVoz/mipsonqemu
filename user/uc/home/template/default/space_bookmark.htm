@@ -20,7 +20,7 @@
 					<p class="c_date"></p>
 					<p class="bmtag">
 					<!--{loop $value[taglist] $subkey $subvalue}-->
-					<a href="#">$subvalue</a>
+					<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
 					<!--{/loop}-->
 					&nbsp;
 					</p>
@@ -295,7 +295,7 @@ function getUserTip(obj) {
 					<p class="c_date"></p>
 					<p class="bmtag">
 					<!--{loop $value[taglist] $subkey $subvalue}-->
-					<a href="#">$subvalue</a>
+					<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
 					<!--{/loop}-->
 					&nbsp;
 					</p>
