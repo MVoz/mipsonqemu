@@ -60,11 +60,18 @@ include_once(S_ROOT.'./data/data_network.php');
 		$groupname='其它';
 	else
 	{
+        //获取groupname
 		$query = $_SGLOBAL['db']->query("SELECT main.subject 
 		FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)."  limit 1");
 		if($value =$_SGLOBAL['db']->fetch_array($query))
 			$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
 	}
+    //获取总条数
+    $page=empty($page)?0:intval($page);
+    $perpage=$_SC['bookmark_show_maxnum'];
+    $theurl="space.php?uid=$space[uid]&do=$do";
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)),0);
+    //获取bookmarklist
 
 	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
 		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$_SC['bookmark_show_maxnum']);
@@ -84,7 +91,8 @@ foreach($bookmarklist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
 	$bookmarklist[$key] = $value;
 }
-
+//分页
+$multi = multi($count, $perpage, $page, $theurl);
 //图片
 $cachefile = S_ROOT.'./data/cache_network_pic.txt';
 if(check_network_cache('pic')) {
