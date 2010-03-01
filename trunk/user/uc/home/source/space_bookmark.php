@@ -68,8 +68,8 @@ include_once(S_ROOT.'./data/data_network.php');
 	}
     //获取总条数
     $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=8/*$_SC['bookmark_show_maxnum']*/;
-    $start=($page-1)*$prepage;
+    $perpage=$_SC['bookmark_show_maxnum'];
+    $start=$page?(($page-1)*$perpage):0;
     $theurl="space.php?uid=$space[uid]&do=$do&groupid=$groupid";
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)),0);
     //获取bookmarklist
@@ -93,7 +93,7 @@ foreach($bookmarklist as $key => $value) {
 	$bookmarklist[$key] = $value;
 }
 //分页
-$multi = multi($count, $perpage, $page, $theurl);
+$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
 //图片
 $cachefile = S_ROOT.'./data/cache_network_pic.txt';
 if(check_network_cache('pic')) {
