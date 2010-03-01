@@ -514,7 +514,7 @@ a.button { padding: 5px; }
 #help p{ margin: 0 0 10px; padding: 0 10px; }
 
 .menu_list { padding: 0 10px; width: 230px; overflow: hidden; }
-    .menu_list li { float: left; width: 50%; line-height: 180%; text-align: center; }
+    .menu_list li { float: left; width: 50%; line-height: 180%; text-align: center;list-style-position: outside; }
 	.menu_list #menu { float: left;padding-left:5px; width: 50%; line-height: 180%; text-align: center; }
 .facebox { padding: 8px; width: 250px; border: 1px solid #CCC; background: #FFF; z-index: 100000;}
     .facebox ul li { float: left; width: 25px; height: 25px; overflow: hidden; }
@@ -875,7 +875,7 @@ a.c_link {
 		float:left;width:220px;height:55px;
 }
 .login_adv ul{
-	height:16px;margin-top:8px;
+	height:16px;margin-top:8px;padding:0px;
 }
 .login_adv ul li{
 	list-style-type:none;
