@@ -1,0 +1,503 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template bm_header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+<h2 class="ntitle">
+		<span class="r_option" style="padding-right:150px;">
+		<ul>
+					<!--{if isset($_GET['groupid'])}-->
+        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
+            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
+           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
+          <!--{/if}-->
+        </ul>	
+			</span> $tagname &raquo;</h2>
+			<ul class="bloglist">
+			<!--{loop $bookmarklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					<p class="message">$value[description] ...</p>
+					<p class="c_date"></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+					<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
+					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
+					<p class="c_date"></p>
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
+				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
+				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edut_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete">删除</a></span>
+				</li>
+				<!--{/loop}-->
+
+			</ul>
+			<div class="page">$multi</div>
+<!--{else}-->
+<div id="network">
+
+<script>
+function setintro(type) {
+	var intro = '';
+	var bPosition = '';
+	if(type == 'doing') {
+		intro = '用一句话记录自己生活中的点点滴滴';
+		bPosition = '0';
+	} else if(type == 'mtag') {
+		intro = '创建自己的小圈子，与大家交流感兴趣的话题';
+		bPosition = '175px';
+	} else if(type == 'pic') {
+		intro = '上传照片，分享生活中的精彩瞬间';
+		bPosition = '55px';
+	} else if(type == 'app') {
+		intro = '与好友一起玩转游戏和游戏，增加好友感情';
+		bPosition = '118px';
+	} else {
+		intro = '马上注册，与好友分享日志、照片，一起玩转游戏';
+		bPosition = '0';
+	}
+	$('guest_intro').innerHTML = intro + '......';
+	$('guest_intro').style.backgroundPosition = bPosition + ' 100%'
+}
+function scrollPic(e, LN, Width, Price, Speed) {
+	id = e.id;
+	if(LN == 'Last'){ scrollNum = Width; } else if(LN == 'Next'){ scrollNum = 0 - Width; }
+	scrollStart = parseInt(e.style.marginLeft, 10);
+	scrollEnd = parseInt(e.style.marginLeft, 10) + scrollNum;
+	
+	MaxIndex = (e.getElementsByTagName('li').length / Price).toFixed(0);
+	sPicMaxScroll = 0 - Width * MaxIndex;
+
+	if(scrollStart == 0 && scrollEnd == Width){
+		scrollEnd = -1806;
+		e.style.marginLeft = parseInt(e.style.marginLeft, 10) - Speed + 'px';
+	} else if(scrollStart == sPicMaxScroll + Width && scrollEnd == sPicMaxScroll){
+		scrollEnd = 0;
+		e.style.marginLeft = parseInt(e.style.marginLeft, 10) + Speed + 'px';
+	}
+	scrollShowPic = setInterval(scrollShow, 1);
+	
+	function scrollShow() {
+		if(scrollStart > scrollEnd) {
+			if(parseInt(e.style.marginLeft, 10) > scrollEnd) {
+				$(id + '_last').onclick = function(){ return false; };
+				$(id + '_next').onclick = function(){ return false; };
+				e.style.marginLeft = parseInt(e.style.marginLeft, 10) - Speed + 'px';
+			} else {
+				clearInterval(scrollShowPic);
+				$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
+				$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
+			}
+		} else {
+			if(parseInt(e.style.marginLeft, 10) < scrollEnd) {
+				$(id + '_last').onclick = function(){ return false; };
+				$(id + '_next').onclick = function(){ return false; };
+				e.style.marginLeft = parseInt(e.style.marginLeft, 10) + Speed + 'px';
+			} else {
+				clearInterval(scrollShowPic);
+				$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
+				$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
+			}					
+		}
+	}
+}
+function scrollShowNav(e, Width, Price, Speed) {
+	id = e.id;
+	$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
+	$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
+	
+}
+function getUserTip(obj) {
+	var tipBox = $('usertip_box');
+	tipBox.childNodes[0].innerHTML = '<strong>' + obj.rel + ':<\/strong> ' + obj.rev + '...';
+	
+	var showLeft;
+	if(obj.parentNode.offsetLeft > 730) {
+		showLeft = $('showuser').offsetLeft + obj.parentNode.offsetLeft - 148;
+		tipBox.childNodes[0].style.right = 0;
+	} else {
+		tipBox.childNodes[0].style.right = 'auto';
+		showLeft = $('showuser').offsetLeft + obj.parentNode.offsetLeft;
+	}
+	tipBox.style.left = showLeft + 'px';
+	
+	var showTop; 
+	if(obj.className == 'uonline') {
+		showTop = $('showuser').offsetTop + obj.parentNode.offsetTop - tipBox.childNodes[0].clientHeight;
+	} else {
+		showTop = $('showuser').offsetTop + obj.parentNode.offsetTop + 48;
+	}
+	tipBox.style.top = showTop + 'px';
+	
+	tipBox.style.visibility = 'visible';
+}
+</script>
+
+<div id="guestbar" class="nbox">
+	<div class="nbox_c">
+		<p id="guest_intro">马上注册，与好友分享日志、照片，一起玩转游戏......</p>
+		<a href="do.php?ac=$_SCONFIG[register_action]" id="regbutton" onmouseover="setintro('register');">马上注册</a>
+		<p id="guest_app">
+			<a href="javascript:;" class="appdoing" onmouseover="setintro('doing');">记录</a>
+			<a href="javascript:;" class="appphotos" onmouseover="setintro('pic');">照片</a>
+			<a href="javascript:;" class="appgames" onmouseover="setintro('app');">游戏</a>
+			<a href="javascript:;" class="appgroups" onmouseover="setintro('mtag');">群组</a> 
+		</p>
+	</div>	
+<!--{if empty($_SGLOBAL[supe_uid])}-->
+	<div class="nbox_s side_rbox" id="nlogin_box">
+		<h3 class="ntitle">登录</h3>
+		<div class="side_rbox_c">
+			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
+				<p><label for="username">用户名</label> <input type="text" name="username" id="username" class="t_input" value="$membername" /></p>
+				<p><label for="password">密　码</label> <input type="password" name="password" id="password" class="t_input" value="$password" /></p>
+				<p class="checkrow"><input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck style="margin-bottom: -2px;" /><label for="cookietime">下次自动登录</label></p>
+				<p class="submitrow">
+					<input type="hidden" name="refer" value="space.php?do=home" />
+					<input type="submit" id="loginsubmit" name="loginsubmit" value="登录" class="submit" />
+					<a href="do.php?ac=lostpasswd">忘记密码?</a>
+					<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+				</p>
+			</form>
+		</div>
+	</div>
+</div>
+<!--{else}-->
+	<div class="nbox_s side_rbox" id="nlogin_box">
+		<h3 class="ntitle">登录</h3>
+		<div class="side_rbox_c">
+			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
+				<div class="logined">
+					<h3>您好！<a href="space.php?do=bookmark" target=_blank><span>$_SGLOBAL['supe_username']</span></a>，欢迎您回来！</h3>
+           <div class="d_avatar avatar48">
+           	<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+            <img onerror="this.onerror=null;this.src='websample_files/1_1264944904t7cl.jpg'" src="./template/default/image/1_1264944905dc86.jpg">
+            </a>
+           </div>
+           <div class=p_menu>
+               <ul class="login_menu">
+               		<li><a href="space.php?do=bookmark&browserid=$browserid">我的收藏</a></li>
+                  <li class=login_menu_r><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出登录</a></li>
+                  <li><a href="javascript:;" onclick="getbmview('lastvisit')">最近访问</a></li>
+                  <li class=login_menu_r"><a href="javascript:;" onclick="getbmview('lastadd')">最近添加</a></li>
+                  <li><a href="javascript:;" onclick="getbmview('oftenvisit')">经常访问</a></li>
+                  <li class=login_menu_r><a href="javascript:;" onclick="getbmview('lastrecommend')">最新推荐</a></li>                 
+               </ul>
+           </div>
+           <div class="login_adv">
+                                		<ul>
+                                				<li><a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all" >人人网</a></li>
+                                			  <li>|<li>
+                                			  <li><a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all">冬瓜网</a></li>
+                                			  <li>|</li>
+                                			  <li><a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all">冬瓜网</a></li>
+                                	      </ul>
+                                
+                                	  <ul>
+                                	  	<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="adv_line">武装Firebug的多款Firefox插件</a><li>
+                                	  </ul>
+           </div>
+			  </div>
+			</form>
+		</div>
+	</div>
+</div>
+<!--{/if}-->
+
+	<!--search bar start-->
+		  <div class="s_clear searchbar">
+                    <div class="floatleft searchForm">
+                        <form action=cp.php method=get>
+   <ul>
+   		<li>        
+           	 <input class=t_input style="padding-right: 5px; padding-left: 5px; padding-bottom: 5px; padding-top: 5px"
+                            size=50 name=searchkey>
+ <!--<input type="text" name="search_text" value="Search text" onkeydown="cautareVexio('');" onmousedown="cautareVexio('');" onchange="cautareVexio('');" onfocus="if(document.search.search_text.value=='Search text')  document.search.search_text.value='';" onblur="if(document.search.search_text.value=='')document.search.search_text.value='Search text';" class="cautareF" />-->
+   <!--          <a href="javascript:document.search.submit();" id="cautareBtn">搜索</a>-->
+             <input class=submit type=submit value=搜索 name=searchsubmit>
+       </li>    
+            	<li>
+            <input type="checkbox" size="2" maxlength="2" value="ON" >
+          </li>
+                <li>	
+			<a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all" class="logogoogle">
+                                   &nbsp
+                                </a>	
+			</li>
+          <li >		
+					 <select name="baidu_judet" >
+							 					 <option value="">新闻</option>
+		                     <option value="">网页</option>
+		                     <option value="Alba" >图片</option>
+							 					<option value="Alba" >mp3</option>
+					</select>
+				  </li>
+				  <li>		
+			<input type="checkbox" size="2" maxlength="2" value="ON" >		
+			</li>
+          <li>	
+			<a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all" class="logobaidu">
+                                   &nbsp
+                                </a>	
+			</li>
+          <li>
+			<select name="google_judet" style="z-index:-10;">
+					 					 <option value="">新闻</option>
+                     <option value="">网页</option>
+                     <option value="Alba" >图片</option>
+					           <option value="Alba" >mp3</option>
+			</select>
+		</li>
+	 </ul>
+                        </form>
+                    </div>
+                    <div class="floatright search_r">
+                        <form action=space.php method=get>
+                            <input class=t_input style="padding-right: 5px; padding-left: 3px; padding-bottom: 5px; padding-top: 5px"
+                            size=15 name=searchkey>
+                            <select name=do>
+                                <option value=blog selected>日志</option>
+                                <option value=album>相册</option>
+                                <option value=thread>话题</option>
+                                <option value=poll>投票</option>
+                                <option value=event>活动</option>
+                            </select>
+                            <input class=submit type=submit value=搜索 name=searchsubmit>
+                            <input type=hidden value=all name=view>
+                            <input type=hidden value=dateline name=orderby>
+                        </form>
+                    </div>
+                  </div>
+		<!--searchBar end-->
+<div class="nbox" style="height:650px;">
+
+	<div class="nbox_c">
+	<div id="bmcontent">
+			<h2 class="ntitle">
+
+			<span class="r_option" style="padding-right:150px;">
+				<ul>
+						<!--{if isset($_GET['groupid'])}-->
+        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
+            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
+           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
+           	<!--{/if}-->
+        </ul>	
+			</span> $tagname &raquo;</h2>
+			<ul class="bloglist">
+			<!--{loop $bookmarklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					<p class="message">$value[description] ...</p>
+					<p class="c_date"></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+					<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
+					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
+					<p class="c_date"></p>
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>
+				  <span class=bvisit><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
+				      <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					 <span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
+				</li>
+				<!--{/loop}-->
+
+			</ul>
+			<div class="page">$multi</div>
+	</div>
+	</div>
+
+	<div class="nbox_s side_rbox side_rbox_w">
+		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=doing&view=all">更多记录</a></span> 记录 &raquo;</h2>
+		<div class="side_rbox_c">
+				                            <div class="menu_item">
+                            	<div class="tabs_header">
+															<ul class="tabs">
+                                	                            <!--{eval mkbrowsertab($browserid)}-->
+															</ul>
+															</div>
+                            	
+                                <ul  class="menu_list">
+                                	<!--{eval usermenu($browserid)}-->
+                                </ul>
+                                
+                            </div>
+		</div>
+		<h2 class=ntitle_1>
+                        </h2>
+                        <div class=side_rbox_c>
+															<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+                                        <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                        src="./template/default/image/1_1264944905dc86.jpg">
+                                    </a>
+                        </div>
+	</div>
+ 						
+</div>
+
+
+
+<div class="nbox" id="photolist">
+	<h2 class="ntitle">
+		<a href="space.php?do=album&view=all" class="r_option">更多图片</a>
+		图片 &raquo;
+		</h2>
+	<div id="p_control">
+		<a href="javascript:;" id="spics_last">上一页</a>
+		<a href="javascript:;" id="spics_next">下一页</a>
+		<ul id="p_control_pages">
+			<li>第一页</li>
+			<li>第二页</li>
+			<li>第三页</li>
+			<li>第四页</li>
+		</li>
+	</div>
+	<div id="spics_wrap">
+	<ul id="spics" style="margin-left: 0px;">
+	<!--{loop $piclist $key $value}-->
+     <li class=spic_0>
+     <div class="avatar125_1"><a href="http://192.168.115.2/uc/home/space.php?uid=1&amp;do=album&amp;picid=5" target=_blank><img alt=我的相册 src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+     <p>人人网</p>
+     <p class="c_date"></p>
+     <p class=label>
+                                    <a href="#" style="float:left;padding-left:2px;">
+                                        足球
+                                    </a>
+                                    <a href="#" style="float:left;padding-left:12px;">
+                                        英超
+                                    </a>
+
+     </p>
+     </li>
+	<!--{/loop}-->
+	</ul>
+	</div>
+</div>
+<script type="text/javascript">
+scrollShowNav($('spics'), 903, 7, 43);
+</script>
+
+
+<div id="showuser" class="nbox">
+	<div id="user_recomm">
+		<h2>站长推荐</h2>
+		<!--{loop $star $value}-->
+		<div class="s_avatar"><a href="space.php?uid=$value[uid]" target="_blank"><!--{avatar($value[uid],middle)}--></a></div>
+		<div class="s_cnts">
+			<h3><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></h3>
+			<p>访问: $value[viewnum]</p>
+			<p>积分: $value[credit]</p>
+			<hr />
+			<p>好友: $value[friendnum]</p>
+			<p>更新: <!--{date('H:i',$value[updatetime],1)}--></p>
+		</div>
+		<!--{/loop}-->
+	</div>
+	<div id="user_wall" onmouseout="javascript:$('usertip_box').style.visibility = 'hidden';">
+		<div id="user_pay" class="s_clear">
+			<h2><a href="space.php?do=top">竞价排名</a></h2>
+			<ul>
+			<!--{loop $showlist $value}-->
+				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
+			<!--{/loop}-->
+			</ul>
+			<p><a href="space.php?do=top">我要上榜</a></p>
+		</div>
+		<div id="user_online" class="s_clear">
+			<h2><a href="space.php?do=top&view=online">在线会员</a></h2>
+			<ul>
+			<!--{loop $onlinelist $value}-->
+				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" class="uonline" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
+			<!--{/loop}-->
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="usertip_box"><div></div></div>
+
+<div class="nbox">
+	<div class="nbox_c">
+		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=thread&view=all">更多话题</a></span>话题 &raquo;</h2>
+		<div class="tlist">
+			
+			
+			<div class="collection_info">      
+        <div class="headpicture_info">
+          <div class="headpicture_infoleft">
+            <div class="act_headpicture"></div>
+            <div class="act_headbtn"><a href="#"><img src="./template/default/image/collection_btn.jpg" /></a></div>
+          </div>
+          <div class="headpicture_inforight">
+          	  <div class="dig_title"><a href="#">
+          <h3>head picture head picture head picture</h3>
+        </a></div>
+            <div class="dig_synopsis"> <a href="#">After paying due consideration to your proposals and investigating your business </a></div>
+            <div class="dig_action">
+              <div class="support"><a href="#"><img src="./template/default/image/icon_support.jpg" /></a></div>
+              <div class="data">(15)</div>
+              <div class="bury"><a href="#"><img src="./template/default/image/icon_bury.jpg"/></a></div>
+              <div class="data">(5)</div>
+              <div class="discuss"><a href="#"><img src="./template/default/image/icon_discuss.jpg"/></a></div>
+              <div class="data">(5)</div>
+              <div class="clear"></div>
+            </div>          
+          </div>
+                        <div class="headpicture_inforight_1">
+            		<div class="d_avatar avatar125">
+                                    <a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+                                        <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                        src="./template/default/image/1_1264944905dc86.jpg">
+                                    </a>
+               </div>
+            </div>
+        </div>
+      </div>
+      
+      
+		</div>
+	</div>
+	<div id="npoll" class="nbox_s side_rbox side_rbox_w">
+		<div class="side_rbox_c">
+			<h2 class="ntitle"><span class="r_option"><a href="space.php?do=poll">更多投票</a></span>投票 &raquo;</h2>
+			<ul>
+			<!--{loop $polllist $key $value}-->
+				<li class="poll_$key"><a href="space.php?uid=$value[uid]&do=poll&pid=$value[pid]" target="_blank">$value[subject]</a><!--{if $key == 0}--><p><a href="">已有 $value[voternum] 位会员投票</a></p><!--{/if}--></li>
+			<!--{/loop}-->
+			</ul>
+		</div>
+	</div>
+</div>
+		<div class="fbbottom"></div>
+	</div>
+
+</div>
+
+<!--{template footer}-->
+<script>
+function getbmview(type) {
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&see='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+}
+function getbmfromid(id) {
+	//var plus = '';
+	//if(type == 'event') plus = '&type=self';
+	//ajaxget('space.php?uid=$space[uid]&do='+type+'&view=me'+plus+'&ajaxdiv=maincontent', 'maincontent');
+	if(id==0)
+	        jQuery('#menu ul').hide();
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
+}
+function ajaxresponse(objname, data) {
+	var x = new Ajax('XML', objname);
+	x.get('cp.php?ac=bookmark&' + data, function(s){
+	});
+}
+function updatevisitstat(id) {
+	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
+}
+</script>
+<!--{/if}-->
