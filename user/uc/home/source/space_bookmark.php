@@ -67,14 +67,15 @@ include_once(S_ROOT.'./data/data_network.php');
 			$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
 	}
     //获取总条数
-    $page=empty($page)?0:intval($page);
-    $perpage=$_SC['bookmark_show_maxnum'];
-    $theurl="space.php?uid=$space[uid]&do=$do";
+    $page=empty($_GET['page'])?0:intval($_GET['page']);
+    $perpage=8/*$_SC['bookmark_show_maxnum']*/;
+    $start=($page-1)*$prepage;
+    $theurl="space.php?uid=$space[uid]&do=$do&groupid=$groupid";
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)),0);
     //获取bookmarklist
 
 	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
-		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$_SC['bookmark_show_maxnum']);
+		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 	$bookmarklist = array();
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], 86, 0, 0, 0, 0, -1);
