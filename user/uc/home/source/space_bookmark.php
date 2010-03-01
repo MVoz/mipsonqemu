@@ -84,7 +84,7 @@ include_once(S_ROOT.'./data/data_network.php');
 		$tag_query= $_SGLOBAL['db']->query("SELECT main.*,field.*  FROM ".tname('linktagbookmark')." main
 			LEFT JOIN ".tname('linktag')." field ON main.tagid=field.tagid where main.bmid=".$value['bmid']);
 		while($tagvalue=$_SGLOBAL['db']->fetch_array($tag_query)){
-			$value['taglist'][]=$tagvalue['tagname'];
+			$value['taglist'][$tagvalue['tagid']]=$tagvalue['tagname'];
 		}
 		$bookmarklist[] = $value;
 	}
