@@ -353,7 +353,7 @@ h2.title img { margin: 0 5px 0 0; vertical-align: middle; }
 #share_ul { padding-bottom: 10px; border-bottom: 1px solid #EBE6C9; }
     #share_ul li { overflow: hidden; }
     #share_ul .title { padding: 5px; border-bottom: 1px solid #EBE6C9; background: #FCF9E6; }
-.page { margin: 10px 0 0; padding: 3px; text-align: center; }
+.page { margin: 10px 0 10px; padding: 3px; text-align: center; }
     .page * { margin: 0 3px 0 0; padding: 3px 5px; border: 1px solid #EBE6C9; background: #FCF9E6; color: #999; }
     .page em { border-color: #FEE4AB; color: #C30; font-style: normal; }
     .page strong { background: #FEE4AB; color: #C30; }
