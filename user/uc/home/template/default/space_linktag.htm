@@ -20,7 +20,7 @@
 					<p class="c_date"></p>
 					<p class="bmtag">
 					<!--{loop $value[taglist] $subkey $subvalue}-->
-					<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
+                    <a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 					<!--{/loop}-->
 					&nbsp;
 					</p>
