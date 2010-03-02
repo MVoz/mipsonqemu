@@ -10,12 +10,16 @@ if(!defined('IN_UCHOME')) {
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
 $op = empty($_GET['op'])?'':$_GET['op'];
+$browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
+if(!checkbrowserid($browserid)){
+        showmessage('error parameters');
+}
 $bookmarkitem = array();
+$groupid=0;
 if($bmid) {
-	$query = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main 
-		LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 
-		WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
+	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$bookmarkitem = $_SGLOBAL['db']->fetch_array($query);
+	$groupid=$bookmarkitem['parentid'];
 }
 //权限检查
 if(empty($bookmarkitem)) {
@@ -86,7 +90,7 @@ else if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bookmarkitem)) {
-		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid'];		
+		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid']."&browserid=".$browserid;		
 		showmessage('do_success', $url, 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
@@ -111,7 +115,7 @@ if($_GET['op'] == 'delete') {
 	if(submitcheck('deletesubmit')) {
 		include_once(S_ROOT.'./source/function_bookmark.php');
 		if(deletebookmark($bmid)) {
-			$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid'];
+			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
 			showmessage('do_success', $url, 0);
 		} else {
 			showmessage('failed_to_delete_operation');

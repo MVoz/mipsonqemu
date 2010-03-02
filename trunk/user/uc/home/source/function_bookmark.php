@@ -324,7 +324,7 @@ function   updatevisitstat($bmid){
 function deletebookmark($bmid){
 	//处理link
 	 global $_SGLOBAL;
-	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid));
+	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid),0);
 	if(empty($link))
 		return 0;
 	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
@@ -341,5 +341,32 @@ function deletebookmark($bmid){
 	//处理bookmark
 	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
 	return 1;
+}
+function deletebookmarkdir($bmid)
+{
+	//获取自己的groupid
+	 global $_SGLOBAL,$_SC;
+	 $query =$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
+	 $link=$_SGLOBAL['db']->fetch_array($query);
+	 $groupid=$link['groupid'];
+	 $browserid=$link['browserid'];
+	// global $log;
+	// $log->debug('$ucnewpm',$groupid." ".$browserid." ".$bmid);
+	 $query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE parentid=".$groupid." AND browserid=".$browserid." AND uid=".$_SGLOBAL['supe_uid']);
+	 while($value=$_SGLOBAL['db']->fetch_array($query))
+	 {
+		switch($value['type'])
+		 {
+			case $_SC['bookmark_type_dir']:
+				deletebookmarkdir($value['bmid']);
+				break;
+			case $_SC['bookmark_type_site']:
+				deletebookmark($value['bmid']);
+				break;
+		 }
+	 }
+	 //删除自己
+	 $_SGLOBAL['db']->query("DELETE FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
+	 return 1;
 }
 ?>
