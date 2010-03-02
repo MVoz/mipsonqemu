@@ -6,7 +6,7 @@
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid">
-	<p>确定删除指定的收藏夹目录吗？</p>
+	<p>确定删除指定的收藏吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="deletesubmit" value="true" />
@@ -70,6 +70,7 @@
 <th>&nbsp;</th>
 <td>
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
 <input type="submit" name="btnsubmit" value="确定" class="submit" />
 </td>
