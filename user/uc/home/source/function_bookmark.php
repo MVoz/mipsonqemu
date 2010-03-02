@@ -321,5 +321,25 @@ function   updatevisitstat($bmid){
 //更新最后访问时间
         $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
-
+function deletebookmark($bmid){
+	//处理link
+	 global $_SGLOBAL;
+	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid));
+	if(empty($link))
+		return 0;
+	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+	//处理tag
+	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+	$updatetagids=array();
+	while($values=$_SGLOBAL['db']->fetch_array($query))
+	{
+		$updatetagids[]=$values['tagid'];		
+	}
+	if($updatetagids)
+		$_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
+	$_SGLOBAL['db']->query("DELETE  from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+	//处理bookmark
+	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
+	return 1;
+}
 ?>
