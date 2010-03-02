@@ -24,9 +24,7 @@ if($_GET['op'] == 'checknewpm') {
 	//检查当前用户
 	if($_SGLOBAL['supe_uid']) {
 		$ucnewpm = uc_pm_checknew($_SGLOBAL['supe_uid']);
-		global $log;
-		$log->debug('$ucnewpm',$ucnewpm);
-		if($_SGLOBAL['member']['newpm'] != $ucnewpm) {
+			if($_SGLOBAL['member']['newpm'] != $ucnewpm) {
 			updatetable('space', array('newpm'=>$ucnewpm), array('uid'=>$_SGLOBAL['supe_uid']));
 		}
 	}

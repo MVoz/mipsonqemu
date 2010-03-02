@@ -2220,11 +2220,11 @@ function usermenu($browserid){
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=0".' AND browserid='.$browserid);
 	createChildMenu($query,"menu");
 }
-    $browsertype=array(
+$browsertype=array(
             'ie'=>1,
             'firefox'=>2,
             'opera'=>3
-        );
+);
 function mkbrowsertab($id)
 {
     global $_SGLOBAL,$browsertype;
@@ -2232,8 +2232,13 @@ function mkbrowsertab($id)
     foreach($browsertype as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
     }
-    
-    
+}
+function checkbrowserid($id)
+{
+	global $_SGLOBAL,$browsertype;
+	if(in_array($id,$browsertype))
+		return 1;
+	return 0;
 }
 function cond_parentid($groupid) {
 	return (($groupid==-1)?' ':' and main.parentid='.$groupid);
