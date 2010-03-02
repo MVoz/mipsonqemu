@@ -240,9 +240,9 @@ function bookmark_tag_batch($bmid, $tags) {
 	$tagids = array_keys($tagarr);
 	$inserts = array();
 	foreach ($tagids as $tagid) {
-		$inserts[] = "('$tagid','$bmid')";
+		$inserts[] = "('$tagid','$bmid','$_SGLOBAL[supe_uid]')";
 	}
-	if($inserts) $_SGLOBAL['db']->query("REPLACE INTO ".tname('linktagbookmark')." (tagid,bmid) VALUES ".implode(',', $inserts));
+	if($inserts) $_SGLOBAL['db']->query("REPLACE INTO ".tname('linktagbookmark')." (tagid,bmid,uid) VALUES ".implode(',', $inserts));
 
 	return $tagarr;
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	[UCenter Home] (C) 2007-2008 Comsenz Inc.
 	$Id: network_album.php 12078 2009-05-04 08:28:37Z zhengqingpeng $
@@ -12,16 +12,7 @@ if(!defined('IN_UCHOME')) {
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
-/*
-$acs = array('space', 'doing', 'blog', 'album', 'mtag', 'thread', 'share');
-$ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'index':$_GET['ac'];
 
-if(!empty($ac)){
-	include_once(S_ROOT.'./source/network_{$ac}.php');
-	include_once template('network_'.$ac);
-	
-}else{
-*/
 include_once(S_ROOT.'./data/data_network.php');
 
 //日志
