@@ -10,7 +10,7 @@ if(!defined('IN_UCHOME')) {
 
 //添加书签
 function bookmark_post($POST, $olds=array()) {
-	global $_SGLOBAL, $_SC, $space;
+	global $_SGLOBAL, $_SC, $space,$_GET;
     global $browserid;	
 	//操作者角色切换
 	$isself = 1;
@@ -55,11 +55,18 @@ function bookmark_post($POST, $olds=array()) {
 		$bmid = $olds['bmid'];
 		$bookmarkarr['uid'] = $olds['uid'];
 		$bookmarkarr['groupid']=$olds['groupid'];
-		$bookmarkarr['description'] = $message;
-		updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid));		
+        $bookmarkarr['description'] = $message;
+        //只修改bookmark目录
+		updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid,'type'=>$_SC['bookmark_type_dir']));		
 		$fuids = array();
 		}else{
 			//增加bookmark或者bookmark目录
+			/*
+			olds:
+			1:增加bookmark时，表是父目录的item
+			2:修改bookmark时，表示该item
+			3:empty时，表示是在根目录增加item
+			*/
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
 			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//语词屏蔽
 
@@ -72,21 +79,35 @@ function bookmark_post($POST, $olds=array()) {
 			$bookmarkarr['type'] = $POST['category'];
 			$bookmarkarr['browserid']=empty($olds)?$browserid:$olds['browserid'];
 			switch($POST['category']){
-				case $_SC['bookmark_type_site']://增加一个bookmark
+				case $_SC['bookmark_type_site']://增加或修改一个bookmark
 				//link 表
 				$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
 				$linkarr['username'] =$_SGLOBAL['supe_username'];
 				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 				$linkarr['url']=$POST['address'];
                 $linkarr['hashurl']=qhash($linkarr['url']);
-                $linkid=bookmark_link_process($linkarr);
-				//$linkid = inserttable('link', $linkarr, 1);
+
+				if($_GET['ac']=='bmdir')
+				{
+					//增加bookmark
+				    $linkid=bookmark_link_process(0,$linkarr);
 				//插入bookmark
-				$bookmarkarr['linkid'] = $linkid;
-				$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
+					$bookmarkarr['linkid'] = $linkid;				
                 //tag
-               	$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
-				$bmid = inserttable('bookmark', $bookmarkarr, 1);
+               		$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+					$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
+					$bmid = inserttable('bookmark', $bookmarkarr, 1);
+				}else{
+					$linkid=bookmark_link_process($olds['bmid'],$linkarr);
+				//插入bookmark
+					$bookmarkarr['linkid'] = $linkid;				
+                //tag
+               		$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+					//修改bookmark
+					$bookmarkarr['parentid'] = $olds['parentid'];
+					updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
+					$bmid =$olds['bmid'];
+				}
 				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
 				//显示对应的目录
 				$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
@@ -259,12 +280,23 @@ function checkhtml($html) {
 	
 	return $html;
 }
-function bookmark_link_process($arr){
+function bookmark_link_process($bmid,$arr){
     //检查此url是否已存在
 	global $_SGLOBAL,$_SC;
+    if($bmid)//修改bookmark项
+    {
+		 $link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid));
+		 if(!empty($link)){
+			if(($link['hashurl']==$arr['hashurl'])&&($link['url']==$arr['url']))//无需对link表做改动
+				return $link['linkid'];
+			else{
+				//将old link所在的表记数减一
+				 $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+			}
+		 }	 
+    }
     $link=array();
-	$query = $_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
-    $link=$_SGLOBAL['db']->fetch_array($query);
+    $link=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'"));
     if(empty($link)){
         $arr['storenum']=1;
 		$linkid = inserttable('link', $arr, 1);
