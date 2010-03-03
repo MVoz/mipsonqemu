@@ -900,3 +900,6 @@ top:expression(this.nextSibling.offsetTop);
 left:expression(this.nextSibling.offsetLeft);
 }
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
+
+.hotsite {color:#666666;font-size:12px;text-align:right;line-height:21px;}
+.hotsite img {vertical-align:middle;border:medium none;}
