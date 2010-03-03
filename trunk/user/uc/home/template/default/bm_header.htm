@@ -66,7 +66,11 @@ $_SGLOBAL[space_css]
 
 </div>
     <div id="status">
+   <!--{if $_SGLOBAL[supe_uid]}-->
+			<span class="pl">你好，<a href="space.php?do=bookmark" target=_blank><span>$_SGLOBAL['supe_username']</span></a>，欢迎回来！</span>
+   <!--{else}-->
             <span class="pl">你好，请<a href="/login" rel="nofollow">登录</a>或<a href="/register">注册</a></span>
+   <!--{/if}-->
     </div>
 </form>
 </div>
