@@ -290,7 +290,9 @@ function getUserTip(obj) {
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
-					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank">
+					<!--{eval getbookmarkimg($value)}-->
+					</a></div>
 					<p class="message">$value[description] ...</p>
 					<p class="c_date"></p>
 					<p class="bmtag">

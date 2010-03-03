@@ -86,6 +86,7 @@ function bookmark_post($POST, $olds=array()) {
 				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 				$linkarr['url']=$POST['address'];
                 $linkarr['hashurl']=qhash($linkarr['url']);
+				$linkarr['md5url']=md5($linkarr['url']);
 
 				if($_GET['ac']=='bmdir')
 				{
@@ -350,8 +351,8 @@ function deletebookmarkdir($bmid)
 	 $link=$_SGLOBAL['db']->fetch_array($query);
 	 $groupid=$link['groupid'];
 	 $browserid=$link['browserid'];
-	// global $log;
-	// $log->debug('$ucnewpm',$groupid." ".$browserid." ".$bmid);
+	 global $log;
+	 $log->debug('$ucnewpm',$groupid." ".$browserid." ".$bmid);
 	 $query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE parentid=".$groupid." AND browserid=".$browserid." AND uid=".$_SGLOBAL['supe_uid']);
 	 while($value=$_SGLOBAL['db']->fetch_array($query))
 	 {
@@ -369,4 +370,23 @@ function deletebookmarkdir($bmid)
 	 $_SGLOBAL['db']->query("DELETE FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
 	 return 1;
 }
+function clearbookmark($browserid)
+{
+	 global $_SGLOBAL,$_SC;
+	 $query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE parentid=0 AND browserid=".$browserid." AND uid=".$_SGLOBAL['supe_uid']);
+	 while($value=$_SGLOBAL['db']->fetch_array($query))
+	 {
+		switch($value['type'])
+		 {
+			case $_SC['bookmark_type_dir']:
+				deletebookmarkdir($value['bmid']);
+				break;
+			case $_SC['bookmark_type_site']:
+				deletebookmark($value['bmid']);
+				break;
+		 }
+	 }
+	 return 1;
+}
+
 ?>
