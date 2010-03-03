@@ -854,7 +854,7 @@ a.c_link {
 		WIDTH: 48px; HEIGHT: 48px
 }
 .logined .avatar48 {
-	 no-repeat; PADDING-BOTTOM: 0px; WIDTH: 60px;  HEIGHT: 60px;padding:0px;
+	 no-repeat; PADDING-BOTTOM: 0px; WIDTH: 48px;  HEIGHT: 48px;padding:5px;
 }
 .logined .avatar48 IMG {
 	WIDTH: 48px; HEIGHT: 48px
@@ -874,22 +874,17 @@ a.c_link {
 .login_adv{
 		float:left;width:220px;height:55px;
 }
-.login_adv ul{
-	height:16px;margin-top:8px;padding:0px;
+.login_adv_top{
+   width:210px;height:20px;margin:5px 0 0;
 }
-.login_adv ul li{
-	list-style-type:none;
-	display:inline;
+#login_adv_bottom ul{margin:0;padding:0}
+#login_adv_bottom li{margin:0;padding:0}
+#login_adv_bottom{
+   width:210px;height:36px;min-height:18px;line-height:18px;margin-top:8px;OVERFLOW: hidden;
 }
-.login_adv ul li a{
-	BACKGROUND: url(image/add.gif) no-repeat;width:16px;height:16px;PADDING-TOP: 2px;PADDING-LEFT: 20px;
-}
-.login_adv .l_icon{
-		WIDTH: 16px; HEIGHT: 16px
-}
-.login_adv .adv_line
-{
-	PADDING-RIGHT: 0px; PADDING-LEFT: 20px; PADDING-BOTTOM: 0px; MARGIN: 10px 0px 10px; OVERFLOW: hidden; WIDTH: 190px; COLOR: green; PADDING-TOP: 0px; HEIGHT: 16px;
+#login_adv_bottom li{height:18px;}
+#login_adv_bottom ul li a{
+	BACKGROUND: url(image/add.gif) no-repeat;width:18px;height:18px;PADDING-LEFT: 20px;color:green;
 }
 #zindexDiv{
 position:absolute;
@@ -901,5 +896,3 @@ left:expression(this.nextSibling.offsetLeft);
 }
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
 
-.hotsite {color:#666666;font-size:12px;text-align:right;line-height:21px;}
-.hotsite img {vertical-align:middle;border:medium none;}
