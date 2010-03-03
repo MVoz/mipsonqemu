@@ -2296,4 +2296,13 @@ function getuserbrowserarray(){
 		}
         return $userbrowser;
 }
+function getbookmarkimg($bookmark)
+{
+	$dirpath='bmimages';
+$dirpath=$dirpath.'/'.($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00ff0000)>>16).'/'.(($bookmark['hashurl']&0x0000ff00)>>8).'/'.(($bookmark['hashurl']&0x00ff)).'/'.$bookmark['md5url'].'.gif';
+//	$dirpath=$dirpath.'/'.$bookmark['md5url'].'.gif';
+	//global $log;
+	//$log->debug('dirpath',$dirpath);
+	echo '<img src="'.$dirpath.'">';
+}
 ?>

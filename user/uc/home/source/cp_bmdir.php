@@ -10,12 +10,15 @@ if(!defined('IN_UCHOME')) {
 //检查信息
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
 $browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
-if(!checkbrowserid($browserid)){
+$ops=array('add','edit','delete');
+$op = empty($_GET['op'])?'':$_GET['op'];
+if(empty($op)||!in_array($op,$ops)||!checkbrowserid($browserid)){
         showmessage('error parameters');
 }
-$op = empty($_GET['op'])?'':$_GET['op'];
+
 $bmdir = array();
 $groupid=0;
+//如果bmdirid为0，则表示为根目录
 if($bmdirid) {
     //获取收藏夹目录
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$_SGLOBAL['supe_uid']." AND type=".$_SC['bookmark_type_dir']." AND groupid=".$bmdirid);
@@ -116,13 +119,14 @@ if($_GET['op'] == 'delete') {
 	//删除
 	if(submitcheck('deletesubmit')) {
 		include_once(S_ROOT.'./source/function_bookmark.php');
-			 global $log;
-		 $log->debug('$xx',$bmdir['bmid']);
-		if(deletebookmarkdir($bmdir['bmid'])) {
+		if($bmdirid&&deletebookmarkdir($bmdir['bmid'])) {
 			//跳到父一级
-			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
+			$url = 'space.php?do=bookmark&groupid='.$groupid.'&browserid='.$browserid;
 			showmessage('do_success', $url, 0);
-		} else {
+		}else if(empty($bmdirid)&&clearbookmark($browserid)){
+			$url = 'space.php?do=bookmark&groupid=0&browserid='.$browserid;
+			showmessage('do_success', $url, 0);
+		}else {
 			showmessage('failed_to_delete_operation');
 		}
 	}
