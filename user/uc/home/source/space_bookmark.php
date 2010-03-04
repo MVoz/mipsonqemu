@@ -131,6 +131,35 @@ foreach($piclist as $key => $value) {
 	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
 	$piclist[$key] = $value;
 }
+//digg
+$cachefile = S_ROOT.'./data/cache_network_digg.txt';
+if(check_network_cache('digg')) {
+	$digglist = unserialize(sreadfile($cachefile));
+} else {
+
+	//显示数量
+	$shownum = 5;
+	
+	$digglist = array();
+	/*$query = $_SGLOBAL['db']->query("SELECT main.*, m.tagname
+		FROM ".tname('digg')." main
+		LEFT JOIN ".tname('diggtag')." m ON m.tagid=main.tagid
+		ORDER BY main.dateline LIMIT 0,$shownum");*/
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main
+				ORDER BY main.dateline LIMIT 0,$shownum");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+		//$value['tagname'] = getstr($value['tagname'], 20);
+		$value['subject'] = getstr($value['subject'], 50);
+		$digglist[] = $value;
+	}
+	if($_SGLOBAL['network']['digg']['cache']) {
+		swritefile($cachefile, serialize($digglist));
+	}
+}
+foreach($digglist as $key => $value) {
+	realname_set($value['uid'], $value['username']);
+	$digglist[$key] = $value;
+}
 
 //话题
 $cachefile = S_ROOT.'./data/cache_network_thread.txt';
