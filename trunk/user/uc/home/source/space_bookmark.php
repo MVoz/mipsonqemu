@@ -150,6 +150,7 @@ if(check_network_cache('digg')) {
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		//$value['tagname'] = getstr($value['tagname'], 20);
 		$value['subject'] = getstr($value['subject'], 50);
+		$value['abbsubject'] = getstr(trim($value['subject']), 28);
 		$digglist[] = $value;
 	}
 	if($_SGLOBAL['network']['digg']['cache']) {
