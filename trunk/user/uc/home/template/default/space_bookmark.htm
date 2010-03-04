@@ -195,12 +195,12 @@ function getUserTip(obj) {
 		   </div>
            <div id="login_adv_bottom">	                     
                                 	  <ul>
-                                	  	<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/">武装Firebug的多款Firefox插件</a></li>
-										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" >武装Firebug的多款Firefox插件</a></li>
-										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" >武装Firebug的多款Firefox插件</a></li>
-										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" >武装Firebug的多款Firefox插件</a></li>
-										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" >武装Firebug的多款Firefox插件</a></li>
-										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/">武装Firebug的多款Firefox插件</a></li>
+                                	  	<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
+										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
+										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
+										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
+										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
+										<li><a href="http://css9.net/firefox-adds-on-strengthen-firebug/" class="digg_qi">武装Firebug的多款Firefox插件</a></li>
                                 	  </ul>
 		  </div>
            </div>
@@ -433,41 +433,47 @@ scrollShowNav($('spics'), 903, 7, 43);
 <div class="nbox">
 	<div class="nbox_c">
 		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=thread&view=all">更多话题</a></span>话题 &raquo;</h2>
-		<div class="tlist">
-			
-			
-			<div class="collection_info">      
+		<div class="tlist">		
+<!--{loop $digglist $key $value}-->			
+		<div class="collection_info">      
         <div class="headpicture_info">
           <div class="headpicture_infoleft">
             <div class="act_headpicture"></div>
             <div class="act_headbtn"><a href="#"><img src="./template/default/image/collection_btn.jpg" /></a></div>
           </div>
           <div class="headpicture_inforight">
-          	  <div class="dig_title"><a href="#">
-          <h3>head picture head picture head picture</h3>
-        </a></div>
-            <div class="dig_synopsis"> <a href="#">After paying due consideration to your proposals and investigating your business </a></div>
-            <div class="dig_action">
-              <div class="support"><a href="#"><img src="./template/default/image/icon_support.jpg" /></a></div>
-              <div class="data">(15)</div>
-              <div class="bury"><a href="#"><img src="./template/default/image/icon_bury.jpg"/></a></div>
-              <div class="data">(5)</div>
-              <div class="discuss"><a href="#"><img src="./template/default/image/icon_discuss.jpg"/></a></div>
-              <div class="data">(5)</div>
-              <div class="clear"></div>
-            </div>          
+          	  <div class="dig_title">
+			  <a href="#"><h3>$value[subject]</h3></a>
+			  </div>
+              <div class="dig_synopsis">
+			  <a href="#">$value[description]...</a>
+			  </div>
+              <div class="dig_action">
+				  <div class="support"><a href="#"><img src="./template/default/image/icon_support.jpg" /></a></div>
+				  <div class="data">($value[upnum])</div>
+				  <div class="bury"><a href="#"><img src="./template/default/image/icon_bury.jpg"/></a></div>
+				  <div class="data">($value[downnum])</div>
+				  <div class="discuss"><a href="#"><img src="./template/default/image/icon_discuss.jpg"/></a></div>
+				  <div class="data">(5)</div>
+				  <div style="float:right">
+						<a href="#" style="margin:0 10px 0">删除</a>
+						<a href="#" style="margin:0 10px 0">编辑</a>
+						<a href="#" style="margin:0 10px 0">点击访问</a>
+				  </div>
+				  <div class="clear"></div>
+             </div>          
           </div>
-                        <div class="headpicture_inforight_1">
-            		<div class="d_avatar avatar125">
-                                    <a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
-                                        <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
-                                        src="./template/default/image/1_1264944905dc86.jpg">
-                                    </a>
+          <div class="headpicture_inforight_1">
+               <div class="d_avatar avatar125">
+                       <a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+                            <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                src="./template/default/image/1_1264944905dc86.jpg">
+                       </a>
                </div>
-            </div>
+           </div>
         </div>
-      </div>
-      
+        </div>
+<!--{/loop}-->      
       
 		</div>
 	</div>
