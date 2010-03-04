@@ -762,9 +762,9 @@ ins.modify { padding-top: 5px; color: #666; text-decoration: none; text-align: r
 .dig_synopsis{width:500px;word-break: break-all;height:55px;}
 .dig_synopsis a:link{margin:0;padding:0;list-style:none;height:17px;color:#666666;text-decoration:none;}
 .dig_synopsis a:visited{color:#666666;}
-.dig_synopsis a:hover{color:#d53030;}
+.dig_synopsis a:hover{color:#666;}
 
-.dig_action{width:300px; color:#669900; height:20px;}
+.dig_action{width:350px; color:#669900; height:20px;}
 .support{ display:block; float:left; width:28px; height:14px; margin-top:3px; margin-right:5px;}
 .data{ display:block; float:left; color:#669900; margin-right:10px;}
 .bury{ display:block; float:left; width:28px; height:14px; margin-top:3px; margin-right:5px;}
@@ -883,8 +883,8 @@ a.c_link {
    width:210px;height:36px;min-height:18px;line-height:18px;margin-top:8px;OVERFLOW: hidden;
 }
 #login_adv_bottom li{height:18px;}
-#login_adv_bottom ul li a{
-	BACKGROUND: url(image/add.gif) no-repeat;width:18px;height:18px;PADDING-LEFT: 20px;color:green;
+#login_adv_bottom ul li .digg_qi{
+	background: url(image/add.gif) no-repeat;width:18px;height:18px;padding-left: 20px;color:green;
 }
 #zindexDiv{
 position:absolute;
