@@ -31,12 +31,14 @@ $_SGLOBAL['usergroup']=Array
 		'allowpoll' => 1,
 		'allowclick' => 1,
 		'allowevent' => 1,
-		'allowmagic' => 1,
+		'allowmagic' => '0',
 		'allowpm' => 1,
 		'allowviewvideopic' => 1,
 		'allowmyop' => 1,
 		'allowtopic' => 1,
 		'allowstat' => 1,
+		'allowlink' => 1,
+		'allowdigg' => 1,
 		'magicdiscount' => '0',
 		'verifyevent' => '0',
 		'edittrail' => '0',
@@ -92,7 +94,10 @@ $_SGLOBAL['usergroup']=Array
 		'managespacenote' => 1,
 		'managevideophoto' => 1,
 		'managelog' => 1,
-		'magicaward' => ''
+		'magicaward' => Array
+			(
+
+			)
 		)
 	)
 ?>

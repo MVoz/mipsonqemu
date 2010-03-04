@@ -1,0 +1,109 @@
+<!--{template header}-->
+
+<!--{if $_GET[op] == 'delete'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>删除收藏</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid&browserid=$browserid">
+	<p>确定删除指定的收藏吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
+
+
+<!--{elseif $_GET[op] == 'edithot'}-->
+
+<h1>调整热度</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=blog&op=edithot&blogid=$blogid">
+	<p class="btn_line">
+		新的热度：<input type="text" name="hot" value="$blog[hot]" size="5"> 
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="hotsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+
+<!--{else}-->
+
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<!--{if $_GET[op] == 'add'}-->
+<h1>添加Digg</h1>
+<!--{else}-->
+<h1>编辑Digg</h1>
+<!--{/if}-->
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=$ac&op=$_GET[op]&diggid=$diggid">
+<table cellspacing="0" cellpadding="3">
+<tr>
+<th><label for="subject">名称：</label></th>
+<td>	
+<input type="text" id="subject" name="subject" value="$diggitem[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="address">地址：</label></th>
+<td>
+<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="tag">标签：</label></th>
+<td>
+<input type="text" id="tag" name="tag" value="$diggitem[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="tag">图片：</label></th>
+<td>
+<input type="file" style="border: 1px solid rgb(204, 204, 204);width: 300px;" name="attachpic" id="attachpic">
+</td>
+</tr>
+<tr>
+<th><label for="category">分类：</label></th>
+<td>
+<select id="category" name="category"/>
+		<option value="0">&nbsp;奇</option>
+		<option value="1">&nbsp;趣</option>
+		<option value="2">&nbsp;囧</option>
+		<option value="3">&nbsp;新</option>
+		<option value="4">&nbsp;怪</option>
+</select>
+</td>
+</tr>
+<tr>
+<th style="vertical-align: top;"><label for="description">描述：</label></th>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$diggitem[description]</textarea></td>
+</tr>
+<tr>
+<th>&nbsp;</th>
+<td>
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<!--{if $_GET[op] == 'add'}-->
+<input type="hidden" name="addsubmit" value="true" />
+<!--{else}-->
+<input type="hidden" name="editsubmit" value="true" />
+<!--{/if}-->
+<input type="submit" name="btnsubmit" value="确定" class="submit" />
+</td>
+</tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
+<!--{/if}-->
+<!--{template footer}-->
