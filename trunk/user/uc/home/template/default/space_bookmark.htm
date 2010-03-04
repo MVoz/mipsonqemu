@@ -452,20 +452,25 @@ scrollShowNav($('spics'), 903, 7, 43);
 							$value[description]... 
 						</div>
 						 <div class="action">
-							 <div style="float:left;width:220px;overflow:hidden;">
+							 <div style="float:left;width:210px;overflow:hidden;">
 								    <span style="float:left">标签:
 										<a href="#" >点击</a>
 										<a href="#" >点击</a>
 									</span>
 							 </div>
 							 
-							 <div style="float:right;width:130px;">
-								<a href="#" class="diggbtn">点击访问</a>								
+							 <div style="float:right;width:180px;">
+								<a href="#" class="diggbtn">点击访问</a>		
+								<!--{if $value[uid]=$_SGLOBAL[supe_uid]}-->
 								<a href="#" class="diggbtn">删除</a>
 								<a href="#" class="diggbtn">编辑</a>
+								<!--{else}-->
+								发布者:
+								<a href="#" >admin</a>
+								<!--{/if}-->
 							 </div>
-							  <div style="float:right;width:150px">
-								    <span>时间:</span><span class="gray"><!--{date('Y-m-d H:i',$value[dateline],1)}--></span>
+							  <div style="float:right;width:120px">
+								    <span>时间:</span><span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 							 </div>
 						 </div>
 				</div>
