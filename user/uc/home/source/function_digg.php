@@ -27,9 +27,9 @@ function digg_post($POST, $olds=array()) {
 
 	//内容
 	if($_SGLOBAL['mobile']) {
-		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
+		$POST['description'] = getstr(trim($POST['description']), 0, 1, 0, 1, 1);
 	} else {
-		$POST['description'] = getstr($POST['description'], 220, 1,1, 1);
+		$POST['description'] = getstr(trim($POST['description']), 220, 1,1, 1);
 	}
 	//$message = $POST['description'];
 	$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
@@ -57,7 +57,7 @@ function digg_post($POST, $olds=array()) {
 	if(empty($olds)){
 		$diggid = inserttable('digg', $diggarr, 1);
 	}else{
-
+		updatetable('digg', $diggarr, array('diggid'=>$diggid));
 	}				
 	$tagarr=digg_tag_batch($diggid,$POST['tag']);
 	$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
@@ -114,38 +114,6 @@ function digg_tag_batch($diggid, $tags) {
 
 	return $tagarr;
 }
-
-
-
-function bookmark_link_process($bmid,$arr){
-    //检查此url是否已存在
-	global $_SGLOBAL,$_SC;
-    if($bmid)//修改bookmark项
-    {
-		 $link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid));
-		 if(!empty($link)){
-			if(($link['hashurl']==$arr['hashurl'])&&($link['url']==$arr['url']))//无需对link表做改动
-				return $link['linkid'];
-			else{
-				//将old link所在的表记数减一
-				 $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
-			}
-		 }	 
-    }
-    $link=array();
-    $link=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'"));
-    if(empty($link)){
-        $arr['storenum']=1;
-		$linkid = inserttable('link', $arr, 1);
-        return $linkid;
-    }else
-    {
-        //update 总数
-	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum+1 WHERE linkid=".$link['linkid']);
-        return $link['linkid'];
-    }
-
-}
 function   updatevisitstat($bmid){
 //更新bookmark访问统计信息
 	    global $_SGLOBAL,$_SC;
@@ -158,71 +126,20 @@ function   updatevisitstat($bmid){
 //更新最后访问时间
         $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
-function deletebookmark($bmid){
-	//处理link
-	 global $_SGLOBAL;
-	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid),0);
-	if(empty($link))
-		return 0;
-	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+function deletedigg($diggid){
+	global $_SGLOBAL;
 	//处理tag
-	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('diggtagdigg')." WHERE diggid=".$diggid);
 	$updatetagids=array();
 	while($values=$_SGLOBAL['db']->fetch_array($query))
 	{
 		$updatetagids[]=$values['tagid'];		
 	}
 	if($updatetagids)
-		$_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
-	$_SGLOBAL['db']->query("DELETE  from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
-	//处理bookmark
-	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
+		$_SGLOBAL['db']->query("UPDATE ".tname('diggtag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
+	$_SGLOBAL['db']->query("DELETE  from ".tname('diggtagdigg')." WHERE diggid=".$diggid);
+	//处理digg
+	$_SGLOBAL['db']->query("DELETE  from ".tname('digg')." WHERE diggid=".$diggid);
 	return 1;
 }
-function deletebookmarkdir($bmid)
-{
-	//获取自己的groupid
-	 global $_SGLOBAL,$_SC;
-	 $query =$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
-	 $link=$_SGLOBAL['db']->fetch_array($query);
-	 $groupid=$link['groupid'];
-	 $browserid=$link['browserid'];
-	 global $log;
-	 $log->debug('$ucnewpm',$groupid." ".$browserid." ".$bmid);
-	 $query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE parentid=".$groupid." AND browserid=".$browserid." AND uid=".$_SGLOBAL['supe_uid']);
-	 while($value=$_SGLOBAL['db']->fetch_array($query))
-	 {
-		switch($value['type'])
-		 {
-			case $_SC['bookmark_type_dir']:
-				deletebookmarkdir($value['bmid']);
-				break;
-			case $_SC['bookmark_type_site']:
-				deletebookmark($value['bmid']);
-				break;
-		 }
-	 }
-	 //删除自己
-	 $_SGLOBAL['db']->query("DELETE FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
-	 return 1;
-}
-function clearbookmark($browserid)
-{
-	 global $_SGLOBAL,$_SC;
-	 $query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE parentid=0 AND browserid=".$browserid." AND uid=".$_SGLOBAL['supe_uid']);
-	 while($value=$_SGLOBAL['db']->fetch_array($query))
-	 {
-		switch($value['type'])
-		 {
-			case $_SC['bookmark_type_dir']:
-				deletebookmarkdir($value['bmid']);
-				break;
-			case $_SC['bookmark_type_site']:
-				deletebookmark($value['bmid']);
-				break;
-		 }
-	 }
-	 return 1;
-}
-
 ?>

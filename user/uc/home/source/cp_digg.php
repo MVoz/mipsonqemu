@@ -84,9 +84,9 @@ else if(submitcheck('editsubmit')) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-	include_once(S_ROOT.'./source/function_bookmark.php');
-	if($newbmdir = bookmark_post($_POST, $bookmarkitem)) {
-		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid']."&browserid=".$browserid;		
+	include_once(S_ROOT.'./source/function_digg.php');
+	if($newbmdir = digg_post($_POST, $diggitem)) {
+		$url=$_SGLOBAL['refer'];	
 		showmessage('do_success', $url, 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
@@ -110,9 +110,9 @@ else if(submitcheck('editsubmit')) {
 if($_GET['op'] == 'delete') {
 	//É¾³ý
 	if(submitcheck('deletesubmit')) {
-		include_once(S_ROOT.'./source/function_bookmark.php');
-		if(deletebookmark($bmid)) {
-			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
+		include_once(S_ROOT.'./source/function_digg.php');
+		if(deletedigg($diggid)) {
+			$url=$_SGLOBAL['refer'];
 			showmessage('do_success', $url, 0);
 		} else {
 			showmessage('failed_to_delete_operation');
