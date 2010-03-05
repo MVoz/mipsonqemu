@@ -1,0 +1,97 @@
+<!--search bar start-->
+<div class="s_clear searchbar">
+    <div class="floatleft searchForm">
+        <form action=cp.php method=get>
+            <ul>
+                <li>
+                    <input class=t_input style="padding-right: 5px; padding-left: 5px; padding-bottom: 5px; padding-top: 5px"
+                    size=50 name=searchkey>
+                    <!--<input type="text" name="search_text" value="Search text" onkeydown="cautareVexio('');"
+                    onmousedown="cautareVexio('');" onchange="cautareVexio('');" onfocus="if(document.search.search_text.value=='Search
+                    text') document.search.search_text.value='';" onblur="if(document.search.search_text.value=='')document.search.search_text.value='Search
+                    text';" class="cautareF" />
+                    -->
+                    <!-- <a href="javascript:document.search.submit();" id="cautareBtn">搜索</a>-->
+                    <input class=submit type=submit value=搜索 name=searchsubmit>
+                </li>
+                <li>
+                    <input type="checkbox" size="2" maxlength="2" value="ON">
+                </li>
+                <li>
+                    <a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all"
+                    class="logogoogle">
+                        &nbsp
+                    </a>
+                </li>
+                <li>
+                    <select name="baidu_judet">
+                        <option value="">
+                            新闻
+                        </option>
+                        <option value="">
+                            网页
+                        </option>
+                        <option value="Alba">
+                            图片
+                        </option>
+                        <option value="Alba">
+                            mp3
+                        </option>
+                    </select>
+                </li>
+                <li>
+                    <input type="checkbox" size="2" maxlength="2" value="ON">
+                </li>
+                <li>
+                    <a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all"
+                    class="logobaidu">
+                        &nbsp
+                    </a>
+                </li>
+                <li>
+                    <select name="google_judet" style="z-index:-10;">
+                        <option value="">
+                            新闻
+                        </option>
+                        <option value="">
+                            网页
+                        </option>
+                        <option value="Alba">
+                            图片
+                        </option>
+                        <option value="Alba">
+                            mp3
+                        </option>
+                    </select>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div class="floatright search_r">
+        <form action=space.php method=get>
+            <input class=t_input style="padding-right: 5px; padding-left: 3px; padding-bottom: 5px; padding-top: 5px"
+            size=15 name=searchkey>
+            <select name=do>
+                <option value=blog selected>
+                    日志
+                </option>
+                <option value=album>
+                    相册
+                </option>
+                <option value=thread>
+                    话题
+                </option>
+                <option value=poll>
+                    投票
+                </option>
+                <option value=event>
+                    活动
+                </option>
+            </select>
+            <input class=submit type=submit value=搜索 name=searchsubmit>
+            <input type=hidden value=all name=view>
+            <input type=hidden value=dateline name=orderby>
+        </form>
+    </div>
+</div>
+<!--searchBar end-->
