@@ -24,9 +24,15 @@ if(check_network_cache('digg')) {
 	//显示数量
 	$shownum = 5;
 	
+	 //获取总条数
+    $page=empty($_GET['page'])?0:intval($_GET['page']);
+    $perpage=$shownum;
+    $start=$page?(($page-1)*$perpage):0;
+    $theurl="space.php?do=$do";
 
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main
-				ORDER BY main.dateline LIMIT 0,$shownum");
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline LIMIT $start,$shownum");
+
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['subject'] = getstr($value['subject'], 50);
 		$value['cutsubject'] = getstr(trim($value['subject']), 28);
@@ -41,7 +47,8 @@ foreach($digglist as $key => $value) {
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$digglist[$key] = $value;
 }
-
+//分页
+$diggmulti = multi($count, $perpage, $page, $theurl,'','diggcontent');
 
 realname_get();
 

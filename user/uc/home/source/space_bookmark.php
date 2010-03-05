@@ -92,7 +92,8 @@ foreach($bookmarklist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
 	$bookmarklist[$key] = $value;
 }
-
+//分页
+$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
 //图片
 $cachefile = S_ROOT.'./data/cache_network_pic.txt';
 if(check_network_cache('pic')) {
