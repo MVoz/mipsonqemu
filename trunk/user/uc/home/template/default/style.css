@@ -858,7 +858,7 @@ a.c_link {
 #login_adv_bottom ul,li{margin:0px;padding:0px;}
 
 #login_adv_bottom ul li .digg_qi{
-	background: url(image/add.gif) no-repeat;width:180px;height:18px;padding:0 0 0 20px;margin:0px;color:green;
+	background: url(image/add.gif) no-repeat;width:180px;height:18px;padding:0 0 0 20px;margin:0px;color:#368332;
 }
 #zindexDiv{
 position:absolute;

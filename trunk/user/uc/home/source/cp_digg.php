@@ -43,7 +43,8 @@ if(empty($diggitem)) {
 //	$diggitem['description'] = empty($_GET['description'])?'':getstr($_GET['description'], 500, 1, 0);
 	
 } else {
-	
+	$diggitem['tag'] = empty($diggitem['tag'])?array():unserialize($diggitem['tag']);
+	$diggitem['tag'] = implode(' ',$diggitem['tag']);
 	//if($_SGLOBAL['supe_uid'] != $bookmarkitem['uid']/* && !checkperm('manageblog')*/) {
 	//	showmessage('no_authority_operation_of_the_log');
 	//}

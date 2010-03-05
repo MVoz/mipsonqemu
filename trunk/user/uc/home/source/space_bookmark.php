@@ -132,6 +132,7 @@ foreach($piclist as $key => $value) {
 	$piclist[$key] = $value;
 }
 //digg
+$digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';
 if(check_network_cache('digg')) {
 	$digglist = unserialize(sreadfile($cachefile));
@@ -140,7 +141,7 @@ if(check_network_cache('digg')) {
 	//显示数量
 	$shownum = 5;
 	
-	$digglist = array();
+
 	/*$query = $_SGLOBAL['db']->query("SELECT main.*, m.tagname
 		FROM ".tname('digg')." main
 		LEFT JOIN ".tname('diggtag')." m ON m.tagid=main.tagid
@@ -148,9 +149,8 @@ if(check_network_cache('digg')) {
 	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main
 				ORDER BY main.dateline LIMIT 0,$shownum");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		//$value['tagname'] = getstr($value['tagname'], 20);
 		$value['subject'] = getstr($value['subject'], 50);
-		$value['abbsubject'] = getstr(trim($value['subject']), 28);
+		$value['cutsubject'] = getstr(trim($value['subject']), 28);
 		$digglist[] = $value;
 	}
 	if($_SGLOBAL['network']['digg']['cache']) {
@@ -159,6 +159,7 @@ if(check_network_cache('digg')) {
 }
 foreach($digglist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
+	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$digglist[$key] = $value;
 }
 

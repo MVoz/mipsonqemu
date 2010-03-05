@@ -87,29 +87,29 @@ function bookmark_post($POST, $olds=array()) {
 				$linkarr['url']=$POST['address'];
                 $linkarr['hashurl']=qhash($linkarr['url']);
 				$linkarr['md5url']=md5($linkarr['url']);
-
+				
 				if($_GET['ac']=='bmdir')
 				{
 					//增加bookmark
 				    $linkid=bookmark_link_process(0,$linkarr);
 				//插入bookmark
 					$bookmarkarr['linkid'] = $linkid;				
-                //tag
-               		$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
 					$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 					$bmid = inserttable('bookmark', $bookmarkarr, 1);
 				}else{
 					$linkid=bookmark_link_process($olds['bmid'],$linkarr);
 				//插入bookmark
 					$bookmarkarr['linkid'] = $linkid;				
-                //tag
-               		$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
-					//修改bookmark
+				//修改bookmark
 					$bookmarkarr['parentid'] = $olds['parentid'];
 					updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
 					$bmid =$olds['bmid'];
-				}
+				}	
+				//tag
 				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
+				//update tag
+				$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
+				updatetable('bookmark', array('tag'=>$tag), array('bmid'=>$bmid));
 				//显示对应的目录
 				$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
 				break;

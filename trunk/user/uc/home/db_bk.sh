@@ -16,4 +16,5 @@ mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-a
 zip  -u -P $rar_passwd $DumpFile.zip $DumpFile uc_bookmark.sdr config.sh
 rm -f $DumpFile 
 rm -f $LogFile
+svn commit -m "$DATA"
 echo "Backup Done!"
