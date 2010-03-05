@@ -47,6 +47,30 @@ function digg_post($POST, $olds=array()) {
 		'category' => $POST['category']
 	);
 	$diggarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+
+		//标题图片
+	$titlepic = '';
+	//图片地址
+	//获取上传的图片
+
+	if(!empty($POST['picids'])) {
+		$picids = array_keys($POST['picids']);
+		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('pic')." WHERE picid IN (".simplode($picids).") AND uid='$_SGLOBAL[supe_uid]'");
+		if ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			if(empty($titlepic) && $value['thumb']) {
+				$titlepic = $value['filepath'].'.thumb.jpg';
+				$diggarr['picflag'] = $value['remote']?2:1;
+			}
+			$diggarr['pic'] = pic_get($value['filepath'], $value['thumb'], $value['remote'], 0);
+		}
+		if(empty($titlepic) && $value) {
+			$titlepic = $value['filepath'];
+			$diggarr['picflag'] = $value['remote']?2:1;
+		}
+	}
+
+
+
 	$diggid=$olds['diggid'];
 		//增加或编辑digg
 			/*
