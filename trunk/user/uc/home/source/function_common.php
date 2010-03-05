@@ -730,9 +730,10 @@ function sstrtotime($string) {
 }
 
 //分页
-function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='') {
+function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0) {
 	global $_SCONFIG, $_SGLOBAL;
-
+	$inajax=$_SGLOBAL['inajax'];
+	$_SGLOBAL['inajax']=empty($_SGLOBAL['inajax'])?$ajax:$_SGLOBAL['inajax'];
 	if(empty($ajaxdiv) && $_SGLOBAL['inajax']) {
 		$ajaxdiv = $_GET['ajaxdiv'];
 	}
@@ -819,6 +820,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='') {
 			$multipage = '<em>&nbsp;'.$num.'&nbsp;</em>'.$multipage;
 		}
 	}
+	$_SGLOBAL['inajax']=$inajax;
 	return $multipage;
 }
 

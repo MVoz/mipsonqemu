@@ -48,7 +48,7 @@ foreach($digglist as $key => $value) {
 	$digglist[$key] = $value;
 }
 //分页
-$diggmulti = multi($count, $perpage, $page, $theurl,'','diggcontent');
+$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);
 
 realname_get();
 

@@ -91,9 +91,6 @@ function getbmview(type) {
 	ajaxget('space.php?uid=$space[uid]&do=bookmark&see='+type+'&ajaxdiv=bmcontent', 'bmcontent');
 }
 function getbmfromid(id) {
-	//var plus = '';
-	//if(type == 'event') plus = '&type=self';
-	//ajaxget('space.php?uid=$space[uid]&do='+type+'&view=me'+plus+'&ajaxdiv=maincontent', 'maincontent');
 	if(id==0)
 	        jQuery('#menu ul').hide();
 	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
