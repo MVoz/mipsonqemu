@@ -2,11 +2,11 @@
 
 <!--{if $_GET[op] == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
-<h1>删除收藏</h1>
+<h1>删除话题</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid&browserid=$browserid">
-	<p>确定删除指定的收藏吗？</p>
+<form method="post" action="cp.php?ac=$ac&op=$_GET[op]&diggid=$diggid">
+	<p>确定删除指定的话题吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="deletesubmit" value="true" />

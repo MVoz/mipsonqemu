@@ -64,7 +64,7 @@ include_once(S_ROOT.'./data/data_network.php');
 		$query = $_SGLOBAL['db']->query("SELECT main.subject 
 		FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)."  limit 1");
 		if($value =$_SGLOBAL['db']->fetch_array($query))
-			$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
+		$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
 	}
     //获取总条数
     $page=empty($_GET['page'])?0:intval($_GET['page']);
@@ -92,8 +92,7 @@ foreach($bookmarklist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
 	$bookmarklist[$key] = $value;
 }
-//分页
-$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
+
 //图片
 $cachefile = S_ROOT.'./data/cache_network_pic.txt';
 if(check_network_cache('pic')) {
@@ -131,231 +130,7 @@ foreach($piclist as $key => $value) {
 	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
 	$piclist[$key] = $value;
 }
-//digg
-$digglist = array();
-$cachefile = S_ROOT.'./data/cache_network_digg.txt';
-if(check_network_cache('digg')) {
-	$digglist = unserialize(sreadfile($cachefile));
-} else {
 
-	//显示数量
-	$shownum = 5;
-	
-
-	/*$query = $_SGLOBAL['db']->query("SELECT main.*, m.tagname
-		FROM ".tname('digg')." main
-		LEFT JOIN ".tname('diggtag')." m ON m.tagid=main.tagid
-		ORDER BY main.dateline LIMIT 0,$shownum");*/
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main
-				ORDER BY main.dateline LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['subject'] = getstr($value['subject'], 50);
-		$value['cutsubject'] = getstr(trim($value['subject']), 28);
-		$digglist[] = $value;
-	}
-	if($_SGLOBAL['network']['digg']['cache']) {
-		swritefile($cachefile, serialize($digglist));
-	}
-}
-foreach($digglist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
-	$digglist[$key] = $value;
-}
-
-//话题
-$cachefile = S_ROOT.'./data/cache_network_thread.txt';
-if(check_network_cache('thread')) {
-	$threadlist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('thread',
-		array('tid', 'uid'),
-		array('hot','viewnum','replynum'),
-		array('dateline','lastpost'),
-		array('dateline','viewnum','replynum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 10;
-	
-	$threadlist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*, m.tagname
-		FROM ".tname('thread')." main
-		LEFT JOIN ".tname('mtag')." m ON m.tagid=main.tagid
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['tagname'] = getstr($value['tagname'], 20);
-		$value['subject'] = getstr($value['subject'], 50);
-		$threadlist[] = $value;
-	}
-	if($_SGLOBAL['network']['thread']['cache']) {
-		swritefile($cachefile, serialize($threadlist));
-	}
-}
-foreach($threadlist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$threadlist[$key] = $value;
-}
-
-
-//活动
-include_once(S_ROOT.'./data/data_eventclass.php');
-$cachefile = S_ROOT.'./data/cache_network_event.txt';
-if(check_network_cache('event')) {
-	$eventlist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('event',
-		array('eventid', 'uid'),
-		array('hot','membernum','follownum'),
-		array('dateline'),
-		array('dateline','membernum','follownum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 4;
-	
-	$eventlist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*
-		FROM ".tname('event')." main
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['title'] = getstr($value['title'], 45);
-		if($value['poster']){
-			$value['pic'] = pic_get($value['poster'], $value['thumb'], $value['remote']);
-		} else {
-			$value['pic'] = $_SGLOBAL['eventclass'][$value['classid']]['poster'];
-		}
-		$eventlist[] = $value;
-	}
-	if($_SGLOBAL['network']['event']['cache']) {
-		swritefile($cachefile, serialize($eventlist));
-	}
-}
-foreach($eventlist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$eventlist[$key] = $value;
-}
-
-
-//投票
-$cachefile = S_ROOT.'./data/cache_network_poll.txt';
-if(check_network_cache('poll')) {
-	$polllist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('poll',
-		array('pid', 'uid'),
-		array('hot','voternum','replynum'),
-		array('dateline'),
-		array('dateline','voternum','replynum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 9;
-	
-	$polllist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*
-		FROM ".tname('poll')." main
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		realname_set($value['uid'], $value['username']);
-		$polllist[] = $value;
-	}
-	if($_SGLOBAL['network']['poll']['cache']) {
-		swritefile($cachefile, serialize($polllist));
-	}
-}
-foreach($polllist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$polllist[$key] = $value;
-}
-
-//记录
-$dolist = array();
-$query = $_SGLOBAL['db']->query("SELECT *
-	FROM ".tname('doing')."
-	ORDER BY dateline DESC LIMIT 0,5");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	realname_set($value['uid'], $value['username']);
-	$value['title'] = getstr($value['message'], 0, 0, 0, 0, 0, -1);
-	$dolist[] = $value;
-}
-
-//站长推荐
-$star = array();
-$starlist = array();
-if($_SCONFIG['spacebarusername']) {
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('space')." WHERE username IN (".simplode(explode(',', $_SCONFIG['spacebarusername'])).")");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-		$starlist[] = $value;
-	}
-}
-if($starlist) {
-	$star = sarray_rand($starlist, 1);
-}
-
-//竞价排名
-$showlist = array();
-$query = $_SGLOBAL['db']->query("SELECT sh.note, s.* FROM ".tname('show')." sh
-	LEFT JOIN ".tname('space')." s ON s.uid=sh.uid
-	ORDER BY sh.credit DESC LIMIT 0,23");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-	$value['note'] = addslashes(getstr($value['note'], 80, 0, 0, 0, 0, -1));
-	$showlist[$value['uid']] = $value;
-}
-if(empty($star) && $showlist) {
-	$star = sarray_rand($showlist, 1);
-}
-
-//在线用户
-$onlinelist = array();
-$query = $_SGLOBAL['db']->query("SELECT s.*, sf.note FROM ".tname('session')." s
-	LEFT JOIN ".tname('spacefield')." sf ON sf.uid=s.uid
-	ORDER BY s.lastactivity DESC LIMIT 0,12");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	if(!$value['magichidden']) {
-		$value['note'] = shtmlspecialchars(strip_tags($value['note']));
-		realname_set($value['uid'], $value['username']);
-		$onlinelist[$value['uid']] = $value;
-	}
-}
-if(empty($star) && $onlinelist) {
-	$star = sarray_rand($onlinelist, 1);
-}
-
-
-//在线人数
-$olcount = getcount('session', array());
-
-//应用
-$myappcount = 0;
-$myapplist = array();
-if($_SCONFIG['my_status']) {
-	$myappcount = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('myapp')." WHERE flag>='0'"), 0);
-	if($myappcount) {
-		$query = $_SGLOBAL['db']->query("SELECT appid,appname FROM ".tname('myapp')." WHERE flag>=0 ORDER BY flag DESC, displayorder LIMIT 0,7");
-		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-			$myapplist[] = $value;
-		}
-	}
-}
-
-//分享
-$sharelist = array();
-$query = $_SGLOBAL['db']->query("SELECT *
-	FROM ".tname('share')."
-	ORDER BY dateline DESC LIMIT 0,11");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	realname_set($value['uid'], $value['username']);
-	$sharelist[] = $value;
-}
 
 realname_get();
 
@@ -365,9 +140,6 @@ $wheretime = $_SGLOBAL['timestamp']-3600*24*30;
 
 $_TPL['css'] = 'network';
 include_once template("space_bookmark");
-/*
-}
-*/
 //检查缓存
 function check_network_cache($type) {
 	global $_SGLOBAL;
