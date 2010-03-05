@@ -869,4 +869,4 @@ top:expression(this.nextSibling.offsetTop);
 left:expression(this.nextSibling.offsetLeft);
 }
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
-
+.diggcontent {height:600px;}
