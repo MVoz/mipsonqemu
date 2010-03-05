@@ -1,0 +1,295 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template bm_header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+<h2 class="ntitle">
+		<span class="r_option" style="padding-right:150px;">
+		<ul>
+					<!--{if isset($_GET['groupid'])}-->
+        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
+            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
+           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
+          <!--{/if}-->
+        </ul>	
+			</span> $groupname &raquo;</h2>
+			<ul class="bloglist">
+			<!--{loop $bookmarklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					<p class="message">$value[description] ...</p>
+					<p class="c_date"></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+                    <a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
+					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
+					<p class="c_date"></p>
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
+				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
+				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$groupid&browserid=$browserid&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$browserid&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
+				</li>
+				<!--{/loop}-->
+
+			</ul>
+			<div class="page">$multi</div>
+<!--{else}-->
+<div id="network">
+<!--{template login}-->
+<!--{template searchbar}-->
+<div class="nbox" style="height:650px;">
+
+	<div class="nbox_c">
+	<div id="bmcontent">
+			<h2 class="ntitle">
+
+			<span class="r_option" style="padding-right:150px;">
+				<ul>
+						<!--{if isset($_GET['groupid'])}-->
+        		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
+            <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
+           	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
+           	<!--{/if}-->
+        </ul>	
+			</span> $groupname &raquo;</h2>
+			<ul class="bloglist">
+			<!--{loop $bookmarklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank">
+					<!--{eval getbookmarkimg($value)}-->
+					</a></div>
+					<p class="message">$value[description] ...</p>
+					<p class="c_date"></p>
+					<p class="bmtag">
+					<!--{loop $value[taglist] $subkey $subvalue}-->
+                    <a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+					<!--{/loop}-->
+					&nbsp;
+					</p>
+					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
+					<p class="c_date"></p>
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>
+				  <span class=bvisit><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
+				      <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
+					 <span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
+				</li>
+				<!--{/loop}-->
+
+			</ul>
+			<div class="page">$multi</div>
+	</div>
+	</div>
+
+	<div class="nbox_s side_rbox side_rbox_w">
+		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=doing&view=all">更多记录</a></span> 记录 &raquo;</h2>
+		<div class="side_rbox_c">
+				                            <div class="menu_item">
+                            	<div class="tabs_header">
+															<ul class="tabs">
+                                	                            <!--{eval mkbrowsertab($browserid)}-->
+															</ul>
+															</div>
+                            	
+                                <ul  class="menu_list">
+                                	<!--{eval usermenu($browserid)}-->
+                                </ul>
+                                
+                            </div>
+		</div>
+		<h2 class=ntitle_1>
+                        </h2>
+                        <div class="side_rbox_c">
+						<div class="side_rbox_adv">
+									<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+                                        <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                        src="./template/default/image/1_1264944905dc86.jpg">
+                                    </a>
+						</div>
+                        </div>
+	</div>
+ 						
+</div>
+
+
+
+<div class="nbox" id="photolist">
+	<h2 class="ntitle">
+		<a href="space.php?do=album&view=all" class="r_option">更多图片</a>
+		图片 &raquo;
+		</h2>
+	<div id="p_control">
+		<a href="javascript:;" id="spics_last">上一页</a>
+		<a href="javascript:;" id="spics_next">下一页</a>
+		<ul id="p_control_pages">
+			<li>第一页</li>
+			<li>第二页</li>
+			<li>第三页</li>
+			<li>第四页</li>
+		</li>
+	</div>
+	<div id="spics_wrap">
+	<ul id="spics" style="margin-left: 0px;">
+	<!--{loop $piclist $key $value}-->
+     <li class=spic_0>
+     <div class="avatar125_1"><a href="http://192.168.115.2/uc/home/space.php?uid=1&amp;do=album&amp;picid=5" target=_blank><img alt=我的相册 src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+     <p>人人网</p>
+     <p class="c_date"></p>
+     <p class=label>
+                                    <a href="#" style="float:left;padding-left:2px;">
+                                        足球
+                                    </a>
+                                    <a href="#" style="float:left;padding-left:12px;">
+                                        英超
+                                    </a>
+
+     </p>
+     </li>
+	<!--{/loop}-->
+	</ul>
+	</div>
+</div>
+<script type="text/javascript">
+scrollShowNav($('spics'), 903, 7, 43);
+</script>
+
+
+<div id="showuser" class="nbox">
+	<div id="user_recomm">
+		<h2>站长推荐</h2>
+		<!--{loop $star $value}-->
+		<div class="s_avatar"><a href="space.php?uid=$value[uid]" target="_blank"><!--{avatar($value[uid],middle)}--></a></div>
+		<div class="s_cnts">
+			<h3><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></h3>
+			<p>访问: $value[viewnum]</p>
+			<p>积分: $value[credit]</p>
+			<hr />
+			<p>好友: $value[friendnum]</p>
+			<p>更新: <!--{date('H:i',$value[updatetime],1)}--></p>
+		</div>
+		<!--{/loop}-->
+	</div>
+	<div id="user_wall" onmouseout="javascript:$('usertip_box').style.visibility = 'hidden';">
+		<div id="user_pay" class="s_clear">
+			<h2><a href="space.php?do=top">竞价排名</a></h2>
+			<ul>
+			<!--{loop $showlist $value}-->
+				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
+			<!--{/loop}-->
+			</ul>
+			<p><a href="space.php?do=top">我要上榜</a></p>
+		</div>
+		<div id="user_online" class="s_clear">
+			<h2><a href="space.php?do=top&view=online">在线会员</a></h2>
+			<ul>
+			<!--{loop $onlinelist $value}-->
+				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" class="uonline" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
+			<!--{/loop}-->
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="usertip_box"><div></div></div>
+
+<div class="nbox">
+	<div class="nbox_c">
+		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=thread&view=all">更多话题</a></span>话题 &raquo;</h2>
+		<div class="diggcontent">
+		<div class="tlist">		
+		<ul>
+<!--{loop $digglist $key $value}-->			
+			<li>
+				<div class="left">
+						<div class="left_top"><a href="#" ><img src="./template/default/image/act_headpicture.jpg" /></a></div>
+						<div class="left_bot">
+							<div class="support"><a href="#"><img src="./template/default/image/icon_support.jpg" /></a></div>
+							<div class="data">($value[upnum])</div>
+							<div class="support"><a href="#"><img src="./template/default/image/icon_bury.jpg" /></a></div>
+							<div class="data">($value[downnum])</div>
+						</div>
+				</div>
+				<div class="mid">
+						 <div class="dig_title"><a href="$value[url]">$value[subject]</a></div>
+						 <div class="descript">
+							$value[description]... 
+						</div>
+						 <div class="action">
+							 <div style="float:left;width:210px;overflow:hidden;">
+								    <span style="float:left">标签:
+											<!--{loop $value[tag] $tagid $tagname}-->
+											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
+											<!--{/loop}-->					
+									</span>
+							 </div>
+							 
+							 <div style="float:right;width:180px;">
+								<a href="$value[url]" target=_blank class="diggbtn">点击访问</a>		
+								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
+								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>
+								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
+								<!--{else}-->
+								发布者:
+								<a href="#" >$value[username]</a>
+								<!--{/if}-->
+							 </div>
+							  <div style="float:right;width:120px">
+								    <span>时间:</span><span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+							 </div>
+						 </div>
+				</div>
+				<div class="right">
+					<div class="d_avatar avatar125">
+                       <a title=admin href="$value[url]" target=_blank>
+                            <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                src="./template/default/image/1_1264944905dc86.jpg">
+                       </a>
+				  </div>
+				</div>
+			</li>
+<!--{/loop}-->    
+		</ul>
+		<div class="page">$diggmulti</div>
+		</div>
+		</div>
+	</div>
+	<div id="npoll" class="nbox_s side_rbox side_rbox_w">
+		<div class="side_rbox_c">
+			<h2 class="ntitle"><span class="r_option"><a href="space.php?do=poll">更多投票</a></span>投票 &raquo;</h2>
+			<ul>
+			<!--{loop $polllist $key $value}-->
+				<li class="poll_$key"><a href="space.php?uid=$value[uid]&do=poll&pid=$value[pid]" target="_blank">$value[subject]</a><!--{if $key == 0}--><p><a href="">已有 $value[voternum] 位会员投票</a></p><!--{/if}--></li>
+			<!--{/loop}-->
+			</ul>
+		</div>
+	</div>
+</div>
+		<div class="fbbottom"></div>
+	</div>
+
+</div>
+
+<!--{template footer}-->
+<script>
+function getbmview(type) {
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&see='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+}
+function getbmfromid(id) {
+	//var plus = '';
+	//if(type == 'event') plus = '&type=self';
+	//ajaxget('space.php?uid=$space[uid]&do='+type+'&view=me'+plus+'&ajaxdiv=maincontent', 'maincontent');
+	if(id==0)
+	        jQuery('#menu ul').hide();
+	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
+}
+function ajaxresponse(objname, data) {
+	var x = new Ajax('XML', objname);
+	x.get('cp.php?ac=bookmark&' + data, function(s){
+	});
+}
+function updatevisitstat(id) {
+	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
+}
+</script>
+<!--{/if}-->
