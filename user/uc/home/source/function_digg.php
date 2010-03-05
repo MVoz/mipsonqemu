@@ -47,8 +47,6 @@ function digg_post($POST, $olds=array()) {
 		'category' => $POST['category']
 	);
 	$diggarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-	$diggarr['tag'] = empty($POST['tag'])?'':addslashes(serialize($POST['tag']));
-
 	$diggid=$olds['diggid'];
 		//增加或编辑digg
 			/*
@@ -60,9 +58,10 @@ function digg_post($POST, $olds=array()) {
 		$diggid = inserttable('digg', $diggarr, 1);
 	}else{
 
-	}
-				
+	}				
 	$tagarr=digg_tag_batch($diggid,$POST['tag']);
+	$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
+	updatetable('digg', array('tag'=>$tag), array('diggid'=>$diggid));
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 

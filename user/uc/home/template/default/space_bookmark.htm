@@ -196,7 +196,7 @@ function getUserTip(obj) {
            <div id="login_adv_bottom">	                     
                                 	  <ul>
 									  <!--{loop $digglist $key $value}-->		
-										<li><a href="$value[url]" class="digg_qi">$value[abbsubject]</a></li>
+										<li><a href="$value[url]" class="digg_qi">$value[cutsubject]</a></li>
 									  <!--{/loop}-->
                                 	  </ul>
 		  </div>
@@ -451,19 +451,20 @@ scrollShowNav($('spics'), 903, 7, 43);
 						 <div class="action">
 							 <div style="float:left;width:210px;overflow:hidden;">
 								    <span style="float:left">标签:
-										<a href="#" >点击</a>
-										<a href="#" >点击</a>
+											<!--{loop $value[tag] $tagid $tagname}-->
+											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
+											<!--{/loop}-->					
 									</span>
 							 </div>
 							 
 							 <div style="float:right;width:180px;">
 								<a href="#" class="diggbtn">点击访问</a>		
-								<!--{if $value[uid]=$_SGLOBAL[supe_uid]}-->
+								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a href="#" class="diggbtn">删除</a>
-								<a href="#" class="diggbtn">编辑</a>
+								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
 								<!--{else}-->
 								发布者:
-								<a href="#" >admin</a>
+								<a href="#" >$value[username]</a>
 								<!--{/if}-->
 							 </div>
 							  <div style="float:right;width:120px">
