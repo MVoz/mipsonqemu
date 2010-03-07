@@ -620,3 +620,13 @@ function selector(pattern, context) {
 		return list;
 	}
 }
+function $E(id){ return document.getElementById(id);}
+function add_favorite()
+{ 
+	if (document.all)  
+	{
+		$E("homepage").setHomePage('http://www.tanzhi.com');
+	}
+	else if (window.sidebar)  
+	window.sidebar.addPanel('弹指网', 'http://www.tanzhi.com', "");
+}
