@@ -6,7 +6,7 @@
 <div id="network">
 <!--{template login}-->
 <!--{template searchbar}-->
-<div class="nbox" style="height:650px;">
+<div class="nbox" style="height:640px;">
 
 	<div class="nbox_c">
 	<div id="bmcontent">
@@ -15,114 +15,30 @@
 	</div>
 
 	<div class="nbox_s side_rbox side_rbox_w">
-		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=doing&view=all">更多记录</a></span> 记录 &raquo;</h2>
-		<div class="side_rbox_c">
-				                            <div class="menu_item">
+		<h2 class="ntitle">菜单 &raquo;</h2>
+		<div class="side_rbox_c" style="height:605px;">
+		        <div class="menu_item">
                             	<div class="tabs_header">
-															<ul class="tabs">
-                                	                            <!--{eval mkbrowsertab($browserid)}-->
-															</ul>
-															</div>
-                            	
+										<ul class="tabs">
+                                	       <!--{eval mkbrowsertab($browserid)}-->
+										</ul>
+								</div>                            	
                                 <ul  class="menu_list">
                                 	<!--{eval usermenu($browserid)}-->
                                 </ul>
-                                
-                            </div>
-		</div>
-		<h2 class=ntitle_1>
-                        </h2>
-                        <div class="side_rbox_c">
 						<div class="side_rbox_adv">
-									<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
-                                        <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
-                                        src="./template/default/image/1_1264944905dc86.jpg">
-                                    </a>
-						</div>
-                        </div>
+						<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
+                              <img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+                                        src="./template/default/image/imgad.gif">
+                        </a>
+				</div>
+                </div>
+		</div>
 	</div>
  						
 </div>
+<!--{template relatedsite}-->
 
-
-
-<div class="nbox" id="photolist">
-	<h2 class="ntitle">
-		<a href="space.php?do=album&view=all" class="r_option">更多图片</a>
-		图片 &raquo;
-		</h2>
-	<div id="p_control">
-		<a href="javascript:;" id="spics_last">上一页</a>
-		<a href="javascript:;" id="spics_next">下一页</a>
-		<ul id="p_control_pages">
-			<li>第一页</li>
-			<li>第二页</li>
-			<li>第三页</li>
-			<li>第四页</li>
-		</li>
-	</div>
-	<div id="spics_wrap">
-	<ul id="spics" style="margin-left: 0px;">
-	<!--{loop $piclist $key $value}-->
-     <li class=spic_0>
-     <div class="avatar125_1"><a href="http://192.168.115.2/uc/home/space.php?uid=1&amp;do=album&amp;picid=5" target=_blank><img alt=我的相册 src="./template/default/image/1_1264944905dc86.jpg"></a></div>
-     <p>人人网</p>
-     <p class="c_date"></p>
-     <p class=label>
-                                    <a href="#" style="float:left;padding-left:2px;">
-                                        足球
-                                    </a>
-                                    <a href="#" style="float:left;padding-left:12px;">
-                                        英超
-                                    </a>
-
-     </p>
-     </li>
-	<!--{/loop}-->
-	</ul>
-	</div>
-</div>
-<script type="text/javascript">
-scrollShowNav($('spics'), 903, 7, 43);
-</script>
-
-
-<div id="showuser" class="nbox">
-	<div id="user_recomm">
-		<h2>站长推荐</h2>
-		<!--{loop $star $value}-->
-		<div class="s_avatar"><a href="space.php?uid=$value[uid]" target="_blank"><!--{avatar($value[uid],middle)}--></a></div>
-		<div class="s_cnts">
-			<h3><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></h3>
-			<p>访问: $value[viewnum]</p>
-			<p>积分: $value[credit]</p>
-			<hr />
-			<p>好友: $value[friendnum]</p>
-			<p>更新: <!--{date('H:i',$value[updatetime],1)}--></p>
-		</div>
-		<!--{/loop}-->
-	</div>
-	<div id="user_wall" onmouseout="javascript:$('usertip_box').style.visibility = 'hidden';">
-		<div id="user_pay" class="s_clear">
-			<h2><a href="space.php?do=top">竞价排名</a></h2>
-			<ul>
-			<!--{loop $showlist $value}-->
-				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
-			<!--{/loop}-->
-			</ul>
-			<p><a href="space.php?do=top">我要上榜</a></p>
-		</div>
-		<div id="user_online" class="s_clear">
-			<h2><a href="space.php?do=top&view=online">在线会员</a></h2>
-			<ul>
-			<!--{loop $onlinelist $value}-->
-				<li><a href="space.php?uid=$value[uid]" target="_blank" rel="{$_SN[$value[uid]]}" rev="$value[note]" class="uonline" onmouseover="getUserTip(this)"><!--{avatar($value[uid],small)}--></a></li>
-			<!--{/loop}-->
-			</ul>
-		</div>
-	</div>
-</div>
-<div id="usertip_box"><div></div></div>
 
 <div class="nbox">
 	<div class="nbox_c">
