@@ -1,0 +1,20 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+var oWin = external.menuArguments;
+var sJs = "http://media.dongua.com/rightpost/post.js";
+var sUrl = "http://www.dongua.com/add/";
+try{
+	var oHead = oWin.document.getElementsByTagName('HEAD')[0]; 
+	var oScript= oWin.document.createElement("script"); 
+	oScript.type = "text/javascript"; 
+	oScript.language = "javascript"; 
+	oScript.charset = "utf-8";
+	oScript.src = sJs;
+	oHead.appendChild(oScript);
+}catch(exp){
+	if(oWin.location.href=="about:blank"||oWin.location.href==""){
+		oWin.location.href = sUrl;
+	}else{
+		oWin.open(sUrl);
+	}
+}
+</script>
