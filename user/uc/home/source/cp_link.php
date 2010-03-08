@@ -107,6 +107,24 @@ elseif($_GET['op'] == 'edithot') {
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
+	//获取class分类
+	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");
+	while($value =$_SGLOBAL['db']->fetch_array($class_query))
+	{
+		//获取二级目录
+		$classnd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=".$value['groupid']);
+		while($classnd_value =$_SGLOBAL['db']->fetch_array($classnd_query))
+		{
+			//获取三级目录
+			$classrd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=".$classnd_value['groupid']);
+			while($classrd_value =$_SGLOBAL['db']->fetch_array($classrd_query))
+			{
+				$classnd_value['grandson'][]= $classrd_value;
+			}
+			$value['son'][]=$classnd_value;
+		}
+		$classlist[]=$value;
+	}
 }
 
 include_once template("cp_link");
