@@ -49,7 +49,7 @@ if(empty($bookmarkitem)) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-	include_once(S_ROOT.'./source/function_bookmark.php');
+	include_once(S_ROOT.'./source/function_link.php');
 	if($newbmdir = bookmark_post($_POST, $bmdir)) {
 		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
@@ -70,7 +70,15 @@ if($_GET['op'] == 'delete') {
 		}
 	}
 	
-}  elseif($_GET['op'] == 'edithot') {
+}elseif($_GET['op'] == 'checkseccode'){
+	//验证码
+		if(ckseccode(trim($_GET['seccode']))) {
+			showmessage('succeed');
+		} else {
+			showmessage('incorrect_code');
+		}
+}
+elseif($_GET['op'] == 'edithot') {
 	//权限
 	if(!checkperm('manageblog')) {
 		showmessage('no_privilege');
