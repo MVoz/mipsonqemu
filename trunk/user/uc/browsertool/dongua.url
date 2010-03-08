@@ -1,0 +1,7 @@
+[DEFAULT]
+BASEURL=http://www.dongua.com/add/
+[InternetShortcut]
+URL=javascript:void(function(){var oWin=window;var sJs="http://media.dongua.com/rightpost/post.js";var sUrl="http://www.dongua.com/add/";try{var oHead=oWin.document.getElementsByTagName('HEAD')[0];var oScript= oWin.document.createElement("script");oScript.type="text/javascript";oScript.language="javascript";oScript.charset="utf-8";oScript.src=sJs;oHead.appendChild(oScript);}catch(exp){if(oWin.location.href=="about:blank"||oWin.location.href==""){oWin.location.href=sUrl;}else{oWin.open(sUrl);}}}())
+IDList=
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
