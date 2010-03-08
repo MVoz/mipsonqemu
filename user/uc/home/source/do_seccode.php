@@ -12,7 +12,7 @@ if(!defined('IN_UCHOME')) {
 $seccodedata = array (
 	'width' => 100,
 	'height' => 40,
-	'adulterate' => '1',//ÀÊª˙±≥æ∞Õº–Œ
+	'adulterate' => '0',//ÀÊª˙±≥æ∞Õº–Œ
 	'angle' => '0',//ÀÊª˙«„–±∂»
 	'shadow' => '1',//“ı”∞
 );
@@ -132,9 +132,10 @@ function seccode_background() {
 		$step[$i] = ($end[$i] - $start[$i]) / $seccodedata['width'];
 		$c[$i] = $start[$i];
 	}
-	//$color = imagecolorallocate($im, 235, 235, 235);
+	$color = imagecolorallocate($im, 235, 235, 235);
 	for($i = 0;$i < $seccodedata['width'];$i++) {
-		$color = imagecolorallocate($im, $c[0], $c[1], $c[2]);
+		//$color = imagecolorallocate($im, $c[0], $c[1], $c[2]);
+		$color = imagecolorallocate($im, 235, 235, 235);
 		imageline($im, $i, 0, $i-$angle, $seccodedata['height'], $color);
 		$c[0] += $step[0];
 		$c[1] += $step[1];
