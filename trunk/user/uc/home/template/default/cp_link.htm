@@ -91,26 +91,9 @@
 					<ul class="type-1">
 						<li class="ll">
 							<ul class="type-2">
-								<li><a id="category_li_3" href="javascript:fSetTag('设计');">设计</a></li>
-								<li><a id="category_li_4" href="javascript:fSetTag('数码');">数码</a></li>
-								<li><a id="category_li_5" href="javascript:fSetTag('产品');">产品</a></li>
-								<li><a id="category_li_6" href="javascript:fSetTag('酷站');">酷站</a></li>
-								<li><a id="category_li_3" href="javascript:fSetTag('设计');">设计</a></li>
-								<li><a id="category_li_4" href="javascript:fSetTag('数码');">数码</a></li>
-								<li><a id="category_li_5" href="javascript:fSetTag('酷站');">产品</a></li>
-								<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
-								<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
-								<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
-								<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
-								<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
-								<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
-								<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
-								<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
-								<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
-								<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
-								<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
-								<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
-								<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
+							<!--{loop $taglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
 							</ul>
 					 </ul>
 					</li>
