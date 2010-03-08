@@ -80,8 +80,7 @@
 	<tr>
 		<th width="40">标签</th>
 		<td>
-		<input type="text" id="username" name="username" value="" style="width: 396px;" class="t_input" onBlur="checkUserName()" tabindex="2" />&nbsp;
-		<span id="checkusername">&nbsp;</span>
+		<input type="text" id="tag" name="tag" value="" style="width: 396px;" class="t_input"  tabindex="2" />&nbsp;
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
@@ -302,7 +301,10 @@
 		 } 
 
 	}
-
+	function fSetTag(tag)
+	{
+		$('tag').value=$('tag').value+tag+' ';
+	}
 //-->
 </script>	
 <!--{/if}-->
