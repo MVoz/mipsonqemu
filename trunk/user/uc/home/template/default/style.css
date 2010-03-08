@@ -871,16 +871,21 @@ left:expression(this.nextSibling.offsetLeft);
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
 #diggcontent {height:700px;}
 /*link*/
-.cont  {float:left;padding-left:3px;}
-.type-1 ul li ,.type-2 ul li {float:left;list-style-type:none;display:inline;}
-.type-1 .ll a {float:left;}
+.cont  {float:left;padding-left:0px;width:420px;}
+.tagcont ul {width:400px;height:100px;}
+.tagcont ul li {float:left;list-style-type:none;display:inline;}
+.tagcont ul li a{float:left;color:#669900;padding:3px;}
+
+
+.type-1 ul li ,.type-2 ul li {list-style-type:none;display:inline;text-align:left;}
+.type-1 .ll a {float:left;border-bottom:1px solid #eee;}
 .type-2 {float:left;}
+.type-2 li {display:block;float:left;}
+.type-1 .ll {height:20px;padding:2px 0}
 
-.type-1 .ll {border-bottom:1px solid #eee;height:20px;padding:2px 0}
-
-.type-1 .on {background:none repeat scroll 0 0 #00ADEF;color:#FFFFFF;padding:3px;}
-.type-1 a {color:#00ADEF;padding:3px;}
-.type-2 a {color:#669900;padding:3px;}
+.type-1 .on {background:none repeat scroll 0 0 #00ADEF;color:#FFFFFF;padding:4px;}
+.type-1 a {color:#00ADEF;padding:4px;}
+.type-2 a {color:#669900;padding:4px;}
  .categorymenu_drop { margin: -1px 0 0; padding: 0 2px 2px; width: 60px; border: 1px solid #EBE6C9; background: #FFF; z-index: 200; }
       .categorymenu_drop li { padding: 2px 2px; border-bottom: 1px solid #EEE; }
         .categorymenu_drop li a { color: #2C629E; font-size: 12px; font-weight: normal; }
