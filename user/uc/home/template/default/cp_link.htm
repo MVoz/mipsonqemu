@@ -65,14 +65,14 @@
 	<tr>
 		<th width="40">标题</th>
 		<td>
-		<input type="text" id="subject" name="subject" value="" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
 		<span id="checkusername">&nbsp;</span>
 		</td>
 	</tr>
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" />&nbsp;
+		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" />&nbsp;
 		<span id="checkusername">&nbsp;</span>
 		<p style="color:gray">请正确填写网页地址</p>
 		</td>
@@ -102,7 +102,11 @@
 	</tr>
 	<tr>
 		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
-		<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4"></textarea></td>
+		<td>
+			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
+			$_GET[content]
+			</textarea>
+		</td>
 	</tr>
 
 <tr>
