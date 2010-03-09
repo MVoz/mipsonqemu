@@ -49,13 +49,15 @@ if(empty($bookmarkitem)) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_link.php');
-	if($linkitem = link_post($_POST, $linkitem)) {
+	$linkitem = link_post($_POST, $linkitem);
+	if(is_array($linkitem)) {
 		$url = $_SGLOBAL['refer'];		
 		showmessage('do_success', $url, 0);
-	} else {
+	} elseif($linkitem==false) {
 		showmessage('that_should_at_least_write_things');
+	}elseif($linkitem==-1) {
+		showmessage('link_has_existed');
 	}
-
 }
 if($_GET['op'] == 'delete') {
 	//É¾³ý
