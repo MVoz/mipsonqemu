@@ -12,89 +12,8 @@ if(!defined('IN_UCHOME')) {
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
-/*
-$acs = array('space', 'doing', 'blog', 'album', 'mtag', 'thread', 'share');
-$ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'index':$_GET['ac'];
-
-if(!empty($ac)){
-	include_once(S_ROOT.'./source/network_{$ac}.php');
-	include_once template('network_'.$ac);
-	
-}else{
-*/
-include_once(S_ROOT.'./data/data_network.php');
-
-//日志
-     $viewstr=array(
-            'lastvisit'=>'lastvisit',
-                'lastadd'=>'dateline',
-                'oftenvisit'=>'visitnums',
-                'lastrecommend'=>'lastvisit'
-            );
-;
-	//显示数量
-	$shownum = 6;
-    //$userbrowertype=getuserbrowserarray();
-    //显示类别如最近访问，最新添加etc...
-    $see=empty($_GET['see'])?'':$_GET['see'];
-    //浏览器类型
-    $browserid=(empty($_GET['browserid']))?$browsertype['ie']:intval($_GET['browserid']);
-    if(!in_array($browserid,$browsertype))
-        $browserid=$browsertype['ie'];
-	$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):'-1';
-    if(!empty($see))//以$see为主
-    {
-        $groupid=-1;
-         
-        if(!in_array($see,array_keys($viewstr)))
-            $see=$viewstr['lastvisit'];
-        else
-            $see=$viewstr[$see];
-
-    }else
-            $see=$viewstr['lastvisit'];
-	$groupname='';
-	if($groupid==-1)
-		$groupname='';
-	else if(!$groupid)
-		$groupname='其它';
-	else
-	{
-        //获取groupname
-		$query = $_SGLOBAL['db']->query("SELECT main.subject 
-		FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)."  limit 1");
-		if($value =$_SGLOBAL['db']->fetch_array($query))
-			$groupname=getstr($value['subject'], 50, 0, 0, 0, 0, -1);
-	}
-    //获取总条数
-    $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=$_SC['bookmark_show_maxnum'];
-    $start=$page?(($page-1)*$perpage):0;
-    $theurl="space.php?uid=$space[uid]&do=$do&groupid=$groupid";
-    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)),0);
-    //获取bookmarklist
-
-	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main
-		LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.type=".$_SC['bookmark_type_site'].cond_parentid($groupid)."  ORDER BY main.".$see." DESC limit ".$start." , ".$_SC['bookmark_show_maxnum']);
-	$bookmarklist = array();
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['description'] = getstr($value['description'], 86, 0, 0, 0, 0, -1);
-		$value['subject'] = getstr($value['subject'], 50, 0, 0, 0, 0, -1);
-		//get the bookmark tag 
-		$tag_query= $_SGLOBAL['db']->query("SELECT main.*,field.*  FROM ".tname('linktagbookmark')." main
-			LEFT JOIN ".tname('linktag')." field ON main.tagid=field.tagid where main.bmid=".$value['bmid']);
-		while($tagvalue=$_SGLOBAL['db']->fetch_array($tag_query)){
-			$value['taglist'][$tagvalue['tagid']]=$tagvalue['tagname'];
-		}
-		$bookmarklist[] = $value;
-	}
-foreach($bookmarklist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$bookmarklist[$key] = $value;
-}
-//分页
-$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
-
+//bookmarklist
+include_once(S_ROOT.'./source/space_bookmark_show.php');
 //digg
 $digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';
@@ -129,84 +48,7 @@ foreach($digglist as $key => $value) {
 	$digglist[$key] = $value;
 }
 //分页
-$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);
-
-//话题
-$cachefile = S_ROOT.'./data/cache_network_thread.txt';
-if(check_network_cache('thread')) {
-	$threadlist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('thread',
-		array('tid', 'uid'),
-		array('hot','viewnum','replynum'),
-		array('dateline','lastpost'),
-		array('dateline','viewnum','replynum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 10;
-	
-	$threadlist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*, m.tagname
-		FROM ".tname('thread')." main
-		LEFT JOIN ".tname('mtag')." m ON m.tagid=main.tagid
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['tagname'] = getstr($value['tagname'], 20);
-		$value['subject'] = getstr($value['subject'], 50);
-		$threadlist[] = $value;
-	}
-	if($_SGLOBAL['network']['thread']['cache']) {
-		swritefile($cachefile, serialize($threadlist));
-	}
-}
-foreach($threadlist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$threadlist[$key] = $value;
-}
-
-
-//活动
-include_once(S_ROOT.'./data/data_eventclass.php');
-$cachefile = S_ROOT.'./data/cache_network_event.txt';
-if(check_network_cache('event')) {
-	$eventlist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('event',
-		array('eventid', 'uid'),
-		array('hot','membernum','follownum'),
-		array('dateline'),
-		array('dateline','membernum','follownum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 4;
-	
-	$eventlist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*
-		FROM ".tname('event')." main
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['title'] = getstr($value['title'], 45);
-		if($value['poster']){
-			$value['pic'] = pic_get($value['poster'], $value['thumb'], $value['remote']);
-		} else {
-			$value['pic'] = $_SGLOBAL['eventclass'][$value['classid']]['poster'];
-		}
-		$eventlist[] = $value;
-	}
-	if($_SGLOBAL['network']['event']['cache']) {
-		swritefile($cachefile, serialize($eventlist));
-	}
-}
-foreach($eventlist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$eventlist[$key] = $value;
-}
+$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);	 
 
 
 //投票
@@ -271,22 +113,6 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 }
 if(empty($star) && $showlist) {
 	$star = sarray_rand($showlist, 1);
-}
-
-//在线用户
-$onlinelist = array();
-$query = $_SGLOBAL['db']->query("SELECT s.*, sf.note FROM ".tname('session')." s
-	LEFT JOIN ".tname('spacefield')." sf ON sf.uid=s.uid
-	ORDER BY s.lastactivity DESC LIMIT 0,12");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	if(!$value['magichidden']) {
-		$value['note'] = shtmlspecialchars(strip_tags($value['note']));
-		realname_set($value['uid'], $value['username']);
-		$onlinelist[$value['uid']] = $value;
-	}
-}
-if(empty($star) && $onlinelist) {
-	$star = sarray_rand($onlinelist, 1);
 }
 
 
