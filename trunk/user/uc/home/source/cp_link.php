@@ -88,9 +88,9 @@ if(empty($linkitem)) {
 if($_GET['op'] == 'delete') {
 	//É¾³ý
 	if(submitcheck('deletesubmit')) {
-		include_once(S_ROOT.'./source/function_bookmark.php');
-		if(deletebookmark($bmid)) {
-			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
+		include_once(S_ROOT.'./source/function_link.php');
+		if(deletelink($linkid)) {
+			$url =$_SGLOBAL['refer'];
 			showmessage('do_success', $url, 0);
 		} else {
 			showmessage('failed_to_delete_operation');

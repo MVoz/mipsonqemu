@@ -169,15 +169,11 @@ function   updatevisitstat($bmid){
 //更新最后访问时间
         $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
-function deletebookmark($bmid){
-	//处理link
-	 global $_SGLOBAL;
-	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid),0);
-	if(empty($link))
-		return 0;
-	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+function link_delete_tag($linkid)
+{
+	global $_SGLOBAL,$_SC;
 	//处理tag
-	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktaglink')." WHERE linkid=".$linkid);
 	$updatetagids=array();
 	while($values=$_SGLOBAL['db']->fetch_array($query))
 	{
@@ -185,9 +181,37 @@ function deletebookmark($bmid){
 	}
 	if($updatetagids)
 		$_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
-	$_SGLOBAL['db']->query("DELETE  from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
-	//处理bookmark
-	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
+	$_SGLOBAL['db']->query("DELETE  from ".tname('linktaglink')." WHERE linkid=".$linkid);
+}
+/*
+	1:管理员可以删除任何连接，但首先参考收藏数，如果收藏数>0,则不删除
+	2:当没有通过验证的站点，则可以删除
+*/
+function deletelink($linkid){
+	//处理link
+	global $_SGLOBAL,$_SC;
+	$link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." main WHERE  main.linkid= ".$linkid);
+	$linkitem=$_SGLOBAL['db']->fetch_array($link_query);
+	if(empty($linkitem))
+		return 0;
+	$isself=0;
+	if($linkitem['postuid']==$_SGLOBAL['supe_uid'])
+		$isself=1;
+	switch($linkitem['verfify'])
+	{
+		case $_SC['link_verify_undo']:
+				 $_SGLOBAL['db']->query("DELETE  from ".tname('link')." WHERE linkid=".$linkid);
+				link_delete_tag($linkid);
+		break;
+		case $_SC['link_verify_passed']:
+				if($isself)
+					updatetable('link',array('postuid'=>$_SC['link_delete_uid']), array('linkid'=>$linkid));
+		case $_SC['link_verify_failed']:
+				 $_SGLOBAL['db']->query("DELETE  from ".tname('link')." WHERE linkid=".$linkid);
+				link_delete_tag($linkid);
+		break;
+	}
+
 	return 1;
 }
 function link_pass($link)

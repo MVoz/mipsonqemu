@@ -43,6 +43,7 @@ $_SC['link_origin_link']=1;
 $_SC['link_verify_undo']=0;
 $_SC['link_verify_passed']=1;
 $_SC['link_verify_failed']=2;
+$_SC['link_delete_uid']=11;
 
 //应用的UCenter配置信息(可以到UCenter后台->应用管理->查看本应用->复制里面对应的配置信息进行替换)
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
