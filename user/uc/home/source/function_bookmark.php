@@ -325,7 +325,8 @@ function   updatevisitstat($bmid){
 function deletebookmark($bmid){
 	//´¦Àílink
 	 global $_SGLOBAL;
-	$link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid),0);
+	$query=	$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid);
+	$link=$_SGLOBAL['db']->fetch_array($query);
 	if(empty($link))
 		return 0;
 	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);

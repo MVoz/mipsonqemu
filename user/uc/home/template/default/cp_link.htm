@@ -2,11 +2,11 @@
 
 <!--{if $_GET[op] == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
-<h1>删除收藏</h1>
+<h1>删除</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
-	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
+<form method="post" action="cp.php?ac=link&op=delete&linkid=$linkitem['linkid']">
+	<p>确定删除标题为<span style="color:#368332">$linkitem['subject']</span>的站点吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="deletesubmit" value="true" />
@@ -23,7 +23,7 @@
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
-	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
+	<p>确定通过标题为<span style="color:#368332">$linkitem['subject']</span>站点的验证吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="passsubmit" value="true" />
