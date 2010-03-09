@@ -8,10 +8,19 @@ if(!defined('IN_UCHOME')) {
 }
 
 //检查信息
-$op = empty($_GET['op'])?'':$_GET['op'];
+$op = empty($_GET['op'])?'':trim($_GET['op']);
+$linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
 $linkitem = array();
+if($linkid)
+{
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
+	$linkitem = $_SGLOBAL['db']->fetch_array($query);
+}
+
 //权限检查
-if(empty($bookmarkitem)) {
+if(empty($linkitem)) {
+	if(($op != 'add')&&($op=='manage'&&!checkperm('managelink')))
+			showmessage('error_parameter');
 	if(!checkperm('allowblog')) {
 		ckspacelog();
 		showmessage('no_authority_to_add_log');
@@ -37,9 +46,9 @@ if(empty($bookmarkitem)) {
 //blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 5000, 1, 0);
 	
 } else {
-	
-	if($_SGLOBAL['supe_uid'] != $bookmarkitem['uid']/* && !checkperm('manageblog')*/) {
-		showmessage('no_authority_operation_of_the_log');
+	//验证是否有此权限
+	if($_SGLOBAL['supe_uid'] != $linkitem['postuid'] && !checkperm('managelink')) {
+		showmessage('no_authority_operation_of_the_link');
 	}
 }
 
@@ -104,12 +113,15 @@ elseif($_GET['op'] == 'edithot') {
 
 }elseif($_GET['op']=='manage'){
 		//获取所有没有通过验证的书签提交
-
 		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main  WHERE main.origin=".$_SC['link_origin_link']." AND main.verify=".$_SC['link_verify_undo']." ORDER BY main.dateline DESC");
 		while($value =$_SGLOBAL['db']->fetch_array($query)){
 			$unverifylist[]=$value;
 		}
 		$_TPL['css'] = 'network';
+}elseif($_GET['op']=='pass'){
+	if(!checkperm('managelink')) {
+		showmessage('no_authority_operation_of_the_link');
+	}
 } else {
 	//添加编辑
 	//获取常用的tag

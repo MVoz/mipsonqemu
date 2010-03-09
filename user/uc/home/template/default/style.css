@@ -776,16 +776,16 @@ a.c_link {
 	background-position: 0px -64px
 }
 .editbtn{
-		font-weight: normal; font-size: 12px;
+		font-weight: normal; font-size: 12px;float:right;
 }
 .editbtn a{
-		color: #2970a6;padding-left:60px;width:40px;
+		color: #2970a6;padding-right:10px;width:40px;
 }
 .deletebtn{
-		font-weight: normal; font-size: 12px;
+		font-weight: normal; font-size: 12px;float:right;
 }
 .deletebtn a{
-		color: #2970a6;padding-left:20px;width:40px;
+		color: #2970a6;padding-right:10px;width:40px;
 }
 .bvisit {
 	float: right; color: #2970a6

@@ -94,6 +94,7 @@ $_SGLOBAL['usergroup']=Array
 		'managespacenote' => '0',
 		'managevideophoto' => '0',
 		'managelog' => '0',
+		'managelink' => '0',
 		'magicaward' => '',
 		'exphigher' => 999
 		)
