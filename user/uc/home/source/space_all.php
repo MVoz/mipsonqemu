@@ -94,43 +94,6 @@ foreach($bookmarklist as $key => $value) {
 }
 //分页
 $multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
-//图片
-$cachefile = S_ROOT.'./data/cache_network_pic.txt';
-if(check_network_cache('pic')) {
-	$piclist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('pic',
-		array('picid', 'uid'),
-		array('hot'),
-		array('dateline'),
-		array('dateline','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 28;
-	
-	$piclist = array();
-	$query = $_SGLOBAL['db']->query("SELECT album.albumname, album.friend, space.username, space.name, space.namestatus, main.* 
-		FROM ".tname('pic')." main
-		LEFT JOIN ".tname('album')." album ON album.albumid=main.albumid
-		LEFT JOIN ".tname('space')." space ON space.uid=main.uid
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		if(empty($value['friend'])) {
-			$value['pic'] = pic_get($value['filepath'], $value['thumb'], $value['remote']);
-			$piclist[] = $value;
-		}
-	}
-	if($_SGLOBAL['network']['pic']['cache']) {
-		swritefile($cachefile, serialize($piclist));
-	}
-}
-foreach($piclist as $key => $value) {
-	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-	$piclist[$key] = $value;
-}
 
 //digg
 $digglist = array();

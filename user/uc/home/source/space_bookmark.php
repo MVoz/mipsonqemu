@@ -110,43 +110,4 @@ function check_network_cache($type) {
 	return false;
 }
 
-//获得SQL
-function mk_network_sql($type, $ids, $crops, $days, $orders) {
-	global $_SGLOBAL;
-	
-	$nt = $_SGLOBAL['network'][$type];
-	
-	$wherearr = array('1');
-	//指定
-	foreach ($ids as $value) {
-		if($nt[$value]) {
-			$wherearr[] = "main.{$value} IN (".$nt[$value].")";
-		}
-	}
-	
-	//范围
-	foreach ($crops as $value) {
-		$value1 = $value.'1';
-		$value2 = $value.'2';
-		if($nt[$value1]) {
-			$wherearr[] = "main.{$value} >= '".$nt[$value1]."'";
-		}
-		if($nt[$value2]) {
-			$wherearr[] = "main.{$value} <= '".$nt[$value2]."'";
-		}
-	}
-	//时间
-	foreach ($days as $value) {
-		if($nt[$value]) {
-			$daytime = $_SGLOBAL['timestamp'] - $nt[$value]*3600*24;
-			$wherearr[] = "main.{$value}>='$daytime'";
-		}
-	}
-	//排序
-	$order = in_array($nt['order'], $orders)?$nt['order']:array_shift($orders);
-	$sc = in_array($nt['sc'], array('desc','asc'))?$nt['sc']:'desc';
-	
-	return array('wherearr'=>$wherearr, 'order'=>$order, 'sc'=>$sc);
-}
-
 ?>
