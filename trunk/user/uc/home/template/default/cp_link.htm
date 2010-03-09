@@ -9,7 +9,7 @@
 	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-		<input type="hidden" name="passsubmit" value="true" />
+		<input type="hidden" name="deletesubmit" value="true" />
 		<input type="submit" name="btnsubmit" value="确定" class="submit" />
 	</p>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
@@ -26,7 +26,7 @@
 	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="hidden" name="passsubmit" value="true" />
 		<input type="submit" name="btnsubmit" value="确定" class="submit" />
 	</p>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
@@ -56,7 +56,7 @@
 	<div id="bmcontent">
 		<h2 class="ntitle">
 		<span class="r_option" style="padding-right:150px;">
-			</span> 带验证站点 &raquo;</h2>
+			</span> 待验证站点 &raquo;</h2>
 			<ul class="bloglist">
 			<!--{loop $unverifylist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>

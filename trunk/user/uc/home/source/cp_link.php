@@ -7,8 +7,11 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
+$ops=array('manage','add','edit','delete','pass','reject');
 //检查信息
 $op = empty($_GET['op'])?'':trim($_GET['op']);
+if(!in_array($op,$ops))
+		showmessage('error_parameter');
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
 $linkitem = array();
 if($linkid)
@@ -121,6 +124,11 @@ elseif($_GET['op'] == 'edithot') {
 }elseif($_GET['op']=='pass'){
 	if(!checkperm('managelink')) {
 		showmessage('no_authority_operation_of_the_link');
+	}
+	if(submitcheck('passsubmit')) {
+		include_once(S_ROOT.'./source/function_link.php');
+		link_pass($linkitem);
+		showmessage('do_success', $_SGLOBAL['refer'], 0);
 	}
 } else {
 	//添加编辑
