@@ -5,8 +5,25 @@
 <h1>删除收藏</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid&browserid=$browserid">
-	<p>确定删除指定的收藏吗？</p>
+<form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
+	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="passsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
+<!--{elseif $_GET[op] == 'pass'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>通过</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
+	<p>确定通过标题为$linkitem['subject']的验证吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="deletesubmit" value="true" />
@@ -16,9 +33,7 @@
 </form>
 </div>
 </div>
-	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
-
-
+<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
 <!--{elseif $_GET[op] == 'edithot'}-->
 
 <h1>调整热度</h1>
@@ -46,7 +61,9 @@
 			<!--{loop $unverifylist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<!--
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					-->
 					<p class="message">$value[description] ...</p>
 					<p class="c_date"></p>
 					<p class="bmtag">
@@ -58,9 +75,21 @@
 					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
 					<p class="c_date"></p>
 					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
-				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
-				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$groupid&browserid=$browserid&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
-					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$browserid&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a></span>
+				  <span class=bvisit>
+					<a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >访问</a>
+				  </span>
+				  <span class=editbtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=reject" id="link_reject_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">驳回</a>
+				  </span>
+				  <span class=editbtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=pass" id="link_pass_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">通过</a>
+				  </span>
+				 <span class=deletebtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=delete" id="link_delete_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+				 </span>
+				  <span class=editbtn>
+				  <a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=edit" id="link_edit_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">编辑</a>
+				  </span>
 				</li>
 				<!--{/loop}-->
 			</ul>
