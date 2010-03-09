@@ -7,9 +7,9 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
-$ops=array('manage','add','edit','delete','pass','reject');
+$ops=array('manage','add','edit','delete','pass','reject','checkseccode');
 //检查信息
-$op = empty($_GET['op'])?'':trim($_GET['op']);
+$op = empty($_GET['op'])?'add':trim($_GET['op']);
 if(!in_array($op,$ops))
 		showmessage('error_parameter');
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -19,16 +19,35 @@ if($linkid)
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
 	$linkitem = $_SGLOBAL['db']->fetch_array($query);
 }
-
+/*
+	permit owner id item 
+0--不关心
+1--需要符合条件
+2--几个中有一个符合即可
+*/
+$link_priority=array(
+ 'manage'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
+ 'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
+ 'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
+ 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
+ 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
+ 'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+ 'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1)
+);
+$ret=check_priority($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
+switch($ret)
+{
+	case -1:
+		showmessage('no_authority_to_do_this');
+	break;
+	case -2:
+		showmessage('error_parameter');
+	break;
+	default:
+	break;
+}
 //权限检查
 if(empty($linkitem)) {
-	if(($op != 'add')&&($op=='manage'&&!checkperm('managelink')))
-			showmessage('error_parameter');
-	if(!checkperm('allowblog')) {
-		ckspacelog();
-		showmessage('no_authority_to_add_log');
-	}
-	
 	//实名认证
 	ckrealname('blog');
 	
@@ -48,12 +67,7 @@ if(empty($linkitem)) {
 //blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
 //blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 5000, 1, 0);
 	
-} else {
-	//验证是否有此权限
-	if($_SGLOBAL['supe_uid'] != $linkitem['postuid'] && !checkperm('managelink')) {
-		showmessage('no_authority_operation_of_the_link');
-	}
-}
+} 
 
  if(submitcheck('addsubmit')) {
 	//验证码
@@ -122,9 +136,6 @@ elseif($_GET['op'] == 'edithot') {
 		}
 		$_TPL['css'] = 'network';
 }elseif($_GET['op']=='pass'){
-	if(!checkperm('managelink')) {
-		showmessage('no_authority_operation_of_the_link');
-	}
 	if(submitcheck('passsubmit')) {
 		include_once(S_ROOT.'./source/function_link.php');
 		link_pass($linkitem);

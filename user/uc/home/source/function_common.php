@@ -2307,4 +2307,43 @@ $dirpath=$dirpath.'/'.($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00
 	//$log->debug('dirpath',$dirpath);
 	echo '<img src="'.$dirpath.'">';
 }
+/*
+	-1:no_authority_to_do_this
+	-2:error_parameter
+*/
+function check_priority($op,$id,$item,$owner,$pristr,$priorityarray)
+{
+	global $_SGLOBAL;
+	if(!in_array($op,array_keys($priorityarray)))
+		return -2;
+	if(($priorityarray[$op]['permit']==1)&&(checkperm($pristr)=='0'))
+		return -1;
+	if(($priorityarray[$op]['id']==1)&&empty($id))
+		return -2;
+	if(($priorityarray[$op]['item']==1)&&empty($item))
+		return -2;
+	if(($priorityarray[$op]['owner']==1)&&($owner!=$_SGLOBAL['supe_uid']))
+		return -1;
+	$option=array();
+	$ret=0;
+	foreach($priorityarray[$op] as $key=>$value)
+	{
+		if($value==2)
+			$option[]=$key;
+	}	
+	foreach($option as $value)
+	{
+		if($value=='permit')
+			$ret|=checkperm($pristr);
+		else if($value=='owner')
+			$ret|=($owner==$_SGLOBAL['supe_uid']);
+		else if($value=='id')
+			$ret|=!empty($id);
+		else if($value=='item')
+			$ret|=!empty($item);
+	}
+	if(!empty($option)&&!$ret)
+		return -1;
+	return 1;
+}
 ?>
