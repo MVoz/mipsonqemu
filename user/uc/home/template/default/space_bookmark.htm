@@ -15,19 +15,17 @@
 	</div>
 
 	<div class="nbox_s side_rbox side_rbox_w">
-		<h2 class="ntitle"><span class="r_option"><a href="space.php?do=doing&view=all">更多记录</a></span> 记录 &raquo;</h2>
+		<h2 class="ntitle"> 记录 &raquo;</h2>
 		<div class="side_rbox_c">
-				                            <div class="menu_item">
+				           <div class="menu_item">
                             	<div class="tabs_header">
-															<ul class="tabs">
-                                	                            <!--{eval mkbrowsertab($browserid)}-->
-															</ul>
-															</div>
-                            	
+									<ul class="tabs">
+                                	    <!--{eval mkbrowsertab($browserid)}-->
+									</ul>
+								</div>	                              	
                                 <ul  class="menu_list">
                                 	<!--{eval usermenu($browserid)}-->
-                                </ul>
-                                
+                                </ul>                                 
                             </div>
 		</div>
 		<h2 class=ntitle_1>
@@ -43,57 +41,15 @@
 	</div>
  						
 </div>
-
-
-
-<div class="nbox" id="photolist">
-	<h2 class="ntitle">
-		<a href="space.php?do=album&view=all" class="r_option">更多图片</a>
-		图片 &raquo;
-		</h2>
-	<div id="p_control">
-		<a href="javascript:;" id="spics_last">上一页</a>
-		<a href="javascript:;" id="spics_next">下一页</a>
-		<ul id="p_control_pages">
-			<li>第一页</li>
-			<li>第二页</li>
-			<li>第三页</li>
-			<li>第四页</li>
-		</li>
-	</div>
-	<div id="spics_wrap">
-	<ul id="spics" style="margin-left: 0px;">
-	<!--{loop $piclist $key $value}-->
-     <li class=spic_0>
-     <div class="avatar125_1"><a href="http://192.168.115.2/uc/home/space.php?uid=1&amp;do=album&amp;picid=5" target=_blank><img alt=我的相册 src="./template/default/image/1_1264944905dc86.jpg"></a></div>
-     <p>人人网</p>
-     <p class="c_date"></p>
-     <p class=label>
-                                    <a href="#" style="float:left;padding-left:2px;">
-                                        足球
-                                    </a>
-                                    <a href="#" style="float:left;padding-left:12px;">
-                                        英超
-                                    </a>
-
-     </p>
-     </li>
-	<!--{/loop}-->
-	</ul>
-	</div>
-</div>
-<script type="text/javascript">
-scrollShowNav($('spics'), 903, 7, 43);
-</script>
 <!--{template footer}-->
 <script>
 function getbmview(type) {
-	ajaxget('space.php?uid=$space[uid]&do=bookmark&see='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+	ajaxget('space.php?do=bookmark&op='+type+'&ajaxdiv=bmcontent', 'bmcontent');
 }
 function getbmfromid(id) {
 	if(id==0)
 	        jQuery('#menu ul').hide();
-	ajaxget('space.php?uid=$space[uid]&do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
+	ajaxget('space.php?do=bookmark&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
 }
 function ajaxresponse(objname, data) {
 	var x = new Ajax('XML', objname);

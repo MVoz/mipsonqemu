@@ -2232,7 +2232,7 @@ function mkbrowsertab($id)
     global $_SGLOBAL,$browsertype;
 	if(empty($_SGLOBAL['supe_uid'])) echo '';
     foreach($browsertype as $key=>$browserid){
-	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
+	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
     }
 }
 function checkbrowserid($id)

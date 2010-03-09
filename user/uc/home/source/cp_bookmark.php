@@ -10,10 +10,12 @@ if(!defined('IN_UCHOME')) {
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
 $op = empty($_GET['op'])?'':$_GET['op'];
+/*
 $browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
 if(!checkbrowserid($browserid)){
         showmessage('error parameters');
 }
+*/
 $bookmarkitem = array();
 $groupid=0;
 if($bmid) {
@@ -151,6 +153,7 @@ if($_GET['op'] == 'delete') {
 }elseif($_GET['op']=='updatevisitstat'){
 		include_once(S_ROOT.'./source/function_bookmark.php');
         updatevisitstat($_GET['bmid']);
+		return;
 
 } else {
 	//添加编辑
