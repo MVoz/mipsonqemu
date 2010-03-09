@@ -102,6 +102,14 @@ elseif($_GET['op'] == 'edithot') {
 		include_once(S_ROOT.'./source/function_bookmark.php');
         updatevisitstat($_GET['bmid']);
 
+}elseif($_GET['op']=='manage'){
+		//获取所有没有通过验证的书签提交
+
+		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main  WHERE main.origin=".$_SC['link_origin_link']." AND main.verify=".$_SC['link_verify_undo']." ORDER BY main.dateline DESC");
+		while($value =$_SGLOBAL['db']->fetch_array($query)){
+			$unverifylist[]=$value;
+		}
+		$_TPL['css'] = 'network';
 } else {
 	//添加编辑
 	//获取常用的tag
