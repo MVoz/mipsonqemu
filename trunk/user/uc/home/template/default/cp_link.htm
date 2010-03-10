@@ -54,47 +54,7 @@
 
 	<div class="nbox_c">
 	<div id="bmcontent">
-		<h2 class="ntitle">
-		<span class="r_option" style="padding-right:150px;">
-			</span> 待验证站点 &raquo;</h2>
-			<ul class="bloglist">
-			<!--{loop $unverifylist $key $value}-->
-			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
-					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
-					<!--
-					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
-					-->
-					<p class="message">$value[description] ...</p>
-					<p class="c_date"></p>
-					<p class="bmtag">
-					<!--{loop $value[taglist] $subkey $subvalue}-->
-                    <a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
-					<!--{/loop}-->
-					&nbsp;
-					</p>
-					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
-					<p class="c_date"></p>
-					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
-				  <span class=bvisit>
-					<a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >访问</a>
-				  </span>
-				  <span class=editbtn>
-					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=reject" id="link_reject_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">驳回</a>
-				  </span>
-				  <span class=editbtn>
-					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=pass" id="link_pass_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">通过</a>
-				  </span>
-				 <span class=deletebtn>
-					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=delete" id="link_delete_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
-				 </span>
-				  <span class=editbtn>
-				  <a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=edit" id="link_edit_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">编辑</a>
-				  </span>
-				</li>
-				<!--{/loop}-->
-			</ul>
-		<div class="page">$multi</div>
-	</div>
+		<!--{template space_link_list}-->
 	</div>
 </div>
 <!--{else}-->
