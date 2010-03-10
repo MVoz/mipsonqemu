@@ -1,71 +1,46 @@
 <!--search bar start-->
 <div class="s_clear searchbar">
     <div class="floatleft searchForm">
-        <form action=cp.php method=get>
-            <ul>
+         <ul>
+		<form target="google_window" action="http://www.google.com/search" method="get" style="float:left">
                 <li>
-                    <input class=t_input style="padding-right: 5px; padding-left: 5px; padding-bottom: 5px; padding-top: 5px"
-                    size=50 name=searchkey>
-                    <!--<input type="text" name="search_text" value="Search text" onkeydown="cautareVexio('');"
-                    onmousedown="cautareVexio('');" onchange="cautareVexio('');" onfocus="if(document.search.search_text.value=='Search
-                    text') document.search.search_text.value='';" onblur="if(document.search.search_text.value=='')document.search.search_text.value='Search
-                    text';" class="cautareF" />
-                    -->
-                    <!-- <a href="javascript:document.search.submit();" id="cautareBtn">搜索</a>-->
-                    <input class=submit type=submit value=搜索 name=searchsubmit>
+					<input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="searchgooglekey" maxlength="255" id="sbi" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="搜索" name="searchsubmit">
                 </li>
                 <li>
-                    <input type="checkbox" size="2" maxlength="2" value="ON">
+                    <input type="checkbox" size="2" maxlength="2" value="googleck" checked>
                 </li>
                 <li>
-                    <a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all"
-                    class="logogoogle">
-                        &nbsp
-                    </a>
+                    <a href="#" class="logogoogle">&nbsp;</a>
                 </li>
                 <li>
                     <select name="baidu_judet">
-                        <option value="">
-                            新闻
-                        </option>
-                        <option value="">
-                            网页
-                        </option>
-                        <option value="Alba">
-                            图片
-                        </option>
-                        <option value="Alba">
-                            mp3
-                        </option>
+					    <option value="web">网页</option>
+                        <option value="news">新闻</option>                    
+                        <option value="Alba">图片</option>
+                        <option value="mp3">mp3</option>
                     </select>
                 </li>
+		</form>
+		<form target="google_window" action="http://www.google.com/search" method="get" style="float:left">
+				<input type="text" name="searchbaidukey" style="display:none" >
                 <li>
-                    <input type="checkbox" size="2" maxlength="2" value="ON">
+                    <input type="checkbox" size="2" maxlength="2" value="baiduck" checked>
                 </li>
                 <li>
-                    <a href="http://192.168.115.2/uc/home/space.php?do=blog&amp;view=all"
-                    class="logobaidu">
-                        &nbsp
-                    </a>
+                    <a href="#" class="logobaidu">&nbsp;</a>
                 </li>
                 <li>
                     <select name="google_judet" style="z-index:-10;">
-                        <option value="">
-                            新闻
-                        </option>
-                        <option value="">
-                            网页
-                        </option>
-                        <option value="Alba">
-                            图片
-                        </option>
-                        <option value="Alba">
-                            mp3
-                        </option>
+                		<option value="web">网页</option>
+                        <option value="news">新闻</option>                    
+                        <option value="Alba">图片</option>
+                        <option value="mp3">mp3</option>
                     </select>
                 </li>
-            </ul>
-        </form>
+		 </form>
+         </ul>
+       
     </div>
     <div class="floatright search_r">
         <form action=space.php method=get>
