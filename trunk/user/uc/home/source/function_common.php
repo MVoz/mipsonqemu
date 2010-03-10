@@ -2314,7 +2314,7 @@ $dirpath=$dirpath.'/'.($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00
 	-1:no_authority_to_do_this
 	-2:error_parameter
 */
-function check_priority($op,$id,$item,$owner,$pristr,$priorityarray)
+function check_valid($op,$id,$item,$owner,$pristr,$priorityarray)
 {
 	global $_SGLOBAL;
 	if(!in_array($op,array_keys($priorityarray)))

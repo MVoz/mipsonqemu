@@ -34,7 +34,7 @@ $link_priority=array(
  'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
  'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1)
 );
-$ret=check_priority($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
+$ret=check_valid($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
 switch($ret)
 {
 	case -1:
