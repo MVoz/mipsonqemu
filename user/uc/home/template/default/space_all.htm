@@ -48,22 +48,4 @@
 </div>
 
 <!--{template footer}-->
-<script language="javascript"  type="text/javascript">
-function getbmview(type) {
-	ajaxget('space.php?do=bookmark&op='+type+'&ajaxdiv=bmcontent', 'bmcontent');
-}
-function getbmfromid(id) {
-	if(id==0)
-	        jQuery('#menu ul').hide();
-	ajaxget('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
-}
-function ajaxresponse(objname, data) {
-	var x = new Ajax('XML', objname);
-	x.get('cp.php?ac=bookmark&' + data, function(s){
-	});
-}
-function updatevisitstat(id) {
-	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
-}
-</script>
 <!--{/if}-->

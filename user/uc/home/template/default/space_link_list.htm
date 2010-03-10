@@ -1,0 +1,45 @@
+<h2 class="ntitle">
+		<span class="r_option" style="padding-right:150px;"></span>
+<!--{if $op=='manage'}-->
+		待验证站点 &raquo;
+<!--{else}-->
+		我的上榜 &raquo;
+<!--{/if}-->			 
+</h2>
+			<ul class="bloglist">
+			<!--{loop $linklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3><a href="$value[url]" target="_blank">$value[subject]</a></h3>
+					<!--
+					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
+					-->
+					<p class="message">$value[description] ...</p>
+					<p class="c_date"></p>
+					<p class="bmtag">
+						
+					</p>
+					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
+					<p class="c_date"></p>
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
+				  <span class=bvisit>
+					<a href="$value[url]"  target="_blank"  >访问</a>
+				  </span>
+<!--{if $op=='manage'}-->
+				  <span class=editbtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=reject" id="link_reject_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">驳回</a>
+				  </span>
+				  <span class=editbtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=pass" id="link_pass_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">通过</a>
+				  </span>
+<!--{/if}-->	
+				 <span class=deletebtn>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=delete" id="link_delete_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+				 </span>
+				  <span class=editbtn>
+				  <a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=edit" id="link_edit_$value[linkid]" onclick="ajaxmenu(event, this.id,1)">编辑</a>
+				  </span>
+				</li>
+				<!--{/loop}-->
+			</ul>
+		<div class="page">$link_multi</div>
+	</div>
