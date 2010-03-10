@@ -36,7 +36,7 @@ $start=$page?(($page-1)*$perpage):0;
    
 
 //获取总数
- $count=0; //$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main ".$wherearr),0);
+ $count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main ".$wherearr),0);
 //获取linklist
 
 	$query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
@@ -52,7 +52,6 @@ foreach($linklist as $key => $value) {
 	realname_set($value['postuid'], $value['username']);
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$linklist[$key] = $value;
-	$count++;
 }
 //分页
 $link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);

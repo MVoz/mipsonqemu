@@ -127,11 +127,33 @@ elseif($_GET['op'] == 'edithot') {
         updatevisitstat($_GET['bmid']);
 
 }elseif($_GET['op']=='manage'){
+
+		$wherearr='';
+		$orderarr='';
+		$theurl='';
+		$wherearr=$wherearr." where main.origin=".$_SC['link_origin_link'];
+		$wherearr=$wherearr." AND main.verify=".$_SC['link_verify_undo'];
+
+		$orderarr=$orderarr." ORDER by main.dateline DESC ";
+
+		$theurl="cp.php?ac=$ac&op=$op";
+		//分页获取总条数
+		$page=empty($_GET['page'])?0:intval($_GET['page']);
+		$perpage=$_SC['bookmark_show_maxnum'];
+		$start=$page?(($page-1)*$perpage):0;
+		
+		//获取总数
+		 $count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main ".$wherearr),0);
+
 		//获取所有没有通过验证的书签提交
-		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main  WHERE main.origin=".$_SC['link_origin_link']." AND main.verify=".$_SC['link_verify_undo']." ORDER BY main.dateline DESC");
+		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
+
 		while($value =$_SGLOBAL['db']->fetch_array($query)){
 			$linklist[]=$value;
 		}
+		//分页
+		$link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
+
 		$_TPL['css'] = 'network';
 }elseif($_GET['op']=='pass'){
 	if(submitcheck('passsubmit')) {
