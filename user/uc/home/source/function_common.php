@@ -2216,21 +2216,24 @@ function createChildMenu($query,$idstr,$doshowit)
     if($idstr=="menu")
        echo '</ul>'; 
 }
-function usermenu($browserid){
-	global $_SGLOBAL;
-	if(empty($_SGLOBAL['supe_uid'])) return false;
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=0".' AND browserid='.$browserid);
-	createChildMenu($query,"menu");
-}
 $browsertype=array(
             'ie'=>1,
             'firefox'=>2,
             'opera'=>3
 );
+function usermenu($browserid){
+	global $_SGLOBAL,$browsertype,$_SC;
+	if(empty($_SGLOBAL['supe_uid'])) return false;
+	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$browserid);
+	createChildMenu($query,"menu");
+}
+
 function mkbrowsertab($id)
 {
     global $_SGLOBAL,$browsertype;
-	if(empty($_SGLOBAL['supe_uid'])) echo '';
+	//if(empty($_SGLOBAL['supe_uid'])) echo '';
+	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
     foreach($browsertype as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
     }
