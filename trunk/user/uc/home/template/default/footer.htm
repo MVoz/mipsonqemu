@@ -10,15 +10,15 @@
 	<!--{/if}-->
 <script language="javascript"  type="text/javascript">
 function getbmview(type) {
-	ajaxget('space.php?do=bookmark&op='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+		ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','relatedcontent','relatehtm');	    
 }
 function getlinkview(type) {
-	ajaxget('space.php?do=link&op='+type+'&ajaxdiv=bmcontent', 'bmcontent');
+	ajaxget('space.php?do=link&op='+type, 'bmcontent');
 }
 function getbmfromid(id) {
 	if(id==0)
 	        jQuery('#menu ul').hide();
-	ajaxget('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid&ajaxdiv=bmcontent', 'bmcontent');
+	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid', 'bmcontent','relatedcontent','relatehtm');	
 }
 function ajaxresponse(objname, data) {
 	var x = new Ajax('XML', objname);

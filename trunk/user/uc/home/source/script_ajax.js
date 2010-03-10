@@ -263,7 +263,41 @@ function ajaxget(url, showid, waitid) {
 		if(!evaled)evalscript(s);
 	});
 }
+function ajaxgetex(url, showid,subid,subexid,waitid) {
+	waitid = typeof waitid == 'undefined' || waitid === null ? showid : waitid;
+	var x = new Ajax();
+	x.setLoading();
+	x.setWaitId(waitid);
+	x.display = '';
+	x.showId = $(showid);
+	if(x.showId) x.showId.orgdisplay = typeof x.showId.orgdisplay === 'undefined' ? x.showId.style.display : x.showId.orgdisplay;
 
+	if(url.substr(strlen(url) - 1) == '#') {
+		url = url.substr(0, strlen(url) - 1);
+		x.autogoto = 1;
+	}
+
+	var url = url + '&inajax=1&ajaxtarget=' + showid;
+	x.get(url, function(s, x) {
+		evaled = false;
+		if(s.indexOf('ajaxerror') != -1) {
+			evalscript(s);
+			evaled = true;
+		}
+		if(!evaled) {
+			if(x.showId) {
+				changedisplay(x.showId, x.showId.orgdisplay);
+				changedisplay(x.showId, x.display);
+				x.showId.orgdisplay = x.showId.style.display;
+				ajaxinnerhtml(x.showId, s);
+				$(subid).innerHTML=$(subexid).innerHTML;
+				ajaxupdateevents(x.showId);
+				if(x.autogoto) scroll(0, x.showId.offsetTop);
+			}
+		}
+		if(!evaled)evalscript(s);
+	});
+}
 function ajaxpost(formid, func, timeout) {
 	showloading();
 	
