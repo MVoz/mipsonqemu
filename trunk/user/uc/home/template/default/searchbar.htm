@@ -1,43 +1,80 @@
 <!--search bar start-->
+<script>
+	function searchsubmit()
+	{
+		if($('searchkey').value==''||$('searchkey').value=='请输入关键词')
+			{
+				$('searchkey').value='请输入关键词';
+				return false;
+			}
+		var key=$('searchkey').value;
+		$('searchbaidukey').value=$('searchgooglekey').value=key;
+		if($('searchgoogleck').checked==true)
+			{
+				$('googlesearchform').action="http://www.google.com/search";
+				$('googlesearchform').submit();
+			}
+		if($('searchbaiduck').checked==true)
+		{
+			$('baidusearchform').action="http://www.baidu.com/s";		
+			$('baidusearchform').submit();
+		}
+		return false;
+	}
+</script>
 <div class="s_clear searchbar">
     <div class="floatleft searchForm">
          <ul>
-		<form target="google_window" action="http://www.google.com/search" method="get" style="float:left">
+		<form id="searchform" target="_blank" action=""  method="get" style="float:left">
                 <li>
-					<input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="searchgooglekey" maxlength="255" id="sbi" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="搜索" name="searchsubmit">
-                </li>
-                <li>
-                    <input type="checkbox" size="2" maxlength="2" value="googleck" checked>
+					<input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
+				</li>
+		</form>
+		<form id="googlesearchform" target="_blank" action=""  method="get" style="float:left">
+				<input type="text" name="q"  id="searchgooglekey"  style="display:none" >
+		</form>
+		<form id="googlesearchform_s" target="_blank" action=""  method="get" style="float:left">
+				<li>
+                    <input type="checkbox" size="2" maxlength="2" id="searchgoogleck" value="googleck" checked>
                 </li>
                 <li>
                     <a href="#" class="logogoogle">&nbsp;</a>
                 </li>
+				<!--
                 <li>
-                    <select name="baidu_judet">
-					    <option value="web">网页</option>
-                        <option value="news">新闻</option>                    
-                        <option value="Alba">图片</option>
-                        <option value="mp3">mp3</option>
-                    </select>
-                </li>
-		</form>
-		<form target="google_window" action="http://www.google.com/search" method="get" style="float:left">
-				<input type="text" name="searchbaidukey" style="display:none" >
-                <li>
-                    <input type="checkbox" size="2" maxlength="2" value="baiduck" checked>
-                </li>
-                <li>
-                    <a href="#" class="logobaidu">&nbsp;</a>
-                </li>
-                <li>
-                    <select name="google_judet" style="z-index:-10;">
+                    <select name="baidu_judet" style="z-index:-10;">
                 		<option value="web">网页</option>
                         <option value="news">新闻</option>                    
                         <option value="Alba">图片</option>
                         <option value="mp3">mp3</option>
                     </select>
                 </li>
+				-->
+                </li>
+
+		</form>
+		<form id="baidusearchform" name="baidusearchform"  target="_blank" action="" method="get" style="float:left">
+				<input type="text" name="wd" id="searchbaidukey" style="display:none" >
+				<input type="text" name="ie" value="utf-8" style="display:none" >
+		</form>
+		<form id="baidusearchform_s" name="baidusearchform_s"  target="_blank" action="" method="get" style="float:left">
+                <li>
+                    <input type="checkbox" size="2" maxlength="2" id="searchbaiduck" value="baiduck" checked>
+                </li>
+                <li>
+                    <a href="#" class="logobaidu">&nbsp;</a>
+                </li>
+				<!--
+                <li>
+                    <select name="baidu_judet" style="z-index:-10;">
+                		<option value="web">网页</option>
+                        <option value="news">新闻</option>                    
+                        <option value="Alba">图片</option>
+                        <option value="mp3">mp3</option>
+                    </select>
+                </li>
+				-->
 		 </form>
          </ul>
        
