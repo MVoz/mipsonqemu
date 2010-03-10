@@ -2305,10 +2305,11 @@ function getbookmarkimg($bookmark)
 {
 	$dirpath='snapshot';
 	$dirrandom='snapshot/random/';
-	if($bookmark['picflag'])
+	if(!$bookmark['picflag'])
 	{
 		$dirpath=$dirpath.'/'.($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00ff0000)>>16).'/'.(($bookmark['hashurl']&0x0000ff00)>>8).'/'.(($bookmark['hashurl']&0x00ff)).'/'.$bookmark['md5url'].'.gif';
-		echo '<img  onerror="this.onerror=null;this.src='.$dirrandom.rand(1,20).'.gif" src="'.$dirpath.'">';  
+		//echo '<img  onerror="this.onerror=null;this.src='.$dirrandom.rand(1,30).'.gif" src="'.$dirpath.'">';  
+		echo '<img   src="'.$dirrandom.rand(1,30).'.gif">';  
 	}
 	else
 		echo '	<img src="./template/default/image/1_1264944905dc86.jpg"> ';
