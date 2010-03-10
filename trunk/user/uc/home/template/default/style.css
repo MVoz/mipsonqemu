@@ -169,10 +169,10 @@ body { background: #FFF; }
 	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; BACKGROUND: url(http://t.douban.com/pics/headnavbot.gif) #eef9eb no-repeat left bottom; PADDING-BOTTOM: 4px; PADDING-TOP: 2px; TEXT-ALIGN: right;margin-top:37px;margin-bottom:5px;
 }
 #status A {
-	MARGIN: 2px 1px 3px 7px; COLOR: #369; LETTER-SPACING: 0px; TEXT-DECORATION: none
+	MARGIN: 2px 1px 3px 7px; COLOR: #369; LETTER-SPACING: 0px; TEXT-DECORATION: none;
 }
 #status A:hover {
-	COLOR: #fff
+	COLOR: #FF8901;
 }
 #dsearch {
 	BORDER-RIGHT: silver 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: silver 1px solid; DISPLAY: none; PADDING-LEFT: 0px; Z-INDEX: 100; BACKGROUND: #fff; LEFT: -51px; PADDING-BOTTOM: 5px; BORDER-LEFT: silver 1px solid; WIDTH: 69px; PADDING-TOP: 5px; BORDER-BOTTOM: silver 1px solid; POSITION: absolute; TOP: 19px; TEXT-ALIGN: center
