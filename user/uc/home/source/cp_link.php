@@ -9,9 +9,7 @@ if(!defined('IN_UCHOME')) {
 
 $ops=array('manage','add','edit','delete','pass','reject','checkseccode');
 //ºÏ≤È–≈œ¢
-$op = empty($_GET['op'])?'add':trim($_GET['op']);
-if(!in_array($op,$ops))
-		showmessage('error_parameter');
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
 $linkitem = array();
 if($linkid)
