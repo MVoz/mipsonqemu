@@ -64,8 +64,6 @@ function link_post($POST, $olds=array()) {
 
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
 			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//语词屏蔽
-
-
 			
 			//link 表
 			$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
@@ -75,8 +73,9 @@ function link_post($POST, $olds=array()) {
 			$linkarr['origin'] = $_SC['link_origin_link'];
 
 
-            $linkarr['hashurl']=qhash($linkarr['url']);
-			$linkarr['md5url']=md5($linkarr['url']);
+            //$linkarr['hashurl']=qhash($linkarr['url']);
+			//$linkarr['md5url']=md5($linkarr['url']);
+			$linkarr=setlinkimagepath($linkarr);
 			$linkarr['verify']=$_SC['link_verify_undo'];
 			if(empty($olds)){
 				//增加一个LINK				

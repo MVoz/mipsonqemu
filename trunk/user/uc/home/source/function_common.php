@@ -2182,11 +2182,8 @@ function createChildMenu($query,$idstr,$doshowit)
 	
 	$do_ul=1;
     if($idstr=="menu"){
-	//		$childresult=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND parentid=0 AND	groupid=0");
-	//		if(!empty($childresult)){
-				echo '<li><a href="javascript:;" onclick="getbmfromid(\'0\');">根目录</a></li>';
-                echo '<ul id="menu">';
-	//		}
+			echo '<li><a href="javascript:;" onclick="getbmfromid(\'0\');">根目录</a></li>';
+            echo '<ul id="menu">';
 	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {
 					$do_showit=0;
@@ -2307,8 +2304,8 @@ function setlinkimagepath($link)
 	$dirrandom=$_SC['link_image_path'].'random/';
 	$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
 
-	$link['pic']=$_SC['link_image_path'].($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00ff0000)>>16).'/'.(($bookmark['hashurl']&0x0000ff00)>>8).'/'.(($bookmark['hashurl']&0x00ff)).'/'.$bookmark['md5url'].$_SC['link_image_suffix'];
-
+	$link['pic']=$_SC['link_image_path'].(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8).'/'.$link['md5url'].$_SC['link_image_suffix'];
+	return $link;
 }
 /*
 	-1:no_authority_to_do_this
