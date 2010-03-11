@@ -1,9 +1,9 @@
 #! /bin/sh
 source config.sh
 
-echo "Please choose the action:(1):commit (2):update (3):exit"
+echo "Please choose the action:(1):commit (2):update (3):commitall (4):updateall (5):exit"
 
-select item in commit update exit
+select item in commit  commitall update updateall exit
 do
 	if [ $item = "commit" ];then
 		echo 'backup is processing......'
@@ -19,15 +19,41 @@ do
 		do
 		    echo 'svn commit '$svni
 		    svn commit -m  '$logdate' $svni
+		done   
+	elif [ $item = "commitall" ];then
+		echo 'backup is processing......'
+		echo 'rm -fr '$sqlfile.sql'.zip'
+		rm -fr $sqlfile.sql.zip
+		echo 'backup mysql database'
+		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
+		echo 'make zip package '$sqlfile'.sql.zip'
+		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile uc_bookmark.sdr config.sh  bm_logo.psd
+		rm -f $sqlfile 
+		echo 'commit is processing......'
+		for svni in $svnallfiles
+		do
+		    echo 'svn commit '$svni
+		    svn commit -m  '$logdate' $svni
 		done
-
 	elif  [ $item = "update" ];then
 		echo 'unzip '$sqlfile.sql'.zip'
 		unzip -xo -P $rar_passwd  $sqlfile.zip
 		echo 'restore mysql database.......'
-		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile.sql
+		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
 		echo 'update is processing......'
 		for svni in $svnfiles
+		do
+		    echo 'svn update '$svni
+		  #  svn update $svni
+		done
+
+	elif  [ $item = "updateall" ];then
+		echo 'unzip '$sqlfile.sql'.zip'
+		unzip -xo -P $rar_passwd  $sqlfile.zip
+		echo 'restore mysql database.......'
+		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
+		echo 'update is processing......'
+		for svni in $svnallfiles
 		do
 		    echo 'svn update '$svni
 		  #  svn update $svni
@@ -37,6 +63,5 @@ do
 	else
 	   echo "error!"
 	fi
-done
-
+done  
 echo "Done !!!"
