@@ -47,7 +47,7 @@ $_SC['link_delete_uid']=11;
 
 //length
 $_SC['subject_length']=256;
-$_SC['subject_nbox_title_length']=32;
+$_SC['subject_nbox_title_length']=56;
 
 $_SC['description_length']=512;
 $_SC['description_nbox_title_length']=128;
