@@ -37,6 +37,7 @@ $_SGLOBAL['usergroup']=Array
 		'allowmyop' => 1,
 		'allowtopic' => 1,
 		'allowstat' => 1,
+		'allowbookmark' => 1,
 		'allowlink' => 1,
 		'allowdigg' => 1,
 		'magicdiscount' => '0',
@@ -94,7 +95,6 @@ $_SGLOBAL['usergroup']=Array
 		'managespacenote' => 1,
 		'managevideophoto' => 1,
 		'managelog' => 1,
-		'managelink' => 1,
 		'magicaward' => Array
 			(
 
