@@ -37,8 +37,8 @@ $_SC['bookmark_show_maxnum'] =8;
 $_SC['bookmark_type_site']=0;
 $_SC['bookmark_type_dir']=1;
 //Link origin 类型
-$_SC['link_origin_bookmark']=0;
-$_SC['link_origin_link']=1;
+$_SC['link_origin_bookmark']=0;	  /*添加bookmark而产生的*/
+$_SC['link_origin_link']=1;		  /*上榜产生的*/
 //link verify 类型
 $_SC['link_verify_undo']=0;
 $_SC['link_verify_passed']=1;
@@ -54,7 +54,7 @@ $_SC['description_nbox_title_length']=128;
 
 //link 图像目录
 $_SC['link_image_path']='snapshot/';
-$_SC['link_image_suffix']='.gif';
+$_SC['link_image_suffix']='.jpg';
 //应用的UCenter配置信息(可以到UCenter后台->应用管理->查看本应用->复制里面对应的配置信息进行替换)
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
 define('UC_DBHOST', '192.168.115.2'); // UCenter 数据库主机
