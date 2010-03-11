@@ -52,8 +52,9 @@ $_SC['subject_nbox_title_length']=32;
 $_SC['description_length']=512;
 $_SC['description_nbox_title_length']=128;
 
-
-
+//link 图像目录
+$_SC['link_image_path']='snapshot/';
+$_SC['link_image_suffix']='.gif';
 //应用的UCenter配置信息(可以到UCenter后台->应用管理->查看本应用->复制里面对应的配置信息进行替换)
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
 define('UC_DBHOST', '192.168.115.2'); // UCenter 数据库主机

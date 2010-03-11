@@ -14,7 +14,12 @@
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
 					<div class="d_avatar avatar125">
 							<a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank">
-									<!--{eval getbookmarkimg($value)}-->
+								 <!--{if empty($bookmark['picflag'])}-->
+									<img src="$value['tmppic']">
+								 <!--{else}-->
+									<img src="$value['pic']">
+								 <!--{/if}-->
+									
 							</a>
 					</div>
 					<p class="message">$value[description] ...</p>
