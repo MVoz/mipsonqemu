@@ -68,17 +68,12 @@ else{
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-		//get the bookmark tag 
-		$tag_query= $_SGLOBAL['db']->query("SELECT main.*,field.*  FROM ".tname('linktagbookmark')." main
-			LEFT JOIN ".tname('linktag')." field ON main.tagid=field.tagid where main.bmid=".$value['bmid']);
-		while($tagvalue=$_SGLOBAL['db']->fetch_array($tag_query)){
-			$value['taglist'][$tagvalue['tagid']]=$tagvalue['tagname'];
-		}
 		$bookmarklist[] = $value;
 	}
 foreach($bookmarklist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
-	$bookmarklist[$key] = $value;
+	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
+	$bookmarklist[$key] = $value;	
 }
 //分页
 $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
