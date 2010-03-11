@@ -59,7 +59,7 @@ $_SC['link_image_suffix']='.gif';
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
 define('UC_DBHOST', '192.168.115.2'); // UCenter 数据库主机
 define('UC_DBUSER', 'root'); // UCenter 数据库用户名
-define('UC_DBPW', '060710'); // UCenter 数据库密码
+define('UC_DBPW', '981221'); // UCenter 数据库密码
 define('UC_DBNAME', 'uc_db'); // UCenter 数据库名称
 define('UC_DBCHARSET', 'utf8'); // UCenter 数据库字符集
 define('UC_DBTABLEPRE', '`uc_db`.uc_'); // UCenter 数据库表前缀
