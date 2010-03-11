@@ -6,9 +6,9 @@
 
 //Ucenter Home配置参数
 $_SC = array();
-$_SC['dbhost']  		= '192.168.115.2'; //服务器地址
+$_SC['dbhost']  		= '127.0.0.1'; //服务器地址
 $_SC['dbuser']  		= 'root'; //用户
-$_SC['dbpw'] 	 		= '060710'; //密码
+$_SC['dbpw'] 	 		= '981221'; //密码
 $_SC['dbcharset'] 		= 'utf8'; //字符集
 $_SC['pconnect'] 		= 0; //是否持续连接
 $_SC['dbname']  		= 'uc_db'; //数据库
