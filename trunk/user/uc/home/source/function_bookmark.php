@@ -49,16 +49,16 @@ function bookmark_post($POST, $olds=array()) {
 		
 //	if($olds['bmid']) {
 		if(!isset($POST['category'])){
-		//修改bookmark目录
-		if(empty($olds))
-            showmessage('error_operation');
-		$bmid = $olds['bmid'];
-		$bookmarkarr['uid'] = $olds['uid'];
-		$bookmarkarr['groupid']=$olds['groupid'];
-        $bookmarkarr['description'] = $message;
-        //只修改bookmark目录
-		updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid,'type'=>$_SC['bookmark_type_dir']));		
-		$fuids = array();
+			//修改bookmark目录
+			if(empty($olds))
+				showmessage('error_operation');
+			$bmid = $olds['bmid'];
+			$bookmarkarr['uid'] = $olds['uid'];
+			$bookmarkarr['groupid']=$olds['groupid'];
+			$bookmarkarr['description'] = $message;
+			//只修改bookmark目录
+			updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid,'type'=>$_SC['bookmark_type_dir']));		
+			$fuids = array();
 		}else{
 			//增加bookmark或者bookmark目录
 			/*
@@ -80,114 +80,49 @@ function bookmark_post($POST, $olds=array()) {
 			$bookmarkarr['browserid']=empty($olds)?$browserid:$olds['browserid'];
 			switch($POST['category']){
 				case $_SC['bookmark_type_site']://增加或修改一个bookmark
-				//link 表
-				$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
-				$linkarr['username'] =$_SGLOBAL['supe_username'];
-				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-				$linkarr['url']=$POST['address'];
-                $linkarr['hashurl']=qhash($linkarr['url']);
-				$linkarr['md5url']=md5($linkarr['url']);
-				
-				if($_GET['ac']=='bmdir')
-				{
-					//增加bookmark
-				    $linkid=bookmark_link_process(0,$linkarr);
-				//插入bookmark
-					$bookmarkarr['linkid'] = $linkid;				
-					$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
-					$bmid = inserttable('bookmark', $bookmarkarr, 1);
-				}else{
-					$linkid=bookmark_link_process($olds['bmid'],$linkarr);
-				//插入bookmark
-					$bookmarkarr['linkid'] = $linkid;				
-				//修改bookmark
-					$bookmarkarr['parentid'] = $olds['parentid'];
-					updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
-					$bmid =$olds['bmid'];
-				}	
-				//tag
-				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
-				//update tag
-				$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
-				updatetable('bookmark', array('tag'=>$tag), array('bmid'=>$bmid));
-				//显示对应的目录
-				$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
+						//link 表
+						$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
+						$linkarr['username'] =$_SGLOBAL['supe_username'];
+						$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+						$linkarr['url']=$POST['address'];
+						$linkarr['hashurl']=qhash($linkarr['url']);
+						$linkarr['md5url']=md5($linkarr['url']);
+						$linkarr=setlinkimagepath($linkarr);
+						if($_GET['ac']=='bmdir')
+						{
+							//增加bookmark
+							$linkid=bookmark_link_process(0,$linkarr);
+						//插入bookmark
+							$bookmarkarr['linkid'] = $linkid;				
+							$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
+							$bmid = inserttable('bookmark', $bookmarkarr, 1);
+						}else{
+							$linkid=bookmark_link_process($olds['linkid'],$linkarr);
+						//插入bookmark
+							$bookmarkarr['linkid'] = $linkid;				
+						//修改bookmark
+							$bookmarkarr['parentid'] = $olds['parentid'];
+							updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
+							$bmid =$olds['bmid'];
+						}	
+						//tag
+						$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
+						//update tag
+						$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
+						updatetable('bookmark', array('tag'=>$tag), array('bmid'=>$bmid));
+						//显示对应的目录
+						$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
 				break;
 				case $_SC['bookmark_type_dir']://增加一个目录
-				$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
-				//插入bookmark
-				$bookmarkarr['groupid'] = ($maxGroupid+1);		
-				$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
-				$bmid = inserttable('bookmark', $bookmarkarr, 1);
+						$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
+						//插入bookmark
+						$bookmarkarr['groupid'] = ($maxGroupid+1);		
+						$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
+						$bmid = inserttable('bookmark', $bookmarkarr, 1);
 				break;
 			}
 		}
-/*	} else {
-        //根目录
-			//增加bookmark或者bookmark目录
-			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
-			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//语词屏蔽
 
-			$POST['address'] = shtmlspecialchars(trim($POST['address']));
-			$POST['address'] = getstr($POST['address'], 500, 1, 1, 1);	//语词屏蔽
-			
-			$bookmarkarr['uid'] = $_SGLOBAL['supe_uid'];
-			$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-			$bookmarkarr['description'] = $message;
-			$bookmarkarr['type'] = $POST['category'];
-			$bookmarkarr['browserid']=$browserid;
-			switch($POST['category']){
-				case $_SC['bookmark_type_site']://增加一个bookmark
-				//link 表
-				$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
-				$linkarr['username'] =$_SGLOBAL['supe_username'];
-				$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-				$linkarr['url']=$POST['address'];
-                $linkarr['hashurl']=qhash($linkarr['url']);
-                $linkid=bookmark_link_process($linkarr);
-				//$linkid = inserttable('link', $linkarr, 1);
-				//插入bookmark
-				$bookmarkarr['linkid'] = $linkid;
-				$bookmarkarr['parentid'] =0;
-                //tag
-               	$bookmarkar['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
-				$bmid = inserttable('bookmark', $bookmarkarr, 1);
-				$tagarr=bookmark_tag_batch($bmid,$POST['tag']);
-				//显示对应的目录
-				$bookmarkarr['groupid']=0;
-				$bookmarkarr['browserid']=$browserid;
-				break;
-				case $_SC['bookmark_type_dir']://增加一个目录
-				$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
-				//插入bookmark
-				$bookmarkarr['groupid'] = ($maxGroupid+1);		
-				$bookmarkarr['parentid'] = 0;
-				$bmid = inserttable('bookmark', $bookmarkarr, 1);
-				break;
-			}
-}
- */
-	/*
-	$blogarr['blogid'] = $blogid;
-	
-	//附表	
-	$fieldarr = array(
-		'message' => $message,
-		'postip' => getonlineip(),
-		'target_ids' => $POST['target_ids']
-	);
-
-	if($olds) {
-		//更新
-		updatetable('blogfield', $fieldarr, array('blogid'=>$blogid));
-	} else {
-		$fieldarr['blogid'] = $blogid;
-		$fieldarr['uid'] = $blogarr['uid'];
-		inserttable('blogfield', $fieldarr);
-	}
-
-
-	*/
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
@@ -281,23 +216,26 @@ function checkhtml($html) {
 	
 	return $html;
 }
-function bookmark_link_process($bmid,$arr){
+function bookmark_link_process($linkid,$arr){
     //检查此url是否已存在
 	global $_SGLOBAL,$_SC;
-    if($bmid)//修改bookmark项
+	$link=array();
+    if($linkid)//修改link项
     {
-		 $link = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." sub on main.linkid=sub.linkid WHERE bmid= ".$bmid));
+		 $link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid= ".$linkid);
+		 $link = $_SGLOBAL['db']->fetch_array($link_query);
 		 if(!empty($link)){
-			if(($link['hashurl']==$arr['hashurl'])&&($link['url']==$arr['url']))//无需对link表做改动
-				return $link['linkid'];
-			else{
-				//将old link所在的表记数减一
-				 $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
-			}
+				if(($link['hashurl']==$arr['hashurl'])&&($link['url']==$arr['url']))//无需对link表做改动
+					return $link['linkid'];
+				else{
+					//将old link所在的表记数减一
+					 $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+				}
 		 }	 
     }
-    $link=array();
-    $link=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'"));
+   
+	$link_query=$_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+	$link = $_SGLOBAL['db']->fetch_array($link_query);
     if(empty($link)){
         $arr['storenum']=1;
 		$linkid = inserttable('link', $arr, 1);

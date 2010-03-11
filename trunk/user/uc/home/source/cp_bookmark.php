@@ -6,55 +6,47 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
+$ops=array('edit','delete','updatevisitstat','checkseccode');
+//检查信息
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
-$op = empty($_GET['op'])?'':$_GET['op'];
-/*
-$browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
-if(!checkbrowserid($browserid)){
-        showmessage('error parameters');
-}
-*/
 $bookmarkitem = array();
 $groupid=0;
 if($bmid) {
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$bookmarkitem = $_SGLOBAL['db']->fetch_array($query);
+	$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['tag'])?array():unserialize($bookmarkitem['tag']));
 	$groupid=$bookmarkitem['parentid'];
 }
-//权限检查
-if(empty($bookmarkitem)) {
-	if(!checkperm('allowblog')) {
-		ckspacelog();
-		showmessage('no_authority_to_add_log');
-	}
-	
-	//实名认证
-	ckrealname('blog');
-	
-	//视频认证
-	ckvideophoto('blog');
-	
-	//新用户见习
-	cknewuser();
-	
-	//判断是否发布太快
-	$waittime = interval_check('post');
-	if($waittime > 0) {
-		showmessage('operating_too_fast','',1,array($waittime));
-	}
-	
-	//接收外部标题
-	//$blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
-	//$blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 500, 1, 0);
-	
-} else {
-	
-	if($_SGLOBAL['supe_uid'] != $bookmarkitem['uid']/* && !checkperm('manageblog')*/) {
-		showmessage('no_authority_operation_of_the_log');
-	}
+
+/*
+	permit owner id item 
+0--不关心
+1--需要符合条件
+2--几个中有一个符合即可
+*/
+$bookmark_priority=array(
+ 'edit'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
+ 'delete'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
+ 'updatevisitstat'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
+ 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0)
+);
+
+$ret=check_valid($op,$bmid,$bookmarkitem,$bookmarkitem['uid'],'allowbookmark',$bookmark_priority);
+switch($ret)
+{
+	case -1:
+		showmessage('no_authority_to_do_this');
+	break;
+	case -2:
+		showmessage('error_parameter');
+	break;
+	default:
+	break;
 }
+
 
 //添加编辑操作
 if(submitcheck('blogsubmit')) {
@@ -157,18 +149,7 @@ if($_GET['op'] == 'delete') {
 
 } else {
 	//添加编辑
-	$bmid=empty($_GET['bmid'])?0:intval($_GET['bmid']);
-	if(!$bmid){
-		//error bmdir id
-			showmessage('failed_to_delete_operation');
-	}
-	
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('linktagbookmark')." main 
-		LEFT JOIN ".tname('linktag')." sub ON main.tagid=sub.tagid 
-		WHERE main.bmid='$bmid'");
-	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
-		$bookmarkitem['tag'][]=$value['tagname'];	
-	$bookmarkitem['tag']=implode(' ',$bookmarkitem['tag']);
+
 }
 
 include_once template("cp_bookmark");
