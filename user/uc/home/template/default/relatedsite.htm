@@ -1,27 +1,29 @@
 			<h4>下面可能有你感兴趣的内容哦</h4>
 			<div class="recommleft">
+			<!--{loop $todayhot $value}-->
 			<div style="width:320px;height:151px;overflow:hidden;">
 				<div id="user_recomm">
 					<h2>站长推荐</h2>
 					<div class="s_avatar">
-						<a href="./template/default/image/001.jpg" title="title0">
-									<img src="./template/default/image/001.jpg" alt="Title #0" />
+						<a href="$value['url']" title="$value['link_description']">
+									<img src="$value['pic']" alt="$value['link_description']" />
 						</a>
 					</div>
 					<div class="s_cnts">
-						<h3><a href="http://www.sohu.com" title="{$_SN[$value[uid]]}">搜狐网</a></h3>
-						<p>收藏数: $value[viewnum]</p>
-						<p>推荐指数: $value[credit]</p>
+						<h3><a href="$value['url']" title="{$value['link_subject']}">$value['link_short_subject']</a></h3>
+						<p>收藏数: $value['storenum']</p>
+						<p>推荐指数: $value[hot]</p>
 						<hr />
 						<p><a href="cp.php?ac=link">我要上榜</a></p>
 					</div>	
 				</div>
 			</div>
 				<div class="description">
-						美国《福布斯》杂志近日根据美国专利商标局所提供的专利，评出14项最怪异发明，入
-						<p style="height:20px;line-height:20px;">标签:足球 欧冠<span style="float:right;"><a href="#">我要收藏</a></span></p>
+						$value['link_short_description']
+						<p style="height:20px;line-height:20px;">标签:$value['link_tag']<span style="float:right;"><a href="#">我要收藏</a></span></p>
 						
 				</div>
+			<!--{/loop}-->
 			</div>
 			<div id="container">
 				<!-- Start Advanced Gallery Html Containers -->

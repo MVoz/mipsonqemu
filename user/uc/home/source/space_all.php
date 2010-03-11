@@ -88,17 +88,25 @@ foreach($polllist as $key => $value) {
 
 
 //站长推荐
-$star = array();
-$starlist = array();
-if($_SCONFIG['spacebarusername']) {
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('space')." WHERE username IN (".simplode(explode(',', $_SCONFIG['spacebarusername'])).")");
+$todayhot = array();
+$todayhotlist = array();
+$_SCONFIG['todayhot']='24,25,27';
+if($_SCONFIG['todayhot']) {
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid IN (".simplode(explode(',', $_SCONFIG['todayhot'])).")");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-		$starlist[] = $value;
+	//	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
+		$todayhotlist[] = $value;
 	}
 }
-if($starlist) {
-	$star = sarray_rand($starlist, 1);
+if($todayhotlist) {
+	$todayhot = sarray_rand($todayhotlist, 1);
+}
+foreach($todayhot as $key => $value) {
+	$value['link_short_subject'] = getstr(trim($value['link_subject']), 10);	
+	$value['link_short_description'] = getstr(trim($value['link_description']), 90);
+	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
+	$value['link_tag'] = getstr(trim($value['link_tag']), 40);
+	$todayhot[$key]=$value;
 }
 
 //竞价排名
