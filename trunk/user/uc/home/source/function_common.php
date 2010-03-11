@@ -2301,18 +2301,14 @@ function getuserbrowserarray(){
 		}
         return $userbrowser;
 }
-function getbookmarkimg($bookmark)
+function setlinkimagepath($link)
 {
-	$dirpath='snapshot';
-	$dirrandom='snapshot/random/';
-	if(!$bookmark['picflag'])
-	{
-		$dirpath=$dirpath.'/'.($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00ff0000)>>16).'/'.(($bookmark['hashurl']&0x0000ff00)>>8).'/'.(($bookmark['hashurl']&0x00ff)).'/'.$bookmark['md5url'].'.gif';
-		//echo '<img  onerror="this.onerror=null;this.src='.$dirrandom.rand(1,30).'.gif" src="'.$dirpath.'">';  
-		echo '<img   src="'.$dirrandom.rand(1,30).'.gif">';  
-	}
-	else
-		echo '	<img src="./template/default/image/1_1264944905dc86.jpg"> ';
+	global $_SC;
+	$dirrandom=$_SC['link_image_path'].'random/';
+	$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
+
+	$link['pic']=$_SC['link_image_path'].($bookmark['hashurl']>>24).'/'.(($bookmark['hashurl']&0x00ff0000)>>16).'/'.(($bookmark['hashurl']&0x0000ff00)>>8).'/'.(($bookmark['hashurl']&0x00ff)).'/'.$bookmark['md5url'].$_SC['link_image_suffix'];
+
 }
 /*
 	-1:no_authority_to_do_this
