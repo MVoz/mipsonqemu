@@ -134,7 +134,7 @@ elseif($_GET['op'] == 'edithot') {
 		$wherearr=$wherearr." where main.origin=".$_SC['link_origin_link'];
 		$wherearr=$wherearr." AND main.verify=".$_SC['link_verify_undo'];
 
-		$orderarr=$orderarr." ORDER by main.dateline DESC ";
+		$orderarr=$orderarr." ORDER by main.link_dateline DESC ";
 
 		$theurl="cp.php?ac=$ac&op=$op";
 		//分页获取总条数

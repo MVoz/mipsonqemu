@@ -36,7 +36,7 @@ function link_post($POST, $olds=array()) {
 	
 	//主表
 	$linkarr = array(
-		'subject' => $POST['subject'],		
+		'link_subject' => $POST['subject'],		
 	);
 	/*
 	//没有填写任何东西
@@ -70,8 +70,8 @@ function link_post($POST, $olds=array()) {
 			//link 表
 			$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
 			$linkarr['username'] =$_SGLOBAL['supe_username'];
-			$linkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-			$linkarr['description'] = $message;
+			$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+			$linkarr['link_description'] = $message;
 			$linkarr['origin'] = $_SC['link_origin_link'];
 
 
@@ -90,8 +90,8 @@ function link_post($POST, $olds=array()) {
 			$tagarr=link_tag_batch($linkid,$POST['tag']);
 			//update tag
 			$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
-			$linkarr['tag']=$tag;
-			updatetable('link',array('tag'=>$tag), array('linkid'=>$linkid));
+			$linkarr['link_tag']=$tag;
+			updatetable('link',array('link_tag'=>$tag), array('linkid'=>$linkid));
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 

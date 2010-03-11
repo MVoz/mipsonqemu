@@ -9,18 +9,18 @@
 			<ul class="bloglist">
 			<!--{loop $linklist $key $value}-->
 			<li  <!--{if $key%2==1}--> class="list_r pass" <!--{/if}--> class="pass">
-					<h3><a href="$value[url]" target="_blank">$value[subject]</a></h3>
+					<h3><a href="$value[url]" target="_blank">$value[link_subject]</a></h3>
 					<!--
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					-->
-					<p class="message">$value[description] ...</p>
+					<p class="message">$value[link_description] ...</p>
 					<p class="c_date"></p>
 					<p class="bmtag">
 						
 					</p>
 					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
 					<p class="c_date"></p>
-					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
+					<p class=ndate><span><!--{date('Y-m-d H:i',$value[link_dateline],1)}--></span></p>	
 				  <span class=bvisit>
 					<a href="$value[url]"  target="_blank"  >访问</a>
 				  </span>

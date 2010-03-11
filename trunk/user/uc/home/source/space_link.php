@@ -23,7 +23,7 @@ $theurl='';
 $wherearr=$wherearr." where main.postuid=".$_SGLOBAL['supe_uid'];
 $wherearr=$wherearr." AND main.origin=".$_SC['link_origin_link'];
 
-$orderarr=$orderarr." ORDER by main.dateline DESC ";
+$orderarr=$orderarr." ORDER by main.link_dateline DESC ";
 
 $groupname=	'我的上榜';
 
@@ -44,13 +44,13 @@ $start=$page?(($page-1)*$perpage):0;
 	$linklist = array();
 
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-		$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['link_description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['link_subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 		$linklist[] = $value;
 	}
 foreach($linklist as $key => $value) {
 	realname_set($value['postuid'], $value['username']);
-	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
+	$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
 	$linklist[$key] = $value;
 }
 //分页

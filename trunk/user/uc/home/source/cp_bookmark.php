@@ -46,8 +46,8 @@ if(empty($bookmarkitem)) {
 	}
 	
 	//接收外部标题
-	$blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
-	$blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 5000, 1, 0);
+	//$blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
+	//$blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 500, 1, 0);
 	
 } else {
 	
