@@ -44,7 +44,8 @@ do
 		for svni in $svnfiles
 		do
 		    echo 'svn update '$svni
-		  #  svn update $svni
+		    svn update $svni
+		    chmod -R 777 $svni
 		done
 
 	elif  [ $item = "updateall" ];then
@@ -56,7 +57,8 @@ do
 		for svni in $svnallfiles
 		do
 		    echo 'svn update '$svni
-		  #  svn update $svni
+		    svn update $svni
+		    chmod -R 777 $svni
 		done
 	elif [ $item = "exit" ];then
 	   break;
