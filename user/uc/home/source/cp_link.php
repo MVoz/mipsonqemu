@@ -7,11 +7,12 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
-$ops=array('manage','add','edit','delete','pass','reject','checkseccode');
+$ops=array('manage','add','edit','delete','pass','reject','checkseccode','get','relate');
 //¼ì²éÐÅÏ¢
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
 $linkitem = array();
+$relatedlist = array();
 if($linkid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
@@ -27,10 +28,12 @@ $link_priority=array(
  'manage'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
  'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
- 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
- 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
+ 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),	
  'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
- 'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1)
+ 'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+ 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
+ 'get'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+ 'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 $ret=check_valid($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
 switch($ret)
@@ -75,15 +78,20 @@ if(empty($linkitem)) {
 	include_once(S_ROOT.'./source/function_link.php');
 	$linkitem = link_post($_POST, $linkitem);
 	if(is_array($linkitem)) {
-		$url = $_SGLOBAL['refer'];		
-		showmessage('do_success', $url, 0);
+		//$url = $_SGLOBAL['refer'];		
+		showmessage('do_success');
 	} elseif($linkitem==false) {
 		showmessage('that_should_at_least_write_things');
 	}elseif($linkitem==-1) {
 		showmessage('link_has_existed');
 	}
 }
-if($_GET['op'] == 'delete') {
+if($op == 'get'){
+}
+elseif($op == 'relate'){
+		$relatedlist[]=$linkitem;
+}
+elseif($_GET['op'] == 'delete') {
 	//É¾³ý
 	if(submitcheck('deletesubmit')) {
 		include_once(S_ROOT.'./source/function_link.php');
