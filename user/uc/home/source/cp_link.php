@@ -149,7 +149,7 @@ elseif($_GET['op'] == 'edithot') {
 		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 
 		while($value =$_SGLOBAL['db']->fetch_array($query)){
-			//$value['link_description']=trim($value['link_description']);
+			$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
 			$linklist[]=$value;
 		}
 		//·ÖÒ³
