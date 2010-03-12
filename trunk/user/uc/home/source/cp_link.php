@@ -149,6 +149,7 @@ elseif($_GET['op'] == 'edithot') {
 		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 
 		while($value =$_SGLOBAL['db']->fetch_array($query)){
+			//$value['link_description']=trim($value['link_description']);
 			$linklist[]=$value;
 		}
 		//分页
@@ -163,6 +164,9 @@ elseif($_GET['op'] == 'edithot') {
 	}
 } else {
 	//添加编辑
+	//将从上榜获得的tag中的,去掉
+	$_GET['tag']=(empty($_GET['tag']))?'':str_replace(array(','), array(' '), $_GET['tag']);
+
 	//获取常用的tag
 	$shownums=30;
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
