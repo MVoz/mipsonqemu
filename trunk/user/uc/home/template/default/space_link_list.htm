@@ -13,7 +13,13 @@
 					<!--
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					-->
-					<p class="message">$value[link_description] ...</p>
+					<p class="message">
+					<!--{if !empty($value['link_description'])}-->
+							$value['link_description'] ...
+					<!--{else}-->
+							$_SC['unknown_description'] ...
+					<!--{/if}-->
+					</p>
 					<p class="c_date"></p>
 					<p class="bmtag">
 						
