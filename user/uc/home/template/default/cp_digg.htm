@@ -1,6 +1,6 @@
 <!--{template bm_header}-->
 <script language="javascript" src="source/script_digg.js"></script>
-<!--{if $_GET[op] == 'delete'}-->
+<!--{if $op == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
 <h1>删除话题</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
@@ -19,7 +19,7 @@
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
 
 
-<!--{elseif $_GET[op] == 'edithot'}-->
+<!--{elseif $op == 'edithot'}-->
 
 <h1>调整热度</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
@@ -37,7 +37,7 @@
 
 <!--{else}-->
 
-<!--{if $_GET[op] == 'add'}-->
+<!--{if $op == 'add'}-->
 <div>
 <!--{else}-->
 <div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
@@ -47,7 +47,7 @@
 <form method="post" action="cp.php?ac=$ac&op=$_GET[op]&diggid=$diggid">
 <table cellpadding="0" cellspacing="0" class="formtable">
 <caption>
-<!--{if $_GET[op] == 'add'}-->
+<!--{if $op == 'add'}-->
 		<h2>添加$_SC['digg_name']</h2>
 <!--{else}-->
 		<h2>编辑$_SC['digg_name']</h2>
@@ -112,7 +112,7 @@
 	<th>&nbsp;</th>
 	<td>
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-		<!--{if $_GET[op] == 'add'}-->
+		<!--{if $op == 'add'}-->
 		<input type="hidden" name="addsubmit" value="true" />
 		<!--{else}-->
 		<input type="hidden" name="editsubmit" value="true" />
