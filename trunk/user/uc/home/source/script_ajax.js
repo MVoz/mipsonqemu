@@ -291,6 +291,7 @@ function ajaxgetex(url, showid,subid,subexid,waitid) {
 				x.showId.orgdisplay = x.showId.style.display;
 				ajaxinnerhtml(x.showId, s);
 				$(subid).innerHTML=$(subexid).innerHTML;
+				$(subexid).parentNode.removeChild($(subexid));
 				ajaxupdateevents(x.showId);
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
 			}

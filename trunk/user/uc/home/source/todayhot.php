@@ -10,7 +10,7 @@ if(!defined('IN_UCHOME')) {
 //今日热荐
 $todayhot = array();
 $todayhotlist = array();
-$_SCONFIG['todayhot']='24,25,27';
+$_SCONFIG['todayhot']='22,23,24,26';
 if($_SCONFIG['todayhot']) {
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid IN (".simplode(explode(',', $_SCONFIG['todayhot'])).")");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
