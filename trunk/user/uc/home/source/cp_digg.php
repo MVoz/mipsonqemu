@@ -141,14 +141,15 @@ if($_GET['op'] == 'delete') {
 
 } else {
 	//添加编辑
-	/*
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('linktagbookmark')." main 
-		LEFT JOIN ".tname('linktag')." sub ON main.tagid=sub.tagid 
-		WHERE main.bmid='$bmid'");
-	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
-		$bookmarkitem['tag'][]=$value['tagname'];	
-	$bookmarkitem['tag']=implode(' ',$bookmarkitem['tag']);
-	*/
+	//将$_GET 转化成$diggitem,以便cp_digg.htm显示
+	if(empty($diggitem))
+	{
+		$diggitem['subject']=$_GET['title'];
+		$diggitem['description']=$_GET['content'];
+		$diggitem['url']=$_GET['url'];
+		$_GET['tag']=(empty($_GET['tag']))?'':str_replace(array(','), array(' '), $_GET['tag']);
+		$diggitem['tag']=$_GET['tag'];
+	}
 	//获取常用的digg tag
 	$shownums=30;
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('diggtag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
