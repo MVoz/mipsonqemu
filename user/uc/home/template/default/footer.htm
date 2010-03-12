@@ -28,6 +28,10 @@ function ajaxresponse(objname, data) {
 function updatevisitstat(id) {
 	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
 }
+function getrelatedlinkfromid(id) {
+	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
+}	
+
 </script>
 	<div id="footer">
 		<!--{if $_TPL['templates']}-->
