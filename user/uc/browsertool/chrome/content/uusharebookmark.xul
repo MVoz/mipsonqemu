@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://uusharebookmark/skin/uusharebookmark.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % UBKDTD SYSTEM "chrome://uusharebookmark/locale/uusharebookmark.dtd">
+%UBKDTD;
+]>
+
+<overlay id="UBK-Overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://uusharebookmark/content/uusharebookmark.js" />
+	<toolbox id="navigator-toolbox">
+		<toolbarpalette id="BrowserToolbarPalette">
+			<toolbarbutton id="UBK-Post" insertbefore="urlbar-container" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&UBK.tbbutton.post.label;" tooltiptext="&UBK.tbbutton.post.tooltip;" oncommand="UushareTB.AddToMyUushareBookmark()"/>
+		</toolbarpalette>
+	</toolbox>
+	<popup id="contentAreaContextMenu">
+		<menuitem id="UBK-RightMueu-Post" insertafter="context-bookmarkpage" 
+		label="&UBK.rightmenu.post.label;(U)..." accesskey="U" 
+		class="menuitem-iconic"
+    image="chrome://uusharebookmark/skin/popup.png"
+		oncommand="UushareTB.AddToMyUushareBookmark();"/>
+	</popup>
+</overlay>
