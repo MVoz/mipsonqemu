@@ -18,9 +18,14 @@
 	</div>	  						
 </div>
 <div  class="nbox">
+		<!--{template todayhot}-->
 	<div id="relatedcontent">
-		<!--{template relatedsite}-->
-	</div>
+
+	</div>	
 </div>
+<script language="javascript"  type="text/javascript">
+	$('relatedcontent').innerHTML=$('relatehtm').innerHTML;
+	$('relatehtm').parentNode.removeChild($('relatehtm'));
+</script>
 <!--{template footer}-->
 <!--{/if}-->
