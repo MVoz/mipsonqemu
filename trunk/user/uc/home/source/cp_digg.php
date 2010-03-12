@@ -159,6 +159,11 @@ if($_GET['op'] == 'delete') {
 		$bookmarkitem['tag'][]=$value['tagname'];	
 	$bookmarkitem['tag']=implode(' ',$bookmarkitem['tag']);
 	*/
+	//获取常用的digg tag
+	$shownums=30;
+	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('diggtag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
+	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
+		$diggtaglist[$value['tagid']]=$value['tagname'];
 }
 
 include_once template("cp_digg");
