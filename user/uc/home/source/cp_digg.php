@@ -6,16 +6,41 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-
+$ops=array('add','edit','delete');
 //检查信息
-$op = empty($_GET['op'])?'':$_GET['op'];
-$diggid=empty($_GET['diggid'])?0:$_GET['diggid'];
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
+$diggid= empty($_GET['diggid'])?0:intval(trim($_GET['diggid']));
 $diggitem = array();
-$groupid=0;
-if($diggid) {
+if($diggid)
+{
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('digg')." main WHERE main.diggid=$diggid");
 	$diggitem = $_SGLOBAL['db']->fetch_array($query);
 }
+
+/*
+	permit owner id item 
+0--不关心
+1--需要符合条件
+2--几个中有一个符合即可
+*/
+$digg_priority=array(
+ 'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
+ 'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
+ 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1)
+);
+$ret=check_valid($op,$diggid,$diggitem,$diggitem['uid'],'managedigg',$digg_priority);
+switch($ret)
+{
+	case -1:
+		showmessage('no_authority_to_do_this');
+	break;
+	case -2:
+		showmessage('error_parameter');
+	break;
+	default:
+	break;
+}
+
 //权限检查
 if(empty($diggitem)) {
 	if(!checkperm('allowdigg')) {
@@ -51,35 +76,7 @@ if(empty($diggitem)) {
 }
 
 //添加编辑操作
-if(submitcheck('blogsubmit')) {
-
-	if(empty($blog['blogid'])) {
-		$blog = array();
-	} else {
-		if(!checkperm('allowblog')) {
-			ckspacelog();
-			showmessage('no_authority_to_add_log');
-		}
-	}
-	
-	//验证码
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
-		showmessage('incorrect_code');
-	}
-	
-	include_once(S_ROOT.'./source/function_blog.php');
-	if($newblog = blog_post($_POST, $blog)) {
-		if(empty($blog) && $newblog['topicid']) {
-			$url = 'space.php?do=topic&topicid='.$newblog['topicid'].'&view=blog';
-		} else {
-			$url = 'space.php?uid='.$newblog['uid'].'&do=blog&id='.$newblog['blogid'];
-		}
-		showmessage('do_success', $url, 0);
-	} else {
-		showmessage('that_should_at_least_write_things');
-	}
-}
-else if(submitcheck('editsubmit')) {
+if(submitcheck('editsubmit')) {
 	//验证码
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
@@ -118,13 +115,6 @@ if($_GET['op'] == 'delete') {
 			showmessage('failed_to_delete_operation');
 		}
 	}
-	
-} elseif($_GET['op'] == 'goto') {
-	
-	$id = intval($_GET['id']);
-	$uid = $id?getcount('blog', array('blogid'=>$id), 'uid'):0;
-
-	showmessage('do_success', "space.php?uid=$uid&do=blog&id=$id", 0);
 	
 } elseif($_GET['op'] == 'edithot') {
 	//权限
