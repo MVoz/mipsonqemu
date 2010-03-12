@@ -88,12 +88,12 @@ $_SGLOBAL[space_css]
     		<a href="space.php?do=all"><span>我的弹指</span></a>
    <!--{/if}-->
             <a  href="space.php?do=bookmark"><span>导航</span></a>
-            <a  href="space.php?do=digg"><span>Digg</span></a>
+            <a  href="space.php?do=digg"><span>$_SC['digg_name']</span></a>
             <!--<a  href="/movie/"><span>热荐</span></a>-->
             <a  href="cp.php?ac=link"><span>上榜</span></a>
    <!--{if $_SGLOBAL[supe_uid]&&checkperm('allowdigg') }-->
 		<!--<a onclick="ajaxmenu(event, this.id,1)" id="digg_add_0" href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交Digg</span></a>-->
-			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交Digg</span></a>
+			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交$_SC['digg_name']</span></a>
    <!--{/if}-->
    <!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
 			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&ac=link&op=manage"><span>管理书签</span></a>
@@ -108,7 +108,7 @@ $_SGLOBAL[space_css]
    <!--{if $_SGLOBAL[supe_uid]}-->
 			<span class="pl">你好，<a href="space.php?do=bookmark" target=_blank><span>$_SGLOBAL['supe_username']</span></a>，欢迎回来！</span>
    <!--{else}-->
-            <span class="pl">你好，请<a href="/login" rel="nofollow">登录</a>或<a href="/register">注册</a></span>
+            <span class="pl">你好，请<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>或<a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
    <!--{/if}-->
     </div>
 </form>

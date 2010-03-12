@@ -64,12 +64,30 @@
 		<th width="40"><label for="address">地址</label></th>
 		<td>
 		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="1"  />
+		<p style="color:gray">请正确填写网页地址</p>
 		</td>
 	</tr>
 	<tr>
 		<th width="40"><label for="tag">标签</label></th>
 		<td>
 		<input type="text" id="tag" name="tag" value="$diggitem[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+		<p style="color:gray">多个标签请用空格隔开</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+				<div class="cont">
+					<ul class="type-1">
+						<li class="ll">
+							<ul class="type-2">
+							<!--{loop $diggtaglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
+							</ul>
+					 </ul>
+					</li>
+				 </div>
 		</td>
 	</tr>
 	<tr>
@@ -153,11 +171,31 @@
 	</tr>
 </table>
 
-<table cellpadding="0" cellspacing="0" >
+<table cellpadding="0" cellspacing="0" class="formtable">
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
 	<tr>
-		<th></th>
+		<th style="vertical-align: top;">请先回答问题</th>
 		<td>
-			<input type="button" id="issuance" onclick="document.getElementById('diggbutton').click();" value="保存发布" class="submit" />
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th width="40" style="vertical-align: top;">验证码</th>
+		<td>
+			<script>seccode();</script>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+			<input type="button" id="issuance" name="issuance" onclick="document.getElementById('diggbutton').click();" value="保存发布" class="submit_disabled"  disabled="true"/>
 		</td>
 	</tr>
 </table>
@@ -165,5 +203,52 @@
 </div>
 </div>
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
+<script type="text/javascript">
+<!--
+	$('subject').focus();
+	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
+	function checkUrl() {
+	}
+	function checkSeccode() {
+		var seccodeVerify = $('seccode').value;
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxsecoderesponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
+	}
+	function ajaxsecoderesponse(objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('cp.php?ac=link&' + data, function(s){
+			var obj = $(objname);
+			s = trim(s);
+			if(s.indexOf('succeed') > -1) {
+				obj.style.display = '';
+				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+				obj.className = "warning";
+				$('issuance').disabled=false;
+				$('issuance').className="submit";
+			} else {
+				warning(obj, s);
+				$('issuance').disabled=true;
+				$('issuance').className="submit_disabled";
+			}
+		});
+	}
+	function warning(obj, msg) {
+		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
+			$(ton).select();
+		}
+		obj.style.display = '';
+		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
+		obj.className = "warning";
+	}
+	function fSetTag(tag)
+	{
+		$('tag').value=$('tag').value+tag+' ';
+	}
+//-->
+</script>	
 <!--{/if}-->
 <!--{template footer}-->
