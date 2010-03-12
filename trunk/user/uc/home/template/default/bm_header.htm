@@ -92,11 +92,13 @@ $_SGLOBAL[space_css]
             <!--<a  href="/movie/"><span>热荐</span></a>-->
             <a  href="cp.php?ac=link"><span>上榜</span></a>
    <!--{if $_SGLOBAL[supe_uid]&&checkperm('allowdigg') }-->
-		<!--<a onclick="ajaxmenu(event, this.id,1)" id="digg_add_0" href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交Digg</span></a>-->
 			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交$_SC['digg_name']</span></a>
    <!--{/if}-->
    <!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&ac=link&op=manage"><span>管理书签</span></a>
+			<a href="cp.php?uid=$_SGLOBAL[supe_uid]&ac=link&op=manage"><span>验证</span></a>
+    <!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]&&checkperm('manageconfig') }-->
+			<a href="admincp.php"><span>管理</span></a>
     <!--{/if}-->
     </div>    
 <div id="searbar">
