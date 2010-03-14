@@ -96,6 +96,7 @@ $_SGLOBAL['usergroup']=Array
 		'managelog' => '0',
 		'managelink' => '0',
 		'managedigg' => '0',
+		'managelinkclass' => '0',
 		'magicaward' => '',
 		'exphigher' => 999999999
 		)
