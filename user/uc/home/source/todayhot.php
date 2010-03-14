@@ -24,6 +24,8 @@ if($todayhotlist) {
 foreach($todayhot as $key => $value) {
 	$value['link_short_subject'] = getstr(trim($value['link_subject']), 10);	
 	$value['link_short_description'] = getstr(trim($value['link_description']), 90);
+	include_once(S_ROOT.'./source/function_link.php');
+	$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
 	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
 	$value['link_tag'] = getstr(trim($value['link_tag']), 40);
 	$todayhot[$key]=$value;

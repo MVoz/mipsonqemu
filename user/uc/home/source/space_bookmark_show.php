@@ -68,10 +68,19 @@ else{
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		if($value[picflag]&&empty($value['description']))
+			$value['description']= getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+		if($value[picflag]&&empty($value['subject']))
+			$value['subject']= getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		
 		$bookmarklist[] = $value;
 	}
 foreach($bookmarklist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
+	include_once(S_ROOT.'./source/function_link.php');
+	$value['link_tag']=convertlinktag($value['linkid'],$value['link_tag']);
+	if($value[picflag]&&empty($value['tag']))
+			$value['tag']= $value['link_tag'];
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$bookmarklist[$key] = $value;	
 }

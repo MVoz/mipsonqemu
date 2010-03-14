@@ -218,4 +218,19 @@ function link_pass($link)
 	global $_SGLOBAL,$_SC;
 	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET verify=".$_SC['link_verify_passed']." WHERE linkid=".$link['linkid']);
 }
+
+function convertlinktag($linkid,$tag)
+{
+		$ntag='';
+		if(!empty($tag)&&!preg_match("/^a\:\d+\:{\S+/i",$tag))
+		{
+			//tag
+			$tagarr=link_tag_batch($linkid,$tag);
+			//update tag
+			$ntag = empty($tagarr)?'':addslashes(serialize($tagarr));
+			updatetable('link',array('link_tag'=>$ntag), array('linkid'=>$linkid));
+			return $ntag;
+		}
+		return $tag;
+}
 ?>
