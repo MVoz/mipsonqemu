@@ -1,0 +1,346 @@
+<!--{template bm_header}-->
+<!--{if $op == 'delete'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>删除</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=link&op=delete&linkid=$linkitem['linkid']">
+	<p>确定删除标题为<span style="color:#368332">$linkitem['subject']</span>的站点吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
+<!--{elseif $op == 'get'}-->
+<!--{elseif $op == 'relate'}-->
+		<!--{template relatedsite_show}-->
+<!--{elseif $op == 'pass'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>通过</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
+	<p>确定通过标题为<span style="color:#368332">$linkitem['subject']</span>站点的验证吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="passsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
+<!--{elseif $op == 'edithot'}-->
+
+<h1>调整热度</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=blog&op=edithot&blogid=$blogid">
+	<p class="btn_line">
+		新的热度：<input type="text" name="hot" value="$blog[hot]" size="5"> 
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="hotsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{elseif $op == 'manage'}-->
+<div class="linkclassshow">	
+				<ul >
+				   	<!--{loop $linkclasslist $key $value}-->
+						<li >
+							<p class="firstlayer">
+								<a style="color:#00ADEF;">$value['classname']</a>
+								<input type="text" class="t_input" style="width: 50px;" value="" name="subject" id="subject">
+								<input type="button"  class="submit" value="增加" name="issuance" id="issuance">
+								<a href="javascript:showlinkclassid('linkclass_id_$value['classid']')" style="float:right;padding-right:20px;">&raquo;</a>
+							</p>
+							<ul id="linkclass_id_$value['classid']" style="display:none">
+									<!--{loop $value[son] $key $valueson}--> 
+												<li>
+													<div class="seclayer">
+													<p  style="float:left;">
+														<a id="linkclass_li_$valueson['classid']" href="javascript:;" >$valueson['classname']</a>
+													</p> 
+														<div style="float:left;">
+														<form id="linkclassform_$valueson['classid']" name="linkclassform_$valueson['classid']" action="cp.php?ac=linkclasstag&op=add" method="post"     >		
+															<input type="text" class="t_input" style="width: 50px;" value="" name="tag" id="tag" />
+															<input type="submit"  class="submit" value="增加" onclick="ajaxpost('linkclassform_$valueson[classid]', 'linkclasstag_add')" />
+															<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+															<input type="hidden" name="classid" value="$valueson['classid']" />
+															<input type="hidden" name="addsubmit" value="true" />
+															<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+														</form>
+														</div>
+														<a href="javascript:showlinkclassid('linkclassform_$valueson[classid]_tag')" style="float:right;padding-right:20px;">&raquo;</a>
+														<div style="clear:both;"></div>
+													</div>
+													<div  class="sonclass" id="linkclassform_$valueson[classid]_tag" style="display:none;">
+														<ul > 
+																	   <!--{loop $valueson[tag] $key $valuesontag}-->
+																		<li><a href="#">$valuesontag['tagname']</a></li>
+ 																	   <!--{/loop}--> 																
+														</ul>
+													</div>
+												</li>
+									<!--{/loop}-->
+							</ul>
+						</li>
+					<!--{/loop}-->
+				</ul>
+
+</div>
+<script language="javascript"  type="text/javascript">
+function showlinkclassid(id)
+{
+	if($(id).style.display=="none")
+			$(id).style.display="block";
+	else
+		    $(id).style.display="none";
+}
+</script>
+<!--{else}-->
+<script>
+	function register(id, result) {
+		if(result) {
+			$('registersubmit').disabled = true;
+			window.location.href = "$jumpurl";
+		} else {
+			updateseccode();
+		}
+	}
+</script>
+
+<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form">
+<table cellpadding="0" cellspacing="0" class="formtable">
+	<caption>
+		<h2>注册本站帐号</h2>
+		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	</caption>
+	<tr>
+		<th width="40">标题</th>
+		<td>
+		<input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<span id="checkusername">&nbsp;</span>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">地址</th>
+		<td>
+		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" />&nbsp;
+		<span id="checkusername">&nbsp;</span>
+		<p style="color:gray">请正确填写网页地址</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">标签</th>
+		<td>
+		<input type="text" id="tag" name="tag" value="$_GET[tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<p style="color:gray">多个标签请用空格隔开</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+				<div class="cont">
+					<ul class="type-1">
+						<li class="ll">
+							<ul class="type-2">
+							<!--{loop $taglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
+							</ul>
+					 </ul>
+					</li>
+				 </div>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
+		<td>
+			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
+			$_GET[content]
+			</textarea>
+		</td>
+	</tr>
+
+<tr>
+		<th width="40">分类</th>
+		<td>
+			<div class="cont">
+				<ul class="type-1">
+				<!--
+					<li class="ll">						
+						<ul class="type-2">
+							<li><a style="color:#00ADEF;">科技</a></li>
+							<li style="height:20px;">
+								<div class="dropmenu" id="usettingli" onmouseover="showMenu(this.id)"><a id="category_li_1" href="cp.php">个人<img src="image/more.gif" align="absmiddle"></a></div>
+								<ul id="usettingli_menu" class="categorymenu_drop" style="display:none;">
+										<li><a href="javascript:setcategoryid('usettingli','我的头像',1)">我的头像</a></li>
+										<li><a href="javascript:setcategoryid('usettingli','个人资料',1)">个人资料</a></li>
+										<li><a href="javascript:setcategoryid('usettingli','主页风格',1)">主页风格</a></li>
+										<li><a href="javascript:setcategoryid('usettingli','我的积分',1)">我的积分</a></li>
+								</ul>
+							</li>
+							<li style="height:20px;">
+								<div class="dropmenu" id="usettingli_2" onmouseover="showMenu(this.id)"><a id="category_li_2" href="cp.php" >个人 <img src="image/more.gif" align="absmiddle"></a></div>
+								<ul id="usettingli_2_menu" class="categorymenu_drop" style="display:none;">
+										<li><a href="javascript:setcategoryid('usettingli_2','我的头像',2)">我的头像</a></li>
+										<li><a href="javascript:setcategoryid('usettingli_2','个人资料',2)">个人资料</a></li>
+										<li><a href="javascript:setcategoryid('usettingli_2','主页风格',2)">主页风格</a></li>
+										<li><a href="javascript:setcategoryid('usettingli_2','我的积分',2)">我的积分</a></li>
+								</ul>
+							</li>
+
+							<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
+							<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
+							<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
+							<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
+							<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
+							<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
+							<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
+							<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
+							<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
+							<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
+							<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
+							<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
+							<li><a id="category_li_3" href="javascript:fSetCategorySelect(3);">设计</a></li>
+							<li><a id="category_li_4" href="javascript:fSetCategorySelect(4);">数码</a></li>
+							<li><a id="category_li_5" href="javascript:fSetCategorySelect(5);">产品</a></li>
+							<li><a id="category_li_6" href="javascript:fSetCategorySelect(6);">酷站</a></li>
+						</ul>
+					</li>
+					<li class="ll" >						
+						<ul class="type-2">
+							<li><a style="color:#00ADEF;">娱乐</a></li>
+							<li><a id="category_li_8" href="javascript:fSetCategorySelect(8);">美女</a></li>
+						</ul>
+					</li>
+					-->
+					<!--{loop $classlist $key $value}-->
+								<ul class="type-2">
+									<li><a style="color:#00ADEF;">$value['classname']</a></li>
+									<!--{loop $value[son] $key $valueson}-->
+											<!--{if empty($valueson[grandson])}-->
+												<li><a id="category_li_$valueson['classid']" href="javascript:fSetCategorySelect($valueson['classid']);">$valueson['classname']</a></li>
+											<!--{else}-->
+												<li>
+													<div class="dropmenu" id="usettingli_$valueson['classid']" onmouseover="showMenu(this.id)"><a id="category_li_$valueson['classid']" href="javascript:;">$valueson['classname']<img src="image/more.gif" align="absmiddle"></a></div>
+														<ul id="usettingli_$valueson['classid']_menu" class="categorymenu_drop" style="display:none;">
+														<!--{loop $valueson[grandson] $key $valuegrandson}-->
+															<li><a href="javascript:setcategoryid('usettingli_$valueson['classid']','$valuegrandson['classname']',$valuegrandson['classid'])">$valuegrandson['classname']</a></li>
+														<!--{/loop}-->
+														</ul>
+												</li>
+											<!--{/if}-->
+									<!--{/loop}-->
+								</ul>
+					<!--{/loop}-->
+				
+				</ul>
+			</div>
+	</td>
+</tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+			<script>seccode();</script>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->	
+
+	<tr><th>&nbsp;</th>
+		<td>
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="addsubmit" value="true" />
+		<input type="submit" id="btnsubmit" name="btnsubmit" value="提交" class="submit_disabled" tabindex="6" disabled="true"/>
+		</td>
+	</tr>
+	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+
+<script type="text/javascript">
+<!--
+	$('subject').focus();
+	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
+	function checkUrl() {
+	}
+	function checkSeccode() {
+		var seccodeVerify = $('seccode').value;
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
+	}
+	function ajaxresponse(objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('cp.php?ac=link&' + data, function(s){
+			var obj = $(objname);
+			s = trim(s);
+			if(s.indexOf('succeed') > -1) {
+				obj.style.display = '';
+				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+				obj.className = "warning";
+				$('btnsubmit').disabled=false;
+				$('btnsubmit').className="submit";
+			} else {
+				warning(obj, s);
+				$('btnsubmit').disabled=true;
+				$('btnsubmit').className="submit_disabled";
+			}
+		});
+	}
+	function warning(obj, msg) {
+		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
+			$(ton).select();
+		}
+		obj.style.display = '';
+		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
+		obj.className = "warning";
+	}
+	function setcategoryid(key,str,n)
+	{
+		$(key).innerHTML='<a id=category_li_'+n+' href="cp.php">'+str+'<img src="image/more.gif" align="absmiddle"></a>';	
+		
+
+		 var oLi = $("category_li_"+n);
+		 if(window.selectLi!=oLi){
+		    oLi.className += " on";
+			if(window.selectLi){
+					window.selectLi.className = window.selectLi.className.replace(" on","");
+			 }
+			 window.selectLi = oLi;
+		 } 
+
+	}
+	function fSetTag(tag)
+	{
+		$('tag').value=$('tag').value+tag+' ';
+	}
+//-->
+</script>	
+<!--{/if}-->
+<!--{template bm_footer}-->
