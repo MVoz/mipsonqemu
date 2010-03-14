@@ -7,11 +7,11 @@ select item in commit  commitall update updateall exit
 do
 	if [ $item = "commit" ];then
 		echo 'backup is processing......'
-		echo 'rm -fr '$sqlfile.sql'.zip'
-		rm -fr $sqlfile.sql.zip	 $sqlfile.sql
+		echo 'rm -fr '$sqlfile'.zip' $sqlfile
+		rm -fr $sqlfile.zip  $sqlfile
 		echo 'backup mysql database'
 		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
-		echo 'make zip package '$sqlfile'.sql.zip'
+		echo 'make zip package '$sqlfile'.zip'
 		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile uc_bookmark.sdr config.sh  bm_logo.psd  url2img.exe qsqlmysql4.dll qsqlmysql4.exp qsqlmysql4.lib libmysql.lib libmySQL.dll cap.exe
 		rm -f $sqlfile 
 		echo 'commit is processing......'
@@ -22,11 +22,11 @@ do
 		done   
 	elif [ $item = "commitall" ];then
 		echo 'backup is processing......'
-		echo 'rm -fr '$sqlfile.sql'.zip' $sqlfile.sql
-		rm -fr $sqlfile.sql.zip
+		echo 'rm -fr '$sqlfile'.zip' $sqlfile
+		rm -fr $sqlfile.zip $sqlfile
 		echo 'backup mysql database'
 		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
-		echo 'make zip package '$sqlfile'.sql.zip'
+		echo 'make zip package '$sqlfile'.zip'
 		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile uc_bookmark.sdr config.sh  bm_logo.psd  url2img.exe qsqlmysql4.dll qsqlmysql4.exp qsqlmysql4.lib libmysql.lib libmySQL.dll cap.exe
 		rm -f $sqlfile 
 		echo 'commit is processing......'
