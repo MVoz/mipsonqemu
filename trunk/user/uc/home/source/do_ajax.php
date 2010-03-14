@@ -78,7 +78,20 @@ if($op == 'comment') {
 	
 	realname_get();
 	
-} elseif($op == 'post') {
+}elseif($op == 'linkclasstag') {
+
+	//ÆÀÂÛ
+	$list = array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linkclasstag')." WHERE uid='$_SGLOBAL[supe_uid]' ORDER BY dateline DESC LIMIT 0,1");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+		//realname_set($value['uid'], $value['username']);
+		//$value = mkshare($value);
+		$list[] = $value;
+	}
+	
+	//realname_get();
+	
+}  elseif($op == 'post') {
 
 	$pid = empty($_GET['pid'])?0:intval($_GET['pid']);
 

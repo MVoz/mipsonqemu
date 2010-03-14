@@ -50,6 +50,8 @@ $start=$page?(($page-1)*$perpage):0;
 	}
 foreach($linklist as $key => $value) {
 	realname_set($value['postuid'], $value['username']);
+	include_once(S_ROOT.'./source/function_link.php');
+	$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
 	$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
 	$linklist[$key] = $value;
 }

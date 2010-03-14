@@ -37,6 +37,30 @@ function share_add(sid, result) {
 		showreward();
 	}
 }
+function linkclasstag_add(sid, result) {
+	if(result) {
+		//linkclassform_1=>linkclassform_1_tag
+		var obj = $(sid+'_tag');
+		var newli = document.createElement("div");
+		var x = new Ajax();
+		x.get('do.php?ac=ajax&op=linkclasstag', function(s){
+			newli.innerHTML = s;
+		});
+		obj.insertBefore(newli, obj.firstChild);
+			var child = $(sid).firstChild;
+		while (child) {
+			if (child.id == 'tag')
+			{
+				child.value='';
+				break;
+			}
+			child = child.nextSibling;
+		} 
+		//$('share_general').value = '';
+		//提示获得积分
+		//showreward();
+	}
+}
 //添加评论
 function comment_add(id, result) {
 	if(result) {
