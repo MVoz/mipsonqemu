@@ -10,7 +10,7 @@ include_once(S_ROOT.'./source/function_cp.php');
 include_once(S_ROOT.'./source/function_magic.php');
 
 //允许的方法
-$acs = array('bookmark','bmdir','bm','space','digg','link', 'doing', 'upload', 'comment', 'blog', 'album', 'relatekw', 'common', 'class',
+$acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'doing', 'upload', 'comment', 'blog', 'album', 'relatekw', 'common', 'class',
 	'swfupload', 'thread', 'mtag', 'poke', 'friend',
 	'avatar', 'profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'share', 'advance', 'invite','sendmail',
 	'userapp', 'task', 'credit', 'password', 'domain', 'event', 'poll', 'topic',
