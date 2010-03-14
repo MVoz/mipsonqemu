@@ -891,3 +891,14 @@ left:expression(this.nextSibling.offsetLeft);
       .categorymenu_drop li { padding: 2px 2px; border-bottom: 1px solid #EEE; }
         .categorymenu_drop li a { color: #2C629E; font-size: 12px; font-weight: normal; }
 		.categorymenu_drop .active { font-weight: bold; }
+
+/*linkclass show*/
+.linkclassshow .firstlayer {background:none repeat scroll 0 0 #eee;}
+.linkclassshow .seclayer {background:none repeat scroll 0 0 #ddd;}
+.linkclassshow .seclayer a{color:#ff8901;}
+.sonclass {display:none;}
+.sonclass ul li{list-style-type:none;display:inline;height:30px;}
+.sonclass  {border:solid 1px #ccc;margin:5px,0;display:none;}
+.sonclass ul{border-bottom:dashed 1px #ccc;height:30px;;}
+.sonclass ul li a{color:#368332;}
+

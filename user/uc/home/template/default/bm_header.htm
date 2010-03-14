@@ -100,6 +100,9 @@ $_SGLOBAL[space_css]
 	<!--{if $_SGLOBAL[supe_uid]&&checkperm('manageconfig') }-->
 			<a href="admincp.php"><span>管理</span></a>
     <!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelinkclass') }-->
+			<a href="cp.php?ac=linkclass&op=manage"><span>分类</span></a>
+    <!--{/if}-->
     </div>    
 <div id="searbar">
 		<span><a id=homepage style="CURSOR: pointer" onclick="this.style.behavior='url(#default#homepage)';javascript:add_favorite();">加为收藏</a></span>
