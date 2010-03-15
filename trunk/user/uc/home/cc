@@ -38,10 +38,7 @@ do
 		svn add snapshot/*/*/*/*/*
 		svn commit  -m  '$logdate'   snapshot/*/*/*/*/*
 	elif  [ $item = "update" ];then
-		echo 'unzip '$sqlfile.sql'.zip'
-		unzip -xo -P $rar_passwd  $sqlfile.zip
-		echo 'restore mysql database.......'
-		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
+		
 		echo 'update is processing......'
 		for svni in $svnfiles
 		do
@@ -49,12 +46,13 @@ do
 		    svn update $svni
 		    chmod -R 777 $svni
 		done
-
-	elif  [ $item = "updateall" ];then
-		echo 'unzip '$sqlfile.sql'.zip'
+		echo 'unzip '$sqlfile'.zip'
 		unzip -xo -P $rar_passwd  $sqlfile.zip
 		echo 'restore mysql database.......'
 		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
+
+	elif  [ $item = "updateall" ];then
+		
 		echo 'update is processing......'
 		for svni in $svnallfiles
 		do
@@ -62,6 +60,10 @@ do
 		    svn update $svni
 		    chmod -R 777 $svni
 		done
+		echo 'unzip '$sqlfile'.zip'
+		unzip -xo -P $rar_passwd  $sqlfile.zip
+		echo 'restore mysql database.......'
+		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
 	elif [ $item = "exit" ];then
 	   break;
 	else
