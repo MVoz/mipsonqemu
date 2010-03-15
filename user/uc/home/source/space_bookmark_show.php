@@ -25,6 +25,9 @@ if($op=='browser'){
 		$query = $_SGLOBAL['db']->query("SELECT main.subject FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)."  limit 1");
 		if($value =$_SGLOBAL['db']->fetch_array($query))
 			$groupname=getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		if(empty($groupname))
+			showmessage('error_parameter');
+		
 	}
 	$wherearr=$wherearr." where main.uid=".$_SGLOBAL['supe_uid'] ;
 	$wherearr=$wherearr." AND main.type=".$_SC['bookmark_type_site']  ;
