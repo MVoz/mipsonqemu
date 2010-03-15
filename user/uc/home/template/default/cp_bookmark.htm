@@ -79,9 +79,15 @@
 	<tr>
 		<th style="vertical-align: top;">验证码</th>
 		<td>
-			<img id="img_seccode" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$bookmarkitem[bmid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bookmarkitem[bmid]')">更换一张</a></p>
+		<!--{/if}-->
 		</td>
 	</tr>
 	<!--{/if}-->
@@ -92,7 +98,7 @@
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
-<input type="submit" name="btnsubmit" value="确定" class="submit_disabled" disabled="true" />
+<input type="submit" name="btnsubmit" value="确定" class="submit_disabled"  />
 </td>
 </tr>
 </table>
