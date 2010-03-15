@@ -17,6 +17,90 @@
 </div>
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
 <!--{elseif $op == 'get'}-->
+<!--{elseif $op == 'bookmark'}-->
+<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form">
+<table cellpadding="0" cellspacing="0" class="formtable">
+	<caption>
+		<h2>我要收藏</h2>
+		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	</caption>
+	<tr>
+		<th width="40">标题</th>
+		<td>
+		<input type="text" id="subject" name="subject" value="$linkitem[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<span id="checkusername">&nbsp;</span>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">地址</th>
+		<td>
+		<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" disabled="true"/>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">标签</th>
+		<td>
+		<input type="text" id="tag" name="tag" value="$linkitem[link_tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<p style="color:gray">多个标签请用空格隔开</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+				<div class="cont">
+					<ul class="type-1">
+						<li class="ll">
+							<ul class="type-2">
+							<!--{loop $taglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
+							</ul>
+					 </ul>
+					</li>
+				 </div>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
+		<td>
+			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
+			$linkitem[link_description]
+			</textarea>
+		</td>
+	</tr>
+
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+			<script>seccode();</script>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->	
+
+	<tr><th>&nbsp;</th>
+		<td>
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="bookmarksubmit" value="true" />
+		<input type="submit" id="btnsubmit" name="btnsubmit" value="提交" class="submit_disabled" tabindex="6" disabled="true"/>
+		</td>
+	</tr>
+	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
 <!--{elseif $op == 'relate'}-->
 		<!--{template relatedsite_show}-->
 <!--{elseif $op == 'pass'}-->
@@ -50,6 +134,7 @@
 	</p>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
+
 </div>
 <!--{elseif $op == 'manage'}-->
 <div class="nbox"">

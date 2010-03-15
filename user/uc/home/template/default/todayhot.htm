@@ -20,7 +20,10 @@
 			</div>
 				<div class="description">
 						$value['link_short_description']
-						<p style="height:20px;line-height:20px;">标签:$value['link_tag']<span style="float:right;"><a href="#">我要收藏</a></span></p>
+						<p style="height:20px;line-height:20px;">标签:$value['link_tag']<span style="float:right;">
+						<a  id="bookmark_add_$value[linkid]" href="cp.php?ac=link&linkid=$value[linkid]&op=bookmark" >我要收藏</a>
+						</span>
+						</p>
 						
 				</div>
 			<!--{/loop}-->
