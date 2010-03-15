@@ -29,7 +29,7 @@ if($op=='browser'){
 	$wherearr=$wherearr." where main.uid=".$_SGLOBAL['supe_uid'] ;
 	$wherearr=$wherearr." AND main.type=".$_SC['bookmark_type_site']  ;
 	$wherearr=$wherearr." AND main.browserid=".$browserid;
-	$wherearr=$wherearr." AND main.groupid=".$groupid; 
+	$wherearr=$wherearr." AND main.parentid=".$groupid; 
 
 	$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
 
