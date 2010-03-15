@@ -27,22 +27,11 @@ if(function_exists('imagecreate') && function_exists('imagecolorset') && functio
 	function_exists('imagecolorallocate') && function_exists('imagechar') && function_exists('imagecolorsforindex') &&
 	function_exists('imageline') && function_exists('imagecreatefromstring') && (function_exists('imagegif') || function_exists('imagepng') || function_exists('imagejpeg'))) {
 
-	$bgcontent = seccode_background();
+	include_once(S_ROOT.'./source/securimage.php');
 
-	$im = imagecreatefromstring($bgcontent);
-	if($seccodedata['adulterate']) {
-		seccode_adulterate();
-	}
-	seccode_giffont();
-
-	if(function_exists('imagepng')) {
-		header('Content-type: image/png');
-		imagepng($im);
-	} else {
-		header('Content-type: image/jpeg');
-		imagejpeg($im, '', 100);
-	}
-	imagedestroy($im);
+    $img = new securimage();
+	 // alternate use:  $img->show('/path/to/background.jpg');
+	$img->show('',$seccode);
 	
 } else {
 	

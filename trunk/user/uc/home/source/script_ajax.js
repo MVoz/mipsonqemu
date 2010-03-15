@@ -435,6 +435,67 @@ function ajaxmenu(e, ctrlid, isbox, timeout, func) {
 	showloading('none');
 	doane(e);
 }
+function ajaxmenuEx(e,imageid, ctrlid, isbox, timeout, func) {
+	var offset = 0;
+	var duration = 3;
+
+	if(isUndefined(timeout)) timeout = 0;
+	if(isUndefined(isbox)) isbox = 0;
+	if(timeout>0) duration = 0;
+	showloading();
+	if(jsmenu['active'][0] && jsmenu['active'][0].ctrlkey == ctrlid) {
+		hideMenu();
+		doane(e);
+		return;
+	} else if(is_ie && is_ie < 7 && document.readyState.toLowerCase() != 'complete') {
+		return;
+	}
+
+	if(isbox) {
+		divclass = 'popupmenu_centerbox';
+		offset = -1;
+	} else {
+		divclass = 'popupmenu_popup';
+	}
+	var div = $(ctrlid + '_menu');
+
+	if(!div) {
+		div = document.createElement('div');
+		div.ctrlid = ctrlid;
+		div.id = ctrlid + '_menu';
+		div.style.display = 'none';
+		div.className = divclass;
+		$('append_parent').appendChild(div);
+	}
+
+	var x = new Ajax();
+	var href = !isUndefined($(ctrlid).href) ? $(ctrlid).href : $(ctrlid).attributes['href'].value;
+	x.div = div;
+	x.etype = e.type;
+
+	x.get(href, function(s) {
+		evaled = false;
+		if(s.indexOf('ajaxerror') != -1) {
+			evaled = true;
+		}
+		if(s.indexOf('hideMenu()') == -1) {//添加关闭
+			s = '<h1>消息</h1><a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a><div class="popupmenu_inner">' + s + '<div>';
+		}
+		if(!evaled) {
+			if(x.div) x.div.innerHTML = s;
+			showMenu(ctrlid, x.etype == 'click', offset, duration, timeout, 0, ctrlid, 1000, true);
+			updateseccodeex(imageid);
+			//function
+			if(func) {
+				setTimeout(func + '(\'' + ctrlid + '\')', 10);
+			}
+		}
+		evalscript(s);
+	});
+
+	showloading('none');
+	doane(e);
+}
 //得到一个定长的hash值,依赖于 stringxor()
 function hash(string, length) {
 	var length = length ? length : 32;

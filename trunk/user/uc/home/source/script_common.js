@@ -114,7 +114,12 @@ function updateseccode() {
 		$('img_seccode').src = img;
 	}
 }
-
+function updateseccodeex(id) {
+	var img = 'do.php?ac=seccode&rand='+Math.random();
+	if($(id)) {
+		$(id).src = img;
+	}
+}
 //缩小图片并添加链接
 function resizeImg(id,size) {
 	var theImages = $(id).getElementsByTagName('img');
