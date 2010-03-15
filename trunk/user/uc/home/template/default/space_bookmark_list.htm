@@ -1,7 +1,7 @@
 <h2 class="ntitle">
 		<span class="r_option" style="padding-right:150px;">
 		<ul>
-		 <!--{if isset($_GET['groupid'])}-->
+		 <!--{if ($op=='browser')&&isset($_GET['groupid'])}-->
         		<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></li>
             <li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></li>
            	<li><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></li>
