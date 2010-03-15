@@ -6,8 +6,8 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-
-$ops=array('manage','add','edit','delete','pass','reject','checkseccode','get','relate');
+//bookmark为"我要收藏"
+$ops=array('manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -33,7 +33,8 @@ $link_priority=array(
  'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
  'get'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
- 'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
+ 'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 $ret=check_valid($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
 switch($ret)
@@ -169,6 +170,9 @@ elseif($_GET['op'] == 'edithot') {
 		include_once(S_ROOT.'./source/function_link.php');
 		link_pass($linkitem);
 		showmessage('do_success', $_SGLOBAL['refer'], 0);
+	}
+}elseif($_GET['op']=='bookmark'){
+	if(submitcheck('bookmarksubmit')) {
 	}
 } else {
 	//添加编辑

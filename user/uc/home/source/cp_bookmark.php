@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 $ops=array('edit','delete','updatevisitstat','checkseccode');
 //检查信息
-$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'edit':$_GET['op'];
 
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
