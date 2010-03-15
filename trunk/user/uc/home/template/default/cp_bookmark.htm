@@ -1,4 +1,4 @@
-<!--{template header}-->
+<!--{template bm_header}-->
 
 <!--{if $_GET[op] == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
@@ -66,13 +66,33 @@
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
 <td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$bookmarkitem['description']</textarea></td>
 </tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+			<img id="img_seccode" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->
 <tr>
 <th>&nbsp;</th>
 <td>
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
-<input type="submit" name="btnsubmit" value="确定" class="submit" />
+<input type="submit" name="btnsubmit" value="确定" class="submit_disabled" disabled="true" />
 </td>
 </tr>
 </table>
@@ -80,6 +100,7 @@
 </form>
 </div>
 </div>
+
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{/if}-->
 <!--{template footer}-->
