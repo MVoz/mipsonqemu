@@ -18,7 +18,7 @@
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
 <!--{elseif $op == 'get'}-->
 <!--{elseif $op == 'bookmark'}-->
-<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form">
+<form id="registerform" name="registerform" method="post" action="cp.php?ac=bmdir&op=add" class="c_form">
 <table cellpadding="0" cellspacing="0" class="formtable">
 	<caption>
 		<h2>我要收藏</h2>
@@ -72,7 +72,7 @@
 		<th style="vertical-align: top;" width="40"><label for="directory">分类</label></th>
 		<td>
 				<input type="hidden" name="browserid" id="browserid" value='$browserid'/>
-				<input type="hidden" name="browsergroupid" id="browsergroupid" />
+				<input type="hidden" name="bmdirid" id="browsergroupid"  value="0"/>
 				<div class="menu_item">
 						<div id="browserdirtree">
 								<!--{template space_browser}-->
@@ -104,9 +104,10 @@
 
 	<tr><th>&nbsp;</th>
 		<td>
+		<input type="hidden" name="category" value="0" />
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="bookmarksubmit" value="true" />
-		<input type="submit" id="btnsubmit" name="btnsubmit" value="提交" class="submit_disabled" tabindex="6" disabled="true"/>
+		<input type="submit" id="addsubmit" name="addsubmit" value="提交" class="submit_disabled" tabindex="6" />
 		</td>
 	</tr>
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
