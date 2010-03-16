@@ -171,16 +171,24 @@ elseif($_GET['op'] == 'edithot') {
 		link_pass($linkitem);
 		showmessage('do_success', $_SGLOBAL['refer'], 0);
 	}
+
 }elseif($_GET['op']=='bookmark'){
 	if(submitcheck('bookmarksubmit')) {
 	}
+	//正确显示tag
+	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+	//获取常用的tag
+	$shownums=$_SC['favorite_tag_maxnum'];
+	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
+	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
+		$taglist[$value['tagid']]=$value['tagname'];
 } else {
 	//添加编辑
 	//将从上榜获得的tag中的,去掉
 	$_GET['tag']=(empty($_GET['tag']))?'':str_replace(array(','), array(' '), $_GET['tag']);
 
 	//获取常用的tag
-	$shownums=30;
+	$shownums=$_SC['favorite_tag_maxnum'];
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
