@@ -13,22 +13,19 @@
 					<!--
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					-->
-					<p class="message">
+					<p class="messagenopic">
 					<!--{if !empty($value['link_description'])}-->
 							$value['link_description'] ...
 					<!--{else}-->
-							$_SC['unknown_description'] ...
+							暂时没有对&nbsp;<a href="$value[url]">$value[link_subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value['linkid']&op=edit">编辑</a>按钮或者等待服务器更新 ...
 					<!--{/if}-->
-					</p>
-					<p class="c_date"></p>
-					<p class="bmtag">
+					<span class="ndate"><!--{date('Y-m-d H:i',$value[link_dateline],1)}--></span>
+					</p>   	
+					<p class="tags">
 						$value['link_tag']
-					</p>
-					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
-					<p class="c_date"></p>
-					<p class=ndate><span><!--{date('Y-m-d H:i',$value[link_dateline],1)}--></span></p>	
+					</p>   			
 				  <span class=bvisit>
-					<a href="$value[url]"  target="_blank"  >访问</a>
+						<a href="$value[url]"  target="_blank"  >访问</a>
 				  </span>
 <!--{if $op=='manage'}-->
 				  <span class=editbtn>
