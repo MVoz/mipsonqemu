@@ -11,6 +11,21 @@ function getbmfromid(id) {
 	        jQuery('#menu ul').hide();
 	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid', 'bmcontent','relatedcontent','relatehtm');	
 }
+//cp_link.htm browser show
+
+function getdirtreefrombrowserid(id)
+{
+	$('browserid').value=id;
+	$('menu').parentNode.removeChild($('menu'));
+	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
+}
+
+function setbookmarkgroupid(id)
+{
+	if(id==0)
+	        jQuery('#menu ul').hide();
+	$('browsergroupid').value=id;
+}
 
 function ajaxresponse(objname, data) {
 	var x = new Ajax('XML', objname);

@@ -2175,14 +2175,14 @@ function ckspacelog() {
 		showmessage('no_authority_expiration'.($value['expiration']?'_date':''), '', 1, array($expiration));
 	}
 }
-function createChildMenu($query,$idstr,$doshowit)
+function createChildMenu($query,$func,$idstr,$doshowit)
 {
 	global $_SGLOBAL;	
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	
 	$do_ul=1;
     if($idstr=="menu"){
-			echo '<li><a href="javascript:;" onclick="getbmfromid(\'0\');">根目录</a></li>';
+			echo '<li><a href="javascript:;" onclick="'.$func.'(\'0\');">根目录</a></li>';
             echo '<ul id="menu">';
 	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {
@@ -2198,11 +2198,11 @@ function createChildMenu($query,$idstr,$doshowit)
 			  		}
 			  		//printf("<li><a href=\"#\">%s</a>\n",mb_substr($value[subject], 0, 15, 'utf-8'));
 			  		if($do_showit)
-			  			echo '<li><a href="javascript:;" onclick="getbmfromid(\''.$value[groupid].'\');" class="showit">'.$value[subject].'</a>';
+			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\');" class="showit">'.$value[subject].'</a>';
 			  		else
-			  			echo '<li><a href="javascript:;" onclick="getbmfromid(\''.$value[groupid].'\');">'.$value[subject].'</a>';
+			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\');">'.$value[subject].'</a>';
 			  		$childQuery=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=$value[groupid]");
-			  		createChildMenu($childQuery,$idstr.$value[groupid],$do_showit);		
+			  		createChildMenu($childQuery,$func,$idstr.$value[groupid],$do_showit);		
 			  		echo '</li>';				  		
 			  		$do_ul=0; 
 			  	//  break;			
@@ -2218,12 +2218,12 @@ $browsertype=array(
             'firefox'=>2,
             'opera'=>3
 );
-function usermenu($browserid){
+function usermenu($browserid,$func){
 	global $_SGLOBAL,$browsertype,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$browserid);
-	createChildMenu($query,"menu");
+	createChildMenu($query,$func,"menu");
 }
 
 function mkbrowsertab($id)
@@ -2233,6 +2233,15 @@ function mkbrowsertab($id)
 	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
     foreach($browsertype as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
+    }
+}
+function mkbrowsershowtab($id)
+{
+    global $_SGLOBAL,$browsertype;
+	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
+    foreach($browsertype as $key=>$browserid){
+	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getdirtreefrombrowserid('.$browserid.');" href="javascript:;"><span>'.$key.'</span></a></li>';
+		/*echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="cp.php?ac=link&op=bookmark&linkid='.$linkid.'&browserid='.$browserid.'">'.$key.'</span></a></li>';*/
     }
 }
 function checkbrowserid($id)
