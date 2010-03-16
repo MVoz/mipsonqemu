@@ -14,24 +14,53 @@ if(empty($bmdirid))
 	$bmdirid = empty($_POST['bmdirid'])?0:intval($_POST['bmdirid']);
 if(empty($browserid))
 	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
+if(empty($browserid))
+	$browserid=$browsertype['ie'];
+
 $ops=array('add','edit','delete');
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
+$bmdiritem = array();
+$groupid=0;
+//如果bmdirid为0，则表示为根目录
+if($bmdirid)
+{
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$_SGLOBAL['supe_uid']." AND type=".$_SC['bookmark_type_dir']." AND groupid=".$bmdirid.' AND browserid='.$browserid);
+	$bmdiritem = $_SGLOBAL['db']->fetch_array($query);
+	$groupid=$bmdiritem['parentid'];
+}
+/*
+	permit owner id item 
+0--不关心
+1--需要符合条件
+2--几个中有一个符合即可
+*/
+$bmdir_priority=array(
+ 'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
+ 'edit'=>array('permit'=>0,'owner'=>1,'id'=>1,'item'=>1),
+ 'delete'=>array('permit'=>0,'owner'=>1,'id'=>1,'item'=>1)
+);
+$ret=check_valid($op,$bmdirid,$bmdiritem,$bmdiritem['uid'],'managelink',$bmdir_priority);
+switch($ret)
+{
+	case -1:
+		showmessage('no_authority_to_do_this');
+	break;
+	case -2:
+		showmessage('error_parameter');
+	break;
+	default:
+	break;
+}
+
+
+
 $op = empty($_GET['op'])?'':$_GET['op'];
 if(empty($op)||!in_array($op,$ops)||!checkbrowserid($browserid)){
         showmessage('error parameters');
 }
 
-$bmdir = array();
-$groupid=0;
-//如果bmdirid为0，则表示为根目录
-if($bmdirid) {
-    //获取收藏夹目录
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$_SGLOBAL['supe_uid']." AND type=".$_SC['bookmark_type_dir']." AND groupid=".$bmdirid);
-	$bmdir = $_SGLOBAL['db']->fetch_array($query);
-	$groupid=$bmdir['parentid'];
-}
-
 //权限检查
-if(empty($bmdir)) {
+if(empty($bmdiritem)) {
 	if(!checkperm('allowblog')) {
 		ckspacelog();
 		showmessage('no_authority_to_add_log');
@@ -58,7 +87,7 @@ if(empty($bmdir)) {
 	
 } else {
 	
-	if($_SGLOBAL['supe_uid'] != $bmdir['uid']/* && !checkperm('manageblog')*/) {
+	if($_SGLOBAL['supe_uid'] != $bmdiritem['uid']/* && !checkperm('manageblog')*/) {
 		showmessage('no_authority_operation_of_the_log');
 	}
 }
@@ -98,7 +127,7 @@ else if(submitcheck('editsubmit')) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
-	if($newbmdir = bookmark_post($_POST, $bmdir)) {
+	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
 		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
 	} else {
@@ -111,7 +140,7 @@ else if(submitcheck('editsubmit')) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
-	if($newbmdir = bookmark_post($_POST, $bmdir)) {
+	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
 		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
 	} else {
@@ -123,7 +152,7 @@ if($_GET['op'] == 'delete') {
 	//删除
 	if(submitcheck('deletesubmit')) {
 		include_once(S_ROOT.'./source/function_bookmark.php');
-		if($bmdirid&&deletebookmarkdir($bmdir['bmid'])) {
+		if($bmdirid&&deletebookmarkdir($bmdiritem['bmid'])) {
 			//跳到父一级
 			$url = 'space.php?do=bookmark&groupid='.$groupid.'&browserid='.$browserid;
 			showmessage('do_success', $url, 0);
