@@ -5,5 +5,9 @@
 		<p style="text-indent:5px;height:55px;padding-top:2px;">
 			<a href="$relatedlist[0]['url']" style="color:red;">$relatedlist[0]['link_subject']</a>:$relatedlist[0]['link_description']
 		</p>
-		<p style="height:20px;line-height:20px;">标签:$relatedlist[0]['tag']<span style="float:right;"><a href="#">我要收藏</a></span></p>
+		<p style="height:20px;line-height:20px;">标签:$relatedlist[0]['tag']
+			<span style="float:right;">
+				<a  id="bookmark_add_$relatedlist[0][linkid]" href="cp.php?ac=link&linkid=$relatedlist[0][linkid]&op=bookmark" >我要收藏</a>
+			</span>
+		</p>
 	</div>
