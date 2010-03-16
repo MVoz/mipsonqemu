@@ -50,7 +50,7 @@ do
 		unzip -xo -P $rar_passwd  $sqlfile.zip
 		echo 'restore mysql database.......'
 		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
-
+		rm -fr $sqlfile
 	elif  [ $item = "updateall" ];then
 		
 		echo 'update is processing......'
@@ -64,6 +64,7 @@ do
 		unzip -xo -P $rar_passwd  $sqlfile.zip
 		echo 'restore mysql database.......'
 		mysql -u $DB_USER -p$mysql_passwd  < $sqlfile
+		rm -fr $sqlfile
 	elif [ $item = "exit" ];then
 	   break;
 	else
