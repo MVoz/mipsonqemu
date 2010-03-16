@@ -1,11 +1,18 @@
 #! /bin/sh
 source config.sh
 
-echo "Please choose the action:(1):commit (2):update (3):commitall (4):updateall (5):exit"
+echo "Please choose the action:(1):commit (2):commitwithdb (3):commitall (4):update (5):updateall (6):exit"
 
-select item in commit  commitall update updateall exit
+select item in commit commitwithdb commitall update updateall exit
 do
 	if [ $item = "commit" ];then
+		echo 'commit is processing......'
+		for svni in $svnfiles
+		do
+		    echo 'svn commit '$svni
+		    svn commit -m  '$logdate' $svni
+		done
+	elif [ $item = "commitwithdb" ];then
 		echo 'backup is processing......'
 		echo 'rm -fr '$sqlfile'.zip' $sqlfile
 		rm -fr $sqlfile.zip  $sqlfile
@@ -19,7 +26,7 @@ do
 		do
 		    echo 'svn commit '$svni
 		    svn commit -m  '$logdate' $svni
-		done   
+		done
 	elif [ $item = "commitall" ];then
 		echo 'backup is processing......'
 		echo 'rm -fr '$sqlfile'.zip' $sqlfile
