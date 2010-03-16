@@ -22,8 +22,8 @@ if($todayhotlist) {
 	$todayhot = sarray_rand($todayhotlist, 1);
 }
 foreach($todayhot as $key => $value) {
-	$value['link_short_subject'] = getstr(trim($value['link_subject']), 10);	
-	$value['link_short_description'] = getstr(trim($value['link_description']), 90);
+	$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
+	$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
 	include_once(S_ROOT.'./source/function_link.php');
 	$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
 	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
