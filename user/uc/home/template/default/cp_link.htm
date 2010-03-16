@@ -34,7 +34,7 @@
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" disabled="true"/>
+		<input type="text" id="addressex" name="addressex" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" disabled="true"/>
 		</td>
 	</tr>
 	<tr>
@@ -106,6 +106,7 @@
 		<td>
 		<input type="hidden" name="category" value="0" />
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" id="address" name="address" value="$linkitem[url]" />
 		<input type="hidden" name="bookmarksubmit" value="true" />
 		<input type="submit" id="addsubmit" name="addsubmit" value="提交" class="submit_disabled" tabindex="6" />
 		</td>
