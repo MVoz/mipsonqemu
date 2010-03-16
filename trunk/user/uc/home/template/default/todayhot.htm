@@ -18,13 +18,18 @@
 					</div>	
 				</div>
 			</div>
-				<div class="description">
-						$value['link_short_description']
-						<p style="height:20px;line-height:20px;">标签:$value['link_tag']<span style="float:right;">
-						<a  id="bookmark_add_$value[linkid]" href="cp.php?ac=link&linkid=$value[linkid]&op=bookmark" >我要收藏</a>
-						</span>
-						</p>
+			<p style="text-indent:5px;height:40px;padding-top:2px;width:318px;overflow:hidden;">
+				<a href="$relatedlist[0]['url']" style="color:red;">$value['link_short_subject']</a>:
+					$value['link_short_description']...
+			</p>
+					<p style="height:20px;line-height:20px;width:318px;">
+							<span style="float:left;"> 标签:</span>
+							<span style="float:left;height:20px;width:220px;overflow:hidden;">$value['link_tag']</span>
+							<span style="float:right;">
+								<a  id="bookmark_add_$value[linkid]" href="cp.php?ac=link&linkid=$value[linkid]&op=bookmark" >我要收藏</a>
+							</span>
+						</p> 						
+	
 						
-				</div>
 			<!--{/loop}-->
 			</div>	
