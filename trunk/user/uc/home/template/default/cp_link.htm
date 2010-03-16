@@ -68,7 +68,19 @@
 			</textarea>
 		</td>
 	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="directory">分类</label></th>
+		<td>
+				<input type="hidden" name="browserid" id="browserid" value='$browserid'/>
+				<input type="hidden" name="browsergroupid" id="browsergroupid" />
+				<div class="menu_item">
+						<div id="browserdirtree">
+								<!--{template space_browser}-->
+						</div>
 
+                </div>
+		</td>
+	</tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
 	<tr>
