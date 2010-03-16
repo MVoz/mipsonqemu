@@ -79,8 +79,9 @@ $_SGLOBAL[space_css]
 </div>
 
 <div id="ajaxwaitid"></div>
+
+<form id="ssform" name="ssform" method="get" action="/subject_search">   
 <div id="bm_header">
-<form id="ssform" name="ssform" method="get" action="/subject_search">     
     <a href="index.php" title="豆瓣"><img src="template/$_SCONFIG[template]/image/bm_logo.jpg" alt="$_SCONFIG[sitename]" class="logo"/></a>
     <div id="nav">
             <a class="now" href="space.php?do=all"><span>首页</span></a>
@@ -115,8 +116,9 @@ $_SGLOBAL[space_css]
    <!--{else}-->
             <span class="pl">你好，请<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>或<a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
    <!--{/if}-->
-    </div>
+
 </form>
+</div>
 </div>
 	<div id="wrap">
 
