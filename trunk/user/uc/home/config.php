@@ -48,15 +48,21 @@ $_SC['link_delete_uid']=11;
 //length
 $_SC['subject_length']=256;
 $_SC['subject_nbox_title_length']=56;
+$_SC['subject_todayhot_length']=10;
+$_SC['subject_related_length']=10;
 
 $_SC['description_length']=512;
-$_SC['description_nbox_title_length']=128;
+$_SC['description_nbox_title_length']=80;
+$_SC['description_todayhot_length']=80;
+$_SC['description_related_length']=98;
 
 //link 图像目录
 $_SC['link_image_path']='snapshot/';
 $_SC['link_image_suffix']='.jpg';
 
 $_SC['unknown_description']='暂没有对此网站描述，请等待服务器更新';
+$_SC['unknown_tag']='什么也没留下...';
+
 $_SC['digg_name']='掘客';
 
 $_SC['related_site_num']=8;
