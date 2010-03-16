@@ -175,6 +175,7 @@ elseif($_GET['op'] == 'edithot') {
 }elseif($_GET['op']=='bookmark'){
 	if(submitcheck('bookmarksubmit')) {
 	}
+	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$browsertype))?$browsertype['ie']:intval($_GET['browserid']);
 	//正确显示tag
 	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
 	//获取常用的tag
