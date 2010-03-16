@@ -2182,7 +2182,7 @@ function createChildMenu($query,$func,$idstr,$doshowit)
 	
 	$do_ul=1;
     if($idstr=="menu"){
-			echo '<li><a href="javascript:;" onclick="'.$func.'(\'0\');">根目录</a></li>';
+			echo '<li><a id="menuroot" class="green" href="javascript:;" onclick="'.$func.'(\'0\');">根目录</a></li>';
             echo '<ul id="menu">';
 	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {

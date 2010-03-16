@@ -8,7 +8,11 @@ function getlinkview(type) {
 
 function getbmfromid(id) {
 	if(id==0)
-	        jQuery('#menu ul').hide();
+	{
+		jQuery('#menuroot').addClass('green');
+		jQuery('#menu li a').removeClass('green');
+		jQuery('#menu ul').hide();
+	}
 	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid', 'bmcontent','relatedcontent','relatehtm');	
 }
 //cp_link.htm browser show
@@ -23,7 +27,11 @@ function getdirtreefrombrowserid(id)
 function setbookmarkgroupid(id)
 {
 	if(id==0)
-	        jQuery('#menu ul').hide();
+	{
+		jQuery('#menuroot').addClass('green');
+		jQuery('#menu li a').removeClass('green');
+		jQuery('#menu ul').hide();
+	}
 	$('browsergroupid').value=id;
 }
 
