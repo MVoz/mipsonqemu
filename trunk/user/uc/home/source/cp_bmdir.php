@@ -10,6 +10,10 @@ if(!defined('IN_UCHOME')) {
 //ºÏ≤È–≈œ¢
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
 $browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
+if(empty($bmdirid))
+	$bmdirid = empty($_POST['bmdirid'])?0:intval($_POST['bmdirid']);
+if(empty($browserid))
+	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
 $ops=array('add','edit','delete');
 $op = empty($_GET['op'])?'':$_GET['op'];
 if(empty($op)||!in_array($op,$ops)||!checkbrowserid($browserid)){
