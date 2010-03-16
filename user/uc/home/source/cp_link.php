@@ -17,6 +17,8 @@ if($linkid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
 	$linkitem = $_SGLOBAL['db']->fetch_array($query);
+	//正确显示tag
+	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
 }
 /*
 	permit owner id item 
@@ -177,7 +179,7 @@ elseif($_GET['op'] == 'edithot') {
 	}
 	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$browsertype))?$browsertype['ie']:intval($_GET['browserid']);
 	//正确显示tag
-	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+	//$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
 	//获取常用的tag
 	$shownums=$_SC['favorite_tag_maxnum'];
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
