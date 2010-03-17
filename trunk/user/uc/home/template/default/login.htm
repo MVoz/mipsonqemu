@@ -35,17 +35,41 @@ jQuery(document).ready(function(){
 .row-list_l{background-color:#F3F3F3;}
 
 .row-list em,.row-list_l em{width:78px;float:left;font-style:normal;padding-top:0px;font-size:110%;text-align:center;overflow:hidden;white-space:nowrap;}
-#searchform{height:30px;padding:10px;}
+#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
+#googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
 </style>
+<script>
+	function searchsubmit()
+	{
+		if($('searchkey').value==''||$('searchkey').value=='请输入关键词')
+			{
+				$('searchkey').value='请输入关键词';
+				return false;
+			}
+		var key=$('searchkey').value;
+		$('searchbaidukey').value=$('searchgooglekey').value=key;
+		if($('searchgoogleck').checked==true)
+			{
+				$('googlesearchform').action="http://www.google.com/search";
+				$('googlesearchform').submit();
+			}
+		if($('searchbaiduck').checked==true)
+		{
+			$('baidusearchform').action="http://www.baidu.com/s";		
+			$('baidusearchform').submit();
+		}
+		return false;
+	}
+</script>
 <div  class="nbox">
 	<div class="nbox_c_1">
 		<div class="entry-foot">
     <p>
         <span id="related_post" class="current">
-            谷歌
+            网页
         </span>
         <span id="mhot" class="">
-            百度
+            淘宝
         </span>
         <span id="allhot" >
             音乐
@@ -77,6 +101,21 @@ jQuery(document).ready(function(){
                     <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
 				</p>				
 		 </form>
+			 <form id="googlesearchform" target="_blank" action=""  method="get" style="float:left">
+					<input type="text" name="q"  id="searchgooglekey"  style="display:none" >
+			</form>
+			<form id="googlesearchform_s" target="_blank" action=""  method="get" style="float:left">
+						<input type="checkbox" size="2" maxlength="2" id="searchgoogleck" value="googleck" checked>
+						<a target="external" rel="_blank" title="谷歌搜索" href="http://www.google.cn/"><img alt="" src="template/default/image/google_web.png"></a>
+			</form>
+			<form id="baidusearchform" name="baidusearchform"  target="_blank" action="" method="get" style="float:left">
+					<input type="text" name="wd" id="searchbaidukey" style="display:none" >
+					<input type="text" name="ie" value="utf-8" style="display:none" >
+			</form>
+			<form id="baidusearchform_s" name="baidusearchform_s"  target="_blank" action="" method="get" style="float:left">
+						<input type="checkbox" size="2" maxlength="2" id="searchbaiduck" value="baiduck" checked>
+						<a target="external" rel="_blank" title="百度一下" href="http://www.baidu.com/index.php?tn=monline_5_dg"><img alt="" src="template/default/image/baidu_web.png"></a>
+			 </form>
         </li>
     </ul>
     <ul class="mhot" style="display: none;">
