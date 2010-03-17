@@ -70,12 +70,12 @@ function ajaxresponse(objname, data) {
 				obj.style.display = '';
 				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
 				obj.className = "warning";
-				$('btnsubmit').disabled=false;
-				$('btnsubmit').className="submit";
+				//$('btnsubmit').disabled=false;
+				//$('btnsubmit').className="submit";
 			} else {
 				warning(obj, s);
-				$('btnsubmit').disabled=true;
-				$('btnsubmit').className="submit_disabled";
+				//$('btnsubmit').disabled=true;
+				//$('btnsubmit').className="submit_disabled";
 			}
 		});
 }

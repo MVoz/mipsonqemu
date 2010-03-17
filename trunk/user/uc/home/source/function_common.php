@@ -2355,4 +2355,5 @@ function check_valid($op,$id,$item,$owner,$pristr,$priorityarray)
 		return -1;
 	return 1;
 }
+$jquerydojs=array('all','bookmark');
 ?>
