@@ -1,7 +1,7 @@
 <?php 
-define('UC_DBHOST', '192.168.115.2');
+define('UC_DBHOST', '127.0.0.1');
 define('UC_DBUSER', 'root');
-define('UC_DBPW', '060710');
+define('UC_DBPW', '981221');
 define('UC_DBNAME', 'uc_db');
 define('UC_DBCHARSET', 'utf8');
 define('UC_DBTABLEPRE', 'uc_');
