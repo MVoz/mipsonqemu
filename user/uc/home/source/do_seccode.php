@@ -31,7 +31,8 @@ if(function_exists('imagecreate') && function_exists('imagecolorset') && functio
 
     $img = new securimage();
 	 // alternate use:  $img->show('/path/to/background.jpg');
-	$img->show('',$seccode);
+	$img->show(S_ROOT.'./source/images/secbk1.jpg',$seccode);
+	//$img->show('',$seccode);
 	
 } else {
 	
