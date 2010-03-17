@@ -1,110 +1,175 @@
-<script>
-function setintro(type) {
-	var intro = '';
-	var bPosition = '';
-	if(type == 'doing') {
-		intro = '用一句话记录自己生活中的点点滴滴';
-		bPosition = '0';
-	} else if(type == 'mtag') {
-		intro = '创建自己的小圈子，与大家交流感兴趣的话题';
-		bPosition = '175px';
-	} else if(type == 'pic') {
-		intro = '上传照片，分享生活中的精彩瞬间';
-		bPosition = '55px';
-	} else if(type == 'app') {
-		intro = '与好友一起玩转游戏和游戏，增加好友感情';
-		bPosition = '118px';
-	} else {
-		intro = '马上注册，与好友分享日志、照片，一起玩转游戏';
-		bPosition = '0';
-	}
-	$('guest_intro').innerHTML = intro + '......';
-	$('guest_intro').style.backgroundPosition = bPosition + ' 100%'
-}
-function scrollPic(e, LN, Width, Price, Speed) {
-	id = e.id;
-	if(LN == 'Last'){ scrollNum = Width; } else if(LN == 'Next'){ scrollNum = 0 - Width; }
-	scrollStart = parseInt(e.style.marginLeft, 10);
-	scrollEnd = parseInt(e.style.marginLeft, 10) + scrollNum;
-	
-	MaxIndex = (e.getElementsByTagName('li').length / Price).toFixed(0);
-	sPicMaxScroll = 0 - Width * MaxIndex;
+<script language="javascript" type="text/javascript" >
+jQuery(document).ready(function(){
+			jQuery(".entry-foot span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".entry-foot ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".entry-foot span").mouseover(function(){  // 鼠标移到 span 上时触发函数
+				jQuery(".entry-foot span").removeClass("currentx");  //为第一个 span 移除 .current 样式
+				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
+				jQuery(".entry-foot ul").hide();  // 隐藏 ul
+				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
+		});
 
-	if(scrollStart == 0 && scrollEnd == Width){
-		scrollEnd = -1806;
-		e.style.marginLeft = parseInt(e.style.marginLeft, 10) - Speed + 'px';
-	} else if(scrollStart == sPicMaxScroll + Width && scrollEnd == sPicMaxScroll){
-		scrollEnd = 0;
-		e.style.marginLeft = parseInt(e.style.marginLeft, 10) + Speed + 'px';
-	}
-	scrollShowPic = setInterval(scrollShow, 1);
-	
-	function scrollShow() {
-		if(scrollStart > scrollEnd) {
-			if(parseInt(e.style.marginLeft, 10) > scrollEnd) {
-				$(id + '_last').onclick = function(){ return false; };
-				$(id + '_next').onclick = function(){ return false; };
-				e.style.marginLeft = parseInt(e.style.marginLeft, 10) - Speed + 'px';
-			} else {
-				clearInterval(scrollShowPic);
-				$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
-				$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
-			}
-		} else {
-			if(parseInt(e.style.marginLeft, 10) < scrollEnd) {
-				$(id + '_last').onclick = function(){ return false; };
-				$(id + '_next').onclick = function(){ return false; };
-				e.style.marginLeft = parseInt(e.style.marginLeft, 10) + Speed + 'px';
-			} else {
-				clearInterval(scrollShowPic);
-				$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
-				$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
-			}					
-		}
-	}
-}
-function scrollShowNav(e, Width, Price, Speed) {
-	id = e.id;
-	$(id + '_last').onclick = function(){ scrollPic(e, 'Last', Width, Price, Speed);return false; };
-	$(id + '_next').onclick = function(){ scrollPic(e, 'Next', Width, Price, Speed);return false; };
-	
-}
-function getUserTip(obj) {
-	var tipBox = $('usertip_box');
-	tipBox.childNodes[0].innerHTML = '<strong>' + obj.rel + ':<\/strong> ' + obj.rev + '...';
-	
-	var showLeft;
-	if(obj.parentNode.offsetLeft > 730) {
-		showLeft = $('showuser').offsetLeft + obj.parentNode.offsetLeft - 148;
-		tipBox.childNodes[0].style.right = 0;
-	} else {
-		tipBox.childNodes[0].style.right = 'auto';
-		showLeft = $('showuser').offsetLeft + obj.parentNode.offsetLeft;
-	}
-	tipBox.style.left = showLeft + 'px';
-	
-	var showTop; 
-	if(obj.className == 'uonline') {
-		showTop = $('showuser').offsetTop + obj.parentNode.offsetTop - tipBox.childNodes[0].clientHeight;
-	} else {
-		showTop = $('showuser').offsetTop + obj.parentNode.offsetTop + 48;
-	}
-	tipBox.style.top = showTop + 'px';
-	
-	tipBox.style.visibility = 'visible';
-}
+		jQuery(".entry-foot_1 span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".entry-foot_1 ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".entry-foot_1 span").mouseover(function(){  // 鼠标移到 span 上时触发函数
+				jQuery(".entry-foot_1 span").removeClass("currentx");  //为第一个 span 移除 .current 样式
+				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
+				jQuery(".entry-foot_1 ul").hide();  // 隐藏 ul
+				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
+		});
+});
 </script>
+<style type="text/css">
+.entry-foot,.entry-foot_1{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
+.entry-foot {height:75px;}
+.entry-foot_1 {height:115px;}
+.entry-foot p,.entry-foot_1 p{font-weight:bold;font-size:110%;margin-top:2px;padding 0px;color:#2C629E}
+.entry-foot p span,.entry-foot_1 p span{background-color:#eee;border:1px solid #ddd;cursor:pointer;padding:3px 20px;overflow:hidden;border-width:1px 1px 1px 0;}
+.entry-foot p span.currentx,.entry-foot_1 p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.entry-foot >li,.entry-foot_1 >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
 
-<div id="guestbar" class="nbox">
-	<div class="nbox_c">
-		<p id="guest_intro">马上注册，与好友分享日志、照片，一起玩转游戏......</p>
-		<a href="do.php?ac=$_SCONFIG[register_action]" id="regbutton" onmouseover="setintro('register');">马上注册</a>
-		<p id="guest_app">
-			<a href="javascript:;" class="appdoing" onmouseover="setintro('doing');">记录</a>
-			<a href="javascript:;" class="appphotos" onmouseover="setintro('pic');">照片</a>
-			<a href="javascript:;" class="appgames" onmouseover="setintro('app');">游戏</a>
-			<a href="javascript:;" class="appgroups" onmouseover="setintro('mtag');">群组</a> 
-		</p>
+.entry-foot ul li {padding:10px;}
+
+
+.related_post_1  li {height:16px;line-height:16px;padding:5px;}
+
+.row-list,.row-list_l{display:block;clear:both;}
+.row-list_l{background-color:#F3F3F3;}
+
+.row-list em,.row-list_l em{width:80px;float:left;font-style:normal;padding-top:0px;}
+
+</style>
+<div  class="nbox">
+	<div class="nbox_c_1">
+		<div class="entry-foot">
+    <p>
+        <span id="related_post" class="current">
+            谷歌
+        </span>
+        <span id="mhot" class="">
+            百度
+        </span>
+        <span id="allhot" >
+            音乐
+        </span>
+		 <span id="allhot" >
+            视频
+        </span>
+			 <span id="allhot" >
+            图片
+        </span>
+			 <span id="allhot" >
+            知道
+        </span>
+		<span id="allhot" >
+            地图
+        </span>
+		<span id="allhot" >
+           影视
+        </span>
+		<span id="allhot" >
+           购物
+        </span>
+    </p>
+    <ul class="related_post" style="display: block;">
+        <li>
+          <form id="searchform" target="_blank" action=""  method="get" style="float:left">
+               <p>
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
+				</p>				
+		 </form>
+        </li>
+    </ul>
+    <ul class="mhot" style="display: none;">
+       <li>
+            <a href="http://www.xiaorsz.com/xkjs-32-pojie/">
+                星空极速3.2破解方法
+            </a>
+            - 66,968 Views
+        </li>
+        <li>
+            <a href="http://www.xiaorsz.com/soft-microsoft-visio-2003-download/">
+                Microsoft Visio 2003中文版下载(附序列号 ...
+            </a>
+            - 29,098 Views
+        </li>
+    </ul>
+    <ul class="allhot" style="display: none;">
+        <li>
+            <a href="http://www.xiaorsz.com/xkjs-32-pojie/">
+                星空极速3.2破解方法
+            </a>
+            - 66,968 Views
+        </li>
+        <li>
+            <a href="http://www.xiaorsz.com/soft-microsoft-visio-2003-download/">
+                Microsoft Visio 2003中文版下载(附序列号 ...
+            </a>
+            - 29,098 Views
+        </li>
+    </ul>
+</div>
+<div class="entry-foot_1">
+    <p>
+        <span id="related_post_1" class="current">
+            常用类
+        </span>
+        <span id="mhot_1" class="">
+            资讯类
+        </span>
+        <span id="allhot_1" >
+            购物类
+        </span>
+		  <span id="allhot_1" >
+            娱乐类
+        </span>
+		<span id="allhot_1" >
+           生活类
+        </span>
+    </p>
+    <ul class="related_post_1" style="display: block;">
+        <li class="row-list">        
+           
+				<em><a title="百 度" target="_blank" href="http://www.baidu.com/index.php?tn=monline_5_dg">百 度</a></em>            
+				<em><a title="Google" target="_blank" href="http://www.google.com/webhp?rls=org.mozilla:en-US:official&amp;client=firefox-a">Google</a></em>             
+				<em><a title="新浪" target="_blank" href="http://www.sina.com.cn/">新浪</a></em>            
+				<em><a title="搜狐" target="_blank" href="http://www.sohu.com/">搜狐</a></em>             
+				<em><a title="网 易" target="_blank" href="http://www.163.com/">网 易</a></em>             
+				<em><a title="MSN中文网" target="_blank" href="http://cn.msn.com/">MSN中文网</a></em>             
+
+		 </li>
+        <li class="row-list_l">        
+          
+				<em><a title="百 度" target="_blank" href="http://www.baidu.com/index.php?tn=monline_5_dg">百 度</a></em>            
+				<em><a title="Google" target="_blank" href="http://www.google.com/webhp?rls=org.mozilla:en-US:official&amp;client=firefox-a">Google</a></em>             
+				<em><a title="新浪" target="_blank" href="http://www.sina.com.cn/">新浪</a></em>            
+				<em><a title="搜狐" target="_blank" href="http://www.sohu.com/">搜狐</a></em>             
+				<em><a title="网 易" target="_blank" href="http://www.163.com/">网 易</a></em>             
+				<em><a title="MSN中文网" target="_blank" href="http://cn.msn.com/">MSN中文网</a></em>             
+
+		 </li>
+    </ul>
+    <ul class="mhot_1" style="display: none;">
+        <li>
+            N/A
+        </li>
+    </ul>
+    <ul class="allhot_1" style="display: none;">
+        <li>
+            <a href="http://www.xiaorsz.com/xkjs-32-pojie/">
+                星空极速3.2破解方法
+            </a>
+            - 66,968 Views
+        </li>
+        <li>
+            <a href="http://www.xiaorsz.com/soft-microsoft-visio-2003-download/">
+                Microsoft Visio 2003中文版下载(附序列号 ...
+            </a>
+            - 29,098 Views
+        </li>
+    </ul>
+</div>
 	</div>	
 <!--{if empty($_SGLOBAL[supe_uid])}-->
 	<div class="nbox_s side_rbox" id="nlogin_box">
