@@ -6,7 +6,9 @@
 <meta http-equiv="x-ua-compatible" content="ie=7" />
 <title><!--{if $_TPL['titles']}--><!--{loop $_TPL['titles'] $value}--><!--{if $value}-->$value - <!--{/if}--><!--{/loop}--><!--{/if}--><!--{if $_SN[$space[uid]]}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
 
+<!--{if in_array($_GET['do'],$jquerydojs)}-->
 <script language="javascript" type="text/javascript" src="source/jquery-1.4.1.min.js"></script>
+<!--{/if}-->
 <script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
@@ -14,46 +16,16 @@
 <script language="javascript" type="text/javascript" src="source/script_ajax.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_face.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_manage.js"></script>
+<!--{if in_array($_GET['do'],$jquerydojs)}-->
 <script language="javascript" type="text/javascript" src="source/menu.js"></script>
 <script type="text/javascript">
-//滚动插件
-(function(jQuery){
-jQuery.fn.extend({
-Scroll:function(opt,callback){
-//参数初始化
-if(!opt) var opt={};
-	var _this=this.eq(0).find("ul:first");
-	var lineH=_this.find("li:first").height(),//获取行高
-	line=opt.line?parseInt(opt.line,10):parseInt(this.height()/lineH,10), //每次滚动的行数，默认为一屏，即父容器高度
-	speed=opt.speed?parseInt(opt.speed,10):500, //卷动速度，数值越大，速度越慢（毫秒）
-	timer=opt.timer?parseInt(opt.timer,10):3000; //滚动的时间间隔（毫秒）
-if(line==0) line=1;
-var upHeight=0-line*lineH;
-//滚动函数
-scrollUp=function(){
-_this.animate({
-	marginTop:upHeight
-	},speed,function(){
-for(i=1;i<=line;i++){
-	_this.find("li:first").appendTo(_this);
-}
-	_this.css({marginTop:0});
-});
-}
-//鼠标事件绑定
-_this.hover(function(){
-clearInterval(timerID);
-},function(){
-	timerID=setInterval("scrollUp()",timer);
-}).mouseout();
-}       
-})
-})(jQuery);
 jQuery(document).ready(function(){
        		initMenuEx();
-			jQuery("#login_adv_bottom").Scroll({line:2,speed:2000,timer:5000});
-        });
+			if(jQuery("#login_adv_bottom"))
+				jQuery("#login_adv_bottom").Scroll({line:2,speed:2000,timer:5000});
+});
 </script>
+<!--{/if}-->
 <style type="text/css">
 @import url(template/default/style.css);
 <!--{if $_TPL['css']}-->
@@ -82,7 +54,7 @@ $_SGLOBAL[space_css]
 
 <form id="ssform" name="ssform" method="get" action="/subject_search">   
 <div id="bm_header">
-    <a href="index.php" title="豆瓣"><img src="template/$_SCONFIG[template]/image/bm_logo.jpg" alt="$_SCONFIG[sitename]" class="logo"/></a>
+    <a href="index.php" title="弹指"><img src="template/$_SCONFIG[template]/image/bm_logo.jpg" alt="$_SCONFIG[sitename]" class="logo"/></a>
     <div id="nav">
             <a class="now" href="space.php?do=all"><span>首页</span></a>
    <!--{if $_SGLOBAL[supe_uid]}-->
