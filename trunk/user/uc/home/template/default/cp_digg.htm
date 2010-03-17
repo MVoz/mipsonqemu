@@ -63,14 +63,18 @@
 	<tr>
 		<th width="40"><label for="address">地址</label></th>
 		<td>
-		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="1"  />
-		<p style="color:gray">请正确填写网页地址</p>
+	<!--{if empty($diggitem[url])}-->
+		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" value="http://" />
+	<!--{else}-->
+		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+	<!--{/if}-->
+		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		</td>
 	</tr>
 	<tr>
 		<th width="40"><label for="tag">标签</label></th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$diggitem[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+		<input type="text" id="tag" name="tag" value="$diggitem[tag]" style="width: 396px;" class="t_input" tabindex="3"  />
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
@@ -93,7 +97,7 @@
 	<tr>
 	<th width="40"><label for="category">分类</label></th>
 		<td>
-			<select id="category" name="category"/>
+			<select id="category" name="category" tabindex="4"/>
 					<option value="0">&nbsp;奇</option>
 					<option value="1">&nbsp;趣</option>
 					<option value="2">&nbsp;囧</option>
@@ -105,7 +109,8 @@
 	<tr width="40">
 		<th style="vertical-align: top;"><label for="description">描述</label></th>
 		<td>
-		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$diggitem[description]</textarea>
+		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5">$diggitem[description]</textarea>
+		<p style="color:gray">简要描述(10~200字符)</p>
 		</td>
 	</tr>
 <tr>
@@ -128,7 +133,7 @@
 	<tr>
 		<th width="40"><label>图片</label></th>
 		<td>
-			<input type="button" name="clickbutton[]" value="上传图片" class="button" style="float:left" onclick="edit_album_show('pic')">
+			<input type="button" name="clickbutton[]" value="上传图片" class="button" style="float:left" tabindex="6" onclick="edit_album_show('pic')">
 		</td>
 	</tr>
 </table>
@@ -178,7 +183,7 @@
 		<th style="vertical-align: top;">请先回答问题</th>
 		<td>
 			<p><!--{eval question();}--></p>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="7" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 		</td>
 	</tr>
 	<!--{else}-->
@@ -186,7 +191,7 @@
 		<th width="40" style="vertical-align: top;">验证码</th>
 		<td>
 			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="7" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
 		</td>
 	</tr>
@@ -195,7 +200,7 @@
 	<tr>
 		<th width="40">&nbsp;</th>
 		<td>
-			<input type="button" id="issuance" name="issuance" onclick="document.getElementById('diggbutton').click();" value="保存发布" class="submit_disabled"  disabled="true"/>
+			<input type="button" id="issuance" name="issuance" onclick="document.getElementById('diggbutton').click();" value="保存发布" class="submit"  />
 		</td>
 	</tr>
 </table>
@@ -203,52 +208,7 @@
 </div>
 </div>
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
-<script type="text/javascript">
-<!--
-	$('subject').focus();
-	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
-	function checkUrl() {
-	}
-	function checkSeccode() {
-		var seccodeVerify = $('seccode').value;
-		if(seccodeVerify == lastSecCode) {
-			return;
-		} else {
-			lastSecCode = seccodeVerify;
-		}
-		ajaxsecoderesponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
-	}
-	function ajaxsecoderesponse(objname, data) {
-		var x = new Ajax('XML', objname);
-		x.get('cp.php?ac=link&' + data, function(s){
-			var obj = $(objname);
-			s = trim(s);
-			if(s.indexOf('succeed') > -1) {
-				obj.style.display = '';
-				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
-				obj.className = "warning";
-				$('issuance').disabled=false;
-				$('issuance').className="submit";
-			} else {
-				warning(obj, s);
-				$('issuance').disabled=true;
-				$('issuance').className="submit_disabled";
-			}
-		});
-	}
-	function warning(obj, msg) {
-		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
-			$(ton).select();
-		}
-		obj.style.display = '';
-		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
-		obj.className = "warning";
-	}
-	function fSetTag(tag)
-	{
-		$('tag').value=$('tag').value+tag+' ';
-	}
-//-->
+
 </script>	
 <!--{/if}-->
 <!--{template footer}-->
