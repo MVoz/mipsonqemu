@@ -2,7 +2,7 @@
 jQuery(document).ready(function(){
 			jQuery(".entry-foot span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
 			jQuery(".entry-foot ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".entry-foot span").mouseover(function(){  // 鼠标移到 span 上时触发函数
+			jQuery(".entry-foot span").click(function(){  // 鼠标移到 span 上时触发函数
 				jQuery(".entry-foot span").removeClass("currentx");  //为第一个 span 移除 .current 样式
 				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
 				jQuery(".entry-foot ul").hide();  // 隐藏 ul
@@ -11,7 +11,7 @@ jQuery(document).ready(function(){
 
 		jQuery(".entry-foot_1 span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
 			jQuery(".entry-foot_1 ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".entry-foot_1 span").mouseover(function(){  // 鼠标移到 span 上时触发函数
+			jQuery(".entry-foot_1 span").click(function(){  // 鼠标移到 span 上时触发函数
 				jQuery(".entry-foot_1 span").removeClass("currentx");  //为第一个 span 移除 .current 样式
 				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
 				jQuery(".entry-foot_1 ul").hide();  // 隐藏 ul
@@ -365,9 +365,9 @@ clearInterval(timerID);
 		</div>
 	</div>
 <!--{else}-->
-	<div class="nbox_s side_rbox" id="nlogin_box">
+	<div class="nbox_s side_rbox" id="nlogin_box" >
 		<h3 class="ntitle">登录</h3>
-		<div class="side_rbox_c">
+		<div class="side_rbox_c" >
 			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
 				<div class="logined">
            <div class="d_avatar avatar48">
@@ -375,8 +375,8 @@ clearInterval(timerID);
             <img onerror="this.onerror=null;this.src='websample_files/1_1264944904t7cl.jpg'" src="./template/default/image/1_1264944905dc86.jpg">
             </a>
            </div>
-           <div class=p_menu>
-               <ul class="login_menu">
+           <div class=p_menu >
+               <ul class="login_menu" >
                	  <li><a href="space.php?do=bookmark&browserid=$browserid">我的收藏</a></li>
                   <li class=login_menu_r><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出登录</a></li>
                   <li><a href="javascript:;" onclick="getbmview('lastvisit')">最近访问</a></li>
@@ -388,23 +388,27 @@ clearInterval(timerID);
 				  </li>                 
                </ul>
            </div>
-           <div class="login_adv">
-	      <div class="login_adv_top">	
+           <div style="position:absolute;z-index:99999;background-color:#f7f7f7;height:20px;width:210px;padding-top:5px;">
 									 <span style="padding: 0px 0px 0px 16px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">&nbsp;</a></span>
 									  <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
 									  <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
 									 <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
 									 
-		   </div>
-           <div id="login_adv_bottom">	                     
+			 </div>		   
+		  <div style="position:absolute; left:750px; top:120px; width:200px; height:50px; z-index:1">
+			<iframe src="http://www.thinkpage.cn/weather/weather.aspx?uid=&c=CHXX0008&l=zh-CHS&p=CMA&a=1&u=C&s=6&m=0&x=1&d=0&fc=&bgc=&bc=&ti=1&in=1&li=2" frameborder="0" scrolling="no" width="200" height="70" marginheight="-50" >
+			</iframe>
+		</div>
+		
+		   <div id="login_adv_bottom">	                     
                                 	  <ul>
 									  <!--{loop $digglist $key $value}-->		
 										<li><a href="$value[url]" class="digg_qi">$value[cutsubject]</a></li>
 									  <!--{/loop}-->
                                 	  </ul>
 		  </div>
+		 
            </div>
-			  </div>
 			</form>
 		</div>
 	</div>
