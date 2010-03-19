@@ -6,14 +6,16 @@ function getlinkview(type) {
 	ajaxget('space.php?do=link&op='+type, 'bmcontent');
 }
 
-function getbmfromid(id) {
-	if(id==0)
+function getbmfromid(groupid,browserid) {
+	if(groupid==0)
 	{
 		jQuery('#menuroot').addClass('green');
 		jQuery('#menu li a').removeClass('green');
 		jQuery('#menu ul').hide();
 	}
-	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+id+'&browserid=$browserid', 'bmcontent','relatedcontent','relatehtm');	
+	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','relatedcontent','relatehtm');
+	
+	$('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenu(event, this.id,1)">增加</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid'+groupid+'&browserid='+browserid+'&op=edit" id="bmdir_edit_'+groupid+'" onclick="ajaxmenu(event, this.id,1)">修改</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid'+groupid+'&browserid='+browserid+'&op=delete" id="bmdir_delete_'+groupid+'" onclick="ajaxmenu(event, this.id,1)">删除</a></span>';
 }
 //cp_link.htm browser show
 
