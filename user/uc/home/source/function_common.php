@@ -2182,7 +2182,7 @@ function createChildMenu($query,$func,$browserid,$idstr,$doshowit)
 	
 	$do_ul=1;
     if($idstr=="menu"){
-			echo '<li><a id="menuroot" class="green" href="javascript:;" onclick="'.$func.'(\'0\',\''.$browserid.'\');">根目录</a></li>';
+			echo '<li><a id="menuroot" class="green" href="javascript:;" onclick="'.$func.'(\'0\',\''.$browserid.'\',\'根目录\');" value="根目录">根目录</a></li>';
             echo '<ul id="menu">';
 	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {
@@ -2198,9 +2198,9 @@ function createChildMenu($query,$func,$browserid,$idstr,$doshowit)
 			  		}
 			  		//printf("<li><a href=\"#\">%s</a>\n",mb_substr($value[subject], 0, 15, 'utf-8'));
 			  		if($do_showit)
-			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\');" class="showit">'.$value[subject].'</a>';
+			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\');" class="showit" value="'.$value[subject].'">'.$value[subject].'</a>';
 			  		else
-			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\');">'.$value[subject].'</a>';
+			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\');" value="'.$value[subject].'">'.$value[subject].'</a>';
 			  		$childQuery=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=$value[groupid]");
 			  		createChildMenu($childQuery,$func,$browserid,$idstr.$value[groupid],$do_showit);		
 			  		echo '</li>';				  		
