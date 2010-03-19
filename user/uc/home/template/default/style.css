@@ -50,10 +50,10 @@ caption, th { text-align: left; }
 
 .groupname {float:left;padding-left:10px;width:150px;overflow:hidden;white-space:nowrap;}
 
-#diggscroll {float:left;width:350px;height:32px;line-height:32px;overflow:hidden;}
-#diggscroll ul {width:350px;margin:0;padding:0;height:32px;}
+#diggscroll {float:left;width:320px;height:32px;line-height:32px;overflow:hidden;}
+#diggscroll ul {width:320px;margin:0;padding:0;height:32px;}
 #diggscroll ul li .diggscroll_r{float:right;}
-#diggscroll ul li .diggscroll_l{float:left;width:300px;overflow:hidden;white-space:nowrap;}
+#diggscroll ul li .diggscroll_l{float:left;width:250px;overflow:hidden;white-space:nowrap;}
 .floatleft{ float: left; }
 .floatright a{ float: right;color:#EEF9EB }
 .clear, .s_clear { clear: both; }
