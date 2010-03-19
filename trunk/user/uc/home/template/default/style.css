@@ -44,10 +44,11 @@ caption, th { text-align: left; }
 
 .face { margin: 0 1px; vertical-align: middle; }
 .r_option { float: right; font-size: 12px; font-weight: normal; }
-    .r_option .active { font-weight: bold; }
-    .r_option ul{	position:absolute; z-index:10;}
-		.r_option ul li {list-style-type:none;display:inline;}
-		.r_option ul li a{background: url(image/add.gif) no-repeat;width:16px;height:16px;padding: 2px 0 0 20px;}
+.r_option .addcomment, .r_option .addtrackback {display:block;float:left;font-size:11px;height:16px;line-height:16px;margin-right:5px;margin-top:4px !important;padding-left:20px;}
+.r_option .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -112px transparent;}
+.r_option .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
+
+
 .floatleft{ float: left; }
 .floatright{ float: right; }
 .clear, .s_clear { clear: both; }
