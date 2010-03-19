@@ -5,7 +5,35 @@
 						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></span>
 						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></span>
 				  <!--{/if}-->
-			</div> $groupname &raquo;</h2>
+			</div>
+			<div class="groupname">$groupname &raquo;</div>
+			<div style="float:left;margin-left:10px;width:400px;">
+			    <div style="float:left;padding-right:10px;"><a href="#">掘客&raquo;</a></div>
+				<div id="diggscroll">                   
+										  <ul>
+										  <!--{loop $digglist $key $value}-->		
+											<li>
+											<a class="diggscroll_l" href="$value[url]" class="digg_qi">$value[cutsubject]</a>
+											<a class="diggscroll_r" href="#">更多&raquo;</a>
+											</li>
+										  <!--{/loop}-->
+										  </ul>
+				</div>
+			</div>
+<script type="text/javascript">
+	function AutoScroll(obj){
+		jQuery(obj).find("ul:first").animate({
+			marginTop:"-32px"
+		},500,function(){
+			jQuery(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+		});	
+	}
+	jQuery(document).ready(function(){
+		setInterval('AutoScroll("#diggscroll")',5000)
+	});
+</script>
+
+</h2>
 			<ul class="bloglist">
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
