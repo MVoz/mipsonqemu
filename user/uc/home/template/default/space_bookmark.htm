@@ -15,20 +15,20 @@
 <h2 class="ntitle">
 		   <div class="r_option" id="groupdo">
 				 <!--{if ($op=='browser')&&isset($_GET['groupid'])}-->
-						<span class="addcomment"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></span>
-						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></span>
-						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></span>
+						<span class="addcomment"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">澧炲姞</a></span>
+						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">淇敼</a></span>
+						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">鍒犻櫎</a></span>
 				  <!--{/if}-->
 			</div>
 			<div class="groupname" id="groupname">$groupname &raquo;</div>
-			<div style="float:left;margin-left:10px;width:380px;">
-			    <div style="float:left;padding-right:10px;"><a href="#">掘客&raquo;</a></div>
+			<div style="float:left;width:380px;">
+			    <div style="float:left;padding-right:10px;"><a href="#">鎺樺&raquo;</a></div>
 				<div id="diggscroll">                   
 										  <ul>
 										  <!--{loop $digglist $key $value}-->		
 											<li>
 											<a class="diggscroll_l" href="$value[url]" class="digg_qi">$value[cutsubject]</a>
-											<a class="diggscroll_r" href="#">更多&raquo;</a>
+											<a class="diggscroll_r" href="#">鏇村&raquo;</a>
 											</li>
 										  <!--{/loop}-->
 										  </ul>

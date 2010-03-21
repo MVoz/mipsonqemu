@@ -50,7 +50,6 @@ $_SGLOBAL[space_css]
 
 <div id="ajaxwaitid"></div>
 
-<form id="ssform" name="ssform" method="get" action="/subject_search">   
 <div id="bm_header">
     <a href="index.php" title="弹指"><img src="template/$_SCONFIG[template]/image/bm_logo.jpg" alt="$_SCONFIG[sitename]" class="logo"/></a>
     <div id="nav">
@@ -83,11 +82,12 @@ $_SGLOBAL[space_css]
     <div id="status">
    <!--{if $_SGLOBAL[supe_uid]}-->
 			<span class="pl">你好，<a href="space.php?do=bookmark" target=_blank><span>$_SGLOBAL['supe_username']</span></a>，欢迎回来！</span>
+			<a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a>
    <!--{else}-->
             <span class="pl">你好，请<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>或<a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
    <!--{/if}-->
 
-</form>
+
 </div>
 </div>
 	<div id="wrap">

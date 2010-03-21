@@ -34,9 +34,21 @@ jQuery(document).ready(function(){
 .row-list,.row-list_l{display:block;clear:both;}
 .row-list_l{background-color:#F3F3F3;}
 
-.row-list em,.row-list_l em{width:78px;float:left;font-style:normal;padding-top:0px;font-size:110%;text-align:center;overflow:hidden;white-space:nowrap;}
+.row-list em,.row-list_l em{width:76px;float:left;font-style:normal;padding:0px;font-size:110%;text-align:center;}
+.row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}
 #googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
 #googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
+
+#hotsite {background-color:#f7f7f7;height:20px;width:210px;padding:3px 0px;}
+#hotsite em{width:18px;float:left;font-style:normal;font-size:100%;overflow:hidden;white-space:nowrap;}
+#hotsite span{float:left;padding:0 5px;text-align:center;white-space:nowrap}
+#hotsite .hot1{color:#368332}
+#hotsite .hot2{color:red}
+#hotsite .hot3{color:blue}
+
+.forecastIcon  {  border:medium none;  margin:-3px -10px -4px; vertical-align:middle;}
+.currentIcon  {border:medium none;margin:-3px -15px;vertical-align:middle; }
+
 </style>
 <script>
 	function searchsubmit()
@@ -174,7 +186,7 @@ jQuery(document).ready(function(){
 				<em><a title="MSN中文网" target="_blank" href="http://cn.msn.com/">MSN中文网</a></em>             
 				<em><a title="天涯社区" target="_blank" href="http://www.tianya.cn/">天涯社区</a></em>             
 				<em><a title="白社会" target="_blank" href="http://bai.sohu.com/">白社会</a></em> 
-				<em><a title="Mtime时光网" target="_blank" href="http://www.mtime.com/">Mtime时光网</a></em>
+				<em><a title="Mtime时光网" target="_blank" href="http://www.mtime.com/">时光网</a></em>
 		 </li>
         <li class="row-list_l">  
 					<em><a title="腾讯QQ" target="_blank" href="http://www.qq.com/">腾讯QQ</a></em>						
@@ -325,7 +337,11 @@ jQuery(document).ready(function(){
 		</div>
 	</div>
 <!--{else}-->
-	<div class="nbox_s side_rbox" id="nlogin_box" >
+	<div class="nbox_s side_rbox_ad" id="nlogin_box" >
+	<!--<img src="template/default/image/commonweal_250x200_1.jpg" style="width: 250px; height: 195px;padding:1px;">-->
+
+
+<!--
 		<h3 class="ntitle">登录</h3>
 		<div class="side_rbox_c" >
 			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
@@ -343,28 +359,50 @@ jQuery(document).ready(function(){
                   <li class=login_menu_r"><a href="javascript:;" onclick="getbmview('lastadd')">最近添加</a></li>
                   <li><a href="javascript:;" onclick="getbmview('oftenvisit')">经常访问</a></li>
                   <li class=login_menu_r>
-					<!--<a href="javascript:;" onclick="getbmview('lastrecommend')">我的上榜</a>-->
 					<a href="javascript:;" onclick="getlinkview('mycharts')">我的上榜</a>
 				  </li>                 
                </ul>
            </div>
-           <div style="position:absolute;z-index:99999;background-color:#f7f7f7;height:20px;width:210px;padding-top:5px;">
-									 <span style="padding: 0px 0px 0px 16px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">&nbsp;</a></span>
-									  <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
-									  <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
-									 <span style="padding: 0px 0px 0px 18px; background-position: 0% 50%; background-image: url(template/default/image/rss_icon.gif); background-repeat: no-repeat;"><a target="_blank" href="http://v.goalhi.com/v18698.html">职业队</a></span>
-									 
-			 </div>		   
-		  <div style="position:absolute; left:750px; top:120px; width:200px; height:50px; z-index:1">
-			<iframe src="http://www.thinkpage.cn/weather/weather.aspx?uid=&c=CHXX0008&l=zh-CHS&p=CMA&a=1&u=C&s=6&m=0&x=1&d=0&fc=&bgc=&bc=&ti=1&in=1&li=2" frameborder="0" scrolling="no" width="200" height="70" marginheight="-50" >
-			</iframe>
-		</div>
-		
-		   
-		 
+		   <div id="hotsite">
+				<em style="color:#FF8901;font-weight:bold;font-size:120%">热</em>
+				<span><a title="新浪" target="_blank" href="http://www.sina.com.cn/" class="hot1">搜狐网</a></span>            
+				<span><a title="搜狐" target="_blank" href="http://www.sohu.com/" class="hot2">冬瓜网</a></span>             
+				<span><a title="网 易" target="_blank" href="http://www.163.com/" class="hot3">中华英才网</a></span>             
+		   </div>
+		   <div id="hotsite">
+				<em style="color:#FF8901;font-weight:bold;font-size:120%">荐</em>
+				<span><a title="新浪" target="_blank" href="http://www.sina.com.cn/" class="hot1">搜狐网</a></span>            
+				<span><a title="搜狐" target="_blank" href="http://www.sohu.com/" class="hot2">冬瓜网</a></span>             
+				<span><a title="网 易" target="_blank" href="http://www.163.com/" class="hot3">中华英才网</a></span>             
+			</div>
+		   	<div style="">
+               <iframe src="http://m.weather.com.cn/m/pn3/weather.htm?id=101190401T " width="225" height="20" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
            </div>
 			</form>
 		</div>
+	-->
 	</div>
+<script>
+var arVersion = navigator.appVersion.split("MSIE")
+var version = parseFloat(arVersion[1])
+function fixPng(myImage) 
+{
+    if ((version >= 5.5) && (version < 7) && (document.body.filters)) 
+    {
+       var imgID = (myImage.id) ? "id='" + myImage.id + "' " : ""
+    var imgClass = (myImage.className) ? "class='" + myImage.className + "' " : ""
+    var imgTitle = (myImage.title) ? 
+               "title='" + myImage.title  + "' " : "title='" + myImage.alt + "' "
+    var imgStyle = "display:inline-block;" + myImage.style.cssText
+    var strNewHTML = "<span " + imgID + imgClass + imgTitle
+                  + " style=\"" + "width:" + myImage.width 
+                  + "px; height:" + myImage.height 
+                  + "px;" + imgStyle + ";"
+                  + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+                  + "(src=\'" + myImage.src + "\', sizingMethod='scale');\"></span>"
+    myImage.outerHTML = strNewHTML   
+    }
+}
+</script>
 <!--{/if}-->
 </div>
