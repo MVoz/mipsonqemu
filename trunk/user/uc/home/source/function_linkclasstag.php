@@ -29,11 +29,12 @@ function linkclasstag_post($POST, $olds=array()) {
 	$linkclasstagarr = array(
 		'classid'=>$olds['classid'],
 		'tagname' => $POST['tag'],
+		'hashname'=>qhash($POST['tag']),
 		'uid' => $_SGLOBAL['supe_uid'],
 		'dateline' => empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline']
 	);
 	//检查是否也存在
-	if($_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT uid FROM ".tname('linktagclass')." main  WHERE classid= ".$olds['classid']." AND tagname=".$POST['tag']),0)
+	if($_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT uid FROM ".tname('linkclasstag')." main  WHERE classid= ".$olds['classid']." AND tagname='".$POST['tag']."'"),0))
 	{
 			return false;
 	}
