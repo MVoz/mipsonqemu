@@ -289,7 +289,7 @@ body { background: #FFF; }
 .c_mgs .ye_l_b{padding:5px 10px 10px;}
 
 /*************************************************TABS HEADER***/
-.tabs_header { margin-bottom: 15px; height: 29px; border-bottom: 1px solid #EBE6C9; clear: both; overflow: hidden; }
+.tabs_header { margin-bottom: 5px; height: 29px; border-bottom: 1px solid #EBE6C9; clear: both; overflow: hidden; }
 
 .tabs_header ul.tabs li a,
 .tabs_header ul.tabs li a span{ background: url(image/tab_bg.gif) no-repeat;  display: block; }
@@ -368,7 +368,7 @@ h2.title img { margin: 0 5px 0 0; vertical-align: middle; }
 textarea { border: 1px solid #ddd; overflow: auto; }
 .t_input, select { padding: 3px 2px; border: 1px solid #ddd; line-height: 16px; }
 .button { padding: 0 5px; margin: 0 0 0 3px; height: 24px; border: none; background: #DDD; color: #333; line-height: 20px; letter-spacing: 1px; cursor: pointer; }
-.submit { padding: 0 5px; height: 24px; border: none; background: #FF8901; color: #FFF; line-height: 20px; letter-spacing: 1px; cursor: pointer; }
+.submit { padding: 0 2px; height: 24px; border: none; background: #FF8901; color: #FFF; line-height: 20px; letter-spacing: 1px; cursor: pointer; }
 .submit_disabled { padding: 0 5px; height: 24px; border: none; background: #eee; color: #666; line-height: 20px; letter-spacing: 1px; cursor: pointer; }
 a.submit { padding: 5px; }
 a.button { padding: 5px; }
@@ -807,10 +807,12 @@ a.c_link {
 }
 /*********************************************************************menu****/
 .menu_item{
-		padding-left: 2px;width:225px;
+		padding: 1px;width:250px;
 }
+.menu_item .quickmenu{ 		width:250px;}
+.menu_item .quickmenu span {float:left;width:120px;padding:5px 0px;}
 .menu_item .menu_list{
-	width:200px;height:350px;overflow:auto;
+	width:230px;height:350px;overflow:auto;
 }
 .menu_item .menu_list ul {
 	padding-right: 10px; padding-left: 0px; padding-bottom: 0px; overflow: hidden; padding-top: 0px; 
