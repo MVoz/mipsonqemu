@@ -812,7 +812,7 @@ a.c_link {
 .menu_item .quickmenu{ 		width:250px;}
 .menu_item .quickmenu span {float:left;width:120px;padding:5px 0px;}
 .menu_item .menu_list{
-	width:230px;height:350px;overflow:auto;
+	width:230px;height:400px;overflow:auto;
 }
 .menu_item .menu_list ul {
 	padding-right: 10px; padding-left: 0px; padding-bottom: 0px; overflow: hidden; padding-top: 0px; 
