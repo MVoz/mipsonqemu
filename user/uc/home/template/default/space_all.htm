@@ -6,45 +6,8 @@
 <div id="network">
 <!--{template login}-->
 <div  style="height:640px;">
-
-	<div class="nbox_c">
-		
-		<h2 class="ntitle">
-		   <div class="r_option" id="groupdo">
-				 <!--{if ($op=='browser')&&isset($_GET['groupid'])}-->
-						<span class="addcomment"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">增加</a></span>
-						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenu(event, this.id,1)">修改</a></span>
-						<span class="addtrackback"><a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenu(event, this.id)">删除</a></span>
-				  <!--{/if}-->
-			</div>
-			<div class="groupname" id="groupname">$groupname &raquo;</div>
-			<div style="float:left;width:360px;">
-			    <div style="float:left;padding-right:10px;"><a href="#">掘客&raquo;</a></div>
-				<div id="diggscroll">                   
-										  <ul>
-										  <!--{loop $digglist $key $value}-->		
-											<li>
-											<a class="diggscroll_l" href="$value[url]" class="digg_qi">$value[cutsubject]</a>
-											<a class="diggscroll_r" href="#">更多&raquo;</a>
-											</li>
-										  <!--{/loop}-->
-										  </ul>
-				</div>
-			</div>
-<script type="text/javascript">
-	function AutoScroll(obj){
-		jQuery(obj).find("ul:first").animate({
-			marginTop:"-32px"
-		},500,function(){
-			jQuery(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
-		});	
-	}
-	jQuery(document).ready(function(){
-		setInterval('AutoScroll("#diggscroll")',5000)
-	});
-</script>
-
-</h2>
+	<div class="nbox_c">		
+				<!--{template space_bookmark_title}-->
 		<div id="bmcontent">
 				<!--{template space_bookmark_list}-->
 		</div>
@@ -86,6 +49,5 @@
 	</div>
 
 </div>
-
 <!--{template footer}-->
 <!--{/if}-->
