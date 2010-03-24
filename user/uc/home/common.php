@@ -78,6 +78,7 @@ $_SGLOBAL['inajax'] = empty($_GET['inajax'])?0:intval($_GET['inajax']);
 $_SGLOBAL['mobile'] = empty($_GET['mobile'])?'':trim($_GET['mobile']);
 $_SGLOBAL['ajaxmenuid'] = empty($_GET['ajaxmenuid'])?'':$_GET['ajaxmenuid'];
 $_SGLOBAL['refer'] = empty($_SERVER['HTTP_REFERER'])?'':$_SERVER['HTTP_REFERER'];
+$_SGLOBAL['client'] = empty($_GET['source'])?0:((trim($_GET['source'])=='client')?1:0);
 if(empty($_GET['m_timestamp']) || $_SGLOBAL['mobile'] != md5($_GET['m_timestamp']."\t".$_SCONFIG['sitekey'])) $_SGLOBAL['mobile'] = '';
 
 //µÇÂ¼×¢²á·À¹àË®»ú
