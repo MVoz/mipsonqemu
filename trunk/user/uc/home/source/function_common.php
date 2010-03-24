@@ -2363,37 +2363,78 @@ function exitwithtip($tip)
 	exit();
 }
 
-function producebmxml($uid,$browserid)
+/*
+	create bookmark xml
+*/
+function createCategory($arr)
 {
-	global $_SGLOBAL,$_SC;
+		global $_SGLOBAL,$_SC;
+		$groupid=(int)$arr['groupid'];	
+	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
+	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
+	   	//printf("<link><![CDATA[%s]]></link>\n",$row[4]);
+	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
+	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+	   $wherearr=$wherearr." where main.uid=".$arr['uid'] ;
+	   $wherearr=$wherearr." AND main.browserid=".$arr['browserid'];
+	   $wherearr=$wherearr." AND main.parentid=".$groupid; 
+
+	   $orderarr=$orderarr." ORDER by main.lastvisit DESC ";
+
+	    $query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+	    while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+	   		    switch($value['type'])
+					   {
+					   	case $_SC['bookmark_type_dir']://category
+					   	  createCategory($value);
+					   	break;
+					   	case $_SC['bookmark_type_site']://item
+						   	printf("<item parentId=\"$value[parentid]\">\n");
+						   	printf("<name><![CDATA[$value[subject]]]></name>\n");
+						   	printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+						   	printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						 //  	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+						   	printf("</item>\n");
+					   	break;
+					   }
+	   	}
+	   	printf("</category >\n");
+}
+function producebmxml($uid)
+{
+	global $_SGLOBAL,$_SC,$browsertype;
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 	printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",date("Y-m-d H:i:s"));
-	printf("<browserType name=\"ie\" >");
-	$wherearr=$wherearr." where main.uid=".$uid ;
-	$wherearr=$wherearr." AND main.browserid=".$browserid;
-	$wherearr=$wherearr." AND main.parentid=0"; 
+	foreach($browsertype as $key=>$browservalue){
+		printf("<browserType name=\"$key\">\n");
+		$wherearr='';
+		$orderarr='';
+		$wherearr=$wherearr." where main.uid=".$uid ;
+		$wherearr=$wherearr." AND main.browserid=".$browservalue;
+		$wherearr=$wherearr." AND main.parentid=0"; 
 
-	$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
+		$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
 
-	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		switch($value['type'])
-		{
-			case $_SC['bookmark_type_dir']:
-				//category
-			//	createCategory($value);
+		$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			switch($value['type'])
+			{
+				case $_SC['bookmark_type_dir']:
+					//category
+					createCategory($value);
+					break;
+				case $_SC['bookmark_type_site']:
+						printf("<item parentId=\"%d\">\n",$value['groupid']);
+						printf("<name><![CDATA[%s]]></name>\n",$value['subject']);
+						printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+						printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+						printf("</item>\n");
 				break;
-			case $_SC['bookmark_type_site']:
-					printf("<item parentId=\"%d\">\n",$value[groupid]);
-					printf("<name><![CDATA[%s]]></name>\n",$value[subject]);
-					printf("<link><![CDATA[%s]]></link>\n",$value[url]);
-					printf("<adddate><![CDATA[%s]]></adddate>\n",$value[dateline]);
-					//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
-					printf("</item>\n");
-			break;
+			}
 		}
+		printf("</browserType>\n");
 	}
-	printf("</browserType>\n");
     printf("</bookmark>\n");
 }
 ?>
