@@ -69,9 +69,11 @@ function bookmark_post($POST, $olds=array()) {
 			*/
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
 			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//Óï´ÊÆÁ±Î
+			
+			$POST['address'] = handleUrlString($POST['address']);
 
 			$POST['address'] = shtmlspecialchars(trim($POST['address']));
-			$POST['address'] = getstr($POST['address'], 500, 1, 1, 1);	//Óï´ÊÆÁ±Î
+			$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//Óï´ÊÆÁ±Î
 			
 			$bookmarkarr['uid'] = $_SGLOBAL['supe_uid'];
 			$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
@@ -327,5 +329,19 @@ function clearbookmark($browserid)
 	 }
 	 return 1;
 }
-
+/*
+	process the url string:
+	example:http://www.sohu.com === http://www.sohu.com/
+*/
+function handleUrlString($url)
+{
+	$url=trim($url);
+	$len=strlen($url);
+	while($url[$len-1]=='/')
+	{
+		$url=substr($url, 0, $len-1); 
+		$len=strlen($url);
+	}
+	return $url;
+}
 ?>
