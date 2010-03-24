@@ -6,7 +6,7 @@
 <meta http-equiv="x-ua-compatible" content="ie=7" />
 <title><!--{if $_TPL['titles']}--><!--{loop $_TPL['titles'] $value}--><!--{if $value}-->$value - <!--{/if}--><!--{/loop}--><!--{/if}--><!--{if $_SN[$space[uid]]}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
 
-<!--{if in_array($_GET['do'],$jquerydojs)}-->
+<!--{if in_array($_GET['do'],$jquerydojs)||in_array($_GET['ac'],$jquerydojs)}-->
 <script language="javascript" type="text/javascript" src="source/jquery-1.2.1.pack.js"></script>
 <!--{/if}-->
 <script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
@@ -19,7 +19,7 @@
 
 <script language="javascript" src="source/script_validate.js"></script>
 
-<!--{if in_array($_GET['do'],$jquerydojs)}-->
+<!--{if in_array($_GET['do'],$jquerydojs)||in_array($_GET['ac'],$jquerydojs)}-->
 <script language="javascript" type="text/javascript" src="source/menu.js"></script>
 
 <script type="text/javascript">
