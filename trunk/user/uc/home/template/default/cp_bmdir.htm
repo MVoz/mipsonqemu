@@ -71,13 +71,15 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="1" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" />
+<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 </td>
 </tr>
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
 <input type="text" id="tag" name="tag" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+<p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 </tbody>
@@ -101,11 +103,11 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_new" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_new')">更换一张</a></p>
 		<!--{/if}-->
 		</td>

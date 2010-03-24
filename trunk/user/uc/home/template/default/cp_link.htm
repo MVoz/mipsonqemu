@@ -34,7 +34,12 @@
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<input type="text" id="addressex" name="addressex" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" disabled="true"/>
+		<!--{if empty($linkitem[url])}-->
+		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" />
+		<!--{else}-->
+		<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+		<!--{/if}-->
+		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		</td>
 	</tr>
 	<tr>

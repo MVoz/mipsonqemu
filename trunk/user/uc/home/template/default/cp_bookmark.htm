@@ -1,5 +1,4 @@
 <!--{template bm_header}-->
-
 <!--{if $_GET[op] == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
 <h1>删除收藏</h1>
@@ -53,12 +52,14 @@
 <th><label for="address">地址：</label></th>
 <td>
 <input type="text" id="address" name="address" value="$bookmarkitem[url]" style="width: 396px;" class="t_input" tabindex="1"  />
+<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 </td>
 </tr>
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
 <input type="text" id="tag" name="tag" value="$bookmarkitem[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 
@@ -81,11 +82,11 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$bookmarkitem[bmid]" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"><img src="image/check_right.gif" width="13" height="13"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bookmarkitem[bmid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
@@ -98,7 +99,11 @@
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
-<input type="submit" name="btnsubmit" value="确定" class="submit"  />
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<!--{else}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<!--{/if}-->
 </td>
 </tr>
 </table>
