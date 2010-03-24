@@ -11,7 +11,7 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/function_cp.php');
 
 
-//Ã»ÓĞµÇÂ¼±íµ¥
+//æ²¡æœ‰ç™»å½•è¡¨å•
 $_SGLOBAL['nologinform'] = 1;
 
 	$password =$_GET['password'];
@@ -25,7 +25,7 @@ $_SGLOBAL['nologinform'] = 1;
 		exitwithtip('users_were_not_empty_please_re_login');
 	}
 
-	//Í¬²½»ñÈ¡ÓÃ»§Ô´
+	//åŒæ­¥è·å–ç”¨æˆ·æº
 	if(!$passport = getpassport($username, $password)) {
 		exitwithtip('login_failure_please_re_login');
 	}
@@ -33,11 +33,11 @@ $_SGLOBAL['nologinform'] = 1;
 	$setarr = array(
 		'uid' => $passport['uid'],
 		'username' => addslashes($passport['username']),
-		'password' => md5("$passport[uid]|$_SGLOBAL[timestamp]")//±¾µØÃÜÂëËæ»úÉú³É
+		'password' => md5("$passport[uid]|$_SGLOBAL[timestamp]")//æœ¬åœ°å¯†ç éšæœºç”Ÿæˆ
 	);
 	
 	//include_once(S_ROOT.'./source/function_space.php');
-	//¿ªÍ¨¿Õ¼ä
+	//å¼€é€šç©ºé—´
 	//$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('space')." WHERE uid='$setarr[uid]'");
 	//if(!$space = $_SGLOBAL['db']->fetch_array($query)) {
 	//	$space = space_open($setarr['uid'], $setarr['username'], 0, $passport['email']);
@@ -45,22 +45,22 @@ $_SGLOBAL['nologinform'] = 1;
 	
 	//$_SGLOBAL['member'] = $space;
 	
-	//ÊµÃû
+	//å®å
 //	realname_set($space['uid'], $space['username'], $space['name'], $space['namestatus']);
 	
-	//¼ìË÷µ±Ç°ÓÃ»§
+	//æ£€ç´¢å½“å‰ç”¨æˆ·
 //	$query = $_SGLOBAL['db']->query("SELECT password FROM ".tname('member')." WHERE uid='$setarr[uid]'");
 	//if($value = $_SGLOBAL['db']->fetch_array($query)) {
 	//	$setarr['password'] = addslashes($value['password']);
 	//} else {
-		//¸üĞÂ±¾µØÓÃ»§¿â
+		//æ›´æ–°æœ¬åœ°ç”¨æˆ·åº“
 	//	inserttable('member', $setarr, 0, true);
 	//}
 
-	//ÇåÀíÔÚÏßsession
+	//æ¸…ç†åœ¨çº¿session
 //	insertsession($setarr);
 	
-	//ÉèÖÃcookie
+	//è®¾ç½®cookie
 	ssetcookie('auth', authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), $cookietime);
 	ssetcookie('loginuser', $passport['username'], 31536000);
 	//ssetcookie('_refer', '');
