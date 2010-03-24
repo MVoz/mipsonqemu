@@ -93,35 +93,7 @@ if(empty($bmdiritem)) {
 }
 
 //添加编辑操作
-if(submitcheck('blogsubmit')) {
-
-	if(empty($blog['blogid'])) {
-		$blog = array();
-	} else {
-		if(!checkperm('allowblog')) {
-			ckspacelog();
-			showmessage('no_authority_to_add_log');
-		}
-	}
-	
-	//验证码
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
-		showmessage('incorrect_code');
-	}
-	
-	include_once(S_ROOT.'./source/function_blog.php');
-	if($newblog = blog_post($_POST, $blog)) {
-		if(empty($blog) && $newblog['topicid']) {
-			$url = 'space.php?do=topic&topicid='.$newblog['topicid'].'&view=blog';
-		} else {
-			$url = 'space.php?uid='.$newblog['uid'].'&do=blog&id='.$newblog['blogid'];
-		}
-		showmessage('do_success', $url, 0);
-	} else {
-		showmessage('that_should_at_least_write_things');
-	}
-}
-else if(submitcheck('editsubmit')) {
+if(submitcheck('editsubmit')) {
 	//验证码
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
@@ -164,14 +136,7 @@ if($_GET['op'] == 'delete') {
 		}
 	}
 	
-} elseif($_GET['op'] == 'goto') {
-	
-	$id = intval($_GET['id']);
-	$uid = $id?getcount('blog', array('blogid'=>$id), 'uid'):0;
-
-	showmessage('do_success', "space.php?uid=$uid&do=blog&id=$id", 0);
-	
-} elseif($_GET['op'] == 'edithot') {
+}  elseif($_GET['op'] == 'edithot') {
 	//权限
 	if(!checkperm('manageblog')) {
 		showmessage('no_privilege');
