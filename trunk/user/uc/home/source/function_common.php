@@ -2356,4 +2356,44 @@ function check_valid($op,$id,$item,$owner,$pristr,$priorityarray)
 	return 1;
 }
 $jquerydojs=array('all','bookmark','digg','link');
+
+function exitwithtip($tip)
+{
+	echo $tip;
+	exit();
+}
+
+function producebmxml($uid,$browserid)
+{
+	global $_SGLOBAL,$_SC;
+	printf("<?xml version="1.0" encoding="utf-8"?>\n");
+	echo '<bookmark version="1.0" updateTime="'.date("Y-m-d H:i:s").'">';
+	echo '<browserType name="ie" >';
+	$wherearr=$wherearr." where main.uid=".$uid ;
+	$wherearr=$wherearr." AND main.browserid=".$browserid;
+	$wherearr=$wherearr." AND main.parentid=0"; 
+
+	$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
+
+	$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+		switch($value['type'])
+		{
+			case $_SC['bookmark_type_dir']:
+				//category
+			//	createCategory($value);
+				break;
+			case $_SC['bookmark_type_site']:
+					echo '<item parentId='.$value[groupid].'>';
+					echo '<name><![CDATA['.$value[subject].']]></name>';
+					echo '<link><![CDATA['.$value[url].']]></link>';
+					echo '<adddate><![CDATA['.$value[dateline].']]></adddate>';
+					//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+					echo  '</item>';
+			break;
+		}
+	}
+	echo '</browserType>';
+    echo '</bookmark>';
+}
 ?>
