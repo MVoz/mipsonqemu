@@ -26,7 +26,7 @@ function validate(obj) {
         var   regUrl   =   /([http|https]\:\/\/)([\w.]+)(\/[\w-   \.\/\?%&=]*)?/gi;
 		var   result   =   address.value.match(regUrl);
 		if(result == null) { 
-				alert('请输入正确的网址');
+				alert("请输入正确的网址");
 				address.focus();
 				return false;
         }
