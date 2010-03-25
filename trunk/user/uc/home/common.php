@@ -111,12 +111,15 @@ if($_SERVER['REQUEST_URI']) {
 }
 //$log->debug('xxx',shtmlspecialchars('hello<>w?o"r%l&d'));
 //判断用户登录状态
-checkauth();
+if(empty($_SGLOBAL['client']))
+	checkauth();
+else
+	checkclientauth($_GET);
 $_SGLOBAL['uhash'] = md5($_SGLOBAL['supe_uid']."\t".substr($_SGLOBAL['timestamp'], 0, 6));
-debugOutput('timestamp',$_SGLOBAL['timestamp']);
-debugOutput('uhash',$_SGLOBAL['uhash']);
+//debugOutput('timestamp',$_SGLOBAL['timestamp']);
+//debugOutput('uhash',$_SGLOBAL['uhash']);
 //用户菜单
-getuserapp();
+//getuserapp();
 
 //处理UC应用
 $_SCONFIG['uc_status'] = 0;
