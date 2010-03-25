@@ -277,7 +277,9 @@ function showmessage($msgkey, $url_forward='', $second=1, $values=array()) {
 
 //判断提交是否正确
 function submitcheck($var) {
+	global $_SGLOBAL;
 	if(!empty($_POST[$var]) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+		if(!empty($_SGLOBAL['client'])) return true;
 		if((empty($_SERVER['HTTP_REFERER']) || preg_replace("/https?:\/\/([^\:\/]+).*/i", "\\1", $_SERVER['HTTP_REFERER']) == preg_replace("/([^\:]+).*/", "\\1", $_SERVER['HTTP_HOST'])) && $_POST['formhash'] == formhash()) {
 			return true;
 		} else {
@@ -2436,5 +2438,28 @@ function producebmxml($uid)
 		printf("</browserType>\n");
 	}
     printf("</bookmark>\n");
+}
+
+function checkclientauth($arr)
+{
+	global $_SGLOBAL;
+	$password =$arr['password'];
+	$username = trim($arr['username']);
+	//$cookietime = intval($_POST['cookietime']);
+	
+	//$cookiecheck = $cookietime?' checked':'';
+	$membername = $username;
+	
+	if(empty($arr['username'])) {
+		exitwithtip('users_were_not_empty_please_re_login');
+	}
+
+	//同步获取用户源
+	if(!$passport = getpassport($username, $password)) {
+		exitwithtip('login_failure_please_re_login');
+	}
+	$_SGLOBAL['supe_uid']=$_SGLOBAL['uid'] = intval($passport['uid']);
+	$_SGLOBAL['supe_username']=$_SGLOBAL['username'] = addslashes($passport['username']);
+	return $passport;
 }
 ?>

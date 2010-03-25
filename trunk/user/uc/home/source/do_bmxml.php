@@ -14,27 +14,27 @@ include_once(S_ROOT.'./source/function_cp.php');
 //没有登录表单
 $_SGLOBAL['nologinform'] = 1;
 
-	$password =$_GET['password'];
-	$username = trim($_GET['username']);
+	//$password =$_GET['password'];
+	//$username = trim($_GET['username']);
 	//$cookietime = intval($_POST['cookietime']);
 	
 	//$cookiecheck = $cookietime?' checked':'';
-	$membername = $username;
+	//$membername = $username;
 	
-	if(empty($_GET['username'])) {
-		exitwithtip('users_were_not_empty_please_re_login');
-	}
+	//if(empty($_GET['username'])) {
+	//	exitwithtip('users_were_not_empty_please_re_login');
+	//}
 
 	//同步获取用户源
-	if(!$passport = getpassport($username, $password)) {
-		exitwithtip('login_failure_please_re_login');
-	}
+	//if(!$passport = getpassport($username, $password)) {
+	//	exitwithtip('login_failure_please_re_login');
+	//}
 	
-	$setarr = array(
-		'uid' => $passport['uid'],
-		'username' => addslashes($passport['username']),
-		'password' => md5("$passport[uid]|$_SGLOBAL[timestamp]")//本地密码随机生成
-	);
+	//$setarr = array(
+	//	'uid' => $passport['uid'],
+	//	'username' => addslashes($passport['username']),
+	//	'password' => md5("$passport[uid]|$_SGLOBAL[timestamp]")//本地密码随机生成
+	//);
 	
 	//include_once(S_ROOT.'./source/function_space.php');
 	//开通空间
@@ -61,14 +61,15 @@ $_SGLOBAL['nologinform'] = 1;
 //	insertsession($setarr);
 	
 	//设置cookie
-	ssetcookie('auth', authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), $cookietime);
-	ssetcookie('loginuser', $passport['username'], 31536000);
+	//ssetcookie('auth', authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), $cookietime);
+	//ssetcookie('loginuser', $passport['username'], 31536000);
 	//ssetcookie('_refer', '');
 	
 	
 //	$_SGLOBAL['supe_uid'] = $space['uid'];
 	
 	//realname_get();
+	$passport=checkclientauth($_GET);
 	producebmxml($passport['uid'],1);
 	exit();
 	
