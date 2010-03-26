@@ -1,0 +1,73 @@
+<!--{template bm_header}-->
+<form method="post" action="$theurl&ref" class="c_form">
+<table cellspacing="0" cellpadding="0" class="formtable">
+<caption>
+			<h2>基本设置</h2>
+			<p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像。</p>
+</caption>
+<tr>
+	<th style="width:10em;">您的登录用户名:</th>
+	<td>
+		<!--{eval echo stripslashes($space['username']);}--> (<a href="cp.php?ac=password">修改登录密码</a>)
+	</td>
+
+</tr>
+<tr>
+	<th style="width:10em;">常用邮箱:</th>
+	<td>
+	<input type="text" id="email" class="t_input" name="email" value="" />
+	<br>请准确填写，取回密码、获取通知的时候都会发送到该邮箱。
+	</td>
+</tr>
+<tr>
+	<th style="width:10em;">&nbsp;</th>
+	<td><input type="submit" name="configsubmit" value="保存" class="submit" /></td>
+</tr>
+</table>
+
+
+
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+<script type="text/javascript">
+	function updateavatar() {
+		window.location.reload();
+	}
+</script>
+<form method="post" action="cp.php?ac=avatar&ref" class="c_form">
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>当前我的头像</h2>
+			<p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像。</p>
+		</caption>
+		<tr>
+			<td>
+				<!--{avatar($space[uid],big)}-->
+			</td>
+		</tr>
+	</table>
+
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>设置我的新头像</h2>
+			<p>请选择一个新照片进行上传编辑。</p>
+		</caption>
+		<tr>
+			<td>$uc_avatarflash</td>
+		</tr>
+		<tr>
+			<td>提示：头像保存后，您可能需要刷新一下本页面(按F5键)，才能查看最新的头像效果。</td>
+		</tr>
+	</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+<script>
+function add_tbody() {
+	for(i=0; i<$("oldtbody").rows.length; i++) {
+		newnode = $("oldtbody").rows[i].cloneNode(true);
+		$("newtbody").appendChild(newnode);
+	}
+}
+</script>
+
+<!--{template bm_footer}-->
