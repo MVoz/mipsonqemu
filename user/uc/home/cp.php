@@ -10,12 +10,12 @@ include_once(S_ROOT.'./source/function_cp.php');
 include_once(S_ROOT.'./source/function_magic.php');
 
 //允许的方法
-$acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'doing', 'upload', 'comment', 'blog', 'album', 'relatekw', 'common', 'class',
+$acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'doing', 'upload', 'comment', 'blog', 'album', 'relatekw', 'common', 'class','config',
 	'swfupload', 'thread', 'mtag', 'poke', 'friend',
 	'avatar', 'profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'share', 'advance', 'invite','sendmail',
 	'userapp', 'task', 'credit', 'password', 'domain', 'event', 'poll', 'topic',
 	'click','magic', 'top', 'videophoto');
-$ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'profile':$_GET['ac'];
+$ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'config':$_GET['ac'];
 $op = empty($_GET['op'])?'':$_GET['op'];
 
 //权限判断
