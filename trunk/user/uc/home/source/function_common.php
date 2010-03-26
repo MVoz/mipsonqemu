@@ -240,7 +240,12 @@ function showmessage($msgkey, $url_forward='', $second=1, $values=array()) {
 
 	//去掉广告
 	$_SGLOBAL['ad'] = array();
-	
+	//优先处理client端的信息
+	if(!empty($_SGLOBAL['client'])) //来自client端
+	{
+		exitwithtip($msgkey);
+		//下面的不会运行了
+	}
 	//语言
 	include_once(S_ROOT.'./language/lang_showmessage.php');
 	if(isset($_SGLOBAL['msglang'][$msgkey])) {
