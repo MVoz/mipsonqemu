@@ -2462,4 +2462,125 @@ function checkclientauth($arr)
 	$_SGLOBAL['supe_username']=$_SGLOBAL['username'] = addslashes($passport['username']);
 	return $passport;
 }
+
+/*encrypt*/
+/*
+	0    1    2	   3    4   5   6   7   8    9    
+
+0   a	 b    c    d    e   f   g   h   i    j    
+
+1	l    m    n    o    p   q   r   s   t    u   
+
+2	w    x    y    z    A   B   C   D   E    F   
+
+3	H    I    J    K    L   M   N   O   P    Q   
+
+4   S    T    U    V    W   X   Y   Z   0    1   
+
+5	3	 4	  5	   6    7   8   9   ~   `    !   
+
+6   #    $    %    ^    &   *   (   )   -    -    
+
+7   =    |    \    {    }   [   ]   :   ;    "    
+
+8   <    >    ,    .    ?   /   k   v   G    R   
+
+9	2	 @	 +	   ' 	0   0   0   0   0    0 
+*/
+$encrypt_h=9;
+$encrypt_v=9;
+$encrypt_key=array(
+	array('1','a','w','s','4','r','t','5','f','e'),
+	array('2','5','t','7','g','8','s','h','b','k'),
+	array('4','a','y','w','e','v','6','5','9','m'),
+	array('2','r','q','s','4','w','3','5','p','n'),
+	array('t','y','w','6','4','l','e','3','f','c')
+);
+$encrypt_key_index=5;
+$encrypt_arr=array(
+	'0'=>array('a','b','c','d','e','f','g','h','i','j'),
+	'1'=>array('l','m','n','o','p','q','r','s','t','u'),
+	'2'=>array('w','x','y','z','A','B','C','D','E','F'), 
+	'3'=>array('H','I','J','K','L','M','N','O','P','Q'),
+	'4'=>array('S','T','U','V','W','X','Y','Z','0','1'),
+	'5'=>array('3','4','5','6','7','8','9','~','`','!'),
+	'6'=>array('#','$','%','^','&','*','(',')','-','-'),
+	'7'=>array('=','|','\\','{','}','[',']',':',';','\"'),
+	'8'=>array('<','>',',','.','?','/','k','v','G','R'),
+	'9'=>array('2','@','+','\'','0','0','0','0','0','0')
+);
+
+function encryptstring($para,$secindex)
+{
+	global $encrypt_h,$encrypt_v,$encrypt_key,$encrypt_arr,$encrypt_key_index;
+	$outstr='';
+	$para=trim($para);
+	$len=strlen($para);
+	$secindex=$secindex%$encrypt_key_index;
+	$i=0;
+	$found=0;
+	$found_h=-1;
+	$found_v=-1;
+	while($i<$len){
+		$found=0;
+		foreach($encrypt_arr as $key=>$value)
+		{
+			foreach($value as $k=>$val )
+			{
+				if($val==$para[$i])
+				{
+					$found=1;
+					$found_v=$k;
+					break;
+				}
+			}
+			if($found)
+			{
+					$found_h=$key;
+					break;
+			}
+		}
+		if($found)
+			$outstr=$outstr.$encrypt_key[$secindex][$found_h].$encrypt_key[$secindex][$found_v];
+		$i++;
+	}
+	return $outstr;
+}
+function decryptstring($para,$secindex)
+{
+	global $encrypt_h,$encrypt_v,$encrypt_key,$encrypt_arr,$encrypt_key_index;
+	$outstr='';
+	$para=trim($para);
+	$len=strlen($para);
+	if($len%2)
+		return '';
+	$secindex=$secindex%$encrypt_key_index;
+	$i=0;
+	$found=0;
+	$found_h=-1;
+	$found_v=-1;
+	while($i<$len){
+			
+		foreach($encrypt_key[$secindex] as $key=>$value)
+		{
+			if($para[$i]==$value)
+			{
+				$found_h=$key;
+				break;
+			}
+
+		}
+		foreach($encrypt_key[$secindex] as $key=>$value)
+		{
+			if($para[$i+1]==$value)
+			{
+				$found_v=$key;
+				break;
+			}
+		}
+		$i=$i+2;
+		$outstr=$outstr.$encrypt_arr[$found_h][$found_v];		
+	}
+	return $outstr;
+}
 ?>
