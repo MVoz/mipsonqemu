@@ -72,9 +72,8 @@ $_SGLOBAL['nologinform'] = 1;
 	$passport=checkclientauth($_GET);
 	producebmxml($passport['uid'],1);
 
-	echo encryptstring('ramen.sh@gmail.com',3);
-	echo '     ';
-	echo decryptstring(encryptstring('ramen.sh@g"\'mail.com',3),3);
+	//echo decryptstring(encryptstring('ramen.sh@g"\'mail.com',3),3);
+
 	exit();
 	
 
