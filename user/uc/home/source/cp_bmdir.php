@@ -113,12 +113,8 @@ if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
-		if(empty($_SGLOBAL['client']))
-		{
 			$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
 			showmessage('do_success', $url, 0);
-		}else
-			exitwithtip('success');
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}
