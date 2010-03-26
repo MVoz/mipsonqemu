@@ -85,8 +85,21 @@ $_SGLOBAL[space_css]
 </div>
     <div id="status">
    <!--{if $_SGLOBAL[supe_uid]}-->
-			<span class="pl">你好，<a href="space.php?do=bookmark" target=_blank><span>$_SGLOBAL['supe_username']</span></a>，欢迎回来！</span>
 			<a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a>
+			<a href="cp.php">设置</a>
+			<span>,欢迎回来!</span>
+			<a href="space.php?do=bookmark" target=_blank>$_SGLOBAL['supe_username']</a>
+			<div class="s_avatar">
+				<a  href="space.php?uid=1">
+					<img onerror="this.onerror=null;this.src='http://192.168.115.2/uc/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/uc/ucenter/images/noavatar_small.gif">
+				</a>
+			</div>
+			<span>您好,</span>
+			
+			
+			
+			
+
    <!--{else}-->
             <span class="pl">你好，请<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>或<a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
    <!--{/if}-->
