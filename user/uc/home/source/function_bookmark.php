@@ -135,7 +135,7 @@ function getMaxGroupid($uid){
 	global $_SGLOBAL,$_SC;
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$uid." AND type=".$_SC['bookmark_type_dir']." ORDER BY groupid DESC limit 1 ");
 	$values=$_SGLOBAL['db']->fetch_array($query);
-	return (empty($values)?8000:$values['groupid']);
+	return (empty($values)?(8000-1):$values['groupid']);
 }
 //¥¶¿Ìtag
 function bookmark_tag_batch($bmid, $tags) {
