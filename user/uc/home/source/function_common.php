@@ -2411,7 +2411,9 @@ function producebmxml($uid)
 {
 	global $_SGLOBAL,$_SC,$browsertype;
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-	printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",date("Y-m-d H:i:s"));
+	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
+	//printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",date("Y-m-d H:i:s"));
+	printf("<bookmark version=\"1.0\" updateTime=\"%d\">\n",$lastmodified);
 	foreach($browsertype as $key=>$browservalue){
 		printf("<browserType name=\"$key\">\n");
 		$wherearr='';
