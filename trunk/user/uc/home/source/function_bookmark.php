@@ -57,7 +57,8 @@ function bookmark_post($POST, $olds=array()) {
 			$bookmarkarr['groupid']=$olds['groupid'];
 			$bookmarkarr['description'] = $message;
 			//只修改bookmark目录
-			updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid,'type'=>$_SC['bookmark_type_dir']));		
+			updatetable('bookmark', $bookmarkarr, array('bmid'=>$bmid,'type'=>$_SC['bookmark_type_dir']));	
+			setbookmarkmodified();
 			$fuids = array();
 		}else{
 			//增加bookmark或者bookmark目录
@@ -98,13 +99,19 @@ function bookmark_post($POST, $olds=array()) {
 							$bookmarkarr['linkid'] = $linkid;				
 							$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 							$bmid = inserttable('bookmark', $bookmarkarr, 1);
+							setbookmarkmodified();
+							setbookmarknum('linknum',1);
 						}else{
 							$linkid=bookmark_link_process($olds['linkid'],$linkarr);
 						//插入bookmark
 							$bookmarkarr['linkid'] = $linkid;				
 						//修改bookmark
 							$bookmarkarr['parentid'] = $olds['parentid'];
-							updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
+							if($linkid!=$olds['linkid'])
+							{
+								updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
+								setbookmarkmodified();
+							}
 							$bmid =$olds['bmid'];
 						}	
 						//tag
@@ -121,6 +128,8 @@ function bookmark_post($POST, $olds=array()) {
 						$bookmarkarr['groupid'] = ($maxGroupid+1);		
 						$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 						$bmid = inserttable('bookmark', $bookmarkarr, 1);
+						setbookmarkmodified();
+						setbookmarknum('bmdirnum',1);
 				break;
 			}
 		}
@@ -282,6 +291,11 @@ function deletebookmark($bmid){
 	$_SGLOBAL['db']->query("DELETE  from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
 	//处理bookmark
 	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
+
+	 //更新统计
+	 setbookmarkmodified();
+	 setbookmarknum('linknum',0);
+
 	return 1;
 }
 function deletebookmarkdir($bmid)
@@ -309,6 +323,11 @@ function deletebookmarkdir($bmid)
 	 }
 	 //删除自己
 	 $_SGLOBAL['db']->query("DELETE FROM ".tname('bookmark')." WHERE bmid= ".$bmid);
+	
+	 //更新统计
+	 setbookmarkmodified();
+	 setbookmarknum('bmdirnum',0);
+
 	 return 1;
 }
 function clearbookmark($browserid)
@@ -343,5 +362,29 @@ function handleUrlString($url)
 		$len=strlen($url);
 	}
 	return $url;
+}
+/*
+	设置bookmark修改标志，如果用户bookmark有关键项的改动，重新设置一下space的lastmodified
+*/
+function setbookmarkmodified()
+{
+	global $_SGLOBAL;
+	$spacearr = array(
+		'lastmodified' => $_SGLOBAL['timestamp'],		
+	);
+	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));		
+}
+function setbookmarknum($item,$action)
+{
+	global $_SGLOBAL;
+	switch($action)
+	{
+		case 0://delete
+			$_SGLOBAL['db']->query("UPDATE ".tname('space')." SET ".$item."=".$item."-1 WHERE uid=".$_SGLOBAL['supe_uid']);
+		break;
+		case 1://add
+			$_SGLOBAL['db']->query("UPDATE ".tname('space')." SET ".$item."=".$item."+1 WHERE uid=".$_SGLOBAL['supe_uid']);
+		break;
+	}
 }
 ?>
