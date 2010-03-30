@@ -1,0 +1,71 @@
+<script language="javascript" type="text/javascript" >
+jQuery(document).ready(function(){
+			jQuery(".digg_sortlist span:first").addClass("nowx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".digg_sortlist ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".digg_sortlist span").click(function(){  // 鼠标移到 span 上时触发函数
+				jQuery(".digg_sortlist span").removeClass("nowx");  //为第一个 span 移除 .current 样式
+				jQuery(this).addClass("nowx");  //为触发的 span 添加样式
+				jQuery(".digg_sortlist ul").hide();  // 隐藏 ul
+				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
+		});
+
+	
+});
+</script>
+<style type="text/css">
+.digg_sortlist{background-color:#fff;margin-bottom:5px;height:75px;width:240px;}
+.digg_sortlist p{font-weight:bold;font-size:110%;margin-top:0px;padding: 0px;color:#2C629E}
+.digg_sortlist p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 5px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+.digg_sortlist p span.nowx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.digg_sortlist >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
+
+.digg_sortlist_li,.digg_sortlist_li_1{display:block;clear:both;}
+.digg_sortlist li {height:16px;line-height:16px;padding:2px;}
+.digg_sortlist_li_1{background-color:#F3F3F3;}
+.digg_sortlist_li a,.digg_sortlist_li_1 a{overflow:hidden;white-space:nowrap;width:100%;font-size:110%;}
+
+</style>
+<div class="digg_sortlist">
+    <p>
+        <span id="digg_sortlist_qu" >趣 </span>
+        <span id="digg_sortlist_xin" >新 </span>
+        <span id="allhot_1" >囧 </span>
+		<span id="allhot_1" >乐 </span>
+		<span id="allhot_1" >潮 </span>
+		<span id="allhot_1" >新 </span>
+		<span id="allhot_1" >怪 </span>
+    </p>
+    <ul class="digg_sortlist_qu" style="display: block;">
+        <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		<li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		<li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		
+    </ul>
+    <ul class="digg_sortlist_xin" style="display: none;">
+        <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
+        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>		
+    </ul>
+    <ul class="allhot_1" style="display: none;">
+      	 <li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+        <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+        <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 
+		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+        <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 
+		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+        <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 
+		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
+        <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 		
+    </ul>
+</div>

@@ -139,7 +139,7 @@ body { background: #FFF; }
 
 #main { margin: 0 0 20px; width: 100%;  overflow: hidden; }
 #bm_header {
-	BACKGROUND: url(image/headnavbot.gif) no-repeat left 43px; MARGIN: 7px auto;width:970px;
+	BACKGROUND: url(image/headnavbot.gif) no-repeat left 43px; MARGIN: 0px auto;width:970px;
 }
 #bm_header img.logo {
 	MARGIN-TOP: 3px; FLOAT: left ;
@@ -159,12 +159,7 @@ body { background: #FFF; }
 #nav A.now SPAN {
 	PADDING-RIGHT: 1px; DISPLAY: block; PADDING-LEFT: 11px; BACKGROUND: url(image/headnavback.gif) no-repeat; PADDING-BOTTOM: 7px; PADDING-TOP: 8px
 }
-#nav .nine_nav:hover {
-	MARGIN-LEFT: 25px; COLOR: #f92d09
-}
-#nav .nine_nav {
-	MARGIN-LEFT: 25px; COLOR: #f92d09
-}
+
 #searbar {
 	MARGIN-TOP: 5px; MARGIN-BOTTOM: -5px
 }
@@ -178,15 +173,13 @@ body { background: #FFF; }
 	MARGIN: 2px 1px 3px 5px;  LETTER-SPACING: 0px; TEXT-DECORATION: none;display:block;float:right;height:22px;
 }
 #status a{color:#369;}
-#status span {}
 #status .s_avatar{
-	 background: url(image/thumb20bg.gif) no-repeat; display: block;float:right;
-}
+	 float: right; margin: 0px 0px 0 0; padding: 0px 0 0 0px; width: 24px; height: 24px; background: url(image/thumb20bg.gif) no-repeat; display: block; }
 #status A:hover {
 	COLOR: #FF8901;
 }
 #status a img{
-	width: 20px; height: 20px; background: url(image/thumb20bg.gif) no-repeat;
+	width: 20px; height: 20px; 
 }
 #dsearch {
 	BORDER-RIGHT: silver 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: silver 1px solid; DISPLAY: none; PADDING-LEFT: 0px; Z-INDEX: 100; BACKGROUND: #fff; LEFT: -51px; PADDING-BOTTOM: 5px; BORDER-LEFT: silver 1px solid; WIDTH: 69px; PADDING-TOP: 5px; BORDER-BOTTOM: silver 1px solid; POSITION: absolute; TOP: 19px; TEXT-ALIGN: center

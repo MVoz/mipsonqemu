@@ -37,11 +37,7 @@
 	<div id="npoll" class="nbox_s side_rbox side_rbox_w">
 		<div class="side_rbox_c">
 			<h2 class="ntitle"><span class="r_option"><a href="space.php?do=poll">更多投票</a></span>投票 &raquo;</h2>
-			<ul>
-			<!--{loop $polllist $key $value}-->
-				<li class="poll_$key"><a href="space.php?uid=$value[uid]&do=poll&pid=$value[pid]" target="_blank">$value[subject]</a><!--{if $key == 0}--><p><a href="">已有 $value[voternum] 位会员投票</a></p><!--{/if}--></li>
-			<!--{/loop}-->
-			</ul>
+			<!--{template space_digg_sortlist}-->
 		</div>
 	</div>
 </div>
