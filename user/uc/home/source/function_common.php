@@ -2379,7 +2379,7 @@ function createCategory($arr)
 		$groupid=(int)$arr['groupid'];	
 	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
 	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
-	   	//printf("<link><![CDATA[%s]]></link>\n",$row[4]);
+	   	printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
 		printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
 	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
 	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
@@ -2450,28 +2450,7 @@ function producebmxml($uid)
     printf("</bookmark>\n");
 }
 
-function checkclientauth($arr)
-{
-	global $_SGLOBAL;
-	$password =$arr['password'];
-	$username = trim($arr['username']);
-	//$cookietime = intval($_POST['cookietime']);
-	
-	//$cookiecheck = $cookietime?' checked':'';
-	$membername = $username;
-	
-	if(empty($arr['username'])) {
-		exitwithtip('users_were_not_empty_please_re_login');
-	}
 
-	//同步获取用户源
-	if(!$passport = getpassport($username, $password)) {
-		exitwithtip('login_failure_please_re_login');
-	}
-	$_SGLOBAL['supe_uid']=$_SGLOBAL['uid'] = intval($passport['uid']);
-	$_SGLOBAL['supe_username']=$_SGLOBAL['username'] = addslashes($passport['username']);
-	return $passport;
-}
 
 /*encrypt*/
 /*
@@ -2517,7 +2496,7 @@ $encrypt_arr=array(
 	'6'=>array('#','$','%','^','&','*','(',')','-','-'),
 	'7'=>array('=','|','\\','{','}','[',']',':',';','\"'),
 	'8'=>array('<','>',',','.','?','/','k','v','G','R'),
-	'9'=>array('2','@','+','\'','0','0','0','0','0','0')
+	'9'=>array('2','@','+','\'',' ','0','0','0','0','0')
 );
 
 function encryptstring($para,$secindex)
@@ -2592,5 +2571,40 @@ function decryptstring($para,$secindex)
 		$outstr=$outstr.$encrypt_arr[$found_h][$found_v];		
 	}
 	return $outstr;
+}
+
+function checkclientauth($arr)
+{
+	global $_SGLOBAL,$encrypt_key_index;
+	/*
+	$password =$arr['password'];
+	$username = trim($arr['username']);
+	*/
+	$key=isset($arr['authkey'])?intval($arr['authkey']):-1;
+	if($key>$encrypt_key_index||$key<0)
+	{
+		exitwithtip('error_parameter');
+	}
+
+
+
+	$auth=decryptstring($arr['auth'],$key);
+
+	sscanf($auth,"username=%s password=%s",$username,$password );
+	$membername = trim($username);
+	
+
+	if(empty($membername)) {
+		exitwithtip('users_were_not_empty_please_re_login');
+	}
+	
+	
+	//同步获取用户源
+	if(!$passport = getpassport($username, $password)) {
+		exitwithtip('login_failure_please_re_login');
+	}
+	$_SGLOBAL['supe_uid']=$_SGLOBAL['uid'] = intval($passport['uid']);
+	$_SGLOBAL['supe_username']=$_SGLOBAL['username'] = addslashes($passport['username']);
+	return $passport;
 }
 ?>
