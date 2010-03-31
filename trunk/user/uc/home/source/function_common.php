@@ -2380,6 +2380,7 @@ function createCategory($arr)
 	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
 	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
 	   	//printf("<link><![CDATA[%s]]></link>\n",$row[4]);
+		printf("<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
 	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 	   $wherearr=$wherearr." where main.uid=".$arr['uid'] ;
@@ -2399,6 +2400,7 @@ function createCategory($arr)
 						   	printf("<item parentId=\"$value[parentid]\">\n");
 						   	printf("<name><![CDATA[$value[subject]]]></name>\n");
 						   	printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+							printf("<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 						   	printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						 //  	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 						   	printf("</item>\n");
@@ -2436,6 +2438,7 @@ function producebmxml($uid)
 						printf("<item parentId=\"%d\">\n",$value['groupid']);
 						printf("<name><![CDATA[%s]]></name>\n",$value['subject']);
 						printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+						printf("<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 						printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 						printf("</item>\n");
