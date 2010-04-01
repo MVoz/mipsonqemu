@@ -70,7 +70,7 @@ $_SGLOBAL['nologinform'] = 1;
 	
 	//realname_get();
 	$passport=checkclientauth($_GET);
-	producebmxml($passport['uid'],1);
+	producebmxml($passport['uid'],$_GET);
 	//echo  encryptstring('ramen.sh@gmail.com',3);
 	//echo decryptstring(encryptstring('ramen.sh@gmail.com',3),3);
 

@@ -2409,12 +2409,18 @@ function createCategory($arr)
 	   	}
 	   	printf("</category >\n");
 }
-function producebmxml($uid)
+function producebmxml($uid,$arr)
 {
 	global $_SGLOBAL,$_SC,$browsertype;
-	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+	$lastupdatetime=isset($arr['tm'])?intval($arr['tm']):0;
 	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
-	//printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",date("Y-m-d H:i:s"));
+	if($lastupdatetime==$lastmodified)
+	{
+		//do nothing
+		exitwithtip('do_nothing');
+	}
+
+	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 	printf("<bookmark version=\"1.0\" updateTime=\"%d\">\n",$lastmodified);
 	foreach($browsertype as $key=>$browservalue){
 		printf("<browserType name=\"$key\">\n");
