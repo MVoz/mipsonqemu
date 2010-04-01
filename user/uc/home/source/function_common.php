@@ -2379,7 +2379,7 @@ function createCategory($arr)
 		$groupid=(int)$arr['groupid'];	
 	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
 	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
-	   	printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
+	   	//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
 		printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
 	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
 	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
