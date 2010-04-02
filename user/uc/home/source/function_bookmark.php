@@ -350,6 +350,7 @@ function clearbookmark($browserid)
 }
 /*
 	process the url string:
+	remove the end char:'/'
 	example:http://www.sohu.com === http://www.sohu.com/
 */
 function handleUrlString($url)
