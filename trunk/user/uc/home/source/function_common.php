@@ -604,8 +604,8 @@ function runlog($file, $log, $halt=0) {
 //获取字符串
 function getstr($string, $length, $in_slashes=0, $out_slashes=0, $censor=0, $bbcode=0, $html=0) {
 	global $_SC, $_SGLOBAL;
-
-	$string = trim($string);
+	if(empty($_SGLOBAL['client']))
+		$string = trim($string);
 
 	if($in_slashes) {
 		//传入的字符有slashes
@@ -693,7 +693,10 @@ function getstr($string, $length, $in_slashes=0, $out_slashes=0, $censor=0, $bbc
 	if($out_slashes) {
 		$string = saddslashes($string);
 	}
-	return trim($string);
+	if(empty($_SGLOBAL['client']))
+		return trim($string);
+	else
+		return $string;
 }
 
 //时间格式化
@@ -2379,8 +2382,8 @@ function createCategory($arr)
 		$groupid=(int)$arr['groupid'];	
 	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
 	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
-	   	//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
-		printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
+	   	printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
+		//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
 	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
 	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 	   $wherearr=$wherearr." where main.uid=".$arr['uid'] ;
@@ -2611,6 +2614,7 @@ function checkclientauth($arr)
 	}
 	$_SGLOBAL['supe_uid']=$_SGLOBAL['uid'] = intval($passport['uid']);
 	$_SGLOBAL['supe_username']=$_SGLOBAL['username'] = addslashes($passport['username']);
+	//echo  $_SGLOBAL['supe_uid'].'  '.$_SGLOBAL['supe_username'];
 	return $passport;
 }
 ?>
