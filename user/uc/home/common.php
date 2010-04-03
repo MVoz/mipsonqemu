@@ -70,7 +70,6 @@ if ($_SC['gzipcompress'] && function_exists('ob_gzhandler')) {
 } else {
 	ob_start();
 }
-
 //≥ı ºªØ
 $_SGLOBAL['supe_uid'] = 0;
 $_SGLOBAL['supe_username'] = '';
