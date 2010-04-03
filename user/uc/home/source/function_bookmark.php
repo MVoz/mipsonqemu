@@ -21,7 +21,10 @@ function bookmark_post($POST, $olds=array()) {
 	}
 
 	//标题
-	$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
+	if($_SGLOBAL['client'])
+		$POST['subject'] = getstr(($POST['subject']), 80, 1, 1, 1);
+	else
+		$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
 		
 	
@@ -121,6 +124,7 @@ function bookmark_post($POST, $olds=array()) {
 						updatetable('bookmark', array('tag'=>$tag), array('bmid'=>$bmid));
 						//显示对应的目录
 						$bookmarkarr['groupid']=empty($olds)?0:$olds['groupid'];
+						$bookmarkarr['bmid']= $bmid;
 				break;
 				case $_SC['bookmark_type_dir']://增加一个目录
 						$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
@@ -128,6 +132,7 @@ function bookmark_post($POST, $olds=array()) {
 						$bookmarkarr['groupid'] = ($maxGroupid+1);		
 						$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 						$bmid = inserttable('bookmark', $bookmarkarr, 1);
+						$bookmarkarr['bmid']= $bmid;
 						setbookmarkmodified();
 						setbookmarknum('bmdirnum',1);
 				break;
