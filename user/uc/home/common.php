@@ -32,6 +32,7 @@ $log=new logdebug;
 $mtime = explode(' ', microtime());
 $_SGLOBAL['timestamp'] = $mtime[1];
 $_SGLOBAL['supe_starttime'] = $_SGLOBAL['timestamp'] + $mtime[0];
+$_SGLOBAL['supe_timestamp'] = ($_SGLOBAL['timestamp']).($mtime[0]*10000000);
 
 //GPC¹ýÂË
 $magic_quote = get_magic_quotes_gpc();
