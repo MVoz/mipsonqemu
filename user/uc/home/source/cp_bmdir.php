@@ -113,8 +113,12 @@ if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
-			$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
-			showmessage('do_success'.'groupid='.$newbmdir['groupid'].' lastmodified='.$_SGLOBAL['timestamp'].'bmid='.$newbmdir['bmid'], $url, 0);
+			$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];
+			if(empty($_SGLOBAL['client']))
+				showmessage('do_success', $url, 0);
+			else
+				showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"'.
+			' groupid="'.$newbmdir['groupid'].'"'.' bmid="'.$newbmdir['bmid'].'"');
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}

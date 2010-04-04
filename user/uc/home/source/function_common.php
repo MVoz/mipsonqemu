@@ -38,6 +38,17 @@ function shtmlspecialchars($string) {
 	}
 	return $string;
 }
+//与shtmlspecialchars相反
+function unshtmlspecialchars($string) {
+	if(is_array($string)) {
+		foreach($string as $key => $val) {
+			$string[$key] = unshtmlspecialchars($val);
+		}
+	} else {
+		$string =str_replace( array('&amp;', '&quot;', '&lt;', '&gt;'),array('&', '"', '<', '>'), $string);
+	}
+	return $string;
+}
 
 //字符串解密加密
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
@@ -243,7 +254,13 @@ function showmessage($msgkey, $url_forward='', $second=1, $values=array()) {
 	//优先处理client端的信息
 	if(!empty($_SGLOBAL['client'])) //来自client端
 	{
-		exitwithtip($msgkey);
+		//exitwithtip($msgkey);
+		$message='<?xml version="1.0" encoding="utf-8"?>';
+		$message =$message.'<status '.$msgkey.'>';
+		$message =$message.'</status>';
+		echo $message;
+		ob_out();
+		exit();
 		//下面的不会运行了
 	}
 	//语言
@@ -2381,7 +2398,7 @@ function createCategory($arr)
 		global $_SGLOBAL,$_SC;
 		$groupid=(int)$arr['groupid'];	
 	   	printf("<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
-	   	printf("<name><![CDATA[%s]]></name>\n",$arr['subject']);
+	   	printf("<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($arr['subject']));
 	   	printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
 		//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
 	   	printf("<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
@@ -2401,8 +2418,8 @@ function createCategory($arr)
 					   	break;
 					   	case $_SC['bookmark_type_site']://item
 						   	printf("<item parentId=\"$value[parentid]\">\n");
-						   	printf("<name><![CDATA[$value[subject]]]></name>\n");
-						   	printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+						   	printf("<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value[subject]));
+						   	printf("<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
 							printf("<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 						   	printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						 //  	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
@@ -2415,7 +2432,7 @@ function createCategory($arr)
 function producebmxml($uid,$arr)
 {
 	global $_SGLOBAL,$_SC,$browsertype;
-	$lastupdatetime=isset($arr['tm'])?intval($arr['tm']):0;
+	$lastupdatetime=isset($arr['tm'])?($arr['tm']):'';
 	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
 	if($lastupdatetime==$lastmodified)
 	{
@@ -2445,8 +2462,8 @@ function producebmxml($uid,$arr)
 					break;
 				case $_SC['bookmark_type_site']:
 						printf("<item parentId=\"%d\">\n",$value['groupid']);
-						printf("<name><![CDATA[%s]]></name>\n",$value['subject']);
-						printf("<link><![CDATA[%s]]></link>\n",$value['url']);
+						printf("<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
+						printf("<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
 						printf("<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 						printf("<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
