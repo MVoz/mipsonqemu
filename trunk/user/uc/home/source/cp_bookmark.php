@@ -110,7 +110,10 @@ if($_GET['op'] == 'delete') {
 		include_once(S_ROOT.'./source/function_bookmark.php');
 		if(deletebookmark($bmid)) {
 			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
-			showmessage('do_success', $url, 0);
+			if(empty($_SGLOBAL['client']))
+				showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $url, 0);
+			else
+				showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"');
 		} else {
 			showmessage('failed_to_delete_operation');
 		}

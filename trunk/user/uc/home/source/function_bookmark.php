@@ -376,7 +376,7 @@ function setbookmarkmodified()
 {
 	global $_SGLOBAL;
 	$spacearr = array(
-		'lastmodified' => $_SGLOBAL['timestamp'],		
+		'lastmodified' => $_SGLOBAL['supe_timestamp'],		
 	);
 	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));		
 }
