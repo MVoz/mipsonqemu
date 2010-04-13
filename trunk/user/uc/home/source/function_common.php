@@ -2441,7 +2441,7 @@ function producebmxml($uid,$arr)
 	}
 
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-	printf("<bookmark version=\"1.0\" updateTime=\"%d\">\n",$lastmodified);
+	printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",$lastmodified);
 	foreach($browsertype as $key=>$browservalue){
 		printf("<browserType name=\"$key\">\n");
 		$wherearr='';
