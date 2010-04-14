@@ -36,7 +36,7 @@ jQuery(document).ready(function(){
 
 .row-list em,.row-list_l em{width:76px;float:left;font-style:normal;padding:0px;font-size:110%;text-align:center;}
 .row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}
-#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
+#zhidao_searchform,#pic_searchform,#map_searchform,#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
 #googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
 
 #hotsite {background-color:#f7f7f7;height:20px;width:210px;padding:3px 0px;}
@@ -72,6 +72,33 @@ jQuery(document).ready(function(){
 		}
 		return false;
 	}
+
+	function general_searchsubmit(type)
+	{
+		    key=type+'_searchkey';
+			form=type+'_searchform';
+			
+			if($(key).value==''||$(key).value=='请输入关键词')
+			{
+				$(key).value='请输入关键词';
+				return false;
+			}
+			if(type=='map')
+			{
+				$(form).action="http://ditu.google.com/maps?ie=utf-8";		
+				$(form).submit();
+			}else if(type=='zhidao')
+			{
+				$(form).action="http://zhidao.baidu.com/q?ct=17&pn=0&pt=5igb_ik&tn=ikaslist&rn=10";		
+				$(form).submit();
+			}else if(type=='pic')
+			{
+				$(form).action="http://images.google.com.hk/images?";	
+				$(form).submit();
+			}
+			
+			return false;
+	}
 </script>
 <div  class="nbox">
 	<div class="nbox_c_1">
@@ -89,13 +116,13 @@ jQuery(document).ready(function(){
 		 <span id="allhot" >
             视频
         </span>
-			 <span id="allhot" >
+		 <span id="pic" >
             图片
         </span>
-			 <span id="allhot" >
+		<span id="zhidao" >
             知道
         </span>
-		<span id="allhot" >
+		<span id="ditu" >
             地图
         </span>
 		<span id="allhot" >
@@ -146,6 +173,36 @@ jQuery(document).ready(function(){
                <p>
 			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
                     <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
+				</p>				
+		 </form>
+        </li>
+    </ul>
+	<ul class="ditu" style="display: none;">
+         <li>
+          <form id="map_searchform" target="_blank" action=""  method="get" style="float:left">
+               <p>
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="map_searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="地图搜索" onclick="return general_searchsubmit('map');">
+				</p>				
+		 </form>
+        </li>
+    </ul>
+	<ul class="zhidao" style="display: none;">
+         <li>
+          <form id="zhidao_searchform" target="_blank" action=""  method="get" style="float:left">
+               <p>
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="word" maxlength="255" id="zhidao_searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="百度知道" onclick="return general_searchsubmit('zhidao');">
+				</p>				
+		 </form>
+        </li>
+    </ul>
+	<ul class="pic" style="display: none;">
+         <li>
+          <form id="pic_searchform" target="_blank" action=""  method="get" style="float:left">
+               <p>
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="pic_searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="百度知道" onclick="return general_searchsubmit('pic');">
 				</p>				
 		 </form>
         </li>
