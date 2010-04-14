@@ -36,7 +36,7 @@ jQuery(document).ready(function(){
 
 .row-list em,.row-list_l em{width:76px;float:left;font-style:normal;padding:0px;font-size:110%;text-align:center;}
 .row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}
-#zhidao_searchform,#pic_searchform,#map_searchform,#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
+#music_searchform_s,#music_searchform,#zhidao_searchform,#pic_searchform,#map_searchform,#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
 #googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
 
 #hotsite {background-color:#f7f7f7;height:20px;width:210px;padding:3px 0px;}
@@ -49,7 +49,19 @@ jQuery(document).ready(function(){
 .forecastIcon  {  border:medium none;  margin:-3px -10px -4px; vertical-align:middle;}
 .currentIcon  {border:medium none;margin:-3px -15px;vertical-align:middle; }
 
+#suggests {
+background:none repeat scroll 0 0 #FFFFFF;
+border:1px solid #CCCCCC;
+display:none;
+left:85px;
+position:absolute;
+top:30px;
+width:418px;
+z-index:5;
+}
+
 </style>
+<script language="javascript" type="text/javascript" src="source/suggest.js"></script>
 <script>
 	function searchsubmit()
 	{
@@ -95,6 +107,12 @@ jQuery(document).ready(function(){
 			{
 				$(form).action="http://images.google.com.hk/images?";	
 				$(form).submit();
+			}else if(type=='music')
+			{
+				
+				$('searchbaidump3key').value=$(key).value;
+				$(form).action="http://mp3.baidu.com/m?ie=utf-8&f=ms&ct=134217728";
+				$(form).submit();
 			}
 			
 			return false;
@@ -107,10 +125,10 @@ jQuery(document).ready(function(){
         <span id="related_post" class="current">
             网页
         </span>
-        <span id="mhot" class="">
+        <span id="mhot">
             淘宝
         </span>
-        <span id="allhot" >
+        <span id="music" >
             音乐
         </span>
 		 <span id="allhot" >
@@ -136,10 +154,11 @@ jQuery(document).ready(function(){
         <li>
           <form id="searchform" target="_blank" action=""  method="get" style="float:left">
                <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50" onkeyup="javascript:myhint(event);">
+               <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
 				</p>				
 		 </form>
+		 <span id="suggests" style="display: none;"></span>
 			 <form id="googlesearchform" target="_blank" action=""  method="get" style="float:left">
 					<input type="text" name="q"  id="searchgooglekey"  style="display:none" >
 			</form>
@@ -202,11 +221,28 @@ jQuery(document).ready(function(){
           <form id="pic_searchform" target="_blank" action=""  method="get" style="float:left">
                <p>
 			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="pic_searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="百度知道" onclick="return general_searchsubmit('pic');">
+                    <input class="submit" type="submit" value="Google图片" onclick="return general_searchsubmit('pic');">
 				</p>				
 		 </form>
         </li>
     </ul>
+	<ul class="music" style="display: none;">
+         <li>
+          <form id="music_searchform_s" target="_blank" action=""  method="get" style="float:left">
+               <p>
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="word" maxlength="255" id="music_searchkey" class="t_input" style="padding:5px" size="50">
+                    <input class="submit" type="submit" value="百度音乐" onclick="return general_searchsubmit('music');">
+				</p>				
+		 </form>
+		 <form id="music_searchform" name="music_searchform"  target="_blank" action="" method="get" style="float:left">
+					<input type="hidden" name="word" id="searchbaidump3key" style="display:none" >
+					<input type="hidden" name="ie" value="utf-8" style="display:none" >
+					<input type="hidden" name="f" value="ms" style="display:none" >
+					<input type="hidden" name="ct" value="134217728" style="display:none" >
+			</form>
+        </li>
+    </ul>
+	
 </div>
 <div class="entry-foot_1">
     <p>
