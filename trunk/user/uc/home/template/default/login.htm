@@ -1,24 +1,4 @@
-<script language="javascript" type="text/javascript" >
-jQuery(document).ready(function(){
-			jQuery(".entry-foot span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
-			jQuery(".entry-foot ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".entry-foot span").click(function(){  // 鼠标移到 span 上时触发函数
-				jQuery(".entry-foot span").removeClass("currentx");  //为第一个 span 移除 .current 样式
-				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
-				jQuery(".entry-foot ul").hide();  // 隐藏 ul
-				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
-		});
 
-		jQuery(".entry-foot_1 span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
-			jQuery(".entry-foot_1 ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".entry-foot_1 span").click(function(){  // 鼠标移到 span 上时触发函数
-				jQuery(".entry-foot_1 span").removeClass("currentx");  //为第一个 span 移除 .current 样式
-				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
-				jQuery(".entry-foot_1 ul").hide();  // 隐藏 ul
-				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
-		});
-});
-</script>
 <style type="text/css">
 .entry-foot,.entry-foot_1{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
 .entry-foot {height:75px;}
@@ -62,186 +42,121 @@ z-index:5;
 
 </style>
 <script language="javascript" type="text/javascript" src="source/suggest.js"></script>
-<script>
-	function searchsubmit()
-	{
-		if($('searchkey').value==''||$('searchkey').value=='请输入关键词')
-			{
-				$('searchkey').value='请输入关键词';
-				return false;
-			}
-		var key=$('searchkey').value;
-		$('searchbaidukey').value=$('searchgooglekey').value=key;
-		if($('searchgoogleck').checked==true)
-			{
-				$('googlesearchform').action="http://www.google.com/search";
-				$('googlesearchform').submit();
-			}
-		if($('searchbaiduck').checked==true)
-		{
-			$('baidusearchform').action="http://www.baidu.com/s";		
-			$('baidusearchform').submit();
-		}
-		return false;
-	}
+<script language="javascript" type="text/javascript" >
+jQuery(document).ready(function(){
+		jQuery(".entry-foot_1 span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".entry-foot_1 ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".entry-foot_1 span").click(function(){  // 鼠标移到 span 上时触发函数
+				jQuery(".entry-foot_1 span").removeClass("currentx");  //为第一个 span 移除 .current 样式
+				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
+				jQuery(".entry-foot_1 ul").hide();  // 隐藏 ul
+				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
+		});
+});
+</script>
 
-	function general_searchsubmit(type)
-	{
-		    key=type+'_searchkey';
-			form=type+'_searchform';
-			
-			if($(key).value==''||$(key).value=='请输入关键词')
-			{
-				$(key).value='请输入关键词';
-				return false;
-			}
-			if(type=='map')
-			{
-				$(form).action="http://ditu.google.com/maps?ie=utf-8";		
-				$(form).submit();
-			}else if(type=='zhidao')
-			{
-				$(form).action="http://zhidao.baidu.com/q?ct=17&pn=0&pt=5igb_ik&tn=ikaslist&rn=10";		
-				$(form).submit();
-			}else if(type=='pic')
-			{
-				$(form).action="http://images.google.com.hk/images?";	
-				$(form).submit();
-			}else if(type=='music')
-			{
-				
-				$('searchbaidump3key').value=$(key).value;
-				$(form).action="http://mp3.baidu.com/m?ie=utf-8&f=ms&ct=134217728";
-				$(form).submit();
-			}
-			
-			return false;
-	}
+<script language="javascript" type="text/javascript" >
+jQuery(document).ready(function(){
+			jQuery(".entry-foot span:first").addClass("currentx"); 	
+			jQuery(".entry-foot span").click(function(){
+				jQuery(".entry-foot span").removeClass("currentx");  
+				jQuery(this).addClass("currentx"); 
+				jQuery('#searchform input[type=checkbox]').remove();
+				jQuery('#searchform span').remove();
+
+				 jQuery("#hidden_form").empty();
+				 var i=0;
+				 var len = searchs[jQuery(this).attr("id")].length;
+				 for (i = 0; i < len; i++) {
+				 //set checkbox
+					var f = document.createElement("INPUT");
+					f.type = "checkbox";
+					f.name = searchs[jQuery(this).attr("id")][i][0];
+					f.id = "check_"+i;
+					getObj('searchform').appendChild(f);
+					getObj(f.id).checked=(searchs[jQuery(this).attr("id")][i][6]==1)?true:false;
+					jQuery('#searchform').append('<span>'+searchs[jQuery(this).attr("id")][i][3]+'</span>');
+				  //set hidden form
+					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[jQuery(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[jQuery(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
+
+					
+					jQuery("#hidden_form").append(hiddenformArr);					
+					//set hidden input						 
+					 if (searchs[jQuery(this).attr("id")][i][7]!= null) {
+						var c = searchs[jQuery(this).attr("id")][i][7].split(";");
+						for (var d = 0, l = c.length; d < l; d++) {
+							var e = c[d].split(":");
+							var f = document.createElement("INPUT");
+							f.type = "hidden";
+							f.name = e[0];
+							f.id = e[0];
+							f.value = e[1];
+							getObj('searchform_'+i).appendChild(f);
+						}
+					}
+				 }
+		});
+		jQuery(".entry-foot span:first").click(); 
+});	
+</script>
+<script>
+		function searchsubmit()
+		{
+			 var i=0;
+			 jQuery('#searchform input[type=checkbox]').each(function(){ 
+					var form_id='searchform_'+i;
+					var searchkey_id='searchkey_'+i;
+					if(jQuery(this).attr("checked")==true){
+						$(searchkey_id).value=$('searchkey').value;		
+						$(form_id).submit();
+					}
+					i++;
+			 });
+			 return false;
+		}
 </script>
 <div  class="nbox">
 	<div class="nbox_c_1">
 		<div class="entry-foot">
-    <p>
-        <span id="related_post" class="current">
+		<p>
+        <span id="web_page" class="current">
             网页
         </span>
-        <span id="mhot">
-            淘宝
+        <span id="tanzhi">
+            弹指
         </span>
         <span id="music" >
             音乐
         </span>
-		 <span id="allhot" >
+		 <span id="video" >
             视频
         </span>
-		 <span id="pic" >
+		 <span id="image" >
             图片
         </span>
-		<span id="zhidao" >
+		<span id="wenda" >
             知道
         </span>
-		<span id="ditu" >
+		<span id="map" >
             地图
         </span>
-		<span id="allhot" >
-           影视
-        </span>
-		<span id="allhot" >
+		<span id="shopping" >
            购物
         </span>
     </p>
-    <ul class="related_post" style="display: block;">
+    
+    <ul class="web_page" >
         <li>
           <form id="searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50" onkeyup="javascript:myhint(event);">
-               <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
-				</p>				
-		 </form>
-		 <span id="suggests" style="display: none;"></span>
-			 <form id="googlesearchform" target="_blank" action=""  method="get" style="float:left">
-					<input type="text" name="q"  id="searchgooglekey"  style="display:none" >
-			</form>
-			<form id="googlesearchform_s" target="_blank" action=""  method="get" style="float:left">
-						<input type="checkbox" size="2" maxlength="2" id="searchgoogleck" value="googleck" checked>
-						<a target="external" rel="_blank" title="谷歌搜索" href="http://www.google.cn/"><img alt="" src="template/default/image/google_web.png"></a>
-			</form>
-			<form id="baidusearchform" name="baidusearchform"  target="_blank" action="" method="get" style="float:left">
-					<input type="text" name="wd" id="searchbaidukey" style="display:none" >
-					<input type="text" name="ie" value="utf-8" style="display:none" >
-			</form>
-			<form id="baidusearchform_s" name="baidusearchform_s"  target="_blank" action="" method="get" style="float:left">
-						<input type="checkbox" size="2" maxlength="2" id="searchbaiduck" value="baiduck" checked>
-						<a target="external" rel="_blank" title="百度一下" href="http://www.baidu.com/index.php?tn=monline_5_dg"><img alt="" src="template/default/image/baidu_web.png"></a>
-			 </form>
+               
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50" onKeyDown="if(event.keyCode==13) return searchsubmit();">
+                <input class="submit" type="submit" id="searchbtn" value="搜索" onclick="return searchsubmit();">							
+		  </form>
+		  <div id="hidden_form" style="display:none;">
+		  </div>
         </li>
     </ul>
-    <ul class="mhot" style="display: none;">
-        <li>
-          <form id="searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
-				</p>				
-		 </form>
-        </li>
-    </ul>
-    <ul class="allhot" style="display: none;">
-         <li>
-          <form id="searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
-				</p>				
-		 </form>
-        </li>
-    </ul>
-	<ul class="ditu" style="display: none;">
-         <li>
-          <form id="map_searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="map_searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="地图搜索" onclick="return general_searchsubmit('map');">
-				</p>				
-		 </form>
-        </li>
-    </ul>
-	<ul class="zhidao" style="display: none;">
-         <li>
-          <form id="zhidao_searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="word" maxlength="255" id="zhidao_searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="百度知道" onclick="return general_searchsubmit('zhidao');">
-				</p>				
-		 </form>
-        </li>
-    </ul>
-	<ul class="pic" style="display: none;">
-         <li>
-          <form id="pic_searchform" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="pic_searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="Google图片" onclick="return general_searchsubmit('pic');">
-				</p>				
-		 </form>
-        </li>
-    </ul>
-	<ul class="music" style="display: none;">
-         <li>
-          <form id="music_searchform_s" target="_blank" action=""  method="get" style="float:left">
-               <p>
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="word" maxlength="255" id="music_searchkey" class="t_input" style="padding:5px" size="50">
-                    <input class="submit" type="submit" value="百度音乐" onclick="return general_searchsubmit('music');">
-				</p>				
-		 </form>
-		 <form id="music_searchform" name="music_searchform"  target="_blank" action="" method="get" style="float:left">
-					<input type="hidden" name="word" id="searchbaidump3key" style="display:none" >
-					<input type="hidden" name="ie" value="utf-8" style="display:none" >
-					<input type="hidden" name="f" value="ms" style="display:none" >
-					<input type="hidden" name="ct" value="134217728" style="display:none" >
-			</form>
-        </li>
-    </ul>
+    
 	
 </div>
 <div class="entry-foot_1">
