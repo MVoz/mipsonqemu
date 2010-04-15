@@ -147,11 +147,12 @@ jQuery(document).ready(function(){
     
     <ul class="web_page" >
         <li>
-          <form id="searchform" target="_blank" action=""  method="get" style="float:left">
+          <form id="searchform" target="_blank" action=""  method="get" style="float:left" onsubmit="return searchsubmit();">
                
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50" onKeyDown="if(event.keyCode==13) return searchsubmit();">
-                <input class="submit" type="submit" id="searchbtn" value="搜索" onclick="return searchsubmit();">							
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50"  onkeyup="javascript:myhint(event);">
+                <input class="submit" type="submit" id="searchbtn" value="搜索" onclick="return searchsubmit();">					
 		  </form>
+		  <span id="suggests" style="display: none;"></span>
 		  <div id="hidden_form" style="display:none;">
 		  </div>
         </li>
