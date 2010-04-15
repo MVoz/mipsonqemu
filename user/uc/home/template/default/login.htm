@@ -95,6 +95,8 @@ jQuery(document).ready(function(){
 						}
 					}
 				 }
+				 //set button value				 
+				 jQuery("#searchbtn").attr("value",jQuery(this).html()+'搜索');
 		});
 		jQuery(".entry-foot span:first").click(); 
 });	
@@ -119,30 +121,14 @@ jQuery(document).ready(function(){
 	<div class="nbox_c_1">
 		<div class="entry-foot">
 		<p>
-        <span id="web_page" class="current">
-            网页
-        </span>
-        <span id="tanzhi">
-            弹指
-        </span>
-        <span id="music" >
-            音乐
-        </span>
-		 <span id="video" >
-            视频
-        </span>
-		 <span id="image" >
-            图片
-        </span>
-		<span id="wenda" >
-            知道
-        </span>
-		<span id="map" >
-            地图
-        </span>
-		<span id="shopping" >
-           购物
-        </span>
+        <span id="web_page" class="current">网页</span>
+        <span id="tanzhi">弹指</span>
+        <span id="music" >音乐</span>
+		 <span id="video" >视频</span>
+		 <span id="image" >图片</span>
+		<span id="wenda" >知道</span>
+		<span id="map" >地图</span>
+		<span id="shopping" >购物</span>
     </p>
     
     <ul class="web_page" >
