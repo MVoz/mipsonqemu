@@ -1,29 +1,9 @@
 	<h2 class="ntitle">
 
-			<div id="quickmenudiv" style="float:left;height:18px;line-height:18px;padding:8px 2px 0 0;">
-				<a href="javascript:;" onclick="getbmview('lastvisit')" onmouseover="showMenu(this.id)" id="quickmenu" >
-					最近访问 <img align="absmiddle" src="image/more.gif" >
-				<a>
-			</div>
 
-			<input type="text" size="15" style="padding: 5px 0 5px 5px;" class="t_input" id="searchkey" maxlength="255" name="q" onblur="if(this.value==''){this.value='请输入关键词';}" onfocus="if(this.value=='请输入关键词'){this.value='';}" value="请输入关键词">
-			<input type="submit" onclick="return searchsubmit();" value="搜索" class="submit" >
-			
-			<ul style=" display: none;" class="quickmenu_drop" id="quickmenu_menu">
-				<li><a href="javascript:;" onclick="getbmview('lastvisit');setquickmenu('lastvisit','最近访问');">最近访问</a></li>
-				<li><a href="javascript:;" onclick="getbmview('oftenvisit');setquickmenu('oftenvisit','经常访问');">经常访问</a></li>
-				<li><a href="javascript:;" onclick="getbmview('lastadd');setquickmenu('lastadd','最新添加');">最新添加</a></li>
-				<li><a href="javascript:;" onclick="getlinkview('mycharts');setquickmenu('mycharts','我的上榜');">我的上榜</a></li>
-			</ul> 
 
 	</h2>
-	<script>
-		function setquickmenu(type,menustr)
-		{
-			 $('quickmenudiv').innerHTML='<a href="javascript:;" onclick="getbmview('+type+')" onmouseover="showMenu(this.id)" id="quickmenu" >'+menustr+'<img align="absmiddle" src="image/more.gif" ><a>';
-			 $('quickmenu_menu').style.display='none';
-		}
-	</script>
+
 		<div class="side_rbox_c" >
 				<div class="menu_item">
                             	<div class="tabs_header">
