@@ -7,6 +7,25 @@
 				  <!--{/if}-->
 			</div>
 			<div class="groupname" id="groupname">$groupname &raquo;</div>
+			<div id="quickmenudiv" style="float:right;height:18px;line-height:18px;padding:8px 2px 0 0;">
+				<a href="javascript:;" onclick="getbmview('lastvisit')" onmouseover="showMenu(this.id)" id="quickmenu" >
+					最近访问 <img align="absmiddle" src="image/more.gif" >
+				<a>
+			</div>
+
+			<ul style=" display: none;" class="quickmenu_drop" id="quickmenu_menu">
+				<li><a href="javascript:;" onclick="getbmview('lastvisit');setquickmenu('lastvisit','最近访问');">最近访问</a></li>
+				<li><a href="javascript:;" onclick="getbmview('oftenvisit');setquickmenu('oftenvisit','经常访问');">经常访问</a></li>
+				<li><a href="javascript:;" onclick="getbmview('lastadd');setquickmenu('lastadd','最新添加');">最新添加</a></li>
+				<li><a href="javascript:;" onclick="getlinkview('mycharts');setquickmenu('mycharts','我的上榜');">我的上榜</a></li>
+			</ul> 
 			
 </h2>
+	<script>
+		function setquickmenu(type,menustr)
+		{
+			 $('quickmenudiv').innerHTML='<a href="javascript:;" onclick="getbmview('+type+')" onmouseover="showMenu(this.id)" id="quickmenu" >'+menustr+'<img align="absmiddle" src="image/more.gif" ><a>';
+			 $('quickmenu_menu').style.display='none';
+		}
+	</script>
 		
