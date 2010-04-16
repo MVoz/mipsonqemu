@@ -1,12 +1,12 @@
 
 <style type="text/css">
-.entry-foot,.entry-foot_1{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
-.entry-foot {height:75px;}
-.entry-foot_1 {height:115px;}
-.entry-foot p,.entry-foot_1 p{font-weight:bold;font-size:110%;margin-top:0px;padding: 0px;color:#2C629E}
-.entry-foot p span,.entry-foot_1 p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 20px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
-.entry-foot p span.currentx,.entry-foot_1 p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
-.entry-foot >li,.entry-foot_1 >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
+.search_area,.popular_site{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
+.search_area {height:95px;}
+.popular_site {height:115px;}
+.search_area p,.popular_site p{font-weight:bold;font-size:110%;margin-top:0px;padding: 0px;color:#2C629E}
+.search_area p span,.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 20px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+.search_area p span.currentx,.popular_site p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.search_area >li,.popular_site >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
 
 
 .allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
@@ -16,7 +16,7 @@
 
 .row-list em,.row-list_l em{width:76px;float:left;font-style:normal;padding:0px;font-size:110%;text-align:center;}
 .row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}
-#music_searchform_s,#music_searchform,#zhidao_searchform,#pic_searchform,#map_searchform,#googlesearchform_s,#baidusearchform_s,#searchform{height:30px;padding:10px;}
+#searchform{height:30px;padding:10px 10px 2px 10px;}
 #googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
 
 #hotsite {background-color:#f7f7f7;height:20px;width:210px;padding:3px 0px;}
@@ -44,12 +44,12 @@ z-index:5;
 <script language="javascript" type="text/javascript" src="source/suggest.js"></script>
 <script language="javascript" type="text/javascript" >
 jQuery(document).ready(function(){
-		jQuery(".entry-foot_1 span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
-			jQuery(".entry-foot_1 ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".entry-foot_1 span").click(function(){  // 鼠标移到 span 上时触发函数
-				jQuery(".entry-foot_1 span").removeClass("currentx");  //为第一个 span 移除 .current 样式
+		jQuery(".popular_site span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".popular_site ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".popular_site span").click(function(){  // 鼠标移到 span 上时触发函数
+				jQuery(".popular_site span").removeClass("currentx");  //为第一个 span 移除 .current 样式
 				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
-				jQuery(".entry-foot_1 ul").hide();  // 隐藏 ul
+				jQuery(".popular_site ul").hide();  // 隐藏 ul
 				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
 		});
 });
@@ -57,9 +57,9 @@ jQuery(document).ready(function(){
 
 <script language="javascript" type="text/javascript" >
 jQuery(document).ready(function(){
-			jQuery(".entry-foot span:first").addClass("currentx"); 	
-			jQuery(".entry-foot span").click(function(){
-				jQuery(".entry-foot span").removeClass("currentx");  
+			jQuery(".search_area span:first").addClass("currentx"); 	
+			jQuery(".search_area span").click(function(){
+				jQuery(".search_area span").removeClass("currentx");  
 				jQuery(this).addClass("currentx"); 
 				jQuery('#searchform input[type=checkbox]').remove();
 				jQuery('#searchform span').remove();
@@ -98,7 +98,7 @@ jQuery(document).ready(function(){
 				 //set button value				 
 				 jQuery("#searchbtn").attr("value",jQuery(this).html()+'搜索');
 		});
-		jQuery(".entry-foot span:first").click(); 
+		jQuery(".search_area span:first").click(); 
 });	
 </script>
 <script>
@@ -119,7 +119,7 @@ jQuery(document).ready(function(){
 </script>
 <div  class="nbox">
 	<div class="nbox_c_1">
-		<div class="entry-foot">
+		<div class="search_area">
 		<p>
         <span id="web_page" class="current">网页</span>
         <span id="tanzhi">弹指</span>
@@ -135,7 +135,7 @@ jQuery(document).ready(function(){
         <li>
           <form id="searchform" target="_blank" action=""  method="get" style="float:left" onsubmit="return searchsubmit();">
                
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50"  onkeyup="javascript:myhint(event);">
+			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="60"  onkeyup="javascript:myhint(event);">
                 <input class="submit" type="submit" id="searchbtn" value="搜索" onclick="return searchsubmit();">					
 		  </form>
 		  <span id="suggests" style="display: none;"></span>
@@ -143,10 +143,36 @@ jQuery(document).ready(function(){
 		  </div>
         </li>
     </ul>
-    
+    <div style="float:left;">
+			<span style="float:left;padding:0px 10px 0px 10px;line-height:25px;height:25px;"><a href="#">掘客&raquo;</a></span>
+			<div id="diggscroll">                   
+						  <ul>
+							  <!--{loop $digglist $key $value}-->		
+								<li>
+									<a class="diggscroll_l" href="$value[url]" class="digg_qi">$value[cutsubject]</a>
+									<a class="diggscroll_r" href="#">更多&raquo;</a>
+								</li>
+							  <!--{/loop}-->
+						  </ul>
+			</div>
+	</div>
+<script type="text/javascript">
+	function AutoScroll(obj){
+		jQuery(obj).find("ul:first").animate({
+			marginTop:"-25px"
+		},500,function(){
+			jQuery(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+		});	
+	}
+	
+	jQuery(document).ready(function(){
+		setInterval('AutoScroll("#diggscroll")',5000);
+	});
+	
+</script>
 	
 </div>
-<div class="entry-foot_1">
+<div class="popular_site">
     <p>
         <span id="related_post_1" class="current">
             常用类
