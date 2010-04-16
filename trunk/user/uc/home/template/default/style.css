@@ -154,7 +154,7 @@ body { background: #FFF; }
 	BACKGROUND-COLOR: transparent; TEXT-DECORATION: underline
 }
 #nav A.now {
-	PADDING-RIGHT: 10px; DISPLAY: block; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: url(image/headnavback.gif) #eef9eb no-repeat right top; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 2px 5px 0px; COLOR: #000; PADDING-TOP: 0px
+	PADDING-RIGHT: 10px; DISPLAY: block; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: url(image/headnavback.gif)  no-repeat right top; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 2px 5px 0px; COLOR: #000; PADDING-TOP: 0px
 }
 #nav A.now SPAN {
 	PADDING-RIGHT: 1px; DISPLAY: block; PADDING-LEFT: 11px; BACKGROUND: url(image/headnavback.gif) no-repeat; PADDING-BOTTOM: 7px; PADDING-TOP: 8px
