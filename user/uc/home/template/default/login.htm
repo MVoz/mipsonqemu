@@ -4,7 +4,7 @@
 .search_area {height:95px;}
 .popular_site {height:115px;}
 .search_area p,.popular_site p{font-weight:bold;font-size:110%;margin-top:0px;padding: 0px;color:#2C629E}
-.search_area p span,.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 20px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+.search_area p span,.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
 .search_area p span.currentx,.popular_site p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
 .search_area >li,.popular_site >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
 
@@ -117,7 +117,10 @@ jQuery(document).ready(function(){
 			 return false;
 		}
 </script>
-<div  class="nbox">
+<div class="bd">
+	<div class="searchinfo">
+
+<div  style="padding:8px;">
 	<div class="nbox_c_1">
 		<div class="search_area">
 		<p>
@@ -207,7 +210,6 @@ jQuery(document).ready(function(){
 				<em><a title="MSN中文网" target="_blank" href="http://cn.msn.com/">MSN中文网</a></em>             
 				<em><a title="天涯社区" target="_blank" href="http://www.tianya.cn/">天涯社区</a></em>             
 				<em><a title="白社会" target="_blank" href="http://bai.sohu.com/">白社会</a></em> 
-				<em><a title="Mtime时光网" target="_blank" href="http://www.mtime.com/">时光网</a></em>
 		 </li>
         <li class="row-list_l">  
 					<em><a title="腾讯QQ" target="_blank" href="http://www.qq.com/">腾讯QQ</a></em>						
@@ -218,10 +220,6 @@ jQuery(document).ready(function(){
 					<em><a title="凤凰网" target="_blank" href="http://www.ifeng.com/">凤凰网</a></em>
 					<em><a title="瑞丽女性网" target="_blank" href="http://www.rayli.com.cn/">瑞丽女性网</a></em>             
 					<em><a title="携程网" target="_blank" href="http://p.yiqifa.com/c?s=5cd2adf9&amp;w=87791&amp;c=297&amp;i=406&amp;l=0&amp;d=853&amp;e=1&amp;t=http://www.ctrip.com/smartlink/smartlink.asp">携程网</a></em>
-					 <em><a title="麒迅特价机票" target="_blank" href="http://extend.oyesgo.com/?ref=firefox_1&amp;url=http://www.oyesgo.com/">麒迅特价机票</a></em>
-            
-          
-            
 		</li>
 		 <li class="row-list">   
             <em><a title="当 当" target="_blank" href="http://union.dangdang.com/transfer/transfer.aspx?from=P-270288&amp;backurl=http://www.dangdang.com/">当 当</a></em>             
@@ -232,9 +230,6 @@ jQuery(document).ready(function(){
             <em><a title="新蛋网" target="_blank" href="http://p.yiqifa.com/c?s=3868c5d5&amp;w=87791&amp;c=280&amp;i=240&amp;l=0&amp;e=d&amp;t=http://www.newegg.com.cn/">新蛋网</a></em>  
 			  <em><a title="中国移动" target="_blank" href="http://www.chinamobile.com/">中国移动</a></em>
 			  <em><a title="安居客房产网" target="_blank" href="http://www.anjuke.com/">安居客房产网</a></em>
-            
-            <em><a title="中华英才网" target="_blank" href="http://www.chinahr.com/">中华英才网</a></em>
-
 		 </li>
 		 <li class="row-list_l">        
           
@@ -247,8 +242,6 @@ jQuery(document).ready(function(){
             <em><a title="校内/人人网" target="_blank" href="http://www.xiaonei.com/">校内/人人网</a></em>	 
 			<em><a title="赶集网" target="_blank" href="http://www.ganji.com/">赶集网</a></em>
 			 <em><a title="去哪儿。机票" target="_blank" href="http://www.qunar.com/twell/redirect.jsp?url=http://flight.qunar.com?dh=ffx">去哪儿。机票</a></em>
-            
-            <em><a title="起点中文网" target="_blank" href="http://www.qidian.com/">起点中文网</a></em>
 
 		 </li>
     </ul>
@@ -403,27 +396,11 @@ jQuery(document).ready(function(){
 		</div>
 	-->
 	</div>
-<script>
-var arVersion = navigator.appVersion.split("MSIE")
-var version = parseFloat(arVersion[1])
-function fixPng(myImage) 
-{
-    if ((version >= 5.5) && (version < 7) && (document.body.filters)) 
-    {
-       var imgID = (myImage.id) ? "id='" + myImage.id + "' " : ""
-    var imgClass = (myImage.className) ? "class='" + myImage.className + "' " : ""
-    var imgTitle = (myImage.title) ? 
-               "title='" + myImage.title  + "' " : "title='" + myImage.alt + "' "
-    var imgStyle = "display:inline-block;" + myImage.style.cssText
-    var strNewHTML = "<span " + imgID + imgClass + imgTitle
-                  + " style=\"" + "width:" + myImage.width 
-                  + "px; height:" + myImage.height 
-                  + "px;" + imgStyle + ";"
-                  + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-                  + "(src=\'" + myImage.src + "\', sizingMethod='scale');\"></span>"
-    myImage.outerHTML = strNewHTML   
-    }
-}
-</script>
+
 <!--{/if}-->
+</div>
+	</div>
+	<div class="dynamicinfo">
+	</div>
+</div>
 </div>
