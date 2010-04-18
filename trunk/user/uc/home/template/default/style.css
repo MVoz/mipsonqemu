@@ -48,7 +48,7 @@ caption, th { text-align: left; }
 .r_option .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -112px transparent;}
 .r_option .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
-.groupname {float:left;padding-left:10px;width:150px;overflow:hidden;white-space:nowrap;}
+.groupname {float:left;padding-left:10px;width:150px;overflow:hidden;white-space:nowrap;color:#FF6A00;font-size:110%;font-weight: blod;}
 
 #diggscroll {float:left;width:300px;height:25px;line-height:25px;overflow:hidden;}
 #diggscroll ul {width:300px;margin:0;padding:0;height:25px;}
