@@ -55,6 +55,7 @@ caption, th { text-align: left; }
 #diggscroll ul li .diggscroll_r{float:right;}
 #diggscroll ul li .diggscroll_l{float:left;width:250px;overflow:hidden;white-space:nowrap;}
 .floatleft{ float: left; }
+.floatright{float:right;}
 .floatright a{ float: right;color:#EEF9EB }
 .clear, .s_clear { clear: both; }
 	.s_clear:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
