@@ -1,0 +1,180 @@
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=$_SC[charset]" />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<title><!--{if $_TPL['titles']}--><!--{loop $_TPL['titles'] $value}--><!--{if $value}-->$value - <!--{/if}--><!--{/loop}--><!--{/if}--><!--{if $_SN[$space[uid]]}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
+
+<!--{if in_array($_GET['do'],$jquerydojs)||in_array($_GET['ac'],$jquerydojs)}-->
+<script language="javascript" type="text/javascript" src="source/jquery-1.2.1.pack.js"></script>
+<!--{/if}-->
+<script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_common.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
+
+<script language="javascript" type="text/javascript" src="source/script_ajax.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_face.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_manage.js"></script>
+
+<script language="javascript" src="source/script_validate.js"></script>
+
+<!--{if in_array($_GET['do'],$jquerydojs)||in_array($_GET['ac'],$jquerydojs)}-->
+<script language="javascript" type="text/javascript" src="source/menu.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+       		initMenuEx();
+});			
+</script>
+<!--{/if}-->
+<style type="text/css">
+@import url(template/default/style.css);
+<!--{if $_TPL['css']}-->
+@import url(template/default/{$_TPL[css]}.css);
+<!--{/if}-->
+<!--{if !empty($_SGLOBAL['space_theme'])}-->
+@import url(theme/$_SGLOBAL[space_theme]/style.css);
+<!--{elseif $_SCONFIG[template] != 'default'}-->
+@import url(template/$_SCONFIG[template]/style.css);
+<!--{/if}-->
+<!--{if !empty($_SGLOBAL['space_css'])}-->
+$_SGLOBAL[space_css]
+<!--{/if}-->
+@import url(template/$_SCONFIG[template]/galleriffic.css);
+</style>
+<link rel="shortcut icon" href="image/favicon.ico" />
+<link rel="edituri" type="application/rsd+xml" title="rsd" href="xmlrpc.php?rsd=$space[uid]" />
+</head>
+<body onmousedown="setDisplay('suggests', 0);">
+
+<div id="append_parent">
+
+</div>	
+<div id="ajaxwaitid"></div>
+
+<div class="gh">
+	<div class="logo">
+		<a title="土豆网 tudou.com 每个人都是生活的导演" href="http://www.tudou.com">土豆网</a>
+	</div>        
+	<div class="gs">            
+			
+	</div>        
+	<div class="gl">            
+		<div class="gq">                
+			<a href="http://www.tudou.com/my/playlist/list/quicklist.html" class="first">设为首页</a>
+			<a href="http://www.tudou.com/my/programs/watched.html#watched">加为收藏</a>
+			<a href="http://www.tudou.com/my/soft/">弹指软件</a>
+			<a class="gs_upload" href="http://www.tudou.com/my/program/publish.html">我要上榜</a>
+		</div>
+		<div class="gu">                
+			<div class="gui" id="uInfo">
+				<strong class="first">你好，<a target="_blank" href="http://www.tudou.com/home/_62967297">ramenshen</a></strong>
+				<span><a href="http://login.tudou.com/loginOut.do?r=0.9302397704216092">退出</a></span>
+				<span><a href="http://login.tudou.com/loginOut.do?r=0.9302397704216092">设置</a></span>
+				<span class="msg_num"><a class="gs_tanzhi" href="http://www.tudou.com/my/program/publish.html">我的弹指</a></span>
+				
+			</div>
+		</div> 
+	</div>
+</div>
+<div class="gn">
+	<div class="gn_i">
+		<ul class="gn_pri">            
+			<li class="first   current  "><a href="http://www.tudou.com/">首页</a></li>
+			<li><a href="http://www.tudou.com/top/">视频</a>        </li>
+			<li><a href="http://www.tudou.com/playlist/">豆单</a>    </li>
+			<li>        <a href="http://www.tudou.com/zone/">专区</a>    </li>
+			<li>        <a href="http://douwan.tudou.com/">豆丸</a>    </li>
+			<li>        <a href="http://hd.tudou.com/">黑豆</a>    </li>
+		</ul>
+	</div>
+</div>
+<div id="bm_header">
+    <a href="index.php" title="弹指">
+		<img src="template/$_SCONFIG[template]/image/bm_logo.jpg" alt="$_SCONFIG[sitename]" class="logo" style="height:50px;"/>
+	</a>
+    <div id="nav">
+		    
+		    <a  href="space.php?do=all" ><span>首页</span></a>
+   <!--{if $_SGLOBAL[supe_uid]}-->
+			<!--{if $_GET['do'] == 'all'}-->
+    			<a href="space.php?do=all" class="now"><span>我的弹指</span></a>
+			<!--{else}-->
+				<a href="space.php?do=all"><span>我的弹指</span></a>
+			<!--{/if}-->
+   <!--{/if}-->
+			<!--{if $_GET['do'] == 'bookmark'}-->
+				<a  href="space.php?do=bookmark" class="now"><span>导航</span></a>
+			<!--{else}-->
+			    <a  href="space.php?do=bookmark"><span>导航</span></a>
+			<!--{/if}-->
+
+			<!--{if $_GET['do'] == 'digg'}-->
+				<a  href="space.php?do=digg" class="now"><span>$_SC['digg_name']</span></a>
+			<!--{else}-->
+				<a  href="space.php?do=digg"><span>$_SC['digg_name']</span></a>
+			<!--{/if}-->
+            <!--<a  href="/movie/"><span>热荐</span></a>-->
+			<!--{if $_GET['ac'] == 'link'}-->
+				<a  href="cp.php?ac=link" class="now"><span>上榜</span></a>
+			<!--{else}-->
+				<a  href="cp.php?ac=link"><span>上榜</span></a>
+			<!--{/if}-->
+   <!--{if $_SGLOBAL[supe_uid]&&checkperm('allowdigg') }-->
+			<!--{if $_GET['ac'] == 'digg'}-->
+				<a href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add" class="now"><span>提交</span></a>
+			<!--{else}-->
+				<a href="cp.php?uid=$_SGLOBAL[supe_uid]&&ac=digg&op=add"><span>提交</span></a>
+			<!--{/if}-->
+   <!--{/if}-->
+   <!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
+			<!--{if ($_GET['ac'] == 'link')&&($_GET['op'] == 'manage')}-->
+				<a href="cp.php?uid=$_SGLOBAL[supe_uid]&ac=link&op=manage" class="now"><span>验证</span></a>
+			<!--{else}-->
+				<a href="cp.php?uid=$_SGLOBAL[supe_uid]&ac=link&op=manage"><span>验证</span></a>
+			<!--{/if}-->
+    <!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]&&checkperm('manageconfig') }-->
+			<a href="admincp.php"><span>管理</span></a>
+    <!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelinkclass') }-->
+			<!--{if ($_GET['ac'] == 'linkclass')&&($_GET['op'] == 'manage')}-->
+				<a href="cp.php?ac=linkclass&op=manage" class="now"><span>分类</span></a>
+			<!--{else}-->
+				<a href="cp.php?ac=linkclass&op=manage"><span>分类</span></a>
+			<!--{/if}-->
+    <!--{/if}-->
+    </div>    
+<div id="searbar">
+		<span><a id=homepage style="CURSOR: pointer" onclick="this.style.behavior='url(#default#homepage)';javascript:add_favorite();">加为收藏</a></span>
+        <span>设为首页</span>
+
+</div>
+
+    <div id="status">
+   <!--{if $_SGLOBAL[supe_uid]}-->
+			<a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a>
+			<a href="cp.php">设置</a>
+			<span>,欢迎回来!</span>
+			<a href="space.php?do=bookmark" target=_blank>$_SGLOBAL['supe_username']</a>
+			<div class="s_avatar">
+				<a href="space.php?uid=$_SGLOBAL[supe_uid]"><!--{avatar($_SGLOBAL[supe_uid])}--></a>
+			</div>
+			<span>您好,</span>
+			
+			
+			
+			
+
+   <!--{else}-->
+            <span class="pl">你好，请<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>或<a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
+   <!--{/if}-->
+
+
+</div>
+
+</div>
+	<div id="wrap">
+
+<!--{/if}-->
