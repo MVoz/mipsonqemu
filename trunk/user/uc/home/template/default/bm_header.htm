@@ -6,9 +6,9 @@
 <meta http-equiv="x-ua-compatible" content="ie=7" />
 <title><!--{if $_TPL['titles']}--><!--{loop $_TPL['titles'] $value}--><!--{if $value}-->$value - <!--{/if}--><!--{/loop}--><!--{/if}--><!--{if $_SN[$space[uid]]}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
 
-<!--{if in_array($_GET['do'],$jquerydojs)||in_array($_GET['ac'],$jquerydojs)}-->
+
 <script language="javascript" type="text/javascript" src="source/jquery-1.2.1.pack.js"></script>
-<!--{/if}-->
+
 <script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
@@ -69,11 +69,16 @@ $_SGLOBAL[space_css]
 		</div>
 		<div class="gu">                
 			<div class="gui" id="uInfo">
-				<strong class="first">你好，<a target="_blank" href="http://www.tudou.com/home/_62967297">ramenshen</a></strong>
-				<span><a href="http://login.tudou.com/loginOut.do?r=0.9302397704216092">退出</a></span>
-				<span><a href="http://login.tudou.com/loginOut.do?r=0.9302397704216092">设置</a></span>
-				<span class="msg_num"><a class="gs_tanzhi" href="http://www.tudou.com/my/program/publish.html">我的弹指</a></span>
-				
+			   <!--{if $_SGLOBAL[supe_uid]}-->
+				<strong class="first">你好，<a target="_blank" href="space.php?do=all">$_SGLOBAL['supe_username']</a></strong>
+				<span><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a></span>
+				<span><a href="cp.php">设置</a></span>				
+			   <!--{else}-->
+			    <strong class="first">你好，欢迎</strong>
+				<span><a href="do.php?ac=$_SCONFIG[login_action]">登录</a></span>
+				<span><a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
+			   <!--{/if}-->
+			   <span class="msg_num"><a class="gs_tanzhi" href="space.php?do=all">我的弹指</a></span>
 			</div>
 		</div> 
 	</div>
