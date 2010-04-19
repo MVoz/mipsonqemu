@@ -226,15 +226,15 @@
 
 	<div style="display: block;" class="wbbg" id="htm_user_signin">
 		<div style="border-bottom: 3px solid rgb(143, 195, 32);" class="right1">
-			<img height="13" width="13" src="http://img.tuke.com/dl_green.gif"><span class="green1">图客登录</span> 可以使用时代图片phototime用户登录
+			<span class="green1">弹指登录&raquo;</span>&nbsp;请使用email登录 
 		</div>
-		<form id="loginform" name="loginform" method="POST" action="/user/login.php">
+		<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
 			<div class="zc_index">
 				<div class="ward_border">
 				<div class="ward_borderl">登录账号：</div>
 				<div class="ward_borderr">
 				<label>
-				<input type="text" value="Email/用户名" id="html_unlogin" name="html_unlogin" class="srkuanga"><span id="html_unerr" class="cwxx"></span>
+				<input type="text" name="username" id="username" value="$membername" class="srkuanga"><span id="html_unerr" class="cwxx"></span>
 				</label>
 				</div>
 				</div>
@@ -242,7 +242,7 @@
 				<div class="ward_borderl">密&nbsp;&nbsp; 码：</div>
 				<div class="ward_borderr">
 				<label>
-				<input type="password" id="html_up" name="html_up" class="srkuanga"><span id="html_uperr" class="cwxx"></span>
+				<input type="password" name="password" id="password" value="$password" class="srkuanga"><span id="html_uperr" class="cwxx"></span>
 				</label>
 				</div>
 				</div>
@@ -253,8 +253,10 @@
 				</div>
 				<div class="ward_border">
 				<div style="float: right; width: 72%;" class="ward_borderr">
-				记住我<input type="checkbox" checked="checked" id="cookie" name="cookie" value="1">
-				<span style="margin-left: 60px;"><a class="linkf" href="/user/findpwd.html">忘记密码</a></span>
+				记住我<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck>
+				<span style="margin-left: 60px;"><a class="linkf" href="do.php?ac=lostpasswd">忘记密码</a></span>
+				<input type="hidden" name="refer" value="space.php?do=all" />
+				<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 				</div>
 				</div>
 			</div>
@@ -264,7 +266,7 @@
 
 	<div style="margin-top: 10px; display: block;" class="wbbg" id="htm_user_register">
     <div style="border-bottom: 3px solid rgb(120, 171, 215);" class="right1">
-    <img height="13" width="13" src="http://img.tuke.com/dl_bule.gif"><span class="green2">免费注册</span> 成为“图客”tuker！</div>
+    <span class="green2">免费注册&raquo;</span>&nbsp;轻松成为弹指人</div>
     <form method="post" action="/user/register.php" id="register_form" name="register_form">
     <input type="hidden" value="" name="url">
     <div class="zc_index">
