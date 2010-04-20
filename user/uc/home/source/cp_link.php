@@ -7,6 +7,7 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 //bookmark为"我要收藏"
+//get为浏览
 $ops=array('manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
@@ -34,7 +35,7 @@ $link_priority=array(
  'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
  'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
- 'get'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+ 'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
@@ -90,6 +91,7 @@ if(empty($linkitem)) {
 	}
 }
 if($op == 'get'){
+
 }
 elseif($op == 'relate'){
 		$relatedlist[]=$linkitem;
