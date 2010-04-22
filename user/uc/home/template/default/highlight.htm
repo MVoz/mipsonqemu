@@ -1,0 +1,87 @@
+	<script type="text/javascript" src="source/easySlider1.5.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){	
+			jQuery("#slider").easySlider({
+				controlsBefore:	'<div id="slider_no">',
+				controlsAfter:	'</div>',
+				auto: true, 
+				continuous: true
+			});
+
+		});	
+	</script>
+	<style type="text/css">
+	#slider{padding:2px 0px 5px 0px;float:right;}	
+	#slider ul, #slider li, {
+		margin:0;
+		padding:0;
+		list-style:none;
+		}
+	#slider li{ 
+		width:275px;
+		height:217px;
+		overflow:hidden; 
+		}	
+
+	#slider li{ 
+		background:#fff;
+		}		
+	#slider li h2{ 
+		margin:0 10px;
+		padding-top:10px;
+		}	
+	#slider li p{ 
+		margin:10px;
+		}
+/*
+	#slider_no{
+		width:275px;
+		height:25px;
+		overflow:hidden;
+		text-align:right;
+		border:1px solid #CCCCCC;
+		left:20px;
+
+		color:red;
+		position:absolute;
+		top:20px;
+		z-index:9999;
+	}
+*/
+#slider_no{
+	background:none repeat scroll 0 0 #eee;
+	float:right;
+	
+	margin-top:-25px!important;
+	margin-top:-30px;
+	display:block;
+	height:20px;
+	width:275px;
+	opacity:0.5;
+	z-index:9999;
+	text-align:right;
+}
+	</style>
+	<div id="slider">
+			<ul>				
+				<li>
+					<h2>What's Templatica anyway?</h2>
+					<p>Templatica is a membership based template club where you get 
+					<strong>full access to all templates</strong> in the <a href="http://templatica.com/templates">css template gallery</a> for a single and very affordable
+					<strong>annual fee of $24!</strong></p>
+				</li>
+				<li>
+					<h2>Why is the fee so low?</h2>
+					<p>I wanted to make premium templates <strong>available to as many of you as possible</strong>. 
+					<a href="http://templatica.com/templates">Templates</a> are not only meant for commercial but for 
+					<strong>educational purpose as well</strong>. I would like you to <a href="http://templatica.com/join">join</a>, 
+					download templates, analyze the code and hopefully learn something new.</p>
+				</li>			
+				<li>
+					<h2>What Templatica offers</h2>	
+					<p>Templatica offers static design templates with <strong>valid XHTML and CSS</strong>. 
+					All templates are tested in<strong> Firefox Win, IE7, IE6, Opera</strong> on Windows 
+					as well as <strong>Safari and Firefox</strong> on Mac.</p>
+				</li>	
+			</ul>
+	</div>

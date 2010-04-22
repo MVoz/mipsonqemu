@@ -26,6 +26,12 @@ caption, th { text-align: left; }
 .avatar125 IMG {
 	WIDTH: 112px; HEIGHT: 83px
 }
+.link200 {
+	float: left;margin-left:10px; BACKGROUND: url(image/200x150_thumb_bg) no-repeat; WIDTH: 200px;  HEIGHT: 150px;padding:7px 8px;
+}
+.link200 IMG {
+	WIDTH: 180px; HEIGHT: 135px
+}
 .avatar125_1 {
 	PADDING-RIGHT: 0px; PADDING-LEFT: 5px; BACKGROUND: url(image/125x95_thumb_bg.gif) no-repeat; PADDING-BOTTOM: 0px; WIDTH: 125px; PADDING-TOP: 5px; HEIGHT: 95px
 }
