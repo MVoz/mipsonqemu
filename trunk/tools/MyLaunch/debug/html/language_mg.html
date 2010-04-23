@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>language managment</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function getHtml(path)
+{
+	OptionsDlg.getHtml(path);
+}
+</script>
+</head>
+<body>
+<div id="wrap">
+	<div id="header"></div>
+	<div class="main">
+	<div id="lm">
+	<ul id="menu">
+		<li>
+			<a href="#" onclick="getHtml('./html/general.html');">通用</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/adv.html');" >高级</a>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
+				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/about.html');">关于</a>
+		</li>		
+	</ul>
+
+	</div>
+	<div id="rm">
+		<div id="taitou">输出</div>
+	<div id="area">
+		<table width="400">
+		<tr>
+			<td width="50%"><input type="checkbox" name="checkbox" id="checkbox" />&nbsp使用渐变</td>
+			<td width="50%" align="right" cellspacing="0">
+				<table width="80" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
+				<tr >
+				<td width="15" ><img src="image/button01.gif" height="20"/></td>
+				<td width="50" style="margin-left:-2px;" ><input name="textfield" type="text" id="textfield" size="10" style="border:0px;height:20px;" /></td>
+				<td width="15" style="margin-left:-2px;"><img src="image/button02.gif" height="20"/></td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</div>
+
+	<div id="taitou">帐号</div>
+	<div id="area">
+	<table width="400" >
+		<tr>
+			<td width="10%">用户:</td>
+			<td width="50%" align=left><input name="textfield" type="text" id="textfield" size=20/></td>
+			<td width="30%"></td>
+		</tr>
+		<tr >
+			<td width="10%">密码:</td>
+			<td width="50%" align=left><input name="textfield" type="text" id="textfield" size=20/></td>
+			<td width="30%" align=right>
+			<div class="btn">
+			<a href="#" style="width:113px;" onclick="syncClick();"><label style="width:113px;height:25px;">同步</label></a>
+			</div>
+			</td>
+		</tr>
+	</table>
+	</div>
+	</div>
+	</div>
+</div>
+</body>
+</html>
