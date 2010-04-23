@@ -3,7 +3,7 @@
 #include "catalog.h"
 
 #include <QSettings>
-#include <QSqlDatabase>
+#include <QtSql>
 /** This class does not pertain to plugins */
 #if defined(CATALOG_TYPES_DLL)
 #define CATALOG_TYPES_DLL_CLASS_EXPORT __declspec(dllexport)
