@@ -1,5 +1,7 @@
 TEMPLATE	= lib
 TARGET		= platform_win
+QT += sql
+QT += network
 CONFIG		+= plugin qt_warn debug_and_release
 VPATH 		+= ../../src/
 INCLUDEPATH += ../../src/
