@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="gb2312"?>   
+<bookmark>   
+ <category >   
+  <name><![CDATA[blog]]></name>   
+  <link></link>   
+  <description><![CDATA[记录好友blog站点]]></description>
+  <adddate>2009-03-02 12:17:36</adddate>
+  <modifydate>2009-03-02 12:17:36</modifydate>
+  <item>   
+   <name><![CDATA[我的文章]]></name>   
+   <description><![CDATA[记录architecture]]></description>
+   <link><![CDATA[http://blog.chinaunix.net/u2/79526/article_95261.html]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+  <item>   
+   <name><![CDATA[Linux内核学习]]></name>   
+   <description><![CDATA[Study Linux kenerl]]></description>
+   <link><![CDATA[http://blog.chinaunix.net/u1/51562/article_82856.htm]]></link>   
+   <adddate>2009-03-01 12:17:36</adddate> 
+   <lastvisit>2009-01-02 12:17:36</lastvisit>
+  </item>   
+ </category>   
+ <category >   
+  <name><![CDATA[web设计]]></name>   
+  <link></link>   
+  <description><![CDATA[记录有关web设计站点]]></description>
+  <adddate>2009-03-02 12:17:36</adddate>
+  <modifydate>2009-03-02 12:17:36</modifydate>
+ <item>   
+   <name><![CDATA[PHPManual]]></name>   
+   <description>php manual web </description>
+   <link><![CDATA[http://cn.php.net/manual/en/funcref.php]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+  <item>   
+   <name><![CDATA[w3school]]></name>   
+   <description><![CDATA[w3school 在线教程]]></description>
+   <link><![CDATA[http://www.w3school.com.cn/]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+ </category>   
+ <item>   
+   <name><![CDATA[湖东三房]]></name>   
+   <description><![CDATA[苏州湖东三房搜索]]></description>
+   <link><![CDATA[http://esf.suzhou.soufun.com/0010_277_4000_3_50_80_0_0_3030_1_0_0_0/]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+ <category >   
+  <name><![CDATA[音乐网站]]></name>   
+  <link></link>   
+  <description><![CDATA[记录好听免费music站点]]></description>
+  <adddate>2009-03-02 12:17:36</adddate>
+  <modifydate>2009-03-02 12:17:36</modifydate>
+  <item>   
+   <name><![CDATA[好听音乐网]]></name>   
+   <description><![CDATA[好听音乐网]]></description>
+   <link><![CDATA[http://seach.haoting.com/user/search2.asp?stype=Singer&keyword=%B4%BF%D2%F4%C0%D6]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+  <item>   
+   <name><![CDATA[闯关东]]></name>   
+   <description><![CDATA[央视大戏闯关东评书]]></description>
+   <link><![CDATA[http://www.ilisten.cn/showdetail.asp?id=7247]]></link>   
+   <adddate>2009-03-02 12:17:36</adddate> 
+   <lastvisit>2009-03-02 12:17:36</lastvisit>
+  </item>   
+ </category>   
+</bookmark>  

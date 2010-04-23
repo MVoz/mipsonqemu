@@ -1,0 +1,179 @@
+#ifndef UPDATER_THREAD_H
+#define UPDATER_THREAD_H
+
+#include <QThread>
+#include <QtNetwork/QHttp>
+#include <QBuffer>
+#include <QString>
+#include <QEventLoop>
+
+#include <boost/shared_ptr.hpp>
+
+#include <QMutex>
+#include <QDialog>
+#include <QtNetwork/QHttpResponseHeader>
+#include <QTimer>
+#include <QFile>
+#include <QtNetwork/QHttp>
+#include <QSettings>
+#include <QTimerEvent>
+#include <config.h>
+#include <globals.h>
+#include <xmlreader.h>
+#include <log.h>
+#include <QtCore/qobject.h>
+#include <QSemaphore>
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
+
+#if defined(UPDATER_THREAD_DLL)
+#define UPDATER_THREAD_DLL_CLASS_EXPORT __declspec(dllexport)
+#else
+#define UPDATER_THREAD_DLL_CLASS_EXPORT __declspec(dllimport)
+#endif
+
+#define UPDATE_FILE_PREFIX "ramen_launchy_"
+#define UPDATE_MODE_GET_INI 1
+#define UPDATE_MODE_GET_FILE 2
+#define UPDATE_MAX_RETRY_TIME 3
+#define HTTP_OK 200
+#define HTTP_FILE_NOT_FOUND 404
+
+#define UPDATE_FILE_NAME "update.ini"
+#define UPDATE_SERVER_HOST "192.168.115.2"
+#define UPDATE_SERVER_URL "update.ini"
+
+#define SETTING_MERGE_LOCALTOSERVER  0
+#define SETTING_MERGE_SERVERTOLOCAL  1
+
+#define VERSION_INFO(x) (((x.at(0).toInt())<<24) | ((x.at(1).toInt())<<16) | ((x.at(2).toInt())<<8) | ((x.at(3).toInt())))
+class  UPDATER_THREAD_DLL_CLASS_EXPORT GetFileHttp:public QThread
+{
+	Q_OBJECT;
+public:
+	QHttp * http[UPDATE_MAX_RETRY_TIME];
+	QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
+	QFile *file[UPDATE_MAX_RETRY_TIME];
+	QString host;
+	QString url;
+//	QString filename;
+	QString updaterFilename;
+	QString downloadFilename;
+	uint checksum;
+	
+	QDateTime* updateTime;
+	QSettings *localSettings;
+	QSettings *serverSettings;
+	QMutex mutex;
+	int retryTime;
+	int mode;
+	int statusCode;
+	int errCode;
+public:
+	 GetFileHttp(QObject * parent = 0,int mode=0,uint checksum=0);	
+	~GetFileHttp()
+	{
+		/*
+		if(file){
+			file->close();
+			delete file;
+			file=NULL;
+		}
+		*/
+		int i=0;
+		for(i=0;i<retryTime;i++)
+		{
+			if(http[i])
+				{
+					//http[i]->close();
+					http[i]->deleteLater();
+				}
+			if(httpTimer[i])
+				{
+					httpTimer[i]->stop();
+					httpTimer[i]->deleteLater();
+				}
+			if(file[i])
+				{
+					file[i]->close();
+					file[i]->deleteLater();
+				}
+		}
+	}
+	void setHost(QString str)
+	{
+		host = str;
+	}
+	void setUrl(QString str)
+	{
+		url = str;
+		updaterFilename=str;
+	}
+	void run();
+//	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
+	void newHttp();
+public slots: 
+	//void updaterDone(bool error);
+	void getFileDone(bool error);
+	void on_http_stateChanged(int stat);
+	void on_http_dataReadProgress(int done, int total);
+	void on_http_dataSendProgress(int done, int total);
+	void on_http_requestFinished(int id, bool error);
+	void on_http_requestStarted(int id);
+	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
+	void httpTimerSlot();
+      signals:
+	void  getIniDoneNotify(int error);
+	void  getFileDoneNotify(int error);
+	void updateStatusNotify(int type);
+	
+};
+class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
+{
+	Q_OBJECT;
+
+public:
+	QDateTime* updateTime;
+	QSettings *localSettings;
+	QSettings *serverSettings;
+	int timers;
+	QSemaphore sem_downfile_success;
+	QSemaphore sem_downfile_start;
+	int needed;
+	int error;
+	//QSemaphore testNet;
+	QNetworkAccessManager *manager;
+	QNetworkReply *reply;
+	QTimer* testNetTimer;
+	
+
+public:
+	 updaterThread(QObject * parent = 0):QThread(parent)
+	 	{
+	 		timers=0;
+			needed=0;
+			error=0;
+	 	}
+	~updaterThread()
+	{
+		sem_downfile_success.release(sem_downfile_success.available());
+		sem_downfile_start.release(sem_downfile_start.available());
+		//testNet.release(testNet.available());
+	}
+	void run();
+	void downloadFileFromServer(QString pathname,int mode,uint checksum);
+	int checkToSetiing(QSettings *settings,const QString &filename1,const QString& version1);
+	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
+
+public slots: 
+	void getIniDone(int error);
+    	void getFileDone(int error);
+	void testNetFinished(QNetworkReply*);
+	void testNetTimeout();
+
+      signals:
+//	void  updaterDoneNotify(bool error);
+	void updateStatusNotify(int type);
+	
+};
+#endif

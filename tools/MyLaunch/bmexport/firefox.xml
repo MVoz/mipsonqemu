@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bookmark version="1.0" updateTime="2009-11-22 21:36:20">
+<browserType name="firefox">
+<category groupId="1" parentId="0">
+<name><![CDATA[]]></name>
+<link><![CDATA[]]></link>
+<category groupId="2" parentId="1">
+<name><![CDATA[书签菜单]]></name>
+<link><![CDATA[]]></link>
+<item  parentId="2">
+<name><![CDATA[冬瓜网 Dongua.com]]></name>
+<link><![CDATA[http://www.dongua.com/]]></link>
+</item>
+<item  parentId="2">
+<name><![CDATA[获取书签附加组件]]></name>
+<link><![CDATA[https://addons.mozilla.org/zh-CN/firefox/bookmarks/]]></link>
+</item>
+<category groupId="14" parentId="2">
+<name><![CDATA[Mozilla Firefox]]></name>
+<link><![CDATA[]]></link>
+<item  parentId="14">
+<name><![CDATA[帮助和教程]]></name>
+<link><![CDATA[http://www.mozilla.com/zh-CN/firefox/help/]]></link>
+</item>
+<item  parentId="14">
+<name><![CDATA[自定义 Firefox]]></name>
+<link><![CDATA[http://www.mozilla.com/zh-CN/firefox/customize/]]></link>
+</item>
+<item  parentId="14">
+<name><![CDATA[加入进来]]></name>
+<link><![CDATA[http://www.mozilla.com/zh-CN/firefox/community/]]></link>
+</item>
+<item  parentId="14">
+<name><![CDATA[关于我们]]></name>
+<link><![CDATA[http://www.mozilla.com/zh-CN/firefox/about/]]></link>
+</item>
+<item  parentId="14">
+<name><![CDATA[GoalHi足球—努力做最好的足球网站]]></name>
+<link><![CDATA[http://www.goalhi.com/]]></link>
+</item>
+</category>
+<item  parentId="2">
+<name><![CDATA[bbccom]]></name>
+<link><![CDATA[http://www.bbc.com]]></link>
+</item>
+<category groupId="83" parentId="2">
+<name><![CDATA[ramens]]></name>
+<link><![CDATA[]]></link>
+<item  parentId="83">
+<name><![CDATA[sohu]]></name>
+<link><![CDATA[http://www.sohu.com/]]></link>
+</item>
+<item  parentId="83">
+<name><![CDATA[GoalHi]]></name>
+<link><![CDATA[http://www.goalhi.com/]]></link>
+</item>
+</category>
+</category>
+<category groupId="3" parentId="1">
+<name><![CDATA[书签工具栏]]></name>
+<link><![CDATA[]]></link>
+<item  parentId="3">
+<name><![CDATA[新手上路]]></name>
+<link><![CDATA[http://www.mozilla.com/zh-CN/firefox/central/]]></link>
+</item>
+<category groupId="87" parentId="3">
+<name><![CDATA[我的工具]]></name>
+<link><![CDATA[]]></link>
+<item  parentId="87">
+<name><![CDATA[114]]></name>
+<link><![CDATA[http://www.114.com/]]></link>
+</item>
+</category>
+</category>
+</category>
+</browserType>
+</bookmark>

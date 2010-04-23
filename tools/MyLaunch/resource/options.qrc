@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>image/arrow_g.gif</file>
+     <file>image/arrow_y.gif</file>
+     <file>image/button.gif</file>
+     <file>image/button01.gif</file>
+     <file>image/button02.gif</file>
+     <file>image/button03.gif</file>
+     <file>image/button04.gif</file>
+     <file>image/button_green.gif</file>
+     <file>image/line_g.gif</file>
+     <file>image/right_bg.gif</file>
+     <file>image/top.jpg</file>
+     <file>image/tt_bg.gif</file>
+     <file>image/loading.gif</file>
+     <file>image/button_gray_80.gif</file>
+     <file>image/button_green_80.gif</file>
+     <file>jm.css</file>
+ </qresource>
+ </RCC>
