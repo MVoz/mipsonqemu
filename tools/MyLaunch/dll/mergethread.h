@@ -104,6 +104,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	        opera_enabled=settings->value("adv/ckSupportOpera",false).toBool();
 		firefox_version=0;
 		modifiedFlag=0;
+		terminatedFlag=0;
 	}
 	 ~mergeThread()
 	{
@@ -136,6 +137,9 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	void deletebmgarbarge(QSqlQuery* q,uint delId);
 	int testFirefoxDbLock(QSqlDatabase& db);
+	void setTerminated(uint flag){
+			terminatedFlag=flag;
+		}
       signals:
 	void done(bool error);
    public:
@@ -164,6 +168,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	QSqlDatabase* db;
 	uint modifiedInServer;
 	uint modifiedFlag;
+	volatile uint terminatedFlag;
 };
 
 #endif
