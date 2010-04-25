@@ -21,6 +21,7 @@
 #include <globals.h>
 #include <xmlreader.h>
 #include <log.h>
+#include "mergethread.h"
 #include <QtCore/qobject.h>
 
 #include <QSqlDatabase>
@@ -107,6 +108,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	int http_finish;
 	int http_timerover;
 	QSqlDatabase *db;
+	mergeThread *mgthread;
 	int error;
 #ifdef CONFIG_HTTP_TIMEOUT
 //	uint httpTimeout;
@@ -154,6 +156,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 	void mergeDone();
 	void httpTimerSlot();
+	void stopSync();
       signals:
 	void bookmarkFinished(bool error);
 	void updateStatusNotify(int type);

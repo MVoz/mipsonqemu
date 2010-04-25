@@ -311,5 +311,6 @@ private slots:
 #endif
 	signals:
 		void reSync();
+		void stopSyncNotify();
 };
 #endif

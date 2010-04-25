@@ -272,22 +272,25 @@ OPERA:
 
 	/**************************************opera end**************************************************/
 #ifdef CONFIG_BOOKMARK_TODB
-	QSqlQuery	query("", *db);
-	db->transaction();
-	uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
-	if(ie_enabled)
-	   	bmintolaunchdb(&query,&ie_bc,COME_FROM_IE,delId);
-	if(firefox_enabled)
-		bmintolaunchdb(&query,&firefox_bc,COME_FROM_FIREFOX,delId);
-	if(opera_enabled)
-		bmintolaunchdb(&query,&opera_bc,COME_FROM_OPERA,delId);
-	deletebmgarbarge(&query,delId);
-	db->commit();
-	query.clear();
+	if(!terminatedFlag)
+	{
+		QSqlQuery	query("", *db);
+		db->transaction();
+		uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
+		if(ie_enabled)
+		   	bmintolaunchdb(&query,&ie_bc,COME_FROM_IE,delId);
+		if(firefox_enabled)
+			bmintolaunchdb(&query,&firefox_bc,COME_FROM_FIREFOX,delId);
+		if(opera_enabled)
+			bmintolaunchdb(&query,&opera_bc,COME_FROM_OPERA,delId);
+		deletebmgarbarge(&query,delId);
+		db->commit();
+		query.clear();
+	}
 #endif
 //write to lastupdate
 	
-	if(modifiedFlag){
+	if(modifiedFlag&&!terminatedFlag){
 		QFile localfile(localBmFullPath);
 		localfile.open(QIODevice::WriteOnly| QIODevice::Truncate);
 		QTextStream os(&localfile);
@@ -315,7 +318,7 @@ OPERA:
 
 	getUpdatetime(updateTime);
 	qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
-	if(!updateTime.isEmpty())
+	if(!terminatedFlag&&!updateTime.isEmpty())
 		settings->setValue("updateTime", updateTime);
 	setUpdatetime("");	//set null
 //close the firefox db
@@ -864,6 +867,8 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 	}
 	for (int i = 0; i < localList->size(); i++)
 	  {
+	  	  if(terminatedFlag)
+		  		break;
 		  bookmark_catagory item = (*localList)[i];
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = bmItemInList(&item, serverList);
@@ -895,6 +900,8 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 	  }
 	foreach(bookmark_catagory item, *serverList)
 	{
+		if(terminatedFlag)
+		  		break;
 		int inLocal = bmItemInList(&item, localList);		
 		if(inLocal>=0){
 			continue;
@@ -923,6 +930,8 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 	}
 	for (int i = 0; i < localList->size(); i++)
 	  {
+	  	  if(terminatedFlag)
+		  		break;
 		  bookmark_catagory item = (*localList)[i];
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = inLast;
@@ -943,6 +952,8 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 	  }
 	foreach(bookmark_catagory item, *lastupdateList)
 	{
+		  if(terminatedFlag)
+		  		break;
 		int inLocal = bmItemInList(&item, localList);
 		int inLast = 1;
 		if(inLocal>=0){

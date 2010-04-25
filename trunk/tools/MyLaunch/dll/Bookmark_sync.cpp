@@ -67,6 +67,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 	//httpTimerId=startTimer(10*1000);
 //	updateTime=d;
 	this->db=db;
+	mgthread=NULL;
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 }
@@ -80,9 +81,32 @@ void BookmarkSync::httpTimerSlot()
 	if(!http_finish)
 		http->abort();
 }
+void BookmarkSync::stopSync()
+{
+	//emit updateStatusNotify(HTTP_TIMEOUT);	
+	QDEBUG_LINE;
+		qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
+//	if(httpTimer->isActive())
+//		httpTimer->stop();
+	switch (http_finish)
+	{
+		case 0:			
+			http->abort();
+			break;
+		case 1:
+			if(mgthread&&mgthread->isRunning())
+			{
+				QDEBUG("shut down the mergethread!");
+				mgthread->setTerminated(1);
+			}
+			break;			
+			
+	}
+}
 
 void BookmarkSync::run()
 {
+		qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
 		 qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 		 http_finish=0;
 		 http_timerover=0;
@@ -94,6 +118,7 @@ void BookmarkSync::run()
 		connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
      		httpTimer->start(10*1000);
 		httpTimer->moveToThread(this);
+		httpTimer->setSingleShot(true);
 #else
 		httpTimerId=startTimer(10*1000);
 #endif
@@ -128,7 +153,10 @@ void BookmarkSync::run()
 	//	QDEBUG("close httptimer");
 		//if(!http_timerover)
 		if(httpTimer->isActive())
-			httpTimer->stop();		
+			{
+				qDebug("kill http timer!");
+				httpTimer->stop();		
+			}
 		QDEBUG("sync thread quit.............");
 	 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
 
@@ -195,7 +223,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
      if(!error)	
 	{
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
-		mergeThread *mgthread = new mergeThread(this,db,settings,iePath);
+		mgthread = new mergeThread(this,db,settings,iePath);
 		emit updateStatusNotify(UPDATE_PROCESSING);
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
 		mgthread->start();
@@ -226,6 +254,10 @@ void BookmarkSync::mergeDone()
 	QDEBUG("quit merge thread...........");
 	if(!error){
 		emit updateStatusNotify(SYNC_SUCCESSFUL);
+	}
+	if(mgthread){
+		mgthread->deleteLater();
+		mgthread=NULL;
 	}
 	exit();
 }

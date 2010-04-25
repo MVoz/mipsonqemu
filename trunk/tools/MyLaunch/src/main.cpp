@@ -1466,7 +1466,9 @@ void MyWidget::stopSyncSlot()
 {
 	if(gSyncer){
 			QDEBUG("stop sync.................");
-			gSyncer->httpTimerSlot();			
+			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
+			emit stopSyncNotify();
+			//gSyncer->stopSync();			
 		}
 }
 void MyWidget::reSyncSlot()
@@ -1540,6 +1542,7 @@ void MyWidget::startSync()
 	connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
 	connect(syncDlg.get(),SIGNAL(reSync()),this,SLOT(reSyncSlot()));
 	connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
@@ -1604,7 +1607,7 @@ void MyWidget::syncDlgTimeout()
 
 	
 	syncDlgTimer->stop();
-	delete syncDlgTimer;
+	syncDlgTimer->deleteLater();
 	syncDlgTimer=NULL;
 	
 	syncDlg->accept();
