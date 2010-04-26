@@ -50,7 +50,7 @@
 			vertical:		false,
 			speed: 			2000,
 			auto:			false,
-			pause:			2000,
+			pause:			8000,
 			continuous:		false
 		}; 
 		

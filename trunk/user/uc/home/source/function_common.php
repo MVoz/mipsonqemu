@@ -2437,7 +2437,7 @@ function producebmxml($uid,$arr)
 	if($lastupdatetime==$lastmodified)
 	{
 		//do nothing
-		exitwithtip('do_nothing');
+		//exitwithtip('do_nothing');
 	}
 
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
