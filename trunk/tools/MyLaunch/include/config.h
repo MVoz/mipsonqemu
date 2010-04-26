@@ -41,6 +41,7 @@
 #else
 #define BM_SERVER_GET_BMXML_URL "http://192.168.1.115/uc/home/do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
 #endif
+#define BM_SERVER_TESTACCOUNT_URL "http://192.168.1.115/uc/home/do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
 #define BM_SERVER_ADD_URL "/uc/home/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
 #define BM_SERVER_DELETE_URL "/uc/home/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
@@ -60,7 +61,7 @@
 
 #endif
 
-#define BM_TEST_ACCOUNT_URL "/testAccount.php"
+#define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
 #define BM_XML_FROM_SERVER	"bm_from_server.xml"
 #define BM_XML_FROM_FIREFOX  "firefox.xml"
 

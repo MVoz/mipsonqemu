@@ -98,8 +98,8 @@ public slots:
 	void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
 	void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
 	void getListDirectory(const QString& id,const int& type);
-	void bookmark_finished(bool error);
-	void testAccountFinished(bool err,QString result);
+	//void bookmark_finished(bool error);
+	//void testAccountFinished(bool err,QString result);
 	void accountTestClick(const QString& name,const QString& password);
 	void proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword);
 	void proxyTestslotError(QNetworkReply::NetworkError err);
@@ -110,5 +110,6 @@ public slots:
 signals:
 	void rebuildcatalogSignal();
 	void optionStartSyncNotify();
+	void testAccountNotify(const QString&,const QString&);
 };
 #endif

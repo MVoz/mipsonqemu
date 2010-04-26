@@ -101,7 +101,7 @@ void OptionsDlg::contextMenuEvent(QContextMenuEvent * event)
 void OptionsDlg::startSync()
 {
 	emit optionStartSyncNotify();
-	
+	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
 #if 0
 	if(!(settings->value("Account/Username","").toString().isEmpty())&&!(settings->value("Account/Userpasswd","").toString().isEmpty()))
 	{
@@ -142,7 +142,7 @@ void OptionsDlg::startSync()
 	}
 #endif
 }
-
+/*
 void OptionsDlg::bookmark_finished(bool error)
 {
 	QDEBUG("%s %d error=%d syncDlg=0x%08x",__FUNCTION__,__LINE__,error,syncDlg);
@@ -151,6 +151,7 @@ void OptionsDlg::bookmark_finished(bool error)
 	if (!error&&syncDlg)
 		syncDlg->accept();	
 }
+
 void OptionsDlg::testAccountFinished(bool err,QString result)
 {
 	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,syncDlg,qPrintable(result));
@@ -158,13 +159,14 @@ void OptionsDlg::testAccountFinished(bool err,QString result)
 	gSyncer.reset();
 	if (!err&&syncDlg)
 		{
-			if(result=="1")
+			if(result==SUCCESSSTRING)
 				syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
 			else
 				syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
 			
 		}
 }
+*/
 void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
 {
 	QDEBUG("%s error=%d\n",__FUNCTION__,err);
@@ -248,7 +250,9 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 {
 	QDEBUG("username=%s password=%s......",qPrintable(name),qPrintable(password));
+	emit testAccountNotify(name,password);
 #if 1
+#if 0
 	if(!gSyncer)
 	{
 		syncDlg = new synchronizeDlg(this);
@@ -260,10 +264,23 @@ void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg, SLOT(readDateProgress(int, int)));
 		gSyncer->setHost(BM_SERVER_ADDRESS);
 		gSyncer->setUrl(BM_TEST_ACCOUNT_URL);
+
+		qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
+		uint key=qrand()%(getkeylength());
+		QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
+		QString auth_encrypt_str="";
+		encryptstring(authstr,key,auth_encrypt_str);
+
+		QString testaccount_url;
+		
+		testaccount_url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);		
+
+		gSyncer->setUrl(testaccount_url);
 		gSyncer->setUsername(password);
 		gSyncer->setPassword(name);
 		gSyncer->start();
 	}
+#endif
 #else
 	postHttp accountTestHttp(this,POST_HTTP_TYPE_TESTACCOUNT);
 	QString postString = QString("name=%1&password=%2").arg(QString(QUrl::toPercentEncoding(name))).arg(QString(QUrl::toPercentEncoding(password)));
