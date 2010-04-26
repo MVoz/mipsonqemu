@@ -1525,6 +1525,7 @@ void MyWidget::reSyncSlot()
 }
 void MyWidget::startSync()
 {
+	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
 	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty())&&!gSyncer)
 	{
 #ifdef CONFIG_SYNDLG_SHAREPTR
@@ -1601,6 +1602,66 @@ void MyWidget::startSync()
 	//  syncDlg->exec();
 
 
+}
+void MyWidget::testAccountFinished(bool err,QString result)
+{
+	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,syncDlg,qPrintable(result));
+	gSyncer->wait();
+	gSyncer.reset();
+	if (!err&&syncDlg)
+		{
+			if(result==SUCCESSSTRING)
+				{
+					syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
+					syncDlgTimer=new QTimer();
+					connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
+					connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+					connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+					
+     					syncDlgTimer->start(10*1000);
+					syncDlgTimer->setSingleShot(true);
+				}
+			else
+				syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
+			
+		}
+}
+
+void MyWidget::testAccount(const QString& name,const QString& password)
+{
+	if(!gSyncer)
+	{
+		syncDlg.reset(new synchronizeDlg(this));
+		syncDlg->setModal(1);
+		syncDlg->show();	
+		if(syncDlgTimer)
+		{
+			if(syncDlgTimer->isActive())
+				syncDlgTimer->stop();
+			delete syncDlgTimer;
+			syncDlgTimer=NULL;
+		}
+		gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_TESTACCOUNT_MODE));
+		connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
+		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+		gSyncer->setHost(BM_SERVER_ADDRESS);
+
+		qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
+		uint key=qrand()%(getkeylength());
+		QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
+		QString auth_encrypt_str="";
+		encryptstring(authstr,key,auth_encrypt_str);
+
+		QString testaccount_url;
+		
+		testaccount_url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);		
+
+		gSyncer->setUrl(testaccount_url);
+		gSyncer->setUsername(password);
+		gSyncer->setPassword(name);
+		gSyncer->start();
+	}
 }
 void MyWidget::syncDlgTimeout()
 {
@@ -1681,7 +1742,9 @@ void MyWidget::menuOptions()
 	optionsOpen = true;
 	ops = new OptionsDlg(this,&gLastUpdateTime,gSettings,gIeFavPath,&db,&gBuilder);
 	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
-	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));	
+	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
+	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(testAccount(const QString&,const QString&)));	
+	
 	ops->setModal(0);
 	ops->setObjectName("options");
 	ops->exec();

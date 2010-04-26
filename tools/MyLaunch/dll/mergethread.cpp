@@ -349,6 +349,7 @@ OPERA:
 		}
 #endif
 	}
+
 }
 int mergeThread::testFirefoxDbLock(QSqlDatabase& db)
 {

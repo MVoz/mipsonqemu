@@ -142,30 +142,18 @@ void BookmarkSync::run()
 		emit updateStatusNotify(BOOKMARK_SYNC_START);	
 		http->get(url, file);
 		int ret=exec();
-		//if(!updateTime->isNull())
-		//{
-		//	QSettings s("HKEY_CURRENT_USER\\Software\\Yiye\\",	QSettings::NativeFormat);
-		//	s.setValue("lastUpdateTime", updateTime->toString(TIME_FORMAT));
-		//	s.sync();
-		//}
 		if(!http_timerover)
 			emit bookmarkFinished(ret);
-	//	QDEBUG("close httptimer");
-		//if(!http_timerover)
-		if(httpTimer->isActive())
-			{
-				qDebug("kill http timer!");
-				httpTimer->stop();		
-			}
+
 		QDEBUG("sync thread quit.............");
 	 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
 
 		http->setHost(BM_SERVER_ADDRESS);
 		connect(http, SIGNAL(done(bool)), this, SLOT(testAccountFinished(bool)));
-		QHttpRequestHeader header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
+		//QHttpRequestHeader header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
 		
-		header.setValue("Host", BM_SERVER_ADDRESS);
-		header.setContentType("application/x-www-form-urlencoded");
+		//header.setValue("Host", BM_SERVER_ADDRESS);
+		//header.setContentType("application/x-www-form-urlencoded");
 		// header.setValue("cookie", "jblog_authkey=MQkzMmJlNmM1OGRmODFkNGExMThiMmNhZjcyMGVjOTUwMA");           
 		// postString.sprintf("name=%s&link=%s",qPrintable(bc.name),qPrintable(bc.link));
 		//       logToFile("%s %d postString=%s",__FUNCTION__,__LINE__,qPrintable(postString));
@@ -173,11 +161,12 @@ void BookmarkSync::run()
 		resultBuffer = new QBuffer();
 		resultBuffer->moveToThread(this);
 		resultBuffer->open(QIODevice::ReadWrite);
-		QString postString = QString("name=%1&password=%2").arg(QString(QUrl::toPercentEncoding(username))).arg(QString(QUrl::toPercentEncoding(password)));
-		http->request(header, postString.toUtf8(), resultBuffer);
+		//QString postString = QString("name=%1&password=%2").arg(QString(QUrl::toPercentEncoding(username))).arg(QString(QUrl::toPercentEncoding(password)));
+		//http->request(header, postString.toUtf8(), resultBuffer);
+		http->get(url, resultBuffer);
 		int ret=exec();	
-
-		emit testAccountFinishedNotify(ret,QString(resultBuffer->data()));
+		if(!http_timerover)
+			emit testAccountFinishedNotify(ret,QString(resultBuffer->data()));
 
 	//	QDEBUG("http=0x%08x ",http);
 		resultBuffer->close();
@@ -186,6 +175,11 @@ void BookmarkSync::run()
 		QDEBUG("testAccount thread quit.............\n");
 	 	}
 
+			if(httpTimer->isActive())
+			{
+				qDebug("kill http timer!");
+				httpTimer->stop();		
+			}
 }
 
 #ifdef CONFIG_HTTP_TIMEOUT
@@ -204,8 +198,10 @@ void BookmarkSync::quit()
 */
 void BookmarkSync::testAccountFinished(bool error)
 {
+	http_finish=1;
+	this->error=error;
 	QDEBUG_LINE;
-	httpTimer->stop();
+	//httpTimer->stop();
 	exit(error);
 }
 void BookmarkSync::bookmarkGetFinished(bool error)

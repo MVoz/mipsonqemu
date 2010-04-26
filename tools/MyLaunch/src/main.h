@@ -299,9 +299,11 @@ public slots:
 	void startSync();
 	void updateApp();
 	void bookmark_finished(bool error);
+	void testAccountFinished(bool err,QString result);
 	void bookmark_syncer_finished();
 	void reSyncSlot();
 	void stopSyncSlot();
+	void testAccount(const QString&name,const QString& password);
 //	void restoreMainwin();
 #endif
 private slots:
