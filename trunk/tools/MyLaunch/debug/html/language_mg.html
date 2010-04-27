@@ -4,9 +4,18 @@
 <title>language managment</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
+var lang=0;//0--en 1--ch
+var language = {
+    general:['general',"通用"]
+};
+
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
+}
+function tr(a)
+{
+		document.write(language[a][lang]);
 }
 </script>
 </head>
@@ -17,7 +26,11 @@ function getHtml(path)
 	<div id="lm">
 	<ul id="menu">
 		<li>
-			<a href="#" onclick="getHtml('./html/general.html');">通用</a>
+			<a href="#" onclick="getHtml('./html/general.html');">
+				<script>
+					tr('general');
+				</script>
+			</a>
 			<ul>
 				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
 				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
