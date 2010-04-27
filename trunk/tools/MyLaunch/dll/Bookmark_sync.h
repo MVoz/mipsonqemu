@@ -20,6 +20,7 @@
 #include <config.h>
 #include <globals.h>
 #include <xmlreader.h>
+#include <QtNetwork/QNetworkProxy>
 #include <log.h>
 #include "mergethread.h"
 #include <QtCore/qobject.h>
@@ -93,6 +94,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
       public:
 	QHttp * http;
 	postHttp *accountTestHttp;
+	QNetworkProxy* netProxy;
 	QTimer* httpTimer;
 	QString host;
 	QString url;
@@ -110,6 +112,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	QSqlDatabase *db;
 	mergeThread *mgthread;
 	int error;
+	uint httpProxyEnable;
 #ifdef CONFIG_HTTP_TIMEOUT
 //	uint httpTimeout;
 //	uint httpTimerId;
@@ -157,6 +160,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void mergeDone();
 	void httpTimerSlot();
 	void stopSync();
+	void setNetworkProxy();
       signals:
 	void bookmarkFinished(bool error);
 	void updateStatusNotify(int type);

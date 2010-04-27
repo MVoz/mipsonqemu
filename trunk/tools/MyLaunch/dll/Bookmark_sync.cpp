@@ -5,6 +5,24 @@
 #include <QStringList>
 #include <bmapi.h>
 #include <posthttp.h>
+void BookmarkSync::setNetworkProxy()
+{
+	//check proxy
+	if(settings->value("HttpProxy/proxyEnable", false).toBool())
+	{
+		qDebug()<<"http proxy enable!";
+		httpProxyEnable=1;
+		 netProxy=new QNetworkProxy();
+		 netProxy->setType(QNetworkProxy::HttpProxy);
+		 netProxy->setHostName(settings->value("HttpProxy/proxyAddress", "").toString());
+		
+		 netProxy->setPort(settings->value("HttpProxy/proxyPort", "").toUInt());
+		 netProxy->setUser(settings->value("HttpProxy/proxyUsername", "").toString());
+		 netProxy->setPassword(settings->value("HttpProxy/proxyPassword", "").toString());
+		
+	}
+}
+
 void BookmarkSync::on_http_stateChanged(int stat)
 {
 
@@ -68,6 +86,8 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 //	updateTime=d;
 	this->db=db;
 	mgthread=NULL;
+	netProxy=NULL;
+	httpProxyEnable=0;
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 }
@@ -111,7 +131,10 @@ void BookmarkSync::run()
 		 http_finish=0;
 		 http_timerover=0;
 		 error=0;
+		 setNetworkProxy();
 		http = new QHttp();
+		if(httpProxyEnable)
+			http->setProxy(*netProxy);
 #if 1
 		httpTimer=new QTimer();
 		//QDEBUG("http=%08x httpTimer=%08x",http,httpTimer);
@@ -254,6 +277,10 @@ void BookmarkSync::mergeDone()
 	if(mgthread){
 		mgthread->deleteLater();
 		mgthread=NULL;
+	}
+	if(netProxy){
+		delete netProxy;
+		netProxy=NULL;
 	}
 	exit();
 }
