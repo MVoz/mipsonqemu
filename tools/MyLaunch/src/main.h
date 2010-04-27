@@ -199,7 +199,6 @@ public:
 	bool optionsOpen;
 	uint updateTimes;// update times
 	QTimer* syncDlgTimer;
-
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
 #ifdef CONFIG_SYNDLG_SHAREPTR
