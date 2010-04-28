@@ -63,6 +63,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QS
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
 	manager=NULL;
+	reply=NULL;
 	updaterDlg=NULL;
 	updaterthread=NULL;
 	
@@ -73,6 +74,11 @@ OptionsDlg::~OptionsDlg()
 	QResource::unregisterResource("options.rcc");
 	cmdLists.clear();
 	dirLists.clear();
+	if(manager){
+				 manager->deleteLater();
+				 manager=NULL;
+		}
+
 	QDialog::accept();
 }
 
@@ -185,7 +191,8 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 {	
 	int err=testreply->error();
 	QDEBUG("%s error=%d\n",__FUNCTION__,testreply->error());
-	testProxyTimer.stop();
+	if(testProxyTimer.isActive())
+		testProxyTimer.stop();
 	switch (err){
 		case QNetworkReply::NoError:
 			QMessageBox::information(this, windowTitle(), QString::fromUtf8("代理服务器工作正常！"));
@@ -197,26 +204,25 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 			QMessageBox::critical(this, windowTitle(), QObject::tr("The proxy server works failed"));
 			break;			
 		}
-	reply->close();
-	disconnect(manager, 0, 0, 0);	
+	//reply->close();
+	//disconnect(manager, 0, 0, 0);	
+	
 	//delete manager;
 	//manager=NULL;
 }
 void OptionsDlg::proxtTestTimerSlot()
 {
 	QDEBUG_LINE;
-	testProxyTimer.stop();
+	if(testProxyTimer.isActive())
+		testProxyTimer.stop();
 	reply->abort();
 }
 void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
-	if(manager){
-			delete manager;
-			manager=NULL;
-		}
-	// QNetworkProxy proxy;
-	QDEBUG("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s\n",
-	__FUNCTION__,qPrintable(proxyAddr),qPrintable(proxyPort),qPrintable(proxyUsername),qPrintable(proxyPassword));
+
+
+	QDEBUG("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s manager=0x%08x reply=0x%08x\n",
+	__FUNCTION__,qPrintable(proxyAddr),qPrintable(proxyPort),qPrintable(proxyUsername),qPrintable(proxyPassword),manager,reply);
 	if(!manager)
 	{
 	 proxy.setType(QNetworkProxy::HttpProxy);
@@ -227,7 +233,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 	 proxy.setPassword(proxyPassword);
 	// QNetworkProxy::setApplicationProxy(proxy);
 	// QNetworkRequest request; 
-	 request.setUrl(QUrl(QString("http://www.trolltech.com")));
+	 request.setUrl(QUrl(QString("http://www.sohu.com")));
 	 request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 	 manager = new QNetworkAccessManager(this);
 	 manager->setProxy(proxy);
@@ -238,7 +244,9 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 
 	// testProxyTimer=new QTimer(this);
 
-	 testProxyTimer.start(10*1000);
+	 testProxyTimer.start(10);
+	testProxyTimer.setSingleShot(TRUE);
+	
 	 connect(&testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
 	// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
 	// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(proxyTestslotError(QNetworkReply::NetworkError)));
