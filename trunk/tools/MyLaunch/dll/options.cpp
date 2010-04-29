@@ -204,8 +204,8 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 			QMessageBox::critical(this, windowTitle(), QObject::tr("The proxy server works failed"));
 			break;			
 		}
-	//reply->close();
-	//disconnect(manager, 0, 0, 0);	
+	reply->close();
+	disconnect(manager, 0, 0, 0);	
 	
 	//delete manager;
 	//manager=NULL;
@@ -214,8 +214,10 @@ void OptionsDlg::proxtTestTimerSlot()
 {
 	QDEBUG_LINE;
 	if(testProxyTimer.isActive())
+	{
 		testProxyTimer.stop();
-	reply->abort();
+		reply->abort();
+	}
 }
 void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
@@ -245,7 +247,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 	// testProxyTimer=new QTimer(this);
 
 	 testProxyTimer.start(10);
-	testProxyTimer.setSingleShot(TRUE);
+	 testProxyTimer.setSingleShot(TRUE);
 	
 	 connect(&testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
 	// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
