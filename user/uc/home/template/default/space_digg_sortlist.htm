@@ -1,10 +1,10 @@
 <script language="javascript" type="text/javascript" >
 jQuery(document).ready(function(){
-			jQuery(".digg_sortlist span:first").addClass("nowx");  // 为第一个span添加 .current 的样式，默认选中
+			jQuery(".digg_sortlist span:first").addClass("lion");  // 为第一个span添加 .current 的样式，默认选中
 			jQuery(".digg_sortlist ul:not(:first)").hide();  //ul 不是第一个时隐藏
 			jQuery(".digg_sortlist span").click(function(){  // 鼠标移到 span 上时触发函数
-				jQuery(".digg_sortlist span").removeClass("nowx");  //为第一个 span 移除 .current 样式
-				jQuery(this).addClass("nowx");  //为触发的 span 添加样式
+				jQuery(".digg_sortlist span").removeClass("lion");  //为第一个 span 移除 .current 样式
+				jQuery(this).addClass("lion");  //为触发的 span 添加样式
 				jQuery(".digg_sortlist ul").hide();  // 隐藏 ul
 				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
 		});
@@ -24,17 +24,52 @@ jQuery(document).ready(function(){
 .digg_sortlist_li_1{background-color:#F3F3F3;}
 .digg_sortlist_li a,.digg_sortlist_li_1 a{overflow:hidden;white-space:nowrap;width:100%;font-size:110%;}
 
+.newstagbg { background:url("template/default/image/tag1.gif") repeat-x scroll left top #FFFFFF; font-size:12px;	height:25px;  margin:2px 0;
+padding:0 1px; text-align:left;	width:258px;
+}
+.newstag {
+height:25px;
+}
+
+.newstag span {
+float:left;
+cursor:pointer;
+display:block;
+width:32px;
+}
+.newstag a {
+color:#333333;
+text-decoration:none;
+}
+.newstag a:hover {
+color:#333333;
+text-decoration:underline;
+}
+.newstag .lion, .newstag .lioff {
+height:25px;
+line-height:21px;
+text-align:center;
+width:32px;
+}
+.newstag .lion {
+background:url("template/default/image/tag1.gif") no-repeat scroll left -25px transparent;
+}
+
 </style>
 <div class="digg_sortlist">
-    <p>
-        <span id="digg_sortlist_qu" >趣 </span>
-        <span id="digg_sortlist_xin" >新 </span>
-        <span id="allhot_1" >囧 </span>
-		<span id="allhot_1" >乐 </span>
-		<span id="allhot_1" >潮 </span>
-		<span id="allhot_1" >新 </span>
-		<span id="allhot_1" >怪 </span>
-    </p>
+
+	<div class="newstagbg">
+		<div class="newstag">
+        <span id="digg_sortlist_qu" class="lioff lion">趣 </span>
+        <span id="digg_sortlist_xin" class="lioff">新 </span>
+        <span id="allhot_1" class="lioff">囧 </span>
+		<span id="allhot_1" class="lioff">乐 </span>
+		<span id="allhot_1" class="lioff">潮 </span>
+		<span id="allhot_1" class="lioff">新 </span>
+		<span id="allhot_1" class="lioff">怪 </span>
+		</div>
+	</div>
+
     <ul class="digg_sortlist_qu" style="display: block;">
         <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
         <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
