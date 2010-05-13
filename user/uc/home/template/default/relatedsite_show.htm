@@ -1,16 +1,16 @@
-   	<div id="slideshow" class="slideshow">
+   	<div id="slideshow" class="link200">
 		<a href="$relatedlist[0]['url']" title="$relatedlist[0]['link_subject']">
 			<img src="$relatedlist[0]['pic']/$relatedlist[0]['md5url'].$_SC['link_image_suffix']" alt="$relatedlist[0]['link_subject']" />
 		</a>
-		<p style="text-indent:5px;height:55px;padding-top:2px;overflow:hidden;">
+	</div>
+	<p class="relate_desc">
 			<a href="$relatedlist[0]['url']" style="color:red;">$relatedlist[0]['link_subject']</a>:
 			$relatedlist[0]['link_description']...
-		</p>
-		<p style="height:20px;line-height:20px;">
+	</p>
+	<p class="relate_tag">
 			<span style="float:left;"> 标签:</span>
 			<span style="float:left;height:20px;width:160px;overflow:hidden;">$relatedlist[0]['link_tag']</span>
 			<span style="float:right;">
 				<a  id="bookmark_add_$relatedlist[0][linkid]" href="cp.php?ac=link&linkid=$relatedlist[0][linkid]&op=bookmark" >我要收藏</a>
 			</span>
-		</p>
-	</div>
+	</p>

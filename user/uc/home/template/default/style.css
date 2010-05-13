@@ -27,7 +27,7 @@ caption, th { text-align: left; }
 	WIDTH: 112px; HEIGHT: 83px
 }
 .link200 {
-	float: left;margin-left:10px; BACKGROUND: url(image/200x150_thumb_bg) no-repeat; WIDTH: 200px;  HEIGHT: 150px;padding:7px 8px;
+	float: left;margin:5px 0 0 20px; BACKGROUND: url(image/200x150_thumb_bg) no-repeat; WIDTH: 200px;  HEIGHT: 140px;padding:7px 8px;
 }
 .link200 IMG {
 	WIDTH: 180px; HEIGHT: 135px
