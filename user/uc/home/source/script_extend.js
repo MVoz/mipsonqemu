@@ -82,9 +82,8 @@ function ajaxupdate(ac,objname, data) {
 		x.get('cp.php?ac='+ac+'&' + data, function(s){
 			var obj = $(objname);
 			if(obj){
-				s = trim(s);
 				obj.style.display = '';
-				obj.innerHTML =s;			
+				obj.innerHTML =s;
 			}
 		});
 }
