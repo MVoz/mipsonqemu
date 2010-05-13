@@ -1,11 +1,11 @@
 <script language="javascript" type="text/javascript" >
 jQuery(document).ready(function(){
 			jQuery(".digg_sortlist span:first").addClass("lion");  // 为第一个span添加 .current 的样式，默认选中
-			jQuery(".digg_sortlist ul:not(:first)").hide();  //ul 不是第一个时隐藏
+			jQuery(".digg_sortlist ol:not(:first)").hide();  //ul 不是第一个时隐藏
 			jQuery(".digg_sortlist span").click(function(){  // 鼠标移到 span 上时触发函数
 				jQuery(".digg_sortlist span").removeClass("lion");  //为第一个 span 移除 .current 样式
 				jQuery(this).addClass("lion");  //为触发的 span 添加样式
-				jQuery(".digg_sortlist ul").hide();  // 隐藏 ul
+				jQuery(".digg_sortlist ol").hide();  // 隐藏 ul
 				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
 		});
 
@@ -61,7 +61,7 @@ background:url("template/default/image/tag1.gif") no-repeat scroll left -25px tr
 	</div>
 
 
-       <ol style="display: block;" class="rank">
+       <ol style="display: block;" class="rank digg_sortlist_qu">
 		<li class="n1">
 			<div class="pack pack_video_brief  ">
 			<div class="pic">
@@ -90,17 +90,39 @@ background:url("template/default/image/tag1.gif") no-repeat scroll left -25px tr
 			<li class="n5"><a target="new" title="会长是女仆 第3话" href="http://www.tudou.com/programs/view/RFi6xbq4geE/" coords="_eE">会长是女仆 第3话</a>
 		</li>
 	  </ol>
-		
 
-    <ul class="digg_sortlist_xin" style="display: none;">
-        <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
-        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
-		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
-        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
-		 <li class="digg_sortlist_li"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>
-        <li class="digg_sortlist_li_1"><a href="#"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</a></li>		
-    </ul>
-    <ul class="allhot_1" style="display: none;">
+	  <ol style="display: block;" class="rank digg_sortlist_xin" style="display: none;">
+		<li class="n1">
+			<div class="pack pack_video_brief  ">
+			<div class="pic">
+			<div class="quick">
+			<a href="#" icode="HA1J-g0AmKE" title="添加到便利豆单" class="quick_hook"></a>
+			</div>
+			<a href="http://www.tudou.com/programs/view/HA1J-g0AmKE/" title="妖精的尾巴 第26话" target="new" class="inner">
+			<img height="90" width="120" class="pack_clipImg" src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg" coords="_eAA"></a>
+			</div>
+			<div class="txt">
+			<h6 class="caption">
+			<a title="妖精的尾巴 第26话" target="new" href="http://www.tudou.com/programs/view/HA1J-g0AmKE/" coords="_eAB"> 妖精的尾巴 第26话 </a></h6>
+			<ul class="info">
+			<li>播客:
+			<a target="_blank" href="http://www.tudou.com/home/kenny1234/" title="闘神威布的主页" coords="_eK">闘神威布</a>
+			</li>
+			</ul>
+			</div>
+			</div>
+			</li>
+			<li class="n2">
+			<a target="new" title="无法逃离的背叛 第2话" href="http://www.tudou.com/programs/view/3MH-uLc91k4/" coords="_eB">无法逃离的背叛 第2话</a></li>
+			<li class="n3">
+			<a target="new" title="海贼王 第447话" href="http://www.tudou.com/programs/view/B1R1gfLKIUs/" coords="_eC">海贼王 第447话</a></li>
+			<li class="n4"><a target="new" title="薄樱鬼 第3话" href="http://www.tudou.com/programs/view/XMZ-6L9XR_k/" coords="_eD">薄樱鬼 第3话</a></li>
+			<li class="n5"><a target="new" title="会长是女仆 第3话" href="http://www.tudou.com/programs/view/RFi6xbq4geE/" coords="_eE">会长是女仆 第3话</a>
+		</li>
+	  </ol>	
+
+  
+    <ol class="allhot_1" style="display: none;">
       	 <li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
         <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
 		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
@@ -111,5 +133,5 @@ background:url("template/default/image/tag1.gif") no-repeat scroll left -25px tr
         <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 
 		<li class="row-list"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li>
         <li class="row-list_l"> 佛罗伦萨老板德拉瓦莱兄弟将辞职！</li> 		
-    </ul>
+    </ol>
 </div>
