@@ -47,7 +47,12 @@ function ajaxresponse(objname, data) {
 function updatevisitstat(id) {
 	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
 }
-
+function updatelinkup(id) {
+	ajaxupdate('up_num', 'op=updatelinkupnum&linkid=' + id);
+}
+function updatelinkdown(id) {
+	ajaxupdate('down_num', 'op=updatelinkdownnum&linkid=' + id);
+}
 function getrelatedlinkfromid(id) {
 	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
 }
@@ -63,7 +68,15 @@ function checkSeccode() {
 		}
 		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
 }
-
+function ajaxupdate(objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('cp.php?ac=link&' + data, function(s){
+			var obj = $(objname);
+			s = trim(s);
+			obj.style.display = '';
+			obj.innerHTML = s;			
+		});
+}
 function ajaxresponse(objname, data) {
 		var x = new Ajax('XML', objname);
 		x.get('cp.php?ac=link&' + data, function(s){
