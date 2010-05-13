@@ -18,8 +18,7 @@ if($linkid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
 	$linkitem = $_SGLOBAL['db']->fetch_array($query);
-	//正确显示tag
-	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+	
 }
 /*
 	permit owner id item 
@@ -91,7 +90,8 @@ if(empty($linkitem)) {
 	}
 }
 if($op == 'get'){
-
+	//正确显示tag
+	$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
 }
 elseif($op == 'relate'){
 		$relatedlist[]=$linkitem;
@@ -177,6 +177,9 @@ elseif($_GET['op'] == 'edithot') {
 	}
 
 }elseif($_GET['op']=='bookmark'){
+	//正确显示tag
+	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+
 	if(submitcheck('bookmarksubmit')) {
 	}
 	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$browsertype))?$browsertype['ie']:intval($_GET['browserid']);
