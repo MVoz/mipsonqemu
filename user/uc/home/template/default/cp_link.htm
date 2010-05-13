@@ -29,12 +29,22 @@
 					</div>
 					<div class="movieDetail">
 						<p><strong>名称: </strong><a href="person/305484" target="_blank">$linkitem['link_subject']</a></p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="person/112280" target="_blank">$linkitem['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						<p><strong>标签: </strong><a href="type,genre/movie,Action" target="_blank">动作</a></p>
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="person/112280" target="_blank">$linkitem['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p>
+						<strong>标签: </strong>
+						<!--{loop $linkitem['link_tag'] $subkey $subvalue}-->
+								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+						<!--{/loop}-->
+						</p>
 						<p>
 						<div style="float:left;width:220px;">
-						<p><strong>收录日期: </strong><span>2009-04-23</span></p>
-						<p><strong>收藏人数: </strong><span>15</span></p>
-						<p><a>点击访问</a> <a>加入收藏</a> <a>举报错误</a></p>
+						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$linkitem[link_dateline],1)}--></span></p>
+						<p><strong>收藏人数: </strong><span>$linkitem[storenum]</span></p>
+						<p>
+						<a target="_target" href="$linkitem['url']">点击访问</a> 
+						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">加入收藏</a>
+						<a>举报错误</a>
+						</p>
 						</div>
 						<div class="movieScore">
 							<p><strong id="pj_title">评价</strong> <span id="my_score">(滑动星星评价)</span></p>
@@ -53,7 +63,8 @@
 				</div>
 				<h3>站点简介</h3>
 				<div class="movieIntro">
-					<p>　　清晨在江华岛，中午在郁陵岛？！一定要留意她！　　伪装为旅行社职员的拥有六年资历的国家情报院要员秀芝，过去的历史可以曝光，但决不能暴露身份。于是她对男友才俊时常是谎话连篇.</p>
+					<p>　$linkitem[link_description]</p>
+					<p>&nbsp;</p>
 				</div>
 		
 	</div>
