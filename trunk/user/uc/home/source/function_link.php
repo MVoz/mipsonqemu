@@ -182,6 +182,14 @@ function   updatelinkdownnum($linkid){
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET down=down+1 WHERE linkid=".$linkid);
 }
+function   updatelinkviewnum($linkid){
+//更新link访问的统计信息
+	    global $_SGLOBAL,$_SC;
+        if(!$_SGLOBAL['supe_uid'])
+            return;
+	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET viewnum=viewnum+1 WHERE linkid=".$linkid);
+}
+
 function link_delete_tag($linkid)
 {
 	global $_SGLOBAL,$_SC;
