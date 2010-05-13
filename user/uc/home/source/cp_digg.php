@@ -6,7 +6,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-$ops=array('add','edit','delete');
+$ops=array('add','edit','delete','updatediggupnum','updatediggdownnum','updatediggviewnum');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $diggid= empty($_GET['diggid'])?0:intval(trim($_GET['diggid']));
@@ -26,7 +26,10 @@ if($diggid)
 $digg_priority=array(
  'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
- 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1)
+ 'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
+ 'updatediggupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatediggdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatediggviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 $ret=check_valid($op,$diggid,$diggitem,$diggitem['uid'],'managedigg',$digg_priority);
 switch($ret)
@@ -135,10 +138,21 @@ if($_GET['op'] == 'delete') {
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
-}elseif($_GET['op']=='updatevisitstat'){
-		include_once(S_ROOT.'./source/function_bookmark.php');
-        updatevisitstat($_GET['bmid']);
-
+}elseif($_GET['op']=='updatediggupnum'){
+		//更新顶数
+		include_once(S_ROOT.'./source/function_digg.php');
+        updatediggupnum($_GET['diggid']);
+		showmessage($diggitem['upnum']+1);
+}elseif($_GET['op']=='updatediggdownnum'){
+		//更新顶数
+		include_once(S_ROOT.'./source/function_digg.php');
+        updatediggdownnum($_GET['diggid']);
+		showmessage($diggitem['downnum']+1);
+}elseif($_GET['op']=='updatediggviewnum'){
+		//更新顶数
+		include_once(S_ROOT.'./source/function_digg.php');
+        updatediggviewnum($_GET['diggid']);
+		showmessage($diggitem['viewnum']+1);
 } else {
 	//添加编辑
 	//将$_GET 转化成$diggitem,以便cp_digg.htm显示
