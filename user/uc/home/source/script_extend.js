@@ -53,6 +53,10 @@ function updatelinkup(id) {
 function updatelinkdown(id) {
 	ajaxupdate('down_num', 'op=updatelinkdownnum&linkid=' + id);
 }
+function updatelinkview(id) {
+	ajaxupdate('view_num', 'op=updatelinkviewnum&linkid=' + id);
+}
+
 function getrelatedlinkfromid(id) {
 	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
 }
@@ -72,9 +76,11 @@ function ajaxupdate(objname, data) {
 		var x = new Ajax('XML', objname);
 		x.get('cp.php?ac=link&' + data, function(s){
 			var obj = $(objname);
-			s = trim(s);
-			obj.style.display = '';
-			obj.innerHTML = s;			
+			if(obj){
+				s = trim(s);
+				obj.style.display = '';
+				obj.innerHTML =' '+s;			
+			}
 		});
 }
 function ajaxresponse(objname, data) {
