@@ -22,14 +22,14 @@
 		<h2 class="ntitle">$linkitem[link_subject]</h2>
 		<div class="movieInfo">
 					<div class="link200">
-					<a target="_target" class="playpic" href="$linkitem['url']">
+					<a target="_target" class="playpic" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">
 					<img alt="$linkitem['$link_subject']" src="$linkitem['pic']/$linkitem['md5url'].$_SC['link_image_suffix']">
 					<em></em>
 					</a>
 					</div>
 					<div class="movieDetail">
-						<p><strong>名称: </strong><a href="person/305484" target="_blank">$linkitem['link_subject']</a></p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="person/112280" target="_blank">$linkitem['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p><strong>名称: </strong><a href="$linkitem['url']" target="_blank" onclick="updatelinkview($linkitem[linkid])">$linkitem['link_subject']</a></p>
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$linkitem['url']" target="_blank" onclick="updatelinkview($linkitem[linkid])">$linkitem['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
 						<p>
 						<strong>标签: </strong>
 						<!--{loop $linkitem['link_tag'] $subkey $subvalue}-->
@@ -40,8 +40,9 @@
 						<div style="float:left;width:220px;">
 						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$linkitem[link_dateline],1)}--></span></p>
 						<p><strong>收藏人数: </strong><span>$linkitem[storenum]</span></p>
+						<p><strong>浏览次数: </strong><span id="view_num">$linkitem[viewnum]</span></p>
 						<p>
-						<a target="_target" href="$linkitem['url']">点击访问</a> 
+						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">点击访问</a> 
 						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">加入收藏</a>
 						<a>举报错误</a>
 						</p>
@@ -49,10 +50,10 @@
 						<div class="movieScore">
 							<p><strong id="pj_title">评价</strong> <span id="my_score">(点击顶踩评价)</span></p>
 							<span>
-								<span class="rate"><a id="movie_item_t_1" target="_self" href="javascript:void(0)"></a></span>
-								(<span id="pj_all_num">1280人顶</span>)</span>&nbsp;&nbsp;&nbsp;
-								<span class="rate"><a id="movie_item_t_1" target="_self" href="javascript:void(0)"></a></span>
-								(<span id="pj_all_num">1280人踩</span>)</span>
+								<span class="rate"><a id="movie_item_t_1" target="_self" onclick="updatelinkup($linkitem[linkid])"  href="javascript:void(0)"></a></span>
+								(<span id="up_num">$linkitem['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
+								<span class="rate"><a id="movie_item_t_1" target="_self"  onclick="updatelinkdown($linkitem[linkid])"  href="javascript:void(0)"></a></span>
+								(<span id="down_num">$linkitem['down']</span>人踩)</span>
 
 						</div>
 						</p>
