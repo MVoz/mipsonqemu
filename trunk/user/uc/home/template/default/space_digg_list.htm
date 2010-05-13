@@ -7,10 +7,10 @@
 							<a href="#" class="le" >&nbsp;</a>
 						</div>
 						<div class="left_bot">
-							<div class="support"><a href="#"><img src="./template/default/image/icon_support.jpg" /></a></div>
-							<div class="data">($value[upnum])</div>
-							<div class="support"><a href="#"><img src="./template/default/image/icon_bury.jpg" /></a></div>
-							<div class="data">($value[downnum])</div>
+							<div class="support"><a href="javascript:void(0)" onclick="updatediggup($value[diggid])"><img src="./template/default/image/icon_support.jpg" /></a></div>
+							<div class="data">(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)</div>
+							<div class="support"><a href="javascript:void(0)" onclick="updatediggdown($value[diggid])"><img src="./template/default/image/icon_bury.jpg" /></a></div>
+							<div class="data">(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)</div>
 						</div>
 				</div>
 				<div class="right_top">
