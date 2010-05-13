@@ -5,7 +5,7 @@
 
 div.navigation {height:220px;}
 .nav_1ogin {padding-left:8px;width:265px;}
-.nav_relate {padding-left:2px;width:370px;}
+.nav_relate {padding-left:2px;width:350px;}
 div.navigation a {text-decoration: none;color: #777;}
 div.navigation a:focus, div.navigation a:hover, div.navigation a:active {
 	text-decoration: underline;
