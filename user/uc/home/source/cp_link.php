@@ -97,6 +97,8 @@ if($op == 'get'){
 	$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
 }
 elseif($op == 'relate'){
+		//ÕıÈ·ÏÔÊ¾tag
+		$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
 		$relatedlist[]=$linkitem;
 }
 elseif($_GET['op'] == 'delete') {
