@@ -19,15 +19,15 @@
 						<!--{else}-->
 						<div class="leftx">
 						<!--{/if}-->	
-							 <div class="dig_title"><a href="$value[url]">$value[subject]</a></div>
+							 <div class="dig_title"><a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[subject]</a></div>
 							 <div class="descript">
-								$value[description]... 
+								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[description]...</a> 
 							</div>
 						</div>
 						<!--{if $value[picflag] }-->	
 						<div class="rightx">						
 							<div class="d_avatar avatar125">
-							   <a title=admin href="$value[url]" target=_blank>
+							   <a title=$value[subject] href="$value[url]" target=_blank onclick="updatediggview($value[diggid])">
 									<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
 										src="$value[pic]">
 							   </a>
@@ -57,7 +57,7 @@
 							  <div style="float:left;padding-left:5px;">
 									发布者:	<a href="#" >$value[username]</a>
 								    <span>时间:</span><span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;">$value[viewnum]</span>弹指人参与围观</span>
+									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>弹指人参与围观</span>
 									
 							 </div>
 						 </div>
