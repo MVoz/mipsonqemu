@@ -24,7 +24,11 @@
 			</p>
 					<p style="height:20px;line-height:20px;width:350px;">
 							<span style="float:left;"> 标签:</span>
-							<span style="float:left;height:20px;width:220px;overflow:hidden;">$value['link_tag']</span>
+							<span style="float:left;height:20px;width:220px;overflow:hidden;">
+								<!--{loop $value['link_tag'] $subkey $subvalue}-->
+								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+								<!--{/loop}-->
+							</span>
 							<span style="float:right;">
 								<a  id="bookmark_add_$value[linkid]" href="cp.php?ac=link&linkid=$value[linkid]&op=bookmark" >我要收藏</a>
 							</span>
