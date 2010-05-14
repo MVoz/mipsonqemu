@@ -4,7 +4,7 @@
 			jQuery("#slider").easySlider({
 				controlsBefore:	'<div id="slider_no">',
 				controlsAfter:	'</div>',
-				auto: true, 
+				auto: false, 
 				continuous: true
 			});
 
@@ -70,6 +70,35 @@
 			<ul>
 				<li>
 					<dl style="display: block;" class="rank">
+					<!--{loop $digglist $key $value}-->	
+						<!--{if $key }-->
+							<!--{eval $key=$key+1;}-->
+							<dt class="n$key">
+								<a target="new" title="$value[subject]" href="$value[url]" coords="_eB">$value[subject]</a>
+							</dt>
+						<!--{else}-->
+							<dt class="n1">
+								<div class="pack pack_video_brief  ">
+										<div class="pic">							
+											<a href="$value[url]" title="$value[subject]" target="new" class="inner">
+											<img height="90" width="120" class="pack_clipImg" src="$value[pic]" coords="_eAA"></a>
+										</div>
+										<div class="txt">
+											<h6 class="caption">
+											<a title="$value[subject]" target="new" href="$value[url]" coords="_eAB"> $value[subject]</a>
+											</h6>
+											<dl class="info">
+												<dt>分&nbsp;类:
+													<a target="_blank" href="http://www.tudou.com/home/kenny1234/"  coords="_eK">$diggtypename[$value[categoryid]]</a>
+												</dt>
+											</dl>
+									  </div>
+								</div>
+							</dt>
+						<!--{/if}-->	
+						
+					<!--{/loop}-->
+					<!--
 						<dt class="n1">
 							<div class="pack pack_video_brief  ">
 							<div class="pic">
@@ -100,6 +129,7 @@
 						</lt>
 						<dt class="n5"><a target="new" title="会长是女仆 第3话" href="http://www.tudou.com/programs/view/RFi6xbq4geE/" coords="_eE">会长是女仆 第3话</a>
 						</dt>
+					-->
 					</dl>
 				</li>
 				<li>
