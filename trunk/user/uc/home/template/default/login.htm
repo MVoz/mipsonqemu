@@ -178,31 +178,16 @@ jQuery(document).ready(function(){
 </div>
 <div class="popular_site">
     <p>
-        <span id="related_post_1" class="current">
-            常用类
-        </span>
-        <span id="mhot_1" class="">
-            资讯类
-        </span>
-        <span id="allhot_1" >
-            购物类
-        </span>
-		  <span id="allhot_1" >
-            娱乐类
-        </span>
-		<span id="allhot_1" >
-           生活类
-        </span>
-		<span id="allhot_1" >
-          在线工具
-        </span>
-		<span id="allhot_1" >
-		常用软件
-        </span>
+        <span id="related_post_1" class="current">常用类</span>
+        <span id="mhot_1" class="">资讯类</span>
+        <span id="allhot_1" >购物类</span>
+		<span id="allhot_1" >娱乐类</span>
+		<span id="allhot_1" >生活类</span>
+		<span id="allhot_1" >在线工具</span>
+		<span id="allhot_1" >常用软件</span>
     </p>
     <ul class="related_post_1" style="display: block;">
-        <li class="row-list">        
-           
+        <li class="row-list"> 
 				<em><a title="百 度" target="_blank" href="http://www.baidu.com/index.php?tn=monline_5_dg">百 度</a></em>            
 				<em><a title="Google" target="_blank" href="http://www.google.com/webhp?rls=org.mozilla:en-US:official&amp;client=firefox-a">Google</a></em>             
 				<em><a title="新浪" target="_blank" href="http://www.sina.com.cn/">新浪</a></em>            
@@ -334,85 +319,7 @@ jQuery(document).ready(function(){
     </ul>
 </div>
 	</div>
-<!--{if empty($_SGLOBAL[supe_uid])}-->
-	<div style="background: #FFF;float:right;height:220px;overflow:hidden;" >
-		<div id="yxw">
-	            	<div id="fttx1"><a title="王树清拥有图片721张，精品197张" href="/home/116882"><img src="snapshot/1/7/4/6/4f12a25ee6cc3d6123be77df850e343e.jpg"></a></div>
-	            	<div id="fttx2"><a title="徐国平拥有图片2195张，精品185张" href="/home/121779"><img src="snapshot/6/3/1/5/580b23629f65c8455cd4baa93b5a0da2.jpg"></a></div>
-	            	<div id="fttx3"><a title="林旭拥有图片1822张，精品113张" href="/home/66006"><img src="snapshot/6/5/3/5/8239c5d74a80ad380e7e415cc7356b1b.jpg"></a></div>
-	            	<div id="fttx4"><a title="蓝七星拥有图片1550张，精品108张" href="/home/104353"><img src="snapshot/6/5/3/5/8239c5d74a80ad380e7e415cc7356b1b.jpg"></a></div>
-	            	<div id="fttx5"><a title="金山阿俊拥有图片323张，精品104张" href="/home/117535"><img src="snapshot/6/5/3/5/8239c5d74a80ad380e7e415cc7356b1b.jpg"></a></div>
-	            	<div id="fttx6"><a title="托尼拥有图片635张，精品89张" href="/home/118190"><img src="snapshot/6/5/3/5/8239c5d74a80ad380e7e415cc7356b1b.jpg"></a></div>
-	            	<div id="fttx7"><a title="曹群拥有图片484张，精品81张" href="/home/111767"><img src="snapshot/6/5/3/5/8239c5d74a80ad380e7e415cc7356b1b.jpg"></a></div>
-	</div>
-   <!--
-		<h3 class="ntitle">登录</h3>
-		<div class="side_rbox_c">
-			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
-				<p><label for="username">用户名</label> <input type="text" name="username" id="username" class="t_input" value="$membername" /></p>
-				<p><label for="password">密　码</label> <input type="password" name="password" id="password" class="t_input" value="$password" /></p>
-				<p class="checkrow"><input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck style="margin-bottom: -2px;" /><label for="cookietime">下次自动登录</label></p>
-				<p class="submitrow">
-					<input type="hidden" name="refer" value="space.php?do=home" />
-					<input type="submit" id="loginsubmit" name="loginsubmit" value="登录" class="submit" />
-					<a href="do.php?ac=lostpasswd">忘记密码?</a>
-					<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
-				</p>
-			</form>
-		</div>
-	-->
-	</div>
-<!--{else}-->
-	<!--{template highlight}-->	
-<!--
-	<div class="nbox_s side_rbox_ad" id="nlogin_box" >
-
-	<img src="template/default/image/commonweal_250x200_1.jpg" style="width: 250px; height: 195px;padding:1px;">
-
-
-
-		<h3 class="ntitle">登录</h3>
-		<div class="side_rbox_c" >
-			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
-				<div class="logined">
-           <div class="d_avatar avatar48">
-           	<a title=admin href="http://192.168.115.2/uc/home/space.php?uid=1" target=_blank>
-            <img onerror="this.onerror=null;this.src='websample_files/1_1264944904t7cl.jpg'" src="./template/default/image/1_1264944905dc86.jpg">
-            </a>
-           </div>
-           <div class=p_menu >
-               <ul class="login_menu" >
-               	  <li><a href="space.php?do=bookmark&browserid=$browserid">我的收藏</a></li>
-                  <li class=login_menu_r><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出登录</a></li>
-                  <li><a href="javascript:;" onclick="getbmview('lastvisit')">最近访问</a></li>
-                  <li class=login_menu_r"><a href="javascript:;" onclick="getbmview('lastadd')">最近添加</a></li>
-                  <li><a href="javascript:;" onclick="getbmview('oftenvisit')">经常访问</a></li>
-                  <li class=login_menu_r>
-					<a href="javascript:;" onclick="getlinkview('mycharts')">我的上榜</a>
-				  </li>                 
-               </ul>
-           </div>
-		   <div id="hotsite">
-				<em style="color:#FF8901;font-weight:bold;font-size:120%">热</em>
-				<span><a title="新浪" target="_blank" href="http://www.sina.com.cn/" class="hot1">搜狐网</a></span>            
-				<span><a title="搜狐" target="_blank" href="http://www.sohu.com/" class="hot2">冬瓜网</a></span>             
-				<span><a title="网 易" target="_blank" href="http://www.163.com/" class="hot3">中华英才网</a></span>             
-		   </div>
-		   <div id="hotsite">
-				<em style="color:#FF8901;font-weight:bold;font-size:120%">荐</em>
-				<span><a title="新浪" target="_blank" href="http://www.sina.com.cn/" class="hot1">搜狐网</a></span>            
-				<span><a title="搜狐" target="_blank" href="http://www.sohu.com/" class="hot2">冬瓜网</a></span>             
-				<span><a title="网 易" target="_blank" href="http://www.163.com/" class="hot3">中华英才网</a></span>             
-			</div>
-		   	<div style="">
-               <iframe src="http://m.weather.com.cn/m/pn3/weather.htm?id=101190401T " width="225" height="20" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
-           </div>
-			</form>
-		</div>
-	
-	</div>
--->
-<!--{/if}-->
+<!--{template highlight}-->	
 </div>
 	</div>
 

@@ -36,9 +36,8 @@
 					 <!--{/if}-->	
 				</div>
 				<div class="right_bottom">
-						 <div class="action">
-						
-							 <div style="float:left;width:210px;overflow:hidden;">
+						 <div class="action">						
+							 <div style="float:left;min-width:100px;max-width:200pxoverflow:hidden;">
 								    <span style="float:left">标签:
 											<!--{loop $value[tag] $tagid $tagname}-->
 											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
@@ -46,18 +45,20 @@
 									</span>
 							 </div>
 							 
-							 <div style="float:right;width:180px;">
-								<a href="$value[url]" target=_blank class="diggbtn">点击访问</a>		
+							 <div style="float:right;padding-left:3px;">
+							    
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
-								<!--{else}-->
-								发布者:
-								<a href="#" >$value[username]</a>
 								<!--{/if}-->
+								
+								
 							 </div>
-							  <div style="float:right;width:120px">
+							  <div style="float:left;padding-left:5px;">
+									发布者:	<a href="#" >$value[username]</a>
 								    <span>时间:</span><span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;">$value[viewnum]</span>弹指人参与围观</span>
+									
 							 </div>
 						 </div>
 				</div>
