@@ -56,6 +56,16 @@ include_once(S_ROOT.'./data/data_network.php');
 		while($tagvalue=$_SGLOBAL['db']->fetch_array($tag_query)){
 			$value['taglist'][$tagvalue['tagid']]=$tagvalue['tagname'];
 		}
+		//获取其bookmark对应的link的信息如pic等
+		$link_query = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main
+		LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid where main.bmid=".$value['bmid']);
+		$value = $_SGLOBAL['db']->fetch_array($link_query);
+		if(empty($value['description']))
+				$value['description']=$value['link_description'];
+		if(empty($value['taglist'])){
+			//如果bookmark没有tag，则取link的tag
+			$value['taglist'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+		}
 		$bookmarklist[] = $value;
 	}
 foreach($bookmarklist as $key => $value) {

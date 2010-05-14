@@ -84,7 +84,7 @@ foreach($bookmarklist as $key => $value) {
 	$value['link_tag']=convertlinktag($value['linkid'],$value['link_tag']);
 	if($value[picflag]&&empty($value['tag']))
 			$value['tag']= $value['link_tag'];
-	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
+	$value['taglist'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$bookmarklist[$key] = $value;	
 }
 //分页
