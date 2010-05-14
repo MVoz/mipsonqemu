@@ -9,7 +9,11 @@
 	</p>
 	<p class="relate_tag">
 			<span style="float:left;"> 标签:</span>
-			<span style="float:left;height:20px;width:160px;overflow:hidden;">$relatedlist[0]['link_tag']</span>
+			<span style="float:left;height:20px;width:160px;overflow:hidden;">
+				<!--{loop $relatedlist[0]['link_tag'] $subkey $subvalue}-->
+								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+				<!--{/loop}-->
+			</span>
 			<span style="float:right;">
 				<a  id="bookmark_add_$relatedlist[0][linkid]" href="cp.php?ac=link&linkid=$relatedlist[0][linkid]&op=bookmark" >我要收藏</a>
 			</span>
