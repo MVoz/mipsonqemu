@@ -62,6 +62,9 @@ function updatediggup(id) {
 function updatediggdown(id) {
 	ajaxupdate('digg','digg_down_num_id_'+id, 'op=updatediggdownnum&diggid=' + id);
 }
+function updatediggview(id) {
+	ajaxupdate('digg','digg_view_num_id_'+id, 'op=updatediggviewnum&diggid=' + id);
+}
 function getrelatedlinkfromid(id) {
 	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
 }
