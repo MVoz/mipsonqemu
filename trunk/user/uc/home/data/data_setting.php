@@ -4,7 +4,17 @@ $_SGLOBAL['setting']=Array
 	(
 	'thumbwidth' => 100,
 	'thumbheight' => 100,
+	'maxthumbwidth' => '',
+	'maxthumbheight' => '',
+	'watermarkfile' => '',
 	'watermarkpos' => 4,
-	'watermarktrans' => 75
+	'ftpssl' => '0',
+	'ftphost' => '',
+	'ftpport' => '',
+	'ftpuser' => '',
+	'ftppassword' => '',
+	'ftppasv' => '0',
+	'ftpdir' => '',
+	'ftptimeout' => ''
 	)
 ?>
