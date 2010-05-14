@@ -107,7 +107,8 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 	}
 foreach($relatedlist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
-	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
+//	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
+	$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
 	$relatedlist[$key] = $value;	
 }
 
