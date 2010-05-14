@@ -2634,4 +2634,11 @@ function checkclientauth($arr)
 	//echo  $_SGLOBAL['supe_uid'].'  '.$_SGLOBAL['supe_username'];
 	return $passport;
 }
+$diggtype=array(
+            0=>'le',
+            1=>'chao',
+            2=>'guai',
+		    3=>'xin',
+		    4=>'qu'
+);
 ?>
