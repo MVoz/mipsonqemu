@@ -41,7 +41,7 @@ include_once(S_ROOT.'./data/data_network.php');
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('linktagbookmark')." main where main.uid=".$_SGLOBAL['supe_uid']." AND main.tagid=".$tagid),0);
     //获取tag名字
     $tagname=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT tagname FROM ".tname('linktag')." main where main.tagid=".$tagid),0);
-    $tagname="Tag:".$tagname;
+    $tagname="标签:".$tagname;
     //获取bookmarklist
 
 	$query = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('linktagbookmark')." main
