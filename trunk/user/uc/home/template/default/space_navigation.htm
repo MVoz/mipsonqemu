@@ -1,0 +1,24 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template bm_header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+	   <!--{template space_catelog_tab}-->
+	   <!--{template space_bookmark_list_sub}-->
+<!--{else}-->
+<div id="network">
+<!--{template login}-->
+<div  style="height:805px;padding-top:10px;">
+	<div class="nbox_c" style="height:800px;">		
+				<!--{template space_bookmark_title}-->
+		<div id="bmcontent"> 
+				<!--{template space_catelog_tab}-->
+				<!--{template space_link_list_sub}-->
+		</div>
+	</div>
+
+	<div class="nbox_s side_rbox side_rbox_w" style="height:800px;">	
+			 <!--{template navigation}-->	 
+	</div> 						
+</div>
+</div>
+<!--{template footer}-->
+<!--{/if}-->

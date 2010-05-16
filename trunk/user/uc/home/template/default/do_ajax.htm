@@ -33,9 +33,13 @@
 <!--{elseif $op == 'linkclasstag'}-->
 
 	<!--{loop $list $value}-->
-		<li><a href="#">$value['tagname']</a></li>
+		<a href="#">$value['tagname']</a>
 	<!--{/loop}-->
+<!--{elseif $op == 'linkclass'}-->
 
+	<!--{loop $list $value}-->
+		<a href="#">$value['classname']</a>
+	<!--{/loop}-->
 <!--{elseif $op == 'album'}-->
 
 	<table cellspacing="2" cellpadding="2">
