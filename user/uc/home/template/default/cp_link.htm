@@ -44,7 +44,7 @@
 						<p>
 						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">点击访问</a> 
 						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">加入收藏</a>
-						<a>举报错误</a>
+						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$linkitem[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$linkitem[linkid]">举报错误</a>
 						</p>
 						</div>
 						<div class="movieScore">
@@ -315,6 +315,70 @@
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
+<!--{elseif $op == 'reporterr'}-->
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<h1>举报错误</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=$ac&op=$op&linkid=$linkid">
+<div style="padding:5px;">
+	<div style="color:#333;font-size:110%;font-weight:bold;line-height:20px;">
+		<div>您对标题为<span>$linkitem[link_subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
+			<span style="color:#0066FF;">&nbsp;[多选题]</span>
+		</div>
+		<div style="clear: both;">
+		</div>
+	</div>
+	<div class="div_table_radio_question">
+		<ul>
+		<li style="width: 99%;"><input type="checkbox" value="1" id="chk1_1"><label for="chk1_1">涉及到政治、黄色、暴力等敏感内容</label></li>
+		<li style="width: 99%;"><input type="checkbox" value="2" id="chk1_2"><label for="chk1_2">含有木马，病毒等内容</label></li>
+		<li style="width: 99%;"><input type="checkbox" value="3" id="chk1_3"><label for="chk1_3">主页不可访问</label></li>
+		<li style="width: 99%;"><input type="checkbox" value="3" id="chk1_4"><label for="chk1_4">介绍的内容与实际不相符合</label></li>
+		<li style="width: 99%;"><input type="checkbox" value="10" id="chk1_5"><label for="chk1_5">其他原因：</label> 
+		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
+		</li>
+		<div style="clear: both;"></div>
+		</ul> 
+	</div>
+	<div>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<span>
+		<label style="vertical-align: top;">请先回答问题</label>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+	</span>
+	<!--{else}-->
+	<span>
+		<label style="vertical-align: top;">验证码</label>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$bookmarkitem[bmid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bookmarkitem[bmid]')">更换一张</a></p>
+		<!--{/if}-->
+	</span>
+	<!--{/if}-->
+	<!--{/if}-->
+	</div>
+</div>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="errsubmit" value="true" />
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<!--{else}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"/>
+<!--{/if}-->
+</form>
+</div>
+</div>
+
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{elseif $op == 'relate'}-->
 		<!--{template relatedsite_show}-->
 <!--{elseif $op == 'pass'}-->
