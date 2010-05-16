@@ -789,18 +789,7 @@ a.c_resend {
 a.c_link {
 	background-position: 0px -64px
 }
-.editbtn{
-		font-weight: normal; font-size: 12px;float:right;
-}
-.editbtn a{
-		color: #2970a6;padding-right:10px;width:40px;
-}
-.deletebtn{
-		font-weight: normal; font-size: 12px;float:right;
-}
-.deletebtn a{
-		color: #2970a6;padding-right:10px;width:40px;
-}
+.oper{color:#C5C5C5;display:inline;margin:0 6px;}
 .bvisit {
 	float: right; color: #2970a6
 }
