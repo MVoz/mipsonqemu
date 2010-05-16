@@ -41,24 +41,25 @@ function linkclasstag_add(sid, result) {
 	if(result) {
 		//linkclassform_1=>linkclassform_1_tag
 		var obj = $(sid+'_tag');
-		var newli = document.createElement("div");
+		var newli = document.createElement("h4");
 		var x = new Ajax();
 		x.get('do.php?ac=ajax&op=linkclasstag', function(s){
 			newli.innerHTML = s;
 		});
-		obj.insertBefore(newli, obj.firstChild);
-			var child = $(sid).firstChild;
-		while (child) {
-			if (child.id == 'tag')
-			{
-				child.value='';
-				break;
-			}
-			child = child.nextSibling;
-		} 
-		//$('share_general').value = '';
-		//提示获得积分
-		//showreward();
+		obj.appendChild(newli);		
+	}
+}
+function linkclass_add(sid, result) {
+	if(result) {
+		//linkclassform_1=>linkclassform_1_tag
+		var obj = $(sid+'_name');
+		var newli = document.createElement("h4");
+		var x = new Ajax();
+		x.get('do.php?ac=ajax&op=linkclass', function(s){
+			newli.innerHTML = s;
+		});
+		obj.appendChild(newli);
+		
 	}
 }
 //添加评论

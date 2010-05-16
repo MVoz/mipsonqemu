@@ -52,7 +52,11 @@ $wherearr='';
 $orderarr='';
 $theurl='';
 $linkclasslist=array();
-if($op=='manage'){	    
+$manageclass=array();
+if($op=='manage'){
+	
+	$classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
+	$groupid=0;
 	//获取class分类
 	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");
 	while($value =$_SGLOBAL['db']->fetch_array($class_query))
@@ -84,9 +88,59 @@ if($op=='manage'){
 		}
 		$linkclasslist[]=$value;
 	}
-}
-else{
+	if($classid)
+	{
+			$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.classid=".$classid);
+			$classitem = $_SGLOBAL['db']->fetch_array($query);
+			if(empty($classitem))   $classid=0;
+			else
+				$groupid=$classitem['groupid'];
+	}
 
+	if($classid){
+
+			//获取三级目录
+			$classrd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=".$groupid);
+			while($classrd_value =$_SGLOBAL['db']->fetch_array($classrd_query))
+			{
+				$manageclass['son'][]= $classrd_value;				
+			}
+			//获取本层class的tag
+			$classtag_query  = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('linkclass')." main	LEFT JOIN ".tname('linkclasstag')." field ON main.classid=field.classid  WHERE main.classid=".$classid);
+			while($classtag_value =$_SGLOBAL['db']->fetch_array($classtag_query))
+			{
+						$manageclass['tag'][]= $classtag_value;
+			}
+
+	}
+	else
+		$manageclass= $linkclasslist[0]['son'][0];
+}
+elseif($op=='add'){
+	$classid= empty($_POST['classid'])?0:intval(trim($_POST['classid']));
+	$groupid=0;
+	//获取class分类
+	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.classid=".$classid);
+	$classitem = $_SGLOBAL['db']->fetch_array($class_query);
+	$groupid=$classitem['groupid'];
+	if(submitcheck('addsubmit')){
+		//验证码
+		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
+			showmessage('incorrect_code');
+		}
+		include_once(S_ROOT.'./source/function_linkclass.php');
+		$ret=linkclass_post($_POST,$classitem);
+		if(is_array($ret)) {
+			$url = $_SGLOBAL['refer'];		
+			showmessage('do_success',$url,0);
+		} elseif($ret==false) {
+			showmessage('that_should_at_least_write_things');
+		}elseif($ret==-1) {
+			showmessage('link_has_existed');
+		}
+	}
+
+}else{
 }
 
 

@@ -91,7 +91,16 @@ if($op == 'comment') {
 	
 	//realname_get();
 	
-}  elseif($op == 'post') {
+}elseif($op == 'linkclass') {
+
+	//ÆÀÂÛ
+	$list = array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linkclass')." WHERE uid='$_SGLOBAL[supe_uid]' ORDER BY dateline DESC LIMIT 0,1");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+		$list[] = $value;
+	}
+	
+} elseif($op == 'post') {
 
 	$pid = empty($_GET['pid'])?0:intval($_GET['pid']);
 
