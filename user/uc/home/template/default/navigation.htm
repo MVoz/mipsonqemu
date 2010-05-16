@@ -1,0 +1,17 @@
+<h2 class="ntitle">
+导航菜单&raquo;
+</h2> 
+<div class="side_rbox_c" >
+				<div class="navi_content">
+				<!--{loop $linkclasslist $key $value}-->
+					<dl class="navi_catalog">
+						<dt>$value['classname']</dt>
+							<dd >
+								<!--{loop $value[son] $key $valueson}-->  								
+								<a href="space.php?do=$do&classid=$valueson['classid']">$valueson['classname']</a>
+								<!--{/loop}-->
+							</dd>
+					</dl>
+				<!--{/loop}-->						
+			</div> 
+</div>

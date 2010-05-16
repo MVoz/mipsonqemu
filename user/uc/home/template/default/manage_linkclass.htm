@@ -1,0 +1,100 @@
+<div id="network">
+<div  style="height:505px;padding-top:10px;">
+	<div class="nbox_c" style="height:500px;">		
+				<h2 class="ntitle">
+					<div class="groupname" id="groupname">$classitem['classname']&raquo;</div>
+				</h2>
+				<div id="bmcontent"> 
+					<div class="navi_content">
+						<dl class="navi_catalog">
+							<dt>							
+								<div style="display:inline;">
+								子分类 
+										<form style="display:inline;padding-left:50px;" id="linkclass_$classid" name="linkclass_$classid" action="cp.php?ac=linkclass&op=add" method="post"     >		
+											<input type="text" class="t_input" style="width: 50px;" value="" name="classname" id="tag" />
+											<input type="submit"  class="submit" value="增加" onclick="ajaxpost('linkclass_$classid', 'linkclass_add')" />
+											<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+											<input type="hidden" name="classid" value="$classid" />
+											<input type="hidden" name="addsubmit" value="true" />
+											<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+										</form>
+								</div> 								
+							</dt>
+							<dd id="linkclass_$classitem['classid']_name">
+								   <!--{loop $manageclass[son] $key $valueson}-->
+											<a href="#">$valueson['classname']</a>
+								   <!--{/loop}--> 
+							</dd>
+						</dl>
+						<dl class="navi_catalog">
+							<dt> 								
+								<div style="display:inline;">
+								关键字
+										<form style="display:inline;padding-left:50px;" id="linkclassform_$classid" name="linkclassform_$classid" action="cp.php?ac=linkclasstag&op=add" method="post"     >		
+											<input type="text" class="t_input" style="width: 50px;" value="" name="tag" id="tag" />
+											<input type="submit"  class="submit" value="增加" onclick="ajaxpost('linkclassform_$classid', 'linkclasstag_add')" />
+											<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+											<input type="hidden" name="classid" value="$classid" />
+											<input type="hidden" name="addsubmit" value="true" />
+											<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+										</form>
+								</div> 								
+							</dt>
+							<dd id="linkclassform_$classitem['classid']_tag" >
+						   <!--{loop $manageclass[tag] $key $valuesontag}-->
+									<a href="#">$valuesontag['tagname']</a>
+						   <!--{/loop}--> 
+						   	</dd>
+						</dl>
+					</div>
+				</div>
+	</div>
+
+	<div class="nbox_s side_rbox side_rbox_w" style="height:500px;">	
+			 
+				<h2 class="ntitle">
+				导航菜单&raquo;
+				</h2> 
+				<div class="side_rbox_c" >
+								<div class="navi_content">
+								<!--{loop $linkclasslist $key $value}-->
+									<dl class="navi_catalog">
+										<dt>
+											
+											<div style="display:inline;">
+											$value['classname']
+												<form style="display:inline;padding-left:50px;" id="linkclass_$value['classid']" name="linkclass_$value['classid']" action="cp.php?ac=linkclass&op=add" method="post"     >		
+													<input type="text" class="t_input" style="width: 50px;" value="" name="classname" id="tag" />
+													<input type="submit"  class="submit" value="增加" onclick="ajaxpost('linkclass_$value['classid']', 'linkclass_add')" />
+													<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+													<input type="hidden" name="classid" value="$value['classid']" />
+													<input type="hidden" name="addsubmit" value="true" />
+													<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+												</form>
+											</div> 						
+										</dt>
+											<dd id="linkclass_$value['classid']_name">
+												<!--{loop $value[son] $key $valueson}--> 
+												<a href="cp.php?ac=linkclass&op=manage&classid=$valueson['classid']">$valueson['classname']</a>
+												<!--{/loop}-->
+											</dd>
+									</dl>
+								<!--{/loop}-->						
+							</div> 
+				</div>
+
+
+	</div> 						
+</div>
+</div>
+<!--{template footer}-->
+<script language="javascript"  type="text/javascript">
+function showlinkclassid(id)
+{
+	if($(id).style.display=="none")
+			$(id).style.display="block";
+	else
+		    $(id).style.display="none";
+}
+</script>
+

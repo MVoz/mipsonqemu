@@ -52,60 +52,7 @@
 </form>
 </div>
 <!--{elseif $op == 'manage'}-->
-<div class="linkclassshow">	
-				<ul >
-				   	<!--{loop $linkclasslist $key $value}-->
-						<li >
-							<p class="firstlayer">
-								<a style="color:#00ADEF;">$value['classname']</a>
-								<input type="text" class="t_input" style="width: 50px;" value="" name="subject" id="subject">
-								<input type="button"  class="submit" value="增加" name="issuance" id="issuance">
-								<a href="javascript:showlinkclassid('linkclass_id_$value['classid']')" style="float:right;padding-right:20px;">&raquo;</a>
-							</p>
-							<ul id="linkclass_id_$value['classid']" style="display:none">
-									<!--{loop $value[son] $key $valueson}--> 
-												<li>
-													<div class="seclayer">
-													<p  style="float:left;">
-														<a id="linkclass_li_$valueson['classid']" href="javascript:;" >$valueson['classname']</a>
-													</p> 
-														<div style="float:left;">
-														<form id="linkclassform_$valueson['classid']" name="linkclassform_$valueson['classid']" action="cp.php?ac=linkclasstag&op=add" method="post"     >		
-															<input type="text" class="t_input" style="width: 50px;" value="" name="tag" id="tag" />
-															<input type="submit"  class="submit" value="增加" onclick="ajaxpost('linkclassform_$valueson[classid]', 'linkclasstag_add')" />
-															<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-															<input type="hidden" name="classid" value="$valueson['classid']" />
-															<input type="hidden" name="addsubmit" value="true" />
-															<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
-														</form>
-														</div>
-														<a href="javascript:showlinkclassid('linkclassform_$valueson[classid]_tag')" style="float:right;padding-right:20px;">&raquo;</a>
-														<div style="clear:both;"></div>
-													</div>
-													<div  class="sonclass" id="linkclassform_$valueson[classid]_tag" style="display:none;">
-														<ul > 
-																	   <!--{loop $valueson[tag] $key $valuesontag}-->
-																		<li><a href="#">$valuesontag['tagname']</a></li>
- 																	   <!--{/loop}--> 																
-														</ul>
-													</div>
-												</li>
-									<!--{/loop}-->
-							</ul>
-						</li>
-					<!--{/loop}-->
-				</ul>
-
-</div>
-<script language="javascript"  type="text/javascript">
-function showlinkclassid(id)
-{
-	if($(id).style.display=="none")
-			$(id).style.display="block";
-	else
-		    $(id).style.display="none";
-}
-</script>
+	<!--{template manage_linkclass}-->
 <!--{else}-->
 <script>
 	function register(id, result) {
