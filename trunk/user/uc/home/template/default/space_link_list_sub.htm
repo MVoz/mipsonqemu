@@ -31,15 +31,18 @@
 						<!--{/if}-->
 					</p>					
 					
-					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[storenum] 人收藏</a></p>
-				    <span class=bvisit><a href="cp.php?ac=link&op=get&linkid=$value[linkid]"  target="_blank" >详情<span id="visitstat"></span></a></span>
+					<p class="oper">
+					<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
+				    <a href="cp.php?ac=link&op=get&linkid=$value[linkid]"  target="_blank" >详情</a>
+					|
 				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
-					</span>
-					 <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit2_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a></span>
-					  <!--{else}-->
-					  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value[linkid]&op=bookmark" id="bookmark_edit2_$value[bmid]" >收藏</a></span>
+					<a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+					|
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit2_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>
+					<!--{else}-->
+					 <a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=link&linkid=$value[linkid]&op=bookmark" id="bookmark_edit2_$value[bmid]" >收藏</a>
 					 <!--{/if}-->
+					 </p>
 					 
 				</li>
 				<!--{/loop}-->
