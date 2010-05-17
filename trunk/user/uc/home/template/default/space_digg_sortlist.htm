@@ -20,13 +20,13 @@ jQuery(document).ready(function(){
 
 	<div class="newstagbg">
 		<div class="newstag">
-        <span id="digg_sortlist_qu" class="lioff lion">趣 </span>
-        <span id="digg_sortlist_xin" class="lioff">新 </span>
-        <span id="allhot_1" class="lioff">囧 </span>
-		<span id="allhot_1" class="lioff">乐 </span>
-		<span id="allhot_1" class="lioff">潮 </span>
-		<span id="allhot_1" class="lioff">新 </span>
-		<span id="allhot_1" class="lioff">怪 </span>
+			<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
+					<!--{if $key }-->
+						<span id="digg_sortlist_$value[categoryname]" class="lioff">$value[categoryalias] </span>	
+					<!--{else}-->
+						<span id="digg_sortlist_$value[categoryname]" class="lioff lion">$value[categoryalias] </span>	
+					<!--{/if}-->						
+			<!--{/loop}-->			
 		</div>
 	</div>
 
