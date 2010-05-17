@@ -12,6 +12,8 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'edit':$_GET['op'];
 
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
+$browserid = empty($_GET['browserid'])?1:intval($_GET['browserid']);
+
 $bookmarkitem = array();
 $groupid=0;
 if($bmid) {
@@ -85,14 +87,17 @@ if(submitcheck('blogsubmit')) {
 	}
 }
 else if(submitcheck('editsubmit')) {
+
 	//验证码
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
+
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bookmarkitem)) {
 		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid']."&browserid=".$browserid;		
 		showmessage('do_success', $url, 0);
+		//showmessage('do_success');
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}

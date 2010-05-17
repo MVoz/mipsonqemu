@@ -84,15 +84,19 @@ function bookmark_post($POST, $olds=array()) {
 			$bookmarkarr['description'] = $message;
 			$bookmarkarr['type'] = $POST['category'];
 			$bookmarkarr['browserid']=empty($olds)?$browserid:$olds['browserid'];
+
+			$linkarr=array();
+			$linkarr['url']=$POST['address'];
+			$linkarr['hashurl']=qhash($linkarr['url']);
+			$linkarr['md5url']=md5($linkarr['url']);
+
 			switch($POST['category']){
 				case $_SC['bookmark_type_site']://增加或修改一个bookmark
 						//link 表
 						$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
 						$linkarr['username'] =$_SGLOBAL['supe_username'];
 						$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-						$linkarr['url']=$POST['address'];
-						$linkarr['hashurl']=qhash($linkarr['url']);
-						$linkarr['md5url']=md5($linkarr['url']);
+						
 						$linkarr=setlinkimagepath($linkarr);
 						if($_GET['ac']=='bmdir')
 						{
@@ -110,7 +114,7 @@ function bookmark_post($POST, $olds=array()) {
 							$bookmarkarr['linkid'] = $linkid;				
 						//修改bookmark
 							$bookmarkarr['parentid'] = $olds['parentid'];
-							if($linkid!=$olds['linkid'])
+							//if($linkid!=$olds['linkid'])
 							{
 								updatetable('bookmark', $bookmarkarr, array('bmid'=>$olds['bmid']));
 								setbookmarkmodified();
