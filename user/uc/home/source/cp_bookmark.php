@@ -17,7 +17,14 @@ $groupid=0;
 if($bmid) {
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$bookmarkitem = $_SGLOBAL['db']->fetch_array($query);
-	$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['tag'])?array():unserialize($bookmarkitem['tag']));
+	if(empty($bookmarkitem['tag']))
+		$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['link_tag'])?array():unserialize($bookmarkitem['link_tag']));
+	else
+		$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['tag'])?array():unserialize($bookmarkitem['tag']));
+
+	if(empty($bookmarkitem['description']))
+		$bookmarkitem['description'] =$bookmarkitem['link_description'];
+	
 	$groupid=$bookmarkitem['parentid'];
 }
 
