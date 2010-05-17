@@ -164,6 +164,7 @@ elseif($_GET['op'] == 'edithot') {
 		showmessage($linkitem['viewnum']+1);
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
+		  include_once(S_ROOT.'./data/data_linkerrtype.php');
 		  include_once(S_ROOT.'./source/function_link.php');
 		  if(submitcheck('errsubmit')) {
 			//验证码
