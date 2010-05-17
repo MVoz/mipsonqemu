@@ -2634,18 +2634,5 @@ function checkclientauth($arr)
 	//echo  $_SGLOBAL['supe_uid'].'  '.$_SGLOBAL['supe_username'];
 	return $passport;
 }
-$diggtype=array(
-            0=>'le',
-            1=>'chao',
-            2=>'guai',
-		    3=>'xin',
-		    4=>'qu'
-);
-$diggtypename=array(
-            0=>'乐',
-            1=>'潮',
-            2=>'怪',
-		    3=>'新',
-		    4=>'趣'
-);
+include_once(S_ROOT.'./data/data_diggcategory.php');
 ?>

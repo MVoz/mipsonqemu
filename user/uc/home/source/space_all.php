@@ -14,6 +14,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 }
 //bookmarklist
 include_once(S_ROOT.'./source/space_bookmark_show.php');
+include_once(S_ROOT.'./data/data_diggcategory.php');
 //digg
 $digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';

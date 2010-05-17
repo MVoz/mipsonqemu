@@ -13,7 +13,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
 include_once(S_ROOT.'./data/data_network.php');
-
+include_once(S_ROOT.'./data/data_diggcategory.php');
 //digg
 $digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';
@@ -57,6 +57,7 @@ $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuse
 $wheretime = $_SGLOBAL['timestamp']-3600*24*30;
 
 $_TPL['css'] = 'network';
+
 include_once template("space_digg");
 /*
 }
