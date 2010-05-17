@@ -331,11 +331,13 @@
 	</div>
 	<div class="div_table_radio_question">
 		<ul>
-		<li style="width: 99%;"><input type="checkbox" value="1" id="chk1_1"><label for="chk1_1">涉及到政治、黄色、暴力等敏感内容</label></li>
-		<li style="width: 99%;"><input type="checkbox" value="2" id="chk1_2"><label for="chk1_2">含有木马，病毒等内容</label></li>
-		<li style="width: 99%;"><input type="checkbox" value="3" id="chk1_3"><label for="chk1_3">主页不可访问</label></li>
-		<li style="width: 99%;"><input type="checkbox" value="3" id="chk1_4"><label for="chk1_4">介绍的内容与实际不相符合</label></li>
-		<li style="width: 99%;"><input type="checkbox" value="10" id="chk1_5"><label for="chk1_5">其他原因：</label> 
+		<!--{loop $_SGLOBAL['linkerrtype'] $key $value}-->
+			<li style="width: 99%;">
+				<input type="checkbox" value="1" id="chk1_$key">
+				<label for="chk1_1">$value</label>
+			</li>
+		<!--{/loop}-->
+		<li style="width: 99%;"><input type="checkbox" value="10" id="chk1_other"><label for="chk1_5">其他原因：</label> 
 		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
 		</li>
 		<div style="clear: both;"></div>
