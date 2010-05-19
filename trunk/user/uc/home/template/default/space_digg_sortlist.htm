@@ -17,7 +17,16 @@ jQuery(document).ready(function(){
 
 </style>
 <div class="digg_sortlist">
-
+  <div class="tab">
+	<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
+			<!--{if $key }-->
+				<span id="digg_sortlist_$value[categoryname]"><a href="#"><b><span>$value[categoryalias]</span></b></a></span>
+			<!--{else}-->
+				<span id="digg_sortlist_$value[categoryname]" class="lion"><a href="#"><b><span>$value[categoryalias]</span></b></a></span>
+			<!--{/if}-->
+	<!--{/loop}-->	
+  </div>
+<!--
 	<div class="newstagbg">
 		<div class="newstag">
 			<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
@@ -29,7 +38,7 @@ jQuery(document).ready(function(){
 			<!--{/loop}-->			
 		</div>
 	</div>
-
+-->
 
        <ol style="display: block;" class="rank digg_sortlist_qu">
 		<li class="n1">
