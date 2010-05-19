@@ -59,38 +59,14 @@ if(empty($op)||!in_array($op,$ops)||!checkbrowserid($browserid)){
         showmessage('error parameters');
 }
 
-//权限检查
-if(empty($bmdiritem)) {
-	if(!checkperm('allowblog')) {
-		ckspacelog();
-		showmessage('no_authority_to_add_log');
-	}
-	
-	//实名认证
-	ckrealname('blog');
-	
-	//视频认证
-	ckvideophoto('blog');
-	
-	//新用户见习
-	cknewuser();
-	
-	//判断是否发布太快
-	$waittime = interval_check('post');
-	if($waittime > 0) {
-		showmessage('operating_too_fast','',1,array($waittime));
-	}
-	
-	//接收外部标题
-	$blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
-	$blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 5000, 1, 0);
-	
-} else {
-	
+
+if($bmdiritem)	
+{
 	if($_SGLOBAL['supe_uid'] != $bmdiritem['uid']/* && !checkperm('manageblog')*/) {
 		showmessage('no_authority_operation_of_the_log');
 	}
 }
+
 
 //添加编辑操作
 if(submitcheck('editsubmit')) {

@@ -2352,6 +2352,9 @@ function check_valid($op,$id,$item,$owner,$pristr,$priorityarray)
 	global $_SGLOBAL;
 	if(!in_array($op,array_keys($priorityarray)))
 		return -2;
+	//全部都不关心则直接返回
+	if(($priorityarray[$op]['permit']+$priorityarray[$op]['id']+$priorityarray[$op]['item']+$priorityarray[$op]['owner'])==0)
+		return 1;
 	if(($priorityarray[$op]['permit']==1)&&(checkperm($pristr)=='0'))
 		return -1;
 	if(($priorityarray[$op]['id']==1)&&empty($id))
