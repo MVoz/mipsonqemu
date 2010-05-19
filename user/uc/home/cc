@@ -34,7 +34,7 @@ do
 		echo 'backup mysql database'
 		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
 		echo 'make zip package '$sqlfile'.zip'
-		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile uc_bookmark.sdr config.sh  bm_logo.psd  url2img.exe qsqlmysql4.dll qsqlmysql4.exp qsqlmysql4.lib libmysql.lib libmySQL.dll cap.exe
+		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile uc_bookmark.sdr config.sh  bm_logo.psd  
 		rm -f $sqlfile 
 		echo 'commit is processing......'
 		for svni in $svnallfiles
