@@ -1,8 +1,9 @@
-<div class="newstagbg">
-	<div class="newstag">
-		<!--{loop $child_class $key $value}-->
-		<span class="lioff lion">$value['classname']</span>
-		<!--{/loop}-->
-	</div>
-</div>
-
+  <div class="tab">
+	<!--{loop $child_class $key $value}-->
+			<!--{if $key }-->
+				<span><a href="#"><b><span>$value[classname]</span></b></a></span>
+			<!--{else}-->
+				<span  class="lion"><a href="#"><b><span>$value[classname]</span></b></a></span>
+			<!--{/if}-->
+	<!--{/loop}-->	
+  </div>
