@@ -54,7 +54,7 @@ caption, th { text-align: left; }
 .r_option .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -112px transparent;}
 .r_option .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
-.groupname {float:left;padding-left:10px;width:150px;overflow:hidden;white-space:nowrap;color:#FF6A00;font-size:110%;font-weight: blod;}
+.groupname {float:left;padding:0px 10px;overflow:hidden;white-space:nowrap;color:#FF6A00;font-size:110%;font-weight: blod;}
 
 #diggscroll {float:left;width:300px;height:25px;line-height:25px;overflow:hidden;}
 #diggscroll ul {width:300px;margin:0;padding:0;height:25px;}
@@ -906,4 +906,10 @@ left:expression(this.nextSibling.offsetLeft);
 .sonclass  {border:solid 1px #ccc;margin:5px,0;display:none;}
 .sonclass ul{border-bottom:dashed 1px #ccc;height:30px;;}
 .sonclass ul li a{color:#368332;}
+
+/*nav_tab*/
+.nav_tab{float:left;height:32px;line-height:32px;}
+	.nav_tab li {float:left;padding:0 5px;}
+	.nav_tab li a{float:left;padding-top:2px;color:#666;text-decoration:none;white-space:nowrap; }
+	.nav_tab .nav_on a,.nav_tab li a:hover{color:#8ABC2B;}
 

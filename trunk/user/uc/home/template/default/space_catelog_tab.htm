@@ -1,9 +1,9 @@
-  <div class="tab">
+<ul class="nav_tab">
 	<!--{loop $child_class $key $value}-->
 			<!--{if $key }-->
-				<span><a href="#"><b><span>$value[classname]</span></b></a></span>
+				<li><a href="#">$value[classname]</a></li>
 			<!--{else}-->
-				<span  class="lion"><a href="#"><b><span>$value[classname]</span></b></a></span>
+				<li class="nav_on"><a href="#">$value[classname]</li>
 			<!--{/if}-->
-	<!--{/loop}-->	
-  </div>
+	<!--{/loop}-->
+</ul>
