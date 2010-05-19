@@ -7,6 +7,8 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
+include_once(S_ROOT.'./data/data_diggcategory.php');
+include_once(S_ROOT.'./data/data_browsertype.php');
 //debug outpur
 function debugOutput($name,$value){
 	global $_SGLOBAL;
@@ -2240,41 +2242,37 @@ function createChildMenu($query,$func,$browserid,$idstr,$doshowit)
     if($idstr=="menu")
        echo '</ul>'; 
 }
-$browsertype=array(
-            'ie'=>1,
-            'firefox'=>2,
-            'opera'=>3
-);
+
 function usermenu($browserid,$func){
-	global $_SGLOBAL,$browsertype,$_SC;
+	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
-	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$browserid);
 	createChildMenu($query,$func,$browserid,"menu");
 }
 
 function mkbrowsertab($id)
 {
-    global $_SGLOBAL,$browsertype;
+    global $_SGLOBAL;
 	//if(empty($_SGLOBAL['supe_uid'])) echo '';
-	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
-    foreach($browsertype as $key=>$browserid){
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+    foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
     }
 }
 function mkbrowsershowtab($id)
 {
-    global $_SGLOBAL,$browsertype;
-	$browserid = (empty($browserid) || !in_array($browserid, $browsertype))?$browsertype['ie']:$browserid;
-    foreach($browsertype as $key=>$browserid){
+    global $_SGLOBAL;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+    foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getdirtreefrombrowserid('.$browserid.');" href="javascript:;"><span>'.$key.'</span></a></li>';
 		/*echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="cp.php?ac=link&op=bookmark&linkid='.$linkid.'&browserid='.$browserid.'">'.$key.'</span></a></li>';*/
     }
 }
 function checkbrowserid($id)
 {
-	global $_SGLOBAL,$browsertype;
-	if(in_array($id,$browsertype))
+	global $_SGLOBAL;
+	if(in_array($id,$_SGLOBAL['browsertype']))
 		return 1;
 	return 0;
 }
@@ -2434,7 +2432,7 @@ function createCategory($arr)
 }
 function producebmxml($uid,$arr)
 {
-	global $_SGLOBAL,$_SC,$browsertype;
+	global $_SGLOBAL,$_SC;
 	$lastupdatetime=isset($arr['tm'])?($arr['tm']):'';
 	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
 	if($lastupdatetime==$lastmodified)
@@ -2445,7 +2443,7 @@ function producebmxml($uid,$arr)
 
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 	printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",$lastmodified);
-	foreach($browsertype as $key=>$browservalue){
+	foreach($_SGLOBAL['browsertype'] as $key=>$browservalue){
 		printf("<browserType name=\"$key\">\n");
 		$wherearr='';
 		$orderarr='';
@@ -2637,5 +2635,5 @@ function checkclientauth($arr)
 	//echo  $_SGLOBAL['supe_uid'].'  '.$_SGLOBAL['supe_username'];
 	return $passport;
 }
-include_once(S_ROOT.'./data/data_diggcategory.php');
+
 ?>

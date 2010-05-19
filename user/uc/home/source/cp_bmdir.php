@@ -15,7 +15,7 @@ if(empty($bmdirid))
 if(empty($browserid))
 	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
 if(empty($browserid))
-	$browserid=$browsertype['ie'];
+	$browserid=$_SGLOBAL['browsertype']['ie'];
 
 $ops=array('add','edit','delete');
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];

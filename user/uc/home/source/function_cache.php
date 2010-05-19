@@ -321,7 +321,7 @@ function linkerrtype_cache(){
 	}
 	cache_write('linkerrtype', "_SGLOBAL['linkerrtype']", $_SGLOBAL['linkerrtype']);
 }
-//更新category类型
+//更新digg ategory类型
 function diggcategory_cache(){
 	global $_SGLOBAL;
 
@@ -333,6 +333,18 @@ function diggcategory_cache(){
 		$_SGLOBAL['diggcategory'][$value['categoryid']]['categoryalias'] = $value['categoryalias'];
 	}
 	cache_write('diggcategory', "_SGLOBAL['diggcategory']", $_SGLOBAL['diggcategory']);
+}
+//更新浏览器类型 
+function browsertype_cache(){
+	global $_SGLOBAL;
+
+	$_SGLOBAL['browsertype'] = array();
+	// 从数据库获取
+	$query = $_SGLOBAL['db']->query("SELECT browserid, browsername FROM ".tname('browser'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+	    $_SGLOBAL['browsertype'][$value['browsername']] = $value['browserid'];
+	}
+	cache_write('browsertype', "_SGLOBAL['browsertype']", $_SGLOBAL['browsertype']);
 }
 //递归清空目录
 function deltreedir($dir) {
