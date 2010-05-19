@@ -39,6 +39,7 @@ if(submitcheck('cachesubmit')) {
 		network_cache();
 		linkerrtype_cache();
 		diggcategory_cache();
+		browsertype_cache();
 	}
 	
 	//Ä£°å±àÒë»º´æ
