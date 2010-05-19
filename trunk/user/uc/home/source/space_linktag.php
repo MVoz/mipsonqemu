@@ -30,7 +30,7 @@ include_once(S_ROOT.'./data/data_network.php');
     $see=empty($_GET['see'])?'':$_GET['see'];
     //浏览器类型
     $browserid=(empty($_GET['browserid']))?0:intval($_GET['browserid']);
-    if(!in_array($browserid,$browsertype))
+    if(!in_array($browserid,$_SGLOBAL['browsertype']))
         $browserid=0;	
     $tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
     //获取总条数

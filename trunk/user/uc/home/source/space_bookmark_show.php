@@ -16,7 +16,7 @@ $wherearr='';
 $orderarr='';
 $theurl='';
 //浏览器类型
-$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$browsertype))?$browsertype['ie']:intval($_GET['browserid']);
+$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 if($op=='browser'){	    
 	$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):0;
 	$groupname=(empty($groupid))?'根目录':'';

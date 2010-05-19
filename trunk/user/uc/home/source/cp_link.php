@@ -224,7 +224,7 @@ elseif($_GET['op'] == 'edithot') {
 
 	if(submitcheck('bookmarksubmit')) {
 	}
-	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$browsertype))?$browsertype['ie']:intval($_GET['browserid']);
+	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 	//正确显示tag
 	//$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
 	//获取常用的tag
