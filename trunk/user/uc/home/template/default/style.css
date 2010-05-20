@@ -49,7 +49,7 @@ caption, th { text-align: left; }
 	.green a{ color: green; }
 
 .face { margin: 0 1px; vertical-align: middle; }
-.r_option { float: right; font-size: 12px; font-weight: normal; }
+.r_option { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:5px; }
 .r_option .addcomment, .r_option .addtrackback {display:block;float:left;font-size:11px;height:16px;line-height:16px;margin-right:5px;margin-top:4px !important;padding-left:20px;}
 .r_option .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -112px transparent;}
 .r_option .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
