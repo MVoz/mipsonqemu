@@ -15,6 +15,7 @@ include_once(S_ROOT.'./data/data_network.php');
 $wherearr='';
 $orderarr='';
 $theurl='';
+$groupid=0;
 //浏览器类型
 $browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 if($op=='browser'){	    
