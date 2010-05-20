@@ -23,6 +23,7 @@ $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
 
 $child_class=array();
 $bookmarklist=array();
+$isSecClass=0;
 if($classid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.classid=".$classid);
@@ -31,6 +32,8 @@ if($classid)
 		   $classid=0;
 	else
 	{
+		if(($classitem['groupid']<3000)&&($classitem['groupid']>=2000))	//判断是否为第二层
+		  		$isSecClass=1;
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.parentid=".$classitem['groupid']);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
