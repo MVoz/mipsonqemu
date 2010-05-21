@@ -332,14 +332,19 @@
 	<div class="div_table_radio_question">
 		<ul>
 		<!--{loop $_SGLOBAL['linkerrtype'] $key $value}-->
-			<li style="width: 99%;">
-				<input type="checkbox"  id="chk1_$key" name="chk1_$key">
-				<label for="chk1_1">$value</label>
-			</li>
+			<!--{if ($key==255)}-->
+				<li style="width: 99%;"><input type="checkbox" id="chk1_$key" name="chk1_$key">
+					<label for="chk1_5">$value</label> 
+					<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
+				</li>
+			<!--{else}-->
+				<li style="width: 99%;">
+					<input type="checkbox"  id="chk1_$key" name="chk1_$key">
+					<label for="chk1_1">$value</label>
+				</li>
+			<!--{/if}-->
 		<!--{/loop}-->
-		<li style="width: 99%;"><input type="checkbox" value="10" id="chk1_other"><label for="chk1_5">其他原因：</label> 
-		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
-		</li>
+		
 		<div style="clear: both;"></div>
 		</ul> 
 	</div>
@@ -374,7 +379,7 @@
 <!--{if empty($_SGLOBAL['inajax'])}-->
 <input type="button" name="btnsubmit" value="确定" class="submit"  onclick="report_validate(this);"/>
 <!--{else}-->
-<input type="button" name="btnsubmit" value="确定" class="submit" onclick="report_validate(this);/>
+<input type="button" name="btnsubmit" value="确定" class="submit" onclick="report_validate(this);"/>
 <!--{/if}-->
 </form>
 </div>
@@ -424,6 +429,15 @@
 		<!--{template space_link_list}-->
 	</div>
 </div>
+<!--{elseif $op == 'checkerror'}-->
+<div class="nbox"">
+
+	<div class="nbox_c">
+	<div id="bmcontent">
+		<!--{template space_link_list}-->
+	</div>
+</div>
+
 <!--{else}-->
 <script>
 	function register(id, result) {
