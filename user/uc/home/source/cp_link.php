@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -27,6 +27,7 @@ if($linkid)
 2--几个中有一个符合即可
 */
 $link_priority=array(
+ 'checkerror'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
  'manage'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
  'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
@@ -174,7 +175,7 @@ elseif($_GET['op'] == 'edithot') {
 			include_once(S_ROOT.'./source/function_link.php');
 			$ret = linkerr_post($_POST, $linkitem);
 			if($ret) {	
-				showmessage('do_success');
+				showmessage('do_success',$_SGLOBAL[refer]);
 			} else{
 				showmessage('that_should_at_least_write_things');
 			}
@@ -203,12 +204,46 @@ elseif($_GET['op'] == 'edithot') {
 
 		while($value =$_SGLOBAL['db']->fetch_array($query)){
 			$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
+			
 			$linklist[]=$value;
 		}
 		//分页
 		$link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
 
-		$_TPL['css'] = 'network';
+		$_TPL['css'] = 'network'; 
+
+
+}elseif($_GET['op']=='checkerror'){
+
+		$orderarr=$orderarr." ORDER by main.dateline DESC ";
+		$theurl="cp.php?ac=$ac&op=$op";
+		//分页获取总条数
+		$page=empty($_GET['page'])?0:intval($_GET['page']);
+		$perpage=$_SC['bookmark_show_maxnum'];
+		$start=$page?(($page-1)*$perpage):0;
+		
+		//获取总数
+		 $count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('linkerr')),0);
+
+		//获取所有没有通过验证的书签提交
+		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linkerr')." main left join ".tname("link")." field on main.linkid=field.linkid ".$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
+		while($value =$_SGLOBAL['db']->fetch_array($query)){
+			$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
+			$err=explode(",",$value['errid']);
+			$value['errid']='';
+			foreach($err as $key=>$val)
+			{
+			   $value['errid']=$value['errid'].'   '.$key.':'.$_SGLOBAL['linkerrtype'][$val];
+			}
+			$value['errid']=$value['errid'].$value['other'];
+			$linklist[]=$value;
+		}
+		//分页
+		$link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
+
+		$_TPL['css'] = 'network'; 
+
+
 }elseif($_GET['op']=='pass'){
 	if(submitcheck('passsubmit')) {
 		include_once(S_ROOT.'./source/function_link.php');

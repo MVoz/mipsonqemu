@@ -9,6 +9,7 @@ if(!defined('IN_UCHOME')) {
 }
 include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./data/data_browsertype.php');
+include_once(S_ROOT.'./data/data_linkerrtype.php');
 //debug outpur
 function debugOutput($name,$value){
 	global $_SGLOBAL;
