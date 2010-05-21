@@ -2,6 +2,8 @@
 		<span class="r_option" style="padding-right:150px;"></span>
 <!--{if $op=='manage'}-->
 		待验证站点 &raquo;
+<!--{elseif $op=='checkerror'}-->
+		举报站点 &raquo;
 <!--{else}-->
 		我的上榜 &raquo;
 <!--{/if}-->			 
@@ -9,7 +11,7 @@
 			<ul class="bloglist">
 			<!--{loop $linklist $key $value}-->
 			<li  <!--{if $key%2==1}--> class="list_r pass" <!--{/if}--> class="pass">
-					<h3><a href="$value[url]" target="_blank">$value[link_subject]</a></h3>
+					<h3><a href="$value[url]" target="_blank" title="$value['errid']">$value[link_subject]</a></h3>
 					<!--
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					-->
