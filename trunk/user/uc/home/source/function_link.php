@@ -255,4 +255,26 @@ function convertlinktag($linkid,$tag)
 		}
 		return $tag;
 }
+
+function linkerr_post($POST, $olds=array())
+{
+	global $_SGLOBAL, $_SC, $space,$_GET;
+	if(empty($olds))
+		return 0;
+	$linkerr_arr = array(
+		'linkid' => $olds['linkid'],
+		'uid' => $_SGLOBAL['supe_uid']		
+	);
+	$linkerr_arr['dateline'] =( empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline']);
+	foreach($_SGLOBAL['linkerrtype'] as $key=>$value){
+		if(isset($POST['chk1_'.$key]))
+		{
+			$linkerr_arr['errid']=$linkerr_arr['errid'].(empty($linkerr_arr['errid'])?'':',').$key;
+		}
+	}
+	//if(empty($linkerr_arr['errid']))
+	//	return 0;
+	$linkerrid = inserttable('linkerr', $linkerr_arr, 1);
+	return 1;
+}
 ?>

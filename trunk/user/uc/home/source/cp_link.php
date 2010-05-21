@@ -172,13 +172,11 @@ elseif($_GET['op'] == 'edithot') {
 				showmessage('incorrect_code');
 			}
 			include_once(S_ROOT.'./source/function_link.php');
-			//$linkitem = link_post($_POST, $linkitem);
-			if(is_array($linkitem)) {	
+			$ret = linkerr_post($_POST, $linkitem);
+			if($ret) {	
 				showmessage('do_success');
-			} elseif($linkitem==false) {
+			} else{
 				showmessage('that_should_at_least_write_things');
-			}elseif($linkitem==-1) {
-				showmessage('link_has_existed');
 			}
 		}
 }elseif($_GET['op']=='manage'){
