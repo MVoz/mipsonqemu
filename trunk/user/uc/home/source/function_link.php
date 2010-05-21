@@ -269,12 +269,29 @@ function linkerr_post($POST, $olds=array())
 	foreach($_SGLOBAL['linkerrtype'] as $key=>$value){
 		if(isset($POST['chk1_'.$key]))
 		{
-			$linkerr_arr['errid']=$linkerr_arr['errid'].(empty($linkerr_arr['errid'])?'':',').$key;
+			if($key==255)
+			{
+				$POST['description'] = getstr($POST['description'], 250, 1,1, 1);
+				$linkerr_arr['other']=empty($POST['description']);
+			}
+			else
+				$linkerr_arr['errid']=$linkerr_arr['errid'].(empty($linkerr_arr['errid'])?'':',').$key;
 		}
 	}
-	//if(empty($linkerr_arr['errid']))
-	//	return 0;
-	$linkerrid = inserttable('linkerr', $linkerr_arr, 1);
+	if(empty($linkerr_arr['errid'])&&empty($linkerr_arr['other']))
+		return 0;
+	//检查是否已经存在
+	$linkerr_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('linkerr')." main WHERE  main.linkid= ".$olds['linkid']);
+	$linkerritem=$_SGLOBAL['db']->fetch_array($linkerr_query);
+	if(empty($linkerritem))	
+		$linkerrid = inserttable('linkerr', $linkerr_arr, 1);
+	else
+	{
+		$err1=explode(",",$linkerr_arr['errid']);
+		$err2=explode(",",$linkerritem['errid']);
+		$linkerr_arr['errid']=implode(",",array_unique(array_merge($err1,$err2)));
+		updatetable('linkerr',$linkerr_arr, array('linkerrid'=>$linkerritem['linkerrid']));
+	}
 	return 1;
 }
 ?>
