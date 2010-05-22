@@ -42,11 +42,12 @@
 						<p><strong>收藏人数: </strong><span>$linkitem[storenum]</span></p>
 						<p><strong>浏览次数: </strong><span id="view_num">$linkitem[viewnum]</span></p>
 						<p>
-						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">点击访问</a> 
-						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">加入收藏</a>
-						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$linkitem[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$linkitem[linkid]">举报错误</a>
+						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">访问</a> 
+						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">收藏</a>
+						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$linkitem[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$linkitem[linkid]">举报</a>
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
 							<a onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="link_edit2_$linkitem[linkid]" href="cp.php?ac=link&linkid=$linkitem[linkid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="link_delete_$linkitem[linkid]" href="cp.php?ac=link&linkid=$linkitem[linkid]&op=delete">删除</a>
 						<!--{/if}-->
 						</p>
 						</div>
