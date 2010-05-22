@@ -346,6 +346,19 @@ function browsertype_cache(){
 	}
 	cache_write('browsertype', "_SGLOBAL['browsertype']", $_SGLOBAL['browsertype']);
 }
+//hotdigglist
+function hotdigg_cache()
+{
+	global $_SGLOBAL;
+
+	$_SGLOBAL['hotdigg'] = array();
+	// 从数据库获取
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." order by viewnum DESC limit 0,10");
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+	    $_SGLOBAL['hotdigg'][] = $value;
+	}
+	cache_write('hotdigg', "_SGLOBAL['hotdigg']", $_SGLOBAL['hotdigg']);
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);

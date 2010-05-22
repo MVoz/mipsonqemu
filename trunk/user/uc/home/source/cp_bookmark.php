@@ -6,28 +6,28 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-$ops=array('edit','delete','updatevisitstat','checkseccode');
+$ops=array('get','edit','delete','updatevisitstat','checkseccode');
 //检查信息
-$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'edit':$_GET['op'];
+$op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
 $browserid = empty($_GET['browserid'])?1:intval($_GET['browserid']);
 
-$bookmarkitem = array();
+$item = array();
 $groupid=0;
 if($bmid) {
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
-	$bookmarkitem = $_SGLOBAL['db']->fetch_array($query);
-	if(empty($bookmarkitem['tag']))
-		$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['link_tag'])?array():unserialize($bookmarkitem['link_tag']));
+	$item = $_SGLOBAL['db']->fetch_array($query);
+	if(empty($item['tag']))
+		$item['tag'] =implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 	else
-		$bookmarkitem['tag'] =implode(' ',empty($bookmarkitem['tag'])?array():unserialize($bookmarkitem['tag']));
-
-	if(empty($bookmarkitem['description']))
-		$bookmarkitem['description'] =$bookmarkitem['link_description'];
+		$item['tag'] =implode(' ',empty($item['tag'])?array():unserialize($item['tag']));
+	$item['link_tag'] = explode(' ',$item['tag']);
+	if(empty($item['description']))
+		$item['description'] =$item['link_description'];
 	
-	$groupid=$bookmarkitem['parentid'];
+	$groupid=$item['parentid'];
 }
 
 /*
@@ -37,13 +37,14 @@ if($bmid) {
 2--几个中有一个符合即可
 */
 $bookmark_priority=array(
+ 'get'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'edit'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'updatevisitstat'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0)
 );
 
-$ret=check_valid($op,$bmid,$bookmarkitem,$bookmarkitem['uid'],'allowbookmark',$bookmark_priority);
+$ret=check_valid($op,$bmid,$item,$item['uid'],'allowbookmark',$bookmark_priority);
 switch($ret)
 {
 	case -1:
@@ -94,8 +95,8 @@ else if(submitcheck('editsubmit')) {
 	}
 
 	include_once(S_ROOT.'./source/function_bookmark.php');
-	if($newbmdir = bookmark_post($_POST, $bookmarkitem)) {
-		$url = 'space.php?do=bookmark&groupid='.$bookmarkitem['groupid']."&browserid=".$browserid;		
+	if($newbmdir = bookmark_post($_POST, $item)) {
+		$url = 'space.php?do=bookmark&groupid='.$item['groupid']."&browserid=".$browserid;		
 		showmessage('do_success', $url, 0);
 		//showmessage('do_success');
 	} else {
