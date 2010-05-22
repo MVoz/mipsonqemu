@@ -45,6 +45,9 @@
 						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">点击访问</a> 
 						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">加入收藏</a>
 						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$linkitem[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$linkitem[linkid]">举报错误</a>
+						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
+							<a onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="link_edit2_$linkitem[linkid]" href="cp.php?ac=link&linkid=$linkitem[linkid]&op=edit">编辑</a>
+						<!--{/if}-->
 						</p>
 						</div>
 						<div class="movieScore">
@@ -334,7 +337,7 @@
 		<!--{loop $_SGLOBAL['linkerrtype'] $key $value}-->
 			<!--{if ($key==255)}-->
 				<li style="width: 99%;"><input type="checkbox" id="chk1_$key" name="chk1_$key">
-					<label for="chk1_5">$value</label> 
+					<label for="chk1_$key">$value</label> 
 					<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
 				</li>
 			<!--{else}-->
@@ -437,7 +440,84 @@
 		<!--{template space_link_list}-->
 	</div>
 </div>
+<!--{elseif $op == 'edit'}-->
 
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<h1>编辑链接</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=$ac&op=$op&linkid=$linkitem[linkid]">
+<table cellspacing="0" cellpadding="3">
+<tr>
+<th><label for="subject">名称：</label></th>
+<td>	
+<input type="text" id="subject" name="subject" value="$linkitem[link_subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="address">地址：</label></th>
+<td>
+<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="1" readonly/>
+<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+</td>
+</tr>
+<tr>
+<th><label for="tag">标签：</label></th>
+<td>
+<input type="text" id="tag" name="tag" value="$linkitem[link_tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<p style="color:gray">多个标签请用空格隔开</p>
+</td>
+</tr>
+
+<tr>
+<th style="vertical-align: top;"><label for="description">描述：</label></th>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$linkitem['link_description']</textarea></td>
+</tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$linkitem[linkid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$linkitem[linkid]')">更换一张</a></p>
+		<!--{/if}-->
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->
+<tr>
+<th>&nbsp;</th>
+<td>
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="editsubmit" value="true" />
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<!--{else}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<!--{/if}-->
+</td>
+</tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{else}-->
 <script>
 	function register(id, result) {
