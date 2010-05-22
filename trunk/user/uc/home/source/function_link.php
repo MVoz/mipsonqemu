@@ -56,8 +56,8 @@ function link_post($POST, $olds=array()) {
 			$linkarr['url']=$POST['address'];
 			$linkarr['hashurl']=qhash($linkarr['url']);
 			$linkarr['md5url']=md5($linkarr['url']);
-			//检查是否已存在
-			if(checklinkexisted($linkarr))
+			//检查是否已存在,只在增加的时候检查
+			if(empty($olds)&&checklinkexisted($linkarr))
 			{
 				return -1;//link existed
 			}
@@ -82,6 +82,7 @@ function link_post($POST, $olds=array()) {
 				$linkid = inserttable('link', $linkarr, 1);
 			}else{
 				//修改一个LINK
+				$linkarr['url']=  $olds['url'];
 				updatetable('link',$linkarr, array('linkid'=>$olds['linkid']));
 				$linkid = $olds['linkid'];
 			}
