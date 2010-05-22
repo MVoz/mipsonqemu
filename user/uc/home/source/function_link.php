@@ -301,4 +301,39 @@ function linkerr_post($POST, $olds=array())
 	}
 	return 1;
 }
+function linktoolbar_post($POST)
+{
+	global $_SGLOBAL, $_SC, $space,$_GET;
+    global $browserid;	
+
+	//标题
+	$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
+	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');	
+	 
+	//内容 
+	$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
+		
+	//主表
+	$linktoolbar_arr = array(
+		'subject' => $POST['subject'],		
+	);
+	$POST['address'] = shtmlspecialchars(trim($POST['address']));
+	$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//语词屏蔽
+	$linktoolbar_arr['url']=$POST['address'];
+	$linktoolbar_arr['hashurl']=qhash($linktoolbar_arr['url']);
+	$linktoolbar_arr['postuid']=$_SGLOBAL['supe_uid'];
+	$linktoolbar_arr['classid']=$POST['category'];
+	$linktoolbar_arr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
+	$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('linktoolbar')." where hashurl=".$linktoolbar_arr['hashurl']." and url='".$linktoolbar_arr['url']."'"),0);
+
+	
+
+	if(empty($count)){
+				//增加一个LINK				
+				$linkid = inserttable('linktoolbar', $linktoolbar_arr, 1);
+	}else{
+				
+	}
+	return 1;
+}
 ?>

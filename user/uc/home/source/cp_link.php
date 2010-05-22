@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr','toolbar');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -41,7 +41,8 @@ $link_priority=array(
  'updatelinkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatelinkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatelinkviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1) 
+ 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
 $ret=check_valid($op,$linkid,$item,$item['postuid'],'managelink',$link_priority);
 switch($ret)
@@ -78,22 +79,7 @@ if(empty($item)) {
 	
 } 
 
- if(submitcheck('addsubmit')) {
-	//验证码
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
-		showmessage('incorrect_code');
-	}
-	include_once(S_ROOT.'./source/function_link.php');
-	$item = link_post($_POST, $item);
-	if(is_array($item)) {
-		//$url = $_SGLOBAL['refer'];		
-		showmessage('do_success');
-	} elseif($item==false) {
-		showmessage('that_should_at_least_write_things');
-	}elseif($item==-1) {
-		showmessage('link_has_existed');
-	}
-}
+
 if($op == 'get'){
 	//正确显示tag
 	$item['link_tag'] = empty($item['link_tag'])?array():unserialize($item['link_tag']);
@@ -282,7 +268,29 @@ elseif($_GET['op'] == 'edithot') {
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
-} else {
+}elseif($_GET['op']=='toolbar'){
+	  if(submitcheck('addsubmit')) {
+		include_once(S_ROOT.'./source/function_link.php');
+		linktoolbar_post($_POST);
+		showmessage('do_success', $_SGLOBAL['refer'], 0);
+	}
+}else {
+	 if(submitcheck('addsubmit')) {
+		//验证码
+		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
+			showmessage('incorrect_code');
+		}
+		include_once(S_ROOT.'./source/function_link.php');
+		$item = link_post($_POST, $item);
+		if(is_array($item)) {
+			//$url = $_SGLOBAL['refer'];		
+			showmessage('do_success');
+		} elseif($item==false) {
+			showmessage('that_should_at_least_write_things');
+		}elseif($item==-1) {
+			showmessage('link_has_existed');
+		}
+	}
 	//添加编辑
 	//将从上榜获得的tag中的,去掉
 	$_GET['tag']=(empty($_GET['tag']))?'':str_replace(array(','), array(' '), $_GET['tag']);

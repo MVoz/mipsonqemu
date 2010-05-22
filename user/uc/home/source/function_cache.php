@@ -359,6 +359,19 @@ function hotdigg_cache()
 	}
 	cache_write('hotdigg', "_SGLOBAL['hotdigg']", $_SGLOBAL['hotdigg']);
 }
+//linktoolbar 
+function linktoolbartype_cache()
+{
+	global $_SGLOBAL;
+
+	$_SGLOBAL['linktoolbartype'] = array();
+	// 从数据库获取
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+	    $_SGLOBAL['linktoolbartype'][$value[id]] = $value[toolbarname];
+	}
+	cache_write('linktoolbartype', "_SGLOBAL['linktoolbartype']", $_SGLOBAL['linktoolbartype']);
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
