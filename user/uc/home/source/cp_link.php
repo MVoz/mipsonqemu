@@ -98,6 +98,21 @@ if($op == 'get'){
 	//正确显示tag
 	$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
 }
+elseif($op == 'edit'){
+		//处理edit提交
+		if(submitcheck('editsubmit')) {
+
+			include_once(S_ROOT.'./source/function_link.php');
+			$linkitem = link_post($_POST, $linkitem);
+			if(is_array($linkitem)) {
+				showmessage('do_success',$_SGLOBAL['refer']);
+			} elseif($linkitem) {
+				showmessage('do_error');
+			}
+		}		
+		//正确显示tag
+		$linkitem['link_tag'] =implode(" ",empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag'])); 
+}
 elseif($op == 'relate'){
 		//正确显示tag
 		$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
@@ -237,6 +252,8 @@ elseif($_GET['op'] == 'edithot') {
 			}
 			$value['errid']=$value['errid'].$value['other'];
 			$linklist[]=$value;
+			$value_err['link_description']=$value['errid'];
+			$linklist[]= $value_err;
 		}
 		//分页
 		$link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
