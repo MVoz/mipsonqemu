@@ -10,126 +10,37 @@
 
 		});	
 	</script>
-	<style type="text/css">
-	#slider{padding:2px 0px 5px 0px;float:right;}	
-	#slider ul, #slider li, {
-		margin:0;
-		padding:0;
-		list-style:none;
-		}
-	#slider li{ 
-		width:275px;
-		height:217px;
-		overflow:hidden; 
-		}	
-
-	#slider li{ 
-		background:#fff;
-		}		
-	#slider li h2{ 
-		margin:0 10px;
-		padding-top:10px;
-		}	
-	#slider li p{ 
-		margin:10px;
-		}
-	#slider dl{ 
-		margin:10px;
-		font:12px/1.5em Verdana,"Lucida Grande",Arial,Helvetica,sans-serif
-	}
-/*
-	#slider_no{
-		width:275px;
-		height:25px;
-		overflow:hidden;
-		text-align:right;
-		border:1px solid #CCCCCC;
-		left:20px;
-
-		color:red;
-		position:absolute;
-		top:20px;
-		z-index:9999;
-	}
-*/
-#slider_no{
-	background:none repeat scroll 0 0 #eee;
-	float:right;	
-	margin-top:-25px!important;
-	margin-top:-30px;
-	display:block;
-	height:20px;
-	width:275px;
-	opacity:0.5;
-    filter: alpha(opacity = 50);
-	z-index:9999;
-	text-align:right;
-}
-	</style>
 	<div id="slider">
 			<ul>
 				<li>
 					<dl style="display: block;" class="rank">
-					<!--{loop $digglist $key $value}-->	
-						<!--{if $key }-->
-							<!--{eval $key=$key+1;}-->
-							<dt class="n$key">
-								<a target="new" title="$value[subject]" href="$value[url]" coords="_eB">$value[subject]</a>
-							</dt>
-						<!--{else}-->
-							<dt class="n1">
-								<div class="pack pack_video_brief  ">
-										<div class="pic">							
-											<a href="$value[url]" title="$value[subject]" target="new" class="inner">
-											<img height="90" width="120" class="pack_clipImg" src="$value[pic]" coords="_eAA"></a>
-										</div>
-										<div class="txt">
-											<h6 class="caption">
-											<a title="$value[subject]" target="new" href="$value[url]" coords="_eAB"> $value[subject]</a>
-											</h6>
-											<dl class="info">
-												<dt>分&nbsp;类:
-													<a target="_blank" href="http://www.tudou.com/home/kenny1234/"  coords="_eK">$_SGLOBAL['diggcategory'][$value[categoryid]][categoryalias]</a>
-												</dt>
-											</dl>
-									  </div>
-								</div>
-							</dt>
-						<!--{/if}-->	
-						
-					<!--{/loop}-->
-					<!--
-						<dt class="n1">
-							<div class="pack pack_video_brief  ">
-							<div class="pic">
-								<div class="quick">
-									<a href="#" icode="HA1J-g0AmKE" title="添加到便利豆单" class="quick_hook"></a>
-									</div>
-									<a href="http://www.tudou.com/programs/view/HA1J-g0AmKE/" title="妖精的尾巴 第26话" target="new" class="inner">
-									<img height="90" width="120" class="pack_clipImg" src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg" coords="_eAA"></a>
-								</div>
-								<div class="txt">
-									<h6 class="caption">
-									<a title="妖精的尾巴 第26话" target="new" href="http://www.tudou.com/programs/view/HA1J-g0AmKE/" coords="_eAB"> 妖精的尾巴 第26话 </a></h6>
-									<dl class="info">
-										<dt>播客:
-											<a target="_blank" href="http://www.tudou.com/home/kenny1234/" title="闘神威布的主页" coords="_eK">闘神威布</a>
-										</dt>
-									</dl>
-								</div>
-							</div>
-						</dt>
-						<dt class="n2">
-							<a target="new" title="无法逃离的背叛 第2话" href="http://www.tudou.com/programs/view/3MH-uLc91k4/" coords="_eB">无法逃离的背叛 第2话</a>
-						</dt>
-						<dt class="n3">
-							<a target="new" title="海贼王 第447话" href="http://www.tudou.com/programs/view/B1R1gfLKIUs/" coords="_eC">海贼王 第447话</a>
-						</dt>
-						<dt class="n4"><a target="new" title="薄樱鬼 第3话" href="http://www.tudou.com/programs/view/XMZ-6L9XR_k/" coords="_eD">薄樱鬼 第3话</a>
-						</lt>
-						<dt class="n5"><a target="new" title="会长是女仆 第3话" href="http://www.tudou.com/programs/view/RFi6xbq4geE/" coords="_eE">会长是女仆 第3话</a>
-						</dt>
-					-->
+						<!--{loop $_SGLOBAL['hotdigg'] $key $value}-->	
+								<!--{if $key }-->
+										<!--{eval $key=$key+1;}-->
+											<dt class="n$key">
+												<a target="new" title="$value[subject]" href="$value[url]" coords="_eB">$value[subject]</a>
+											</dt>
+										<!--{else}-->
+											<dt class="n1">
+												<div class="pack pack_video_brief  ">
+														<div class="pic">							
+															<a href="$value[url]" title="$value[subject]" target="new" class="inner">
+																<img height="90" width="120" class="pack_clipImg" src="$value[pic]" coords="_eAA"></a>
+														</div>
+														<div class="txt">
+																<h6 class="caption">
+																	<a title="$value[subject]" target="new" href="$value[url]" coords="_eAB"> $value[subject]</a>
+																	</h6>
+																	<dl class="info">
+																		<dt>分&nbsp;类:
+																			<a target="_blank" href="http://www.tudou.com/home/kenny1234/"  coords="_eK">$_SGLOBAL['diggcategory'][$value[categoryid]][categoryalias]</a>
+																		</dt>
+																	</dl>
+															  </div>
+														</div>
+													</dt>
+									<!--{/if}-->			
+						<!--{/loop}--> 
 					</dl>
 				</li>
 				<li>
@@ -137,18 +48,18 @@
 				</li>
 				<li>
 				<div style="display: block;padding-left:15px;" class="rank ">
-<script type="text/javascript">
-alimama_pid = "mm_16666649_0_0";
-alimama_bm_revision = "bb976bb604c5b4379f0a8a6c54bd7201e37d75dc";
-alimama_bm_uid = "";
-alimama_bm_bid = "6428941";
-alimama_bm_width = 250;
-alimama_bm_height = 220;
-alimama_bm_xmlsrc = "http://bm.alimama.cn/x/2010-05-14/20-53/2010-05-14_99104403c77fcfc65cd111756d27d131_2.xml";
-alimama_bm_ds = "";
-alimama_bm_as = "taoke";
-</script>
-<script type="text/javascript" src="http://bm.alimama.cn/bmv1.js?v=a25a29e8bd84be55fbec128d322c23a516544fad"></script>
+					<script type="text/javascript">
+					alimama_pid = "mm_16666649_0_0";
+					alimama_bm_revision = "bb976bb604c5b4379f0a8a6c54bd7201e37d75dc";
+					alimama_bm_uid = "";
+					alimama_bm_bid = "6428941";
+					alimama_bm_width = 250;
+					alimama_bm_height = 220;
+					alimama_bm_xmlsrc = "http://bm.alimama.cn/x/2010-05-14/20-53/2010-05-14_99104403c77fcfc65cd111756d27d131_2.xml";
+					alimama_bm_ds = "";
+					alimama_bm_as = "taoke";
+					</script>
+					<script type="text/javascript" src="http://bm.alimama.cn/bmv1.js?v=a25a29e8bd84be55fbec128d322c23a516544fad"></script>
 				</div>
 				</li>	
 			</ul>
