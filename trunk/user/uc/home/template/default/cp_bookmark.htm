@@ -46,27 +46,27 @@
 <tr>
 <th><label for="subject">名称：</label></th>
 <td>	
-<input type="text" id="subject" name="subject" value="$bookmarkitem[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$item[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
 </td>
 </tr>
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$bookmarkitem[url]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="1"  />
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 </td>
 </tr>
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
-<input type="text" id="tag" name="tag" value="$bookmarkitem[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="tag" name="tag" value="$item[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$bookmarkitem['description']</textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$item['description']</textarea></td>
 </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
@@ -86,9 +86,9 @@
 			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_$bookmarkitem[bmid]" src='' align="absmiddle">
+			<img id="img_seccode_$item[bmid]" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bookmarkitem[bmid]')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[bmid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
 	</tr>

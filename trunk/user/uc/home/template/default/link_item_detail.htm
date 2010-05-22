@@ -1,44 +1,51 @@
 <div id="network">
 	<div class="nbox_c">
-		<h2 class="ntitle">$linkitem[link_subject]</h2>
+		<h2 class="ntitle">$item[link_subject]</h2>
 		<div class="movieInfo">
 					<div class="link200">
-					<a target="_target" class="playpic" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">
-					<img alt="$linkitem['$link_subject']" src="$linkitem['pic']/$linkitem['md5url'].$_SC['link_image_suffix']">
+					<a target="_target" class="playpic" href="$item['url']" onclick="updatelinkview($item[linkid])">
+					<img alt="$item['$link_subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
 					<em></em>
 					</a>
 					</div>
 					<div class="movieDetail">
-						<p><strong>名称: </strong><a href="$linkitem['url']" target="_blank" onclick="updatelinkview($linkitem[linkid])">$linkitem['link_subject']</a></p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$linkitem['url']" target="_blank" onclick="updatelinkview($linkitem[linkid])">$linkitem['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p><strong>名称: </strong><a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a></p>
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
 						<p>
 						<strong>标签: </strong>
-						<!--{loop $linkitem['link_tag'] $subkey $subvalue}-->
+						<!--{loop $item['link_tag'] $subkey $subvalue}-->
 								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 						<!--{/loop}-->
 						</p>
 						<p>
 						<div style="float:left;width:220px;">
-						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$linkitem[link_dateline],1)}--></span></p>
-						<p><strong>收藏人数: </strong><span>$linkitem[storenum]</span></p>
-						<p><strong>浏览次数: </strong><span id="view_num">$linkitem[viewnum]</span></p>
+						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$item[link_dateline],1)}--></span></p>
+						<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
+						<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
 						<p>
-						<a target="_target" href="$linkitem['url']" onclick="updatelinkview($linkitem[linkid])">访问</a> 
-						<a  href="cp.php?ac=link&linkid=$linkitem[linkid]&op=bookmark">收藏</a>
-						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$linkitem[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$linkitem[linkid]">举报</a>
+						<a target="_target" href="$item['url']" onclick="updatelinkview($item[linkid])">访问</a> 
+						<!--{if $ac=='link' }-->
+						<a  href="cp.php?ac=link&linkid=$item[linkid]&op=bookmark">收藏</a>
+						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
+						<!--{/if}-->
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-							<a onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="link_edit2_$linkitem[linkid]" href="cp.php?ac=link&linkid=$linkitem[linkid]&op=edit">编辑</a>
-							<a onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="link_delete_$linkitem[linkid]" href="cp.php?ac=link&linkid=$linkitem[linkid]&op=delete">删除</a>
+							<!--{if $ac=='link' }-->
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[linkid]', this.id,1);" id="link_edit2_$item[linkid]" href="cp.php?ac=link&linkid=$item[linkid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[linkid]', this.id,1);" id="link_delete_$item[linkid]" href="cp.php?ac=link&linkid=$item[linkid]&op=delete">删除</a>
+							<!--{else}-->
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=link&linkid=$item[bmid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=link&linkid=$item[bmid]&op=delete">删除</a>
+							<!--{/if}-->
 						<!--{/if}-->
 						</p>
 						</div>
 						<div class="movieScore">
 							<p><strong id="pj_title">评价</strong> <span id="my_score">(点击顶踩评价)</span></p>
 							<span>
-								<span class="rate"><a id="movie_item_t_1" target="_self" onclick="updatelinkup($linkitem[linkid])"  href="javascript:void(0)"></a></span>
-								(<span id="up_num">$linkitem['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
-								<span class="rate"><a id="movie_item_t_1" target="_self"  onclick="updatelinkdown($linkitem[linkid])"  href="javascript:void(0)"></a></span>
-								(<span id="down_num">$linkitem['down']</span>人踩)</span>
+								<span class="rate"><a id="movie_item_t_1" target="_self" onclick="updatelinkup($item[linkid])"  href="javascript:void(0)"></a></span>
+								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
+								<span class="rate"><a id="movie_item_t_1" target="_self"  onclick="updatelinkdown($item[linkid])"  href="javascript:void(0)"></a></span>
+								(<span id="down_num">$item['down']</span>人踩)</span>
 
 						</div>
 						</p>
@@ -49,7 +56,7 @@
 				</div>
 				<h3>站点简介</h3>
 				<div class="movieIntro">
-					<p>　$linkitem[link_description]</p>
+					<p>$item[link_description]</p>
 					<p>&nbsp;</p>
 				</div>
 		

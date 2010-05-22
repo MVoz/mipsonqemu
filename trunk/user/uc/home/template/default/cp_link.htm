@@ -4,8 +4,8 @@
 <h1>删除</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=link&op=delete&linkid=$linkitem['linkid']">
-	<p>确定删除标题为<span style="color:#368332">$linkitem['subject']</span>的站点吗？</p>
+<form method="post" action="cp.php?ac=link&op=delete&linkid=$item['linkid']">
+	<p>确定删除标题为<span style="color:#368332">$item['subject']</span>的站点吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="deletesubmit" value="true" />
@@ -28,17 +28,17 @@
 	<tr>
 		<th width="40">标题</th>
 		<td>
-		<input type="text" id="subject" name="subject" value="$linkitem[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
 		<span id="checkusername">&nbsp;</span>
 		</td>
 	</tr>
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<!--{if empty($linkitem[url])}-->
+		<!--{if empty($item[url])}-->
 		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" />
 		<!--{else}-->
-		<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
 		<!--{/if}-->
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		</td>
@@ -46,7 +46,7 @@
 	<tr>
 		<th width="40">标签</th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$linkitem[link_tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
@@ -70,7 +70,7 @@
 		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
 		<td>
 			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
-			$linkitem[link_description]
+			$item[link_description]
 			</textarea>
 		</td>
 	</tr>
@@ -112,7 +112,7 @@
 		<td>
 		<input type="hidden" name="category" value="0" />
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-		<input type="hidden" id="address" name="address" value="$linkitem[url]" />
+		<input type="hidden" id="address" name="address" value="$item[url]" />
 		<input type="hidden" name="bookmarksubmit" value="true" />
 		<input type="submit" id="addsubmit" name="addsubmit" value="提交" class="submit_disabled" tabindex="6" />
 		</td>
@@ -129,7 +129,7 @@
 <form method="post" action="cp.php?ac=$ac&op=$op&linkid=$linkid">
 <div style="padding:5px;">
 	<div style="color:#333;font-size:110%;font-weight:bold;line-height:20px;">
-		<div>您对标题为<span>$linkitem[link_subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
+		<div>您对标题为<span>$item[link_subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
 			<span style="color:#0066FF;">&nbsp;[多选题]</span>
 		</div>
 		<div style="clear: both;">
@@ -170,9 +170,9 @@
 			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_$linkitem[linkid]" src='' align="absmiddle">
+			<img id="img_seccode_$item[linkid]" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$linkitem[linkid]')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[linkid]')">更换一张</a></p>
 		<!--{/if}-->
 	</span>
 	<!--{/if}-->
@@ -199,8 +199,8 @@
 <h1>通过</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=link&op=pass&linkid=$linkitem['linkid']">
-	<p>确定通过标题为<span style="color:#368332">$linkitem['subject']</span>站点的验证吗？</p>
+<form method="post" action="cp.php?ac=link&op=pass&linkid=$item['linkid']">
+	<p>确定通过标题为<span style="color:#368332">$item['subject']</span>站点的验证吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="passsubmit" value="true" />
@@ -249,32 +249,32 @@
 <h1>编辑链接</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=$ac&op=$op&linkid=$linkitem[linkid]">
+<form method="post" action="cp.php?ac=$ac&op=$op&linkid=$item[linkid]">
 <table cellspacing="0" cellpadding="3">
 <tr>
 <th><label for="subject">名称：</label></th>
 <td>	
-<input type="text" id="subject" name="subject" value="$linkitem[link_subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input" tabindex="1"  />
 </td>
 </tr>
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$linkitem[url]" style="width: 396px;" class="t_input" tabindex="1" readonly/>
+<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="1" readonly/>
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 </td>
 </tr>
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
-<input type="text" id="tag" name="tag" value="$linkitem[link_tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input" tabindex="1"  />
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$linkitem['link_description']</textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$item['link_description']</textarea></td>
 </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
@@ -294,9 +294,9 @@
 			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_$linkitem[linkid]" src='' align="absmiddle">
+			<img id="img_seccode_$item[linkid]" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$linkitem[linkid]')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[linkid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
 	</tr>
