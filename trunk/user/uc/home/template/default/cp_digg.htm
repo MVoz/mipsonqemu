@@ -97,11 +97,9 @@
 	<th width="40"><label for="category">分类</label></th>
 		<td>
 			<select id="category" name="category" tabindex="4"/>
-					<option value="0">&nbsp;奇</option>
-					<option value="1">&nbsp;趣</option>
-					<option value="2">&nbsp;囧</option>
-					<option value="3">&nbsp;新</option>
-					<option value="4">&nbsp;怪</option>
+				<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
+					<option value="$key">&nbsp;$value['categoryalias']</option>
+				<!--{/loop}-->
 			</select>
 		</td>
 	</tr>
