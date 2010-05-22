@@ -12,12 +12,12 @@ $ops=array('checkerror','manage','add','edit','delete','pass','reject','checksec
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
-$linkitem = array();
+$item = array();
 $relatedlist = array();
 if($linkid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
-	$linkitem = $_SGLOBAL['db']->fetch_array($query);
+	$item = $_SGLOBAL['db']->fetch_array($query);
 	
 }
 /*
@@ -43,7 +43,7 @@ $link_priority=array(
  'updatelinkviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1) 
 );
-$ret=check_valid($op,$linkid,$linkitem,$linkitem['postuid'],'managelink',$link_priority);
+$ret=check_valid($op,$linkid,$item,$item['postuid'],'managelink',$link_priority);
 switch($ret)
 {
 	case -1:
@@ -56,7 +56,7 @@ switch($ret)
 	break;
 }
 //权限检查
-if(empty($linkitem)) {
+if(empty($item)) {
 	//实名认证
 	ckrealname('blog');
 	
@@ -84,39 +84,39 @@ if(empty($linkitem)) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_link.php');
-	$linkitem = link_post($_POST, $linkitem);
-	if(is_array($linkitem)) {
+	$item = link_post($_POST, $item);
+	if(is_array($item)) {
 		//$url = $_SGLOBAL['refer'];		
 		showmessage('do_success');
-	} elseif($linkitem==false) {
+	} elseif($item==false) {
 		showmessage('that_should_at_least_write_things');
-	}elseif($linkitem==-1) {
+	}elseif($item==-1) {
 		showmessage('link_has_existed');
 	}
 }
 if($op == 'get'){
 	//正确显示tag
-	$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
+	$item['link_tag'] = empty($item['link_tag'])?array():unserialize($item['link_tag']);
 }
 elseif($op == 'edit'){
 		//处理edit提交
 		if(submitcheck('editsubmit')) {
 
 			include_once(S_ROOT.'./source/function_link.php');
-			$linkitem = link_post($_POST, $linkitem);
-			if(is_array($linkitem)) {
+			$item = link_post($_POST, $item);
+			if(is_array($item)) {
 				showmessage('do_success',$_SGLOBAL['refer']);
-			} elseif($linkitem) {
+			} elseif($item) {
 				showmessage('do_error');
 			}
 		}		
 		//正确显示tag
-		$linkitem['link_tag'] =implode(" ",empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag'])); 
+		$item['link_tag'] =implode(" ",empty($item['link_tag'])?array():unserialize($item['link_tag'])); 
 }
 elseif($op == 'relate'){
 		//正确显示tag
-		$linkitem['link_tag'] = empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']);
-		$relatedlist[]=$linkitem;
+		$item['link_tag'] = empty($item['link_tag'])?array():unserialize($item['link_tag']);
+		$relatedlist[]=$item;
 }
 elseif($_GET['op'] == 'delete') {
 	//删除
@@ -165,19 +165,19 @@ elseif($_GET['op'] == 'edithot') {
 		//更新顶数
 		include_once(S_ROOT.'./source/function_link.php');
         updatelinkupnum($_GET['linkid']);
-		showmessage($linkitem[up]+1);
+		showmessage($item[up]+1);
 
 }elseif($_GET['op']=='updatelinkdownnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_link.php');
         updatelinkdownnum($_GET['linkid']);
-		showmessage($linkitem[down]+1);
+		showmessage($item[down]+1);
 
 }elseif($_GET['op']=='updatelinkviewnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_link.php');
         updatelinkviewnum($_GET['linkid']);
-		showmessage($linkitem['viewnum']+1);
+		showmessage($item['viewnum']+1);
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
 		  include_once(S_ROOT.'./data/data_linkerrtype.php');
@@ -188,7 +188,7 @@ elseif($_GET['op'] == 'edithot') {
 				showmessage('incorrect_code');
 			}
 			include_once(S_ROOT.'./source/function_link.php');
-			$ret = linkerr_post($_POST, $linkitem);
+			$ret = linkerr_post($_POST, $item);
 			if($ret) {	
 				showmessage('do_success',$_SGLOBAL[refer]);
 			} else{
@@ -264,19 +264,19 @@ elseif($_GET['op'] == 'edithot') {
 }elseif($_GET['op']=='pass'){
 	if(submitcheck('passsubmit')) {
 		include_once(S_ROOT.'./source/function_link.php');
-		link_pass($linkitem);
+		link_pass($item);
 		showmessage('do_success', $_SGLOBAL['refer'], 0);
 	}
 
 }elseif($_GET['op']=='bookmark'){
 	//正确显示tag
-	$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+	$item['link_tag'] = implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 
 	if(submitcheck('bookmarksubmit')) {
 	}
 	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 	//正确显示tag
-	//$linkitem['link_tag'] = implode(' ',empty($linkitem['link_tag'])?array():unserialize($linkitem['link_tag']));
+	//$item['link_tag'] = implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 	//获取常用的tag
 	$shownums=$_SC['favorite_tag_maxnum'];
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
