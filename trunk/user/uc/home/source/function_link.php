@@ -216,6 +216,11 @@ function deletelink($linkid){
 	$linkitem=$_SGLOBAL['db']->fetch_array($link_query);
 	if(empty($linkitem))
 		return 0;
+	if($linkitem['storenum'])//ÊÕ²ØÊý>0
+	{
+		updatetable('link',array('delflag'=>1), array('linkid'=>$linkitem['linkid']));
+		return 1;
+	}
 	$isself=0;
 	if($linkitem['postuid']==$_SGLOBAL['supe_uid'])
 		$isself=1;
@@ -228,6 +233,7 @@ function deletelink($linkid){
 		case $_SC['link_verify_passed']:
 				if($isself)
 					updatetable('link',array('postuid'=>$_SC['link_delete_uid']), array('linkid'=>$linkid));
+		break;
 		case $_SC['link_verify_failed']:
 				 $_SGLOBAL['db']->query("DELETE  from ".tname('link')." WHERE linkid=".$linkid);
 				link_delete_tag($linkid);
