@@ -178,13 +178,13 @@ jQuery(document).ready(function(){
 </div>
 <div class="popular_site">
     <p>
-        <span id="related_post_1" class="current">常用类</span>
-        <span id="mhot_1" class="">资讯类</span>
-        <span id="allhot_1" >购物类</span>
-		<span id="allhot_1" >娱乐类</span>
-		<span id="allhot_1" >生活类</span>
-		<span id="allhot_1" >在线工具</span>
-		<span id="allhot_1" >常用软件</span>
+		<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
+					<!--{if $key==1 }-->
+						<span id="toolbar_$key" class="current">$value</span>
+					<!--{else}-->
+						<span id="toolbar_$key">$value</span>
+					<!--{/if}-->
+		<!--{/loop}--> 
     </p>
     <ul class="related_post_1" style="display: block;">
         <li class="row-list"> 
