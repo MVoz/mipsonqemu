@@ -11,6 +11,7 @@ include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./data/data_browsertype.php');
 include_once(S_ROOT.'./data/data_linkerrtype.php');
 include_once(S_ROOT.'./data/data_hotdigg.php');
+include_once(S_ROOT.'./data/data_linktoolbartype.php');
 //debug outpur
 function debugOutput($name,$value){
 	global $_SGLOBAL;

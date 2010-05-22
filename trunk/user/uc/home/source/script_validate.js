@@ -49,3 +49,24 @@ function report_validate(obj) {
     	return true;
     }
 }
+function linktoolbar_validate(obj)
+{
+	 if($('seccode')) {
+		var code = $('seccode').value;
+		var x = new Ajax();
+		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
+			s = trim(s);
+			if(s.indexOf('succeed') == -1) {
+				alert(s);
+				$('seccode').focus();
+           		return false;
+			} else {
+				obj.form.submit();
+				return true;
+			}
+		});
+    } else {
+     	obj.form.submit();
+    	return true;
+    }
+}
