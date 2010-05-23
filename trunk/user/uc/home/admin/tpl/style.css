@@ -81,3 +81,18 @@ URL: http://www.comsenz.com
 	.folder .active { font-weight:bold; padding-left: 1em; }
 	
 .message { width:100%; text-align:center;  font-size:14px; padding:1em; }
+/*linktoolbar*/
+.popular_site{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
+
+.popular_site p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
+.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+.popular_site p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.popular_site >li{/*border-bottom:1px dotted #ddd;*/padding-bottom:3px;margin:5px 0;}
+.popular_site {height:115px;}
+.allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
+
+.row-list,.row-list_l{display:block;clear:both;}
+.row-list_l{background-color:#F3F3F3;}
+
+.row-list em,.row-list_l em{width:76px;float:left;font-style:normal;padding:0px;text-align:center;}
+.row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}

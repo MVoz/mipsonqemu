@@ -40,6 +40,9 @@ if(submitcheck('cachesubmit')) {
 		linkerrtype_cache();
 		diggcategory_cache();
 		browsertype_cache();
+		linktoolbartype_cache();
+		linktoolbar_cache();
+		hotdigg_cache();
 	}
 	
 	//Ä£°å±àÒë»º´æ
