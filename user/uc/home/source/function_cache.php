@@ -359,7 +359,7 @@ function hotdigg_cache()
 	}
 	cache_write('hotdigg', "_SGLOBAL['hotdigg']", $_SGLOBAL['hotdigg']);
 }
-//linktoolbar 
+//linktoolbartype
 function linktoolbartype_cache()
 {
 	global $_SGLOBAL;
@@ -371,6 +371,22 @@ function linktoolbartype_cache()
 	    $_SGLOBAL['linktoolbartype'][$value[id]] = $value[toolbarname];
 	}
 	cache_write('linktoolbartype', "_SGLOBAL['linktoolbartype']", $_SGLOBAL['linktoolbartype']);
+}
+//linktoolbar
+function linktoolbar_cache()
+{
+	global $_SGLOBAL;
+
+	$_SGLOBAL['linktoolbar'] = array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+		// 从数据库获取
+		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbar')." where classid=".$value[id]);	 
+		while($v = $_SGLOBAL['db']->fetch_array($q)){
+			$_SGLOBAL['linktoolbar'][$value[id]][] = $v;
+		}
+	}
+	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
 }
 //递归清空目录
 function deltreedir($dir) {
