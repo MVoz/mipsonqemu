@@ -56,6 +56,7 @@ $manageclass=array();
 if($op=='manage'){
 	
 	$classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
+
 	$groupid=0;
 	//获取class分类
 	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");

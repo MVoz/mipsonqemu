@@ -388,6 +388,39 @@ function linktoolbar_cache()
 	}
 	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
 }
+//linkclass	
+function linkclass_cache()
+{
+	global $_SGLOBAL;
+
+	$_SGLOBAL['linkclass'] = array();
+
+	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");
+	while($value =$_SGLOBAL['db']->fetch_array($class_query))
+	{
+		//获取二级目录
+		$classnd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=".$value['groupid']);
+		while($classnd_value =$_SGLOBAL['db']->fetch_array($classnd_query))
+		{			
+		
+			//获取本层class的tag
+			
+			$classtag_query  = $_SGLOBAL['db']->query("SELECT field.tagid,field.tagname FROM ".tname('linkclass')." main	LEFT JOIN ".tname('linkclasstag')." field ON main.classid=field.classid  WHERE main.classid=".$classnd_value['classid']);
+			while($classtag_value =$_SGLOBAL['db']->fetch_array($classtag_query))
+			{
+						$classnd_value['tag'][]= $classtag_value;
+			}
+			
+			$value['son'][]=$classnd_value;
+		}
+		$_SGLOBAL['linkclass'][$value['classid']]=$value;
+	}
+
+
+
+
+	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);

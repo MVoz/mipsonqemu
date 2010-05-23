@@ -65,6 +65,7 @@ if($classid)
 
 //获取书签分类列表
 //获取class分类
+/*
 $class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");
 while($value =$_SGLOBAL['db']->fetch_array($class_query))
 {
@@ -76,6 +77,7 @@ while($value =$_SGLOBAL['db']->fetch_array($class_query))
 		}
 	$linkclasslist[]=$value;	
 }
+*/
 realname_get();
 
 //修正tag以便显示
