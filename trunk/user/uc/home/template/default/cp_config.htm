@@ -8,7 +8,7 @@
 <tr>
 	<th style="width:10em;">您的登录用户名:</th>
 	<td>
-		<!--{eval echo stripslashes($space['username']);}--> (<a href="cp.php?ac=password">修改登录密码</a>)
+		<!--{eval echo stripslashes($space['username']);}--> (<a onclick="passwdformshow();" href="javascript:;">修改登录密码</a>)
 	</td>
 
 </tr>
@@ -24,16 +24,54 @@
 	<td><input type="submit" name="configsubmit" value="保存" class="submit" /></td>
 </tr>
 </table>
-
-
-
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
+
+<div class="c_form" id="passwdform" style="display:none;">
+<form action="cp.php?ac=password&amp;op=" method="post">
+<table cellspacing="0" cellpadding="0" class="formtable">
+<caption>
+<h2>我的登录密码</h2>
+<p>修改密码后，您需要重新登陆一次。</p>
+</caption>
+<tbody><tr>
+<th width="100">登录用户名</th>
+<td>admin</td>
+</tr>
+<tr>
+<th width="100">旧密码</th>
+<td><input type="password" class="t_input" value="" name="password" id="password"></td>
+</tr>
+<tr>
+<th>新密码</th>
+<td><input type="password" class="t_input" value="" name="newpasswd1" id="newpasswd1"></td>
+</tr>
+<tr>
+<th>确认新密码</th>
+<td><input type="password" class="t_input" value="" name="newpasswd2" id="newpasswd2"></td>
+</tr>
+<tr>
+<th>&nbsp;</th>
+<td><input type="submit" class="submit" value="修改密码" name="pwdsubmit"></td>
+</tr>
+</tbody></table>
+<input type="hidden" value="85d31e3c" name="formhash">
+</form>
+</div>
 <script type="text/javascript">
 	function updateavatar() {
 		window.location.reload();
 	}
+	function passwdformshow()
+	{
+		if($('passwdform').style.display=='none')
+			 $('passwdform').style.display='block';
+		else
+			$('passwdform').style.display='none';
+	}
 </script>
+
+
 <form method="post" action="cp.php?ac=avatar&ref" class="c_form">
 	<table cellspacing="0" cellpadding="0" class="formtable">
 		<caption>
