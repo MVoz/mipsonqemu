@@ -73,7 +73,10 @@ $_SGLOBAL[space_css]
 			   <!--{if $_SGLOBAL[supe_uid]}-->
 				<strong class="first">你好，<a target="_blank" href="space.php?do=all">$_SGLOBAL['supe_username']</a></strong>
 				<span><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a></span>
-				<span><a href="cp.php">设置</a></span>				
+				<span><a href="cp.php">设置</a></span>
+			   <!--{if $_SGLOBAL[supe_uid]&&checkperm('manageconfig') }-->
+				<span><a href="admincp.php">管理</a></span>
+			   <!--{/if}-->
 			   <!--{else}-->
 			    <strong class="first">你好，欢迎</strong>
 				<span><a href="do.php?ac=$_SCONFIG[login_action]">登录</a></span>
@@ -90,9 +93,7 @@ $_SGLOBAL[space_css]
 			<li class="first   current  "><a  href="space.php?do=all" >首页</a></li>
 			<li><a  href="space.php?do=navigation">导航</a>        </li>
 			<li><a  href="space.php?do=digg">$_SC['digg_name']</a>   </li>
-	<!--{if $_SGLOBAL[supe_uid]&&checkperm('manageconfig') }-->
-			<li><a href="admincp.php">管理</a></li>
-    <!--{/if}-->
+
 	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelinkclass') }-->
 			<!--{if ($_GET['ac'] == 'linkclass')&&($_GET['op'] == 'manage')}-->
 			<li><a href="cp.php?ac=linkclass&op=manage" class="now">分类</a><li>
