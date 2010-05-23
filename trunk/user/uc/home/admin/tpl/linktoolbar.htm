@@ -1,0 +1,162 @@
+<!--{eval 
+	$_TPL['pagetypes'] = array('header'=>'页头', 'rightside'=>'内容页面', 'footer'=>'页脚', 'couplet'=>'对联', 'contenttop'=>'页面主区域上方', 'contentbottom'=>'页面主区域下方', 'feedbox'=>'动态置顶位');
+	$_TPL['availables'] = array('0'=>'-', '1'=>'有效');
+}-->
+<!--{template admin/tpl/header}-->
+
+<div class="mainarea">
+<div class="maininner">
+
+<div class="tabs_header">
+	<ul class="tabs">
+		<li$actives[view]><a href="admincp.php?ac=linktoolbar"><span>便捷站点</span></a></li>
+		<li class="null"><a href="admincp.php?ac=linktoolbar&op=add">添加新站点</a></li>
+	</ul>
+</div>
+
+		
+<!--{if empty($_GET['op'])}-->
+<script language="javascript" type="text/javascript" src="source/suggest.js"></script>
+<script language="javascript" type="text/javascript" >
+jQuery(document).ready(function(){
+		jQuery(".popular_site span:first").addClass("currentx");  
+			jQuery(".popular_site ul:not(:first)").hide();  
+			jQuery(".popular_site span").click(function(){  
+				jQuery(".popular_site span").removeClass("currentx");  
+				jQuery(this).addClass("currentx");  
+				jQuery(".popular_site ul").hide(); 
+				jQuery("."+jQuery(this).attr("id")).show(); 
+		});
+});
+</script>
+	<form method="post" action="admincp.php?ac=ad">
+		<div class="popular_site">
+		<p>
+			<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
+						<!--{if $key==1 }-->
+							<span id="toolbar_$key" class="current">$value</span>
+						<!--{else}-->
+							<span id="toolbar_$key">$value</span>
+						<!--{/if}-->
+			<!--{/loop}--> 
+		</p>
+		<!--{loop $list $key $value}-->
+			<ul class="toolbar_$key" style="display: block;">
+			<!--{loop $value $k $val}-->
+						<!--{if ($k%8)==0 }-->
+							<!--{if (($k%16)==0)&&$k }-->
+								<li class="row-list_1">
+							<!--{else}-->
+								<li class="row-list">
+							<!--{/if}-->
+						<!--{/if}-->
+							<em><a title="$val[subject]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[subject]</a></em>  
+			<!--{/loop}-->
+			</ul>
+		<!--{/loop}-->
+
+		</div>
+	
+	</form>
+
+<!--{elseif $_GET['op'] == 'add' || $_GET['op'] == 'edit'}-->
+	<form method="post" action="admincp.php?ac=linktoolbar">
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	
+	<div class="bdrcontent">
+		<table cellspacing="0" cellpadding="3">
+			<tr>
+			<th><label for="subject">名称：</label></th>
+			<td>	
+			<input type="text" id="subject" name="subject" value="$linktoolbarvalue[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+			</td>
+			</tr>
+			<tr>
+			<th><label for="address">地址：</label></th>
+			<td>
+			<input type="text" id="address" name="address" value="$linktoolbarvalue[url]" style="width: 396px;" class="t_input" tabindex="1" />
+			<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+			</td>
+			</tr> 
+			<tr>
+			<th><label for="category">分类</label></th>
+			<td>
+						<select id="category" name="category" tabindex="4"/>
+							<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
+								<!--{if $linktoolbarvalue[classid]==$key }-->
+									<option value="$key" selected>&nbsp;$value</option>
+								<!--{else}-->
+									<option value="$key">&nbsp;$value</option>
+								<!--{/if}-->
+							<!--{/loop}-->
+						</select>
+					</td>
+			</tr>
+			<th style="vertical-align: top;"><label for="description">描述：</label></th>
+			<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$linktoolbarvalue[description]</textarea></td>
+			</tr>
+			<!--{if $_SCONFIG['seccode_register']}-->
+			<!--{if $_SCONFIG['questionmode']}-->
+			<tr>
+				<th style="vertical-align: top;">请先回答问题</th>
+				<td>
+					<p><!--{eval question();}--></p>
+					<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+				</td>
+			</tr>
+			<!--{else}-->
+			<tr>
+				<th style="vertical-align: top;">验证码</th>
+				<td>
+				<!--{if empty($_SGLOBAL['inajax'])}-->
+					<script>seccode()</script>
+					<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+					<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+				<!--{else}-->
+					<img id="img_seccode_0" src='' align="absmiddle">
+					<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+					<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_0')">更换一张</a></p>
+				<!--{/if}-->
+				</td>
+			</tr>
+			<!--{/if}-->
+			<!--{/if}-->
+		</table>
+		
+	</div>
+	
+	<div class="footactions">
+		<input type="hidden" name="linktoolbarid" value="$linktoolbarvalue[toolbarid]">
+		<input type="submit" name="linktoolbarsubmit" value="提交" class="submit">
+	</div>
+
+	</form>
+	
+<!--{elseif $_GET['op'] == 'tpl'}-->
+	<div class="bdrcontent">
+	<div class="title"><h3>模版调用代码</h3></div>
+	
+	<table class="formtable">
+	<tr><td>请将以下代码复制，放到站点模板的任意页面的指定位置即可。</td></tr>
+	<tr><td><input type="text" name="blockadcode" value="$adcode" size="80"></td></tr>
+	</table>
+	</div>
+
+<!--{elseif $_GET['op'] == 'js'}-->
+
+	<div class="bdrcontent">
+	<div class="title"><h3>Javascript调用代码</h3></div>
+	
+	<table class="formtable">
+	<tr><td><textarea name="blockadcode" style="width:98%;" rows="5">$adcode</textarea></td></tr>
+	</table>
+	</div>
+<!--{/if}-->
+</div>
+</div>
+
+<div class="side">
+	<!--{template admin/tpl/side}-->
+</div>
+
+<!--{template admin/tpl/footer}-->
