@@ -14,6 +14,11 @@ if(empty($_SCONFIG['networkpublic'])) {
 }
 include_once(S_ROOT.'./data/data_network.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
+
+$type = empty($_GET['type'])?0:intval($_GET['type']);
+//检查type合法性
+if(!isbetween($type,0,count($_SGLOBAL['diggcategory'])))
+	  $type=0;
 //digg
 $digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';
@@ -30,8 +35,12 @@ if(check_network_cache('digg')) {
     $start=$page?(($page-1)*$perpage):0;
     $theurl="space.php?do=$do";
 
+	$wherearr='';
+	if(!empty($type))
+		 $wherearr=' where main.categoryid='.$type;
+
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline LIMIT $start,$shownum");
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main ".$wherearr." ORDER BY main.dateline LIMIT $start,$shownum");
 
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['subject'] = getstr($value['subject'], 50);
