@@ -2640,5 +2640,11 @@ function checkclientauth($arr)
 	//echo  $_SGLOBAL['supe_uid'].'  '.$_SGLOBAL['supe_username'];
 	return $passport;
 }
-
+function isbetween($a,$min,$max)
+{
+	if(($a<=$min)||($a>=$max))
+		return 0;
+	else
+		return 1;
+}
 ?>
