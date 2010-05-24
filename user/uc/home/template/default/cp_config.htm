@@ -55,7 +55,7 @@
 <td><input type="submit" class="submit" value="修改密码" name="pwdsubmit"></td>
 </tr>
 </tbody></table>
-<input type="hidden" value="85d31e3c" name="formhash">
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
 </div>
 <script type="text/javascript">
@@ -70,7 +70,32 @@
 			$('passwdform').style.display='none';
 	}
 </script>
-
+<div class="c_form" id="styleform">
+<form action="cp.php?ac=style" method="post">
+<table cellspacing="0" cellpadding="0" class="formtable">
+<caption>
+<h2>主页风格</h2>
+<p>请选择自己喜欢的个人主页风格。</p>
+</caption>
+<tbody>
+<tr>
+<th width="100">网站缩略图:</th>
+<!--{if empty($space[style])}-->
+<td width="100"><input type="radio"  value="0" name="ownerstyle" id="ownerstyle" checked>显示</td>
+<td width="100"><input type="radio" value="1" name="ownerstyle" id="ownerstyle">不显示</td>
+<!--{else}-->
+<td width="100"><input type="radio"  value="0" name="ownerstyle" id="ownerstyle">显示</td>
+<td width="100"><input type="radio" value="1" name="ownerstyle" id="ownerstyle" checked>不显示</td>
+<!--{/if}-->
+<td>&nbsp;</td>
+</tr> 
+<th>&nbsp;</th>
+<td><input type="submit" class="submit" value="修改风格" name="stylesubmit"></td>
+</tr>
+</tbody></table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
 
 <form method="post" action="cp.php?ac=avatar&ref" class="c_form">
 	<table cellspacing="0" cellpadding="0" class="formtable">
