@@ -8,6 +8,16 @@
 <div class="nbox" style="height:650px;">
 
 	<div class="nbox_c">
+	<h2 class="ntitle">
+		<span class="r_option" style="padding-right:150px;"></span>
+<!--{if $op=='manage'}-->
+		待验证站点 &raquo;
+<!--{elseif $op=='checkerror'}-->
+		举报站点 &raquo;
+<!--{else}-->
+		我的上榜 &raquo;
+<!--{/if}-->			 
+	</h2>
 	<div id="bmcontent">
 		<!--{template space_link_list}-->	
 	</div>
