@@ -19,6 +19,9 @@ $type = empty($_GET['type'])?0:intval($_GET['type']);
 //检查type合法性
 if(!isbetween($type,0,count($_SGLOBAL['diggcategory'])))
 	  $type=0;
+//根据postuser来查看
+$uid = empty($_GET['uid'])?0:intval($_GET['uid']);
+
 //digg
 $digglist = array();
 $cachefile = S_ROOT.'./data/cache_network_digg.txt';
@@ -38,6 +41,8 @@ if(check_network_cache('digg')) {
 	$wherearr='';
 	if(!empty($type))
 		 $wherearr=' where main.categoryid='.$type;
+	if(!empty($uid))
+		 $wherearr=' where main.postuid='.$uid;
 
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
 	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main ".$wherearr." ORDER BY main.dateline LIMIT $start,$shownum");
