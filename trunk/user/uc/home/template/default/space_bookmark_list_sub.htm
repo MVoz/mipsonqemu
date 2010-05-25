@@ -3,24 +3,35 @@
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
-					<div class="d_avatar avatar125">
-							<a href="$value[url]" title="{$value[subject]}" target="_blank">
-								 <!--{if empty($value['picflag'])}-->
-									<img src="$value['tmppic']">
-								 <!--{else}-->
-									<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
-								 <!--{/if}-->
-									
-							</a>
-					</div>
-					<p class="message">
-						<!--{if !empty($value['description'])}-->
-								$value['description'] ...
-						<!--{else}-->
-								暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
-						<!--{/if}-->
-						<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-					</p>
+					<!--{if empty($space['style'])}-->
+						<div class="d_avatar avatar125">
+								<a href="$value[url]" title="{$value[subject]}" target="_blank">
+									 <!--{if empty($value['picflag'])}-->
+										<img src="$value['tmppic']">
+									 <!--{else}-->
+										<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+									 <!--{/if}-->
+										
+								</a>
+						</div>
+						<p class="message">
+							<!--{if !empty($value['description'])}-->
+									$value['description'] ...
+							<!--{else}-->
+									暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+							<!--{/if}-->
+							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+						</p>
+					<!--{else}-->						
+						<p class="messagenopic">
+							<!--{if !empty($value['description'])}-->
+									$value['description'] ...
+							<!--{else}-->
+									暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+							<!--{/if}-->
+							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+						</p>
+					<!--{/if}-->
 					<p class="tags"> 
 						<!--{if !empty($value['taglist'])}-->
 							<!--{loop $value[taglist] $subkey $subvalue}-->
