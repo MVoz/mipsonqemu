@@ -2211,17 +2211,22 @@ function ckspacelog() {
 }
 function createChildMenu($query,$func,$browserid,$groupid,$idstr,$doshowit)
 {
-	global $_SGLOBAL;	
+	global $_SGLOBAL,$_SC;	
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	
 	$do_ul=1;
     if($idstr=="menu"){
+		if($browserid==$_SGLOBAL['browsertype']['firefox'])
+		{
+			echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="space.php?do=bookmark&op=browser&browserid='.$browserid.'" value="根目录">根目录</a></li>';
+		}else{
 			echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="javascript:;" onclick="'.$func.'(\'0\',\''.$browserid.'\',\'根目录\');" value="根目录">根目录</a></li>';
+		}
             echo '<ul id="menu">';
 	}
 	while ($value= $_SGLOBAL['db']->fetch_array($query)) {
 					$do_showit=0;
-					if(!empty($_GET['groupid'])&&($value[groupid]==intval($_GET['groupid'])))
+					if(($value[parentid]==$groupid))
 						$do_showit=1;
 						//category
 			  		if($do_ul&&$idstr!="menu"){ 
@@ -2237,7 +2242,7 @@ function createChildMenu($query,$func,$browserid,$groupid,$idstr,$doshowit)
 			  		else
 			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\');" value="'.$value[subject].'"'.
 						(($value[groupid]==$groupid)?('class="green"'):'').'>'.$value[subject].'</a>';
-			  		$childQuery=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=1 AND parentid=$value[groupid]");
+			  		$childQuery=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=$value[groupid]");
 			  		createChildMenu($childQuery,$func,$browserid,$groupid,$idstr.$value[groupid],$do_showit);		
 			  		echo '</li>';				  		
 			  		$do_ul=0; 
@@ -2648,5 +2653,19 @@ function isbetween($a,$min,$max)
 		return 0;
 	else
 		return 1;
+}
+/*
+	获取 firefox 书签菜单的groupid
+*/
+function getFirefoxBookmarkMenuGroupid()
+{
+	global $_SGLOBAL,$_SC;
+	if(empty($_SGLOBAL['supe_uid'])) return 0;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+	$query =$_SGLOBAL['db']->query("SELECT groupid FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$_SGLOBAL['browsertype']['firefox']." AND subject='书签菜单' limit 1");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+		return $value['groupid'];
+	}
+	return 0;
 }
 ?>

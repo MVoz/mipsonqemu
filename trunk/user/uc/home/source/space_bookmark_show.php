@@ -29,7 +29,7 @@ if(file_exists($bmcachefile)){
 		$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):0;
 		//firefox做特殊处理，点击根目录直接转到书签菜单
 		if(($browserid==$_SGLOBAL['browsertype']['firefox'])&&empty($groupid))
-				$groupid=8001;
+				$groupid=getFirefoxBookmarkMenuGroupid();
 
 		$groupname=(empty($groupid))?'根目录':'';
 		if(empty($groupname)){
