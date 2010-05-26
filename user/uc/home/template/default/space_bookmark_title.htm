@@ -36,6 +36,9 @@
 		{
 			 $('quickmenudiv').innerHTML='<a href="javascript:;" onclick="getbmview('+type+')" onmouseover="showMenu(this.id)" id="quickmenu" >'+menustr+'<img align="absmiddle" src="image/more.gif" ><a>';
 			 $('quickmenu_menu').style.display='none';
+			 if($('groupdo'))
+				 $('groupdo').innerHTML='';
+			 if($('groupname'))
 			 $('groupname').innerHTML=menustr+' &raquo;';
 		}
 	</script>
