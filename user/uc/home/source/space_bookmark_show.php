@@ -27,10 +27,14 @@ if(file_exists($bmcachefile)){
 	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 	if($op=='browser'){	    
 		$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):0;
+		//firefox做特殊处理，点击根目录直接转到书签菜单
+		if(($browserid==$_SGLOBAL['browsertype']['firefox'])&&empty($groupid))
+				$groupid=8001;
+
 		$groupname=(empty($groupid))?'根目录':'';
 		if(empty($groupname)){
 			//获取groupname
-			$query = $_SGLOBAL['db']->query("SELECT main.subject FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)."  limit 1");
+			$query = $_SGLOBAL['db']->query("SELECT main.subject FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)." AND main.browserid=".$browserid."  limit 1");
 			if($value =$_SGLOBAL['db']->fetch_array($query))
 				$groupname=getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 			if(empty($groupname))
