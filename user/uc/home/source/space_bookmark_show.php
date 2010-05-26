@@ -28,8 +28,13 @@ if(file_exists($bmcachefile)){
 	if($op=='browser'){	    
 		$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):0;
 		//firefox做特殊处理，点击根目录直接转到书签菜单
-		if(($browserid==$_SGLOBAL['browsertype']['firefox'])&&empty($groupid))
-				$groupid=getFirefoxBookmarkMenuGroupid();
+		if(($browserid==$_SGLOBAL['browsertype']['firefox']))
+		{
+			$_SGLOBAL['firefox_menu_groupid']=getFirefoxBookmarkMenuGroupid();
+			$_SGLOBAL['firefox_tool_groupid']=getFirefoxBookmarkToolGroupid();
+			if(empty($groupid))
+				$groupid=$_SGLOBAL['firefox_menu_groupid'];
+		}
 
 		$groupname=(empty($groupid))?'根目录':'';
 		if(empty($groupname)){
