@@ -14,11 +14,11 @@
 				<li><a href="javascript:;" onclick="getlinkview('mycharts');setquickmenu('mycharts','我的上榜');">我的上榜</a></li>
 			</ul> 
 			  <div class="r_option" id="groupdo">
-				 <!--{if ($op=='browser')&&isset($_GET['groupid'])}-->
+				 <!--{if ($op=='browser')}-->
 						<span class="addcomment">
 						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenuEx(event, this.id,1)">增加</a>
 						</span>
-						<!--{if empty($_GET['groupid'])}-->
+						<!--{if ($browserid!=$_SGLOBAL['browsertype']['firefox']&&empty($groupid))||($browserid==$_SGLOBAL['browsertype']['firefox'])&&($groupid==$_SGLOBAL['firefox_menu_groupid']||$groupid==$_SGLOBAL['firefox_tool_groupid'])}-->
 						<!--{else}-->
 						<span class="addtrackback">
 						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenuEx(event, this.id,1)">修改</a>
