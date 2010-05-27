@@ -2,14 +2,12 @@
 jQuery(document).ready(function(){
 			jQuery(".digg_sortlist span:first").addClass("lion");  // 为第一个span添加 .current 的样式，默认选中
 			jQuery(".digg_sortlist ol:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".digg_sortlist span").click(function(){  // 鼠标移到 span 上时触发函数
+			jQuery(".digg_sortlist span").hover(function(){  // 鼠标移到 span 上时触发函数
 				jQuery(".digg_sortlist span").removeClass("lion");  //为第一个 span 移除 .current 样式
 				jQuery(this).addClass("lion");  //为触发的 span 添加样式
 				jQuery(".digg_sortlist ol").hide();  // 隐藏 ul
 				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
-		});
-
-	
+		});	
 });
 </script>
 <style type="text/css">
@@ -20,27 +18,13 @@ jQuery(document).ready(function(){
   <div class="tab">
 	<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
 			<!--{if $key }-->
-				<span id="digg_sortlist_$value[categoryname]"><a href="#"><b><span>$value[categoryalias]</span></b></a></span>
+				<span id="digg_sortlist_$value[categoryname]"><a href="space.php?do=digg&type=$key"><b><em>$value[categoryalias]</em></b></a></span>
 			<!--{else}-->
-				<span id="digg_sortlist_$value[categoryname]" class="lion"><a href="#"><b><span>$value[categoryalias]</span></b></a></span>
+				<span id="digg_sortlist_$value[categoryname]" class="lion"><a href="#"><b><em>$value[categoryalias]</em></b></a></span>
 			<!--{/if}-->
 	<!--{/loop}-->	
   </div>
-<!--
-	<div class="newstagbg">
-		<div class="newstag">
-			<!--{loop $_SGLOBAL['diggcategory'] $key $value}-->
-					<!--{if $key }-->
-						<span id="digg_sortlist_$value[categoryname]" class="lioff">$value[categoryalias] </span>	
-					<!--{else}-->
-						<span id="digg_sortlist_$value[categoryname]" class="lioff lion">$value[categoryalias] </span>	
-					<!--{/if}-->						
-			<!--{/loop}-->			
-		</div>
-	</div>
--->
-
-       <ol style="display: block;" class="rank digg_sortlist_qu">
+       <ol style="display: block;" class="rank digg_sortlist_le">
 		<li class="n1">
 			<div class="pack pack_video_brief  ">
 			<div class="pic">
@@ -70,7 +54,7 @@ jQuery(document).ready(function(){
 		</li>
 	  </ol>
 
-	  <ol style="display: block;" class="rank digg_sortlist_xin" style="display: none;">
+	  <ol  class="rank digg_sortlist_chao" style="display: none;">
 		<li class="n1">
 			<div class="pack pack_video_brief  ">
 			<div class="pic">
