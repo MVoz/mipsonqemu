@@ -75,28 +75,30 @@ if(file_exists($bmcachefile)){
 
 			$theurl="space.php?do=$do&op=$op";
 	}
-
-		//分页获取总条数
+	//分页获取总条数
 		$page=empty($_GET['page'])?0:intval($_GET['page']);
 		$perpage=$_SC['bookmark_show_maxnum'];
 		$start=$page?(($page-1)*$perpage):0;
-	   
+		$bmcachefile=S_ROOT.'./data/bmcache/bookmark_'.$_SGLOBAL['supe_uid'].'_'.$browserid.'_'.$groupid.'.txt';
+		if(($op!='browser')||(!file_exists($bmcachefile))){
+			 //获取总数
+			$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main ".$wherearr),0);
+			//获取bookmarklist
 
-		 //获取总数
-		$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main ".$wherearr),0);
-		//获取bookmarklist
+			$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 
-		$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
-
-		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-			$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-			$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-			if($value[picflag]&&empty($value['description']))
-				$value['description']= getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-			if($value[picflag]&&empty($value['subject']))
-				$value['subject']= getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-			
-			$bookmarklist[] = $value;
+			while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+				$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+				if($value[picflag]&&empty($value['description']))
+					$value['description']= getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+				if($value[picflag]&&empty($value['subject']))
+					$value['subject']= getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+				
+				$bookmarklist[] = $value;
+			}
+		}else{
+			$bookmarklist = unserialize(sreadfile($bmcachefile));
 		}
 	foreach($bookmarklist as $key => $value) {
 		realname_set($value['uid'], $value['username']);
