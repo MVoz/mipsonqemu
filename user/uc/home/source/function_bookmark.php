@@ -397,4 +397,5 @@ function setbookmarknum($item,$action)
 		break;
 	}
 }
+
 ?>
