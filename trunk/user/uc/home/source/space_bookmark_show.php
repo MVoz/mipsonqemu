@@ -12,6 +12,10 @@ $ops = array('lastvisit', 'lastadd', 'oftenvisit', 'album', 'lastrecommend','bro
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op'];	 
 
 include_once(S_ROOT.'./data/data_network.php');
+
+include_once(S_ROOT.'./source/function_cache.php');
+bookmark_cache(0);
+
 $bookmarklist = array();
 /*
 $bmcachefile = S_ROOT.'./data/cache_bookmark_uid_'.$_SGLOBAL['supe_uid'].'.txt';

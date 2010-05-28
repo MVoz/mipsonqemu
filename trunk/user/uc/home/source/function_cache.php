@@ -421,6 +421,30 @@ function linkclass_cache()
 
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
+/*user bookmarkcache*/
+function bookmark_cache($groupid)
+{
+	global $_SGLOBAL;
+
+	$bmcachefileprefix = S_ROOT.'./data/bmcache/bookmark_'.$_SGLOBAL['supe_uid'];
+		
+	foreach($_SGLOBAL['browsertype'] as $k=>$v)
+	{
+		$bookmarklist=array();
+		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$v." and main.parentid=".$groupid);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			$bookmarklist[]=$value;
+
+			//检查目录
+			if(!empty($value['type']))
+			{
+				 bookmark_cache($value['groupid']);
+			}
+		}
+		swritefile($bmcachefileprefix.'_'.$v.'_'.$groupid.'.txt', serialize($bookmarklist));
+	}
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
