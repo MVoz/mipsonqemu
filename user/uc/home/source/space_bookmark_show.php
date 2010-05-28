@@ -11,10 +11,10 @@ if(!defined('IN_UCHOME')) {
 $ops = array('lastvisit', 'lastadd', 'oftenvisit', 'album', 'lastrecommend','browser');
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op'];	 
 
-include_once(S_ROOT.'./data/data_network.php');
+//include_once(S_ROOT.'./data/data_network.php');
+include_once(S_ROOT.'./source/function_link.php');
+$isFromCache=0;
 
-include_once(S_ROOT.'./source/function_cache.php');
-bookmark_cache(0);
 
 $bookmarklist = array();
 /*
@@ -98,6 +98,7 @@ if(file_exists($bmcachefile)){
 				$bookmarklist[] = $value;
 			}
 		}else{
+			$isFromCache=1;
 			$bookmarklist = unserialize(sreadfile($bmcachefile));
 			$count=$bookmarklist['count'];
 			
