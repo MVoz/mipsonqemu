@@ -99,6 +99,16 @@ if(file_exists($bmcachefile)){
 			}
 		}else{
 			$bookmarklist = unserialize(sreadfile($bmcachefile));
+			$count=$bookmarklist['count'];
+			
+			array_splice($bookmarklist, $count);//去掉最后的统计数
+		
+			//先去掉后面
+			array_splice($bookmarklist, $start+$perpage);
+			//去掉前面
+			$bookmarklist=array_splice($bookmarklist, $start);
+			
+		
 		}
 	foreach($bookmarklist as $key => $value) {
 		realname_set($value['uid'], $value['username']);

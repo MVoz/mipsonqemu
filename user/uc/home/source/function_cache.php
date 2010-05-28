@@ -434,14 +434,15 @@ function bookmark_cache($groupid)
 		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$v." and main.parentid=".$groupid);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
-			$bookmarklist[]=$value;
-
 			//¼ì²éÄ¿Â¼
 			if(!empty($value['type']))
 			{
 				 bookmark_cache($value['groupid']);
+				 continue;
 			}
-		}
+			$bookmarklist[]=$value;
+		}	
+		$bookmarklist['count']=count($bookmarklist);
 		swritefile($bmcachefileprefix.'_'.$v.'_'.$groupid.'.txt', serialize($bookmarklist));
 	}
 }
