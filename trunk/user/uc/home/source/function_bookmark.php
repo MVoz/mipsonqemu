@@ -382,7 +382,9 @@ function setbookmarkmodified()
 	$spacearr = array(
 		'lastmodified' => $_SGLOBAL['supe_timestamp'],		
 	);
-	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));		
+	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));	
+	include_once(S_ROOT.'./source/function_cache.php');
+	bookmark_cache(0);
 }
 function setbookmarknum($item,$action)
 {

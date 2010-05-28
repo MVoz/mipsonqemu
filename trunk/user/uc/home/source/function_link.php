@@ -336,4 +336,11 @@ function linktoolbar_post($POST)
 	}
 	return 1;
 }
+
+function getLinkStorenum($linkid)
+{
+	global $_SGLOBAL;
+	$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0);
+	echo  $count;
+}
 ?>
