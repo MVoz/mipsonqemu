@@ -469,6 +469,7 @@ function bookmark_cache()
 
 	}
 }
+//书签组名字的缓存
 function bookmark_groupname_cache()
 {
 	global $_SGLOBAL,$_SC;
@@ -490,6 +491,41 @@ function bookmark_groupname_cache()
 
 	}
 	cache_write_extend('bookmark_groupname', "_SGLOBAL['bookmark_groupname']", $grouplist);
+} 
+//用户菜单缓存
+function usermenu_cache_group($browserid,$groupid)
+{
+	global $_SGLOBAL,$_SC;
+	$arr=array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=".$groupid.' AND browserid='.$browserid);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			usermenu_cache_group($browserid,$value['groupid'],$value);
+			$arr[]=$value;
+		}
+		return $arr;
+}
+function usermenu_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$groupid=0;
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']))
+	{
+		mkdir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'], 0777);	
+	}
+	$usermenulist=array();
+	foreach($_SGLOBAL['browsertype'] as $k=>$v)
+	{
+		
+		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=".$groupid.' AND browserid='.$v);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			$value['son']=usermenu_cache_group($v,$value['groupid']);
+			$usermenulist[$v][$groupid][]=$value;
+			
+		}
+		cache_write_extend('usermenu', "_SGLOBAL['usermenu']", $usermenulist);
+	}
 }
 //递归清空目录
 function deltreedir($dir) {

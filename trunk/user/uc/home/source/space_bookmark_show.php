@@ -14,9 +14,10 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op
 //include_once(S_ROOT.'./data/data_network.php');
 include_once(S_ROOT.'./source/function_link.php');
 $isFromCache=0;
-//include_once(S_ROOT.'./source/function_cache.php');
+include_once(S_ROOT.'./source/function_cache.php');
 //bookmark_cache();
 //bookmark_groupname_cache();
+//usermenu_cache();
 
 $bookmarklist = array();
 /*
