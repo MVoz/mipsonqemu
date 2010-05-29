@@ -502,7 +502,6 @@ function ajaxmenuEx(e,imageid, ctrlid, isbox, timeout, func) {
 		div.className = divclass;
 		$('append_parent').appendChild(div);
 	}
-
 	var x = new Ajax();
 	var href = !isUndefined($(ctrlid).href) ? $(ctrlid).href : $(ctrlid).attributes['href'].value;
 	x.div = div;

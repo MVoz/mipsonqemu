@@ -84,7 +84,7 @@ if(submitcheck('editsubmit')) {
 
 }else if(submitcheck('addsubmit')) {
 	//ÑéÖ¤Âë
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
+	if( !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
