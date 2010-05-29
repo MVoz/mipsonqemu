@@ -2230,11 +2230,12 @@ function createChildMenu($query,$func,$browserid,$groupid,$idstr,$doshowit)
 						$do_showit=1;
 						//category
 			  		if($do_ul&&$idstr!="menu"){ 
-			  				if($doshowit)
-			  					echo '<ul id="'.$idstr.'" class="showit" style="display:none;">';
-			  				else
+			  				//if($doshowit)
+			  				//	echo '<ul id="'.$idstr.'" class="showit" style="display:none;">';
+			  				//else
 			  					echo '<ul id="'.$idstr.'" style="display:none;">';
 			  		}
+					
 					//检查是不是root，就是书签工具栏与书签菜单栏
 					$isroot=0;
 					if($browserid==$_SGLOBAL['browsertype']['firefox'])
@@ -2294,7 +2295,7 @@ function usermenu($browserid,$groupid,$func){
 	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	//先检查cache
-	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php'))
+	if(file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php'))
 	{
 		include_once(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php');
 		echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="space.php?do=bookmark&op=browser&browserid='.$browserid.'" value="根目录">根目录</a></li>';

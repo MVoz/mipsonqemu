@@ -71,7 +71,7 @@ if($bmdiritem)
 //添加编辑操作
 if(submitcheck('editsubmit')) {
 	//验证码
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
+	if(!ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
