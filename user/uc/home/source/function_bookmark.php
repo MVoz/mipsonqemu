@@ -386,6 +386,7 @@ function setbookmarkmodified()
 	include_once(S_ROOT.'./source/function_cache.php');
 	bookmark_cache();
 	bookmark_groupname_cache();
+	usermenu_cache();
 }
 function setbookmarknum($item,$action)
 {
