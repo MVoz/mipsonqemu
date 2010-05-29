@@ -106,9 +106,9 @@
 			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_new" src='' align="absmiddle">
+			<img id="img_seccode_$_GET[op]_$bmdirid" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_new')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$_GET[op]_$bmdirid')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
 	</tr>
