@@ -14,7 +14,8 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op
 //include_once(S_ROOT.'./data/data_network.php');
 include_once(S_ROOT.'./source/function_link.php');
 $isFromCache=0;
-
+//include_once(S_ROOT.'./source/function_cache.php');
+//bookmark_cache();
 
 $bookmarklist = array();
 /*
@@ -79,7 +80,7 @@ if(file_exists($bmcachefile)){
 		$page=empty($_GET['page'])?0:intval($_GET['page']);
 		$perpage=$_SC['bookmark_show_maxnum'];
 		$start=$page?(($page-1)*$perpage):0;
-		$bmcachefile=S_ROOT.'./data/bmcache/bookmark_'.$_SGLOBAL['supe_uid'].'_'.$browserid.'_'.$groupid.'.txt';
+		$bmcachefile=S_ROOT.'./data/bmcache/1/bookmark_'.$browserid.'_'.$groupid.'.txt';
 		if(($op!='browser')||(!file_exists($bmcachefile))){
 			 //获取总数
 			$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main ".$wherearr),0);
