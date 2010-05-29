@@ -2243,13 +2243,18 @@ function createChildMenu($query,$func,$browserid,$groupid,$idstr,$doshowit)
 							$isroot=1;
 
 					}
+					 echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\','.$isroot.');" value="'.$value[subject].'"'.'class="'.
+								(($value[groupid]==$groupid)?(' green '):' ').
+								(($value[groupid]==$groupid||$value[parentid]==$groupid)?(' showit '):' ').'"'.'>'.$value[subject].'</a>';
 			  		//printf("<li><a href=\"#\">%s</a>\n",mb_substr($value[subject], 0, 15, 'utf-8'));
+					/*
 			  		if($do_showit)
 			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\','.$isroot.');" class="showit" value="'.$value[subject].'"'.
 						(($value[groupid]==$groupid)?('class="green"'):'').'>'.$value[subject].'</a>';
 			  		else
 			  			echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$value[groupid].'\',\''.$browserid.'\',\''.$value[subject].'\','.$isroot.');" value="'.$value[subject].'"'.
 						(($value[groupid]==$groupid)?('class="green"'):'').'>'.$value[subject].'</a>';
+					*/
 			  		$childQuery=$_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=$value[groupid]");
 			  		createChildMenu($childQuery,$func,$browserid,$groupid,$idstr.$value[groupid],$do_showit);		
 			  		echo '</li>';				  		
@@ -2273,9 +2278,9 @@ function usermenuchild($browserid,$groupid,$func,$value)
 					$isroot=1;
 
 			}
-		   echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$a[groupid].'\',\''.$browserid.'\',\''.$a[subject].'\','.$isroot.');" value="'.$a[subject].'"'.
-								(($a[groupid]==$groupid)?('class="green"'):'').
-								(($a[parentid]==$groupid)?('class="showit"'):'').'>'.$a[subject].'</a>';
+		   echo '<li><a href="javascript:;" onclick="'.$func.'(\''.$a[groupid].'\',\''.$browserid.'\',\''.$a[subject].'\','.$isroot.');" value="'.$a[subject].'"'.'class="'.
+								(($a[groupid]==$groupid)?(' green '):' ').
+								(($a[groupid]==$groupid||$a[parentid]==$groupid)?(' showit '):' ').'"'.'>'.$a[subject].'</a>';
 		   if(!empty($a['son']))
 			{
 					echo '<ul id="menu'.$a['groupid'].'">';
@@ -2289,7 +2294,7 @@ function usermenu($browserid,$groupid,$func){
 	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
 	//先检查cache
-	if(file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php'))
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php'))
 	{
 		include_once(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php');
 		echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="space.php?do=bookmark&op=browser&browserid='.$browserid.'" value="根目录">根目录</a></li>';

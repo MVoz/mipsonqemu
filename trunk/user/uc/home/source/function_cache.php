@@ -500,7 +500,7 @@ function usermenu_cache_group($browserid,$groupid)
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=".$groupid.' AND browserid='.$browserid);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
-			usermenu_cache_group($browserid,$value['groupid'],$value);
+			$value['son']=usermenu_cache_group($browserid,$value['groupid'],$value);
 			$arr[]=$value;
 		}
 		return $arr;

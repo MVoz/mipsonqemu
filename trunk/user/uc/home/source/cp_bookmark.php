@@ -96,7 +96,7 @@ else if(submitcheck('editsubmit')) {
 
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $item)) {
-		$url = 'space.php?do=bookmark&groupid='.$item['groupid']."&browserid=".$browserid;		
+		$url = 'space.php?do=bookmark&op=browser&groupid='.$item['groupid']."&browserid=".$browserid;		
 		showmessage('do_success', $url, 0);
 		//showmessage('do_success');
 	} else {
@@ -110,7 +110,7 @@ else if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdir)) {
-		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
+		$url = 'space.php?do=bookmark&op=browser&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
@@ -122,7 +122,7 @@ if($_GET['op'] == 'delete') {
 	if(submitcheck('deletesubmit')) {
 		include_once(S_ROOT.'./source/function_bookmark.php');
 		if(deletebookmark($bmid)) {
-			$url = 'space.php?do=bookmark&groupid='.$groupid."&browserid=".$browserid;
+			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			if(empty($_SGLOBAL['client']))
 				showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $url, 0);
 			else
