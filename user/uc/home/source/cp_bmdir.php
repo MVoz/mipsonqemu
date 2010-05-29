@@ -89,7 +89,7 @@ if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
-			$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];
+			$url = 'space.php?do=bookmark&op=browser&browserid='.$newbmdir['browserid'].'&groupid='.$newbmdir['groupid'];
 			if(empty($_SGLOBAL['client']))
 				showmessage('do_success', $url, 0);
 			else
