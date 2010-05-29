@@ -422,12 +422,34 @@ function linkclass_cache()
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
 /*user bookmarkcache*/
-function bookmark_cache($groupid)
+function bookmark_cache_group($groupid,$browserid)
+{
+		global $_SGLOBAL;
+		$bookmarklist=array();
+		$bmcachefileprefix = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark';
+		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			//检查目录
+			if(!empty($value['type']))
+			{
+				 bookmark_cache_group($value['groupid'],$browserid);
+				 continue;
+			}
+			$bookmarklist[]=$value;
+		}
+		$bookmarklist['count']=count($bookmarklist);
+		swritefile($bmcachefileprefix.'_'.$browserid.'_'.$groupid.'.txt', serialize($bookmarklist));
+}
+function bookmark_cache()
 {
 	global $_SGLOBAL;
-
-	$bmcachefileprefix = S_ROOT.'./data/bmcache/bookmark_'.$_SGLOBAL['supe_uid'];
-		
+	$groupid=0;
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']))
+	{
+		mkdir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'], 0777);	
+	}
+	$bmcachefileprefix = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark';	
 	foreach($_SGLOBAL['browsertype'] as $k=>$v)
 	{
 		$bookmarklist=array();
@@ -437,13 +459,14 @@ function bookmark_cache($groupid)
 			//检查目录
 			if(!empty($value['type']))
 			{
-				 bookmark_cache($value['groupid']);
+				 bookmark_cache_group($value['groupid'],$v);
 				 continue;
 			}
 			$bookmarklist[]=$value;
-		}	
+		}
 		$bookmarklist['count']=count($bookmarklist);
 		swritefile($bmcachefileprefix.'_'.$v.'_'.$groupid.'.txt', serialize($bookmarklist));
+
 	}
 }
 //递归清空目录
