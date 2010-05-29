@@ -469,6 +469,28 @@ function bookmark_cache()
 
 	}
 }
+function bookmark_groupname_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$groupid=0;
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']))
+	{
+		mkdir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'], 0777);	
+	}
+	$bmcachefileprefix = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_groupname';	
+	$grouplist=array();
+	foreach($_SGLOBAL['browsertype'] as $k=>$v)
+	{
+		
+		$query  = $_SGLOBAL['db']->query("SELECT groupid,subject FROM ".tname('bookmark')." main WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$v." and main.type=".$_SC['bookmark_type_dir']);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			$grouplist[$v][$value['groupid']]=getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		}
+
+	}
+	cache_write_extend('bookmark_groupname', "_SGLOBAL['bookmark_groupname']", $grouplist);
+}
 //µÝ¹éÇå¿ÕÄ¿Â¼
 function deltreedir($dir) {
 	$files = sreaddir($dir);
@@ -514,5 +536,20 @@ function cache_write($name, $var, $values) {
 		exit("File: $cachefile write error.");
 	}
 }
-
+//add by ramen to extend
+function cache_write_extend($name, $var, $values) {
+	global $_SGLOBAL,$_SC;
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']))
+	{
+		mkdir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'], 0777);	
+	}
+	$cachefile = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/'.$name.'.php';
+	$cachetext = "<?php\r\n".
+		"if(!defined('IN_UCHOME')) exit('Access Denied');\r\n".
+		'$'.$var.'='.arrayeval($values).
+		"\r\n?>";
+	if(!swritefile($cachefile, $cachetext)) {
+		exit("File: $cachefile write error.");
+	}
+}
 ?>

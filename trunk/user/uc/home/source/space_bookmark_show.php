@@ -16,6 +16,7 @@ include_once(S_ROOT.'./source/function_link.php');
 $isFromCache=0;
 //include_once(S_ROOT.'./source/function_cache.php');
 //bookmark_cache();
+//bookmark_groupname_cache();
 
 $bookmarklist = array();
 /*
@@ -44,9 +45,16 @@ if(file_exists($bmcachefile)){
 		$groupname=(empty($groupid))?'根目录':'';
 		if(empty($groupname)){
 			//获取groupname
-			$query = $_SGLOBAL['db']->query("SELECT main.subject FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)." AND main.browserid=".$browserid."  limit 1");
-			if($value =$_SGLOBAL['db']->fetch_array($query))
-				$groupname=getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+			//先检查cache
+			if(file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_groupname.php'))
+			{
+					include_once(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_groupname.php');
+					$groupname=$_SGLOBAL['bookmark_groupname'][$browserid][$groupid];
+			}else{
+				$query = $_SGLOBAL['db']->query("SELECT main.subject FROM ".tname('bookmark')." main where uid=".$_SGLOBAL['supe_uid']." AND main.type=".$_SC['bookmark_type_dir'].cond_groupid($groupid)." AND main.browserid=".$browserid."  limit 1");
+				if($value =$_SGLOBAL['db']->fetch_array($query))
+					$groupname=getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+			}
 			if(empty($groupname))
 				showmessage('error_parameter');
 			
@@ -80,7 +88,7 @@ if(file_exists($bmcachefile)){
 		$page=empty($_GET['page'])?0:intval($_GET['page']);
 		$perpage=$_SC['bookmark_show_maxnum'];
 		$start=$page?(($page-1)*$perpage):0;
-		$bmcachefile=S_ROOT.'./data/bmcache/1/bookmark_'.$browserid.'_'.$groupid.'.txt';
+		$bmcachefile=S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_'.$browserid.'_'.$groupid.'.txt';
 		if(($op!='browser')||(!file_exists($bmcachefile))){
 			 //获取总数
 			$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main ".$wherearr),0);
