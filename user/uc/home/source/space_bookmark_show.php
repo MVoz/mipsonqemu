@@ -17,7 +17,7 @@ $isFromCache=0;
 include_once(S_ROOT.'./source/function_cache.php');
 //bookmark_cache();
 //bookmark_groupname_cache();
-//usermenu_cache();
+usermenu_cache();
 
 $bookmarklist = array();
 /*

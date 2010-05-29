@@ -76,7 +76,7 @@ if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
-		$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
+		$url = 'space.php?do=bookmark&op=browser&browserid='.$newbmdir['browserid'].'&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
@@ -106,10 +106,10 @@ if($_GET['op'] == 'delete') {
 		include_once(S_ROOT.'./source/function_bookmark.php');
 		if($bmdirid&&deletebookmarkdir($bmdiritem['bmid'])) {
 			//Ìøµ½¸¸Ò»¼¶
-			$url = 'space.php?do=bookmark&groupid='.$groupid.'&browserid='.$browserid;
+			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid.'&browserid='.$browserid;
 			showmessage('do_success', $url, 0);
 		}else if(empty($bmdirid)&&clearbookmark($browserid)){
-			$url = 'space.php?do=bookmark&groupid=0&browserid='.$browserid;
+			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid.'&browserid='.$browserid;
 			showmessage('do_success', $url, 0);
 		}else {
 			showmessage('failed_to_delete_operation');
