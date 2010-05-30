@@ -103,11 +103,11 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$_GET[op]_$bmdirid" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$_GET[op]_$bmdirid')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
@@ -123,7 +123,7 @@
 <!--{else}-->
 <input type="hidden" name="addsubmit" value="true" />
 <!--{/if}-->
-<input type="submit" name="btnsubmit" value="确定" class="submit" onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit" onclick="bookmark_validate(this);"/>
 </td>
 </tr>
 </table>
