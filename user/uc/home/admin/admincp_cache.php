@@ -44,6 +44,7 @@ if(submitcheck('cachesubmit')) {
 		linktoolbar_cache();
 		hotdigg_cache();
 		linkclass_cache();
+		link_cache();
 	}
 	
 	//Ä£°å±àÒë»º´æ
