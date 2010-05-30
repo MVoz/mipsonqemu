@@ -44,12 +44,6 @@ function setbookmarkgroupid(id)
 	$('browsergroupid').value=id;
 }
 
-function ajaxresponse(objname, data) {
-	var x = new Ajax('XML', objname);
-	x.get('cp.php?ac=bookmark&' + data, function(s){
-	});
-}
-
 function updatevisitstat(id) {
 	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
 }
@@ -76,16 +70,6 @@ function getrelatedlinkfromid(id) {
 }
 
 var lastSecCode='';
-
-function checkSeccode() {
-		var seccodeVerify = $('seccode').value;
-		if(seccodeVerify == lastSecCode) {
-			return;
-		} else {
-			lastSecCode = seccodeVerify;
-		}
-		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
-}
 function ajaxupdate(ac,objname, data) {
 		var x = new Ajax('XML', objname);
 		x.get('cp.php?ac='+ac+'&' + data, function(s){
@@ -96,23 +80,16 @@ function ajaxupdate(ac,objname, data) {
 			}
 		});
 }
-function ajaxresponse(objname, data) {
-		var x = new Ajax('XML', objname);
-		x.get('cp.php?ac=link&' + data, function(s){
-			var obj = $(objname);
-			s = trim(s);
-			if(s.indexOf('succeed') > -1) {
-				obj.style.display = '';
-				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
-				obj.className = "warning";
-				//$('btnsubmit').disabled=false;
-				//$('btnsubmit').className="submit";
-			} else {
-				warning(obj, s);
-				//$('btnsubmit').disabled=true;
-				//$('btnsubmit').className="submit_disabled";
-			}
-		});
+
+function checkSeccode() {
+		var  seccodeVerify= $('seccode').value;
+		
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
 }
 
 function warning(obj, msg) {
