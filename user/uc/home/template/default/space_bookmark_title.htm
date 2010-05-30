@@ -16,15 +16,15 @@
 			  <div class="r_option" id="groupdo">
 				 <!--{if ($op=='browser')}-->
 						<span class="addcomment">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=add" id="bmdir_add_$_GET['groupid']" onclick="ajaxmenuEx(event,'img_seccode_add_$_GET['groupid']', this.id,1)">增加</a>
+						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=add" id="bmdir_add_$groupid]" onclick="ajaxmenuEx(event,'img_seccode_add_$groupid', this.id,1)">增加</a>
 						</span>
 						<!--{if ($browserid!=$_SGLOBAL['browsertype']['firefox']&&empty($groupid))||($browserid==$_SGLOBAL['browsertype']['firefox'])&&($groupid==$_SGLOBAL['firefox_menu_groupid']||$groupid==$_SGLOBAL['firefox_tool_groupid'])}-->
 						<!--{else}-->
 						<span class="addtrackback">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=edit" id="bmdir_edit_$_GET['groupid']" onclick="ajaxmenuEx(event,'img_seccode_edit_$_GET['groupid']', this.id,1)">修改</a>
+						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=edit" id="bmdir_edit_$groupid" onclick="ajaxmenuEx(event,'img_seccode_edit_$groupid', this.id,1)">修改</a>
 						</span>
 						<span class="addtrackback">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$_GET['groupid']&browserid=$browserid&op=delete" id="bmdir_delete_$_GET['groupid']" onclick="ajaxmenuEx(event, this.id)">删除</a>
+						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=delete" id="bmdir_delete_$groupid" onclick="ajaxmenuEx(event, this.id)">删除</a>
 						</span>
 						  <!--{/if}-->
 				  <!--{/if}-->
