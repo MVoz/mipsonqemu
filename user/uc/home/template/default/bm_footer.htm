@@ -4,7 +4,23 @@
 		<div id="bottom"></div>
 	<!--/main-->
 	<!--{/if}-->
-	<script language="javascript" type="text/javascript" src="source/script_extend.js"></script>
+	<script language="javascript" type="text/javascript" src="source/script_extend.js">	</script>
+	<script type="text/javascript">
+	  function ajaxresponse(objname, data) {
+			var x = new Ajax('XML', objname);
+			x.get('do.php?ac=$_SCONFIG[register_action]&' + data, function(s){
+				var obj = $(objname);
+				s = trim(s);
+				if(s.indexOf('succeed') > -1) {
+					obj.style.display = '';
+					obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+					obj.className = "warning";
+				} else {
+					warning(obj, s);
+				}
+			});
+		}
+	</script>
 	<div id="footer">
 		<!--{if $_TPL['templates']}-->
 		<div class="chostlp" title="切换风格"><img id="chostlp" src="{$_TPL['default_template']['icon']}" onmouseover="showMenu(this.id)" alt="{$_TPL['default_template']['name']}" /></div>
@@ -97,6 +113,7 @@
 <!--{if $_SCOOKIE[reward_log]}-->
 <script type="text/javascript">
 showreward();
+
 </script>
 <!--{/if}-->
 </body>
