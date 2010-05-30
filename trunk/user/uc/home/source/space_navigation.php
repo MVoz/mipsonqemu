@@ -21,6 +21,8 @@ $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
     $perpage=$_SC['bookmark_show_maxnum'];
     $start=$page?(($page-1)*$perpage):0;
 
+
+
 $child_class=array();
 $bookmarklist=array();
 $isSecClass=0;
@@ -34,6 +36,7 @@ if($classid)
 	{
 		if(($classitem['groupid']<3000)&&($classitem['groupid']>=2000))	//判断是否为第二层
 		  		$isSecClass=1;
+		//获取子分类
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.parentid=".$classitem['groupid']);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
@@ -43,18 +46,24 @@ if($classid)
 		if($childid)
 		{
 		}else{
-			
-			//获取总数
-			$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main where main.classid=".$classid),0);
-
-			$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
-		
-
-			while($value =$_SGLOBAL['db']->fetch_array($query))
+			//先检查cache
+			if(file_exists( S_ROOT.'./data/linkcache/'.$classid.'/link_cache_'.$classid.'_page'.$page.'.txt'))
 			{
-				$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-				$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-				$bookmarklist[]=$value;
+				$bookmarklist = unserialize(sreadfile(S_ROOT.'./data/linkcache/'.$classid.'/link_cache_'.$classid.'_page'.$page.'.txt'));
+				$count=sreadfile(S_ROOT.'./data/linkcache/'.$classid.'/link_cache_'.$classid.'_count.txt');
+			}else{
+				//获取总数
+				$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main where main.classid=".$classid),0);
+
+				$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
+			
+
+				while($value =$_SGLOBAL['db']->fetch_array($query))
+				{
+					$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+					$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+					$bookmarklist[]=$value;
+				}
 			}
 		}
 	}
