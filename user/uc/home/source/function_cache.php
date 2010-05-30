@@ -527,6 +527,46 @@ function usermenu_cache()
 		cache_write_extend('usermenu', "_SGLOBAL['usermenu']", $usermenulist);
 	}
 }
+//link cache
+function link_cache_classid($classid)
+{
+	global $_SGLOBAL,$_SC;
+	if(!file_exists(S_ROOT.'./data/linkcache/'.$classid))
+	{
+		mkdir(S_ROOT.'./data/linkcache/'.$classid, 0777);	
+	}
+	$linkfileprefix = S_ROOT.'./data/linkcache/'.$classid.'/link_cache';	
+	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main where main.classid=".$classid),0);
+
+	//$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid);	
+	$page=1;
+	$linklist=array();
+	while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+		
+		$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		$linklist[]=$value;
+		if(count($linklist)==$_SC['bookmark_show_maxnum'])
+		{
+			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
+			$page++;
+			$linklist=array();
+		}
+	}
+	swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
+	swritefile($linkfileprefix.'_'.$classid.'_count.txt', $count) ;
+}
+function link_cache()
+{
+   global $_SGLOBAL,$_SC;
+   $query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.groupid>=2000");	
+   while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+	   link_cache_classid($value['classid']);
+	}
+}
 //µİ¹éÇå¿ÕÄ¿Â¼
 function deltreedir($dir) {
 	$files = sreaddir($dir);
