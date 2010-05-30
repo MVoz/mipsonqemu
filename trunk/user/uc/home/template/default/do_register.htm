@@ -1,5 +1,5 @@
 <!--{eval $_TPL['nosidebar']=1;}-->
-<!--{template header}-->
+<!--{template bm_header}-->
 
 <script>
 	function register(id, result) {
@@ -170,37 +170,6 @@
 			cp2.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
 		}
 	}
-	function checkSeccode() {
-		var seccodeVerify = $('seccode').value;
-		if(seccodeVerify == lastSecCode) {
-			return;
-		} else {
-			lastSecCode = seccodeVerify;
-		}
-		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
-	}
-	function ajaxresponse(objname, data) {
-		var x = new Ajax('XML', objname);
-		x.get('do.php?ac=$_SCONFIG[register_action]&' + data, function(s){
-			var obj = $(objname);
-			s = trim(s);
-			if(s.indexOf('succeed') > -1) {
-				obj.style.display = '';
-				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
-				obj.className = "warning";
-			} else {
-				warning(obj, s);
-			}
-		});
-	}
-	function warning(obj, msg) {
-		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
-			$(ton).select();
-		}
-		obj.style.display = '';
-		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
-		obj.className = "warning";
-	}
 
 	function checkPwd(pwd){
 
@@ -273,4 +242,4 @@
 //-->
 </script>
 
-<!--{template footer}-->
+<!--{template bm_footer}-->
