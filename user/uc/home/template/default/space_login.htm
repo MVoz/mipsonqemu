@@ -234,7 +234,7 @@
 				<div class="ward_borderl">登录账号：</div>
 				<div class="ward_borderr">
 				<label>
-				<input type="text" name="loginname" id="loginname" value="$membername" class="srkuanga"><span id="html_unerr" class="cwxx"></span>
+				<input type="text" name="username" id="username" value="$membername" class="srkuanga"><span id="html_unerr" class="cwxx"></span>
 				</label>
 				</div>
 				</div>
@@ -242,7 +242,7 @@
 				<div class="ward_borderl">密&nbsp;&nbsp; 码：</div>
 				<div class="ward_borderr">
 				<label>
-				<input type="password" name="loginpassword" id="loginpassword" value="$password" class="srkuanga"><span id="html_uperr" class="cwxx"></span>
+				<input type="password" name="password" id="password" value="$password" class="srkuanga"><span id="html_uperr" class="cwxx"></span>
 				</label>
 				</div>
 				</div>
@@ -299,7 +299,7 @@
 	<div class="ward_border">
     <div class="ward_borderl"><span class="rded">*</span>昵称：</div>
     <div class="ward_borderr">
-	 <input type="text" id="username" name="username" value="" class="srkuanga" onBlur="checkUserName()" tabindex="2" />&nbsp;
+	 <input type="text" id="regusername" name="regusername" value="" class="srkuanga" onBlur="checkRegUserName()" tabindex="2" />&nbsp;
 	 <p id="checkusername"></p>
     </div>
     </div>
@@ -307,14 +307,14 @@
     <div class="ward_border">
     <div class="ward_borderl"><span class="rded">*</span>设置密码：</div>
     <div class="ward_borderr">
-    <input type="password" name="password" id="password" value="" class="srkuanga" onBlur="checkPassword()" onkeyup="checkPwd(this.value);" tabindex="3" />&nbsp;
+    <input type="password" name="regpassword" id="regpassword" value="" class="srkuanga" onBlur="checkPassword()" onkeyup="checkPwd(this.value);" tabindex="3" />&nbsp;
 	<p id="checkpassword"></p>
     </div>
     </div>
 	<div class="ward_border">
     <div class="ward_borderl"><span class="rded">*</span>重复密码：</div>
     <div class="ward_borderr">
-    <input type="password" id="password2" name="password2" value="" class="srkuanga"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<p id="checkpassword2"></p>
+    <input type="password" id="regpassword2" name="regpassword2" value="" class="srkuanga"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<p id="checkpassword2"></p>
     </div>
     </div>
    
@@ -344,10 +344,10 @@
 </div>
 <script type="text/javascript">
 <!--
-	$('username').focus();
+	$('regusername').focus();
 	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
-	function checkUserName() {
-		var userName = $('username').value;
+	function checkRegUserName() {
+		var userName = $('regusername').value;
 		if(userName == lastUserName) {
 			return;
 		} else {
@@ -385,7 +385,7 @@
 		ajaxresponse('checkusermail', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email),1);
 	}
 	function checkPassword(confirm) {
-		var password = $('password').value;
+		var password = $('regpassword').value;
 		if(!confirm && password == lastPassword) {
 			return;
 		} else {
@@ -403,8 +403,8 @@
 		}
 	}
 	function checkPassword2(confirm) {
-		var password = $('password').value;
-		var password2 = $('password2').value;
+		var password = $('regpassword').value;
+		var password2 = $('regpassword2').value;
 		var cp2 = $('checkpassword2');
 		if(password2 != '') {
 			checkPassword(true);
