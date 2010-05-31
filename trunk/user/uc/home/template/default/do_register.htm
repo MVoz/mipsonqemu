@@ -50,11 +50,11 @@
 	<!--{/if}-->
 	<tr><th>邮箱</th><td><input type="text" id="email" name="email" value="@" class="t_input" onBlur="checkUserEmail()"  tabindex="5" />
 		&nbsp;<span id="checkusermail">&nbsp;</span><br>请准确填入您的邮箱，在忘记密码，或者您使用邮件通知功能时，会发送邮件到该邮箱。</td></tr>
-	<tr><th width="100">昵称</th><td><input type="text" id="username" name="username" value="" class="t_input" onBlur="checkUserName()" tabindex="2" />&nbsp;<span id="checkusername">&nbsp;</span></td></tr>
+	<tr><th width="100">昵称</th><td><input type="text" id="regusername" name="regusername" value="" class="t_input" onBlur="checkUserName()" tabindex="2" />&nbsp;<span id="checkusername">&nbsp;</span></td></tr>
 	<tr>
 		<th>注册密码</th>
 		<td>
-			<input type="password" name="password" id="password" value="" class="t_input" onBlur="checkPassword()" onkeyup="checkPwd(this.value);" tabindex="3" />&nbsp;<span id="checkpassword">&nbsp;</span><br/>
+			<input type="password" name="regpassword" id="regpassword" value="" class="t_input" onBlur="checkPassword()" onkeyup="checkPwd(this.value);" tabindex="3" />&nbsp;<span id="checkpassword">&nbsp;</span><br/>
 			<style>
 				.psdiv0,.psdiv1,.psdiv2,.psdiv3,.psdiv4{position:relative;height:30px;color:#666}/*密码强度容器*/
 				.strongdepict{position:absolute; width:300px;left:0px;top:3px}/*密码强度固定文字*/
@@ -81,7 +81,7 @@
 			</div>
 		</td>
 	</tr>
-	<tr><th>再次输入密码</th><td><input type="password" id="password2" name="password2" value="" class="t_input"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<span id="checkpassword2">&nbsp;</span></td></tr>
+	<tr><th>再次输入密码</th><td><input type="password" id="regpassword2" name="regpassword2" value="" class="t_input"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<span id="checkpassword2">&nbsp;</span></td></tr>
 	
 	
 	<!--{if $register_rule}-->
@@ -114,10 +114,10 @@
 
 <script type="text/javascript">
 <!--
-	$('username').focus();
+	$('regusername').focus();
 	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
 	function checkUserName() {
-		var userName = $('username').value;
+		var userName = $('regusername').value;
 		if(userName == lastUserName) {
 			return;
 		} else {
@@ -155,7 +155,7 @@
 		ajaxresponse('checkusermail', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
 	}
 	function checkPassword(confirm) {
-		var password = $('password').value;
+		var password = $('regpassword').value;
 		if(!confirm && password == lastPassword) {
 			return;
 		} else {
@@ -175,8 +175,8 @@
 		}
 	}
 	function checkPassword2(confirm) {
-		var password = $('password').value;
-		var password2 = $('password2').value;
+		var password = $('regpassword').value;
+		var password2 = $('regpassword2').value;
 		var cp2 = $('checkpassword2');
 		if(password2 != '') {
 			checkPassword(true);
