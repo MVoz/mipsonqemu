@@ -8,26 +8,34 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 //今日热荐
-$todayhot = array();
-$todayhotlist = array();
-$_SCONFIG['todayhot']='1,2,3,4';
-if($_SCONFIG['todayhot']) {
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid IN (".simplode(explode(',', $_SCONFIG['todayhot'])).")");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	//	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-		$todayhotlist[] = $value;
+	$todayhot=array();
+	if(!file_exists(S_ROOT.'./data/todayhot.txt')){
+	/*
+		$todayhot = array();
+		$todayhotlist = array();
+		$_SCONFIG['todayhot']='1,2,3,4';
+		if($_SCONFIG['todayhot']) {
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid IN (".simplode(explode(',', $_SCONFIG['todayhot'])).")");
+			while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$todayhotlist[] = $value;
+			}
+		}
+		if($todayhotlist) {
+			$todayhot = sarray_rand($todayhotlist, 1);
+		}
+		foreach($todayhot as $key => $value) {
+			$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
+			$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
+			include_once(S_ROOT.'./source/function_link.php');
+			$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
+			$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+			//$value['link_tag'] = getstr(trim($value['link_tag']), 40);
+			$todayhot[$key]=$value;
+		}
+	 */
+		include_once(S_ROOT.'./source/function_cache.php');
+		everydayhot_cache();
+
 	}
-}
-if($todayhotlist) {
-	$todayhot = sarray_rand($todayhotlist, 1);
-}
-foreach($todayhot as $key => $value) {
-	$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
-	$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
-	include_once(S_ROOT.'./source/function_link.php');
-	$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
-	$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
-	//$value['link_tag'] = getstr(trim($value['link_tag']), 40);
-	$todayhot[$key]=$value;
-}
+	$todayhot = unserialize(sreadfile(S_ROOT.'./data/todayhot.txt'));
 ?>

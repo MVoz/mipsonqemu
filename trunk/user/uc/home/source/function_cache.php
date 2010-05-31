@@ -567,6 +567,31 @@ function link_cache()
 	   link_cache_classid($value['classid']);
 	}
 }
+//每日推荐
+function everydayhot_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$todayhot = array();
+	//$todayhotlist = array();
+
+	//获得link的统计数
+	//$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main where //main.origin=$_SC['link_origin_link']"),0);
+
+	$_SCONFIG['todayhot']=array(1,2,3,4);
+	$todayhotid = sarray_rand($_SCONFIG['todayhot'], 1);
+	foreach($todayhotid as $key=>$val){
+		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid=$val");
+		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
+				$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
+				include_once(S_ROOT.'./source/function_link.php');
+				$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
+				$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+				$todayhot= $value;
+		}	
+	}
+	swritefile( S_ROOT.'./data/todayhot.txt', serialize($todayhot));
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
