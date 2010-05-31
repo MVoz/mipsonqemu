@@ -40,7 +40,7 @@ if($uid && $code && !$pay) {
 	$url_plus = "uid=$uid&invite=$invite";
 }
 
-$jumpurl = $app?"userapp.php?id=$app&my_extra=invitedby_bi_{$uid}_{$code}&my_suffix=Lw%3D%3D":'space.php?do=home';
+$jumpurl = $app?"userapp.php?id=$app&my_extra=invitedby_bi_{$uid}_{$code}&my_suffix=Lw%3D%3D":'space.php?do=all';
 
 if(empty($op)) {
 
@@ -73,16 +73,16 @@ if(empty($op)) {
 			showmessage('system_error');
 		}
 
-		if($_POST['password'] != $_POST['password2']) {
+		if($_POST['regpassword'] != $_POST['regpassword2']) {
 			showmessage('password_inconsistency');
 		}
 
-		if(!$_POST['password'] || $_POST['password'] != addslashes($_POST['password'])) {
+		if(!$_POST['regpassword'] || $_POST['regpassword'] != addslashes($_POST['regpassword'])) {
 			showmessage('profile_passwd_illegal');
 		}
 		
-		$name = trim($_POST['username']);
-		$password = $_POST['password'];
+		$name = trim($_POST['regusername']);
+		$password = $_POST['regpassword'];
 		
 		$username=$email = isemail($_POST['email'])?$_POST['email']:'';
 		if(empty($email)) {
@@ -207,7 +207,6 @@ if(empty($op)) {
 	include template('do_register');
 
 } elseif($op == "checkusername") {
-
 	$username = trim($_GET['username']);
 	if(empty($username)) {
 		showmessage('user_name_is_not_legitimate');
