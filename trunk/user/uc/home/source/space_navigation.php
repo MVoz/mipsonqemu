@@ -61,7 +61,8 @@ if($classid)
 				while($value =$_SGLOBAL['db']->fetch_array($query))
 				{
 					$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-					$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+					//$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+					$value['subject'] = getstr($value['link_subject'], 10, 0, 0, 0, 0, -1);
 					$bookmarklist[]=$value;
 				}
 			}
