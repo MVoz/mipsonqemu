@@ -48,8 +48,9 @@
 	</tr>
 	<!--{/if}-->
 	<!--{/if}-->
-	
-	<tr><th width="100">用户名</th><td><input type="text" id="username" name="username" value="" class="t_input" onBlur="checkUserName()" tabindex="2" />&nbsp;<span id="checkusername">&nbsp;</span></td></tr>
+	<tr><th>邮箱</th><td><input type="text" id="email" name="email" value="@" class="t_input" onBlur="checkUserEmail()"  tabindex="5" />
+		&nbsp;<span id="checkusermail">&nbsp;</span><br>请准确填入您的邮箱，在忘记密码，或者您使用邮件通知功能时，会发送邮件到该邮箱。</td></tr>
+	<tr><th width="100">昵称</th><td><input type="text" id="username" name="username" value="" class="t_input" onBlur="checkUserName()" tabindex="2" />&nbsp;<span id="checkusername">&nbsp;</span></td></tr>
 	<tr>
 		<th>注册密码</th>
 		<td>
@@ -81,8 +82,7 @@
 		</td>
 	</tr>
 	<tr><th>再次输入密码</th><td><input type="password" id="password2" name="password2" value="" class="t_input"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<span id="checkpassword2">&nbsp;</span></td></tr>
-	<tr><th>邮箱</th><td><input type="text" id="email" name="email" value="@" class="t_input" onBlur="checkUserEmail()"  tabindex="5" />
-		&nbsp;<span id="checkusermail">&nbsp;</span><br>请准确填入您的邮箱，在忘记密码，或者您使用邮件通知功能时，会发送邮件到该邮箱。</td></tr>
+	
 	
 	<!--{if $register_rule}-->
 	<tr><th>服务条款</th>
@@ -152,7 +152,7 @@
 			warning(cu, unLen < 3 ? '用户名小于3个字符' : '用户名超过 25 个字符');
 			return;
 		}
-		ajaxresponse('checkusername', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
+		ajaxresponse('checkusermail', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
 	}
 	function checkPassword(confirm) {
 		var password = $('password').value;
