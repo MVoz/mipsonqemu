@@ -81,10 +81,10 @@ if(empty($op)) {
 			showmessage('profile_passwd_illegal');
 		}
 		
-		$username = trim($_POST['username']);
+		$name = trim($_POST['username']);
 		$password = $_POST['password'];
 		
-		$email = isemail($_POST['email'])?$_POST['email']:'';
+		$username=$email = isemail($_POST['email'])?$_POST['email']:'';
 		if(empty($email)) {
 			showmessage('email_format_is_wrong');
 		}
@@ -194,6 +194,8 @@ if(empty($op)) {
 
 			//变更记录
 			if($_SCONFIG['my_status']) inserttable('userlog', array('uid'=>$newuid, 'action'=>'add', 'dateline'=>$_SGLOBAL['timestamp']), 0, true);
+			//ramen更新space的数据库中的昵称
+			updatetable('space', array('name'=>$name), array('uid'=>$newuid));
 
 			showmessage('registered', $jumpurl);
 		}
