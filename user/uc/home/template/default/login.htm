@@ -196,7 +196,11 @@ jQuery(document).ready(function(){
 								<li class="row-list">
 							<!--{/if}-->
 						<!--{/if}-->
+						<!--{if $ac=='linktoolbar'}-->
 							<em><a title="$val[subject]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[subject]</a></em>  
+						<!--{else}-->
+							<em><a title="$val[subject]" target="_blank" href="$val[url]">$val[subject]</a></em>  
+						<!--{/if}-->
 			<!--{/loop}-->
 			</ul>
 	<!--{/loop}-->    
