@@ -93,10 +93,39 @@ function checkSeccode() {
 }
 
 function warning(obj, msg) {
+	/*
 		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
 			$(ton).select();
 		}
+	*/
 		obj.style.display = '';
 		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
 		obj.className = "warning";
+}
+function killspace(str)
+{
+	while( str.charAt(0)==" " )
+	{
+		str=str.substr(1,str.length);
+	}
+	
+	while( str.charAt(str.length-1)==" " )
+	{
+		str=str.substr(0,str.length-1);  
+	}
+	return str;
+}
+function checkemail(email)//M12 
+{
+	if(typeof email == "undefined")return false;
+	var pattern = /^(([a-zA-Z0-9_.\-])+@([a-zA-Z0-9_\-])+(\.[a-zA-Z0-9_\-]+)+){0,1}$/;  
+	var email_array = email.split("\r\n");
+	for (i = 0; i < email_array.length; i++)
+	{
+		if (!killspace(email_array[i]))
+			continue;
+		if(!pattern.test(killspace(email_array[i])))
+			return false;
+	}
+	return true;
 }
