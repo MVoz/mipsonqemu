@@ -1,0 +1,44 @@
+<div class="navigation floatleft nav_1ogin" id="thumbs">
+<ul class="thumbs noscript">
+<!--{loop $bookmarklist $key $value}-->
+<!--{if $key>=3}-->
+<li>
+	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
+	<img alt="$value['link_description']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+	</a>
+	<p><a href="$value[url]">$value[subject]</a></p>							
+</li>
+<!--{/if}-->
+<!--{/loop}-->
+</ul>
+</div> 
+
+<div class="content_login_r" >
+<!--{loop $bookmarklist $key $value}-->
+<!--{if $key<3}-->
+		<div class="content_login_r_1">
+				<a href="$value[url]" title="{$value[link_subject]}">
+					<img alt="$value['link_description']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+				</a>
+				<p style="text-indent: 5px; height: 55px; padding-top: 2px; overflow: hidden;color:#777">
+					<a style="color: #74AE00;" href="$value[url]">$value[subject]</a>:
+					$value['description']...
+				</p>
+				<p style="height: 20px; line-height: 20px;">
+					<span style="float: right;">
+						<a href="cp.php?ac=link&amp;linkid=1&amp;op=bookmark" id="bookmark_add_1">我要收藏</a>
+					</span>
+				</p>
+		</div>
+<!--{/if}-->
+<!--{/loop}-->
+		<div class="txt_tag">
+						<p><span>热门分类:</span>
+						<a blockid="2217" title="动作" href="http://movies.xunlei.com/type,genre/movie,Action">动作</a>|<a blockid="2217" title="冒险" href="http://movies.xunlei.com/type,genre/movie,Adventure">冒险</a>|<a blockid="2217" title="喜剧" href="http://movies.xunlei.com/type,genre,tab/movie%2CComedy%2Cvod_free">喜剧</a>|<a blockid="2217" title="恐怖" href="http://movies.xunlei.com/type,genre,tab/movie%2CHorror%2Cvod_free">恐怖</a>|<a blockid="2217" title="科幻" href="http://movies.xunlei.com/type,genre,tab/movie%2CSci-Fi%2Cvod_free">科幻</a>|<a blockid="2217" title="警匪" href="http://movies.xunlei.com/type,genre/movie,Crime">警匪</a>
+						</p>
+						<p><span>特色频道:</span>
+						<a blockid="2218" title="720P" href="http://hd.xunlei.com/">720P</a>|<a blockid="2218" title="首播" href="http://movie.xunlei.com/shoubo/">首播</a>|<a blockid="2218" title="大片" href="http://movie.xunlei.com/online/dapian_index.html">大片</a>|<a blockid="2218" title="新片" href="http://movie.xunlei.com/new,movie">新片</a>|<a blockid="2218" title="风云榜" href="http://movie.xunlei.com/top/">风云榜</a>|<a blockid="2218" title="组合查询" href="http://movies.xunlei.com/list,movie/">组合查询</a>
+						</p>
+		</div>
+
+</div>	
