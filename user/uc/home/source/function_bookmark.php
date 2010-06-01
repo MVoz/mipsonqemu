@@ -105,6 +105,7 @@ function bookmark_post($POST, $olds=array()) {
 						//≤Â»Îbookmark
 							$bookmarkarr['linkid'] = $linkid;				
 							$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
+							$bookmarkarr['initaward'] =$bookmarkarr['award']=$_SC['link_award_initial_value'];
 							$bmid = inserttable('bookmark', $bookmarkarr, 1);
 							setbookmarkmodified();
 							setbookmarknum('linknum',1);
