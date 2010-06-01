@@ -23,6 +23,7 @@ if(!@include_once(S_ROOT.'./config.php')) {
 	header("Location: install/index.php");//°²×°
 	exit();
 }
+
 include_once(S_ROOT.'./source/function_common.php');
 
 include_once(S_ROOT.'./source/log.php');
