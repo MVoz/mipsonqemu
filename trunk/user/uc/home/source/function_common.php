@@ -2729,4 +2729,32 @@ function getFirefoxBookmarkToolGroupid()
 	}
 	return 0;
 }
+/*计算link的award*/
+function calc_link_award($init=7000,$store=0,$view=0,$up=0,$down=0)
+{
+	global $_SGLOBAL,$_SC;
+	$val=$init+($_SC['link_award_store_weight']*$store)+($_SC['link_award_view_weight']*$view)+($_SC['link_award_up_weight']*$up)
+		-($_SC['link_award_down_weight']*$down);
+	if($val<=($_SC['link_award_min']*$_SC['link_award_div']))
+		return ($_SC['link_award_min']*$_SC['link_award_div']);
+	if($val>=($_SC['link_award_max']*$_SC['link_award_div']))
+		return ($_SC['link_award_max']*$_SC['link_award_div']);
+	return $val;
+}
+/*返回link的award*/
+function linkaward($val,$flag)
+{
+	global $_SGLOBAL,$_SC;
+	switch($flag)
+	{
+		case 0://整数
+		echo round($val/$_SC['link_award_div']);
+		break;
+		case 1:
+		printf('%02d',round(($val-(round($val/$_SC['link_award_div'])*$_SC['link_award_div']))/10));
+		break;
+		
+	}
+	return;
+}
 ?>
