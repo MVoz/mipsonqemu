@@ -544,10 +544,12 @@ function link_cache_classid($classid)
 	$linklist=array();
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
-		
+		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
+		//¸üÐÂlinkidµÄaward
+		updatetable('link', array('award'=>$value['award']),array('linkid'=>$value[linkid]));
 		$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
+		
 		$linklist[]=$value;
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{

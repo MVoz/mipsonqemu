@@ -91,7 +91,7 @@ if(file_exists($bmcachefile)){
 		$start=$page?(($page-1)*$perpage):0;
 		$bmcachefile=S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_'.$browserid.'_'.$groupid.'.txt';
 		if(($op!='browser')||(!file_exists($bmcachefile))){
-			 //获取总数
+			 //获取总数,用户首页
 			$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main ".$wherearr),0);
 			//获取bookmarklist
 
