@@ -3,22 +3,45 @@
 <!--{if !empty($_SGLOBAL[inajax])}-->
 	   	   <!--{template space_bookmark_list_sub}-->
 <!--{else}-->
+
 <div id="network">
 <!--{template login}-->
-<div  style="height:805px;padding-top:10px;">
-	<div class="nbox_c" style="height:800px;">		
-				<h2 class="ntitle">
-					<div class="groupname" id="groupname">$classitem['classname']&raquo;</div>
-					<!--{template space_catelog_tab}-->	
-				</h2>
-		<div id="bmcontent"> 				
-				<!--{template space_navigation_list}-->
-		</div>
-	</div>
 
+<!--{if empty($classid)}-->
+<div style="padding-top:10px;">
+	<div class="nbox_c">
+	<!--{loop $navlist $key $bookmarklist}-->
+		<div  style="height:270px;">		
+			<h2 class="ntitle">
+				<div class="groupname" id="groupname">$bookmarklist['classname']&raquo;</div>
+				<!--{template space_catelog_tab}-->	
+			</h2>
+			<div id="bmcontent"> 			  
+				<!--{template space_navigation_list}-->				  
+			</div>
+		</div>				 
+	<!--{/loop}-->
+	</div>
+	<div class="nbox_s side_rbox side_rbox_w" >	
+			 <!--{template navigation}-->	 
+	</div> 
+<!--{else}-->	
+<div  style="height:805px;padding-top:10px;">
+<div class="nbox_c" style="height:800px;">		
+	<h2 class="ntitle">
+			<div class="groupname" id="groupname">$classitem['classname']&raquo;</div>
+			<!--{template space_catelog_tab}-->	
+	</h2>
+	<div id="bmcontent"> 			  
+		    <!--{template space_bookmark_list_sub}-->				  
+	</div>
+</div>
 	<div class="nbox_s side_rbox side_rbox_w" style="height:800px;">	
 			 <!--{template navigation}-->	 
-	</div> 						
+	</div> 
+<!--{/if}-->
+
+						
 </div>
 </div>
 <!--{template footer}-->
