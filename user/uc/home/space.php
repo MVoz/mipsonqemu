@@ -5,6 +5,7 @@
 */
 
 include_once('./common.php');
+
 include_once(S_ROOT.'./data/data_magic.php');
 
 // «∑Òπÿ±’’æµ„
