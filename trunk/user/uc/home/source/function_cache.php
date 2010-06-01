@@ -567,6 +567,38 @@ function link_cache()
 	   link_cache_classid($value['classid']);
 	}
 }
+//navigation的页面的cache
+function navigation_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.nav=1");
+	$navlist=array();
+	while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+			//获取此类的link
+			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$value['classid']." limit 9");
+			while($val =$_SGLOBAL['db']->fetch_array($qry))
+			{
+				$val['link_description']= getstr($val['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+				$val['link_subject']= getstr($val['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+				$value['son'][]=$val;
+			}
+			//获取此类的子分类
+			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.parentid=".$value['groupid']);
+			while($val =$_SGLOBAL['db']->fetch_array($qry))
+			{
+				$value['sonclass'][]=$val;
+			}
+			//获取此类的关键词
+			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclasstag')." main where main.classid=".$value['classid']." limit 5");
+			while($val =$_SGLOBAL['db']->fetch_array($qry))
+			{
+				$value['sontag'][]=$val;
+			}
+			$navlist[]=$value;
+	}
+	swritefile($S_ROOT.'./data/navigation_cache.txt', serialize($navlist));
+}
 //每日推荐
 function everydayhot_cache()
 {
