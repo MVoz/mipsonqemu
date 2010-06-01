@@ -17,9 +17,9 @@ $classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
 $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
 
  //分页获取总条数
-    $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=$_SC['bookmark_show_maxnum'];
-    $start=$page?(($page-1)*$perpage):0;
+$page=empty($_GET['page'])?0:intval($_GET['page']);
+$perpage=$_SC['bookmark_show_maxnum'];
+$start=$page?(($page-1)*$perpage):0;
 
 
 
@@ -69,8 +69,16 @@ if($classid)
 		}
 	}
 }else{
-	//今日推荐
-	include_once(S_ROOT.'./source/space_bookmark_show.php');
+	//显示导航
+	//include_once(S_ROOT.'./source/space_bookmark_show.php');
+	//获取显示的nav分类
+	
+	if(!file_exists( S_ROOT.'./data/navigation_cache.txt'))
+	{
+		include_once(S_ROOT.'./source/function_cache.php');
+		navigation_cache();		
+	}
+	$navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
 }
 
 //获取书签分类列表
