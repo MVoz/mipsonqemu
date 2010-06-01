@@ -47,11 +47,21 @@ function setbookmarkgroupid(id)
 function updatevisitstat(id) {
 	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
 }
+var updatelinkupclick=0;
 function updatelinkup(id) {
-	ajaxupdate('link','up_num', 'op=updatelinkupnum&linkid=' + id);
+	if(!updatelinkupclick)
+	{
+		ajaxupdate('link','up_num', 'op=updatelinkupnum&linkid=' + id);
+		updatelinkupclick=1;
+	}
 }
+var updatelinkupdown=0;
 function updatelinkdown(id) {
-	ajaxupdate('link','down_num', 'op=updatelinkdownnum&linkid=' + id);
+	if(!updatelinkupdown)
+	{
+		ajaxupdate('link','down_num', 'op=updatelinkdownnum&linkid=' + id);
+		updatelinkupdown=1;
+	}
 }
 function updatelinkview(id) {
 	ajaxupdate('link','view_num', 'op=updatelinkviewnum&linkid=' + id);

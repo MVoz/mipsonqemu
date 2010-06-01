@@ -540,13 +540,14 @@ function link_cache_classid($classid)
 
 	//$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$classid);	
-	$page=1;
+	$page=0;
 	$linklist=array();
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 		
 		$value['description'] = getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
 		$linklist[]=$value;
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
