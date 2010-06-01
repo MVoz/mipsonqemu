@@ -50,14 +50,13 @@
 						<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
 					<!--{else}-->
 						<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot"><!--{eval getLinkStorenum($value[linkid])}--> 人收藏</a>
-					<!--{/if}-->
-
+					<!--{/if}--> 
 					 
-				     <a href="cp.php?ac=bookmark&op=get&bmid=$value[bmid]"  target="_blank" >详情</a>
+				     <a href="cp.php?ac=$ac&op=get&bmid=$value[bmid]"  target="_blank" >详情</a>
 					 | 				  
-					<a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+					<a href="cp.php?ac=$ac&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
 					 |
-					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit2_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>
+					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=$ac&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit2_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>
 					</p> 
 				</li>
 				<!--{/loop}-->
