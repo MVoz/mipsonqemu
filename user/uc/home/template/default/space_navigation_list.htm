@@ -33,8 +33,11 @@
 <!--{/if}-->
 <!--{/loop}-->
 		<div class="txt_tag">
-						<p><span>特色分类:</span>							
+						<p><span>特色分类:</span>	
+							
+							<!--{if !empty($bookmarklist['classname'])}-->
 								<a  href="space.php?do=$do&classid=$bookmarklist[classid]">$bookmarklist['classname']综合</a>|
+							<!--{/if}-->
 							<!--{loop $bookmarklist['sonclass'] $key $value}-->								
 								<a  href="space.php?do=$do&classid=$value[classid]">$value[classname]</a>|
 							<!--{/loop}-->
