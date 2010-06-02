@@ -627,6 +627,43 @@ function everydayhot_cache()
 	}
 	swritefile( S_ROOT.'./data/todayhot.txt', serialize($todayhot));
 }
+//首页每日热藏
+function everydayhotcollect_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$todayhotcollect = array();
+	$_SCONFIG['hotcollect']=array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+	$todayhotid = sarray_rand($_SCONFIG['hotcollect'], 9);
+	foreach($todayhotid as $key=>$val){
+		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid=$val");
+		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
+				$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
+				include_once(S_ROOT.'./source/function_link.php');
+				$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
+				$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+				$todayhotcollect['son'][]= $value;
+		}	
+	}
+	//推荐分类
+	$todayclass=array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linkclass')." WHERE groupid between 2000 and 3000");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$todayclass[]= $value;
+	}	
+	$todayhotcollect['sonclass'] = sarray_rand($todayclass, 7);
+	//推荐标签
+	$todaytag=array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktag')." order by totalnum DESC limit 20");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$todaytag[]= $value;
+	}	
+	$todayhotcollect['sontag'] = sarray_rand($todaytag, 7);
+	
+
+
+	swritefile( S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
