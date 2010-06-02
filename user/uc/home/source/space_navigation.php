@@ -105,20 +105,5 @@ include_once template("space_navigation");
 /*
 }
 */
-//检查缓存
-function check_network_cache($type) {
-	global $_SGLOBAL;
-	
-	if($_SGLOBAL['network'][$type]['cache']) {
-		$cachefile = S_ROOT.'./data/cache_network_'.$type.'.txt';
-		$ftime = filemtime($cachefile);
-		if($_SGLOBAL['timestamp'] - $ftime < $_SGLOBAL['network'][$type]['cache']) {
-			return true;
-		}
-	}
-	return false;
-}
-
-
 
 ?>
