@@ -9,7 +9,7 @@ if(!defined('IN_UCHOME')) {
 }
 
 //是否公开
-if(empty($_SCONFIG['networkpublic'])) {
+if(empty($_SGLOBAL['supe_uid'])) {
 	checklogin();//需要登录
 }
 
