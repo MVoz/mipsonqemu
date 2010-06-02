@@ -101,11 +101,28 @@ function bookmark_post($POST, $olds=array()) {
 						if($_GET['ac']=='bmdir')
 						{
 							//增加bookmark
+							$linkarr['initaward'] =$linkarr['award']=$_SC['link_award_initial_value'];
 							$linkid=bookmark_link_process(0,$linkarr);
 						//插入bookmark
-							$bookmarkarr['linkid'] = $linkid;				
+							$bookmarkarr['linkid'] = $linkid;
+							//bookmark的level深度，父目录深度+1
+							$bookmarkarr['level'] = empty($olds)?1:($olds['level']+1);
+							//bookmark不需要检测深度，因为目录能建立，bookmark肯定可以建立
+							//检测是否超出最大允许数
+							$count=0;
+							if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_'.$browserid.'_'.$groupid.'.txt')){
+								$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('bookmark')." main "." where main.uid=".$_SGLOBAL['supe_uid']." AND main.browserid=".$browserid." AND main.parentid=".(empty($olds)?0:$olds['groupid'])),0);
+							}else{
+								$bookmarklist = unserialize(sreadfile(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_'.$browserid.'_'.$groupid.'.txt'));
+								$count=$bookmarklist['totalcount'];
+							}							
+							include_once(S_ROOT.'./data/data_browser.php');
+							if($count>=$_SGLOBAL['browser'][$browserid]['maxchild'])
+							{
+								return $_SC['error']['err_bookmark_add_overflow'];
+							}
 							$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
-							$bookmarkarr['initaward'] =$bookmarkarr['award']=$_SC['link_award_initial_value'];
+							
 							$bmid = inserttable('bookmark', $bookmarkarr, 1);
 							setbookmarkmodified();
 							setbookmarknum('linknum',1);
@@ -136,7 +153,7 @@ function bookmark_post($POST, $olds=array()) {
 						//插入bookmark
 						$bookmarkarr['groupid'] = ($maxGroupid+1);
 						//bmdir的level深度，父目录深度+1
-						$bookmarkarr['level'] = empty($olds)?0:($olds['level']+1);
+						$bookmarkarr['level'] = empty($olds)?1:($olds['level']+1);
 						//检测深度
 						include_once(S_ROOT.'./data/data_browser.php');
 						if($bookmarkarr['level']>=$_SGLOBAL['browser'][$browserid]['maxlev'])
