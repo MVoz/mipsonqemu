@@ -134,7 +134,15 @@ function bookmark_post($POST, $olds=array()) {
 				case $_SC['bookmark_type_dir']://增加一个目录
 						$maxGroupid=getMaxGroupid($_SGLOBAL['supe_uid']);
 						//插入bookmark
-						$bookmarkarr['groupid'] = ($maxGroupid+1);		
+						$bookmarkarr['groupid'] = ($maxGroupid+1);
+						//bmdir的level深度，父目录深度+1
+						$bookmarkarr['level'] = empty($olds)?0:($olds['level']+1);
+						//检测深度
+						include_once(S_ROOT.'./data/data_browser.php');
+						if($bookmarkarr['level']>=$_SGLOBAL['browser'][$browserid]['maxlev'])
+						{
+							return $_SC['error']['err_bmdir_add_overflow'];
+						}
 						$bookmarkarr['parentid'] = empty($olds)?0:$olds['groupid'];
 						$bmid = inserttable('bookmark', $bookmarkarr, 1);
 						$bookmarkarr['bmid']= $bmid;

@@ -2757,4 +2757,9 @@ function linkaward($val,$flag)
 	}
 	return;
 }
+function showerrmessage($err)
+{
+	global $_SGLOBAL,$_SC;
+	showmessage($_SC['error'][-1*$err]);
+}
 ?>
