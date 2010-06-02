@@ -97,4 +97,15 @@ define('UC_IP', '127.0.0.1'); // UCenter 的 IP, 当 UC_CONNECT 为非 mysql 方
 define('UC_APPID', '1'); // 当前应用的 ID
 define('UC_PPP', 20);
 
+/*
+err type
+*/
+
+$_SC['error']['err_bookmark_add_overflow']=-10;
+$_SC['error'][-1*$_SC['error']['err_bookmark_add_overflow']]='err_bookmark_add_overflow';
+
+
+$_SC['error']['err_bmdir_add_overflow']=-11;
+$_SC['error'][-1*$_SC['error']['err_bmdir_add_overflow']]='err_bmdir_add_overflow';
+
 ?>
