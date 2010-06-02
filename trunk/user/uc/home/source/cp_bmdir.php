@@ -26,6 +26,7 @@ if($bmdirid)
 {
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid=".$_SGLOBAL['supe_uid']." AND type=".$_SC['bookmark_type_dir']." AND groupid=".$bmdirid.' AND browserid='.$browserid);
 	$bmdiritem = $_SGLOBAL['db']->fetch_array($query);
+	//为了删除目录是跳到父目录中
 	$groupid=$bmdiritem['parentid'];
 }
 /*
@@ -89,12 +90,17 @@ if(submitcheck('editsubmit')) {
 	}
 	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdiritem)) {
-			$url = 'space.php?do=bookmark&op=browser&browserid='.$newbmdir['browserid'].'&groupid='.$newbmdir['groupid'];
-			if(empty($_SGLOBAL['client']))
-				showmessage('do_success', $url, 0);
-			else
-				showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"'.
-			' groupid="'.$newbmdir['groupid'].'"'.' bmid="'.$newbmdir['bmid'].'"');
+			if(is_array($newbmdir))//成功
+			{
+				$url = 'space.php?do=bookmark&op=browser&browserid='.$newbmdir['browserid'].'&groupid='.$newbmdir['groupid'];
+				if(empty($_SGLOBAL['client']))
+					showmessage('do_success', $url, 0);
+				else
+					showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"'.
+				' groupid="'.$newbmdir['groupid'].'"'.' bmid="'.$newbmdir['bmid'].'"');
+			}else{
+				showerrmessage($newbmdir);				
+			}
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}

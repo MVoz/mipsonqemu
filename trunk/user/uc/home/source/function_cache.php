@@ -346,6 +346,18 @@ function browsertype_cache(){
 	}
 	cache_write('browsertype', "_SGLOBAL['browsertype']", $_SGLOBAL['browsertype']);
 }
+//浏览器类型
+function browser_cache(){
+	global $_SGLOBAL;
+
+	$_SGLOBAL['browser'] = array();
+	// 从数据库获取
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('browser'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+	    $_SGLOBAL['browser'][$value['browserid']] = $value;
+	}
+	cache_write('browser', "_SGLOBAL['browser']", $_SGLOBAL['browser']);
+}
 //hotdigglist
 function hotdigg_cache()
 {
