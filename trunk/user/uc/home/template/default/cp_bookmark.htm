@@ -46,14 +46,16 @@
 <tr>
 <th><label for="subject">名称：</label></th>
 <td>	
-<input type="text" id="subject" name="subject" value="$item[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$item[subject]" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<p id="subject_tip"></p>
 </td>
 </tr>
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
+<p id="address_tip"></p>
 </td>
 </tr>
 <tr>
@@ -87,7 +89,8 @@
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$item[bmid]" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[bmid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
