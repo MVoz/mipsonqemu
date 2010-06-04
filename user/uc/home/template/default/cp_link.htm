@@ -254,14 +254,16 @@
 <tr>
 <th><label for="subject">名称：</label></th>
 <td>	
-<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$item[link_subject]" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<p id="subject_tip"></p>
 </td>
 </tr>
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="1" readonly/>
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="1" readonly/>
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
+<p id="address_tip"></p>
 </td>
 </tr>
 <tr>
@@ -272,9 +274,10 @@
 </td>
 </tr>
 <tr>
-<th><label for="tag">标签：</label></th>
+<th><label for="tag">评分：</label></th>
 <td>
-<input type="text" id="initaward" name="initaward" value="$item[initaward]" style="width: 50px;" class="t_input" tabindex="1"  />
+<input type="text" id="initaward" name="initaward" value="$item[initaward]" onfocus="clearwarning($('initaward_tip'));" style="width: 50px;" class="t_input" tabindex="1"  />
+<p id="initaward_tip"></p>
 </td>
 </tr>
 <tr>
@@ -296,11 +299,13 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$item[linkid]" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[linkid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
@@ -313,9 +318,9 @@
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="editsubmit" value="true" />
 <!--{if empty($_SGLOBAL['inajax'])}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode');"/>
 <!--{else}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode');"/>
 <!--{/if}-->
 </td>
 </tr>

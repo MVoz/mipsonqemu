@@ -85,7 +85,8 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  onfocus="clearwarning($('checkseccode'));" tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$item[bmid]" src='' align="absmiddle">
@@ -104,9 +105,9 @@
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
 <!--{if empty($_SGLOBAL['inajax'])}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this,'seccode');"/>
 <!--{else}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this,'seccode');"/>
 <!--{/if}-->
 </td>
 </tr>
