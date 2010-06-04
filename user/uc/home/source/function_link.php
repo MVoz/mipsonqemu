@@ -77,12 +77,16 @@ function link_post($POST, $olds=array()) {
 			//$linkarr['md5url']=md5($linkarr['url']);
 			$linkarr=setlinkimagepath($linkarr);
 			$linkarr['verify']=$_SC['link_verify_undo'];
+			
 			if(empty($olds)){
-				//增加一个LINK				
+				//增加一个LINK	
+				$linkarr['initaward'] =$linkarr['award']=$_SC['link_award_initial_value'];
 				$linkid = inserttable('link', $linkarr, 1);
 			}else{
 				//修改一个LINK
 				$linkarr['url']=  $olds['url'];
+				$linkarr['initaward'] =$POST['initaward'];
+				$linkarr['award']=calc_link_award($linkarr['initaward'],$olds['storenum'],$olds['viewnum'],$olds['up'],$olds['down']);
 				updatetable('link',$linkarr, array('linkid'=>$olds['linkid']));
 				$linkid = $olds['linkid'];
 			}
