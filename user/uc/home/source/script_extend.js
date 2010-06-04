@@ -112,6 +112,10 @@ function warning(obj, msg) {
 		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
 		obj.className = "warning";
 }
+function clearwarning(obj) {
+		obj.style.display = 'none';
+		obj.innerHTML = '';		
+}
 function killspace(str)
 {
 	while( str.charAt(0)==" " )
