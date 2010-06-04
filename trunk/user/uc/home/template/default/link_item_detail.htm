@@ -1,6 +1,9 @@
 <div id="network">
 	<div class="nbox_c">
-		<h2 class="ntitle">$item[link_subject]</h2>
+		<h2 class="ntitle">
+			$item[link_subject]
+			
+		</h2>
 		<div class="movieInfo">
 					<div class="link200">
 					<a target="_target" class="playpic" href="$item['url']" onclick="updatelinkview($item[linkid])">
@@ -9,7 +12,11 @@
 					</a>
 					</div>
 					<div class="movieDetail">
-						<p><strong>名称: </strong><a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a></p>
+						<p>
+							<strong>名称: </strong>
+							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a>
+							<span class="num_con"><span><strong><!--{eval linkaward($item[award],0);}--></strong>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
+						</p>
 						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
 						<p>
 						<strong>标签: </strong>
