@@ -1,19 +1,19 @@
 <div id="network">
 	<div class="nbox_c">
 		<h2 class="ntitle">
-			$item[link_subject]			
+			$item[subject]			
 		</h2>
 		<div class="movieInfo">
 					<div class="link200">
 					<a target="_target" class="playpic" href="$item['url']" onclick="updatelinkview($item[linkid])">
-					<img alt="$item['$link_subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
+					<img alt="$item['$subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
 					<em></em>
 					</a>
 					</div>
 					<div class="movieDetail">
 						<p>
 							<strong>名称: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a>
+							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['subject']</a>
 							<span class="num_con"><span><strong><!--{eval linkaward($item[award],0);}--></strong>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
 						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
@@ -35,13 +35,8 @@
 						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
 						<!--{/if}-->
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-							<!--{if $ac=='link' }-->
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[linkid]', this.id,1);" id="link_edit2_$item[linkid]" href="cp.php?ac=link&linkid=$item[linkid]&op=edit">编辑</a>
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[linkid]', this.id,1);" id="link_delete_$item[linkid]" href="cp.php?ac=link&linkid=$item[linkid]&op=delete">删除</a>
-							<!--{else}-->
 							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=edit">编辑</a>
 							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=delete">删除</a>
-							<!--{/if}-->
 						<!--{/if}-->
 						</p>
 						</div>
@@ -62,7 +57,7 @@
 				</div>
 				<h3>站点简介</h3>
 				<div class="movieIntro">
-					<p>$item[link_description]</p>
+					<p>$item[description]</p>
 					<p>&nbsp;</p>
 				</div>
 		
