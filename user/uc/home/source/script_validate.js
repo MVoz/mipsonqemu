@@ -64,29 +64,52 @@ function check_url(id,min,max)
     }
 	return true;
 }
-function check_seccode()
+function check_seccode(obj,id)
 {
-	if($('seccode')) {
-		var code = $('seccode').value;
+	if($(id)) {
+		var code = $(id).value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
 				 warning($('checkseccode'),s);
-           		 return false;			
+           		 return false;
+			}else {
+				obj.form.submit();
+				return true;
+			}
 		});
+    }else{
+		obj.form.submit();
+		return true;
+	}
+}
+function check_number(id,min,max)
+{
+	if ($(id)) {
+		if(!range_validate($(id).value,min,max))    	
+			{
+				warning($(id+'_tip'),"请填写一个("+min+"~"+max+")之间的整数合要求");
+				return false;
+			}
     }
 	return true;
 }
-function bookmark_validate(obj) {
 
-	if(!check_subject('subject',1,1024)||!check_subject('address',1,1024)||!check_seccode())
-			return false;
-	 
-   	obj.form.submit();
-    return true;    
+function bookmark_validate(obj,seccode_id) {
+
+	if(!check_subject('subject',1,1024)||!check_url('address',1,1024))
+		return false;
+    check_seccode(obj,seccode_id);  
 }
 
+function link_validate(obj,seccode_id) {
+
+	if(!check_subject('subject',1,1024)||!check_url('address',1,1024)||!check_number('initaward',5000,9900))
+			return false;
+	 
+   	 check_seccode(obj,seccode_id);    
+}
 function report_validate(obj) {
     if($('seccode')) {
 		var code = $('seccode').value;
