@@ -62,7 +62,7 @@ class usermodel {
 	}
 
 	function check_usernameexists($username) {
-		$data = $this->db->result_first("SELECT username FROM ".UC_DBTABLEPRE."members WHERE username='$username'");
+		$data = $this->db->result_first("SELECT name FROM ".UC_DBTABLEPRE."members WHERE name='$username'");
 		return $data;
 	}
 
@@ -88,7 +88,8 @@ class usermodel {
 	}
 
 	function check_emailexists($email, $username = '') {
-		$sqladd = $username !== '' ? "AND username<>'$username'" : '';
+	//	$sqladd = $username !== '' ? "AND username<>'$username'" : '';
+		$sqladd = '';
 		$email = $this->db->result_first("SELECT email FROM  ".UC_DBTABLEPRE."members WHERE email='$email' $sqladd");
 		return $email;
 	}
@@ -103,12 +104,12 @@ class usermodel {
 		return $user['uid'];
 	}
 
-	function add_user($username, $password, $email, $uid = 0, $questionid = '', $answer = '') {
+	function add_user($username, $password, $email, $name, $uid = 0, $questionid = '', $answer = '') {
 		$salt = substr(uniqid(rand()), -6);
 		$password = md5(md5($password).$salt);
 		$sqladd = $uid ? "uid='".intval($uid)."'," : '';
 		$sqladd .= $questionid > 0 ? " secques='".$this->quescrypt($questionid, $answer)."'," : " secques='',";
-		$this->db->query("INSERT INTO ".UC_DBTABLEPRE."members SET $sqladd username='$username', password='$password', email='$email', regip='".$this->base->onlineip."', regdate='".$this->base->time."', salt='$salt'");
+		$this->db->query("INSERT INTO ".UC_DBTABLEPRE."members SET $sqladd username='$username', password='$password', email='$email', name='$name', regip='".$this->base->onlineip."', regdate='".$this->base->time."', salt='$salt'");
 		$uid = $this->db->insert_id();
 		$this->db->query("INSERT INTO ".UC_DBTABLEPRE."memberfields SET uid='$uid'");
 		return $uid;

@@ -70,16 +70,22 @@ class usercontrol extends base {
 		$username = $this->input('username');
 		$password =  $this->input('password');
 		$email = $this->input('email');
+		$name = $this->input('name');
 		$questionid = $this->input('questionid');
 		$answer = $this->input('answer');
-
+		/*
 		if(($status = $this->_check_username($username)) < 0) {
+			return $status;
+		}
+		*/
+		//ÓÃêÇ³Æ´úÌæ
+		if(($status = $this->_check_username($name)) < 0) {
 			return $status;
 		}
 		if(($status = $this->_check_email($email)) < 0) {
 			return $status;
 		}
-		$uid = $_ENV['user']->add_user($username, $password, $email, 0, $questionid, $answer);
+		$uid = $_ENV['user']->add_user($username, $password, $email, $name, 0, $questionid, $answer);
 		return $uid;
 	}
 
@@ -255,7 +261,7 @@ class usercontrol extends base {
 			return UC_USER_EMAIL_FORMAT_ILLEGAL;
 		} elseif(!$_ENV['user']->check_emailaccess($email)) {
 			return UC_USER_EMAIL_ACCESS_ILLEGAL;
-		} elseif(!$this->settings['doublee'] && $_ENV['user']->check_emailexists($email, $username)) {
+		} elseif(/*!$this->settings['doublee'] &&*/ $_ENV['user']->check_emailexists($email, $username)) {
 			return UC_USER_EMAIL_EXISTS;
 		} else {
 			return 1;

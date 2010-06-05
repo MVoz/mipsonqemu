@@ -426,8 +426,8 @@ function uc_friend_ls($uid, $page = 1, $pagesize = 10, $totalnum = 10, $directio
 	-6 : 该 email 已经被注册
 	>1 : 表示成功，数值为 UID
 */
-function uc_user_register($username, $password, $email, $questionid = '', $answer = '') {
-	return call_user_func(UC_API_FUNC, 'user', 'register', array('username'=>$username, 'password'=>$password, 'email'=>$email, 'questionid'=>$questionid, 'answer'=>$answer));
+function uc_user_register($username, $password, $email, $name , $questionid = '', $answer = '') {
+	return call_user_func(UC_API_FUNC, 'user', 'register', array('username'=>$username, 'password'=>$password, 'email'=>$email, 'name'=>$name, 'questionid'=>$questionid, 'answer'=>$answer));
 }
 
 /**
