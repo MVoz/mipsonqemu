@@ -105,7 +105,7 @@ if(empty($op)) {
 			}
 		}
 
-		$newuid = uc_user_register($username, $password, $email);
+		$newuid = uc_user_register($username, $password, $email, $name);
 		if($newuid <= 0) {
 			if($newuid == -1) {
 				showmessage('user_name_is_not_legitimate');
@@ -220,6 +220,22 @@ if(empty($op)) {
 		showmessage('include_not_registered_words');
 	} elseif($ucresult == -3) {
 		showmessage('user_name_already_exists');
+	} else {
+		showmessage('succeed');
+	}
+} elseif($op == "checkemail") {
+	$email = trim($_GET['email']);
+	if(empty($email)) {
+		showmessage('user_email_is_not_legitimate');
+	}
+	@include_once (S_ROOT.'./uc_client/client.php');
+	$ucresult = uc_user_checkemail($email);
+	if($ucresult == -4) {
+			showmessage('email_format_is_wrong');
+	} elseif($ucresult == -5) {
+			showmessage('email_not_registered');
+	} elseif($ucresult == -6) {
+			showmessage('email_has_been_registered');
 	} else {
 		showmessage('succeed');
 	}
