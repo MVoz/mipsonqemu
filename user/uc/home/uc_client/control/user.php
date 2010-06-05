@@ -140,7 +140,7 @@ class usercontrol extends base {
 			$status = $user['uid'];
 		}
 		$merge = $status != -1 && !$isuid && $_ENV['user']->check_mergeuser($username) ? 1 : 0;
-		return array($status, $user['username'], $password, $user['email'], $merge);
+		return array($status, $user['username'], $password, $user['email'], $merge,$user['name']);
 	}
 
 	//note public 外部接口 ajax 校验 EMAIL
