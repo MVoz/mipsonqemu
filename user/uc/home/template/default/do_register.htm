@@ -142,17 +142,20 @@
 		}
 		
 		var cu = $('checkusermail');
-		if(!checkemail(email))
+		/*
+		if(!email_validate(email))
 			{
 				warning(cu, '请填写正确的email');
 				return false;
 			}
+		
 		var unLen = email.replace(/[^\x00-\xff]/g, "**").length;
 		if(unLen < 3 || unLen > 25) {
 			warning(cu, unLen < 3 ? '用户名小于3个字符' : '用户名超过 25 个字符');
 			return;
 		}
-		ajaxresponse('checkusermail', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
+		*/
+		ajaxresponse('checkusermail', 'op=checkemail&email=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
 	}
 	function checkPassword(confirm) {
 		var password = $('regpassword').value;
