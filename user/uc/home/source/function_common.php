@@ -184,6 +184,7 @@ function checkauth() {
 				if($member['password'] == $password) {
 					$_SGLOBAL['supe_username'] = addslashes($member['username']);
 					$_SGLOBAL['session'] = $member;
+					$_SGLOBAL['name'] = $member['name'];
 				} else {
 					$_SGLOBAL['supe_uid'] = 0;
 				}
@@ -192,7 +193,8 @@ function checkauth() {
 				if($member = $_SGLOBAL['db']->fetch_array($query)) {
 					if($member['password'] == $password) {
 						$_SGLOBAL['supe_username'] = addslashes($member['username']);
-						$session = array('uid' => $_SGLOBAL['supe_uid'], 'username' => $_SGLOBAL['supe_username'], 'password' => $password);
+						$_SGLOBAL['name'] = addslashes($member['name']);
+						$session = array('uid' => $_SGLOBAL['supe_uid'], 'username' => $_SGLOBAL['supe_username'], 'password' => $password,'name'=>$_SGLOBAL['name']);
 						include_once(S_ROOT.'./source/function_space.php');
 						insertsession($session);//登录
 					} else {
@@ -208,6 +210,7 @@ function checkauth() {
 		clearcookie();
 	} else {
 		$_SGLOBAL['username'] = $member['username'];
+		$_SGLOBAL['name'] = $member['name'];
 		realname_set($_SGLOBAL['supe_uid'],$_SGLOBAL['username'] );
 		realname_get();
 	}
@@ -1318,6 +1321,7 @@ function getpassport($username, $password) {
 		$passport['uid'] = $ucresult[0];
 		$passport['username'] = $ucresult[1];
 		$passport['email'] = $ucresult[3];
+		$passport['name'] = $ucresult[5];
 	}
 	return $passport;
 }

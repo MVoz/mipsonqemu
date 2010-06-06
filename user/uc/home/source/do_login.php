@@ -77,6 +77,7 @@ if(submitcheck('loginsubmit')) {
 	$setarr = array(
 		'uid' => $passport['uid'],
 		'username' => addslashes($passport['username']),
+		'name' =>  addslashes($passport['name']),
 		'password' => md5("$passport[uid]|$_SGLOBAL[timestamp]")//本地密码随机生成
 	);
 	
