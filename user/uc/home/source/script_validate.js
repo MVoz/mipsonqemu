@@ -106,19 +106,26 @@ function check_email(id)
     }
 	return true;
 }
-function bookmark_validate(obj,seccode_id) {
-
-	if(!check_subject('subject',1,1024)||!check_url('address',1,1024))
+function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen) {
+	var    titlelen=subjectlen;
+	if($('category')&&$('category').value==1) //dir
+				titlelen=dirlen; 
+			
+	if(!check_subject('subject',1,titlelen)||!check_url('address',1,urlen))
 		return false;
-    check_seccode(obj,seccode_id);  
+	
+    if(!check_seccode(obj,seccode_id))
+	    return false;
+	return true;
 }
 
-function link_validate(obj,seccode_id) {
+function link_validate(obj,seccode_id, subjectlen,  urlen) {
 
-	if(!check_subject('subject',1,1024)||!check_url('address',1,1024)||!check_number('initaward',5000,9900))
+	if(!check_subject('subject',1,subjectlen)||!check_url('address',1,urlen)||!check_number('initaward',5000,9900))
 			return false;
-	 
-   	 check_seccode(obj,seccode_id);    
+	if(!check_seccode(obj,seccode_id))
+	    return false;
+	return true;   
 }
 function report_validate(obj) {
     if($('seccode')) {
