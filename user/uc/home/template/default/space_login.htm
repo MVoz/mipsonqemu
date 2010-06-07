@@ -131,13 +131,14 @@
 		<div style="border-bottom: 3px solid rgb(143, 195, 32);" class="right1">
 			<span class="green1">弹指登录&raquo;</span>&nbsp;请使用email登录 
 		</div>
-		<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post">
+		<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" onsubmit="return login_validate(this);">
 			<div class="zc_index">
 				<div class="ward_border">
 				<div class="ward_borderl">登录账号：</div>
 				<div class="ward_borderr">
 				<label>
-				<input type="text" name="username" id="username" value="$membername" class="srkuanga"><span id="html_unerr" class="cwxx"></span>
+				<input type="text" name="username" id="username" value="$membername" class="srkuanga">
+				<p name="username_tip" id="username_tip"> </p>
 				</label>
 				</div>
 				</div>
@@ -210,7 +211,7 @@
     <div class="ward_border">
     <div class="ward_borderl"><span class="rded">*</span>设置密码：</div>
     <div class="ward_borderr">
-    <input type="password" name="regpassword" id="regpassword" value="" class="srkuanga" onBlur="checkPassword()" onkeyup="checkPwd(this.value);" tabindex="3" />&nbsp;
+    <input type="password" name="regpassword" id="regpassword" value="" class="srkuanga" onBlur="checkPassword()"  tabindex="3" />&nbsp;
 	<p id="checkpassword"></p>
     </div>
     </div>
@@ -220,7 +221,7 @@
     <input type="password" id="regpassword2" name="regpassword2" value="" class="srkuanga"  onBlur="checkPassword2()" tabindex="4" />&nbsp;<p id="checkpassword2"></p>
     </div>
     </div>
-   
+ <!--  
 	  <style>
 				.psdiv0,.psdiv1,.psdiv2,.psdiv3,.psdiv4{position:relative;height:30px;color:#666}/*密码强度容器*/
 				.strongdepict{position:absolute; width:300px;left:0px;top:3px}/*密码强度固定文字*/
@@ -247,7 +248,7 @@
 			</div>		
 		</div>
      </div>
-    
+ -->   
     <div class="ward_border">
     <label>
     &nbsp;&nbsp;&nbsp;&nbsp; 
@@ -300,17 +301,20 @@
 		}
 		
 		var cu = $('checkusermail');
-		if(!checkemail(email))
+		
+		if(!email_validate(email))
 			{
 				warning(cu, '请填写正确的email');
 				return false;
 			}
+		/*
 		var unLen = email.replace(/[^\x00-\xff]/g, "**").length;
 		if(unLen < 3 || unLen > 25) {
 			warning(cu, unLen < 3 ? '用户名小于3个字符' : '用户名超过 25 个字符');
 			return;
 		}
-		ajaxresponse('checkusermail', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email),1);
+		*/
+		ajaxresponse('checkusermail', 'op=checkemail&email=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email),1);
 	}
 	function checkPassword(confirm) {
 		var password = $('regpassword').value;
@@ -324,6 +328,8 @@
 			warning(cp, '密码空或包含非法字符');
 			return false;
 		} else {
+			cp.style.display = 'none';
+			cp.innerHTML = '';
 			if(!confirm) {
 				checkPassword2(true);
 			}
@@ -344,9 +350,11 @@
 		if(password != password2) {
 			warning(cp2, '两次输入的密码不一致');
 		} else {
+			 cp2.style.display = 'none';
+			 cp2.innerHTML = '';
 		}
 	}
-
+/*
 	function checkPwd(pwd){
 
 		if (pwd == "") {
@@ -376,6 +384,8 @@
 			}
 		}
 	}
+*/
+/*
 	function isPassword(str){
 		if (str.length < 3) return false;
 		var len;
@@ -386,6 +396,7 @@
 		}
 		return true;
 	}
+
 	function charMode(iN){ 
 		if (iN>=48 && iN <=57) //数字 
 		return 1; 
@@ -415,6 +426,7 @@
 		} 
 		return bitTotal(modes);
 	}
+*/
 //-->
 </script>
 <!--{template bm_footer}-->
