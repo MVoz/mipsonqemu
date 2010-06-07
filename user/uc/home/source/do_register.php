@@ -73,16 +73,9 @@ if(empty($op)) {
 			showmessage('system_error');
 		}
 
-		if($_POST['regpassword'] != $_POST['regpassword2']) {
-			showmessage('password_inconsistency');
-		}
-
-		if(!$_POST['regpassword'] || $_POST['regpassword'] != addslashes($_POST['regpassword'])) {
-			showmessage('profile_passwd_illegal');
-		}
 		
 		$name = trim($_POST['regusername']);
-		$password = $_POST['regpassword'];
+		
 		
 		$username=$email = isemail($_POST['email'])?$_POST['email']:'';
 		if(empty($email)) {
@@ -94,6 +87,15 @@ if(empty($op)) {
 				showmessage('email_has_been_registered');
 			}
 		}
+
+		if($_POST['regpassword'] != $_POST['regpassword2']) {
+			showmessage('password_inconsistency');
+		}
+
+		if(!$_POST['regpassword'] || $_POST['regpassword'] != addslashes($_POST['regpassword'])) {
+			showmessage('profile_passwd_illegal');
+		}
+		$password = $_POST['regpassword'];
 		//ºÏ≤ÈIP
 		$onlineip = getonlineip();
 		if($_SCONFIG['regipdate']) {
