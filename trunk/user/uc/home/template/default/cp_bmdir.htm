@@ -1,4 +1,4 @@
-<!--{template header}-->
+<!--{template bm_header}-->
 
 <!--{if $_GET[op] == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
@@ -51,10 +51,11 @@
 <th><label for="subject">名称：</label></th>
 <td>	
 <!--{if $_GET[op] == 'edit'}-->
-<input type="text" id="subject" name="subject" value="$bmdirname" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$bmdirname" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
 <!--{else}-->
-<input type="text" id="subject" name="subject" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
 <!--{/if}-->
+<p id="subject_tip"></p>
 </td>
 </tr>
 <!--{if $_GET[op] == 'add'}-->
@@ -71,9 +72,10 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="1" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" />
+<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="1" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" onfocus="clearwarning($('address_tip'));" />
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
-</td>
+<p id="address_tip"></p>
+</td> 
 </tr>
 <tr>
 <th><label for="tag">标签：</label></th>
@@ -123,7 +125,7 @@
 <!--{else}-->
 <input type="hidden" name="addsubmit" value="true" />
 <!--{/if}-->
-<input type="button" name="btnsubmit" value="确定" class="submit" onclick="bookmark_validate(this);"/>
+<input type="button" name="btnsubmit" value="确定" class="submit" onclick="bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen']);"/>
 </td>
 </tr>
 </table>
@@ -133,4 +135,4 @@
 </div>
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{/if}-->
-<!--{template footer}-->
+<!--{template bm_footer}-->
