@@ -317,11 +317,9 @@
 <td>
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="editsubmit" value="true" />
-<!--{if empty($_SGLOBAL['inajax'])}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen']);"/>
-<!--{else}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen']);"/>
-<!--{/if}-->
+
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['speicalchar']);"/>
+
 </td>
 </tr>
 </table>
