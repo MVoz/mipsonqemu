@@ -5,7 +5,7 @@
 */
 
 @define('IN_UCHOME', TRUE);
-define('D_BUG', '1');
+define('D_BUG', '0');
 define('DEBUG_UC','1');
 define('TEMPLATE_CACHE_UPDATE','1');
 
