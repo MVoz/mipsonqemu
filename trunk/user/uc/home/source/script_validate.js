@@ -95,7 +95,17 @@ function check_number(id,min,max)
     }
 	return true;
 }
-
+function check_email(id)
+{
+	if ($(id)) {
+		if(!email_validate($(id).value))    	
+			{
+				warning($(id+'_tip'),"请填写一个合法的email地址");
+				return false;
+			}
+    }
+	return true;
+}
 function bookmark_validate(obj,seccode_id) {
 
 	if(!check_subject('subject',1,1024)||!check_url('address',1,1024))
@@ -150,4 +160,11 @@ function linktoolbar_validate(obj)
      	obj.form.submit();
     	return true;
     }
+}
+function login_validate(obj)
+{
+	if(!check_email('username'))
+			return false;
+	obj.submit();
+   	return true;
 }
