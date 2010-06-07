@@ -17,7 +17,7 @@ function range_validate(value,min,max)
 }
 function illegachar_validate(value)
 {
-   return reg = /['"\\/]/i.test(trim(value)) ; 
+   return /[\\/:*?\"<>|]/i.test(trim(value)) ; 
 }
 function maxlen_validate(value,max)
 {
@@ -42,7 +42,7 @@ function getLength(value)
 	return length;
 }
 
-function check_subject(id,min,max)
+function check_subject(id, min, max, specialchar)
 {
 	if ($(id)) {
 		if(!rangelen_validate($(id).value,min,max))    	
@@ -50,10 +50,16 @@ function check_subject(id,min,max)
             warning($(id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
             return false;
         }
+		if(!specialchar&&illegachar_validate($(id).value))//不支持特殊字符
+		{
+		   warning($(id+'_tip'),"标题不允许含有特殊字符");
+		   return false;
+		}
+	
     }
 	return true;
 }
-function check_url(id,min,max)
+function check_url(id, min, max)
 {
 	if ($(id)) {
 		if(!url_validate($(id).value)||!rangelen_validate($('address').value,min,max))    	
@@ -61,6 +67,7 @@ function check_url(id,min,max)
 				warning($(id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
 				return false;
 			}
+		
     }
 	return true;
 }
@@ -106,12 +113,12 @@ function check_email(id)
     }
 	return true;
 }
-function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen) {
+function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialchar) {
 	var    titlelen=subjectlen;
 	if($('category')&&$('category').value==1) //dir
 				titlelen=dirlen; 
 			
-	if(!check_subject('subject',1,titlelen)||!check_url('address',1,urlen))
+	if(!check_subject('subject', 1, titlelen, specialchar)||!check_url('address',1,urlen))
 		return false;
 	
     if(!check_seccode(obj,seccode_id))
@@ -119,9 +126,9 @@ function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen) {
 	return true;
 }
 
-function link_validate(obj,seccode_id, subjectlen,  urlen) {
+function link_validate(obj,seccode_id, subjectlen,  urlen, specialchar) {
 
-	if(!check_subject('subject',1,subjectlen)||!check_url('address',1,urlen)||!check_number('initaward',5000,9900))
+	if(!check_subject('subject',1,subjectlen, specialchar)||!check_url('address',1,urlen)||!check_number('initaward',5000,9900))
 			return false;
 	if(!check_seccode(obj,seccode_id))
 	    return false;
