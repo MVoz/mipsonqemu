@@ -20,8 +20,13 @@ function link_post($POST, $olds=array()) {
 		$_SGLOBAL['supe_uid'] = $olds['uid'];
 	}
 
+	//对输入的address description tag进行限制
+	$POST['address']= mb_substr(trim($POST['address']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][urllen], 'UTF-8');
+	$POST['description']= mb_substr(trim($POST['description']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][deslen], 'UTF-8');
+	$POST['tag'] =  mb_substr(trim($POST['tag']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][taglen], 'UTF-8');
+
 	//标题
-	$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
+	$POST['subject'] = getstr(trim($POST['subject']), 0, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
 		
 	
@@ -30,7 +35,7 @@ function link_post($POST, $olds=array()) {
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
 	} else {
-		$POST['description'] = getstr($POST['description'], 250, 1,1, 1);
+		$POST['description'] = getstr($POST['description'], 0, 1,1, 1);
 	}
 	$message = $POST['description'];
 	
@@ -52,7 +57,7 @@ function link_post($POST, $olds=array()) {
 			2:修改linkk时，表示该item
 			*/
 			$POST['address'] = shtmlspecialchars(trim($POST['address']));
-			$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//语词屏蔽
+			$POST['address'] = getstr($POST['address'], 0, 1, 1, 1);	//语词屏蔽
 			$linkarr['url']=$POST['address'];
 			$linkarr['hashurl']=qhash($linkarr['url']);
 			$linkarr['md5url']=md5($linkarr['url']);
@@ -63,7 +68,7 @@ function link_post($POST, $olds=array()) {
 			}
 
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
-			$POST['tag'] = getstr($POST['tag'], 500, 1, 1, 1);	//语词屏蔽
+			$POST['tag'] = getstr($POST['tag'], 0, 1, 1, 1);	//语词屏蔽
 			
 			//link 表
 			$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
@@ -96,6 +101,13 @@ function link_post($POST, $olds=array()) {
 			$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
 			$linkarr['link_tag']=$tag;
 			updatetable('link',array('link_tag'=>$tag), array('linkid'=>$linkid));
+
+			//cache更新，先获得classid,如果classid为0则无动作
+			if(!empty($olds[classid]))
+			{
+				include_once(S_ROOT.'./source/function_cache.php');
+				link_cache_classid($olds[classid]);
+			}
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
