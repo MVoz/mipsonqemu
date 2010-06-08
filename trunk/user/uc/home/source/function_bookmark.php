@@ -19,12 +19,36 @@ function bookmark_post($POST, $olds=array()) {
 		$__SGLOBAL = $_SGLOBAL;
 		$_SGLOBAL['supe_uid'] = $olds['uid'];
 	}
+	//取适当个数的字符串
+	//1:检查是目录还是书签
+	//2:subject
+	//3:url
+	//4:description
+	//5:tag 取前128
+	if(!isset($POST['category'])){
+		//修改bookmark目录
+		$POST['subject'] = mb_substr(($POST['subject']), 0, $_SGLOBAL['browser'][$browserid][dirlen], 'UTF-8');
+	}else{
+		switch($POST['category']){
+				case $_SC['bookmark_type_site']://增加或修改一个bookmark
+					$POST['subject'] = mb_substr(($POST['subject']), 0, $_SGLOBAL['browser'][$browserid][titlelen], 'UTF-8');
+				break;
+				case $_SC['bookmark_type_dir']://增加一个目录
+					$POST['subject'] = mb_substr(($POST['subject']), 0, $_SGLOBAL['browser'][$browserid][dirlen], 'UTF-8');
+				break;
+		}
+
+	}
+
+	$POST['address']= mb_substr(trim($POST['address']), 0, $_SGLOBAL['browser'][$browserid][urllen], 'UTF-8');
+	$POST['description']= mb_substr(trim($POST['description']), 0, $_SGLOBAL['browser'][$browserid][deslen], 'UTF-8');
+	$POST['tag'] =  mb_substr(trim($POST['tag']), 0, $_SGLOBAL['browser'][$browserid][taglen], 'UTF-8');
 
 	//标题
 	if($_SGLOBAL['client'])
-		$POST['subject'] = getstr(($POST['subject']), 80, 1, 1, 1);
+		$POST['subject'] = getstr(($POST['subject']), 0, 1, 1, 1);
 	else
-		$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
+		$POST['subject'] = getstr(trim($POST['subject']), 0, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
 		
 	
@@ -33,7 +57,7 @@ function bookmark_post($POST, $olds=array()) {
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
 	} else {
-		$POST['description'] = getstr($POST['description'], 250, 1,1, 1);
+		$POST['description'] = getstr($POST['description'], 0, 1, 1, 1);
 	}
 	$message = $POST['description'];
 	
@@ -77,7 +101,7 @@ function bookmark_post($POST, $olds=array()) {
 			$POST['address'] = handleUrlString($POST['address']);
 
 			$POST['address'] = shtmlspecialchars(trim($POST['address']));
-			$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//语词屏蔽
+			$POST['address'] = getstr($POST['address'], 0, 1, 1, 1);	//语词屏蔽
 			
 			$bookmarkarr['uid'] = $_SGLOBAL['supe_uid'];
 			$bookmarkarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
