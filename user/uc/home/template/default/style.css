@@ -7,7 +7,8 @@ ul li { list-style: none; }
 select { margin-right: 2px; }
 
 a { color: #2C629E; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a:hover, a:link, a:visited{ text-decoration:none; }
+
 a img { border: none; }
 
 .blocklink a { padding-left: 0.5em; line-height: 2em; display: block; }
