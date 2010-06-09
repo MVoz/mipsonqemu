@@ -21,7 +21,7 @@ if($ms) {
 }
 if(empty($refer)) {
 	//$refer = 'space.php?do=home';
-	$refer = 'space.php?do=bookmark';
+	$refer = 'space.php?do=all';
 }
 
 //好友邀请
@@ -110,6 +110,10 @@ if(submitcheck('loginsubmit')) {
 	ssetcookie('loginuser', $passport['username'], 31536000);
 	ssetcookie('_refer', '');
 	
+	if(!empty($cookiecheck))
+			ssetcookie('cookiecheck', $cookiecheck, 31536000);
+	else
+			ssetcookie('cookiecheck', '');
 	//同步登录
 	if($_SCONFIG['uc_status']) {
 		include_once S_ROOT.'./uc_client/client.php';
@@ -117,7 +121,7 @@ if(submitcheck('loginsubmit')) {
 	} else {
 		$ucsynlogin = '';
 	}
-	
+	/*
 	//好友邀请
 	if($invitearr) {
 		//成为好友
@@ -152,7 +156,7 @@ if(submitcheck('loginsubmit')) {
 	if($setarr) {
 		$_SGLOBAL['db']->query("UPDATE ".tname('space')." SET ".implode(',', $setarr)." WHERE uid='$space[uid]'");
 	}
-
+	*/
 	if(empty($_POST['refer'])) {
 		//$_POST['refer'] = 'space.php?do=home';
 		$_POST['refer'] = 'space.php?do=bookmark';

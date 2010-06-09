@@ -21,7 +21,8 @@ include_once(S_ROOT.'./source/todayhotcollect.php');
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
 $wheretime = $_SGLOBAL['timestamp']-3600*24*30;
-
+if(!empty($_SCOOKIE['cookiecheck']))
+	$cookiecheck = ' checked';
 $_TPL['css'] = 'network';
 include_once template("space_login");
 
