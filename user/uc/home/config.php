@@ -18,7 +18,7 @@ $_SC['charset'] 		= 'utf-8'; //页面字符集
 
 $_SC['gzipcompress'] 	= 0; //启用gzip
 
-$_SC['cookiepre'] 		= 'uchome_'; //COOKIE前缀
+$_SC['cookiepre'] 		= 'tanzhi_'; //COOKIE前缀
 $_SC['cookiedomain'] 	= ''; //COOKIE作用域
 $_SC['cookiepath'] 		= '/'; //COOKIE作用路径
 
