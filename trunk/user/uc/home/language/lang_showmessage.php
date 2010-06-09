@@ -444,7 +444,7 @@ $_SGLOBAL['msglang'] = array(
 	'space_has_been_locked' => '空间已被锁定无法访问，如有疑问请联系管理员',
 	//source/cpbmdir.php
 	'err_bmdir_add_overflow' => '超出目录分类的最大深度' ,
-	'err_bookmark_add_overflow' => '超出目录书签的最大允许数' ,
+	'err_bookmark_add_overflow' => '超出目录书签的最大允许数' 
 	
 );
 
