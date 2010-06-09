@@ -6,12 +6,13 @@
 
 include_once('./common.php');
 
-include_once(S_ROOT.'./data/data_magic.php');
+//include_once(S_ROOT.'./data/data_magic.php');
 
 //是否关闭站点
 checkclose();
 
 //处理rewrite
+/*
 if($_SCONFIG['allowrewrite'] && isset($_GET['rewrite'])) {
 	$rws = explode('-', $_GET['rewrite']);
 	if($rw_uid = intval($rws[0])) {
@@ -27,17 +28,21 @@ if($_SCONFIG['allowrewrite'] && isset($_GET['rewrite'])) {
 	}
 	unset($_GET['rewrite']);
 }
-
+*/
 //允许动作
-$dos = array('all','bookmark','navigation','login','link','linktag','digg','diggtag','browser','feed', 'doing', 'mood', 'blog', 'album', 'thread', 'mtag', 'friend', 'wall', 'tag', 'notice', 'share', 'topic', 'home', 'pm', 'event', 'poll', 'top', 'info', 'videophoto');
+$dos = array('all','bookmark','navigation','login','link','linktag','digg','diggtag','browser'
+/*
+,'feed', 'doing', 'mood', 'blog', 'album', 'thread', 'mtag', 'friend', 'wall', 'tag', 'notice', 'share', 'topic', 'home', 'pm', 'event', 'poll', 'top', 'info', 'videophoto'
+*/
+);
 
 //获取变量
 $isinvite = 0;
 $uid = empty($_GET['uid'])?0:intval($_GET['uid']);
 $username = empty($_GET['username'])?'':$_GET['username'];
 $domain = empty($_GET['domain'])?'':$_GET['domain'];
-$do = (!empty($_GET['do']) && in_array($_GET['do'], $dos))?$_GET['do']:'index';
-
+$do = (!empty($_GET['do']) && in_array($_GET['do'], $dos))?$_GET['do']:'all';
+/*
 if($do == 'home') {
 	$do = 'feed';
 } elseif ($do == 'index') {
@@ -51,7 +56,7 @@ if($do == 'home') {
 		$isinvite = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT id FROM ".tname('invite')." WHERE uid='$uid' AND code='$invite' AND fuid='0'"), 0);
 	}
 }
-
+*/
 //是否公开
 if(empty($isinvite) && empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
