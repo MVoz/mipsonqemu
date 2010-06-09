@@ -129,67 +129,34 @@ function killspace(str)
 	}
 	return str;
 }
-/*
-function checkemail(email)//M12 
-{
-	if(typeof email == "undefined")return false;
-	var pattern = /^(([a-zA-Z0-9_.\-])+@([a-zA-Z0-9_\-])+(\.[a-zA-Z0-9_\-]+)+){0,1}$/;  
-	var email_array = email.split("\r\n");
-	for (i = 0; i < email_array.length; i++)
-	{
-		if (!killspace(email_array[i]))
-			continue;
-		if(!pattern.test(killspace(email_array[i])))
-			return false;
+function getStrbylen(str, len) {
+	var num = 0;
+	var strlen = 0;
+	var newstr = "";
+	var obj_value_arr = str.split("");
+	for(var i = 0; i < obj_value_arr.length; i ++) {
+		if(i < len && num + byteLength(obj_value_arr[i]) <= len) {
+			num += byteLength(obj_value_arr[i]);
+			strlen = i + 1;
+		}
 	}
-	return true;
+	if(str.length > strlen) {
+		newstr = str.substr(0, strlen);
+	} else {
+		newstr = str;
+	}
+	return newstr;
 }
-*/
-function checkemail(emailStr) {
-               if (emailStr.length == 0) {
-                   return true;
-               }
-               var emailPat=/^(.+)@(.+)$/;
-               var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
-               var validChars="\[^\\s" + specialChars + "\]";
-               var quotedUser="(\"[^\"]*\")";
-               var ipDomainPat=/^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/;
-               var atom=validChars + '+';
-               var word="(" + atom + "|" + quotedUser + ")";
-               var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
-               var domainPat=new RegExp("^" + atom + "(\\." + atom + ")*$");
-               var matchArray=emailStr.match(emailPat);
-               if (matchArray == null) {
-                   return false;
-               }
-               var user=matchArray[1];
-               var domain=matchArray[2];
-               if (user.match(userPat) == null) {
-                   return false;
-               }
-               var IPArray = domain.match(ipDomainPat);
-               if (IPArray != null) {
-                   for (var i = 1; i <= 4; i++) {
-                      if (IPArray[i] > 255) {
-                         return false;
-                      }
-                   }
-                   return true;
-               }
-               var domainArray=domain.match(domainPat);
-               if (domainArray == null) {
-                   return false;
-               }
-               var atomPat=new RegExp(atom,"g");
-               var domArr=domain.match(atomPat);
-               var len=domArr.length;
-               if ((domArr[domArr.length-1].length < 2) ||
-                   (domArr[domArr.length-1].length > 3)) {
-                   return false;
-               }
-               if (len < 2) {
-                   return false;
-               }
-               return true;
-} 
+function byteLength (sStr) {
+	aMatch = sStr.match(/[^\x00-\x80]/g);
+	return (sStr.length + (! aMatch ? 0 : aMatch.length));
+}
+function strLen(str) {
+	var charset = document.charset; 
+	var len = 0;
+	for(var i = 0; i < str.length; i++) {
+		len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? (charset == "utf-8" ? 3 : 2) : 1;
+	}
+	return len;
+}
 
