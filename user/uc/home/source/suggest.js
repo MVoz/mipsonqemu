@@ -103,7 +103,7 @@ var searchs = {
 };
 
 function getSearchTabCookieName() {
-        return "web_page"
+        return "tanzhi_search"
     };
 
 function setSearchTab(a) {
@@ -119,15 +119,15 @@ function getCookie(a) {
         var b;
         var c = new RegExp("(^| )" + a + "=([^;]*)(;|$)");
         if (b = document.cookie.match(c)) return unescape(b[2]);
-        else return null
+        else return null ;
     };
 
 function setCookie(a, b) {
         var c = arguments[2] ? arguments[2] : 7 * 24 * 60 * 60 * 1000;
         var d = new Date;
         d.setTime(d.getTime() + c);
-        var e = "hao.360.cn";
-        document.cookie = a + "=" + escape(b) + ";expires=" + d.toGMTString() + ";path=/;domain=" + e
+        var e = "tanzhi.com";
+        document.cookie = a + "=" + escape(b); + ";expires=" + d.toGMTString() + ";path=/;domain=" + e ;
     };
 
 function delCookie(a) {
@@ -149,5 +149,3 @@ function setDisplay(a, b) {
         if (getObj(a)) getObj(a).style.display = b ? "block" : "none"
     };
 
-
-document.onclick = visit;
