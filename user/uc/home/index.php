@@ -11,6 +11,7 @@ if(is_numeric($_SERVER['QUERY_STRING'])) {
 }
 
 //二级域名
+/*
 if(!isset($_GET['do']) && $_SCONFIG['allowdomain']) {
 	$hostarr = explode('.', $_SERVER['HTTP_HOST']);
 	$domainrootarr = explode('.', $_SCONFIG['domainroot']);
@@ -18,13 +19,13 @@ if(!isset($_GET['do']) && $_SCONFIG['allowdomain']) {
 		showmessage('enter_the_space', $_SCONFIG['siteallurl'].'space.php?domain='.$hostarr[0], 0);
 	}
 }
-
+*/
 if($_SGLOBAL['supe_uid']) {
 	//已登录，直接跳转个人首页
 	//showmessage('enter_the_space', 'space.php?do=home', 0);
 	showmessage('enter_the_space', 'space.php?do=bookmark', 0);
 }
-
+/*
 if(empty($_SCONFIG['networkpublic'])) {
 	
 	$cachefile = S_ROOT.'./data/cache_index.txt';
@@ -69,5 +70,6 @@ if(empty($_SCONFIG['networkpublic'])) {
 } else {
 	include_once(S_ROOT.'./source/network.php');
 }
-
+*/
+	include_once(S_ROOT.'./source/space_login.php');
 ?>
