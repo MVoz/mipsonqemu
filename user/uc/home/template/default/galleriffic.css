@@ -23,7 +23,7 @@ div.navigation a:focus, div.navigation a:hover, div.navigation a:active {
 }
 
 ul.thumbs {		clear: both;	margin: 0;	padding: 0;}
-ul.thumbs li { 	float: left; 	padding: 0;	margin: 5px 5px 5px 0;		list-style: none;}
+ul.thumbs li { 	float: left; 	padding: 0;	margin: 5px 5px 5px 0;		list-style: none;height:100px;width:82px;}
 ul.thumbs li p{	text-align:center;padding: 0;	margin: 0;	width:70px;	white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
 ul.thumbs li.selected a.thumb {	background: #000; }
