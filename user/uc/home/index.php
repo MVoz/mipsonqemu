@@ -23,7 +23,7 @@ if(!isset($_GET['do']) && $_SCONFIG['allowdomain']) {
 if($_SGLOBAL['supe_uid']) {
 	//已登录，直接跳转个人首页
 	//showmessage('enter_the_space', 'space.php?do=home', 0);
-	showmessage('enter_the_space', 'space.php?do=bookmark', 0);
+	showmessage('enter_the_space', 'space.php?do=all', 0);
 }
 /*
 if(empty($_SCONFIG['networkpublic'])) {
