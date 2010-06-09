@@ -64,38 +64,6 @@
 </div>
 <!--/wrap-->
 
-<!--{if $_SGLOBAL['appmenu']}-->
-<ul id="ucappmenu_menu" class="dropmenu_drop" style="display:none;">
-	<li><a href="{$_SGLOBAL[appmenu][url]}" title="{$_SGLOBAL[appmenu][name]}" target="_blank">{$_SGLOBAL[appmenu][name]}</a></li>
-	<!--{loop $_SGLOBAL['appmenus'] $value}-->
-	<li><a href="$value[url]" title="$value[name]" target="_blank">$value[name]</a></li>
-	<!--{/loop}-->
-</ul>
-<!--{/if}-->
-
-<!--{if $_SGLOBAL[supe_uid]}-->
-<ul id="membernotemenu_menu" class="dropmenu_drop" style="display:none;">
-	<!--{eval $member = $_SGLOBAL['member'];}-->
-	<!--{if $member[notenum]}--><li><img src="image/icon/notice.gif" width="16" alt="" /> <a href="space.php?do=notice"><strong>$member[notenum]</strong> 个新通知</a></li><!--{/if}-->
-	<!--{if $member[pokenum]}--><li><img src="image/icon/poke.gif" alt="" /> <a href="cp.php?ac=poke"><strong>$member[pokenum]</strong> 个新招呼</a></li><!--{/if}-->
-	<!--{if $member[addfriendnum]}--><li><img src="image/icon/friend.gif" alt="" /> <a href="cp.php?ac=friend&op=request"><strong>$member[addfriendnum]</strong> 个好友请求</a></li><!--{/if}-->
-	<!--{if $member[mtaginvitenum]}--><li><img src="image/icon/mtag.gif" alt="" /> <a href="cp.php?ac=mtag&op=mtaginvite"><strong>$member[mtaginvitenum]</strong> 个群组邀请</a></li><!--{/if}-->
-	<!--{if $member[eventinvitenum]}--><li><img src="image/icon/event.gif" alt="" /> <a href="cp.php?ac=event&op=eventinvite"><strong>$member[eventinvitenum]</strong> 个活动邀请</a></li><!--{/if}-->
-	<!--{if $member[myinvitenum]}--><li><img src="image/icon/userapp.gif" alt="" /> <a href="space.php?do=notice&view=userapp"><strong>$member[myinvitenum]</strong> 个应用消息</a></li><!--{/if}-->
-</ul>
-<!--{/if}-->
-
-<!--{if $_SGLOBAL[supe_uid]}-->
-<!--{if !isset($_SCOOKIE['checkpm'])}-->
-<script language="javascript"  type="text/javascript" src="cp.php?ac=pm&op=checknewpm&rand=$_SGLOBAL[timestamp]"></script>
-<!--{/if}-->
-<!--{if !isset($_SCOOKIE['synfriend'])}-->
-<script language="javascript"  type="text/javascript" src="cp.php?ac=friend&op=syn&rand=$_SGLOBAL[timestamp]"></script>
-<!--{/if}-->
-<!--{/if}-->
-<!--{if !isset($_SCOOKIE['sendmail'])}-->
-<script language="javascript"  type="text/javascript" src="do.php?ac=sendmail&rand=$_SGLOBAL[timestamp]"></script>
-<!--{/if}-->
 
 <!--{if $_SGLOBAL['ad']['couplet']}-->
 <script language="javascript" type="text/javascript" src="source/script_couplet.js"></script>
@@ -112,11 +80,6 @@
 		lsfloatdiv('uch_couplet', 0, 0, '', 0).floatIt();
 	</script>
 </div>
-<!--{/if}-->
-<!--{if $_SCOOKIE[reward_log]}-->
-<script type="text/javascript">
-//showreward(); 
-</script>
 <!--{/if}-->
 </body>
 </html>
