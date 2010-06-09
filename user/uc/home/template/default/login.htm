@@ -57,17 +57,20 @@ jQuery(document).ready(function(){
 
 <script language="javascript" type="text/javascript" >
 jQuery(document).ready(function(){
-			jQuery(".search_area span:first").addClass("currentx"); 	
+			jQuery(".search_area span:first").addClass("currentx");
+			//alert(getCookie(getSearchTabCookieName()));
+			currentid= getCookie(getSearchTabCookieName());
 			jQuery(".search_area span").click(function(){
 				jQuery(".search_area span").removeClass("currentx");  
 				jQuery(this).addClass("currentx"); 
 				jQuery('#searchform input[type=checkbox]').remove();
 				jQuery('#searchform span').remove();
 
-				 jQuery("#hidden_form").empty();
-				 var i=0;
-				 var len = searchs[jQuery(this).attr("id")].length;
-				 for (i = 0; i < len; i++) {
+				jQuery("#hidden_form").empty();
+				var i=0;
+				setSearchTab(jQuery(this).attr("id"));
+				var len = searchs[jQuery(this).attr("id")].length;
+				for (i = 0; i < len; i++) {
 				 //set checkbox
 					var f = document.createElement("INPUT");
 					f.type = "checkbox";
@@ -98,7 +101,7 @@ jQuery(document).ready(function(){
 				 //set button value				 
 				 jQuery("#searchbtn").attr("value",jQuery(this).html()+'搜索');
 		});
-		jQuery(".search_area span:first").click(); 
+		jQuery('.search_area #'+currentid).click(); 
 });	
 </script>
 <script>
