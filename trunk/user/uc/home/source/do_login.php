@@ -11,7 +11,7 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/function_cp.php');
 
 if($_SGLOBAL['supe_uid']) {
-	showmessage('do_success', 'space.php', 0);
+	showmessage('do_success', 'space.php?do=all', 0);
 }
 
 $refer = empty($_GET['refer'])?rawurldecode($_SCOOKIE['_refer']):$_GET['refer'];
