@@ -4,6 +4,7 @@
 */
 
 //添加留言
+/*
 function wall_add(cid, result) {
 	if(result) {
 		var obj = $('comment_ul');
@@ -37,6 +38,7 @@ function share_add(sid, result) {
 		showreward();
 	}
 }
+*/
 function linkclasstag_add(sid, result) {
 	if(result) {
 		//linkclassform_1=>linkclassform_1_tag
@@ -62,6 +64,7 @@ function linkclass_add(sid, result) {
 		
 	}
 }
+/*
 //添加评论
 function comment_add(id, result) {
 	if(result) {
@@ -492,6 +495,7 @@ function showbirthday(){
 		if(nbirthyear%400==0 || nbirthyear%4==0 && nbirthyear%100!=0) $('birthday').options.add(new Option(29, 29));
 	}
 }
+*/
 /**
  * 插入涂鸦
  * @param String fid: 要关闭的层ID
@@ -501,6 +505,7 @@ function showbirthday(){
  * @param String from: 涂鸦从哪来的
  * @return 没有返回值
  */
+ /*
 function setDoodle(fid, oid, url, tid, from) {
 	if(tid == null) {
 		hideMenu();
@@ -579,3 +584,4 @@ function getgroup(gid) {
 		});
 	}
 }
+*/
