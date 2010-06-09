@@ -7,14 +7,18 @@
 //通用文件
 include_once('./common.php');
 include_once(S_ROOT.'./source/function_cp.php');
-include_once(S_ROOT.'./source/function_magic.php');
+//include_once(S_ROOT.'./source/function_magic.php');
 
 //允许的方法
-$acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'doing', 'upload', 'comment', 'blog', 'album', 'relatekw', 'common', 'class','config','style',
-	'swfupload', 'thread', 'mtag', 'poke', 'friend',
-	'avatar', 'profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'share', 'advance', 'invite','sendmail',
-	'userapp', 'task', 'credit', 'password', 'domain', 'event', 'poll', 'topic',
-	'click','magic', 'top', 'videophoto');
+$acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'common', 'class','config','style',
+	 'avatar',  'invite','sendmail',
+	 'password',  
+	);
+/*
+	cancel action
+	'userapp', 'task', 'credit','domain', 'event', 'poll','click','magic', 'top', 'videophoto','topic','profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'share', 'advance','swfupload', 'thread', 'mtag', 'poke', 'friend', 'doing', 'upload', 'comment', 'blog', 'album',
+	'relatekw', 
+*/
 $ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'config':$_GET['ac'];
 $op = empty($_GET['op'])?'':$_GET['op'];
 
