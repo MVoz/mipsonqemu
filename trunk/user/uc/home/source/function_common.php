@@ -2303,7 +2303,8 @@ function usermenu($browserid,$groupid,$func){
 	if(file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php'))
 	{
 		include_once(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/usermenu.php');
-		echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="space.php?do=bookmark&op=browser&browserid='.$browserid.'" value="根目录">根目录</a></li>';
+		//echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="space.php?do=bookmark&op=browser&browserid='.$browserid.'" value="根目录">根目录</a></li>';
+		echo '<li><a id="menuroot"'.(empty($groupid)?'class="green"':'').' href="javascript:;" onclick="'.$func.'(\'0\',\''.$browserid.'\',\'根目录\');" value="根目录">根目录</a></li>';
 		echo '<ul id="menu">';
 		usermenuchild($browserid,$groupid,$func,$_SGLOBAL['usermenu'][$browserid][0]); 		
 		echo '</ul>';

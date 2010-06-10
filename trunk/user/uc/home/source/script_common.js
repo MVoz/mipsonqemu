@@ -121,6 +121,7 @@ function updateseccodeex(id) {
 	}
 }
 //缩小图片并添加链接
+/*
 function resizeImg(id,size) {
 	var theImages = $(id).getElementsByTagName('img');
 	for (i=0; i<theImages.length; i++) {
@@ -157,7 +158,7 @@ function resizeImg(id,size) {
 		}
 	}
 }
-
+*/
 //Ctrl+Enter 发布
 function ctrlEnter(event, btnId, onlyEnter) {
 	if(isUndefined(onlyEnter)) onlyEnter = 0;
@@ -168,6 +169,7 @@ function ctrlEnter(event, btnId, onlyEnter) {
 	return true;
 }
 //缩放Textarea
+/*
 function zoomTextarea(id, zoom) {
 	zoomSize = zoom ? 10 : -10;
 	obj = $(id);
@@ -186,7 +188,7 @@ function setCopy(_sTxt){
 		prompt("请复制网站地址:",_sTxt); 
 	}
 }
-
+*/
 //验证是否有选择记录
 function ischeck(id, prefix) {
 	form = document.getElementById(id);
@@ -224,7 +226,7 @@ function getEvent() {
 	}
 	return null;
 }
- 
+/* 
 function copyRow(tbody) {
 	var add = false;
 	var newnode;
@@ -260,7 +262,7 @@ function delRow(obj, tbody) {
 		$(tbody).removeChild(obj.parentNode.parentNode);
 	}
 }
-
+*/
 function insertWebImg(obj) {
 	if(checkImage(obj.value)) {
 		insertImage(obj.value);
@@ -328,6 +330,7 @@ function trim(str) {
 	re.exec(str); 
 	return RegExp.$1; 
 }
+/*
 // 停止音乐flash
 function stopMusic(preID, playerID) {
 	var musicFlash = preID.toString() + '_' + playerID.toString();
@@ -458,7 +461,7 @@ function userapp_close() {
 		}
 	});
 }
-
+*/
 //滚动
 function startMarquee(h, speed, delay, sid) {
 	var t = null;
@@ -497,7 +500,7 @@ function readfeed(obj, id) {
 	Cookie.set("read_feed_ids", fcookie, 48);
 	obj.className = 'feedread';
 }
-
+/*
 function showreward() {
 	if(Cookie.get('reward_notice_disable')) {
 		return false;
@@ -509,7 +512,7 @@ function showreward() {
 		}
 	});
 }
-
+*/
 function msgwin(s, t) {
 	
 	var msgWinObj = $('msgwin');
