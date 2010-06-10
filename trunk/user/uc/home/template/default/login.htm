@@ -101,7 +101,11 @@ jQuery(document).ready(function(){
 				 //set button value				 
 				 jQuery("#searchbtn").attr("value",jQuery(this).html()+'搜索');
 		});
-		jQuery('.search_area #'+currentid).click(); 
+		if(jQuery('.search_area #'+currentid))
+			jQuery('.search_area #'+currentid).click(); 
+		else
+			jQuery(".search_area span:first").click();
+		//jQuery(".popular_site span:first").click();
 });	
 </script>
 <script>
@@ -127,7 +131,7 @@ jQuery(document).ready(function(){
 	<div class="nbox_c_1">
 		<div class="search_area">
 		<p>
-			<span id="web_page" class="current">网页</span>
+			<span id="web_page" class="currentx">网页</span>
 			<span id="tanzhi">弹指</span>
 			<span id="music" >音乐</span>
 			<span id="video" >视频</span>
@@ -183,14 +187,18 @@ jQuery(document).ready(function(){
     <p>
 		<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
 					<!--{if $key==1 }-->
-						<span id="toolbar_$key" class="current">$value</span>
+						<span id="toolbar_$key" class="currentx">$value</span>
 					<!--{else}-->
 						<span id="toolbar_$key">$value</span>
 					<!--{/if}-->
 		<!--{/loop}--> 
     </p>
 	<!--{loop $_SGLOBAL['linktoolbar'] $key $value}-->
-			<ul class="toolbar_$key" style="display: block;">
+			<!--{if $key==1 }-->
+				<ul class="toolbar_$key" style="display: block;">
+			<!--{else}-->
+				<ul class="toolbar_$key" style="display: none;">
+			<!--{/if}-->
 			<!--{loop $value $k $val}-->
 						<!--{if ($k%8)==0 }-->
 							<!--{if (($k%16)==0)&&$k }-->

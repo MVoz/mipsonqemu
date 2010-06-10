@@ -38,7 +38,7 @@
 		<!--{if empty($item[url])}-->
 		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" />
 		<!--{else}-->
-		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" readonly/>
 		<!--{/if}-->
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		</td>
@@ -75,7 +75,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th style="vertical-align: top;" width="40"><label for="directory">分类</label></th>
+		<th style="vertical-align: top;" width="40"><label for="directory">目录</label></th>
 		<td>
 				<input type="hidden" name="browserid" id="browserid" value='$browserid'/>
 				<input type="hidden" name="bmdirid" id="browsergroupid"  value="0"/>
@@ -435,7 +435,7 @@
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" />&nbsp;
+		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" disabled=true/>&nbsp;
 		<span id="checkusername">&nbsp;</span>
 		<p style="color:gray">请正确填写网页地址</p>
 		</td>
