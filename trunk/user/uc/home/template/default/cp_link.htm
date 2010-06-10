@@ -261,7 +261,7 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="1" readonly/>
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="2" readonly/>
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 <p id="address_tip"></p>
 </td>
@@ -269,20 +269,20 @@
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
-<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input" tabindex="3"  />
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 <tr>
 <th><label for="tag">评分：</label></th>
 <td>
-<input type="text" id="initaward" name="initaward" value="$item[initaward]" onfocus="clearwarning($('initaward_tip'));" style="width: 50px;" class="t_input" tabindex="1"  />
+<input type="text" id="initaward" name="initaward" value="$item[initaward]" onfocus="clearwarning($('initaward_tip'));" style="width: 50px;" class="t_input" tabindex="4"  />
 <p id="initaward_tip"></p>
 </td>
 </tr>
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$item['link_description']</textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5" >$item['link_description']</textarea></td>
 </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
@@ -299,12 +299,12 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="5" autocomplete="off" />
+			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="6" autocomplete="off" />
 			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$item[linkid]" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="5" autocomplete="off" />
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="6" autocomplete="off" />
 			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[linkid]')">更换一张</a></p>
 		<!--{/if}-->
@@ -345,7 +345,7 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="1" />
+<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="2" />
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 </td>
 </tr> 

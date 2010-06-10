@@ -45,7 +45,7 @@
 <!--{/if}-->
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid" onsubmit="return bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);">
+<form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
 <tr>
 <th><label for="subject">名称：</label></th>
@@ -105,7 +105,7 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$_GET[op]_$bmdirid" src='' align="absmiddle">
@@ -125,7 +125,7 @@
 <!--{else}-->
 <input type="hidden" name="addsubmit" value="true" />
 <!--{/if}-->
-<input type="submit" name="btnsubmit" value="确定" class="submit" />
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);"/>
 </td>
 </tr>
 </table>
