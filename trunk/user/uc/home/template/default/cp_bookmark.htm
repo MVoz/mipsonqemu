@@ -41,7 +41,7 @@
 <h1>编辑收藏</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=bookmark&op=edit&bmid=$bmid&browserid=$browserid">
+<form method="post" action="cp.php?ac=bookmark&op=edit&bmid=$bmid&browserid=$browserid" onsumbit="return bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);">
 <table cellspacing="0" cellpadding="3">
 <tr>
 <th><label for="subject">名称：</label></th>
@@ -53,7 +53,7 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="2"  />
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 <p id="address_tip"></p>
 </td>
@@ -61,14 +61,14 @@
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
-<input type="text" id="tag" name="tag" value="$item[tag]" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="tag" name="tag" value="$item[tag]" style="width: 396px;" class="t_input" tabindex="3"  />
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
 
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');">$item['description']</textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">$item['description']</textarea></td>
 </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
@@ -104,7 +104,7 @@
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);"/>
+<input type="submit" name="btnsubmit" value="确定" class="submit"  />
 </td>
 </tr>
 </table>
