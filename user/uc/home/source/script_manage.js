@@ -566,6 +566,7 @@ function passwordShow(value) {
 		$('tb_selectgroup').style.display = 'none';
 	}
 }
+*/
 function  categoryShow(value) {
 	if(value==0) {
 		$('tb_bookmark').style.display = '';
@@ -573,7 +574,7 @@ function  categoryShow(value) {
 		$('tb_bookmark').style.display = 'none';
 	}
 }
-
+/*
 //隐私特定好友
 function getgroup(gid) {
 	if(gid) {

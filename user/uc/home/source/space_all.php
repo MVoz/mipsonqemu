@@ -9,9 +9,9 @@ if(!defined('IN_UCHOME')) {
 }
 
 //是否公开
-if(empty($_SCONFIG['networkpublic'])) {
+//if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
-}
+//}
 //bookmarklist
 include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
@@ -51,7 +51,7 @@ foreach($digglist as $key => $value) {
 //分页
 $diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);	 
 
-
+/*
 //投票
 $cachefile = S_ROOT.'./data/cache_network_poll.txt';
 if(check_network_cache('poll')) {
@@ -86,11 +86,11 @@ foreach($polllist as $key => $value) {
 	$polllist[$key] = $value;
 }
 
-
+*/
 
 //今日热荐
 include_once(S_ROOT.'./source/todayhot.php');
-
+/*
 //竞价排名
 $showlist = array();
 $query = $_SGLOBAL['db']->query("SELECT sh.note, s.* FROM ".tname('show')." sh
@@ -108,7 +108,7 @@ if(empty($star) && $showlist) {
 
 //在线人数
 $olcount = getcount('session', array());
-
+*/
 
 realname_get();
 

@@ -16,7 +16,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 $ops = array('show');
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'show':$_GET['op'];	 
 
-include_once(S_ROOT.'./data/data_network.php');
+
 $wherearr='';
 $orderarr='';
 $theurl='';

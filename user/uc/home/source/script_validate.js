@@ -115,10 +115,14 @@ function check_email(id)
 }
 function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialchar) {
 	var    titlelen=subjectlen;
+	var	   iscategory=0;
 	if($('category')&&$('category').value==1) //dir
-				titlelen=dirlen; 
+	{
+		titlelen=dirlen; 
+		iscategory=1;
+	}
 			
-	if(!check_subject('subject', 1, titlelen, specialchar)||!check_url('address',1,urlen))
+	if(!check_subject('subject', 1, titlelen, specialchar)||((!iscategory)&&!check_url('address',1,urlen)))
 		return false;
 	
     if(!check_seccode(obj,seccode_id))
