@@ -41,7 +41,7 @@
 <h1>编辑收藏</h1>
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=bookmark&op=edit&bmid=$bmid&browserid=$browserid" onsumbit="return bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);">
+<form method="post" action="cp.php?ac=bookmark&op=edit&bmid=$bmid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
 <tr>
 <th><label for="subject">名称：</label></th>
@@ -104,7 +104,7 @@
 <input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 <input type="hidden" name="category" value="$_SC['bookmark_type_site']" />
 <input type="hidden" name="editsubmit" value="true" />
-<input type="submit" name="btnsubmit" value="确定" class="submit"  />
+<input type="button" name="btnsubmit" value="确定" class="submit"   onclick="bookmark_validate(this,'seccode',$_SGLOBAL['browser'][$browserid]['titlelen'],$_SGLOBAL['browser'][$browserid]['dirlen'] , $_SGLOBAL['browser'][$browserid]['urllen'], $_SGLOBAL['browser'][$browserid]['speicalchar']);"/>
 </td>
 </tr>
 </table>
@@ -115,4 +115,4 @@
 
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{/if}-->
-<!--{template footer}-->
+<!--{template bm_footer}-->
