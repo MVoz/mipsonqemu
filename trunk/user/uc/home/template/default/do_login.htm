@@ -31,7 +31,7 @@
 		<th width="100" style="vertical-align: top;">请先回答问题</th>
 		<td>
 			<p><!--{eval question();}--></p>
-			<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"<!--{if empty($_SGLOBAL['input_seccode'])}--> onBlur="checkSeccode()"<!--{/if}--> />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"<!--{if empty($_SGLOBAL['input_seccode'])}--> <!--{/if}--> />&nbsp;<span id="checkseccode">&nbsp;</span>
 		</td>
 	</tr>
 	<!--{else}-->

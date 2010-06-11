@@ -153,7 +153,7 @@
 		<th style="vertical-align: top;">请先回答问题</th>
 		<td>
 			<p><!--{eval question();}--></p>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 		</td>
 	</tr>
 	<!--{else}-->
@@ -161,7 +161,7 @@
 		<th style="vertical-align: top;">验证码</th>
 		<td>
 			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input" onBlur="checkSeccode()" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
 		</td>
 	</tr>
