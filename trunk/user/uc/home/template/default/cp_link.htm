@@ -29,7 +29,7 @@
 		<th width="40">标题</th>
 		<td>
 		<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
-		<span id="checkusername">&nbsp;</span>
+		<p id="subject_tip"></p>
 		</td>
 	</tr>
 	<tr>
@@ -40,6 +40,7 @@
 		<!--{else}-->
 		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" readonly/>
 		<!--{/if}-->
+		<p id="address_tip"></p>
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		</td>
 	</tr>
@@ -114,13 +115,21 @@
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" id="address" name="address" value="$item[url]" />
 		<input type="hidden" name="bookmarksubmit" value="true" />
-		<input type="submit" id="addsubmit" name="addsubmit" value="提交" class="submit_disabled" tabindex="6" />
+		<input type="button" id="addsubmit" name="addsubmit" value="提交" class="submit" tabindex="6" onclick=" bookmark_validate(this,'seccode',linkcond[$('browserid').value][0], linkcond[$('browserid').value][1], linkcond[$('browserid').value][2],linkcond[$('browserid').value][3]);"/>
 		</td>
 	</tr>
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
+<script type="text/javascript">	
+	var linkcond=[
+		[0,0,0,0,0],
+		<!--{loop $_SGLOBAL['browser'] $key $value}-->
+		[ $value['titlelen'], $value['dirlen'], $value['urllen'], $value['deslen'], $value['speicalchar'] ],
+		<!--{/loop}-->
+	];
+</script>
 <!--{elseif $op == 'reporterr'}-->
 <div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
 <h1>举报错误</h1>
