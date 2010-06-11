@@ -45,7 +45,7 @@ function setbookmarkgroupid(id)
 }
 
 function updatevisitstat(id) {
-	ajaxresponse('visitstat', 'op=updatevisitstat&bmid=' + id);
+	ajaxupdate('bookmark','visitstat', 'op=updatevisitstat&bmid=' + id);
 }
 var updatelinkupclick=0;
 function updatelinkup(id) {
@@ -79,7 +79,7 @@ function getrelatedlinkfromid(id) {
 	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
 }
 
-var lastSecCode='';
+
 function ajaxupdate(ac,objname, data) {
 		var x = new Ajax('XML', objname);
 		x.get('cp.php?ac='+ac+'&' + data, function(s){
@@ -91,6 +91,7 @@ function ajaxupdate(ac,objname, data) {
 		});
 }
 
+var lastSecCode='';
 function checkSeccode() {
 		var  seccodeVerify= $('seccode').value;
 		
