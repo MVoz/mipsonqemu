@@ -36,19 +36,32 @@
 </div>
 
 <!--{else}-->
-
+<!--{if !empty($_SGLOBAL['inajax'])}-->
 <div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
-<!--{if $_GET[op] == 'edit'}-->
-<h1>编辑收藏</h1>
-<!--{else}-->
-<h1>增加收藏</h1>
-<!--{/if}-->
+	<!--{if $_GET[op] == 'edit'}-->
+	<h1>编辑收藏</h1>
+	<!--{else}-->
+	<h1>增加收藏</h1>
+	<!--{/if}-->
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
+<!--{else}-->
+
+<form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid" class="c_form">
+<table cellspacing="0" cellpadding="3" class="formtable">
+<caption>
+	<!--{if $_GET[op] == 'edit'}-->
+	<h2>编辑收藏</h2>
+	<!--{else}-->
+	<h2>增加收藏</h2>
+	<!--{/if}-->
+	<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+</caption>
+<!--{/if}-->
 <tr>
-<th><label for="subject">名称：</label></th>
+<th width="40"><label for="subject">名称：</label></th>
 <td>	
 <!--{if $_GET[op] == 'edit'}-->
 <input type="text" id="subject" name="subject" value="$bmdirname" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
@@ -131,8 +144,10 @@
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
+<!--{if !empty($_SGLOBAL['inajax'])}-->
+</div>								   
 </div>
-</div>
+<!--{/if}-->
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>
 
 <!--{/if}-->
