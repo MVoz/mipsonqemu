@@ -123,6 +123,7 @@ $_SGLOBAL['uhash'] = md5($_SGLOBAL['supe_uid']."\t".substr($_SGLOBAL['timestamp'
 //getuserapp();
 
 //处理UC应用
+/*
 $_SCONFIG['uc_status'] = 0;
 $_SGLOBAL['appmenus'] = $_SGLOBAL['appmenu'] = array();
 if($_SGLOBAL['app']) {
@@ -139,5 +140,5 @@ if($_SGLOBAL['app']) {
 		}
 	}
 }
-
+*/
 ?>
