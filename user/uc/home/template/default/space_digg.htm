@@ -1,5 +1,9 @@
 <!--{eval $_TPL['nosidebar']=1;}-->
 <!--{template bm_header}-->
+<script language="javascript" type="text/javascript" >
+	jQuery("#nav_menu li").removeClass("current"); 
+	jQuery("#nav_menu #nav_digg").addClass("current");
+</script>
 <!--{if !empty($_SGLOBAL[inajax])}-->
 	<!--{template space_digg_list}-->
 <!--{else}-->
