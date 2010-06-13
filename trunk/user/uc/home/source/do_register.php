@@ -128,7 +128,8 @@ if(empty($op)) {
 			$setarr = array(
 				'uid' => $newuid,
 				'username' => $username,
-				'password' => md5("$newuid|$_SGLOBAL[timestamp]")//本地密码随机生成
+				'password' => md5("$newuid|$_SGLOBAL[timestamp]"),//本地密码随机生成
+				'name' => $name
 			);
 			//更新本地用户库
 			inserttable('member', $setarr, 0, true);
