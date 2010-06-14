@@ -597,7 +597,7 @@ function navigation_cache()
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 			//获取此类的link
-			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$value['classid']." limit 9");
+			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$value['classid']." limit 8");
 			while($val =$_SGLOBAL['db']->fetch_array($qry))
 			{
 				$val['link_description']= getstr($val['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
