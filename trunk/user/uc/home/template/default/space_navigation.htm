@@ -1,5 +1,9 @@
 <!--{eval $_TPL['nosidebar']=1;}-->
 <!--{template bm_header}-->
+<script language="javascript" type="text/javascript" >
+	jQuery("#nav_menu li").removeClass("current"); 
+	jQuery("#nav_menu #nav_navigation").addClass("current");
+</script>
 <!--{if !empty($_SGLOBAL[inajax])}-->
 	   	   <!--{template space_link_list_sub}-->
 <!--{else}-->
@@ -11,15 +15,15 @@
 <div style="padding-top:10px;">
 	<div class="nbox_c">
 	<!--{loop $navlist $key $bookmarklist}-->
-		<div  style="height:270px;">		
+		<div  style="height:135px;">		
 			<h2 class="ntitle">
 				<div class="groupname" id="groupname">$bookmarklist['classname']&raquo;</div>
-				<!--{template space_catelog_tab}-->	
 			</h2>
 			<div id="bmcontent"> 			  
-				<!--{template space_navigation_list}-->				  
+				<!--{template space_navigation_class}-->				  
 			</div>
-		</div>				 
+		</div>	
+
 	<!--{/loop}-->
 	</div>
 	<div class="nbox_s side_rbox side_rbox_w" >	
