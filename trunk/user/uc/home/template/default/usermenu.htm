@@ -28,12 +28,12 @@
 									<!--{eval $value = mkfeed($value);}-->
 									<li style="height:60px;overflow: hidden">
 									<div class="avatar48" style="float:left">
-										<a href="space.php?uid=9">
-										<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif">
+										<a href="space.php?uid=$value[uid]">
+										<!--{avatar($value[uid],small)}-->
 										</a>
 									</div>
 									<div style="float:left;padding:8px 2px;width:215px;">
-									<a href="#">$value[title_template]</a>与大家分享<a href="#">$value[body_template]</a> <span class="gray">01-29 16:11</span>
+									<a href="#">$value[title_template]</a><a href="#">$value[body_template]</a> <span class="gray">01-29 16:11</span>
 									</div>
 									</li>
 								<!--{/loop}-->
