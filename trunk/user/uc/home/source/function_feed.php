@@ -255,7 +255,8 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['id'] = $value['sid'];
 				$setarr['idtype'] = $idtype;
 				$setarr['uid'] = $value['uid'];
-				$setarr['username'] = $value['username'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $value['dateline'];
 				$setarr['hot'] = $value['hot'];
 				

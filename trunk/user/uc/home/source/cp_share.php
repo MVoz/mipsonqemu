@@ -401,10 +401,14 @@ if($_GET['op'] == 'delete') {
 			$arr['title_template'] = cplang('share_link');
 			$arr['body_template'] = '{link}';
 
-			$link_text = sub_url($link, 45);
+			// $link_text = sub_url($link, 45);
+			$link_text =sub_title($_POST['title'],45);
+			$link_text =$_POST['title'];
 
 			$arr['body_data'] = array('link'=>"<a href=\"$link\" target=\"_blank\">$link_text</a>", 'data'=>$link);
+			/*
 			$parseLink = parse_url($link);
+
 			if(preg_match("/(youku.com|youtube.com|5show.com|ku6.com|sohu.com|mofile.com|sina.com.cn)$/i", $parseLink['host'], $hosts)) {
 				$flashvar = getflash($link, $hosts[1]);
 				if(!empty($flashvar)) {
@@ -426,13 +430,15 @@ if($_GET['op'] == 'delete') {
 				$arr['body_data']['flashaddr'] = $link;
 				$type = 'flash';
 			}
+			*/
 		}
 		
 		$arr['body_general'] = getstr($_POST['general'], 150, 1, 1, 1, 1);
 
 		$arr['type'] = $type;
 		$arr['uid'] = $_SGLOBAL['supe_uid'];
-		$arr['username'] = $_SGLOBAL['supe_username'];
+		//$arr['username'] = $_SGLOBAL['supe_username'];
+		$arr['username'] = $_SGLOBAL['name'];
 		$arr['dateline'] = $_SGLOBAL['timestamp'];
 		$arr['topicid'] = $_POST['topicid'];
 		$arr['body_data'] = serialize($arr['body_data']);//数组转化
@@ -458,10 +464,11 @@ if($_GET['op'] == 'delete') {
 		}
 		
 		//积分
+		/*
 		$needle = $id ? $type.$id : '';
 		$reward = getreward('createshare', 0, 0, $needle);
 		$_SGLOBAL['db']->query("UPDATE ".tname('space')." SET {$sharenumsql}, lastpost='$_SGLOBAL[timestamp]', updatetime='$_SGLOBAL[timestamp]', credit=credit+$reward[credit], experience=experience+$reward[experience] WHERE uid='$_SGLOBAL[supe_uid]'");
-
+		*/
 		//动态
 		if(ckprivacy('share', 1)) {
 			include_once(S_ROOT.'./source/function_feed.php');
