@@ -3,7 +3,7 @@
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3>
-						<a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a>
+						<a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid]);this.href=this.href+'&title=$value[subject]';">$value[subject]</a>
 						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
 					</h3>
 					<!--{if empty($space['style'])}-->

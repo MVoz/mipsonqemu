@@ -1,0 +1,12 @@
+<div style="float:left;height:105px;padding:0px 3px;" id="thumbs">
+<ul class="thumbs noscript">
+<!--{loop $bookmarklist['son'] $key $value}-->
+<li class="mgn2">
+	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
+	<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+	</a>
+	<p><a href="$value[url]">$value[link_subject]</a></p>							
+</li>
+<!--{/loop}-->
+</ul>
+</div>
