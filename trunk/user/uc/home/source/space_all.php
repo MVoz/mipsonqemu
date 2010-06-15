@@ -90,6 +90,7 @@ foreach($polllist as $key => $value) {
 
 //今日热荐
 include_once(S_ROOT.'./source/todayhot.php');
+include_once(S_ROOT.'./source/sitefeed.php');
 /*
 //竞价排名
 $showlist = array();
