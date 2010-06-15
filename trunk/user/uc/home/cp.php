@@ -12,11 +12,11 @@ include_once(S_ROOT.'./source/function_cp.php');
 //允许的方法
 $acs = array('bookmark','bmdir','bm','space','digg','link','linkclass','linkclasstag', 'common', 'class','config','style',
 	 'avatar',  'invite','sendmail',
-	 'password',  
+	 'password','share'  
 	);
 /*
 	cancel action
-	'userapp', 'task', 'credit','domain', 'event', 'poll','click','magic', 'top', 'videophoto','topic','profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'share', 'advance','swfupload', 'thread', 'mtag', 'poke', 'friend', 'doing', 'upload', 'comment', 'blog', 'album',
+	'userapp', 'task', 'credit','domain', 'event', 'poll','click','magic', 'top', 'videophoto','topic','profile', 'theme', 'import', 'feed', 'privacy', 'pm', 'advance','swfupload', 'thread', 'mtag', 'poke', 'friend', 'doing', 'upload', 'comment', 'blog', 'album',
 	'relatekw', 
 */
 $ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'config':$_GET['ac'];
