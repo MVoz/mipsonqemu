@@ -1498,7 +1498,7 @@ function mkfeed($feed, $actors=array()) {
 	}
 
 	$searchs[] = '{actor}';
-	$replaces[] = empty($actors)?"<a href=\"space.php?uid=$feed[uid]\">".$_SN[$feed['uid']]."</a>":implode(lang('dot'), $actors);
+	$replaces[] = empty($actors)?"<a href=\"space.php?uid=$feed[uid]\">".$feed[username]."</a>":implode(lang('dot'), $actors);
 
 	$searchs[] = '{app}';
 	if(empty($_SGLOBAL['app'][$feed['appid']])) {
