@@ -571,12 +571,14 @@ function link_cache_classid($classid)
 		$linklist[]=$value;
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
-			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
 			$page++;
+			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist)); 			
 			$linklist=array();
 		}
 	}
-	swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
+	$page++;
+	if(!empty($linklist))
+		swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
 	swritefile($linkfileprefix.'_'.$classid.'_count.txt', $count) ;
 }
 function link_cache()
