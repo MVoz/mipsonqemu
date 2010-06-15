@@ -1,12 +1,12 @@
 <!--{eval $_TPL['nosidebar']=1;}-->
 <!--{template bm_header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+	  <!--{template space_bookmark_list}-->
+<!--{else}-->
 <script language="javascript" type="text/javascript" >
 	jQuery("#nav_menu li").removeClass("current"); 
 	jQuery("#nav_menu #nav_mytanzhi").addClass("current");
 </script>
-<!--{if !empty($_SGLOBAL[inajax])}-->
-	  <!--{template space_bookmark_list}-->
-<!--{else}-->
 <div id="network">
 <!--{template login}-->
 <div  style="height:705px;padding-top:10px;">
