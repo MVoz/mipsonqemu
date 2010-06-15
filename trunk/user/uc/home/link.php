@@ -10,6 +10,7 @@ if(empty($_GET['url'])) {
 	showmessage('do_success', $refer, 0);
 } else {
 	$url = $_GET['url'];
+	$title = $_GET['title'];
 	if(!$_SCONFIG['linkguide']) {
 		showmessage('do_success', $url, 0);//Ö±½ÓÌø×ª
 	}
