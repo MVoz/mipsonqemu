@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
-//添加书签
+//添加digg
 function digg_post($POST, $olds=array()) {
 	global $_SGLOBAL, $_SC, $space,$_GET;
 	//操作者角色切换
@@ -41,10 +41,11 @@ function digg_post($POST, $olds=array()) {
 	$diggarr = array(
 		'subject' => $POST['subject'],	
 		'postuid' => $_SGLOBAL['supe_uid'],
-		'username'=> $_SGLOBAL['supe_username'],
+		//'username'=> $_SGLOBAL['supe_username'],
+		'username'=> $_SGLOBAL['name'],
 		'description' => $POST['description'],
 		'url'=>$POST['address'],
-		'category' => $POST['category']
+		'categoryid' => $POST['category']
 	);
 	$diggarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 
@@ -80,6 +81,8 @@ function digg_post($POST, $olds=array()) {
 			*/
 	if(empty($olds)){
 		$diggid = inserttable('digg', $diggarr, 1);
+		include_once(S_ROOT.'./source/function_feed.php');
+		feed_publish($diggid, 'diggid', 1);
 	}else{
 		updatetable('digg', $diggarr, array('diggid'=>$diggid));
 	}				
