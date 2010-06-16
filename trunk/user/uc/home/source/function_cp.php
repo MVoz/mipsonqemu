@@ -731,7 +731,9 @@ function request_ignore($uid) {
 //检查验证码
 function ckseccode($seccode) {
 	global $_SGLOBAL, $_SCOOKIE, $_SCONFIG;
-
+	//来自client，直接返回1
+	if(!empty($_SGLOBAL['client']))
+		return true;
 	$check = true;
 	if(empty($_SGLOBAL['mobile'])) {
 		if($_SCONFIG['questionmode']) {
