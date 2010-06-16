@@ -149,6 +149,7 @@ $_SGLOBAL['cplang'] = array(
 	'share_tag' => '分享了一个标签',
 	'share_tag_blognum' => '现有 {blognum} 篇日志',
 	'share_link' => '分享了一个网址',
+	'digg_link' => '分享一篇好文',
 	'share_video' => '分享了一个视频',
 	'share_music' => '分享了一个音乐',
 	'share_flash' => '分享了一个 Flash',
