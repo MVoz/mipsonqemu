@@ -34,30 +34,30 @@
 
 #define APP_NAME "MyLaunchy"
 
-#define BM_SERVER_ADDRESS "192.168.1.115"
+#define BM_SERVER_ADDRESS "www.tanzhi.com"
 #ifdef CONFIG_AUTH_ENCRYPTION
 #ifdef CONFIG_SYNC_TIMECHECK
-#define BM_SERVER_GET_BMXML_URL "http://192.168.1.115/uc/home/do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
+#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
 #else
-#define BM_SERVER_GET_BMXML_URL "http://192.168.1.115/uc/home/do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
+#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
 #endif
-#define BM_SERVER_TESTACCOUNT_URL "http://192.168.1.115/uc/home/do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
-#define BM_SERVER_ADD_URL "/uc/home/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_SERVER_TESTACCOUNT_URL "http://www.tanzhi.com/do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
+#define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
-#define BM_SERVER_DELETE_URL "/uc/home/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
-#define BM_SERVER_DELETE_DIR  "/uc/home/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 
 #else
 //#define BM_SERVER_GET_BMLIST_URL "http://192.168.1.115/bookmark.php"
-#define BM_SERVER_GET_BMXML_URL "http://192.168.1.115/uc/home/do.php?ac=bmxml&source=client&username=%1&password=%2"
+#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&username=%1&password=%2"
 
 
-#define BM_SERVER_ADD_URL "/uc/home/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
+#define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
 #define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
 
-#define BM_SERVER_DELETE_URL "/uc/home/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&username=%3&password=%4"
+#define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&username=%3&password=%4"
 
-#define BM_SERVER_DELETE_DIR  "/uc/home/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
+#define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
 
 #endif
 
@@ -68,6 +68,7 @@
 #define SUCCESSSTRING "do_success"
 
 #define DO_NOTHING   "do_nothing"
+#define LOGIN_FALIL   "login_failure_please_re_login"
 
 #undef CATALOG_COMPRESS_ENABLE 
 
