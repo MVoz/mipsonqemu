@@ -31,7 +31,11 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
 			QDEBUG("no modification on server!!!");
-		}	
+		}else if(line.contains(LOGIN_FALIL)){
+			QDEBUG("login failed!!!");
+			s_file.close();
+			return;
+		}
 		else
 			{
 				QDEBUG("has modification on server!!!");
