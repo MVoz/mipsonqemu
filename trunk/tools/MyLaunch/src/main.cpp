@@ -1549,7 +1549,7 @@ void MyWidget::startSync()
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	syncAction->setDisabled(TRUE);
-	 
+	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer); 
 #else
 	syncDlg = new synchronizeDlg(this);
 	syncDlg->setModal(1);

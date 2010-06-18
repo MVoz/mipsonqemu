@@ -161,6 +161,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void httpTimerSlot();
 	void stopSync();
 	void setNetworkProxy();
+	void mgUpdateStatus(int status,QString str);
       signals:
 	void bookmarkFinished(bool error);
 	void updateStatusNotify(int type);
