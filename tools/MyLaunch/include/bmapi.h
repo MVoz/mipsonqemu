@@ -9,6 +9,7 @@
 #include <QSettings>
  #include <QDataStream>
  #include <QFile>
+ #include <QCoreApplication>
  #ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
@@ -64,6 +65,8 @@ BMAPI_DLL_FUNCEXPORT void setBmId(uint bmid);
 BMAPI_DLL_FUNCEXPORT uint getBmId();
 BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
+BMAPI_DLL_FUNCEXPORT uint getLanguage(QString str,QString lang,QString& res);
+
 
 //int setDirectoryTimeIncludeAllFiles(QString path);
 #endif

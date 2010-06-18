@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 #include <QSettings>
+#include <QTextCodec>
+
 uint gMaxGroupId=0;
 QString gUpdatetime;
 bool gPostError=0;
@@ -511,6 +513,25 @@ uint getIEBinPath(QString& ie_bin)
 			return 1;
 		else
 			return 0;
+}
+uint getLanguage(QString str,QString lang,QString& res)
+{		
+		QDEBUG("getLanguage %s ",qPrintable(qApp->applicationDirPath()+"/data/language.dat"));
+		QDEBUG("getLanguage %s str=%s lang=%s res=%s",qPrintable(qApp->applicationDirPath()+"/data/language.dat"),qPrintable(str),qPrintable(lang),qPrintable(res));
+		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat", QSettings::IniFormat, NULL);
+		//langsetting.setIniCodec(QTextCodec::codecForName("utf-8"))toUnicode(myArray); 
+		QByteArray resArr=langsetting.value(str+"/"+lang, "Unknow string").toByteArray();
+		res=QTextCodec::codecForName("UTF-8")->toUnicode(resArr); 
+		QDEBUG("getLanguage %s ",qPrintable(res));
+		res=QString::fromUtf8(resArr.data());
+		QDEBUG("getLanguage %s ",qPrintable(res));
+		res=QString::fromUtf8(resArr.data());
+		QDEBUG("getLanguage %s ",qPrintable(res));
+
+		QTextCodec *codec=QTextCodec::codecForName("GBK"); 
+		res = codec->toUnicode(resArr); 
+		QDEBUG("getLanguage %s ",qPrintable(res));
+		return 0;
 }
 
 

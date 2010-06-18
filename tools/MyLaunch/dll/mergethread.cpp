@@ -33,6 +33,9 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 			QDEBUG("no modification on server!!!");
 		}else if(line.contains(LOGIN_FALIL)){
 			QDEBUG("login failed!!!");
+			QString langstr="";
+			getLanguage(QString(LOGIN_FALIL),QString("chinese"),langstr);
+			emit mgUpdateStatusNotify(123,langstr);
 			s_file.close();
 			return;
 		}

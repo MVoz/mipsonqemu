@@ -227,6 +227,12 @@ void BookmarkSync::testAccountFinished(bool error)
 	//httpTimer->stop();
 	exit(error);
 }
+void BookmarkSync::mgUpdateStatus(int status,QString str)
+{
+	//QDEBUG("%s status=%d %s",__FUNCTION__,status,qPrintable(str));
+	qDebug()<<__FUNCTION__<<str;
+}
+
 void BookmarkSync::bookmarkGetFinished(bool error)
 {
 	http_finish=1;
@@ -245,6 +251,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		mgthread = new mergeThread(this,db,settings,iePath);
 		emit updateStatusNotify(UPDATE_PROCESSING);
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
+		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,QString)), this, SLOT(mgUpdateStatus(int,QString)));
 		mgthread->start();
 		QDEBUG("start merge thread...........");
 	}
