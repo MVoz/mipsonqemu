@@ -1599,8 +1599,9 @@ void MyWidget::_startSync(int mode)
 	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
 	uint key=qrand()%(getkeylength());
 	QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
-	QString auth_encrypt_str="";
-	encryptstring(authstr,key,auth_encrypt_str);
+	QString auth_encrypt_str=translate::encrypt(authstr,key);
+	//encryptstring(authstr,key,auth_encrypt_str);
+	
 	//QDEBUG("authstr=%s auth_encrypt_str=%s ",qPrintable(authstr),qPrintable(auth_encrypt_str));
 #ifdef CONFIG_SYNC_TIMECHECK
 	QString localBmFullPath;
