@@ -18,6 +18,10 @@ chinese=确定
 english=retry
 chinese=重试
 
+[reject]
+english=reject
+chinese=中止
+
 [http_timeout]
 english=http_timeout
 chinese=操作超时

@@ -51,7 +51,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 		void readDateProgress(int done,int total);
 		void reSyncSlot();
 	signals:
-		void reSync();
+		void reSyncNotify();
 		void stopSync();
 		void updateSuccessNotify();
 };

@@ -159,7 +159,11 @@ signals:
 	void fadeLevel(double);
 	void finishedFade(double);
 };
-
+enum {
+	SYNC_MODE_BOOKMARK,
+	SYNC_MODE_REBOOKMARK,	
+	SYNC_MODE_TESTACCOUNT
+};
 class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
@@ -201,6 +205,9 @@ public:
 	QTimer* syncDlgTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
+	QString testAccountName;
+	QString testAccountPassword;
+	int syncMode;
 
 	shared_ptr < synchronizeDlg> syncDlg;
 
@@ -294,11 +301,13 @@ public slots:
 	void updateSuccess();
 #ifdef CONFIG_SYSTEM_TRAY
 	void startSync();
+	void _startSync(int mode);
 	void updateApp();
 	void bookmark_finished(bool error);
 	void testAccountFinished(bool err,QString result);
 	void bookmark_syncer_finished();
-	void reSyncSlot();
+	void syncer_finished();
+	void reSync();
 	void stopSyncSlot();
 	void testAccount(const QString&name,const QString& password);
 //	void restoreMainwin();
@@ -309,7 +318,7 @@ private slots:
      	void iconActivated(QSystemTrayIcon::ActivationReason reason);
 #endif
 	signals:
-		void reSync();
+		//void reSync();
 		void stopSyncNotify();
 };
 #endif

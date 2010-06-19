@@ -151,6 +151,8 @@
 #define LANGUAGE_APPLY "apply"
 #define LANGUAGE_RETRY "retry"
 #define LANGUAGE_CANCEL "cancel"
+#define LANGUAGE_REJECT "reject"
+
 
 
 

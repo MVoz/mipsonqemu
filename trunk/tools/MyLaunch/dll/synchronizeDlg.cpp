@@ -80,7 +80,7 @@ void synchronizeDlg::reject()
 }
 void synchronizeDlg::retry()
 {
-	emit reSync();
+	emit reSyncNotify();
 	QDEBUG("synchronizeDlg retry.....");
 }
 void synchronizeDlg::populateJavaScriptWindowObject()
@@ -95,16 +95,16 @@ void synchronizeDlg::updateStatus(int type,int status,QString str)
 	switch(type)
 		{
 		case UPDATESTATUS_FLAG_APPLY:
-			jsStr.append(QString("document.getElementById('loading').style.display='block';"));
-			jsStr.append(QString("document.getElementById('arrow').style.display='none';"));
-			jsStr.append(QString("document.getElementById('ps').innerHTML ='%1';").arg(str));
-			jsStr.append(QString("document.getElementById('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(translate::tr(LANGUAGE_APPLY)));
+			jsStr.append(QString("$$('loading').style.display='block';"));
+			jsStr.append(QString("$$('arrow').style.display='none';"));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(translate::tr(LANGUAGE_APPLY)));
 			break;
 		case UPDATESTATUS_FLAG_RETRY:
-			jsStr.append(QString("document.getElementById('loading').style.display='block';"));
-			jsStr.append(QString("document.getElementById('arrow').style.display='none';"));
-			jsStr.append(QString("document.getElementById('ps').innerHTML ='%1';").arg(str));
-			jsStr.append(QString("document.getElementById('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(translate::tr(LANGUAGE_RETRY)));
+			jsStr.append(QString("$$('loading').style.display='block';"));
+			jsStr.append(QString("$$('arrow').style.display='none';"));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
 			break;
 		/*
 		case UPDATE_SUCCESSFUL:		
@@ -161,14 +161,14 @@ void synchronizeDlg::updateStatus(int type,int status,QString str)
 void synchronizeDlg::readDateProgress(int done, int total)
 {
 	QString jsStr;
-	jsStr.append(QString("document.getElementById('ps').innerHTML ='%1';").arg(httpStateString.at(HTTP_READING)));
+	jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(httpStateString.at(HTTP_READING)));
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }
 void synchronizeDlg::reSyncSlot()
 {
 	QString jsStr;
-	jsStr.append(QString("document.getElementById('btn').innerHTML ='%1';").arg("<a href=\"#\"  onclick=\"reject();\" >中止</a>"));
+	jsStr.append(QString("$$('btn').innerHTML ='%1';").arg("<a href=\"#\"  onclick=\"reject();\" >中止</a>"));
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }
