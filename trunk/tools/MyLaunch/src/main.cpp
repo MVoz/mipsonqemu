@@ -1486,14 +1486,9 @@ void MyWidget::reSyncSlot()
 			//connect(syncDlg,SIGNAL(reSync()),this,SLOT(reSyncSlot()));
 			//connect(syncDlg,SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
 			connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
-#ifdef CONFIG_SYNDLG_SHAREPTR
 			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
 			connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 
-#else
-			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
-			connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg, SLOT(readDateProgress(int, int)));
-#endif
 			gSyncer->setHost(BM_SERVER_ADDRESS);
 #ifdef CONFIG_AUTH_ENCRYPTION
 				qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
@@ -1532,7 +1527,6 @@ void MyWidget::startSync()
 	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
 	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty())&&!gSyncer)
 	{
-#ifdef CONFIG_SYNDLG_SHAREPTR
 	if(syncDlgTimer)
 		{
 			if(syncDlgTimer->isActive())
@@ -1554,20 +1548,8 @@ void MyWidget::startSync()
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	syncAction->setDisabled(TRUE);
 	 
-#else
-	syncDlg = new synchronizeDlg(this);
-	syncDlg->setModal(1);
-	syncDlg->show();
-	gSyncer.reset(new BookmarkSync(this,&db,&gLastUpdateTime,gSettings,gIeFavPath,BOOKMARK_SYNC_MODE));
-	connect(this,SIGNAL(reSync()),syncDlg,SLOT(reSyncSlot()));
-	connect(syncDlg,SIGNAL(reSync()),this,SLOT(reSyncSlot()));
-	connect(syncDlg,SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
-	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
-	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg, SLOT(readDateProgress(int, int)));
-	
-#endif
 	gSyncer->setHost(BM_SERVER_ADDRESS);
+	
 #ifdef CONFIG_AUTH_ENCRYPTION
 					qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
 					uint key=qrand()%(getkeylength());
@@ -1601,10 +1583,6 @@ void MyWidget::startSync()
 	gSyncer.run();
 #endif
 	}
-	//  connect(this, SIGNAL(textChanged(int) ),dlg, SLOT(dlgTextChanged(int)));
-	//  connect(this, SIGNAL(Finished() ),dlg, SLOT(dlgFinished()));
-	//  syncDlg->exec();
-
 
 }
 void MyWidget::testAccountFinished(bool err,QString result)

@@ -201,11 +201,9 @@ public:
 	QTimer* syncDlgTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
-#ifdef CONFIG_SYNDLG_SHAREPTR
+
 	shared_ptr < synchronizeDlg> syncDlg;
-#else
-	synchronizeDlg  *syncDlg; 
-#endif
+
 	void connectAlpha();
 	QIcon getIcon(CatItem & item);
 	void MoveFromAlpha(QPoint pos);
