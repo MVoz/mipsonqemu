@@ -50,8 +50,8 @@ void postHttp::run()
 					qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
 					uint key=qrand()%(getkeylength());
 					QString authstr=QString("username=%1 password=%2").arg(username).arg(password);
-					QString auth_encrypt_str="";
-					encryptstring(authstr,key,auth_encrypt_str);
+					QString auth_encrypt_str=translate::encrypt(authstr,key);;
+					//encryptstring(authstr,key,auth_encrypt_str);
 #endif
 
 					if(action==POST_HTTP_ACTION_ADD_URL||action==POST_HTTP_ACTION_ADD_DIR)

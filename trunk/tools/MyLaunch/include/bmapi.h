@@ -53,8 +53,8 @@ BMAPI_DLL_FUNCEXPORT void setPostError(bool err);
 BMAPI_DLL_FUNCEXPORT bool getPostError();
 BMAPI_DLL_FUNCEXPORT void setPostResponse(uint type);
 BMAPI_DLL_FUNCEXPORT uint getPostResponse();
-BMAPI_DLL_FUNCEXPORT int decryptstring(QString para,uint secindex,QString &out);
-BMAPI_DLL_FUNCEXPORT int  encryptstring(QString para,uint secindex,QString& out);
+//BMAPI_DLL_FUNCEXPORT int decryptstring(QString para,uint secindex,QString &out);
+//BMAPI_DLL_FUNCEXPORT int  encryptstring(QString para,uint secindex,QString& out);
 BMAPI_DLL_FUNCEXPORT int getkeylength();
 BMAPI_DLL_FUNCEXPORT int handleUrlString(QString& url);
 BMAPI_DLL_FUNCEXPORT void setUpdatetime(QString time);
@@ -72,7 +72,8 @@ public:
 	~translate(){};
 public :
 	static QString tr(const char* index);
-	
+	static QString encrypt(QString para,uint secindex);
+	static QString decrypt(QString para,uint secindex);
 };
 
 //int setDirectoryTimeIncludeAllFiles(QString path);

@@ -270,7 +270,6 @@ bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest)
 	dest += "/";
 	dest +=filename;
 	return true;
-
 }
 int getDesktop()
 {
@@ -385,6 +384,7 @@ char encrypt_arr[10][10]={
 	{'<','>',',','.','?','/','k','v','G','R'},
 	{'2','@','+','\'',' ','0','0','0','0','0'}
 };
+/*
 int encryptstring(QString para,uint secindex,QString &out)
 {
 	para=para.trimmed();
@@ -421,6 +421,7 @@ int encryptstring(QString para,uint secindex,QString &out)
 	}
 	return 1;
 }
+
 int decryptstring(QString para,uint secindex,QString &out)
 {
 	para=para.trimmed();
@@ -456,6 +457,8 @@ int decryptstring(QString para,uint secindex,QString &out)
 	}
 	return 1;
 }
+*/
+
 int getkeylength()
 {
 	return encrypt_key_index;
@@ -538,6 +541,79 @@ QString translate::tr(const char* index)
 		return res;
 	}
 	return "unknow error";
+}
+QString translate::encrypt(QString para,uint secindex)
+{
+	QString out="";
+	para=para.trimmed();
+	uint len=para.length();
+	secindex=secindex%encrypt_key_index;
+	uint i=0;
+	uint found=0;
+	int found_h=-1;
+	int found_v=-1;
+	while(i<len){
+		found=0;
+		uint m=0,n=0;
+		for(m=0;m<encrypt_h;m++)
+		{
+			for(n=0;n<encrypt_v;n++ )
+			{
+				if(encrypt_arr[m][n]==para.at(i).toLatin1())
+				{
+					found=1;
+					found_v=n;
+					break;
+				}
+			}
+			if(found)
+			{
+					found_h=m;
+					break;
+			}
+		}
+		if(found)
+			out.append(encrypt_key[secindex][found_h]);
+			out.append(encrypt_key[secindex][found_v]);
+		i++;
+	}
+	return out;
+}
+QString translate::decrypt(QString para,uint secindex)
+{
+	QString out="";
+	para=para.trimmed();
+	uint len=para.length();
+	if(len%2)
+		return 1;
+	secindex=secindex%encrypt_key_index;
+	uint i=0;
+	int found_h=-1;
+	int found_v=-1;
+	while(i<len){
+		uint m=0;	
+		for(m=0;m<encrypt_h;m++)
+		{
+			if(encrypt_key[secindex][m]==para.at(i).toLatin1())
+			{
+				found_h=m;
+				break;
+			}
+			
+		}
+		for(m=0;m<encrypt_h;m++)
+		{
+			if(encrypt_key[secindex][m]==para.at(i+1).toLatin1())
+			{
+				found_v=m;
+				break;
+			}
+			
+		}
+		i=i+2;
+		out.append(encrypt_arr[found_h][found_v]);
+	}
+	return out;
 }
 
 
