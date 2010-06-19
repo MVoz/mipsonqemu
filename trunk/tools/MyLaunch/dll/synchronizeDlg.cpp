@@ -87,13 +87,26 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 {
 	webView->page()->mainFrame()->addToJavaScriptWindowObject("processDlg", this);
 }
-void synchronizeDlg::updateStatus(int type)
+void synchronizeDlg::updateStatus(int type,int status,QString str)
 {
 	QString jsStr;
 	qDebug("%s type=%d\n",__FUNCTION__,type);
-	status=type;
+	status=status;
 	switch(type)
 		{
+		case UPDATESTATUS_FLAG_APPLY:
+			jsStr.append(QString("document.getElementById('loading').style.display='block';"));
+			jsStr.append(QString("document.getElementById('arrow').style.display='none';"));
+			jsStr.append(QString("document.getElementById('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("document.getElementById('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(translate::tr(LANGUAGE_APPLY)));
+			break;
+		case UPDATESTATUS_FLAG_RETRY:
+			jsStr.append(QString("document.getElementById('loading').style.display='block';"));
+			jsStr.append(QString("document.getElementById('arrow').style.display='none';"));
+			jsStr.append(QString("document.getElementById('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("document.getElementById('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(translate::tr(LANGUAGE_RETRY)));
+			break;
+		/*
 		case UPDATE_SUCCESSFUL:		
 			jsStr.append(QString("document.getElementById('loading').style.display='block';"));
 			jsStr.append(QString("document.getElementById('arrow').style.display='none';"));
@@ -139,6 +152,7 @@ void synchronizeDlg::updateStatus(int type)
 		default:
 			jsStr.append(QString("document.getElementById('ps').innerHTML ='<img src=\"image/loading.gif\">%1';").arg(httpStateString.at(type)));
 			break;
+		*/
 		}
 	
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);

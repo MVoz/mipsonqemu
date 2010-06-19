@@ -278,7 +278,6 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		int retry=0;
 		int bookmark_retry=0;
 		int numresults=settings->value("GenOps/numresults",10).toInt();
-		int maxresult=settings->value("GenOps/numresults",10).toInt();
 		//db.transaction();
 		QString queryStr;
 		queryStr=QString("select * from %1 where shortCut='%2' limit %3").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
@@ -322,25 +321,25 @@ RETRY:
 								qDebug("%s",qPrintable(item->fullPath));
 								ret.push_back(item);
 					 	}
-					  numresults=maxresult-i;
+					  numresults-=i;
 					  query.clear();
 			}
 	//	db.commit();
-		if(!retry&&numresults>0){	
+		if(!retry&&numresults){	
 			retry=1;
 			//select * from (select * from launch_db order by usage) where shortName like '%tc%' limit 10;
 			queryStr=QString("select * from (select * from %1 order by usage desc ) where shortName LIKE '%%2%' limit %3 ").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
 			goto RETRY;
 			}
 //look for the bookmark address 
-		if(!bookmark_retry&&numresults>0){	
+		if(!bookmark_retry&&numresults){	
 			bookmark_retry=1;
 			//select * from (select * from launch_db order by usage) where shortName like '%tc%' limit 10;
 			queryStr=QString("select * from (select * from %1 order by usage desc ) where fullpath LIKE '%%2%' limit %3 ").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
 			goto RETRY;
 			}
 
-		if(numresults>0){
+		if(numresults){
 			//find from pinyin
 				queryStr=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
 				if(query.exec(queryStr)){
@@ -389,7 +388,7 @@ RETRY:
 								}
 						
 								if(matched){
-											qDebug("pinyinReg=%s shortname=%s txt=%s ret=%d i=%d numresults=%d\n",qPrintable(item.pinyinReg),qPrintable(item.shortName),qPrintable(searchTxt),ret,i,numresults);
+											qDebug("pinyinReg=%s shortname=%s txt=%s ret=%d\n",qPrintable(item.pinyinReg),qPrintable(item.shortName),qPrintable(searchTxt),ret);
 											CatItem* it=&searchResults[i++];
 											*it=item;
 											ret.push_back(it);

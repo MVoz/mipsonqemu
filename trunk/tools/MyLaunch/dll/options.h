@@ -67,8 +67,8 @@ public:
 	QList < int >iActionKeys;
 	QList <CMD_LIST> cmdLists;
 	QList <Directory> dirLists;
-	shared_ptr <BookmarkSync> gSyncer;
-	shared_ptr <CatBuilder> catalogBuilder;
+	//shared_ptr <BookmarkSync> gSyncer;
+	//shared_ptr <CatBuilder> catalogBuilder;
 	QSettings *settings;
 	QDateTime* updateTime;
 	postHttp *accountTestHttp;

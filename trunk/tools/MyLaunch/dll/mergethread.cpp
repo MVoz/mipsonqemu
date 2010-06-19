@@ -31,11 +31,11 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
 			QDEBUG("no modification on server!!!");
-		}else if(line.contains(LOGIN_FALIL)){
+		}else if(line.contains(LOGIN_FALIL_STRING)){
 			QDEBUG("login failed!!!");
-			QString langstr="";
-			getLanguage(QString(LOGIN_FALIL),QString("chinese"),langstr);
-			emit mgUpdateStatusNotify(123,langstr);
+			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
+			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,translate::tr(LOGIN_FALIL_STRING));
+			
 			s_file.close();
 			return;
 		}
