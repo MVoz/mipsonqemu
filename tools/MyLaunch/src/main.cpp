@@ -1475,8 +1475,21 @@ void MyWidget::stopSyncSlot()
 			//gSyncer->stopSync();			
 		}
 }
-void MyWidget::reSyncSlot()
+void MyWidget::reSync()
 {
+	int mode;
+	switch(syncMode)
+	{
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			mode=SYNC_MODE_REBOOKMARK;
+			break;
+		case SYNC_MODE_TESTACCOUNT:
+			mode=SYNC_MODE_TESTACCOUNT;			
+			break;
+	}
+	_startSync(mode);
+/*
 	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty()))
 		{
 			QDEBUG("resync.................");
@@ -1512,84 +1525,123 @@ void MyWidget::reSyncSlot()
 			QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
 #endif			
 			gSyncer->setUrl(bmxml_url);
-#ifdef CONFIG_SYNC_THREAD
 			//QDEBUG("bookmark syncer start..........1");
 			gSyncer->start();
 			//QDEBUG("bookmark syncer start..........2");
-#else
-			gSyncer.run();
-#endif
 		}
-		
+*/		
 }
 void MyWidget::startSync()
 {
-	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
-	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty())&&!gSyncer)
+	_startSync(SYNC_MODE_BOOKMARK);
+}
+
+void MyWidget::_startSync(int mode)
+{
+	syncMode = mode;
+	QString name,password;
+	switch(mode)
 	{
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			name=gSettings->value("Account/Username","").toString();
+			password=gSettings->value("Account/Userpasswd","").toString();					
+			break;
+		case SYNC_MODE_TESTACCOUNT:
+			name=testAccountName;
+			password=testAccountPassword;
+			break;
+	}
+	if(gSyncer||name.isEmpty()||password.isEmpty())
+			return;		
+	qDebug("%s gSyncer=0x%08x syncDlg=0x%p",__FUNCTION__,gSyncer,syncDlg);
 	if(syncDlgTimer)
-		{
+	{
 			if(syncDlgTimer->isActive())
 				syncDlgTimer->stop();
 			delete syncDlgTimer;
 			syncDlgTimer=NULL;
-		}
-	syncDlg.reset(new synchronizeDlg(this));
+	}
+	if(!syncDlg)
+		syncDlg.reset(new synchronizeDlg(this));
 	syncDlg->setModal(1);
 	syncDlg->show();
-	gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_SYNC_MODE));
-	connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
-	connect(syncDlg.get(),SIGNAL(reSync()),this,SLOT(reSyncSlot()));
+	
+	switch(mode)
+	{
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_SYNC_MODE));
+			break;
+		case SYNC_MODE_TESTACCOUNT:
+			gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_TESTACCOUNT_MODE));
+			break;
+	}
+	
+	
+
+	//connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
+	connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 	connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
 	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
-	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
+	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
+	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
+	
 	syncAction->setDisabled(TRUE);
 	 
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 	
 #ifdef CONFIG_AUTH_ENCRYPTION
-					qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
-					uint key=qrand()%(getkeylength());
-					QString authstr=QString("username=%1 password=%2").arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
-					QString auth_encrypt_str="";
-					encryptstring(authstr,key,auth_encrypt_str);
-					//QDEBUG("authstr=%s auth_encrypt_str=%s ",qPrintable(authstr),qPrintable(auth_encrypt_str));
+	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
+	uint key=qrand()%(getkeylength());
+	QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
+	QString auth_encrypt_str="";
+	encryptstring(authstr,key,auth_encrypt_str);
+	//QDEBUG("authstr=%s auth_encrypt_str=%s ",qPrintable(authstr),qPrintable(auth_encrypt_str));
 #ifdef CONFIG_SYNC_TIMECHECK
-					QString localBmFullPath;
-					QString bmxml_url;
-					if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
-					{
-						bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
-					}else{
-						bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-					}
-#else
-					QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key);
-#endif
-#else
-
-	QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
-#endif
-
-	gSyncer->setUrl(bmxml_url);
-#ifdef CONFIG_SYNC_THREAD
-	//QDEBUG("bookmark syncer start..........1");
-	gSyncer->start();
-	//QDEBUG("bookmark syncer start..........2");
-#else
-	gSyncer.run();
-#endif
+	QString localBmFullPath;
+	QString url;
+	switch(mode)
+	{
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
+			{
+					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
+			}else{
+					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
+			}
+			break;
+		case SYNC_MODE_TESTACCOUNT:
+			url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
+			gSyncer->setUsername(testAccountName);
+			gSyncer->setPassword(testAccountPassword);
+			break;
 	}
+	
+#else
+	QString url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key);
+#endif
+#else
+
+	QString url=QString(BM_SERVER_GET_BMXML_URL).arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
+#endif
+
+	
+	gSyncer->setUrl(url);
+	gSyncer->start();
+
 
 }
 void MyWidget::testAccountFinished(bool err,QString result)
 {
 	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,syncDlg,qPrintable(result));
-	gSyncer->wait();
-	gSyncer.reset();
+	//gSyncer->wait();
+	//gSyncer.reset();
 	if (!err&&syncDlg)
 		{
 			if(result==SUCCESSSTRING)
@@ -1611,6 +1663,11 @@ void MyWidget::testAccountFinished(bool err,QString result)
 
 void MyWidget::testAccount(const QString& name,const QString& password)
 {
+	testAccountName=name;
+	testAccountPassword=password;
+	_startSync(SYNC_MODE_TESTACCOUNT);
+	return;
+	/*
 	if(!gSyncer)
 	{
 		syncDlg.reset(new synchronizeDlg(this));
@@ -1644,6 +1701,7 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 		gSyncer->setPassword(name);
 		gSyncer->start();
 	}
+	*/
 }
 void MyWidget::syncDlgTimeout()
 {
@@ -1669,12 +1727,22 @@ void MyWidget::deleteSynDlg()
 	}
 
 }
+void MyWidget::syncer_finished()
+{
+	
+		gSyncer->wait();		
+						
+		gSyncer.reset();
+
+		syncAction->setDisabled(FALSE);
+
+}
 
 void MyWidget::bookmark_syncer_finished()
 {
 	//char *p=(char*)(gSyncer.get());
 		//dumpBuffer((char*)p,16);	
-		gSyncer->wait();
+	//	gSyncer->wait();
 		//QDEBUG("bookmark_finished  gSyncer=0x%08x",gSyncer);
 		//while(gSyncer->isFinished())
 			{
@@ -1698,15 +1766,29 @@ void MyWidget::bookmark_syncer_finished()
 			}
 		//QDEBUG("bookmark_finished  gSyncer=%d",gSyncer->isFinished());
 		
-		gSyncer.reset();
+	//	gSyncer.reset();
 		//QDEBUG("%s syncDlg=0x%08x gSyncer=0x%08x",__FUNCTION__,syncDlg,gSyncer);
-		syncAction->setDisabled(FALSE);
+	//	syncAction->setDisabled(FALSE);
 
 }
 
 void MyWidget::bookmark_finished(bool error)
 {
-	
+		if (syncDlg)
+			{
+				if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
+				{
+					syncDlgTimer=new QTimer();
+					connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
+					connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+					connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+					
+     					syncDlgTimer->start(10*1000);
+					syncDlgTimer->setSingleShot(true);
+				}
+				//	syncDlg->accept();
+					//syncDlg.reset();
+			}	
 }
 #endif
 void MyWidget::menuOptions()

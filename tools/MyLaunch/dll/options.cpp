@@ -803,7 +803,7 @@ void OptionsDlg::startUpdater()
 	
 		updaterThread* updaterthread=new updaterThread(updaterDlg);	
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
-		connect(updaterDlg,SIGNAL(reSync()),this,SLOT(startUpdater()));
+		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));
 		updaterthread->start(QThread::IdlePriority);		
 	}
 
