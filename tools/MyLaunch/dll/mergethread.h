@@ -142,7 +142,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 		}
       signals:
 	void done(bool error);
-	void mgUpdateStatusNotify(int status,QString str);
+	void mgUpdateStatusNotify(int flag,int status,QString str);
    public:
 	postHttp * posthp;
 	QFile *file;

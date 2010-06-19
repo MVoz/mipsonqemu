@@ -76,7 +76,8 @@ enum httpState
 	UPDATE_NET_ERROR,
 	BOOKMARK_SYNC_START,
 	UPDATE_PROCESSING,
-	SYNC_SUCCESSFUL
+	SYNC_SUCCESSFUL,
+	LOGIN_FALIL
 };
 
 #if defined(BOOKMARK_SYNC_DLL)
@@ -161,10 +162,10 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void httpTimerSlot();
 	void stopSync();
 	void setNetworkProxy();
-	void mgUpdateStatus(int status,QString str);
+	void mgUpdateStatus(int flag,int status,QString str);
       signals:
 	void bookmarkFinished(bool error);
-	void updateStatusNotify(int type);
+	void updateStatusNotify(int type,int status,QString str);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(bool error,QString result);
 

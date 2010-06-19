@@ -44,6 +44,8 @@ shared_ptr < BookmarkSync> gSyncer;
 QString gNativeSep = QDir::toNativeSeparators("/");
 CatItem* gSearchResult;
 
+
+
 /*
 void log(QString str)
 {

@@ -5,12 +5,16 @@
 #include <QStringList>
 #include <QSettings>
 #include <QTextCodec>
-
+#include <qDebug>
+#include <QCoreApplication>
 uint gMaxGroupId=0;
 QString gUpdatetime;
 bool gPostError=0;
 uint gPostResponse=0;
 uint gBmId=0;
+int language=DEFAULT_LANGUAGE;
+char* gLanguageList[]={"chinese","english"};
+
 void setPostResponse(uint  type)
 {
 	gPostResponse=type;
@@ -514,24 +518,26 @@ uint getIEBinPath(QString& ie_bin)
 		else
 			return 0;
 }
-uint getLanguage(QString str,QString lang,QString& res)
-{		
-		QDEBUG("getLanguage %s ",qPrintable(qApp->applicationDirPath()+"/data/language.dat"));
-		QDEBUG("getLanguage %s str=%s lang=%s res=%s",qPrintable(qApp->applicationDirPath()+"/data/language.dat"),qPrintable(str),qPrintable(lang),qPrintable(res));
-		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat", QSettings::IniFormat, NULL);
-		//langsetting.setIniCodec(QTextCodec::codecForName("utf-8"))toUnicode(myArray); 
-		QByteArray resArr=langsetting.value(str+"/"+lang, "Unknow string").toByteArray();
-		res=QTextCodec::codecForName("UTF-8")->toUnicode(resArr); 
-		QDEBUG("getLanguage %s ",qPrintable(res));
-		res=QString::fromUtf8(resArr.data());
-		QDEBUG("getLanguage %s ",qPrintable(res));
-		res=QString::fromUtf8(resArr.data());
-		QDEBUG("getLanguage %s ",qPrintable(res));
+uint setLanguage(int l)
+{
+	language=l;
+	if(l<0||(l>=sizeof(gLanguageList)/sizeof(char*)))
+		language=DEFAULT_LANGUAGE;
+	return 0;	
+}
 
-		QTextCodec *codec=QTextCodec::codecForName("GBK"); 
-		res = codec->toUnicode(resArr); 
-		QDEBUG("getLanguage %s ",qPrintable(res));
-		return 0;
+
+QString translate::tr(const char* index)
+{
+	
+   	if(QFile::exists(qApp->applicationDirPath()+"/data/language.dat")){
+		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat",QSettings::IniFormat);	
+		QByteArray langarray=langsetting.value(QString(index)+"/"+QString(gLanguageList[language]),"unknow error").toByteArray();
+		QString res=QTextCodec::codecForName("UTF-8")->toUnicode(langarray);
+		qDebug()<<res;
+		return res;
+	}
+	return "unknow error";
 }
 
 

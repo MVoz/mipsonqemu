@@ -67,8 +67,10 @@
 
 #define SUCCESSSTRING "do_success"
 
+#define DEFAULT_LANGUAGE 0 //chinese
+
 #define DO_NOTHING   "do_nothing"
-#define LOGIN_FALIL   "login_failure_please_re_login"
+
 
 #undef CATALOG_COMPRESS_ENABLE 
 
@@ -118,6 +120,39 @@
 #define FIREFOX_SQLITE_UNIQUE 1
 
 #define TEST_DB_MAXINUM_TIMEOUT 3
+
+/*updatestatus flag*/
+#define UPDATESTATUS_FLAG_APPLY 0
+#define UPDATESTATUS_FLAG_RETRY 1
+
+#define HTTP_TEST_ACCOUNT_SUCCESS_STRING  "http_test_account_success"
+#define  HTTP_TEST_ACCOUNT_FAIL_STRING  "http_test_account_fail"
+#define HTTP_TIMEOUT_STRING  "http_timeout"
+#define BOOKMARK_SYNC_START_STRING  "bookmark_sync_start"
+#define UPDATE_NET_ERROR_STRING  "update_net_error"
+#define SYNC_SUCCESSFUL_STRING "sync_successful"
+#define HTTP_GET_INI_SUCCESSFUL_STRING "http_get_ini_successful"
+#define HTTP_GET_INI_NOT_EXISTED_STRING "http_get_ini_not_existed"
+#define HTTP_GET_INI_FAILED_STRING "http_get_ini_failed"
+#define  HTTP_GET_FILE_SUCCESSFUL_STRING "http_get_file_successful"
+#define  HTTP_GET_FILE_FAILED_STRING "http_get_file_failed"
+#define  HTTP_GET_FILE_NOT_EXISTED_STRING "http_get_file_not_existed"
+#define HTTP_NEED_RETRY_STRING "http_need_retry"
+#define UPDATE_FAILED_STRING "update_failed"
+#define UPDATE_SUCCESSFUL_STRING "update_successful"
+#define UPDATE_NO_NEED_STRING "update_no_need"
+#define LOGIN_FALIL_STRING   "login_failure_please_re_login"
+
+
+
+
+
+
+
+#define LANGUAGE_APPLY "apply"
+#define LANGUAGE_RETRY "retry"
+#define LANGUAGE_CANCEL "cancel"
+
 
 
 #endif

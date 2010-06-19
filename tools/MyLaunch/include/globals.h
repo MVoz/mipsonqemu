@@ -71,6 +71,7 @@ extern QString gNativeSep;
 extern QString gSearchTxt;
 extern CatItem* gSearchResult;
 //extern QSqlDatabase db;
+//extern int language;
 
 
 struct Directory

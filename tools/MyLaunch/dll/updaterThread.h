@@ -125,7 +125,7 @@ public slots:
       signals:
 	void  getIniDoneNotify(int error);
 	void  getFileDoneNotify(int error);
-	void updateStatusNotify(int type);
+	void updateStatusNotify(int type,int status,QString str);
 	
 };
 class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
@@ -173,7 +173,7 @@ public slots:
 
       signals:
 //	void  updaterDoneNotify(bool error);
-	void updateStatusNotify(int type);
+	void updateStatusNotify(int type,int status,QString str);
 	
 };
 #endif

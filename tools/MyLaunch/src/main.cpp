@@ -99,6 +99,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	if (platform->isAlreadyRunning())
 		exit(1);
+	//inital language
 	init_pinyin_utf8_list();
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
@@ -120,7 +121,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	createActions();
 	createTrayIcon();
 #endif
-
+	
 	//      hideLaunchy();
 	label = new QLabel(this);
 
@@ -176,6 +177,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 #ifdef CONFIG_LOG_ENABLE
 //      dump_setting(NULL);
 #endif
+	//inital language
+	setLanguage(gSettings->value("GenOps/language", DEFAULT_LANGUAGE).toInt()) ;
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
@@ -196,7 +199,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 					exit(1);
 		 } 
 		 else{
-				   qDebug("connect database %s successfully!\n",qPrintable(dest));  
+
+  			        qDebug("connect database %s successfully!\n",qPrintable(dest));  
 					if(buildDbWithStart)
 						createDbFile();
 		}
@@ -1483,7 +1487,7 @@ void MyWidget::reSyncSlot()
 			//connect(syncDlg,SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
 			connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 #ifdef CONFIG_SYNDLG_SHAREPTR
-			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
 			connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 
 #else
@@ -1546,10 +1550,10 @@ void MyWidget::startSync()
 	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	syncAction->setDisabled(TRUE);
-	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer); 
+	 
 #else
 	syncDlg = new synchronizeDlg(this);
 	syncDlg->setModal(1);
@@ -1612,7 +1616,7 @@ void MyWidget::testAccountFinished(bool err,QString result)
 		{
 			if(result==SUCCESSSTRING)
 				{
-					syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
+					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,translate::tr(HTTP_TEST_ACCOUNT_SUCCESS_STRING)) ;
 					syncDlgTimer=new QTimer();
 					connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
 					connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
@@ -1622,7 +1626,7 @@ void MyWidget::testAccountFinished(bool err,QString result)
 					syncDlgTimer->setSingleShot(true);
 				}
 			else
-				syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
+				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,translate::tr(HTTP_TEST_ACCOUNT_FAIL_STRING)) ;
 			
 		}
 }
@@ -1643,7 +1647,7 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 		}
 		gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_TESTACCOUNT_MODE));
 		connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
-		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
 		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 		gSyncer->setHost(BM_SERVER_ADDRESS);
 
@@ -2162,8 +2166,8 @@ int main(int argc, char *argv[])
 			  // Kill all existing Launchy's
 			  //                      platform->KillLaunchys();
 		  }
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	//QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 #ifdef CONFIG_LOG_ENABLE
 	qInstallMsgHandler(myMessageOutput);
 	QDir logDir(".");
@@ -2190,8 +2194,9 @@ int main(int argc, char *argv[])
 #endif
 #if 0
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));	//
-	app->setFont(QFont("å®‹ä½“", 9, QFont::Normal, false));	//
+	app->setFont(QFont("ËÎÌå", 9, QFont::Normal, false));	//
 #endif
+
 	
 	MyWidget widget(NULL, platform, rescue);
 	//widget.setObjectName("main");

@@ -107,8 +107,9 @@ void OptionsDlg::contextMenuEvent(QContextMenuEvent * event)
 void OptionsDlg::startSync()
 {
 	emit optionStartSyncNotify();
-	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
 #if 0
+	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
+
 	if(!(settings->value("Account/Username","").toString().isEmpty())&&!(settings->value("Account/Userpasswd","").toString().isEmpty()))
 	{
 		if(!gSyncer)
@@ -204,8 +205,8 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 			QMessageBox::critical(this, windowTitle(), QObject::tr("The proxy server works failed"));
 			break;			
 		}
-	reply->close();
-	disconnect(manager, 0, 0, 0);	
+	//reply->close();
+	//disconnect(manager, 0, 0, 0);	
 	
 	//delete manager;
 	//manager=NULL;
@@ -214,10 +215,8 @@ void OptionsDlg::proxtTestTimerSlot()
 {
 	QDEBUG_LINE;
 	if(testProxyTimer.isActive())
-	{
 		testProxyTimer.stop();
-		reply->abort();
-	}
+	reply->abort();
 }
 void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
@@ -247,7 +246,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 	// testProxyTimer=new QTimer(this);
 
 	 testProxyTimer.start(10);
-	 testProxyTimer.setSingleShot(TRUE);
+	testProxyTimer.setSingleShot(TRUE);
 	
 	 connect(&testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
 	// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
@@ -650,7 +649,8 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 	int matchPos=pathReg.indexIn(cmdCommand);
 	int matchLength=pathReg.matchedLength();
         QDEBUG("cmd=%s regvalid=%d cmdlength=%d matchPos=%d matchLength=%d\n",qPrintable(cmdCommand),pathReg.isValid(),cmdLength,matchPos,matchLength);
-	if(matchPos==0&&cmdLength==matchLength){//is command
+	if(matchPos==0&&cmdLength==matchLength){
+//is command
 		settings->beginWriteArray("runner/cmds");		
 		for (int i = 0; i < cmdLists.size(); ++i)
 		  {
