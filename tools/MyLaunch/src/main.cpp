@@ -1578,16 +1578,19 @@ void MyWidget::_startSync(int mode,int silence)
 			delete syncDlgTimer;
 			syncDlgTimer=NULL;
 	}
+
+	if(!syncDlg)
+		{
+			syncDlg.reset(new synchronizeDlg(this));
+			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+			connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+		}
 	if(silence == SYN_MODE_NOSILENCE)
 	{
-		if(!syncDlg)
-			{
-				syncDlg.reset(new synchronizeDlg(this));
-				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-				connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
-			}
 		syncDlg->setModal(1);
 		syncDlg->show();
+	}else{
+		syncDlg->hide();
 	}
 	switch(mode)
 	{
@@ -1608,11 +1611,10 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
-	if(silence == SYN_MODE_NOSILENCE)
-	{
-		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
-		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-	}
+
+	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
+	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+	
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 	
 	syncAction->setDisabled(TRUE);
