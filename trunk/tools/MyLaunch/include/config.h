@@ -155,7 +155,8 @@
 #define LANGUAGE_CANCEL "cancel"
 #define LANGUAGE_REJECT "reject"
 
-
+#define SYN_MODE_SILENCE  0
+#define SYN_MODE_NOSILENCE  1
 
 
 #endif

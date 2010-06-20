@@ -183,6 +183,7 @@ public:
 	QCharLineEdit *input;
 	QTimer* updateTimer;
 	QTimer* dropTimer;
+	QTimer* syncTimer;
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
@@ -279,6 +280,7 @@ public slots:
 	void menuOptions();
 	void onHotKey();
 	void updateTimeout();
+	void syncTimeout();
 	void dropTimeout();
 	void setAlwaysShow(bool);
 	void setAlwaysTop(bool);
@@ -301,7 +303,7 @@ public slots:
 	void updateSuccess();
 #ifdef CONFIG_SYSTEM_TRAY
 	void startSync();
-	void _startSync(int mode);
+	void _startSync(int mode,int silence);
 	void updateApp();
 	void bookmark_finished(bool error);
 	void testAccountFinished(bool err,QString result);

@@ -537,7 +537,6 @@ QString translate::tr(const char* index)
 		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat",QSettings::IniFormat);	
 		QByteArray langarray=langsetting.value(QString(index)+"/"+QString(gLanguageList[language]),"unknow error").toByteArray();
 		QString res=QTextCodec::codecForName("UTF-8")->toUnicode(langarray);
-		qDebug()<<res;
 		return res;
 	}
 	return "unknow error";
