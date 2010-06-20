@@ -268,12 +268,16 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	  }
 	// Set the timers
 	updateTimer = new QTimer(this);
+	syncTimer = new QTimer(this);
 	dropTimer = new QTimer(this);
 	dropTimer->setSingleShot(true);
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimeout()));
+	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
 	if (gSettings->value("GenOps/updatetimer", 10).toInt() != 0)
-		updateTimer->start(60000);
+		updateTimer->start(60000);//1m
+	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
+		syncTimer->start(5*60000);//5m
 
 
 
@@ -1071,7 +1075,17 @@ gSettings->setValue("Display/rposY", rpos.second);
 }
 */
 
-
+void MyWidget::syncTimeout()
+{
+	// one hour
+	int time = gSettings->value("GenOps/updatetimer", 60).toInt();
+	{
+		_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);
+	}
+	syncTimer->stop();
+	if (time != 0)
+		syncTimer->start(time * 60000);//minutes
+}
 void MyWidget::updateTimeout()
 {
 	// Save the settings periodically
@@ -1489,7 +1503,7 @@ void MyWidget::reSync()
 			mode=SYNC_MODE_TESTACCOUNT;			
 			break;
 	}
-	_startSync(mode);
+	_startSync(mode,SYN_MODE_NOSILENCE);
 /*
 	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty()))
 		{
@@ -1534,10 +1548,10 @@ void MyWidget::reSync()
 }
 void MyWidget::startSync()
 {
-	_startSync(SYNC_MODE_BOOKMARK);
+	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_NOSILENCE);
 }
 
-void MyWidget::_startSync(int mode)
+void MyWidget::_startSync(int mode,int silence)      
 {
 	syncMode = mode;
 	QString name,password;
@@ -1564,15 +1578,17 @@ void MyWidget::_startSync(int mode)
 			delete syncDlgTimer;
 			syncDlgTimer=NULL;
 	}
-	if(!syncDlg)
-		{
-			syncDlg.reset(new synchronizeDlg(this));
-			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-			connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
-		}
-	syncDlg->setModal(1);
-	syncDlg->show();
-	
+	if(silence == SYN_MODE_NOSILENCE)
+	{
+		if(!syncDlg)
+			{
+				syncDlg.reset(new synchronizeDlg(this));
+				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+				connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+			}
+		syncDlg->setModal(1);
+		syncDlg->show();
+	}
 	switch(mode)
 	{
 		case SYNC_MODE_BOOKMARK:
@@ -1592,8 +1608,11 @@ void MyWidget::_startSync(int mode)
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
-	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+	if(silence == SYN_MODE_NOSILENCE)
+	{
+		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
+		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+	}
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 	
 	syncAction->setDisabled(TRUE);
@@ -1671,7 +1690,7 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 {
 	testAccountName=name;
 	testAccountPassword=password;
-	_startSync(SYNC_MODE_TESTACCOUNT);
+	_startSync(SYNC_MODE_TESTACCOUNT,SYN_MODE_NOSILENCE);
 	return;
 	/*
 	if(!gSyncer)
