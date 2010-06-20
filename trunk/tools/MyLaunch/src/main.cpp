@@ -1472,12 +1472,13 @@ void MyWidget::stopSyncSlot()
 			QDEBUG("stop sync.................");
 			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 			emit stopSyncNotify();
-			//gSyncer->stopSync();			
+	
 		}
 }
 void MyWidget::reSync()
 {
 	int mode;
+	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(syncMode)
 	{
 		case SYNC_MODE_BOOKMARK:
@@ -1540,6 +1541,7 @@ void MyWidget::_startSync(int mode)
 {
 	syncMode = mode;
 	QString name,password;
+	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(mode)
 	{
 		case SYNC_MODE_BOOKMARK:
@@ -1554,7 +1556,7 @@ void MyWidget::_startSync(int mode)
 	}
 	if(gSyncer||name.isEmpty()||password.isEmpty())
 			return;		
-	qDebug("%s gSyncer=0x%08x syncDlg=0x%p",__FUNCTION__,gSyncer,syncDlg);
+	
 	if(syncDlgTimer)
 	{
 			if(syncDlgTimer->isActive())
@@ -1563,7 +1565,11 @@ void MyWidget::_startSync(int mode)
 			syncDlgTimer=NULL;
 	}
 	if(!syncDlg)
-		syncDlg.reset(new synchronizeDlg(this));
+		{
+			syncDlg.reset(new synchronizeDlg(this));
+			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+			connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+		}
 	syncDlg->setModal(1);
 	syncDlg->show();
 	
@@ -1581,8 +1587,7 @@ void MyWidget::_startSync(int mode)
 	
 
 	//connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
-	connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-	connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+	
 	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
@@ -1640,7 +1645,7 @@ void MyWidget::_startSync(int mode)
 }
 void MyWidget::testAccountFinished(bool err,QString result)
 {
-	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,syncDlg,qPrintable(result));
+	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
 	//gSyncer->wait();
 	//gSyncer.reset();
 	if (!err&&syncDlg)
@@ -1729,14 +1734,10 @@ void MyWidget::deleteSynDlg()
 
 }
 void MyWidget::syncer_finished()
-{
-	
-		gSyncer->wait();		
-						
+{	
+		gSyncer->wait();								
 		gSyncer.reset();
-
 		syncAction->setDisabled(FALSE);
-
 }
 
 void MyWidget::bookmark_syncer_finished()
@@ -1788,7 +1789,7 @@ void MyWidget::bookmark_finished(bool error)
 					syncDlgTimer->setSingleShot(true);
 				}
 				//	syncDlg->accept();
-					//syncDlg.reset();
+				//syncDlg.reset();
 			}	
 }
 #endif
@@ -2230,7 +2231,7 @@ int main(int argc, char *argv[])
 	//QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 #ifdef CONFIG_LOG_ENABLE
-	qInstallMsgHandler(myMessageOutput);
+	//qInstallMsgHandler(myMessageOutput);
 	QDir logDir(".");
 	if (logDir.exists("log.txt"))
 	  {

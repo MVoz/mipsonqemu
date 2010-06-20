@@ -160,7 +160,7 @@ signals:
 	void finishedFade(double);
 };
 enum {
-	SYNC_MODE_BOOKMARK,
+	SYNC_MODE_BOOKMARK=0,
 	SYNC_MODE_REBOOKMARK,	
 	SYNC_MODE_TESTACCOUNT
 };

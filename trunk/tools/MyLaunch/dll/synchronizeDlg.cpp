@@ -80,8 +80,9 @@ void synchronizeDlg::reject()
 }
 void synchronizeDlg::retry()
 {
+	qDebug("%s %d",__FUNCTION__,__LINE__);
 	emit reSyncNotify();
-	QDEBUG("synchronizeDlg retry.....");
+	
 }
 void synchronizeDlg::populateJavaScriptWindowObject()
 {
@@ -104,7 +105,8 @@ void synchronizeDlg::updateStatus(int type,int status,QString str)
 			jsStr.append(QString("$$('loading').style.display='block';"));
 			jsStr.append(QString("$$('arrow').style.display='none';"));
 			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(str));
-			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
+			//jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
+			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(translate::tr(LANGUAGE_RETRY)));
 			break;
 		/*
 		case UPDATE_SUCCESSFUL:		
