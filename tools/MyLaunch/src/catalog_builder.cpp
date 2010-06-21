@@ -119,7 +119,7 @@ void CatBuilder::buildCatalog(uint delId)
 		  QFile f(dest);
 		  f.open(QIODevice::ReadOnly);
 		  XmlReader bm_xml(&f,gSettings);
-		  //bm_xml.getCatalog(&pitems);
+		  bm_xml.getCatalog(&pitems);
 		  f.close();
 	}
 //	runner run(gSettings);
@@ -132,7 +132,7 @@ void CatBuilder::buildCatalog(uint delId)
 //	plugins->getCatalogs(&pitems);
 	foreach(CatItem item, pitems)
 	{
-		// qDebug("fullpath=%s iconpath=%s useage=%d name=%s delId=%d comeFrom=%d",  qPrintable(item.fullPath), qPrintable(item.icon), item.usage,qPrintable(item.shortName),delId,item.comeFrom);
+		 qDebug("fullpath=%s iconpath=%s useage=%d name=%s delId=%d comeFrom=%d",  qPrintable(item.fullPath), qPrintable(item.icon), item.usage,qPrintable(item.shortName),delId,item.comeFrom);
 		 cat->addItem(item,item.comeFrom,delId);
 	}
 
