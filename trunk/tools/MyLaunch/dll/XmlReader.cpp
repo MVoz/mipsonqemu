@@ -10,7 +10,7 @@
 static QString browserName[]={QString(""),QString("ie"),QString("firefox"),QString("opera")};
 void XmlReader::getCatalog(QList<CatItem>* items)
 {
-/*
+
 	while (!atEnd())
 	  {
 		  readNext();
@@ -26,7 +26,7 @@ void XmlReader::getCatalog(QList<CatItem>* items)
 		    {
 		    }
 	  }
-*/
+
 }
 void XmlReader::getBookmarkCatalog(QList<CatItem>* items)
 {
