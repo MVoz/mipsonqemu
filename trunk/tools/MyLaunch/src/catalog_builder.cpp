@@ -53,7 +53,7 @@ void CatBuilder::run()
 	//if buildWithStart is true,rescan all item
 	//else
 	//includedir true--include dir
-	//if (buildWithStart)
+	if (buildWithStart)
 	 {
 	 	  uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
 		  qDebug("delId=%d",delId);
@@ -67,9 +67,9 @@ void CatBuilder::clearDb(int type,uint delId)
 {
 		QSqlQuery	query("", *db);
 		QString queryStr;
-		if(buildWithStart)
-			queryStr=QString("delete  from %1 where comefrom=%2 and delId!=%3 ").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
-		else
+	//	if(buildWithStart)
+	//		queryStr=QString("delete  from %1 where comefrom=%2 and delId!=%3 ").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+	//	else
 			queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
 		qDebug("queryStr=%s",qPrintable(queryStr));
 		if(query.exec(queryStr)){
@@ -81,7 +81,8 @@ void CatBuilder::buildCatalog(uint delId)
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (main == NULL)
 		return;
-	if(buildWithStart){
+	if(buildWithStart)
+	{
 		QList < Directory > memDirs;
 		int size = gSettings->beginReadArray("dirs");
 		for (int i = 0; i < size; ++i)
@@ -364,6 +365,7 @@ void CatBuilder::storeCatalog(QString dest,uint delId)
 		  	}
 			db->commit();
 			query.clear();
+			this->cat->clearItem();
 		}
 //}
 
