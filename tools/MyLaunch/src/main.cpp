@@ -363,6 +363,7 @@ void MyWidget::showAlternatives(bool show)
 			    QListWidgetItem *item = new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
 			    //                      QListWidgetItem *item = new QListWidgetItem(alternatives);
 			    item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
+			    qDebug("size=%d fullPath=%s\n",searchResults.size(),qPrintable(searchResults[i].fullPath));
 			    item->setData(ROLE_SHORT, searchResults[i].shortName);
 			    item->setData(ROLE_ICON, icon);
 			    item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));

@@ -20,6 +20,7 @@ public:
 		}
 	virtual ~Catalog() {}
 	virtual void addItem(CatItem& item,int type,uint delId) = 0;
+	virtual void clearItem() = 0;
 	virtual int count() = 0;
 	virtual const CatItem & getItem(int) = 0;
 	//bool matches(CatItem* item, QString& txt);
@@ -71,6 +72,7 @@ private:
 public:
 	SlowCatalog(QSettings* setting,CatItem* searchResult,QSqlDatabase* db) : Catalog(setting,searchResult,db) {}
 	void addItem(CatItem& item,int type,uint delId);
+	void clearItem() ;
 	QList<CatItem*> search(QString);
 	int count() { return catList.count(); }
 	const CatItem & getItem(int i){

@@ -95,6 +95,10 @@ void SlowCatalog::addItem(CatItem& item,int type,uint delId)
 	catList.push_back(item);
 #endif
 }
+void SlowCatalog::clearItem()
+{
+	catList.clear();
+}
 #endif
 void Catalog::pinyinMatches(QStringList& strlist,int i,int max,QString e_s,QString &txt,bool& ret)
 {
@@ -214,7 +218,7 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem > &out)
 	if(!fuzzyMatch&&!CaseSensitive)
 		txt = txt.toLower();
 	QList < CatItem * >catMatches = search(txt);
-
+	qDebug("%s found count=%d",__FUNCTION__,catMatches.count());
 	// Now prioritize the catalog items
 	searchText = txt;
 	qSort(catMatches.begin(), catMatches.end(), CatLess);
@@ -280,7 +284,7 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		int numresults=settings->value("GenOps/numresults",10).toInt();
 		//db.transaction();
 		QString queryStr;
-		queryStr=QString("select * from %1 where shortCut='%2' limit %3").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
+		queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
 RETRY:
 		qDebug("queryStr=%s",qPrintable(queryStr));
 		if(query.exec(queryStr)){
@@ -324,6 +328,7 @@ RETRY:
 					  numresults-=i;
 					  query.clear();
 			}
+/*
 	//	db.commit();
 		if(!retry&&numresults){	
 			retry=1;
@@ -338,7 +343,7 @@ RETRY:
 			queryStr=QString("select * from (select * from %1 order by usage desc ) where fullpath LIKE '%%2%' limit %3 ").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
 			goto RETRY;
 			}
-
+*/
 		if(numresults){
 			//find from pinyin
 				queryStr=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
