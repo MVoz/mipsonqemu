@@ -2250,8 +2250,9 @@ int main(int argc, char *argv[])
 			  // Kill all existing Launchy's
 			  //                      platform->KillLaunchys();
 		  }
-	//QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	//QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 #ifdef CONFIG_LOG_ENABLE
 	//qInstallMsgHandler(myMessageOutput);
 	QDir logDir(".");

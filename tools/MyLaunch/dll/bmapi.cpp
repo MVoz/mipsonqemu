@@ -529,18 +529,6 @@ uint setLanguage(int l)
 	return 0;	
 }
 
-
-QString translate::tr(const char* index)
-{
-	
-   	if(QFile::exists(qApp->applicationDirPath()+"/data/language.dat")){
-		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat",QSettings::IniFormat);	
-		QByteArray langarray=langsetting.value(QString(index)+"/"+QString(gLanguageList[language]),"unknow error").toByteArray();
-		QString res=QTextCodec::codecForName("UTF-8")->toUnicode(langarray);
-		return res;
-	}
-	return "unknow error";
-}
 QString translate::encrypt(QString para,uint secindex)
 {
 	QString out="";
@@ -613,6 +601,16 @@ QString translate::decrypt(QString para,uint secindex)
 		out.append(encrypt_arr[found_h][found_v]);
 	}
 	return out;
+}
+QString translate::tr(const char* index)
+{
+	QString res="unknow error";
+   	if(QFile::exists(qApp->applicationDirPath()+"/data/language.dat")){
+		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat",QSettings::IniFormat);	
+		QByteArray langarray=langsetting.value(QString(index)+"/"+QString(gLanguageList[language]),"unknow error").toByteArray();
+		res=QTextCodec::codecForName("UTF-8")->toUnicode(QString(langarray).toLatin1()); 
+	}		  	
+	return res;
 }
 
 
