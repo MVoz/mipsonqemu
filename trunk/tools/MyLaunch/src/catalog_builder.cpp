@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDataStream>
 #include <weby>
 #include <runner>
-CatBuilder::CatBuilder(bool fromArchive,QSqlDatabase *dbs):
- buildWithStart(fromArchive),db(dbs)
+CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
+ buildWithStart(fromArchive),buildMode(mode),db(dbs)
 {
 	//if (gSettings->value("GenOps/fastindexer", false).toBool())
 	//	cat.reset((Catalog *) new FastCatalog(gSettings));
@@ -65,22 +65,65 @@ void CatBuilder::run()
 }
 void CatBuilder::clearDb(int type,uint delId)
 {
-		QSqlQuery	query("", *db);
+		QSqlQuery query("", *db);
 		QString queryStr;
-	//	if(buildWithStart)
-	//		queryStr=QString("delete  from %1 where comefrom=%2 and delId!=%3 ").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
-	//	else
-			queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+		switch(buildMode)
+		{
+			case CAT_BUILDMODE_ALL:
+				queryStr=QString("delete  from %1 where comeFrom!=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PREDEFINE).arg(delId);
+			break;
+			case CAT_BUILDMODE_DIRECTORY:
+				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+			break;
+			case CAT_BUILDMODE_BOOKMARK:
+				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
+				queryStr=QString("delete  from %1 where (comeFrom between %2 and %3) and delId!=%4").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(COME_FROM_OPERA).arg(delId);
+			break;
+			case CAT_BUILDMODE_COMMAND:
+				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
+			break;
+		}
+		
 		qDebug("queryStr=%s",qPrintable(queryStr));
 		if(query.exec(queryStr)){
 				query.clear();
-			}
+		}
 }
-void CatBuilder::buildCatalog(uint delId)
+void CatBuilder::buildCatalog_bookmark(uint delId)
+{
+	QList < CatItem > pitems;
+#if 1
+	//load from xml file
+		 QString dest ;
+		if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),dest)&&QFile::exists(dest))
+		  {
+			  QFile f(dest);
+			  f.open(QIODevice::ReadOnly);
+			  XmlReader bm_xml(&f,gSettings);
+			  bm_xml.getCatalog(&pitems);
+			  f.close();
+		}
+	//	runner run(gSettings);
+	//	run.getCatalog(&pitems);
+#else
+		Weby web(gSettings); 
+		web.getCatalog(&pitems);
+#endif
+	
+	//	plugins->getCatalogs(&pitems);
+		foreach(CatItem item, pitems)
+		{
+			 qDebug("fullpath=%s iconpath=%s useage=%d name=%s delId=%d comeFrom=%d",  qPrintable(item.fullPath), qPrintable(item.icon), item.usage,qPrintable(item.shortName),delId,item.comeFrom);
+			 cat->addItem(item,item.comeFrom,delId);
+		}
+
+}
+void CatBuilder::buildCatalog_directory(uint delId)
 {
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (main == NULL)
-		return;
+			return;
+
 	if(buildWithStart)
 	{
 		QList < Directory > memDirs;
@@ -110,30 +153,33 @@ void CatBuilder::buildCatalog(uint delId)
 			  indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth,COME_FROM_PROGRAM,delId);
 		  }
 	}
-	QList < CatItem > pitems;
-#if 1
-//load from xml file
-	 QString dest ;
-	if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),dest)&&QFile::exists(dest))
-	  {
-		  QFile f(dest);
-		  f.open(QIODevice::ReadOnly);
-		  XmlReader bm_xml(&f,gSettings);
-		  bm_xml.getCatalog(&pitems);
-		  f.close();
-	}
-//	runner run(gSettings);
-//	run.getCatalog(&pitems);
-#else
-	Weby web(gSettings); 
-	web.getCatalog(&pitems);
-#endif
 
-//	plugins->getCatalogs(&pitems);
-	foreach(CatItem item, pitems)
+}
+void CatBuilder::buildCatelog_command(uint delId)
+{
+}
+
+void CatBuilder::buildCatalog(uint delId)
+{
+	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
+	if (main == NULL)
+		return;
+	switch(buildMode)
 	{
-		 qDebug("fullpath=%s iconpath=%s useage=%d name=%s delId=%d comeFrom=%d",  qPrintable(item.fullPath), qPrintable(item.icon), item.usage,qPrintable(item.shortName),delId,item.comeFrom);
-		 cat->addItem(item,item.comeFrom,delId);
+		case CAT_BUILDMODE_ALL:
+			buildCatalog_directory(delId);
+			buildCatalog_bookmark(delId);
+			buildCatelog_command(delId);
+		break;
+		case CAT_BUILDMODE_DIRECTORY:
+			buildCatalog_directory(delId);
+		break;
+		case CAT_BUILDMODE_BOOKMARK:
+			buildCatalog_bookmark(delId);
+		break;
+		case CAT_BUILDMODE_COMMAND:
+			buildCatelog_command(delId);
+		break;
 	}
 
 	emit(catalogIncrement(0.0));

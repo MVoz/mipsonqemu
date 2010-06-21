@@ -29,7 +29,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/shared_ptr.hpp>
 
 using namespace boost;
-
+enum catbuildmode{
+	CAT_BUILDMODE_ALL=0,
+	CAT_BUILDMODE_DIRECTORY,
+	CAT_BUILDMODE_BOOKMARK,
+	CAT_BUILDMODE_COMMAND,
+	
+};
 class CatBuilder : public QThread
 {
 	Q_OBJECT
@@ -39,14 +45,19 @@ private:
 	shared_ptr<Catalog> curcat;
 	//PluginHandler* plugins;
 	bool buildWithStart;
+	
 	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
 	QSqlDatabase *db;
+	catbuildmode buildMode;
 
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(QString,uint);
 	void buildCatalog(uint);
+	void buildCatalog_bookmark(uint);
+	void buildCatalog_directory(uint);
+	void buildCatelog_command(uint);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId);
 	void produceInsetQueryStr(CatItem& item,QString& s );
 	bool createDbFile();
@@ -57,7 +68,7 @@ public:
 
 
 	shared_ptr<Catalog> getCatalog() { return cat; }
-	CatBuilder(bool fromArchive,QSqlDatabase *dbs);
+	CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs);
 	CatBuilder(shared_ptr<Catalog> catalog,QSqlDatabase *dbs) :  buildWithStart(false),db(dbs),cat(catalog){}
 	void run();
 	void clearDb(int type,uint delId);
