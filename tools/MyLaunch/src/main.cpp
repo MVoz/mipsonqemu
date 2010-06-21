@@ -283,7 +283,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	// Load the catalog
 	updateTimes=0;
-	gBuilder.reset(new CatBuilder(buildDbWithStart,&db));
+	gBuilder.reset(new CatBuilder(buildDbWithStart,CAT_BUILDMODE_ALL,&db));
 	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	
 	gBuilder->start();
@@ -1103,7 +1103,7 @@ void MyWidget::updateTimeout()
 	// Perform the database update
 	if (gBuilder == NULL)
 	  {
-		  gBuilder.reset(new CatBuilder(includeDir,&db));
+		  gBuilder.reset(new CatBuilder(includeDir,CAT_BUILDMODE_ALL,&db));
 		  connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		  gBuilder->start(QThread::IdlePriority);
 	  }		
@@ -1465,19 +1465,19 @@ void MyWidget::contextMenuEvent(QContextMenuEvent * event)
 	menu.exec(event->globalPos());
 	menuOpen = false;
 }
-
-void MyWidget::buildCatalog()
+void MyWidget::_buildCatalog(catbuildmode mode)
 {
-	// Perform the database update
-//	QDEBUG("%s gBuilder=0x%08x\n",__FUNCTION__,gBuilder);
 	if (gBuilder == NULL)
 	  {
-		  gBuilder.reset(new CatBuilder(true,&db));
+		  gBuilder.reset(new CatBuilder(true,mode,&db));
 		//  gBuilder->setPreviousCatalog(catalog);
 		  connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		  gBuilder->start(QThread::IdlePriority);
 	  }
-
+}
+void MyWidget::buildCatalog()
+{
+	_buildCatalog(CAT_BUILDMODE_ALL);
 }
 
 #ifdef  CONFIG_SYSTEM_TRAY
@@ -1609,7 +1609,7 @@ void MyWidget::_startSync(int mode,int silence)
 	//connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
 	
 	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
-	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
+	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_syncer_finished(bool)));
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
 
@@ -1762,17 +1762,8 @@ void MyWidget::syncer_finished()
 		syncAction->setDisabled(FALSE);
 }
 
-void MyWidget::bookmark_syncer_finished()
+void MyWidget::bookmark_syncer_finished(bool error)
 {
-	//char *p=(char*)(gSyncer.get());
-		//dumpBuffer((char*)p,16);	
-	//	gSyncer->wait();
-		//QDEBUG("bookmark_finished  gSyncer=0x%08x",gSyncer);
-		//while(gSyncer->isFinished())
-			{
-				
-			}
-		
 		if (syncDlg)
 			{
 				if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
@@ -1784,18 +1775,12 @@ void MyWidget::bookmark_syncer_finished()
 					
      					syncDlgTimer->start(10*1000);
 					syncDlgTimer->setSingleShot(true);
+					//update catalog
+					_buildCatalog(CAT_BUILDMODE_BOOKMARK);
 				}
-				//	syncDlg->accept();
-					//syncDlg.reset();
 			}
-		//QDEBUG("bookmark_finished  gSyncer=%d",gSyncer->isFinished());
-		
-	//	gSyncer.reset();
-		//QDEBUG("%s syncDlg=0x%08x gSyncer=0x%08x",__FUNCTION__,syncDlg,gSyncer);
-	//	syncAction->setDisabled(FALSE);
-
 }
-
+/*
 void MyWidget::bookmark_finished(bool error)
 {
 		if (syncDlg)
@@ -1809,11 +1794,13 @@ void MyWidget::bookmark_finished(bool error)
 					
      					syncDlgTimer->start(10*1000);
 					syncDlgTimer->setSingleShot(true);
+								
 				}
 				//	syncDlg->accept();
 				//syncDlg.reset();
 			}	
 }
+*/
 #endif
 void MyWidget::menuOptions()
 {

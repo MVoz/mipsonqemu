@@ -300,14 +300,15 @@ public slots:
 	void finishedFade(double d);
 	void menuEvent(QContextMenuEvent*);
 	void buildCatalog();
+	void _buildCatalog(catbuildmode);
 	void updateSuccess();
 #ifdef CONFIG_SYSTEM_TRAY
 	void startSync();
 	void _startSync(int mode,int silence);
 	void updateApp();
-	void bookmark_finished(bool error);
+//	void bookmark_finished(bool error);
 	void testAccountFinished(bool err,QString result);
-	void bookmark_syncer_finished();
+	void bookmark_syncer_finished(bool error);
 	void syncer_finished();
 	void reSync();
 	void stopSyncSlot();
