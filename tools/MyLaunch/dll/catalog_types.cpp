@@ -283,8 +283,8 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		int bookmark_retry=0;
 		int numresults=settings->value("GenOps/numresults",10).toInt();
 		//db.transaction();
-		QString queryStr;
-		queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
+		//QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
+		QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
 RETRY:
 		qDebug("queryStr=%s",qPrintable(queryStr));
 		if(query.exec(queryStr)){
