@@ -122,7 +122,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);	
 	~BookmarkSync()
 	{
-	QDEBUG("~BookmarkSync.....");
+	qDebug("~BookmarkSync.....");
 	}
 	void setHost(QString str)
 	{

@@ -88,8 +88,8 @@
 
 
 
-#define LOG_RUN_LINE logToFile("Call function %s()  %d in the file %s",__FUNCTION__,__LINE__,__FILE__);
-#define QDEBUG_LINE   QDEBUG("%s %d\n",__FUNCTION__,__LINE__);
+#define LOG_RUN_LINE qDebug("Call function %s()  %d in the file %s",__FUNCTION__,__LINE__,__FILE__);
+#define QDEBUG_LINE   qDebug("%s %d\n",__FUNCTION__,__LINE__);
 #define SHAREPTRPRINT(X) (X?X.get():0)
 
 #define BM_EQUAL 1

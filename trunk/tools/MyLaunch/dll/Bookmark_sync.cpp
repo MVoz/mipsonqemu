@@ -62,7 +62,7 @@ void BookmarkSync::on_http_stateChanged(int stat)
 
 void BookmarkSync::on_http_dataReadProgress(int done, int total)
 {
-	QDEBUG("Downloaded:%d bytes out of %d", done, total);
+	qDebug("Downloaded:%d bytes out of %d", done, total);
 	emit readDateProgressNotify(done, total);
 }
 
@@ -93,7 +93,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 }
 void BookmarkSync::httpTimerSlot()
 {
-	QDEBUG("httpTimerSlot.......");
+	qDebug("httpTimerSlot.......");
 	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,translate::tr(HTTP_TIMEOUT_STRING));	
 	http_timerover=1;
 	httpTimer->stop();
@@ -116,7 +116,7 @@ void BookmarkSync::stopSync()
 		case 1:
 			if(mgthread&&mgthread->isRunning())
 			{
-				QDEBUG("shut down the mergethread!");
+				qDebug("shut down the mergethread!");
 				mgthread->setTerminated(1);
 			}
 			break;			
@@ -157,7 +157,7 @@ void BookmarkSync::run()
 	if(mode==BOOKMARK_SYNC_MODE)	
 	{
 		connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)));
-		QDEBUG("BookmarkSync run...........");
+		qDebug("BookmarkSync run...........");
 		file = new QFile(BM_XML_FROM_SERVER);
 		int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 		http->setHost(host);
@@ -168,7 +168,7 @@ void BookmarkSync::run()
 		if(!http_timerover)
 			emit bookmarkFinished(ret);
 
-		QDEBUG("sync thread quit.............");
+		qDebug("sync thread quit.............");
 	 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
 
 		http->setHost(BM_SERVER_ADDRESS);
@@ -195,7 +195,7 @@ void BookmarkSync::run()
 		resultBuffer->close();
 		delete resultBuffer;
 		resultBuffer=NULL;
-		QDEBUG("testAccount thread quit.............\n");
+		qDebug("testAccount thread quit.............\n");
 	 	}
 
 			if(httpTimer->isActive())
@@ -245,7 +245,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	//	http->killTimer(httpTimerId);
 	//httpTimerId = 0;
 #endif
-	QDEBUG("emit bookmarkFinished error %d to networkpage", error);
+	qDebug("emit bookmarkFinished error %d to networkpage", error);
      if(!error)	
 	{
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
@@ -255,17 +255,17 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
 		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int,QString)), this, SLOT(mgUpdateStatus(int,int,QString)));
 		mgthread->start();
-		QDEBUG("start merge thread...........");
+		qDebug("start merge thread...........");
 	}
 else
 	{
 		if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
 			{
-				QDEBUG("http error %s",qPrintable(http->errorString()));
+				qDebug("http error %s",qPrintable(http->errorString()));
 				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,translate::tr(UPDATE_NET_ERROR_STRING));
 			}
 		else
-			QDEBUG("http error %s",qPrintable(http->errorString()));
+			qDebug("http error %s",qPrintable(http->errorString()));
 		mergeDone();
 	}
 if (!IS_NULL(file))
@@ -279,7 +279,7 @@ if (!IS_NULL(file))
 
 void BookmarkSync::mergeDone()
 {
-	QDEBUG("quit merge thread...........");
+	qDebug("quit merge thread...........");
 	if(!error){
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL,translate::tr(SYNC_SUCCESSFUL_STRING));
 	}
@@ -291,7 +291,7 @@ void BookmarkSync::mergeDone()
 		delete netProxy;
 		netProxy=NULL;
 	}
-	exit();
+	exit(error);
 }
 
 

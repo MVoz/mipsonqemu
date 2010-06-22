@@ -39,7 +39,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QS
 	webView->setMaximumSize(QSize(805, 16777215));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	QDEBUG("register resource options.rcc");
+	qDebug("register resource options.rcc");
 	QResource::registerResource("options.rcc");
 	setFixedSize(805, 450);
 	metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
@@ -70,7 +70,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QS
 }
 OptionsDlg::~OptionsDlg()
 {
-	QDEBUG(" ~OptionsDlg unregister resource options.rcc");
+	qDebug(" ~OptionsDlg unregister resource options.rcc");
 	QResource::unregisterResource("options.rcc");
 	cmdLists.clear();
 	dirLists.clear();
@@ -176,7 +176,7 @@ void OptionsDlg::testAccountFinished(bool err,QString result)
 */
 void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
 {
-	QDEBUG("%s error=%d\n",__FUNCTION__,err);
+	qDebug("%s error=%d\n",__FUNCTION__,err);
 	 testProxyTimer.stop();
 	switch (err){
 		case  QNetworkReply::ProxyAuthenticationRequiredError:
@@ -191,7 +191,7 @@ void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
 void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 {	
 	int err=testreply->error();
-	QDEBUG("%s error=%d\n",__FUNCTION__,testreply->error());
+	qDebug("%s error=%d\n",__FUNCTION__,testreply->error());
 	if(testProxyTimer.isActive())
 		testProxyTimer.stop();
 	switch (err){
@@ -222,7 +222,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 {
 
 
-	QDEBUG("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s manager=0x%08x reply=0x%08x\n",
+	qDebug("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s manager=0x%08x reply=0x%08x\n",
 	__FUNCTION__,qPrintable(proxyAddr),qPrintable(proxyPort),qPrintable(proxyUsername),qPrintable(proxyPassword),manager,reply);
 	if(!manager)
 	{
@@ -258,7 +258,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 }
 void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 {
-	QDEBUG("username=%s password=%s......",qPrintable(name),qPrintable(password));
+	qDebug("username=%s password=%s......",qPrintable(name),qPrintable(password));
 	emit testAccountNotify(name,password);
 #if 1
 #if 0
@@ -296,7 +296,7 @@ void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 	accountTestHttp.postString = postString;
 	accountTestHttp.start();
 	accountTestHttp.wait();
-	QDEBUG("account test complish........");
+	qDebug("account test complish........");
 #endif
 }
 void OptionsDlg::getHtml(const QString & path)
@@ -521,7 +521,7 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 {
 	settings->setValue(name, value);
 	if(name=="generalOpt/ckStartWithSystem"){
-		QDEBUG("set generalOpt/ckStartWithSystem! ");
+		qDebug("set generalOpt/ckStartWithSystem! ");
 		QSettings s(QString("HKEY_LOCAL_MACHINE\\Software\\microsoft\\windows\\currentversion\\run"),QSettings::NativeFormat);	
 		QString filepath=qApp->applicationFilePath().replace(QString("/"), QString("\\"));
 		if(QVariant(value).toBool())
@@ -679,7 +679,7 @@ int OptionsDlg::checkListDirExist(const QString& dirname)
 {
 	for (int i = 0; i < dirLists.size(); ++i)
 		{
-			        QDEBUG("name=%s dirname=%s\n",qPrintable(dirLists.at(i).name),qPrintable(dirname));
+			        qDebug("name=%s dirname=%s\n",qPrintable(dirLists.at(i).name),qPrintable(dirname));
 				if(dirLists.at(i).name==dirname){
 						return 1;
 					}
@@ -709,7 +709,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 	  	  //check the dir path	  	
 		  if(listPath.isEmpty()||checkListDirSpecialchar(listPath)||!dir.exists()) err=-2;
 		  if(checkListDirExist(listPath))	err=-1;  
-		  QDEBUG("err=%d\n",err);
+		  qDebug("err=%d\n",err);
  		  if(err<0) goto ERR;
 		  dc.index = dirLists.size();
 		  dc.name = listPath;
@@ -737,7 +737,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 	for (int i = 0; i < dirLists.size(); ++i)
 	  {
 		  settings->setArrayIndex(i);
-		  QDEBUG("directory path:%s",qPrintable(dirLists.at(i).name));
+		  qDebug("directory path:%s",qPrintable(dirLists.at(i).name));
 		  settings->setValue("name", qPrintable(dirLists.at(i).name));
 		  settings->setValue("types", dirLists.at(i).types);
 		  settings->setValue("indexDirs", dirLists.at(i).indexDirs);
