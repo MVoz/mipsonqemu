@@ -155,7 +155,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	licon = new QLabel(label);
 
 	dirs = platform->GetDirectories();
-#ifdef CONFIG_LOG_ENABLE
+#if 0
 	QHash < QString, QList < QString > >::const_iterator i;
 	for (i = dirs.constBegin(); i != dirs.constEnd(); ++i)
 	  {
@@ -208,7 +208,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	gLastUpdateTime = QDateTime::fromString(gSettings->value("updateTime", TIME_INIT_STR).toString(), TIME_FORMAT);
 	GetShellDir(CSIDL_FAVORITES, gIeFavPath);
 #ifdef CONFIG_LOG_ENABLE
-	logToFile("gLastUpdateTime=%s", qPrintable(gLastUpdateTime.toString(TIME_FORMAT)));
+	qDebug("gLastUpdateTime=%s", qPrintable(gLastUpdateTime.toString(TIME_FORMAT)));
 #endif
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
@@ -589,7 +589,7 @@ void MyWidget::parseInput(QString text)
 #ifdef CONFIG_LOG_ENABLE
 	for (int i = 0; i < inputData.size(); i++)
 	  {
-		  logToFile("%s inputData[%d] %s", __FUNCTION__, i, TOCHAR(inputData[i].getText()));
+		  qDebug("%s inputData[%d] %s", __FUNCTION__, i, TOCHAR(inputData[i].getText()));
 	  }
 #endif
 
@@ -766,11 +766,11 @@ void MyWidget::searchOnInput()
 //	plugins.getLabels(&inputData);
 //	plugins.getResults(&inputData, &searchResults);
 #ifdef CONFIG_LOG_ENABLE
-	logToFile("gSearchTxt=%s", TOCHAR(gSearchTxt));
-	logToFile("plugins searchResults:");
+	qDebug("gSearchTxt=%s", TOCHAR(gSearchTxt));
+	qDebug("plugins searchResults:");
 	for (int i = 0; i < searchResults.count(); i++)
 	  {
-		  logToFile("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
+		  qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
 	  }
 #endif
 	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
@@ -1484,7 +1484,7 @@ void MyWidget::buildCatalog()
 void MyWidget::stopSyncSlot()
 {
 	if(gSyncer){
-			QDEBUG("stop sync.................");
+			qDebug("stop sync.................");
 			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 			emit stopSyncNotify();
 	
@@ -1572,14 +1572,7 @@ void MyWidget::_startSync(int mode,int silence)
 	if(gSyncer||name.isEmpty()||password.isEmpty())
 			return;		
 	
-	if(syncDlgTimer)
-	{
-			if(syncDlgTimer->isActive())
-				syncDlgTimer->stop();
-			delete syncDlgTimer;
-			syncDlgTimer=NULL;
-	}
-
+	deleteSynDlgTimer();
 	if(!syncDlg)
 		{
 			syncDlg.reset(new synchronizeDlg(this));
@@ -1665,9 +1658,23 @@ void MyWidget::_startSync(int mode,int silence)
 
 
 }
+void MyWidget::bookmark_syncer_finished(bool error)
+{
+		if (syncDlg&&!error)
+			{
+				//if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
+				{
+					createSynDlgTimer();			//update catalog
+					
+				}
+			}
+		if(!error)
+			_buildCatalog(CAT_BUILDMODE_BOOKMARK);
+}
+
 void MyWidget::testAccountFinished(bool err,QString result)
 {
-	QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
+	qDebug("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
 	//gSyncer->wait();
 	//gSyncer.reset();
 	if (!err&&syncDlg)
@@ -1675,13 +1682,7 @@ void MyWidget::testAccountFinished(bool err,QString result)
 			if(result==SUCCESSSTRING)
 				{
 					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,translate::tr(HTTP_TEST_ACCOUNT_SUCCESS_STRING)) ;
-					syncDlgTimer=new QTimer();
-					connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
-					connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-					connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-					
-     					syncDlgTimer->start(10*1000);
-					syncDlgTimer->setSingleShot(true);
+					createSynDlgTimer();
 				}
 			else
 				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,translate::tr(HTTP_TEST_ACCOUNT_FAIL_STRING)) ;
@@ -1733,28 +1734,37 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 }
 void MyWidget::syncDlgTimeout()
 {
-
-	
-	syncDlgTimer->stop();
-	syncDlgTimer->deleteLater();
-	syncDlgTimer=NULL;
-	
 	syncDlg->accept();
+	deleteSynDlgTimer();
 }
 void MyWidget::deleteSynDlg()
 {
 	qDebug()<<__FUNCTION__;
 	syncDlg.reset();
 
+	deleteSynDlgTimer();
+}
+void MyWidget::createSynDlgTimer()
+{
+	syncDlgTimer=new QTimer();
+	connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
+	connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+	connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+					
+     	syncDlgTimer->start(10*1000);
+	syncDlgTimer->setSingleShot(true);
+}
+void MyWidget::deleteSynDlgTimer()
+{
 	if(syncDlgTimer)
 	{
 			if(syncDlgTimer->isActive())
 				syncDlgTimer->stop();
-			delete syncDlgTimer;
+			syncDlgTimer->deleteLater();
 			syncDlgTimer=NULL;
 	}
-
 }
+
 void MyWidget::syncer_finished()
 {	
 		gSyncer->wait();								
@@ -1762,24 +1772,7 @@ void MyWidget::syncer_finished()
 		syncAction->setDisabled(FALSE);
 }
 
-void MyWidget::bookmark_syncer_finished(bool error)
-{
-		if (syncDlg)
-			{
-				if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
-				{
-					syncDlgTimer=new QTimer();
-					connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
-					connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-					connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-					
-     					syncDlgTimer->start(10*1000);
-					syncDlgTimer->setSingleShot(true);
-					//update catalog
-					_buildCatalog(CAT_BUILDMODE_BOOKMARK);
-				}
-			}
-}
+
 /*
 void MyWidget::bookmark_finished(bool error)
 {
@@ -2137,7 +2130,7 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 	  case QSystemTrayIcon::Trigger:
 	  case QSystemTrayIcon::DoubleClick:
 #ifdef CONFIG_LOG_ENABLE
-		  logToFile("%s", "QSystemTrayIcon::DoubleClick");
+		  qDebug("%s", "QSystemTrayIcon::DoubleClick");
 #endif
 		  if (!isVisible())
 			  showLaunchy();
@@ -2172,7 +2165,7 @@ void MyWidget::dumpBuffer(char* addr,int length)
 		qDebug()<<(addr[i]&0xff);
 		//if(i&&((i&0x7)==0x7)) QDEBUG("\n");
 	}
-	QDEBUG("\n");
+	qDebug("\n");
 }
 
 #endif

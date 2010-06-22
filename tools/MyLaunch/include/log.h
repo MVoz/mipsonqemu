@@ -16,7 +16,9 @@
 #endif
 #endif
 #pragma warning(disable:4996)
+/*
 FUNCEXPORT void QDEBUG(const char *cformat, ...);
 FUNCEXPORT void logToFile(const char* cformat,...);
 FUNCEXPORT void logMsgbox(const char* cformat,...);
+*/
 #endif

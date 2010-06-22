@@ -149,7 +149,7 @@ void CatBuilder::buildCatalog_directory(uint delId)
 		  {
 			  emit(catalogIncrement(100.0 * (float) (i + 1) / (float) memDirs.count()));
 			  QString cur = main->platform->expandEnvironmentVars(memDirs[i].name);
-			  QDEBUG("scan directory %s......",qPrintable(memDirs[i].name));
+			  qDebug("scan directory %s......",qPrintable(memDirs[i].name));
 			  indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth,COME_FROM_PROGRAM,delId);
 		  }
 	}
@@ -265,7 +265,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 				      if (curcat != NULL)
 					      item.usage = curcat->getUsage(item.fullPath);
 				      cat->addItem(item,flag,delId);
-				     QDEBUG("add item:fullpath=%s shortName=%s\n",qPrintable(item.fullPath),qPrintable(item.shortName));
+				     qDebug("add item:fullpath=%s shortName=%s\n",qPrintable(item.fullPath),qPrintable(item.shortName));
 				      indexed[dir + "/" + bins[i]] = true;
 			      }
 		    }

@@ -184,16 +184,15 @@ int deleteDirectory(QString path)
 	QStringList files = dir.entryList(QDir::Files);
 	for(int i=0;i<files.size();i++)
 		{
-			QDEBUG("delete file %s ",qPrintable(files[i]));
+			qDebug("delete file %s ",qPrintable(files[i]));
 			dir.remove(dirPath+ "/"+files[i]);
 		}
 	QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
 	for(int i=0;i<dirs.size();i++)
 	{
-			QDEBUG("delete directory %s ",qPrintable(dirs[i]));
 			deleteDirectory(dirPath+ "/"+dirs[i]);
 	}
-	QDEBUG("deleteDirectory %s ",qPrintable(dirPath));
+	qDebug("deleteDirectory %s ",qPrintable(dirPath));
 	dir.rmdir(dirPath);
 	return 1;
 	

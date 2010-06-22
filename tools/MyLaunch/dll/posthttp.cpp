@@ -143,7 +143,7 @@ void postHttp::httpDone(bool error)
 					}
 			}
 #endif
-			QDEBUG("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),getMaxGroupId(),qPrintable(lastModified),getBmId());
+			qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),getMaxGroupId(),qPrintable(lastModified),getBmId());
 		}
 	setPostError(error);
 	exit(error);
@@ -162,7 +162,7 @@ void postHttp::httpDone(bool error)
 //}
 void postHttp::postTimerSlot()
 {
-	QDEBUG("postTimerSlot.......");
+	qDebug("postTimerSlot.......");
 	posthttp->abort();
 }
 

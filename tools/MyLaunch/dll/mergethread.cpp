@@ -30,9 +30,9 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 		QString line = s_file.readLine();
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
-			QDEBUG("no modification on server!!!");
+			qDebug("no modification on server!!!");
 		}else if(line.contains(LOGIN_FALIL_STRING)){
-			QDEBUG("login failed!!!");
+			qDebug("login failed!!!");
 			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
 			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,translate::tr(LOGIN_FALIL_STRING));
 			
@@ -41,7 +41,7 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 		}
 		else
 			{
-				QDEBUG("has modification on server!!!");
+				qDebug("has modification on server!!!");
 			}
 		QDEBUG_LINE;
 	}
@@ -108,7 +108,7 @@ if(ie_enabled)
 #if 1
 		foreach(bookmark_catagory item, ieFavReader->bm_list)
 	{
-		logToFile("iefav item:name=%s",qPrintable(item.name));
+		qDebug("iefav item:name=%s",qPrintable(item.name));
 	}
 	
 #endif
@@ -513,7 +513,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		  posthp->wait();
 		   if(getPostError())
 		  	{
-		  		QDEBUG("post error happen!");
+		  		qDebug("post error happen!");
 				return;
 		  	}
 		  if(action)//add
@@ -525,7 +525,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 			  int i=0;
 			  for(i=0;i<bc->list.size();i++)
 			  {
-				  QDEBUG("Post to Server[add]:name=%s groupId=%d", qPrintable((bc->list.at(i)).name), bc->groupId);			  
+				  qDebug("Post to Server[add]:name=%s groupId=%d", qPrintable((bc->list.at(i)).name), bc->groupId);			  
 				  postItemToHttpServer(&(bc->list[i]), action, nowparentid,browserType);
 			  }
 		  }
@@ -560,7 +560,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		  bc->bmid= getBmId();
 		   if(getPostError())
 		  	{
-		  		QDEBUG("post error happen!");
+		  		qDebug("post error happen!");
 				return;
 		  	}
 		  break;
@@ -609,7 +609,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 						    dirPath = path + "\\" + bc->name;
 						    if (!CreateDirectory(dirPath.utf16(), NULL))
 						      {
-							      logToFile("Couldn't create new directory %s.", qPrintable(dirPath));
+							      qDebug("Couldn't create new directory %s.", qPrintable(dirPath));
 							      return;
 						      }
 						    foreach(bookmark_catagory bm, bc->list)
@@ -650,7 +650,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 						 	 dirPath = path + "\\" + bc->name;
 						    if (!deleteDirectory(dirPath))
 						      {
-							      QDEBUG("Couldn't remove new directory %s error=%d.", qPrintable(dirPath),GetLastError());
+							      qDebug("Couldn't remove new directory %s error=%d.", qPrintable(dirPath),GetLastError());
 							      return;
 						      }
 						break;
@@ -696,7 +696,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 
 				    if (hFile == INVALID_HANDLE_VALUE)
 				      {
-					      logToFile("Could not create file %s.", qPrintable(filePath));	// process error 
+					      qDebug("Could not create file %s.", qPrintable(filePath));	// process error 
 					      return;
 				      }
 				    urlContent = QString("[InternetShortcut]\nURL=%1\n").arg(bc->link);
@@ -743,7 +743,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 					      filePath = path + "\\" + bc->name + ".url";
 					    if (!DeleteFile(filePath.utf16()))
 					      {
-						      QDEBUG("Couldn't remove file %s.", qPrintable(filePath));
+						      qDebug("Couldn't remove file %s.", qPrintable(filePath));
 						      return;
 					      }
 					    break;
@@ -793,18 +793,18 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 				item->addDate=QDateTime::currentDateTime();
 	  	  		productFFId(item->id,6);
 	  	  	}	  	 
-		  QDEBUG("Down to Local[add]:name=%s local_parentId=%d", qPrintable(item->name),local_parentId);
+		  qDebug("Down to Local[add]:name=%s local_parentId=%d", qPrintable(item->name),local_parentId);
 		  downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? iePath : iePath + "/" + dir,browserType,local_parentId);
 		  list->push_back(*item);
 		  break;
 	  case 2:		//only exist in lastupdate,do nothing
 		  break;
 	  case 3:		//exist in server&lastupdate,need to delete from server
-		 QDEBUG("Post to Server[delete]:name=%s", qPrintable(item->name));
+		 qDebug("Post to Server[delete]:name=%s", qPrintable(item->name));
 		  postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
 		  break;
 	  case 4:		//only exist in local,need post to server
-		  QDEBUG("Post to Server[add]:name=%s hr=%d", qPrintable(item->name),item->hr);		  
+		  qDebug("Post to Server[add]:name=%s hr=%d", qPrintable(item->name),item->hr);		  
 		  postItemToHttpServer(item, ACTION_ITEM_ADD, parentId,browserType);
 		  list->push_back(*item);
 		  break;
@@ -814,7 +814,7 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 		//  		list->push_back(*item);
 		  break;
 	  case 6:		//exist in local&lastupdate,need delete from local
-		  QDEBUG("Down to Local[delete]:name=%s local_parentId=%d path=%s", qPrintable(item->name),local_parentId,qPrintable(QString( (dir == "") ? iePath : iePath + "/" + dir)));
+		  qDebug("Down to Local[delete]:name=%s local_parentId=%d path=%s", qPrintable(item->name),local_parentId,qPrintable(QString( (dir == "") ? iePath : iePath + "/" + dir)));
 		  downloadToLocal(item, ACTION_ITEM_DELETE, (dir == "") ? iePath : iePath + "/" + dir,browserType,local_parentId);
 		  break;
 	  case 7:		//exist in local,lastupdate&server,do nothing
@@ -828,8 +828,8 @@ int mergeThread::isBmEntryEqual(const bookmark_catagory& b,const bookmark_catago
 	settings->sync();
 	if((settings->value("GenOps/debugmerge",1).toUInt()&0x01)!=1)		
 	{
-		QDEBUG("b:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(b.name),b.name_hash,qPrintable(b.link),b.link_hash,b.flag);
-		QDEBUG("bm:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(bm.name),bm.name_hash,qPrintable(bm.link),bm.link_hash,bm.flag);
+		qDebug("b:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(b.name),b.name_hash,qPrintable(b.link),b.link_hash,b.flag);
+		qDebug("bm:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(bm.name),bm.name_hash,qPrintable(bm.link),bm.link_hash,bm.flag);
 	}
 	if ((b.name_hash!= bm.name_hash) || (b.link_hash!= bm.link_hash) || (b.flag != bm.flag)||(b.name != bm.name) || (b.link != bm.link))
 		return BM_DIFFERENT;
@@ -881,7 +881,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = bmItemInList(&item, serverList);
 		  ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		   QDEBUG("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
+		   qDebug("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
 		   if (ret != 7&&ret!=5)
 			{
 				/*
@@ -900,7 +900,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		    {
 			    bookmark_catagory tmp;
 			    copyBmCatagory(&tmp, &((*serverList)[inServer]));
-			    QDEBUG("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
+			    qDebug("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
 			    resultList->push_back(tmp);
 			    //when re=5,inLast=-1,use lastupdateList
 			    bmMerge(&(item.list), (inLast>=0)?(&((*lastupdateList)[inLast].list)):(lastupdateList), &((*serverList)[inServer].list), &(resultList->last().list), (localDirName == "") ? iePath : iePath + "/" + localDirName,iePath,browserType);
@@ -944,7 +944,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = inLast;
 		  ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		  QDEBUG("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
+		  qDebug("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
 		  if (ret != 7&&ret!=5){
 			  handleItem(&item, ret, localDirName, parentId, resultList,iePath,browserType,local_parentId,HANDLE_ITEM_LOCAL);
 		  }
@@ -952,7 +952,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		    {
 			    bookmark_catagory tmp;
 			    copyBmCatagory(&tmp, &((*lastupdateList)[inLast]));
-			    QDEBUG("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
+			    qDebug("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
 			    resultList->push_back(tmp);
 			   // resultList->push_back(lastupdateList->at(inLast));
 			    bmMergeWithoutModifyInServer(&(item.list), &((*lastupdateList)[inLast].list), &(resultList->last().list), (localDirName == "") ? iePath : iePath + "/" + localDirName,iePath,browserType);
@@ -975,7 +975,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 }
 void mergeThread::run()
 {
-	QDEBUG("mergerThread running. iePath=%s.................",qPrintable(iePath));
+	qDebug("mergerThread running. iePath=%s.................",qPrintable(iePath));
 	handleBmData(iePath,GroupId);
 	exit();
 	emit done(0);

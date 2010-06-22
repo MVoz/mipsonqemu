@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <QMessageBox>
+/*
 void QDEBUG(const char *cformat, ...)
 {
 
@@ -56,3 +57,4 @@ void logMsgbox(const char *cformat, ...)
 	msgBox.setText(msgstring);
 	msgBox.exec();
 }
+*/

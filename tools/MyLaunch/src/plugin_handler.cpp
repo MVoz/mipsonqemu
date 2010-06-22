@@ -131,7 +131,7 @@ void PluginHandler::loadPlugins()
 	  {
 		  hashi.next();
 		  PluginInfo in = hashi.value();
-		  logToFile("key:%d name=%s loaded=%d plugin:0x%08x", hashi.key(), qPrintable(in.path), in.loaded, in.obj);
+		  qDebug("key:%d name=%s loaded=%d plugin:0x%08x", hashi.key(), qPrintable(in.path), in.loaded, in.obj);
 	  }
 #endif
 	foreach(QString szDir, main->dirs["plugins"])
@@ -200,7 +200,7 @@ void PluginHandler::loadPlugins()
 				    }
 				  plugins[id] = info;
 #ifdef CONFIG_LOG_ENABLE
-				  logToFile("%s id=%d name=%s plugin=0x%08x", qPrintable(pluginsDir.absoluteFilePath(fileName)), id, qPrintable(name), info.obj);
+				  qDebug("%s id=%d name=%s plugin=0x%08x", qPrintable(pluginsDir.absoluteFilePath(fileName)), id, qPrintable(name), info.obj);
 #endif
 			  }
 		}

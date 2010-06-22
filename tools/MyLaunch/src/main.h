@@ -254,6 +254,8 @@ public:
 	void createActions();
 	void freeOccupyMemeory();
 #endif
+	void createSynDlgTimer();
+	void deleteSynDlgTimer();
 private:
     QHttp *http;
     QBuffer *verBuffer;

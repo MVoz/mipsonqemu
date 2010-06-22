@@ -88,13 +88,13 @@ void dump_setting(const QString prefix)
 		  gSettings->beginGroup(prefix);
 		  QStringList keys = gSettings->childKeys();
 		  for (int j = 0; j < keys.size(); j++)
-			 logToFile("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
+			 qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
 		  gSettings->endGroup();
 	} else
 	  {
 		  QStringList keys = gSettings->allKeys();
 		  for (int j = 0; j < keys.size(); j++)
-			  logToFile("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
+			  qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
 	  }
 }
 #endif
