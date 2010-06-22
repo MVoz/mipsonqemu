@@ -1668,8 +1668,8 @@ void MyWidget::bookmark_syncer_finished(bool error)
 					
 				}
 			}
-		if(!error)
-			_buildCatalog(CAT_BUILDMODE_BOOKMARK);
+		//if(!error)
+			//_buildCatalog(CAT_BUILDMODE_BOOKMARK);
 }
 
 void MyWidget::testAccountFinished(bool err,QString result)

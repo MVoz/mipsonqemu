@@ -109,7 +109,7 @@ public:
 			usage = 0;
 			groupId=0;
 			parentId=0;
-			hash_id = qHash(fullPath);
+			hash_id = qHash(shortName);
 			alias1="";
 			alias2="";
 			shortCut="";
@@ -127,7 +127,7 @@ public:
 		usage = 0;
 		groupId=0;
 		parentId=0;
-		hash_id = qHash(fullPath);
+		hash_id = qHash(shortName);
 		alias1="";
 		alias2="";
 		shortCut="";
@@ -144,7 +144,7 @@ public:
 		usage = 0;
 		groupId=0;
 		parentId=0;
-		hash_id = qHash(fullPath);
+		hash_id = qHash(shortName);
 		alias1="";
 		alias2="";
 		shortCut="";
@@ -160,7 +160,7 @@ public:
 		usage = 0;
 		groupId=0;
 		parentId=0;
-		hash_id = qHash(fullPath);
+		hash_id = qHash(shortName);
 		alias1="";
 		alias2="";
 		shortCut="";
@@ -183,7 +183,7 @@ public:
 		usage = 0;
 		groupId=0;
 		parentId=0;
-		hash_id = qHash(fullPath);
+		hash_id = qHash(shortName);
 		alias1="";
 		alias2="";
 		shortCut="";
@@ -199,7 +199,7 @@ public:
 		usage = 0;
 		groupId=0;
 		parentId=0;
-		hash_id = qHash(fullPath);
+		hash_id = qHash(shortName);
 		alias1="";
 		alias2="";
 		shortCut="";
