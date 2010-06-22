@@ -366,7 +366,7 @@ uint CatBuilder::isExistInDb(CatItem &item)
 	QSqlQuery query("",*db);
 	QString queryStr;
 	uint id=0;
-	queryStr=QString("select id from %1 where hashId=%2 and fullPath='%3'").arg(DB_TABLE_NAME).arg(qHash(item.fullPath)).arg(item.fullPath);
+	queryStr=QString("select id from %1 where hashId=%2 and fullPath='%3'").arg(DB_TABLE_NAME).arg(qHash(item.shortName)).arg(item.fullPath);
 	if(query.exec(queryStr)){
 					  QSqlRecord rec = query.record();
 					   

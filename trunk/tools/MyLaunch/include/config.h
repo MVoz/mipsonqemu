@@ -82,6 +82,7 @@
 #define TIME_INIT_STR "1970-01-01 00:00:00"
 
 #define LOCAL_BM_SETTING_FILE_NAME "localbm.dat"
+#define LOCAL_BM_TMP_FOR_BUILD "bmtmp.dat"
 #define IE_BM_XML_FILE_NAME "iefav.xml"
 #define LOCAL_BM_SETTING_INTERVAL "@@$$=$$@@"
 #define TOCHAR(str) ((str).toLatin1().data())
