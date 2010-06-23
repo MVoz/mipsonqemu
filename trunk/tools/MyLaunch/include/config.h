@@ -159,6 +159,14 @@
 #define SYN_MODE_SILENCE  0
 #define SYN_MODE_NOSILENCE  1
 
+#define COME_FROM_PROGRAM 1
+#define COME_FROM_RUNNER 2
+#define COME_FROM_DEFINE 3
+#define COME_FROM_PREDEFINE 4
+#define COME_FROM_IE 5
+#define COME_FROM_FIREFOX 6
+#define COME_FROM_OPERA 7
+
 
 #endif
 

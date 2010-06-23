@@ -80,6 +80,6 @@ public:
 		}
 	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
-	uint isExistInDb(CatItem &item);
+//	uint isExistInDb(CatItem &item);
 };
 

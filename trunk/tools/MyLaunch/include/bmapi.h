@@ -36,6 +36,16 @@ public :
 
 };
 */
+
+struct BMAPI_DLL_CLASSEXPORT browserinfo{
+		QString name;
+		bool enable; 
+		bool defenable;
+		int id;
+};
+
+//BMAPI_DLL_FUNCEXPORT struct browserinfo* getbrowserInfo();
+
 #define DESKTOP_WINDOWS 0
 //BMAPI_DLL_FUNCEXPORT int  getFileTime(QString filename,QString* createTime,QString* lastAccessTime,QString* lastWriteTime,int flag);
 //BMAPI_DLL_FUNCEXPORT int  setFileTime(QString filename,QString createTime,QString* lastAccessTime,QString* lastWriteTime,int flag);
@@ -65,15 +75,20 @@ BMAPI_DLL_FUNCEXPORT uint getBmId();
 BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
+BMAPI_DLL_FUNCEXPORT void getBrowserEnable(QSettings *s,struct browserinfo* b);
+
 extern int language;
-class CLASSEXPORT  translate {
+
+class BMAPI_DLL_CLASSEXPORT  tz {
 public:
-	translate(){};
-	~translate(){};
+	tz(){};
+	~tz(){};
 public :
 	static QString tr(const char* index);
 	static QString encrypt(QString para,uint secindex);
 	static QString decrypt(QString para,uint secindex);
+	static struct browserinfo* getbrowserInfo();
+
 };
 
 //int setDirectoryTimeIncludeAllFiles(QString path);

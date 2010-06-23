@@ -7,6 +7,7 @@
 #include <QTextCodec>
 #include <qDebug>
 #include <QCoreApplication>
+#include <QSettings>
 uint gMaxGroupId=0;
 QString gUpdatetime;
 bool gPostError=0;
@@ -14,6 +15,23 @@ uint gPostResponse=0;
 uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 char* gLanguageList[]={"chinese","english"};
+struct browserinfo browserInfo[]={
+	{QString("Ie"),true,true,COME_FROM_IE},
+	{QString("Firefox"),false,false,COME_FROM_FIREFOX},
+	{QString("Opera"),false,false,COME_FROM_OPERA},
+	{QString(""),false,0}
+};
+
+
+void getBrowserEnable(QSettings *s,struct browserinfo* b)
+{
+	if(!s||!b) return;
+	int i = 0;
+	while(!b[i++].name.isEmpty())
+		{
+			b->enable = s->value(QString("adv/ckSupport%1").arg(b[i].name),b[i].defenable).toBool();		
+		}
+}
 
 void setPostResponse(uint  type)
 {
@@ -528,7 +546,7 @@ uint setLanguage(int l)
 	return 0;	
 }
 
-QString translate::encrypt(QString para,uint secindex)
+QString tz::encrypt(QString para,uint secindex)
 {
 	QString out="";
 	para=para.trimmed();
@@ -565,7 +583,7 @@ QString translate::encrypt(QString para,uint secindex)
 	}
 	return out;
 }
-QString translate::decrypt(QString para,uint secindex)
+QString tz::decrypt(QString para,uint secindex)
 {
 	QString out="";
 	para=para.trimmed();
@@ -601,7 +619,7 @@ QString translate::decrypt(QString para,uint secindex)
 	}
 	return out;
 }
-QString translate::tr(const char* index)
+QString tz::tr(const char* index)
 {
 	QString res="unknow error";
    	if(QFile::exists(qApp->applicationDirPath()+"/data/language.dat")){
@@ -610,6 +628,10 @@ QString translate::tr(const char* index)
 		res=QTextCodec::codecForName("UTF-8")->toUnicode(QString(langarray).toLatin1()); 
 	}		  	
 	return res;
+}
+struct browserinfo* tz::getbrowserInfo()
+{
+	return browserInfo;
 }
 
 

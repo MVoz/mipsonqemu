@@ -126,7 +126,7 @@ void GetFileHttp::run()
 void GetFileHttp::httpTimerSlot()
 {
 	qDebug("httpTimerSlot.......");
-	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,translate::tr(HTTP_TIMEOUT_STRING));
+	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));
 	httpTimer[retryTime]->stop();
 	http[retryTime]->abort();	
 }
@@ -163,16 +163,16 @@ void GetFileHttp::getFileDone(bool error)
 				switch(statusCode)
 				{
 				case HTTP_OK:
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL,translate::tr(HTTP_GET_INI_SUCCESSFUL_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL,tz::tr(HTTP_GET_INI_SUCCESSFUL_STRING));
 					emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
 
 					break;
 				case HTTP_FILE_NOT_FOUND:				
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED,translate::tr(HTTP_GET_INI_NOT_EXISTED_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED,tz::tr(HTTP_GET_INI_NOT_EXISTED_STRING));
 					errCode=HTTP_GET_INI_NOT_EXISTED;
 					break;
 				default:
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,translate::tr(HTTP_GET_INI_FAILED_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
 					errCode=HTTP_GET_INI_FAILED;		
 					break;
 				}
@@ -187,7 +187,7 @@ void GetFileHttp::getFileDone(bool error)
 				}
 				else
 					{
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,translate::tr(HTTP_GET_INI_FAILED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
 						errCode=HTTP_GET_INI_FAILED;						
 					}
 			}
@@ -206,7 +206,7 @@ void GetFileHttp::getFileDone(bool error)
 							fileCkSum.close();
 						}	
 						if(isEqual){
-								emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,translate::tr(HTTP_GET_FILE_SUCCESSFUL_STRING));
+								emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,tz::tr(HTTP_GET_FILE_SUCCESSFUL_STRING));
 					         		emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);		
 							}else{
 								if(retryTime<UPDATE_MAX_RETRY_TIME)
@@ -217,7 +217,7 @@ void GetFileHttp::getFileDone(bool error)
 										errCode=HTTP_NEED_RETRY;
 								}else
 								{
-									emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,translate::tr(HTTP_GET_FILE_FAILED_STRING));
+									emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 									errCode=HTTP_GET_FILE_FAILED;							
 								}
 
@@ -225,11 +225,11 @@ void GetFileHttp::getFileDone(bool error)
 						}
 						break;
 					case HTTP_FILE_NOT_FOUND:	
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED,translate::tr(HTTP_GET_FILE_NOT_EXISTED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED,tz::tr(HTTP_GET_FILE_NOT_EXISTED_STRING));
 						errCode=HTTP_GET_FILE_NOT_EXISTED;						
 						break;
 					default:
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,translate::tr(HTTP_GET_FILE_FAILED_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 							errCode=HTTP_GET_FILE_FAILED;	
 							break;
 					}
@@ -243,7 +243,7 @@ void GetFileHttp::getFileDone(bool error)
 					}
 					else
 						{
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,translate::tr(HTTP_GET_FILE_FAILED_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 							errCode=HTTP_GET_FILE_FAILED;							
 						}
 				}
@@ -256,7 +256,7 @@ void GetFileHttp::getFileDone(bool error)
 	
 			switch(errCode){
 					case HTTP_NEED_RETRY:
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,translate::tr(HTTP_NEED_RETRY_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,tz::tr(HTTP_NEED_RETRY_STRING));
 						qDebug("%d times to get %s from server!",retryTime,qPrintable(updaterFilename));
 						break;
 					case HTTP_GET_INI_NOT_EXISTED:
@@ -312,7 +312,7 @@ void updaterThread::testNetFinished(QNetworkReply* reply)
 	{
 			downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,0);
 	}else{
-		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,translate::tr(UPDATE_NET_ERROR_STRING));
+		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
 		quit();
 	}
 }
@@ -433,14 +433,14 @@ void updaterThread::getIniDone(int error)
 			qDebug("%s error %d happened",__FUNCTION__,__LINE__);
 			if(error){
 					//sem_downfile_success.acquire(1);
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,translate::tr(UPDATE_FAILED_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
 			}else if(needed) 
 				{
 					sem_downfile_success.acquire(1);
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,translate::tr(UPDATE_SUCCESSFUL_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
 				}
 			else
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,translate::tr(UPDATE_NO_NEED_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
 			quit();
 			//msleep(500);
 			//find the "lanuchy"
@@ -452,7 +452,7 @@ void updaterThread::getIniDone(int error)
 
 	}else
 		{
-			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,translate::tr(UPDATE_FAILED_STRING));
+			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
 			qDebug("%s error %d happened",__FUNCTION__,error);
 			quit();
 		}	

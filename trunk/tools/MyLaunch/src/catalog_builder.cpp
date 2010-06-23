@@ -77,7 +77,8 @@ void CatBuilder::clearDb(int type,uint delId)
 			break;
 			case CAT_BUILDMODE_BOOKMARK:
 				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
-				queryStr=QString("delete  from %1 where (comeFrom between %2 and %3) and delId!=%4").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(COME_FROM_OPERA).arg(delId);
+				//queryStr=QString("delete  from %1 where (comeFrom between %2 and %3) and delId!=%4").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(COME_FROM_OPERA).arg(delId);
+				mergeThread::deletebmgarbarge(&query,delId);
 			break;
 			case CAT_BUILDMODE_COMMAND:
 				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
@@ -347,6 +348,8 @@ else
 	return true;
 }
 #endif
+/*
+
 void CatBuilder::produceInsetQueryStr(CatItem& item,QString& s )
 {
 
@@ -356,11 +359,12 @@ void CatBuilder::produceInsetQueryStr(CatItem& item,QString& s )
 				   "comeFrom,hanziNums,pinyinDepth,"
 				   "pinyinReg,alias1,alias2,shortCut,delId,args) "
 				   "VALUES ('%2','%3','%4','%5',%6,%7,%8,%9,%10,%11,%12,%13,'%14','%15','%16','%17',%18,'%19')").arg(DB_TABLE_NAME).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
-				   .arg(item.icon).arg(item.usage).arg(qHash(item.fullPath))
+				   .arg(item.icon).arg(item.usage).arg(qHash(item.shortName))
 				   .arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
 				   .arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
 				   .arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(item.args);
 }
+
 uint CatBuilder::isExistInDb(CatItem &item)
 {
 	QSqlQuery query("",*db);
@@ -383,7 +387,7 @@ uint CatBuilder::isExistInDb(CatItem &item)
 	return id;
 	
 }
-
+*/
 void CatBuilder::storeCatalog(QString dest,uint delId)
 {
 #if 1
@@ -397,17 +401,25 @@ void CatBuilder::storeCatalog(QString dest,uint delId)
 			for (int i = 0; i < this->cat->count(); i++)
 		  	{
 				  CatItem item = cat->getItem(i);
-				  uint id=isExistInDb(item);
+				//uint id=isExistInDb(item);
+				uint id=mergeThread::isExistInDb(&query,item.shortName,item.fullPath,item.comeFrom);
+				//qDebug("%s id=%d",__FUNCTION__,id);
 				  if(id){
-					queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
+					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 					//qDebug("queryStr=%s",qPrintable(queryStr));
-					query.exec(queryStr);
+					//query.exec(queryStr);
+					query.prepare("update "DB_TABLE_NAME" set delId=? where id=?");
+					int i=0;
+					query.bindValue(i++, delId);
+					query.bindValue(i++, id);
 				  }else
 				  {			
-				 	 produceInsetQueryStr(item,queryStr);
-					  qDebug("queryStr:%s",qPrintable(queryStr));				  	
-					query.exec(queryStr);
+				 	// produceInsetQueryStr(item,queryStr);
+					//  qDebug("queryStr:%s",qPrintable(queryStr));				  	
+					//query.exec(queryStr);
+					mergeThread::prepareInsertQuery(&query,item);
 				  }
+				  query.exec();
 		  	}
 			db->commit();
 			query.clear();

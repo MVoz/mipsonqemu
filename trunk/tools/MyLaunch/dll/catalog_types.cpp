@@ -63,6 +63,7 @@ void SlowCatalog::incrementUsage(const CatItem & item)
 		    }
 	  }
 }
+/*
 uint SlowCatalog::isExistInDb(CatItem &item)
 {
 	QSqlQuery query("",*dbs);
@@ -85,6 +86,7 @@ uint SlowCatalog::isExistInDb(CatItem &item)
 	return id;
 	
 }
+*/
 void SlowCatalog::addItem(CatItem& item,int type,uint delId)
 {
 #if 1

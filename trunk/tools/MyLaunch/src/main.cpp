@@ -239,7 +239,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		x = loadPosition();
 	move(x);
 	platform->MoveAlphaBorder(x);
-
+	//get broswerenable
+	getBrowserEnable(gSettings,tz::getbrowserInfo());
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -1619,7 +1620,7 @@ void MyWidget::_startSync(int mode,int silence)
 	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
 	uint key=qrand()%(getkeylength());
 	QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
-	QString auth_encrypt_str=translate::encrypt(authstr,key);
+	QString auth_encrypt_str=tz::encrypt(authstr,key);
 	//encryptstring(authstr,key,auth_encrypt_str);
 	
 	//QDEBUG("authstr=%s auth_encrypt_str=%s ",qPrintable(authstr),qPrintable(auth_encrypt_str));
@@ -1681,11 +1682,11 @@ void MyWidget::testAccountFinished(bool err,QString result)
 		{
 			if(result==SUCCESSSTRING)
 				{
-					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,translate::tr(HTTP_TEST_ACCOUNT_SUCCESS_STRING)) ;
+					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,tz::tr(HTTP_TEST_ACCOUNT_SUCCESS_STRING)) ;
 					createSynDlgTimer();
 				}
 			else
-				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,translate::tr(HTTP_TEST_ACCOUNT_FAIL_STRING)) ;
+				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,tz::tr(HTTP_TEST_ACCOUNT_FAIL_STRING)) ;
 			
 		}
 }

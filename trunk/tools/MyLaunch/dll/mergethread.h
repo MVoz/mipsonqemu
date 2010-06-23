@@ -82,6 +82,9 @@ using namespace boost;
 
 #define HANDLE_ITEM_LOCAL 0
 #define HANDLE_ITEM_SERVER 1
+
+
+
 class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT
@@ -133,9 +136,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	void handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &iePath,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
-	uint isExistInDb(bookmark_catagory &item,int frombrowsertype);
-	void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
-	void deletebmgarbarge(QSqlQuery* q,uint delId);
+
 	int testFirefoxDbLock(QSqlDatabase& db);
 	void setTerminated(uint flag){
 			terminatedFlag=flag;
@@ -170,6 +171,11 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	uint modifiedInServer;
 	uint modifiedFlag;
 	volatile uint terminatedFlag;
+public:
+	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
+	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
+	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);	
+	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };
 
 #endif

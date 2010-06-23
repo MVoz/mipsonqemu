@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "globals.h"
 
+
 //uint  gMaxGroupId;
 void mergeThread::handleBmData(QString& iePath,int& maxGroupId)
 {
@@ -18,15 +19,13 @@ QString localFirefoxPlaceSqlite;
 QString ff_path;
 modifiedInServer=1;
 //check BM_XML_FROM_SERVER
-if(QFile::exists(BM_XML_FROM_SERVER))
-{
-	QDEBUG_LINE;
+if(!QFile::exists(BM_XML_FROM_SERVER))
+	return;
+
 	QFile s_file(BM_XML_FROM_SERVER);
 	if (!s_file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return;
-	QDEBUG_LINE;
 	if (!s_file.atEnd()) {
-		QDEBUG_LINE;
 		QString line = s_file.readLine();
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
@@ -34,7 +33,7 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
 			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
-			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,translate::tr(LOGIN_FALIL_STRING));
+			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,tz::tr(LOGIN_FALIL_STRING));
 			
 			s_file.close();
 			return;
@@ -43,11 +42,9 @@ if(QFile::exists(BM_XML_FROM_SERVER))
 			{
 				qDebug("has modification on server!!!");
 			}
-		QDEBUG_LINE;
 	}
 	s_file.close();
-}else
-	return;
+
 
 if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
  {
@@ -996,54 +993,112 @@ void mergeThread::productFFId(QString & randString,int length){
     randString.append(str);   
     return;
 }
-uint mergeThread::isExistInDb(bookmark_catagory &item,int frombrowsertype)
-{
-	QSqlQuery query("",*db);
-	QString queryStr;
-	uint id=0;
-	queryStr=QString("select id from %1 where comeFrom=%2 and hashId=%3 and shortName='%4' and fullPath='%5' limit 1").arg(DB_TABLE_NAME).arg(frombrowsertype).arg(qHash(item.name)).arg(item.name).arg(item.link);
-	//QDEBUG("queryStr=%s",qPrintable(queryStr));
-	if(query.exec(queryStr)){
-					  QSqlRecord rec = query.record();
-					   
-					   int id_Idx = rec.indexOf("id"); // index of the field "name"
-					   while(query.next()) {	
-								        id=query.value(id_Idx).toUInt();
-									query.clear();
-									return id;		
-					 	}					 	
-			}else{
-				qDebug("%s query error",__FUNCTION__);
-				}
-	query.clear();
-	return id;
-	
-}
+
+
 void mergeThread::deletebmgarbarge(QSqlQuery* q,uint delId)
 {
-	uint comefrom_s=0,comefrom_e=0;
+	//uint comefrom_s=0,comefrom_e=0;
 	QString queryStr;
-	if(ie_enabled)
+	int i = 0;
+	struct browserinfo* browserInfo=tz::getbrowserInfo();
+	while(!browserInfo[i].name.isEmpty())
+	{
+			queryStr.clear();
+			queryStr=QString("delete from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(browserInfo[i].id).arg(delId);
+			q->exec(queryStr);		
+			i++;
+	}
+	/*
+	if(browserEnable.ieEnable)
 		{
 			queryStr.clear();
 			queryStr=tr("delete from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(delId);
 			q->exec(queryStr);		
 		}
-	if(firefox_enabled)
+	if(browserEnable.firefoxEnable)
 		{
 			queryStr.clear();
 			queryStr=tr("delete from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_FIREFOX).arg(delId);
 			q->exec(queryStr);		
 		}
-	if(opera_enabled)
+	if(browserEnable.operaEnable)
 		{
 			queryStr.clear();
 			queryStr=tr("delete from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_FIREFOX).arg(delId);
 			q->exec(queryStr);		
 		}
+	*/
 
 }
+uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype)
+{
+	QString queryStr;
+	uint id=0;
+#if 1
+	q->prepare("select id from "DB_TABLE_NAME" where comeFrom = ? and hashId=? and shortName = ? and fullPath=? limit 1");
+	int i=0;
+	q->bindValue(i++, frombrowsertype);
+	q->bindValue(i++, qHash(name));
+	q->bindValue(i++, name);
+	q->bindValue(i++, fullpath);
+	q->exec();
+	if(q->next())
+	{
+		id=q->value(q->record().indexOf("id")).toUInt();
+	}
+	q->clear();
+#else
+	queryStr=QString("select id from %1 where comeFrom=%2 and hashId=%3 and shortName='%4' and fullPath='%5' limit 1").arg(DB_TABLE_NAME).arg(frombrowsertype).arg(qHash(name)).arg(name).arg(fullpath);
+	qDebug("queryStr=%s",qPrintable(queryStr));
+	if(q->exec(queryStr)){
+					  QSqlRecord rec = q->record();
+					   
+					   int id_Idx = rec.indexOf("id"); // index of the field "name"
+					   while(q->next()) {	
+								        id=q->value(id_Idx).toUInt();
+									q->clear();
+									return id;		
+					 	}					 	
+			}else{
+				qDebug("%s query error",__FUNCTION__);
+				}
+	q->clear();
+#endif
+	return id;
+	
+}
+void mergeThread::prepareInsertQuery(QSqlQuery* q,CatItem& item)
+{
+	q->prepare("INSERT INTO "DB_TABLE_NAME
+							"(fullPath, shortName, lowName,icon,usage,hashId,"
+						   "groupId, parentId, isHasPinyin,comeFrom,hanziNums,pinyinDepth,"
+						   "pinyinReg,alias1,alias2,shortCut,delId,args)"
+						   "values("
+							"? , ? , ? , ? , ? , ? ,"
+							 "? , ? , ? , ? , ? , ? ,"
+							  "? , ? , ? , ? , ? , ? "
+						   ")");
+						   q->bindValue("fullPath", item.fullPath);
+						   q->bindValue("shortName", item.shortName);
+						   q->bindValue("lowName", item.lowName);
+						   q->bindValue("icon", item.icon);
+						   q->bindValue("usage", item.usage);
+						   q->bindValue("hashId", qHash(item.shortName));
+						   q->bindValue("groupId", item.groupId);
+						   q->bindValue("parentId", item.parentId);
+						   q->bindValue("isHasPinyin", item.isHasPinyin);
+						   q->bindValue("comeFrom", item.comeFrom);
+						   q->bindValue("hanziNums", item.hanziNums);
+						   q->bindValue("pinyinDepth", item.pinyinDepth);
+						   q->bindValue("pinyinReg", item.pinyinReg);
+						   q->bindValue("alias1", item.alias1);
+						   q->bindValue("alias2", item.alias2);
+						   q->bindValue("shortCut", item.shortCut);
+						   q->bindValue("delId", item.delId);
+						   q->bindValue("args", item.args
+	);
 
+}
 void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
 {
 
@@ -1056,38 +1111,35 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 		}else{
 				QString queryStr="";
 				uint id=0;
-				if(id=isExistInDb(item,frombrowsertype)){
-					queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
+				if(id=isExistInDb(q,item.name,item.link,frombrowsertype)){
+					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
+					q->prepare("update "DB_TABLE_NAME" set delId = ? where id= ? ");
+					int i=0;
+					q->bindValue(i++, delId);
+					q->bindValue(i++, id);
+					
 				}				
 				else
 				{
-				/*
-				   queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
-				   "icon,usage,hashId,"
-				   "groupId, parentId, isHasPinyin,"
-				   "comeFrom,hanziNums,pinyinDepth,"
-				   "pinyinReg,alias1,alias2,shortCut,delId,args) "
-				   "VALUES ('%2','%3','%4','%5',%6,%7,%8,%9,%10,%11,%12,%13,'%14','%15','%16','%17',%18,'%19')").arg(DB_TABLE_NAME)
-				   .arg(item.link) .arg(item.name).arg(item.name.toLower())
-				   .arg(item.icon).arg(0).arg(qHash(item.name))
-				   .arg(item.groupId).arg(item.parentId).arg(0)
-				   .arg(frombrowsertype).arg(0).arg(0)
-				   .arg("").arg("").arg("").arg("").arg(delId).arg("");	
-				   */
-				   CatItem citem(item.link,item.name,frombrowsertype);
-				   queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
-				   "icon,usage,hashId,"
-				   "groupId, parentId, isHasPinyin,"
-				   "comeFrom,hanziNums,pinyinDepth,"
-				   "pinyinReg,alias1,alias2,shortCut,delId,args) "
-				   "VALUES ('%2','%3','%4','%5',%6,%7,%8,%9,%10,%11,%12,%13,'%14','%15','%16','%17',%18,'%19')").arg(DB_TABLE_NAME).arg(citem.fullPath) .arg(citem.shortName).arg(citem.lowName)
-				   .arg(citem.icon).arg(citem.usage).arg(qHash(item.name))
-				   .arg(citem.groupId).arg(citem.parentId).arg(citem.isHasPinyin)
-				   .arg(citem.comeFrom).arg(citem.hanziNums).arg(citem.pinyinDepth)
-				   .arg(citem.pinyinReg).arg(citem.alias1).arg(citem.alias2).arg(citem.shortCut).arg(delId).arg(citem.args);
+					   CatItem citem(item.link,item.name,frombrowsertype);
+#if 1
+					   prepareInsertQuery(q,citem);
+#else
+					   queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
+					   "icon,usage,hashId,"
+					   "groupId, parentId, isHasPinyin,"
+					   "comeFrom,hanziNums,pinyinDepth,"
+					   "pinyinReg,alias1,alias2,shortCut,delId,args) "
+					   "VALUES ('%2','%3','%4','%5',%6,%7,%8,%9,%10,%11,%12,%13,'%14','%15','%16','%17',%18,'%19')").arg(DB_TABLE_NAME).arg(citem.fullPath) .arg(citem.shortName).arg(citem.lowName)
+					   .arg(citem.icon).arg(citem.usage).arg(qHash(item.name))
+					   .arg(citem.groupId).arg(citem.parentId).arg(citem.isHasPinyin)
+					   .arg(citem.comeFrom).arg(citem.hanziNums).arg(citem.pinyinDepth)
+					   .arg(citem.pinyinReg).arg(citem.alias1).arg(citem.alias2).arg(citem.shortCut).arg(delId).arg(citem.args);
+#endif
 				}
 				//QDEBUG("%s %s",__FUNCTION__,qPrintable(queryStr));
-				  q->exec(queryStr);			
+				  q->exec();
+				//  q->clear();
 		}		
 	}
 
