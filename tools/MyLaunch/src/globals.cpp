@@ -46,6 +46,8 @@ CatItem* gSearchResult;
 
 
 
+
+
 /*
 void log(QString str)
 {

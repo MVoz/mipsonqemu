@@ -46,13 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PINYIN_MAX_NUMBER 4
 #define PINYIN_TOKEN_FLAG "(p)"
 
-#define COME_FROM_PROGRAM 1
-#define COME_FROM_RUNNER 2
-#define COME_FROM_DEFINE 3
-#define COME_FROM_PREDEFINE 4
-#define COME_FROM_IE 5
-#define COME_FROM_FIREFOX 6
-#define COME_FROM_OPERA 7
+
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
 public:

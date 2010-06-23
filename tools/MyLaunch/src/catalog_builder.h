@@ -59,7 +59,7 @@ public:
 	void buildCatalog_directory(uint);
 	void buildCatelog_command(uint);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId);
-	void produceInsetQueryStr(CatItem& item,QString& s );
+	//void produceInsetQueryStr(CatItem& item,QString& s );
 	bool createDbFile();
 	//bool createConnection(QSqlDatabase& db,const QString &name);
 	//void setPreviousCatalog(shared_ptr<Catalog> cata) {	
@@ -72,7 +72,7 @@ public:
 	CatBuilder(shared_ptr<Catalog> catalog,QSqlDatabase *dbs) :  buildWithStart(false),db(dbs),cat(catalog){}
 	void run();
 	void clearDb(int type,uint delId);
-	uint isExistInDb(CatItem &item);
+	//uint isExistInDb(CatItem &item);
 
 signals:
 	void catalogFinished();

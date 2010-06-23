@@ -50,7 +50,7 @@ void postHttp::run()
 					qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
 					uint key=qrand()%(getkeylength());
 					QString authstr=QString("username=%1 password=%2").arg(username).arg(password);
-					QString auth_encrypt_str=translate::encrypt(authstr,key);;
+					QString auth_encrypt_str=tz::encrypt(authstr,key);;
 					//encryptstring(authstr,key,auth_encrypt_str);
 #endif
 

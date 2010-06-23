@@ -94,7 +94,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 void BookmarkSync::httpTimerSlot()
 {
 	qDebug("httpTimerSlot.......");
-	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,translate::tr(HTTP_TIMEOUT_STRING));	
+	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));	
 	http_timerover=1;
 	httpTimer->stop();
 	
@@ -162,7 +162,7 @@ void BookmarkSync::run()
 		int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 		http->setHost(host);
 	//	QDEBUG("http=0x%08x url=%s ret1=%d",http,qPrintable(url),ret1);
-		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START,translate::tr(BOOKMARK_SYNC_START_STRING));	
+		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START,tz::tr(BOOKMARK_SYNC_START_STRING));	
 		http->get(url, file);
 		int ret=exec();
 		if(!http_timerover)
@@ -262,7 +262,7 @@ else
 		if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
 			{
 				qDebug("http error %s",qPrintable(http->errorString()));
-				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,translate::tr(UPDATE_NET_ERROR_STRING));
+				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
 			}
 		else
 			qDebug("http error %s",qPrintable(http->errorString()));
@@ -281,7 +281,7 @@ void BookmarkSync::mergeDone()
 {
 	qDebug("quit merge thread...........");
 	if(!error){
-		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL,translate::tr(SYNC_SUCCESSFUL_STRING));
+		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL,tz::tr(SYNC_SUCCESSFUL_STRING));
 	}
 	if(mgthread){
 		mgthread->deleteLater();

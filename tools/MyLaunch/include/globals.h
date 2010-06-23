@@ -72,6 +72,7 @@ extern QString gSearchTxt;
 extern CatItem* gSearchResult;
 //extern QSqlDatabase db;
 //extern int language;
+//extern struct browserinfo* browserInfo;
 
 
 struct Directory
