@@ -172,10 +172,10 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	uint modifiedFlag;
 	volatile uint terminatedFlag;
 public:
-	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
+	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);	
-	static void deletebmgarbarge(QSqlQuery* q,uint delId);
+//	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };
 
 #endif

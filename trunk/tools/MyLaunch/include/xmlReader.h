@@ -57,30 +57,7 @@ class XMLREADER_DLL_CLASSEXPORT Firefox_BM{
 	};
 
 
-struct XMLREADER_DLL_CLASSEXPORT  bookmark_catagory{
-   QString name;
-   QString link;
-   QString desciption;
-   QString icon;
-   QString feedurl;
-   QString last_charset;
-   QString personal_toolbar_folder;
-   QString id;
-   QDateTime  addDate;
-   QDateTime modifyDate;
-   QString last_visit;
-   uint flag;
-   uint groupId;
-   uint parentId;
-   uint bmid;
-   uint level;
-   uint hr;
-   /*for acclerate find*/
-   uint name_hash;
-   uint link_hash;
-   QList<bookmark_catagory> list;
-   
-};
+
 #define BM_WRITE_HEADER 1
 #define BM_WRITE_END 2
 #define BM_WRITE_MASK 0x3

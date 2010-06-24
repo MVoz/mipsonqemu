@@ -287,7 +287,8 @@ OPERA:
 			bmintolaunchdb(&query,&firefox_bc,COME_FROM_FIREFOX,delId);
 		if(opera_enabled)
 			bmintolaunchdb(&query,&opera_bc,COME_FROM_OPERA,delId);
-		deletebmgarbarge(&query,delId);
+		//deletebmgarbarge(&query,delId);
+		tz::clearbmgarbarge(&query, delId);
 		db->commit();
 		query.clear();
 	}
@@ -994,7 +995,7 @@ void mergeThread::productFFId(QString & randString,int length){
     return;
 }
 
-
+#if 0
 void mergeThread::deletebmgarbarge(QSqlQuery* q,uint delId)
 {
 	//uint comefrom_s=0,comefrom_e=0;
@@ -1030,6 +1031,7 @@ void mergeThread::deletebmgarbarge(QSqlQuery* q,uint delId)
 	*/
 
 }
+
 uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype)
 {
 	QString queryStr;
@@ -1067,6 +1069,8 @@ uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fu
 	return id;
 	
 }
+
+#endif 
 void mergeThread::prepareInsertQuery(QSqlQuery* q,CatItem& item)
 {
 	q->prepare("INSERT INTO "DB_TABLE_NAME
@@ -1099,6 +1103,7 @@ void mergeThread::prepareInsertQuery(QSqlQuery* q,CatItem& item)
 	);
 
 }
+
 void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
 {
 
@@ -1111,7 +1116,7 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 		}else{
 				QString queryStr="";
 				uint id=0;
-				if(id=isExistInDb(q,item.name,item.link,frombrowsertype)){
+				if(id=tz::isExistInDb(q,item.name,item.link,frombrowsertype)){
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 					q->prepare("update "DB_TABLE_NAME" set delId = ? where id= ? ");
 					int i=0;
@@ -1144,3 +1149,5 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 	}
 
 }
+
+
