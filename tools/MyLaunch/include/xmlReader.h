@@ -69,8 +69,6 @@ public:
     	}
     XmlReader();
 public:
-    void readDirectory(QString directory,QList<bookmark_catagory>* list,int level,uint flag);
-
     int readFirefoxBookmark3(QList<bookmark_catagory>* list);
     int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list);
     int productExcludeIdStr(QSqlDatabase *db);
@@ -97,7 +95,7 @@ public:
    void importCatItemComefrom(CatItem *item);
    void readBrowserType(int browserType);
    void setFirefoxDb(QSqlDatabase* db);
-   void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
+  
    /*******************for firefox2******************************/
    int readFirefoxBookmark2(QFile& file);
    void init_ff_bm();
@@ -112,7 +110,7 @@ public:
    void  importPersonalToolbarFolder(struct bookmark_catagory*bc);
    void importLastVisit(struct bookmark_catagory*bc);
    void importHr(struct bookmark_catagory *bc);
-   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
+  
  public:
  	QList<bookmark_catagory> bm_list;
 	QSettings* settings;
@@ -123,6 +121,10 @@ public:
 	QSqlDatabase* ff_db;
 	QList<Firefox_BM> ff_bm;
 	QString updateTime;
+public:
+	   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
+	   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
+	   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 };
 
 #endif
