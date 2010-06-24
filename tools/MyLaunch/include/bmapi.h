@@ -9,6 +9,8 @@
 #include <QSettings>
  #include <QDataStream>
  #include <QFile>
+ #include <QSqlQuery>
+ #include <QDateTime>
  #ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
@@ -78,6 +80,30 @@ BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
 BMAPI_DLL_FUNCEXPORT void getBrowserEnable(QSettings *s,struct browserinfo* b);
 
 extern int language;
+struct BMAPI_DLL_CLASSEXPORT  bookmark_catagory{
+   QString name;
+   QString link;
+   QString desciption;
+   QString icon;
+   QString feedurl;
+   QString last_charset;
+   QString personal_toolbar_folder;
+   QString id;
+   QDateTime  addDate;
+   QDateTime modifyDate;
+   QString last_visit;
+   uint flag;
+   uint groupId;
+   uint parentId;
+   uint bmid;
+   uint level;
+   uint hr;
+   /*for acclerate find*/
+   uint name_hash;
+   uint link_hash;
+   QList<bookmark_catagory> list;
+   
+};
 
 class BMAPI_DLL_CLASSEXPORT  tz {
 public:
@@ -88,7 +114,11 @@ public :
 	static QString encrypt(QString para,uint secindex);
 	static QString decrypt(QString para,uint secindex);
 	static struct browserinfo* getbrowserInfo();
-
+	static void clearbmgarbarge(QSqlQuery* q,uint delId);
+	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
+//	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
+//	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
+	
 };
 
 //int setDirectoryTimeIncludeAllFiles(QString path);

@@ -78,7 +78,8 @@ void CatBuilder::clearDb(int type,uint delId)
 			case CAT_BUILDMODE_BOOKMARK:
 				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
 				//queryStr=QString("delete  from %1 where (comeFrom between %2 and %3) and delId!=%4").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(COME_FROM_OPERA).arg(delId);
-				mergeThread::deletebmgarbarge(&query,delId);
+				//mergeThread::deletebmgarbarge(&query,delId);
+				tz::clearbmgarbarge(&query,delId);
 			break;
 			case CAT_BUILDMODE_COMMAND:
 				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
@@ -402,7 +403,7 @@ void CatBuilder::storeCatalog(QString dest,uint delId)
 		  	{
 				  CatItem item = cat->getItem(i);
 				//uint id=isExistInDb(item);
-				uint id=mergeThread::isExistInDb(&query,item.shortName,item.fullPath,item.comeFrom);
+				uint id=tz::isExistInDb(&query,item.shortName,item.fullPath,item.comeFrom);
 				//qDebug("%s id=%d",__FUNCTION__,id);
 				  if(id){
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
