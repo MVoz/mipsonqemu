@@ -69,9 +69,7 @@ public:
     	}
     XmlReader();
 public:
-    int readFirefoxBookmark3(QList<bookmark_catagory>* list);
-    int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list);
-    int productExcludeIdStr(QSqlDatabase *db);
+   
    // void readStream(uint flag);
    void readStream(uint flag,QSettings* setting,int browserType);
     void readCategoryElement();
@@ -117,14 +115,20 @@ public:
 	QDateTime serverLastUpdateTime;
 	uint maxGroupId;
 	uint flag;	
-	QString ff_excludeId;
+	//QString ff_excludeId;
 	QSqlDatabase* ff_db;
 	QList<Firefox_BM> ff_bm;
 	QString updateTime;
 public:
+	  /*for ie*/
 	   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
 	   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
+	   /*for firefox*/
+	   static int readFirefoxBookmark3(QSettings* settings,QSqlDatabase *db,QList<bookmark_catagory>* list);
+   	   static int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString& excludeid);
+    	   static QString productExcludeIdStr(QSqlDatabase *db);
+	   
 };
 
 #endif
