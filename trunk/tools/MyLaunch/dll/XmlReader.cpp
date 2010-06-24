@@ -760,10 +760,10 @@ void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *li
 	  }
 }
 /**************************firefox***************************************/
-int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list)
+int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString & excludeid)
 {
 
-		QString queryStr=QString("select * from moz_bookmarks bookmarks left join moz_places places on bookmarks.fk=places.id where bookmarks.parent=%1 and bookmarks.id not in (%2);").arg(id).arg(ff_excludeId);
+		QString queryStr=QString("select * from moz_bookmarks bookmarks left join moz_places places on bookmarks.fk=places.id where bookmarks.parent=%1 and bookmarks.id not in (%2);").arg(id).arg(excludeid);
 		qDebug("%s",qPrintable(queryStr));
 		QSqlQuery   query(queryStr, *db);
 		if(query.exec()){
@@ -826,12 +826,12 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 											   os<<"<name><![CDATA["<<query.value(titleIndex).toString()<<"]]></name>"<<"\n";
 											   os<<"<link><![CDATA["<<query.value(urlIndex).toString()<<"]]></link>"<<"\n";
 											   ff_bc.link_hash=0;
-											   outChildItem(query.value(idIndex).toInt(),db,os,&(ff_bc.list));
+											   outChildItem(query.value(idIndex).toInt(),db,os,&(ff_bc.list),excludeid);
 											   os<<"</category>"<<"\n";
 											   addItemToSortlist(ff_bc,list);
 										 }
 									}else{
-										 outChildItem(query.value(idIndex).toInt(),db,os,list);
+										 outChildItem(query.value(idIndex).toInt(),db,os,list,excludeid);
 									}
 
 								 
@@ -844,8 +844,9 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 		return 0;
 }
 
-int XmlReader::productExcludeIdStr(QSqlDatabase *db)
-{
+QString XmlReader::productExcludeIdStr(QSqlDatabase *db)
+{	
+		QString ff_excludeId;
 		qDebug("productExcludeIdStr begin.......");
 	        QStringList excludeStr;
         	excludeStr << "tags" << "unfiled"; 
@@ -899,15 +900,15 @@ int XmlReader::productExcludeIdStr(QSqlDatabase *db)
 					}
 			}
 		qDebug("ff_excludeId=%s",qPrintable(ff_excludeId));
-		return 0;
+		return ff_excludeId;
 }
 
-int XmlReader::readFirefoxBookmark3(QList < bookmark_catagory > *list)
+int XmlReader::readFirefoxBookmark3(QSettings* settings,QSqlDatabase* db,QList < bookmark_catagory > *list)
 {
 	 QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
 	 qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
-	 ff_excludeId.clear();
-	 productExcludeIdStr(ff_db);
+//	 ff_excludeId.clear();
+	 QString excludeid =  productExcludeIdStr(db);
 	 QString dest_filepath;
 	  getUserLocalFullpath(settings,QString(BM_XML_FROM_FIREFOX),dest_filepath);
 	  QFile file(dest_filepath);
@@ -917,7 +918,7 @@ int XmlReader::readFirefoxBookmark3(QList < bookmark_catagory > *list)
 	 os<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<"\n";
 	 os<<"<bookmark version=\"1.0\" updateTime=\"2009-11-22 21:36:20\">"<<"\n";
 	 os<<"<browserType name=\"firefox\">"<<"\n";
-	 outChildItem(0,ff_db,os,list);
+	 outChildItem(0,db,os,list,excludeid);
 	 os<<"</browserType>"<<"\n";
 	 os<<"</bookmark>"<<"\n";
 	 file.close();

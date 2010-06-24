@@ -213,7 +213,7 @@ if(ie_enabled)
 			 			 firefoxReader = new XmlReader(&firefox_file,settings);
 			 			 firefoxReader->setFirefoxDb(&ff_db);
 					
-			if(!firefoxReader->readFirefoxBookmark3(&(firefoxReader->bm_list)))
+			if(!XmlReader::readFirefoxBookmark3(settings,&ff_db,&(firefoxReader->bm_list)))
 				goto OPERA;
 			}else{
 			//firefox version 2
