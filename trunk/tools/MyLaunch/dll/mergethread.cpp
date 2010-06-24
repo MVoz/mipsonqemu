@@ -101,7 +101,7 @@ if(ie_enabled)
 
 //internet explore
 	ieFavReader = new XmlReader(NULL,settings);
-	ieFavReader->readDirectory(iePath, &(ieFavReader->bm_list), 0, XML_FROM_IEFAV);
+	XmlReader::readDirectory(iePath, &(ieFavReader->bm_list), 0);
 #if 1
 		foreach(bookmark_catagory item, ieFavReader->bm_list)
 	{

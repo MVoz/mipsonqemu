@@ -287,7 +287,6 @@ void XmlReader::importLastVisit(struct bookmark_catagory *bc)
 			  readNext();
 			  if (isCharacters() && !isWhitespace())
 				{
-					//	 logToFile("%s %s",__FUNCTION__,qPrintable(text().toString())); 	  
 					bc->last_visit= text().toString().trimmed();
 			  } else if (isEndElement())
 				{
@@ -700,10 +699,10 @@ void XmlReader::addItemToSortlist(const struct bookmark_catagory &bc,QList < boo
 }
 //flag 0--file 1--dir
 
-void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *list, int level, uint flag)
+void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *list, int level/*, uint flag*/)
 {
-	if (level == 0)
-		this->flag = flag;
+	//if (level == 0)
+	//	this->flag = flag;
 	QString createTime, lastAccessTime, lastWriteTime;
 	QDir qd(directory);
 	QString dir = qd.absolutePath();
@@ -723,40 +722,26 @@ void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *li
 		   dir_bc.link_hash=0;
 		   dir_bc.flag = BOOKMARK_CATAGORY_FLAG;
 		   dir_bc.level = level;
-		 // getFileTime(dir + "/" + dirs[i], &createTime, &lastAccessTime, &lastWriteTime, 1);
-		//  dir_bc.addDate = QDateTime::fromString(createTime, TIME_FORMAT);
-		//  dir_bc.modifyDate = QDateTime::fromString(lastWriteTime, TIME_FORMAT);
-		  readDirectory(dir + "/" + dirs[i], &(dir_bc.list), level + 1,  flag);
-		//  list->push_back(dir_bc);
-		addItemToSortlist(dir_bc,list);
+		  readDirectory(dir + "/" + dirs[i], &(dir_bc.list), level + 1/*,  flag*/);
+		  addItemToSortlist(dir_bc,list);
 	  }
-#if 0
-	DWORD dw =::GetFileAttributes((LPCWSTR) FilePath.utf16());
-	if (dw & FILE_ATTRIBUTE_DIRECTORY)
-	  {
-	} else
-	  {
-	  }
-
-#endif
 	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
 	for (int i = 0; i < files.count(); ++i)
 	  {
 		  struct bookmark_catagory bc;
 		  const QString FilePath(dir + "/" + files[i]);
-		  QSettings *favSettings = new QSettings(FilePath, QSettings::IniFormat);
-		  if (!IS_NULL(favSettings))
+		  QSettings favSettings (FilePath, QSettings::IniFormat);
 		    {
 			    struct bookmark_catagory dir_bc;
 			    int dotIndex = files[i].lastIndexOf('.');
 			    files[i].truncate(dotIndex);
-			    dir_bc.link = favSettings->value("InternetShortcut/URL").toString();
+			    dir_bc.link = favSettings.value("InternetShortcut/URL").toString();
 			    if( !dir_bc.link.isEmpty())
 			    {
 			    	    QUrl url(dir_bc.link);
 				    if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
 					//	qDebug()<<"unvalid http format!";
-						goto out;
+						break;
 				    }
 				    handleUrlString(dir_bc.link );
 				    dir_bc.name = files[i];
@@ -770,8 +755,6 @@ void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *li
 				   // list->push_back(dir_bc);
 				    addItemToSortlist(dir_bc,list);
 			    	}
-			out:
-			    delete favSettings;
 		    }
 		  //items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
 	  }
