@@ -77,11 +77,12 @@ public:
     void readBookmarkElement();
    void CreateItem(int level,QList<bookmark_catagory>*list,uint parentId);
    void CreateCatagory(int level,QList<bookmark_catagory>* list,uint groupId,uint parentId);   
-   void importName(struct bookmark_catagory*bc);
-   void importLink(struct bookmark_catagory*bc);
-   void importDescription(struct bookmark_catagory*bc);
-   void importAdddate(struct bookmark_catagory*bc);
-   void importModifydate(struct bookmark_catagory*bc);
+   void importItem(struct bookmark_catagory *bc,int item);
+  // void importName(struct bookmark_catagory*bc);
+  // void importLink(struct bookmark_catagory*bc);
+  // void importDescription(struct bookmark_catagory*bc);
+  // void importAdddate(struct bookmark_catagory*bc);
+  // void importModifydate(struct bookmark_catagory*bc);
    void dumpBookmarkList(int level,QList<bookmark_catagory> list);
    void buildLocalBmSetting(int level,QString path,QList<bookmark_catagory> list,QTextStream *os);
   static void writeToFile(QTextStream* os,const char *cformat, ...);
@@ -100,14 +101,14 @@ public:
    void handler_line(QString line,int type);
    void outToFile(QTextStream& os);
    void item_end(QTextStream& os,int type,int& finish);
-   void    importID(struct bookmark_catagory*bc);
-    void    importbmid(struct bookmark_catagory*bc);
-   void   importFeedurl(struct bookmark_catagory*bc);
-   void   importIcon(struct bookmark_catagory*bc);
-   void   importLastCharset(struct bookmark_catagory*bc);		
-   void  importPersonalToolbarFolder(struct bookmark_catagory*bc);
-   void importLastVisit(struct bookmark_catagory*bc);
-   void importHr(struct bookmark_catagory *bc);
+ //  void    importID(struct bookmark_catagory*bc);
+ //   void    importbmid(struct bookmark_catagory*bc);
+ //  void   importFeedurl(struct bookmark_catagory*bc);
+ //  void   importIcon(struct bookmark_catagory*bc);
+ //  void   importLastCharset(struct bookmark_catagory*bc);		
+//   void  importPersonalToolbarFolder(struct bookmark_catagory*bc);
+//   void importLastVisit(struct bookmark_catagory*bc);
+ //  void importHr(struct bookmark_catagory *bc);
   
  public:
  	QList<bookmark_catagory> bm_list;

@@ -124,6 +124,80 @@ void XmlReader::readStream(uint flag,QSettings* setting,int browserType)
 	  }
 
 }
+void XmlReader::importItem(struct bookmark_catagory *bc,int item)
+{
+	while (!atEnd())
+	  {
+		  readNext();
+		  if (isCharacters() && !isWhitespace())   {
+			switch(item){
+				case BOOKMARK_CATAGORY_NAME:
+				    bc->name = text().toString();
+			    	    bc->name_hash= qhashEx(bc->name,bc->name.length());
+				break;
+				case BOOKMARK_CATAGORY_LINK:
+				     bc->link = text().toString().trimmed();
+				    handleUrlString(bc->link);
+				    if(bc->link.length())
+				    	bc->link_hash=qhashEx(bc->link ,bc->link.length());
+				    else
+					bc->link_hash=0;	
+				break;
+				case BOOKMARK_CATAGORY_DESCIPTION:
+					bc->desciption = text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_ICON:
+					bc->icon= text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_FEEDURL:
+					bc->feedurl= text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_LAST_CHARSET:
+					bc->last_charset= text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER:
+					bc->personal_toolbar_folder= text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_ID:
+					bc->id= text().toString();
+				break;
+				case BOOKMARK_CATAGORY_ADDDATE:
+					 bc->addDate = QDateTime::fromString(text().toString().trimmed(), TIME_FORMAT);
+				break;
+				case BOOKMARK_CATAGORY_MODIFYDATE:
+					   bc->modifyDate = QDateTime::fromString(text().toString().trimmed(), TIME_FORMAT);
+					    //update the serverlastUpdateTime
+					    if (bc->modifyDate > serverLastUpdateTime)
+						    serverLastUpdateTime = bc->modifyDate;
+				break;
+				case BOOKMARK_CATAGORY_LAST_VISIT:
+					bc->last_visit= text().toString().trimmed();
+				break;
+				case BOOKMARK_CATAGORY_FLAGX:
+				break;
+				case BOOKMARK_CATAGORY_GROUPID:
+				break;
+				case BOOKMARK_CATAGORY_PARENTID:
+				break;
+				case BOOKMARK_CATAGORY_BMID:
+					bc->bmid= text().toString().toUInt();
+				break;
+				case BOOKMARK_CATAGORY_LEVEL:
+				break;
+				case BOOKMARK_CATAGORY_HR:
+					bc->hr= text().toString().toUInt();
+				break;
+				case BOOKMARK_CATAGORY_NAME_HASH:
+				break;
+				case BOOKMARK_CATAGORY_LINK_HASH:
+				break;
+			}
+		   }
+		  else if (isEndElement())		    
+			    break;		    
+	  }
+}
+#if 0
 void XmlReader::importName(struct bookmark_catagory *bc)
 {
 	while (!atEnd())
@@ -135,59 +209,6 @@ void XmlReader::importName(struct bookmark_catagory *bc)
 			   // bc->name = text().toString().trimmed();
 			   bc->name = text().toString();
 			    bc->name_hash= qhashEx(bc->name,bc->name.length());
-		  } else if (isEndElement())
-		    {
-			    break;
-		    }
-	  }
-}
-void XmlReader::importCatItemName(CatItem *item)
-{
-	while (!atEnd())
-	  {
-		  readNext();
-		  if (isCharacters() && !isWhitespace())
-		    {
-			    item->shortName = text().toString().trimmed();
-			    item->lowName = item->shortName.toLower();	
-			    item->getPinyinReg(item->shortName );
-		  } else if (isEndElement())
-		    {
-			    break;
-		    }
-	  }
-}
-void XmlReader::importCatItemComefrom(CatItem *item)
-{
-	while (!atEnd())
-		  {
-			  readNext();
-			  if (isCharacters() && !isWhitespace())
-				{
-					item->comeFrom= text().toString().toUInt();
-				//	qDebug("item->comeFrom=%d",item->comeFrom);
-			  } else if (isEndElement())
-				{
-					break;
-				}
-		  }
-
-}
-void XmlReader::importCatItemFullPath(CatItem *item)
-{
-	while (!atEnd())
-	  {
-		  readNext();
-		  if (isCharacters() && !isWhitespace())
-		    {
-			    item->fullPath = text().toString().trimmed();
-			    item->hash_id=qHash(item->fullPath);			   
-			    item->usage = 0;
-			    item->groupId=0;
-			    item->parentId=0;
-			    item->alias1="";
-			    item->alias2="";
-			    item->shortCut="";
 		  } else if (isEndElement())
 		    {
 			    break;
@@ -396,7 +417,7 @@ void XmlReader::importModifydate(struct bookmark_catagory *bc)
 	  }
 }
 
-
+#endif
 
 void XmlReader::CreateCatagory(int level, QList < bookmark_catagory > *list, uint groupId, uint parentId)
 {
@@ -406,14 +427,41 @@ void XmlReader::CreateCatagory(int level, QList < bookmark_catagory > *list, uin
 	bc.groupId = groupId;
 	bc.parentId = parentId;	
 	bc.hr=0;
+	struct {
+		enum BOOKMARK_CATAGORY_ITEM im;
+		QString name;
+	} importlist[]={
+		{  BOOKMARK_CATAGORY_NAME , QString("name") },
+		{  BOOKMARK_CATAGORY_DESCIPTION , QString("DD") },
+		{  BOOKMARK_CATAGORY_LINK , QString("link") },
+		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
+		{  BOOKMARK_CATAGORY_ADDDATE , QString("ADD_DATE") },
+		{  BOOKMARK_CATAGORY_MODIFYDATE , QString("LAST_MODIFIED") },
+		{  BOOKMARK_CATAGORY_ID , QString("ID") },
+		{  BOOKMARK_CATAGORY_ICON , QString("ICON") },
+		{  BOOKMARK_CATAGORY_FEEDURL , QString("FEEDURL") },
+		{  BOOKMARK_CATAGORY_LAST_CHARSET , QString("LAST_CHARSET") },
+		{  BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER , QString("PERSONAL_TOOLBAR_FOLDER") },
+		{  BOOKMARK_CATAGORY_HR , QString("HR") },
+		{  BOOKMARK_CATAGORY_MAX , QString("")}
+	};
 	while (!atEnd())
 	  {
 		  readNext();
 		  if (isStartElement())
 		    {
-#ifdef CONFIG_LOG_ENABLE
-			    //logToFile("%s level=%d name=%s",__FUNCTION__,level,qPrintable(name().toString()));
-#endif
+		    	int i = 0;
+			while( !importlist[i].name.isEmpty() )
+			{
+				if( name() == importlist[i].name )
+					{
+						importItem(&bc,importlist[i].im);
+						break;
+					}
+				i++;
+			}
+			
+#if 0
 			    if (name() == "name")
 				    importName(&bc);
 			    else if (name() == "link")
@@ -438,7 +486,9 @@ void XmlReader::CreateCatagory(int level, QList < bookmark_catagory > *list, uin
 				   importPersonalToolbarFolder(&bc);
 			    else if(name()=="HR")
 				   importHr(&bc);
-			    else if (name() == "item")
+			    else
+#endif
+			    if (name() == "item")
 				    CreateItem(level + 1, &(bc.list), attributes().value("parentId").toString().toUInt());
 			    else if (name() == "category")
 			      {
@@ -469,12 +519,42 @@ void XmlReader::CreateItem(int level, QList < bookmark_catagory > *list, uint pa
 	bc.groupId = 0;
 	bc.parentId = parentId;
 	bc.hr=0;
+
+	struct {
+		enum BOOKMARK_CATAGORY_ITEM im;
+		QString name;
+	} importlist[]={
+		{  BOOKMARK_CATAGORY_NAME , QString("name") },
+		{  BOOKMARK_CATAGORY_DESCIPTION , QString("DD") },
+		{  BOOKMARK_CATAGORY_LINK , QString("link") },
+		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
+		{  BOOKMARK_CATAGORY_ADDDATE , QString("ADD_DATE") },
+		{  BOOKMARK_CATAGORY_MODIFYDATE , QString("LAST_MODIFIED") },
+		{  BOOKMARK_CATAGORY_ID , QString("ID") },
+		{  BOOKMARK_CATAGORY_ICON , QString("ICON") },
+		{  BOOKMARK_CATAGORY_FEEDURL , QString("FEEDURL") },
+		{  BOOKMARK_CATAGORY_LAST_CHARSET , QString("LAST_CHARSET") },
+		{  BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER , QString("PERSONAL_TOOLBAR_FOLDER") },
+		{  BOOKMARK_CATAGORY_HR , QString("HR") },
+		{  BOOKMARK_CATAGORY_MAX , QString("")}
+	};
+	
 	while (!atEnd())
 	  {
 		  readNext();
 		  if (isStartElement())
 		    {
-
+			int i = 0;
+			while( !importlist[i].name.isEmpty() )
+			{
+				if( name() == importlist[i].name )
+					{
+						importItem(&bc,importlist[i].im);
+						break;
+					}
+				i++;
+			}
+#if 0				
 			    if (name() == "name")
 				    importName(&bc);
 			    else if (name() == "link")
@@ -499,6 +579,7 @@ void XmlReader::CreateItem(int level, QList < bookmark_catagory > *list, uint pa
 				    importLastVisit(&bc);
 			    else if(name()=="HR")
 				   importHr(&bc);
+#endif
 				
 		  } else if (isEndElement())
 		    {
@@ -664,6 +745,59 @@ void XmlReader::buildLocalBmSetting(int level, QString path, QList < bookmark_ca
 		  }
 
 	}
+}
+void XmlReader::importCatItemName(CatItem *item)
+{
+	while (!atEnd())
+	  {
+		  readNext();
+		  if (isCharacters() && !isWhitespace())
+		    {
+			    item->shortName = text().toString().trimmed();
+			    item->lowName = item->shortName.toLower();	
+			    item->getPinyinReg(item->shortName );
+		  } else if (isEndElement())
+		    {
+			    break;
+		    }
+	  }
+}
+void XmlReader::importCatItemComefrom(CatItem *item)
+{
+	while (!atEnd())
+		  {
+			  readNext();
+			  if (isCharacters() && !isWhitespace())
+				{
+					item->comeFrom= text().toString().toUInt();
+				//	qDebug("item->comeFrom=%d",item->comeFrom);
+			  } else if (isEndElement())
+				{
+					break;
+				}
+		  }
+
+}
+void XmlReader::importCatItemFullPath(CatItem *item)
+{
+	while (!atEnd())
+	  {
+		  readNext();
+		  if (isCharacters() && !isWhitespace())
+		    {
+			    item->fullPath = text().toString().trimmed();
+			    item->hash_id=qHash(item->fullPath);			   
+			    item->usage = 0;
+			    item->groupId=0;
+			    item->parentId=0;
+			    item->alias1="";
+			    item->alias2="";
+			    item->shortCut="";
+		  } else if (isEndElement())
+		    {
+			    break;
+		    }
+	  }
 }
 
 void XmlReader::readCategoryElement()
