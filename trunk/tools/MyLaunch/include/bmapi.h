@@ -141,7 +141,9 @@ public :
 	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static int testFirefoxDbLock(QSqlDatabase* db);
 	static QString getBrowserName(uint id);
-	
+	static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
+	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
+	 static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

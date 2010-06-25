@@ -527,7 +527,7 @@ void XmlReader::CreateCatagory(int level, QList < bookmark_catagory > *list, uin
 			      	      bc.link.clear();
 				      bc.link_hash=0;
 			      	    //  list->push_back(bc);
-				      addItemToSortlist(bc,list);
+				      tz::addItemToSortlist(bc,list);
 				      break;
 			      }
 		    }
@@ -608,7 +608,7 @@ void XmlReader::CreateItem(int level, QList < bookmark_catagory > *list, uint pa
 			    if (name() == "item")
 			      {
 				     // list->push_back(bc);
-				      addItemToSortlist(bc,list);  
+				      tz::addItemToSortlist(bc,list);  
 				      break;
 			      }
 		    }
@@ -866,7 +866,7 @@ void XmlReader::readItemElement()
 {
 }
 
-
+#if 0
 void XmlReader::addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list)
 {
        // QDEBUG("add name=%s name_hash=%u",qPrintable(bc.name),bc.name_hash);
@@ -951,6 +951,7 @@ void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *li
 		  //items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
 	  }
 }
+#endif
 /**************************firefox***************************************/
 int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString & excludeid)
 {
@@ -997,7 +998,7 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 									   ff_bc.parentId=query.value(parentIndex).toString().toUInt();
 		  							   ff_bc.flag = BOOKMARK_ITEM_FLAG;
 									 //  list->push_back(ff_bc);
-									    addItemToSortlist(ff_bc,list);
+									    tz::addItemToSortlist(ff_bc,list);
 								 }
 							 }
 							//(os)<<"\n";
@@ -1020,7 +1021,7 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 											   ff_bc.link_hash=0;
 											   outChildItem(query.value(idIndex).toInt(),db,os,&(ff_bc.list),excludeid);
 											   os<<"</category>"<<"\n";
-											   addItemToSortlist(ff_bc,list);
+											  tz::addItemToSortlist(ff_bc,list);
 										 }
 									}else{
 										 outChildItem(query.value(idIndex).toInt(),db,os,list,excludeid);
