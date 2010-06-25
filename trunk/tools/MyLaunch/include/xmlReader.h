@@ -71,7 +71,7 @@ public:
 public:
    
    // void readStream(uint flag);
-   void readStream(uint flag,QSettings* setting,int browserType);
+   void readStream(int browserType);
     void readCategoryElement();
     void readItemElement();
     void readBookmarkElement();
@@ -114,7 +114,7 @@ public:
  	QList<bookmark_catagory> bm_list;
 	QSettings* settings;
 	QDateTime serverLastUpdateTime;
-	uint maxGroupId;
+//	uint maxGroupId;
 	uint flag;	
 	//QString ff_excludeId;
 	QSqlDatabase* ff_db;

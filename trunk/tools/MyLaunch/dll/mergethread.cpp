@@ -6,7 +6,7 @@
 
 
 //uint  gMaxGroupId;
-void mergeThread::handleBmData(QString& iePath,int& maxGroupId)
+void mergeThread::handleBmData(QString& iePath)
 {
 QDEBUG_LINE;
 setPostError(false);
@@ -53,7 +53,7 @@ if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFul
 	  lastFile.setFileName(localBmFullPath);
 	  lastFile.open(QIODevice::ReadOnly);
 	  ie_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  ie_xmlLastUpdate->readStream(XML_FROM_LASTUPDATE,settings,BROWSER_TYPE_IE);
+	  ie_xmlLastUpdate->readStream(BROWSER_TYPE_IE);
 	  lastFile.close();
 
 #if 1
@@ -68,14 +68,14 @@ if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFul
 	  lastFile.setFileName(localBmFullPath);
 	  lastFile.open(QIODevice::ReadOnly);
 	  firefox_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  firefox_xmlLastUpdate->readStream(XML_FROM_LASTUPDATE,settings,BROWSER_TYPE_FIREFOX);
+	  firefox_xmlLastUpdate->readStream(BROWSER_TYPE_FIREFOX);
 	  lastFile.close();
 
 	  
 	  lastFile.setFileName(localBmFullPath);
 	  lastFile.open(QIODevice::ReadOnly);
 	  opera_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  opera_xmlLastUpdate->readStream(XML_FROM_LASTUPDATE,settings,BROWSER_TYPE_OPERA);
+	  opera_xmlLastUpdate->readStream(BROWSER_TYPE_OPERA);
 	  lastFile.close();
 } else{
 	ie_xmlLastUpdate = new XmlReader(NULL,settings);
@@ -93,7 +93,7 @@ if(ie_enabled)
 		QFile server_file(BM_XML_FROM_SERVER);
 		server_file.open(QIODevice::ReadOnly);
 		ie_xmlHttpServer = new XmlReader(&server_file,settings);
-		ie_xmlHttpServer->readStream(XML_FROM_HTTPSERVER,settings,BROWSER_TYPE_IE);
+		ie_xmlHttpServer->readStream(BROWSER_TYPE_IE);
 		setUpdatetime(ie_xmlHttpServer->updateTime);
 		//qDebug()<<"Lastmodified on server is "<<updateTime;
 		server_file.close();
@@ -237,7 +237,7 @@ if(ie_enabled)
 			QFile server_file(BM_XML_FROM_SERVER);
 			server_file.open(QIODevice::ReadOnly);
 			firefox_xmlHttpServer = new XmlReader(&server_file,settings);
-			firefox_xmlHttpServer->readStream(XML_FROM_HTTPSERVER,settings,BROWSER_TYPE_FIREFOX);
+			firefox_xmlHttpServer->readStream(BROWSER_TYPE_FIREFOX);
 			//updateTime=firefox_xmlHttpServer->updateTime;
 			setUpdatetime(firefox_xmlHttpServer->updateTime);
 			//qDebug()<<"Lastmodified on server is "<<updateTime;
@@ -977,7 +977,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 void mergeThread::run()
 {
 	qDebug("mergerThread running. iePath=%s.................",qPrintable(iePath));
-	handleBmData(iePath,GroupId);
+	handleBmData(iePath);
 	exit();
 	emit done(0);
 }
