@@ -77,8 +77,7 @@ using namespace boost;
 #define LASTUPDATE_EXIST_OFFSET 1
 #define SERVER_EXIST_OFFSET 0
 
-#define FIREFOX_VERSION_2 2
-#define FIREFOX_VERSION_3 3
+
 
 #define HANDLE_ITEM_LOCAL 0
 #define HANDLE_ITEM_SERVER 1
