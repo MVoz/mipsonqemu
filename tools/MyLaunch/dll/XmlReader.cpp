@@ -96,10 +96,10 @@ void XmlReader::readBrowserType(int browserType)
 		    }
 	  }
 }
-void XmlReader::readStream(uint flag,QSettings* setting,int browserType)
+void XmlReader::readStream(int browserType)
 {
-	this->flag = flag;
-	this->maxGroupId = 0;
+	//this->flag = flag;
+//	this->maxGroupId = 0;
 	while (!atEnd())
 	  {
 		  readNext();
@@ -1163,7 +1163,7 @@ int XmlReader::readFirefoxBookmark2(QFile& file)
 	 lastFile.setFileName(tmp_firefox2_xml_filepath);
 	 lastFile.open(QIODevice::ReadOnly);
 	 setDevice(&lastFile);
-	 readStream(XML_FROM_FIREFOXFAV,settings,BROWSER_TYPE_FIREFOX);
+	 readStream(BROWSER_TYPE_FIREFOX);
 	 lastFile.close();
 	 return 1;
 }

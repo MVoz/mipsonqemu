@@ -127,7 +127,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	int copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src);
 	void postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType);
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
-	void handleBmData(QString& iePath,int& maxGroupId);
+	void handleBmData(QString& iePath);
 	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
 	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
 	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
@@ -161,7 +161,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	//QDateTime* updateTime;
 	QSettings* settings;
 	QString iePath;
-	int GroupId;
+	//int GroupId;
 	int firefox_version;
 	QSqlDatabase ff_db;
 	bool ie_enabled;
