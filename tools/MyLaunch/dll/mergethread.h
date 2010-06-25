@@ -89,26 +89,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT
       public:
-	 mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path=""):QThread(parent),db(b),settings(s),iePath(path)
-	{
-		file = NULL;
-		localxmlFile = NULL;
-		serverxmlFile = NULL;;
-		ie_xmlLastUpdate = NULL;;
-		firefox_xmlLastUpdate = NULL;;
-		opera_xmlLastUpdate = NULL;;
-		ie_xmlHttpServer = NULL;;
-		firefox_xmlHttpServer = NULL;;
-		opera_xmlHttpServer = NULL;;
-		ieFavReader = NULL;;
-		firefoxReader = NULL;;
-		ie_enabled=settings->value("adv/ckSupportIe",true).toBool();
-	        firefox_enabled=settings->value("adv/ckSupportFirefox",false).toBool();
-	        opera_enabled=settings->value("adv/ckSupportOpera",false).toBool();
-		firefox_version=0;
-		modifiedFlag=0;
-		terminatedFlag=0;
-	}
+	 mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path="");
 	 ~mergeThread()
 	{
 		if (!IS_NULL(file))
@@ -156,7 +137,6 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	XmlReader *ie_xmlHttpServer;
 	XmlReader *firefox_xmlHttpServer;
 	XmlReader *opera_xmlHttpServer;
-	XmlReader *ieFavReader;
 	XmlReader *firefoxReader;
 	//QDateTime* updateTime;
 	QSettings* settings;
