@@ -169,10 +169,7 @@ if(ie_enabled)
 	//firefox 
 			QFile firefox_file("firefox.xml");
 			firefox_file.open(QIODevice::ReadOnly);
-			QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
-			qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
-			QString firefox_v= ff_reg.value("CurrentVersion","").toString().trimmed();
-
+			
 			getFirefoxPath(ff_path);
 			//qDebug("ff_path=%s",qPrintable(ff_path));
 			if(ff_path.isNull()||ff_path.isEmpty())
@@ -180,18 +177,9 @@ if(ie_enabled)
 			QDir ff_dir(ff_path);
 			if(!ff_dir.exists())
 				goto OPERA;
- 			if(!firefox_v.isEmpty())
-			{
-				if(firefox_v.at(0).isDigit())
-				{
-					if(QString(firefox_v.at(0)).toInt()>=3)
-					firefox_version=FIREFOX_VERSION_3;
-					else 
-					firefox_version=FIREFOX_VERSION_2;
-				}
-				else
-					firefox_version=0;
-			}
+
+			firefox_version = tz::getFirefoxVersion();
+
 			if(!firefox_version)
 				{
 					

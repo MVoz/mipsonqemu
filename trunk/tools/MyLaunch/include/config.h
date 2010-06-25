@@ -170,6 +170,9 @@
 #define BOOKMARK_CATAGORY_FLAG 1
 #define BOOKMARK_ITEM_FLAG 2
 
+#define FIREFOX_VERSION_2 2
+#define FIREFOX_VERSION_3 3
+
 
 #endif
 

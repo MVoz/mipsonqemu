@@ -814,7 +814,29 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 		  //items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
 	  }
 }
+int tz::getFirefoxVersion()
+{
+	int ver = 0;
 
+	QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
+	qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
+	QString ff_v= ff_reg.value("CurrentVersion","").toString().trimmed();
+
+
+ 	if(!ff_v.isEmpty())
+	{
+		if(ff_v.at(0).isDigit())
+		{
+			if(QString(ff_v.at(0)).toInt()>=3)
+				ver=FIREFOX_VERSION_3;
+			else 
+				ver=FIREFOX_VERSION_2;
+		}
+		else
+			ver=0;
+	}
+		return ver;
+}
 #if 0
 void tz::prepareInsertQuery(QSqlQuery* q,CatItem& item)
 {

@@ -80,6 +80,8 @@ BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
 BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
 
+
+
 extern int language;
 enum BOOKMARK_CATAGORY_ITEM{
 	BOOKMARK_CATAGORY_NAME=0,
@@ -144,6 +146,7 @@ public :
 	static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	 static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
+	static int getFirefoxVersion();
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
