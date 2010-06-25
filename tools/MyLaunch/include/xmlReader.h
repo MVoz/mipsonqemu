@@ -19,8 +19,7 @@
 #define XMLREADER_DLL_CLASSEXPORT __declspec(dllimport)
 #define XMLREADER_DLL_FUNCEXPORT extern "C" __declspec(dllimport)
 #endif
-#define BOOKMARK_CATAGORY_FLAG 1
-#define BOOKMARK_ITEM_FLAG 2
+
 #define MASK_TYPE 0x03
 
 #define XML_FROM_HTTPSERVER 1
@@ -123,9 +122,9 @@ public:
 	QString updateTime;
 public:
 	  /*for ie*/
-	   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
+	//   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
 	   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
-	   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
+	//   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	   /*for firefox*/
 	   static int readFirefoxBookmark3(QSettings* settings,QSqlDatabase *db,QList<bookmark_catagory>* list);
    	   static int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString& excludeid);

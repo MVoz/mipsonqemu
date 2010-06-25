@@ -167,6 +167,9 @@
 #define COME_FROM_FIREFOX 6
 #define COME_FROM_OPERA 7
 
+#define BOOKMARK_CATAGORY_FLAG 1
+#define BOOKMARK_ITEM_FLAG 2
+
 
 #endif
 

@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QTextCodec>
 #include <qDebug>
+#include <QUrl>
 #include <QCoreApplication>
 #include <QSettings>
 #include <QSqlRecord>
@@ -725,6 +726,90 @@ void setBrowserEnable(QSettings *s)
 			browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();		
 			i++;
 		}
+}
+void tz::addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list)
+{
+       // QDEBUG("add name=%s name_hash=%u",qPrintable(bc.name),bc.name_hash);
+	int i=0;
+	if(!list->size()) //empty
+		{
+			list->push_back(bc);
+			return;
+		}
+	
+	for(i=0;i<list->size();i++)
+	{
+		if(list->at(i).name_hash<bc.name_hash)
+			continue;		
+		list->insert(i,bc);		
+		return;
+	}
+	if(i==list->size())
+		{
+			list->push_back(bc);
+		}
+}
+//flag 0--file 1--dir
+
+void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int level/*, uint flag*/)
+{
+	//if (level == 0)
+	//	this->flag = flag;
+	QString createTime, lastAccessTime, lastWriteTime;
+	QDir qd(directory);
+	QString dir = qd.absolutePath();
+	QStringList dirs = qd.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+
+
+	for (int i = 0; i < dirs.count(); ++i)
+	  {
+		  QString cur = dirs[i];
+		  if (cur.contains(".lnk"))
+			  continue;
+		   struct bookmark_catagory dir_bc;
+		   dir_bc.name = dirs[i];
+		  // dir_bc.name.trimmed();
+		   dir_bc.name_hash=qhashEx(dir_bc.name,dir_bc.name.length());
+		   dir_bc.link.clear();
+		   dir_bc.link_hash=0;
+		   dir_bc.flag = BOOKMARK_CATAGORY_FLAG;
+		   dir_bc.level = level;
+		  readDirectory(dir + "/" + dirs[i], &(dir_bc.list), level + 1/*,  flag*/);
+		  addItemToSortlist(dir_bc,list);
+	  }
+	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
+	for (int i = 0; i < files.count(); ++i)
+	  {
+		  struct bookmark_catagory bc;
+		  const QString FilePath(dir + "/" + files[i]);
+		  QSettings favSettings (FilePath, QSettings::IniFormat);
+		    {
+			    struct bookmark_catagory dir_bc;
+			    int dotIndex = files[i].lastIndexOf('.');
+			    files[i].truncate(dotIndex);
+			    dir_bc.link = favSettings.value("InternetShortcut/URL").toString();
+			    if( !dir_bc.link.isEmpty())
+			    {
+			    	    QUrl url(dir_bc.link);
+				    if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
+					//	qDebug()<<"unvalid http format!";
+						break;
+				    }
+				    handleUrlString(dir_bc.link );
+				    dir_bc.name = files[i];
+				    dir_bc.name.trimmed();
+				    dir_bc.name_hash=qhashEx(dir_bc.name,dir_bc.name.length());
+					  
+					   
+				    dir_bc.link_hash=qhashEx(dir_bc.link,dir_bc.link.length());
+				    dir_bc.flag = BOOKMARK_ITEM_FLAG;
+				    dir_bc.level = level;			
+				   // list->push_back(dir_bc);
+				    addItemToSortlist(dir_bc,list);
+			    	}
+		    }
+		  //items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
+	  }
 }
 
 #if 0
