@@ -25,13 +25,25 @@ struct browserinfo browserInfo[]={
 };
 
 
-void getBrowserEnable(QSettings *s,struct browserinfo* b)
+bool getBrowserEnable(uint id)
 {
-	if(!s||!b) return;
 	int i = 0;
-	while(!b[i++].name.isEmpty())
+	while(!browserInfo[i].name.isEmpty())
 		{
-			b->enable = s->value(QString("adv/ckSupport%1").arg(b[i].name),b[i].defenable).toBool();		
+			if( browserInfo[i].id == id )
+				return browserInfo[i].enable;
+			i++;
+		}
+	return false;
+}
+void setBrowserEnable(QSettings *s)
+{
+	if(!s) return;
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+		{
+			browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();		
+			i++;
 		}
 }
 
@@ -717,16 +729,7 @@ int tz::testFirefoxDbLock(QSqlDatabase* db)
 		return 0;
 	}
 }
-void setBrowserEnable(QSettings *s)
-{
-	if(!s) return;
-	int i = 0;
-	while(!browserInfo[i].name.isEmpty())
-		{
-			browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();		
-			i++;
-		}
-}
+
 void tz::addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list)
 {
        // QDEBUG("add name=%s name_hash=%u",qPrintable(bc.name),bc.name_hash);

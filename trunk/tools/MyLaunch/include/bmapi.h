@@ -77,7 +77,7 @@ BMAPI_DLL_FUNCEXPORT uint getBmId();
 BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
-BMAPI_DLL_FUNCEXPORT void getBrowserEnable(QSettings *s,struct browserinfo* b);
+BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
 
 extern int language;

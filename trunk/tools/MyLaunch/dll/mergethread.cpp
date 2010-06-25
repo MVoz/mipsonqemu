@@ -3,16 +3,42 @@
 #include <QUrl>
 #include <QMessageBox>
 #include "globals.h"
+mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString path):QThread(parent),db(b),settings(s),iePath(path)
+   {
+	   file = NULL;
+	   localxmlFile = NULL;
+	   serverxmlFile = NULL;;
+	   ie_xmlLastUpdate = NULL;;
+	   firefox_xmlLastUpdate = NULL;;
+	   opera_xmlLastUpdate = NULL;;
+	   ie_xmlHttpServer = NULL;;
+	   firefox_xmlHttpServer = NULL;;
+	   opera_xmlHttpServer = NULL;;
+	   firefoxReader = NULL;;
+
+	   firefox_version=0;
+	   modifiedFlag=0;
+	   terminatedFlag=0;
+   }
 
 
 //uint  gMaxGroupId;
 void mergeThread::handleBmData(QString& iePath)
 {
 QDEBUG_LINE;
+ie_enabled=getBrowserEnable(COME_FROM_IE);
+firefox_enabled=getBrowserEnable(COME_FROM_FIREFOX);
+opera_enabled=getBrowserEnable(COME_FROM_OPERA);
+
 setPostError(false);
 QList < bookmark_catagory > ie_bc;
 QList < bookmark_catagory > firefox_bc;
 QList < bookmark_catagory > opera_bc;
+
+
+QList<bookmark_catagory> iefav_list;
+
+
 //from lastupdater
 QString localBmFullPath;	
 QString localFirefoxPlaceSqlite;
@@ -100,10 +126,10 @@ if(ie_enabled)
 	}
 
 //internet explore
-	ieFavReader = new XmlReader(NULL,settings);
-	tz::readDirectory(iePath, &(ieFavReader->bm_list), 0);
+	//ieFavReader = new XmlReader(NULL,settings);
+	tz::readDirectory(iePath, &iefav_list, 0);
 #if 1
-		foreach(bookmark_catagory item, ieFavReader->bm_list)
+		foreach(bookmark_catagory item, iefav_list)
 	{
 		qDebug("iefav item:name=%s",qPrintable(item.name));
 	}
@@ -130,9 +156,9 @@ if(ie_enabled)
 	ie_xmlHttpServer->bmListToXml(0, &(ie_xmlHttpServer->bm_list), &ie_xml_in,updateTime);
 #endif	
        if(modifiedInServer)
-		bmMerge(&(ieFavReader->bm_list), &(ie_xmlLastUpdate->bm_list), &(ie_xmlHttpServer->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
+		bmMerge(&iefav_list, &(ie_xmlLastUpdate->bm_list), &(ie_xmlHttpServer->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
        else
-	   	bmMergeWithoutModifyInServer(&(ieFavReader->bm_list), &(ie_xmlLastUpdate->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
+	   	bmMergeWithoutModifyInServer(&iefav_list, &(ie_xmlLastUpdate->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
         
 }
 #endif
@@ -328,8 +354,7 @@ OPERA:
 		settings->setValue("updateTime", updateTime);
 	setUpdatetime("");	//set null
 //close the firefox db
-	if(ie_enabled&&ieFavReader)
-			delete ieFavReader;
+
 	if(firefox_enabled){
 		if(firefoxReader)
 			delete firefoxReader;
@@ -976,6 +1001,8 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 }
 void mergeThread::run()
 {
+	
+
 	qDebug("mergerThread running. iePath=%s.................",qPrintable(iePath));
 	handleBmData(iePath);
 	exit();
