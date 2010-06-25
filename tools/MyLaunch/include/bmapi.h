@@ -78,6 +78,7 @@ BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
 BMAPI_DLL_FUNCEXPORT void getBrowserEnable(QSettings *s,struct browserinfo* b);
+BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
 
 extern int language;
 enum BOOKMARK_CATAGORY_ITEM{
@@ -139,6 +140,8 @@ public :
 	static void clearbmgarbarge(QSqlQuery* q,uint delId);
 	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static int testFirefoxDbLock(QSqlDatabase* db);
+	static QString getBrowserName(uint id);
+	
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

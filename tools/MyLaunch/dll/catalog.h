@@ -46,6 +46,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PINYIN_MAX_NUMBER 4
 #define PINYIN_TOKEN_FLAG "(p)"
 
+enum CATITEM_ITEM{
+	  CATITEM_FULLPATH=0,
+	  CATITEM_SHORTNAME,	
+	  CATITEM_COMEFROM,
+	  CATITEM_MAX
+};
 
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
@@ -69,8 +75,8 @@ public:
         uint groupId;
         uint parentId;
 	/*is has pingyin*/
-	unsigned char isHasPinyin;
-	unsigned char comeFrom;
+	unsigned short isHasPinyin;
+	unsigned short comeFrom;
 	unsigned short hanziNums;
 	/*pinyin depth*/
 	unsigned int pinyinDepth;

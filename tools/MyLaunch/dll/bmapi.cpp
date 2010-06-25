@@ -34,6 +34,7 @@ void getBrowserEnable(QSettings *s,struct browserinfo* b)
 		}
 }
 
+
 void setPostResponse(uint  type)
 {
 	gPostResponse=type;
@@ -634,6 +635,18 @@ struct browserinfo* tz::getbrowserInfo()
 {
 	return browserInfo;
 }
+QString tz::getBrowserName(uint id)
+{
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+	{
+		if(browserInfo[i].id == id)
+			return browserInfo[i].name;
+		i++;
+	}
+	return "";
+}
+
 void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 {
 	//uint comefrom_s=0,comefrom_e=0;
@@ -702,6 +715,16 @@ int tz::testFirefoxDbLock(QSqlDatabase* db)
 		db->setConnectOptions();
 		return 0;
 	}
+}
+void setBrowserEnable(QSettings *s)
+{
+	if(!s) return;
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+		{
+			browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();		
+			i++;
+		}
 }
 
 #if 0

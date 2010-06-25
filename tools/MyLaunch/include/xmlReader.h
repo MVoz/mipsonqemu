@@ -89,9 +89,10 @@ public:
   static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime);
    void getBookmarkCatalog(QList<CatItem>* items);
    void getCatalog(QList<CatItem>* items);
-   void importCatItemName(CatItem *item);
-   void importCatItemFullPath(CatItem *item);
-   void importCatItemComefrom(CatItem *item);
+  // void importCatItemName(CatItem *item);
+  // void importCatItemFullPath(CatItem *item);
+ //  void importCatItemComefrom(CatItem *item);
+ void importCatItem(CatItem *item,int im);
    void readBrowserType(int browserType);
    void setFirefoxDb(QSqlDatabase* db);
   
