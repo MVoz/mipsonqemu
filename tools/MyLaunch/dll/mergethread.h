@@ -121,6 +121,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	void setTerminated(uint flag){
 			terminatedFlag=flag;
 		}
+	bool checkXmlfileFromServer();
       signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status,QString str);

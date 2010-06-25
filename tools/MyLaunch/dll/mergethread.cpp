@@ -21,6 +21,39 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	   terminatedFlag=0;
    }
 
+bool mergeThread::checkXmlfileFromServer()
+{
+	if(!QFile::exists(BM_XML_FROM_SERVER))
+	return false;
+
+	QFile s_file(BM_XML_FROM_SERVER);
+	if (!s_file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return false;
+	if (!s_file.atEnd()) {
+		QString line = s_file.readLine();
+		if (line.contains(DO_NOTHING)) {
+			modifiedInServer=0;
+			qDebug("no modification on server!!!");
+			goto good;
+		}else if(line.contains(LOGIN_FALIL_STRING)){
+			qDebug("login failed!!!");
+			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
+			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,tz::tr(LOGIN_FALIL_STRING));
+			goto bad;
+		}
+		else{
+				qDebug("has modification on server!!!");
+				goto good;
+		}
+	}
+	
+good:
+	s_file.close();
+	return true;
+bad:
+	s_file.close();
+	return false;
+}
 
 //uint  gMaxGroupId;
 void mergeThread::handleBmData(QString& iePath)
@@ -45,31 +78,8 @@ QString localFirefoxPlaceSqlite;
 QString ff_path;
 modifiedInServer=1;
 //check BM_XML_FROM_SERVER
-if(!QFile::exists(BM_XML_FROM_SERVER))
+if(!checkXmlfileFromServer())
 	return;
-
-	QFile s_file(BM_XML_FROM_SERVER);
-	if (!s_file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-	if (!s_file.atEnd()) {
-		QString line = s_file.readLine();
-		if (line.contains(DO_NOTHING)) {
-			modifiedInServer=0;
-			qDebug("no modification on server!!!");
-		}else if(line.contains(LOGIN_FALIL_STRING)){
-			qDebug("login failed!!!");
-			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
-			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,tz::tr(LOGIN_FALIL_STRING));
-			
-			s_file.close();
-			return;
-		}
-		else
-			{
-				qDebug("has modification on server!!!");
-			}
-	}
-	s_file.close();
 
 
 if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
