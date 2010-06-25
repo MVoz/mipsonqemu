@@ -7,7 +7,7 @@
 //extern QString gIeFavPath;
 //extern QDateTime gNowUpdateTime;
 //extern QSettings *gSettings;
-static QString browserName[]={QString(""),QString("ie"),QString("firefox"),QString("opera")};
+//static QString browserName[]={QString(""),QString("ie"),QString("firefox"),QString("opera")};
 void XmlReader::getCatalog(QList<CatItem>* items)
 {
 
@@ -31,6 +31,15 @@ void XmlReader::getCatalog(QList<CatItem>* items)
 void XmlReader::getBookmarkCatalog(QList<CatItem>* items)
 {
 	CatItem item;
+	struct {
+		enum CATITEM_ITEM im;
+		QString name;
+	} importlist[]={
+		{  CATITEM_FULLPATH , QString("link") },
+		{  CATITEM_SHORTNAME , QString("name") },
+		{  CATITEM_COMEFROM , QString("comeFrom") },
+		{  CATITEM_MAX , QString("")}
+	};
 	while (!atEnd())
 	  {
 		  readNext();
@@ -46,13 +55,26 @@ void XmlReader::getBookmarkCatalog(QList<CatItem>* items)
 							  readNext();
 							  if (isStartElement())
 							    {
-
+							    
+#if 1
+								int i = 0;
+								while( !importlist[i].name.isEmpty() )
+								{
+									if( name() == importlist[i].name )
+										{
+											importCatItem(&item,importlist[i].im);
+											break;
+										}
+									i++;
+								}
+#else
 								    if (name() == "name")
 									    importCatItemName(&item);
 								    else if (name() == "link")
 									    importCatItemFullPath(&item);
 								    else if (name() == "comeFrom")
 									    importCatItemComefrom(&item);
+#endif
 							  } else if (isEndElement())
 							    {
 								    if (name() == "item")
@@ -80,9 +102,9 @@ void XmlReader::readBrowserType(int browserType)
 		  readNext();
 		  if (isStartElement())
 		    {
-			    if (name() == "browserType"&&attributes().value("name") == browserName[browserType])
+			    if (name() == "browserType"&&attributes().value("name") == tz::getBrowserName(browserType).toLower())
 			      {
-			      			qDebug("%s %d %s",__FUNCTION__,__LINE__,qPrintable(browserName[browserType]));
+			      			qDebug("%s %d %s",__FUNCTION__,__LINE__,qPrintable(tz::getBrowserName(browserType)));
 			      			readFlag=1;
 		 				readBookmarkElement();
 			    	} 
@@ -631,7 +653,7 @@ void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextSt
 		 *os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\">\n";
 	  }
 	if(start) 
-			writeToFile(os, "<browserType name=\"%s\">\n",qPrintable(browserName[browserType]));	
+			writeToFile(os, "<browserType name=\"%s\">\n",qPrintable(tz::getBrowserName(browserType)));	
 	qDebug("firefox_bc's size is %d",list->size());
 	foreach(bookmark_catagory bm, *list)
 	{
@@ -746,6 +768,42 @@ void XmlReader::buildLocalBmSetting(int level, QString path, QList < bookmark_ca
 
 	}
 }
+void XmlReader::importCatItem(CatItem *item,int im)
+{
+	while (!atEnd())
+	  {
+		  readNext();
+		  if (isCharacters() && !isWhitespace())
+		    {
+		    	    switch(im)
+		    	    {
+		    	    	case CATITEM_FULLPATH:
+					 item->fullPath = text().toString().trimmed();
+				   	 item->hash_id=qHash(item->fullPath);			   
+				    	 item->usage = 0;
+				  	 item->groupId=0;
+				   	 item->parentId=0;
+					 item->alias1="";
+					 item->alias2="";
+					 item->shortCut="";
+				break;
+				case  CATITEM_SHORTNAME:
+					 item->shortName = text().toString().trimmed();
+			    		 item->lowName = item->shortName.toLower();	
+			   		 item->getPinyinReg(item->shortName );
+				break;
+				case  CATITEM_COMEFROM:
+					item->comeFrom= text().toString().toUShort();
+				break;		    	    	
+		    	    }
+			   
+		  } else if (isEndElement())
+		    {
+			    break;
+		    }
+	  }
+}
+#if 0
 void XmlReader::importCatItemName(CatItem *item)
 {
 	while (!atEnd())
@@ -799,7 +857,7 @@ void XmlReader::importCatItemFullPath(CatItem *item)
 		    }
 	  }
 }
-
+#endif
 void XmlReader::readCategoryElement()
 {
 

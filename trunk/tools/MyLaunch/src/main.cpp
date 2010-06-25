@@ -240,7 +240,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	move(x);
 	platform->MoveAlphaBorder(x);
 	//get broswerenable
-	getBrowserEnable(gSettings,tz::getbrowserInfo());
+	//getBrowserEnable(gSettings,tz::getbrowserInfo());
+	setBrowserEnable(gSettings);
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
