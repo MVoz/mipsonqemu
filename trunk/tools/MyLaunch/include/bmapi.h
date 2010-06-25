@@ -116,6 +116,7 @@ public :
 	static struct browserinfo* getbrowserInfo();
 	static void clearbmgarbarge(QSqlQuery* q,uint delId);
 	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
+	static int testFirefoxDbLock(QSqlDatabase* db);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

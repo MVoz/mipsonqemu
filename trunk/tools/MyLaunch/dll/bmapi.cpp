@@ -688,6 +688,22 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 	}
 
 }
+int tz::testFirefoxDbLock(QSqlDatabase* db)
+{
+	db->setConnectOptions(tr("QSQLITE_BUSY_TIMEOUT=%1").arg(TEST_DB_MAXINUM_TIMEOUT));
+	QString queryStr=QString("select * from moz_bookmarks limit 1");
+	QSqlQuery   query(queryStr, *db);
+	if(query.exec()){
+		qDebug("test firefox db successfuly!");
+		db->setConnectOptions();
+		return 1;
+	}else{
+		qDebug("test firefox db failed!");
+		db->setConnectOptions();
+		return 0;
+	}
+}
+
 #if 0
 void tz::prepareInsertQuery(QSqlQuery* q,CatItem& item)
 {

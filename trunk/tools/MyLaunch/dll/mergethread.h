@@ -137,7 +137,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
 
-	int testFirefoxDbLock(QSqlDatabase& db);
+	//int testFirefoxDbLock(QSqlDatabase& db);
 	void setTerminated(uint flag){
 			terminatedFlag=flag;
 		}

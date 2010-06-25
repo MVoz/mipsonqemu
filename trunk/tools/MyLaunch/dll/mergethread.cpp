@@ -197,7 +197,8 @@ if(ie_enabled)
 			 							 goto OPERA ;
 			 		 }else{ 
 			 		 	 qDebug("connect database %s successfully!\n",qPrintable(ff_path));   
-						 if(!testFirefoxDbLock(ff_db)){
+						// if(!testFirefoxDbLock(ff_db)){
+						 if(!tz::testFirefoxDbLock(&ff_db)){
 						 	//locked						 	
 							
 							//QMessageBox msgBox;
@@ -356,6 +357,8 @@ OPERA:
 	}
 
 }
+#if 0
+
 int mergeThread::testFirefoxDbLock(QSqlDatabase& db)
 {
 	db.setConnectOptions(tr("QSQLITE_BUSY_TIMEOUT=%1").arg(TEST_DB_MAXINUM_TIMEOUT));
@@ -373,7 +376,7 @@ int mergeThread::testFirefoxDbLock(QSqlDatabase& db)
 	}
 }
 
-#if 0
+
 
 int mergeThread::isExistInLastUpdateList(QString path, bookmark_catagory * bm)
 {
