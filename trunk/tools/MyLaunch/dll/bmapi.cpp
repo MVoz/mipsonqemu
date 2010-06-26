@@ -18,11 +18,51 @@ uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 char* gLanguageList[]={"chinese","english"};
 struct browserinfo browserInfo[]={
-	{QString("Ie"),true,true,COME_FROM_IE},
-	{QString("Firefox"),false,false,COME_FROM_FIREFOX},
-	{QString("Opera"),false,false,COME_FROM_OPERA},
-	{QString(""),false,0}
+	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
+	{QString("Firefox"), false, false , false,false,false, BROWSE_TYPE_FIREFOX},
+	{QString("Opera") , false , false , false,false,false, BROWSE_TYPE_OPERA},
+	{QString(""),false,false, false,false,false,0}
 };
+void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type)
+{
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+		{
+			if( browserInfo[i].id == id )
+				{
+					switch(type){
+						case BROWSERINFO_OP_LASTUPDATE:
+							browserInfo[i].lastupdate= true;
+							break;
+						case BROWSERINFO_OP_FROMSERVER:
+							browserInfo[i].fromserver= true;
+							break;
+						case BROWSERINFO_OP_LOCAL:
+							browserInfo[i].local= true;
+							break;
+					}					
+					return;
+				}
+			i++;
+		}
+	return ;
+}
+void clearBrowserInfoOpFlag(uint id)
+{
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+		{
+			if( browserInfo[i].id == id )
+				{
+					browserInfo[i].lastupdate= false;
+					browserInfo[i].fromserver= false;
+					browserInfo[i].local= false;
+					return;
+				}
+			i++;
+		}
+	return ;
+}
 
 
 bool getBrowserEnable(uint id)
@@ -837,6 +877,46 @@ int tz::getFirefoxVersion()
 	}
 		return ver;
 }
+bool tz::checkFirefoxDir(QString& path)
+{
+	if(!getFirefoxPath(path))
+		return false;
+	if(path.isNull()||path.isEmpty())
+		return false;
+	QDir ff_dir(path);
+	if(!ff_dir.exists())
+		return false;
+}
+bool tz::openFirefox3Db(QSqlDatabase& db,QString path)
+{
+	
+	db = QSqlDatabase::addDatabase("QSQLITE", "dbFirefox");					
+	QString ffpath=QString(path).append("/places.sqlite");
+	db.setDatabaseName(ffpath);	
+	//qDebug()<<"Open Firefox DB:"<<ffpath;
+	if ( !db.open())  {
+			// qDebug("connect %s failed",qPrintable(ff_path));     
+			goto bad;
+	 }else{ 
+		//qDebug("connect database %s successfully!\n",qPrintable(ff_path));   
+		 if(!tz::testFirefoxDbLock(&db)){
+			qDebug()<<"firefox db is locked!";
+			goto bad;
+		 }
+	}
+	qDebug("Open Firefox DB successfully!");
+	return true;	
+bad:
+	closeFirefox3Db(db);
+	return false;
+}
+void tz::closeFirefox3Db(QSqlDatabase& db)
+{
+	if(db.isOpen())	
+		db.close();
+	QSqlDatabase::removeDatabase("dbFirefox");		
+}
+
 #if 0
 void tz::prepareInsertQuery(QSqlQuery* q,CatItem& item)
 {

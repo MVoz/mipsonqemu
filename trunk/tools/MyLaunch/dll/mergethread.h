@@ -122,6 +122,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 			terminatedFlag=flag;
 		}
 	bool checkXmlfileFromServer();
+	//bool checkFirefoxDir(QString& path);
       signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status,QString str);
