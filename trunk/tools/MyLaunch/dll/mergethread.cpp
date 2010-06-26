@@ -28,18 +28,12 @@ void mergeThread::setRandomFileFromserver(QString& s)
 #endif
 bool mergeThread::checkXmlfileFromServer()
 {
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
+
 	if(!QFile::exists(filename_fromserver))
 	return false;
 
 	QFile s_file(filename_fromserver);
-#else
 
-	if(!QFile::exists(BM_XML_FROM_SERVER))
-	return false;
-
-	QFile s_file(BM_XML_FROM_SERVER);
-#endif
 	if (!s_file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 	if (!s_file.atEnd()) {
@@ -168,18 +162,12 @@ while(!browserInfo[i].name.isEmpty())
 			if( browserenable[i] )
 				{
 					//from server xml file
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
-					if(QFile::exists(filename_fromserver)&&modifiedInServer)
-#else
 
-					if(QFile::exists(BM_XML_FROM_SERVER)&&modifiedInServer)
-#endif
+					if(QFile::exists(filename_fromserver)&&modifiedInServer)
 					{
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
+
 						 f.setFileName(filename_fromserver);
-#else
-						 f.setFileName(BM_XML_FROM_SERVER);
-#endif
+
 						 f.open(QIODevice::ReadOnly);
 						 fromServer[i] = new XmlReader(&f,settings);
 						 fromServer[i]->readStream(BROWSE_TYPE_IE);
