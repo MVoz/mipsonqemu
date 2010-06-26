@@ -152,6 +152,12 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	uint modifiedInServer;
 	uint modifiedFlag;
 	volatile uint terminatedFlag;
+#ifdef CONFIG_RANDOMFILE_FROM_SERVER
+	QString filename_fromserver;
+       void setRandomFileFromserver(QString &s);
+#endif
+
+	
 public:
 	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);

@@ -61,6 +61,8 @@
 #endif
 
 #define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
+
+#define CONFIG_RANDOMFILE_FROM_SERVER
 #define BM_XML_FROM_SERVER	"bm_from_server.xml"
 #define BM_XML_FROM_FIREFOX  "firefox.xml"
 
