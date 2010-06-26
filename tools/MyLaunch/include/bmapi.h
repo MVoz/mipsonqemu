@@ -11,6 +11,7 @@
  #include <QFile>
  #include <QSqlQuery>
  #include <QDateTime>
+ #include <QSqlDatabase>
  #ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
@@ -38,11 +39,19 @@ public :
 
 };
 */
+enum BROWSERINFO_OP{
+	BROWSERINFO_OP_LASTUPDATE=0,
+	BROWSERINFO_OP_FROMSERVER,
+	BROWSERINFO_OP_LOCAL
+};
 
 struct BMAPI_DLL_CLASSEXPORT browserinfo{
 		QString name;
 		bool enable; 
 		bool defenable;
+		bool lastupdate; //import lastupdate success?
+		bool fromserver;//import fromserver success?
+		bool local;//import local success
 		int id;
 };
 
@@ -79,6 +88,8 @@ BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
 BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
+BMAPI_DLL_FUNCEXPORT void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type);
+BMAPI_DLL_FUNCEXPORT void clearBrowserInfoOpFlag(uint id);
 
 
 
@@ -92,13 +103,13 @@ enum BOOKMARK_CATAGORY_ITEM{
 	BOOKMARK_CATAGORY_LAST_CHARSET,
 	BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER,
 	BOOKMARK_CATAGORY_ID,
+	BOOKMARK_CATAGORY_BMID,
 	BOOKMARK_CATAGORY_ADDDATE,
 	BOOKMARK_CATAGORY_MODIFYDATE,
 	BOOKMARK_CATAGORY_LAST_VISIT,
 	BOOKMARK_CATAGORY_FLAGX,
 	BOOKMARK_CATAGORY_GROUPID,
 	BOOKMARK_CATAGORY_PARENTID,
-	BOOKMARK_CATAGORY_BMID,
 	BOOKMARK_CATAGORY_LEVEL,
 	BOOKMARK_CATAGORY_HR,
 	BOOKMARK_CATAGORY_NAME_HASH,
@@ -147,6 +158,9 @@ public :
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	 static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	static int getFirefoxVersion();
+	static bool checkFirefoxDir(QString& path);//get & check firefox directory
+	static bool openFirefox3Db(QSqlDatabase& db,QString path);
+	static void closeFirefox3Db(QSqlDatabase& db);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

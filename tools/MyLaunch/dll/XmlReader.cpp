@@ -8,6 +8,37 @@
 //extern QDateTime gNowUpdateTime;
 //extern QSettings *gSettings;
 //static QString browserName[]={QString(""),QString("ie"),QString("firefox"),QString("opera")};
+const static struct CATITEM_ITEM_IMPORT{
+	enum CATITEM_ITEM im;
+	QString name;
+} catitem_importlist[]={
+	{  CATITEM_FULLPATH , QString("link") },
+	{  CATITEM_SHORTNAME , QString("name") },
+	{  CATITEM_COMEFROM , QString("comeFrom") },
+	{  CATITEM_MAX , QString("")}
+};
+const static struct BOOKMARK_CATAGORY_ITEM_IMPORT{
+		enum BOOKMARK_CATAGORY_ITEM im;
+		QString name;
+} importlist[]={
+		{  BOOKMARK_CATAGORY_NAME , QString("name") },
+		{  BOOKMARK_CATAGORY_DESCIPTION , QString("DD") },
+		{  BOOKMARK_CATAGORY_LINK , QString("link") },
+		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
+		{  BOOKMARK_CATAGORY_ADDDATE , QString("ADD_DATE") },
+		{  BOOKMARK_CATAGORY_MODIFYDATE , QString("LAST_MODIFIED") },
+		{  BOOKMARK_CATAGORY_ID , QString("ID") },
+		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
+		{  BOOKMARK_CATAGORY_ICON , QString("ICON") },
+		{  BOOKMARK_CATAGORY_FEEDURL , QString("FEEDURL") },
+		{  BOOKMARK_CATAGORY_LAST_CHARSET , QString("LAST_CHARSET") },
+		{  BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER , QString("PERSONAL_TOOLBAR_FOLDER") },
+		{  BOOKMARK_CATAGORY_HR , QString("HR") },
+		{  BOOKMARK_CATAGORY_LAST_VISIT , QString("LAST_VISITE") },		
+		{  BOOKMARK_CATAGORY_MAX , QString("")}
+};
+
+
 void XmlReader::getCatalog(QList<CatItem>* items)
 {
 
@@ -31,15 +62,7 @@ void XmlReader::getCatalog(QList<CatItem>* items)
 void XmlReader::getBookmarkCatalog(QList<CatItem>* items)
 {
 	CatItem item;
-	struct {
-		enum CATITEM_ITEM im;
-		QString name;
-	} importlist[]={
-		{  CATITEM_FULLPATH , QString("link") },
-		{  CATITEM_SHORTNAME , QString("name") },
-		{  CATITEM_COMEFROM , QString("comeFrom") },
-		{  CATITEM_MAX , QString("")}
-	};
+
 	while (!atEnd())
 	  {
 		  readNext();
@@ -58,11 +81,11 @@ void XmlReader::getBookmarkCatalog(QList<CatItem>* items)
 							    
 #if 1
 								int i = 0;
-								while( !importlist[i].name.isEmpty() )
+								while( !catitem_importlist[i].name.isEmpty() )
 								{
-									if( name() == importlist[i].name )
+									if( name() == catitem_importlist[i].name )
 										{
-											importCatItem(&item,importlist[i].im);
+											importCatItem(&item,catitem_importlist[i].im);
 											break;
 										}
 									i++;
@@ -449,24 +472,7 @@ void XmlReader::CreateCatagory(int level, QList < bookmark_catagory > *list, uin
 	bc.groupId = groupId;
 	bc.parentId = parentId;	
 	bc.hr=0;
-	struct {
-		enum BOOKMARK_CATAGORY_ITEM im;
-		QString name;
-	} importlist[]={
-		{  BOOKMARK_CATAGORY_NAME , QString("name") },
-		{  BOOKMARK_CATAGORY_DESCIPTION , QString("DD") },
-		{  BOOKMARK_CATAGORY_LINK , QString("link") },
-		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
-		{  BOOKMARK_CATAGORY_ADDDATE , QString("ADD_DATE") },
-		{  BOOKMARK_CATAGORY_MODIFYDATE , QString("LAST_MODIFIED") },
-		{  BOOKMARK_CATAGORY_ID , QString("ID") },
-		{  BOOKMARK_CATAGORY_ICON , QString("ICON") },
-		{  BOOKMARK_CATAGORY_FEEDURL , QString("FEEDURL") },
-		{  BOOKMARK_CATAGORY_LAST_CHARSET , QString("LAST_CHARSET") },
-		{  BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER , QString("PERSONAL_TOOLBAR_FOLDER") },
-		{  BOOKMARK_CATAGORY_HR , QString("HR") },
-		{  BOOKMARK_CATAGORY_MAX , QString("")}
-	};
+
 	while (!atEnd())
 	  {
 		  readNext();
@@ -541,25 +547,6 @@ void XmlReader::CreateItem(int level, QList < bookmark_catagory > *list, uint pa
 	bc.groupId = 0;
 	bc.parentId = parentId;
 	bc.hr=0;
-
-	struct {
-		enum BOOKMARK_CATAGORY_ITEM im;
-		QString name;
-	} importlist[]={
-		{  BOOKMARK_CATAGORY_NAME , QString("name") },
-		{  BOOKMARK_CATAGORY_DESCIPTION , QString("DD") },
-		{  BOOKMARK_CATAGORY_LINK , QString("link") },
-		{  BOOKMARK_CATAGORY_BMID , QString("bmid") },
-		{  BOOKMARK_CATAGORY_ADDDATE , QString("ADD_DATE") },
-		{  BOOKMARK_CATAGORY_MODIFYDATE , QString("LAST_MODIFIED") },
-		{  BOOKMARK_CATAGORY_ID , QString("ID") },
-		{  BOOKMARK_CATAGORY_ICON , QString("ICON") },
-		{  BOOKMARK_CATAGORY_FEEDURL , QString("FEEDURL") },
-		{  BOOKMARK_CATAGORY_LAST_CHARSET , QString("LAST_CHARSET") },
-		{  BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER , QString("PERSONAL_TOOLBAR_FOLDER") },
-		{  BOOKMARK_CATAGORY_HR , QString("HR") },
-		{  BOOKMARK_CATAGORY_MAX , QString("")}
-	};
 	
 	while (!atEnd())
 	  {
@@ -644,82 +631,103 @@ void XmlReader::readBookmarkElement()
 		    }
 	  }
 }
+void XmlReader::bmItemToFile(QTextStream * os,bookmark_catagory& bm)
+{
+	uint i = 0;
+	QVariant t;
+	while( importlist[i].im < BOOKMARK_CATAGORY_MAX)
+	{
+		switch( importlist[i].im )
+		{
+			case BOOKMARK_CATAGORY_NAME:
+				if(!bm.name.isNull()&&!bm.name.isEmpty())
+				 	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.name<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_DESCIPTION:
+				  if(!bm.desciption.isNull()&&!bm.desciption.isEmpty())
+				  	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.desciption<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_LINK:
+				if(!bm.link.isNull()&&!bm.link.isEmpty())
+					 (*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.link<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_ADDDATE:
+				 if(bm.addDate.isValid())
+				 	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.addDate.toString(TIME_FORMAT)<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_MODIFYDATE:
+				  if(bm.modifyDate.isValid())
+				  	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.modifyDate.toString(TIME_FORMAT)<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_ID:
+				  if(!bm.id.isNull()&&!bm.id.isEmpty())
+				  	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.id<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_BMID:
+				  	(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.bmid<<"]]></"<<importlist[i].name<<">\n";
+				 break;
+			case BOOKMARK_CATAGORY_ICON:
+				  if(!bm.icon.isNull()&&!bm.icon.isEmpty())
+			  		(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.icon<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_FEEDURL:
+				  if(!bm.feedurl.isNull()&&!bm.feedurl.isEmpty())
+			  		(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.feedurl<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_LAST_CHARSET:
+				  if(!bm.last_charset.isNull()&&!bm.last_charset.isEmpty())
+			  		(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.last_charset<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_PERSONAL_TOOLBAR_FOLDER:
+				if(!bm.personal_toolbar_folder.isNull()&&!bm.personal_toolbar_folder.isEmpty())
+			  		(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.personal_toolbar_folder<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_HR:
+				 if(bm.hr==1)
+			  		(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.hr<<"]]></"<<importlist[i].name<<">\n";
+				break;
+			case BOOKMARK_CATAGORY_LAST_VISIT:
+				if(!bm.last_visit.isNull()&&!bm.last_visit.isEmpty())
+					(*os)<<"<"<<importlist[i].name<<"><![CDATA["<<bm.last_visit<<"]]></"<<importlist[i].name<<">\n";
+				break;
+		}
+		
+		i++;
+	}
+}
+
 void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream * os,int browserType,int start,QString updateTime)
 {
 	if (flag&BM_WRITE_HEADER)
 	  {
-		//  writeToFile(os, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		  *os<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-		 *os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\">\n";
+		  *os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\">\n";
 	  }
 	if(start) 
-			writeToFile(os, "<browserType name=\"%s\">\n",qPrintable(tz::getBrowserName(browserType)));	
+		(*os)<<"<browserType name=\""<<tz::getBrowserName(browserType).toLower()<<"\">\n";
 	qDebug("firefox_bc's size is %d",list->size());
 	foreach(bookmark_catagory bm, *list)
 	{
-		//*os<<"flag="<<bm.flag<<" name="<<bm.name<<"\n";
-		if (bm.flag == BOOKMARK_CATAGORY_FLAG)
-		  {
-			  writeToFile(os, "<category groupId=\"%u\" parentId=\"%u\">\n", bm.groupId, bm.parentId);
-			  *os<< "<name><![CDATA["<<bm.name<<"]]></name>\n";
-			   if(!bm.link.isNull()&&!bm.link.isEmpty())
-			 	 writeToFile(os, "<link><![CDATA[%s]]></link>\n", qPrintable(bm.link));
-			  if(bm.addDate.isValid())
-			  	writeToFile(os, "<ADD_DATE><![CDATA[%s]]></ADD_DATE>\n", qPrintable(bm.addDate.toString(TIME_FORMAT)));
-			  if(bm.modifyDate.isValid())
-			  	writeToFile(os, "<LAST_MODIFIED><![CDATA[%s]]></LAST_MODIFIED>\n", qPrintable(bm.modifyDate.toString(TIME_FORMAT)));
-			  if(!bm.id.isNull()&&!bm.id.isEmpty())
-			  	writeToFile(os, "<ID><![CDATA[%s]]></ID>\n", qPrintable(bm.id));
-			  writeToFile(os, "<bmid><![CDATA[%u]]></bmid>\n", bm.bmid);
-			  if(!bm.desciption.isNull()&&!bm.desciption.isEmpty())
-			  	*os<<"<DD><![CDATA["<<bm.desciption<<"]]></DD>\n";
-			 if(!bm.personal_toolbar_folder.isNull()&&!bm.personal_toolbar_folder.isEmpty())
-			  	writeToFile(os, "<PERSONAL_TOOLBAR_FOLDER><![CDATA[%s]]></PERSONAL_TOOLBAR_FOLDER>\n", qPrintable(bm.personal_toolbar_folder));
-			  if(!bm.last_visit.isNull()&&!bm.last_visit.isEmpty())
-			  	writeToFile(os, "<LAST_VISITE><![CDATA[%s]]></LAST_VISITE>\n", qPrintable(bm.last_visit));
-			  if(bm.hr==1)
-			  	writeToFile(os, "<HR><![CDATA[%d]]></HR>\n", bm.hr);
-			  bmListToXml(0, &(bm.list), os,browserType,0,updateTime);
-			  writeToFile(os, "</category>\n");
-
-		} else
-		  {
-			  writeToFile(os, "<item parentId=\"%u\">\n", bm.parentId);
-			  *os<< "<name><![CDATA["<<bm.name<<"]]></name>\n";
-			  writeToFile(os, "<link><![CDATA[%s]]></link>\n", qPrintable(bm.link));			  
-			  if(bm.addDate.isValid())
-			  writeToFile(os, "<ADD_DATE><![CDATA[%s]]></ADD_DATE>\n", qPrintable(bm.addDate.toString(TIME_FORMAT)));
-			   if(bm.modifyDate.isValid())
-			  writeToFile(os, "<LAST_MODIFIED><![CDATA[%s]]></LAST_MODIFIED>\n", qPrintable(bm.modifyDate.toString(TIME_FORMAT)));		
-			  writeToFile(os, "<bmid><![CDATA[%u]]></bmid>\n", bm.bmid);
-			   if(!bm.id.isNull()&&!bm.id.isEmpty())
-			  	writeToFile(os, "<ID><![CDATA[%s]]></ID>\n", qPrintable(bm.id));
-			   if(!bm.icon.isNull()&&!bm.icon.isEmpty())
-			  	*os<< "<ICON><![CDATA["<<bm.icon<<"]]></ICON>\n";
-			   if(!bm.desciption.isNull()&&!bm.desciption.isEmpty())
-			  	*os<<"<DD><![CDATA["<<bm.desciption<<"]]></DD>\n";
-			   if(!bm.last_visit.isNull()&&!bm.last_visit.isEmpty())
-			  	writeToFile(os, "<LAST_VISITE><![CDATA[%s]]></LAST_VISITE>\n", qPrintable(bm.last_visit));
-			   if(!bm.feedurl.isNull()&&!bm.feedurl.isEmpty())
-			  	writeToFile(os, "<FEEDURL><![CDATA[%s]]></FEEDURL>\n", qPrintable(bm.feedurl));
-			    if(!bm.last_charset.isNull()&&!bm.last_charset.isEmpty())
-			  	writeToFile(os, "<LAST_CHARSET><![CDATA[%s]]></LAST_CHARSET>\n", qPrintable(bm.last_charset));
-			  if(bm.hr==1)
-			  	writeToFile(os, "<HR><![CDATA[%d]]></HR>\n", bm.hr);
-			  writeToFile(os, "<comeFrom><![CDATA[%u]]></comeFrom>\n", COME_FROM_IE+(browserType-BROWSER_TYPE_IE));
-			  writeToFile(os, "</item>\n");
-		  }
-
+		switch(bm.flag)
+		{
+			case BOOKMARK_CATAGORY_FLAG:
+				  (*os)<<"<category groupId=\""<<bm.groupId<<"\" parentId=\""<<bm.parentId<<"\">\n";
+			  	  bmItemToFile(os,bm);
+				  bmListToXml(0, &(bm.list), os,browserType,0,updateTime);
+				  (*os)<<"</category>\n";
+				break;
+			case BOOKMARK_ITEM_FLAG:
+				  (*os)<<"<item parentId=\""<<bm.parentId<<"\">\n";
+			 	 bmItemToFile(os,bm);
+				 (*os)<<"<comeFrom><![CDATA["<<(COME_FROM_IE+(browserType-BROWSE_TYPE_IE))<<"]]></comeFrom>\n";
+				 (*os)<<"</item>\n";
+				break;
+		}
 	}
 	if(start)
-			writeToFile(os,"</browserType>\n");
+		 (*os)<<"</browserType>\n";
 	if (flag&BM_WRITE_END)
-		{
-			
-			writeToFile(os, "</bookmark>\n");
-		}
-
-
+		 (*os)<<"</bookmark>\n";
 }
 void XmlReader::dumpBookmarkList(int level, QList < bookmark_catagory > list)
 {
@@ -734,6 +742,7 @@ void XmlReader::dumpBookmarkList(int level, QList < bookmark_catagory > list)
 
 	}
 }
+#if 0
 void XmlReader::writeToFile(QTextStream * os, const char *cformat, ...)
 {
 /*
@@ -753,6 +762,7 @@ void XmlReader::writeToFile(QTextStream * os, const char *cformat, ...)
 	//qDebug("msg=%s",qPrintable(msg));
 	*os << msg;
 }
+#endif
 void XmlReader::buildLocalBmSetting(int level, QString path, QList < bookmark_catagory > list, QTextStream * os)
 {
 	foreach(bookmark_catagory bm, list)
@@ -760,11 +770,14 @@ void XmlReader::buildLocalBmSetting(int level, QString path, QList < bookmark_ca
 		if (bm.flag == BOOKMARK_CATAGORY_FLAG)
 		  {
 			  buildLocalBmSetting(level + 1, path + "/" + bm.name, bm.list, os);
-			  writeToFile(os, "\n%s" LOCAL_BM_SETTING_INTERVAL "%s", qPrintable(path + "/" + bm.name), qPrintable(bm.link));
-		} else
-		  {
-			  writeToFile(os, "\n%s" LOCAL_BM_SETTING_INTERVAL "%s", qPrintable(path + "/" + bm.name), qPrintable(bm.link));
-		  }
+			 // writeToFile(os, "\n%s" LOCAL_BM_SETTING_INTERVAL "%s", qPrintable(path + "/" + bm.name), qPrintable(bm.link));
+			//  (*os)<<"\n"<<QString(path + "/" + bm.name)<<LOCAL_BM_SETTING_INTERVAL<<bm.link;
+		} 
+		//else
+		//  {
+		//	  writeToFile(os, "\n%s" LOCAL_BM_SETTING_INTERVAL "%s", qPrintable(path + "/" + bm.name), qPrintable(bm.link));
+		//  }
+		(*os)<<"\n"<<QString(path + "/" + bm.name)<<LOCAL_BM_SETTING_INTERVAL<<bm.link;
 
 	}
 }
@@ -980,10 +993,12 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 								 if(!query.value(titleIndex).toString().isNull())
 								 {
 									  //os<<"<item itemId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
+#ifdef CONFIG_LOG_ENABLE
 									  os<<"<item  parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
 									  os<<"<name><![CDATA["<<query.value(titleIndex).toString()<<"]]></name>"<<"\n";
 									  os<<"<link><![CDATA["<<query.value(urlIndex).toString()<<"]]></link>"<<"\n";
 									  os<<"</item>"<<"\n";
+#endif
 									   struct bookmark_catagory ff_bc;
 		  							   ff_bc.name =query.value(titleIndex).toString();									   
 									   ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());									   
@@ -1015,12 +1030,17 @@ int XmlReader::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < book
 											   ff_bc.groupId=query.value(idIndex).toString().toUInt();
 											   ff_bc.parentId=query.value(parentIndex).toString().toUInt();
 				  							   ff_bc.flag = BOOKMARK_CATAGORY_FLAG;
+#ifdef CONFIG_LOG_ENABLE
 											   os<<"<category groupId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
 											   os<<"<name><![CDATA["<<query.value(titleIndex).toString()<<"]]></name>"<<"\n";
 											   os<<"<link><![CDATA["<<query.value(urlIndex).toString()<<"]]></link>"<<"\n";
+#endif
 											   ff_bc.link_hash=0;
 											   outChildItem(query.value(idIndex).toInt(),db,os,&(ff_bc.list),excludeid);
+#ifdef CONFIG_LOG_ENABLE
 											   os<<"</category>"<<"\n";
+#endif
+
 											  tz::addItemToSortlist(ff_bc,list);
 										 }
 									}else{
@@ -1098,10 +1118,11 @@ QString XmlReader::productExcludeIdStr(QSqlDatabase *db)
 
 int XmlReader::readFirefoxBookmark3(QSettings* settings,QSqlDatabase* db,QList < bookmark_catagory > *list)
 {
+#ifdef CONFIG_LOG_ENABLE
 	 QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
 	 qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
 //	 ff_excludeId.clear();
-	 QString excludeid =  productExcludeIdStr(db);
+	
 	 QString dest_filepath;
 	  getUserLocalFullpath(settings,QString(BM_XML_FROM_FIREFOX),dest_filepath);
 	  QFile file(dest_filepath);
@@ -1111,10 +1132,18 @@ int XmlReader::readFirefoxBookmark3(QSettings* settings,QSqlDatabase* db,QList <
 	 os<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<"\n";
 	 os<<"<bookmark version=\"1.0\" updateTime=\"2009-11-22 21:36:20\">"<<"\n";
 	 os<<"<browserType name=\"firefox\">"<<"\n";
+#endif
+	 QString excludeid =  productExcludeIdStr(db);
+#ifdef CONFIG_LOG_ENABLE
 	 outChildItem(0,db,os,list,excludeid);
+#else
+	 outChildItem(0,db,NULL,list,excludeid);
+#endif
+#ifdef CONFIG_LOG_ENABLE
 	 os<<"</browserType>"<<"\n";
 	 os<<"</bookmark>"<<"\n";
 	 file.close();
+#endif
 	 return 1;
 }
 void XmlReader::setFirefoxDb(QSqlDatabase* db)
@@ -1222,7 +1251,7 @@ int XmlReader::readFirefoxBookmark2(QFile& file)
 	 lastFile.setFileName(tmp_firefox2_xml_filepath);
 	 lastFile.open(QIODevice::ReadOnly);
 	 setDevice(&lastFile);
-	 readStream(BROWSER_TYPE_FIREFOX);
+	 readStream(BROWSE_TYPE_FIREFOX);
 	 lastFile.close();
 	 return 1;
 }
@@ -1275,6 +1304,7 @@ void XmlReader::item_end(QTextStream& os,int type,int& finish)
 }
 void XmlReader::productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os)
 {
+#if 0
 	if(!level)
 		writeToFile(os,"%s","<!DOCTYPE NETSCAPE-Bookmark-file-1>\n"
 	"<!-- This is an automatically generated file.\n"
@@ -1346,6 +1376,7 @@ void XmlReader::productFirefox2BM(int level,QList < bookmark_catagory > *list, Q
 	}
 	if(!level)
 		writeToFile(os,"%s","<DL><p>\n");
+#endif
 }
 
 

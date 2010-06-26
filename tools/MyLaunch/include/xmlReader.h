@@ -30,9 +30,9 @@
 
 
 
-#define BROWSER_TYPE_IE   1
-#define BROWSER_TYPE_FIREFOX 2
-#define BROWSER_TYPE_OPERA 3
+//#define BROWSER_TYPE_IE   1
+//#define BROWSER_TYPE_FIREFOX 2
+//#define BROWSER_TYPE_OPERA 3
 
 #define DATA_TYPE_STRING 0
 #define DATA_TYPE_DATETIME 1
@@ -84,8 +84,8 @@ public:
   // void importModifydate(struct bookmark_catagory*bc);
    void dumpBookmarkList(int level,QList<bookmark_catagory> list);
    void buildLocalBmSetting(int level,QString path,QList<bookmark_catagory> list,QTextStream *os);
-  static void writeToFile(QTextStream* os,const char *cformat, ...);
-  static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime);
+//  static void writeToFile(QTextStream* os,const char *cformat, ...);
+
    void getBookmarkCatalog(QList<CatItem>* items);
    void getCatalog(QList<CatItem>* items);
   // void importCatItemName(CatItem *item);
@@ -129,6 +129,8 @@ public:
 	   static int readFirefoxBookmark3(QSettings* settings,QSqlDatabase *db,QList<bookmark_catagory>* list);
    	   static int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString& excludeid);
     	   static QString productExcludeIdStr(QSqlDatabase *db);
+	   static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime);
+  	   static  void bmItemToFile(QTextStream * os,bookmark_catagory& bm);
 	   
 };
 

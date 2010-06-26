@@ -14,7 +14,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	   ie_xmlHttpServer = NULL;;
 	   firefox_xmlHttpServer = NULL;;
 	   opera_xmlHttpServer = NULL;;
-	   firefoxReader = NULL;;
+//	   firefoxReader = NULL;;
 
 	   firefox_version=0;
 	   modifiedFlag=0;
@@ -54,422 +54,239 @@ bad:
 	s_file.close();
 	return false;
 }
-
+#if 0
+bool mergeThread::checkFirefoxDir(QString& path)
+{
+	QString  path;
+	if(!getFirefoxPath(path))
+		return false;
+	if(path.isNull()||path.isEmpty())
+		return false;
+	QDir ff_dir(path);
+	if(!ff_dir.exists())
+		return false;
+}
+bool mergeThread::openFirefox3Db(QSqlDatabase& db,QString path)
+{
+	
+	db = QSqlDatabase::addDatabase("QSQLITE", "dbFirefox");					
+	QString ffpath=QString(path).append("/places.sqlite");
+	db.setDatabaseName(ffpath);	
+	//qDebug()<<"Open Firefox DB:"<<ffpath;
+	if ( !db.open())  {
+			// qDebug("connect %s failed",qPrintable(ff_path));     
+			goto bad;
+	 }else{ 
+		//qDebug("connect database %s successfully!\n",qPrintable(ff_path));   
+		 if(!tz::testFirefoxDbLock(&db)){
+			qDebug()<<"firefox db is locked!";
+			goto bad;
+		 }
+	}
+	qDebug("Open Firefox DB successfully!");
+	return true;	
+bad:
+	closeFirefox3Db(db);
+	return false;
+}
+void mergeThread::closeFirefox3Db(QSqlDatabase& db)
+{
+	if(db.isOpen())	
+		db.close();
+	QSqlDatabase::removeDatabase("dbFirefox");		
+}
 //uint  gMaxGroupId;
+#endif
 void mergeThread::handleBmData(QString& iePath)
 {
-QDEBUG_LINE;
-ie_enabled=getBrowserEnable(COME_FROM_IE);
-firefox_enabled=getBrowserEnable(COME_FROM_FIREFOX);
-opera_enabled=getBrowserEnable(COME_FROM_OPERA);
-
+int i = 0;
 setPostError(false);
-QList < bookmark_catagory > ie_bc;
-QList < bookmark_catagory > firefox_bc;
-QList < bookmark_catagory > opera_bc;
 
+/*for result */
+QList < bookmark_catagory > result_bc[BROWSE_TYPE_MAX];
+/*for current*/
+QList < bookmark_catagory > current_bc[BROWSE_TYPE_MAX];
 
-QList<bookmark_catagory> iefav_list;
+XmlReader *lastUpdate[BROWSE_TYPE_MAX];
+XmlReader *fromServer[BROWSE_TYPE_MAX];
 
-
+bool browserenable[BROWSE_TYPE_MAX];
 //from lastupdater
 QString localBmFullPath;	
-QString localFirefoxPlaceSqlite;
 QString ff_path;
+QString updateTime;
+QFile f;
+
+
 modifiedInServer=1;
-//check BM_XML_FROM_SERVER
+
 if(!checkXmlfileFromServer())
 	return;
 
-
-if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
- {
-// 	   QDEBUG("read %s!",qPrintable(localBmFullPath));
-	  QFile lastFile;
-	  lastFile.setFileName(localBmFullPath);
-	  lastFile.open(QIODevice::ReadOnly);
-	  ie_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  ie_xmlLastUpdate->readStream(BROWSER_TYPE_IE);
-	  lastFile.close();
-
-#if 1
-		foreach(bookmark_catagory item, ie_xmlLastUpdate->bm_list)
-	{
-		//QDEBUG("lastupdate item:name=%s link=%s bmid=%u",qPrintable(item.name),qPrintable(item.link),item.bmid);
-		qDebug() << "lastupdate item:name="<<item.name<<"link="<<item.link<<"bmid="<<item.bmid;
-	}
-	
-#endif
-	  
-	  lastFile.setFileName(localBmFullPath);
-	  lastFile.open(QIODevice::ReadOnly);
-	  firefox_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  firefox_xmlLastUpdate->readStream(BROWSER_TYPE_FIREFOX);
-	  lastFile.close();
-
-	  
-	  lastFile.setFileName(localBmFullPath);
-	  lastFile.open(QIODevice::ReadOnly);
-	  opera_xmlLastUpdate = new XmlReader(&lastFile,settings);
-	  opera_xmlLastUpdate->readStream(BROWSER_TYPE_OPERA);
-	  lastFile.close();
-} else{
-	ie_xmlLastUpdate = new XmlReader(NULL,settings);
-	firefox_xmlLastUpdate = new XmlReader(NULL,settings);
-	opera_xmlLastUpdate = new XmlReader(NULL,settings);
-}
-/**************************************ie explore start**************************************************/
-#if 1
-	QString updateTime;
-if(ie_enabled)
+struct browserinfo* browserInfo =tz::getbrowserInfo();
+//get browser enable
+ i = 0;
+while(!browserInfo[i].name.isEmpty())
 {
-//from server
-	if(modifiedInServer)
-	{
-		QFile server_file(BM_XML_FROM_SERVER);
-		server_file.open(QIODevice::ReadOnly);
-		ie_xmlHttpServer = new XmlReader(&server_file,settings);
-		ie_xmlHttpServer->readStream(BROWSER_TYPE_IE);
-		setUpdatetime(ie_xmlHttpServer->updateTime);
-		//qDebug()<<"Lastmodified on server is "<<updateTime;
-		server_file.close();
-	}
-
-//internet explore
-	//ieFavReader = new XmlReader(NULL,settings);
-	tz::readDirectory(iePath, &iefav_list, 0);
-#if 1
-		foreach(bookmark_catagory item, iefav_list)
-	{
-		qDebug("iefav item:name=%s",qPrintable(item.name));
-	}
-	
-#endif
-#if 1
-	if(modifiedInServer){
-			foreach(bookmark_catagory item, ie_xmlHttpServer->bm_list)
-			{
-				//QDEBUG("lastupdate item:name=%s link=%s bmid=%u",qPrintable(item.name),qPrintable(item.link),item.bmid);
-				qDebug() << "httpserver item:name="<<item.name<<"link="<<item.link<<"bmid="<<item.bmid;
-			}
-	}
-	
-#endif
-//	QDEBUG("**********Get From local IE lastupdatetime=%s*******************", qPrintable(updateTime->toString(TIME_FORMAT)));
-#if 0
-	//dump ie favorite to xml
-	QFile ieFavXml(IE_BM_XML_FILE_NAME);
-	if (!ieFavXml.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
-	QTextStream ie_xml_in(&ieFavXml);
-	ie_xml_in.setCodec("UTF-8");
-	ie_xmlHttpServer->bmListToXml(0, &(ie_xmlHttpServer->bm_list), &ie_xml_in,updateTime);
-#endif	
-       if(modifiedInServer)
-		bmMerge(&iefav_list, &(ie_xmlLastUpdate->bm_list), &(ie_xmlHttpServer->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
-       else
-	   	bmMergeWithoutModifyInServer(&iefav_list, &(ie_xmlLastUpdate->bm_list), &ie_bc, "",iePath,BROWSER_TYPE_IE);
-        
+	browserenable[i] =browserInfo[i].enable;
+	i++;
 }
-#endif
-	/**************************************ie explore end**************************************************/
-	/**************************************firefox start**************************************************/
-	if(firefox_enabled)
-	{
-	//firefox 
-			QFile firefox_file("firefox.xml");
-			firefox_file.open(QIODevice::ReadOnly);
-			
-			getFirefoxPath(ff_path);
-			//qDebug("ff_path=%s",qPrintable(ff_path));
-			if(ff_path.isNull()||ff_path.isEmpty())
-				goto OPERA;
-			QDir ff_dir(ff_path);
-			if(!ff_dir.exists())
-				goto OPERA;
 
-			firefox_version = tz::getFirefoxVersion();
+ {
 
-			if(!firefox_version)
-				{
-					
-					if(QFile::exists("places.sqlite"))
-						firefox_version=FIREFOX_VERSION_3;
-					else if(QFile::exists("bookmarks.html"))
-						firefox_version=FIREFOX_VERSION_2;
-					else 
-						goto OPERA;
-					
-				}
-			if(firefox_version==FIREFOX_VERSION_3){
-					ff_db = QSqlDatabase::addDatabase("QSQLITE", "dbFirefox");					
-					ff_path.append("/places.sqlite");
-#ifdef FIREFOX_SQLITE_UNIQUE
-					ff_db.setDatabaseName(ff_path);	
-					qDebug()<<"Firefox DB:"<<ff_path;
-#else
-					getUserLocalFullpath(settings,QString("/places.sqlite"),localFirefoxPlaceSqlite);
-					if(QFile::exists(localFirefoxPlaceSqlite))
-						QFile::remove(localFirefoxPlaceSqlite);
-					if(!QFile::copy(ff_path,localFirefoxPlaceSqlite)) goto OPERA;
-					qDebug()<<"copy firefox bookmark successfully!";
-					ff_db.setDatabaseName(localFirefoxPlaceSqlite);						
-#endif
-			 		 if ( !ff_db.open())     
-			 			   {
-			 							 qDebug("connect %s failed",qPrintable(ff_path));     
-			 							 goto OPERA ;
-			 		 }else{ 
-			 		 	 qDebug("connect database %s successfully!\n",qPrintable(ff_path));   
-						// if(!testFirefoxDbLock(ff_db)){
-						 if(!tz::testFirefoxDbLock(&ff_db)){
-						 	//locked						 	
-							
-							//QMessageBox msgBox;
-							// msgBox.setText("The document has been modified.");
-							// msgBox.exec();
-							
-							qDebug()<<"do nothing for firefox!";
-							goto OPERA ;
-						 	
-						 }
-			 		 }
-						
-			 			 firefoxReader = new XmlReader(&firefox_file,settings);
-			 			 firefoxReader->setFirefoxDb(&ff_db);
-					
-			if(!XmlReader::readFirefoxBookmark3(settings,&ff_db,&(firefoxReader->bm_list)))
-				goto OPERA;
-			}else{
-			//firefox version 2
-				ff_path.append("/bookmarks.html");
-				QFile ff_file(ff_path);
-				ff_file.open(QIODevice::ReadOnly);
-				 firefoxReader = new XmlReader(NULL,settings);
-				qDebug("ff_path=%s",qPrintable(ff_path));
-				if(!firefoxReader->readFirefoxBookmark2(ff_file))
-				{
-					ff_file.close();
-					goto OPERA;
-				}
-				ff_file.close();
-			}
-
-	//from server
-		if(modifiedInServer)
+	  	i = 0;
+		while(!browserInfo[i].name.isEmpty())
 		{
-			QFile server_file(BM_XML_FROM_SERVER);
-			server_file.open(QIODevice::ReadOnly);
-			firefox_xmlHttpServer = new XmlReader(&server_file,settings);
-			firefox_xmlHttpServer->readStream(BROWSER_TYPE_FIREFOX);
-			//updateTime=firefox_xmlHttpServer->updateTime;
-			setUpdatetime(firefox_xmlHttpServer->updateTime);
-			//qDebug()<<"Lastmodified on server is "<<updateTime;
-		//	if (firefox_xmlHttpServer->maxGroupId)
-		//		maxGroupId = firefox_xmlHttpServer->maxGroupId + 1;
-		//	else
-		//		maxGroupId = PARENT_ID_START;
-			server_file.close();
-			
-		}
-#if 1
-		if(modifiedInServer)
-			bmMerge(&(firefoxReader->bm_list), &(firefox_xmlLastUpdate->bm_list), &(firefox_xmlHttpServer->bm_list), &firefox_bc, "",iePath,BROWSER_TYPE_FIREFOX);
-		else
-			bmMergeWithoutModifyInServer(&(firefoxReader->bm_list), &(firefox_xmlLastUpdate->bm_list), &firefox_bc, "",iePath,BROWSER_TYPE_FIREFOX);
-#endif
-		
-		//qDebug("firefox:xmlLastUpdate list 's size is %d http_sever size is %d local is %d",firefox_xmlLastUpdate->bm_list.size(),firefox_xmlHttpServer->bm_list.size(),firefoxReader->bm_list.size());
-		//dump to firefix bookmark when firefox version is 2
-		if(firefox_version==FIREFOX_VERSION_2)
-		{
-			QFile ff_bm_file(ff_path);
-			if (!ff_bm_file.open(QIODevice::WriteOnly | QIODevice::Text))
-				return;
-			QTextStream ff_bm_os(&ff_bm_file);
-			ff_bm_os.setCodec("UTF-8");
-			XmlReader::productFirefox2BM(0,&(firefox_bc), &ff_bm_os);
-			ff_bm_file.close();
-		}
+			 int browserid = browserInfo[i].id;
 
-		}
-	/**************************************firfox end**************************************************/
-	/**************************************opera start**************************************************/
-OPERA:
-		if(opera_enabled){
+			 //lastupdate xml file whether enable or not
+			 if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
+			{
+					  f.setFileName(localBmFullPath);
+					  f.open(QIODevice::ReadOnly);						  
+					  lastUpdate[i] = new XmlReader(&f,settings);
+					  lastUpdate[i]->readStream(browserid);
+					  f.close();
+			}else	{
+					  lastUpdate[i] = new XmlReader(NULL,settings);
 			}
+			setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
+			 
+			if( browserenable[i] )
+				{
+					//from server xml file
+					if(QFile::exists(BM_XML_FROM_SERVER)&&modifiedInServer)
+					{
+						 f.setFileName(BM_XML_FROM_SERVER);
+						 f.open(QIODevice::ReadOnly);
+						 fromServer[i] = new XmlReader(&f,settings);
+						 fromServer[i]->readStream(BROWSE_TYPE_IE);
+						 setUpdatetime(fromServer[i]->updateTime);
+						 f.close();
+						 setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_FROMSERVER);
+					}
+					//current from kinds of browser type
+					switch( browserid )
+					{
+						case BROWSE_TYPE_IE:
+								tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0);
+								setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+							break;
+						case BROWSE_TYPE_FIREFOX:
+								if(!tz::checkFirefoxDir(ff_path))
+										goto ffout;
+								firefox_version = tz::getFirefoxVersion();
+								if(!firefox_version)
+								{	
+									QDir ffdir(ff_path);
+									if(ffdir.exists("places.sqlite"))
+										firefox_version=FIREFOX_VERSION_3;
+									else if(ffdir.exists("bookmarks.html"))
+										firefox_version=FIREFOX_VERSION_2;
+									else 
+										goto ffout;									
+								}
+								if(firefox_version==FIREFOX_VERSION_3){
+									if(!tz::openFirefox3Db(ff_db,ff_path))
+										goto ffout;									
+									if(!XmlReader::readFirefoxBookmark3(settings,&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+										goto ffout;								
+								}
+								setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+								ffout:
+							break;
+						case BROWSE_TYPE_OPERA:
+							break;
+					}
+					/*
+					foreach(bookmark_catagory item, fromServer[browserid]->bm_list)
+					{
+						//QDEBUG("lastupdate item:name=%s link=%s bmid=%u",qPrintable(item.name),qPrintable(item.link),item.bmid);
+						qDebug() << "httpserver item:name="<<item.name<<"link="<<item.link<<"bmid="<<item.bmid;
+					}
+					*/		
+					//start merge
+					if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
+					 {
+					   if(modifiedInServer)
+							bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &(fromServer[browserid]->bm_list), &result_bc[browserid], "",iePath,browserid);
+					  else
+						   	bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid], "",iePath,browserid);	
+					}					
+				}
+			i++;
+		}
+}
 
-	/**************************************opera end**************************************************/
 #ifdef CONFIG_BOOKMARK_TODB
 	if(!terminatedFlag)
 	{
-		QSqlQuery	query("", *db);
+		QSqlQuery	q("", *db);
 		db->transaction();
 		uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
-		if(ie_enabled)
-		   	bmintolaunchdb(&query,&ie_bc,COME_FROM_IE,delId);
-		if(firefox_enabled)
-			bmintolaunchdb(&query,&firefox_bc,COME_FROM_FIREFOX,delId);
-		if(opera_enabled)
-			bmintolaunchdb(&query,&opera_bc,COME_FROM_OPERA,delId);
-		//deletebmgarbarge(&query,delId);
-		tz::clearbmgarbarge(&query, delId);
+		i = 0;
+		while(!browserInfo[i].name.isEmpty())
+		{
+			 int browserid = browserInfo[i].id;
+			if( browserenable[i])
+				{
+					bmintolaunchdb(&q,&result_bc[browserid],browserid+COME_FROM_IE,delId);
+				}
+			i++;
+		}		
+		tz::clearbmgarbarge(&q, delId);
 		db->commit();
-		query.clear();
+		q.clear();
 	}
 #endif
 //write to lastupdate
-	
-	if(modifiedFlag&&!terminatedFlag){
+if((!QFile::exists(localBmFullPath)||modifiedFlag)&&!terminatedFlag){
 		QFile localfile(localBmFullPath);
 		localfile.open(QIODevice::WriteOnly| QIODevice::Truncate);
 		QTextStream os(&localfile);
 		os.setCodec("UTF-8");
-		if(settings->value("adv/ckSupportIe",true).toBool())
-			XmlReader::bmListToXml(BM_WRITE_HEADER, &ie_bc, &os,BROWSER_TYPE_IE,1,updateTime);
-		else
-			XmlReader::bmListToXml(BM_WRITE_HEADER, &(ie_xmlLastUpdate->bm_list), &os,BROWSER_TYPE_IE,1,updateTime);
-		if(settings->value("adv/ckSupportFirefox",true).toBool())
-			{
-				XmlReader::bmListToXml(0, &firefox_bc, &os,BROWSER_TYPE_FIREFOX,1,updateTime);
-			}
-		else
-			XmlReader::bmListToXml(0, &(firefox_xmlLastUpdate->bm_list), &os,BROWSER_TYPE_FIREFOX,1,updateTime);
-		if(settings->value("adv/ckSupportOpera",true).toBool())
-			XmlReader::bmListToXml(BM_WRITE_END, &opera_bc, &os,BROWSER_TYPE_OPERA,1,updateTime);
-		else
-			XmlReader::bmListToXml(BM_WRITE_END,&(opera_xmlLastUpdate->bm_list), &os,BROWSER_TYPE_OPERA,1,updateTime);
-		localfile.close();
-	}
-	//set updatetime
-	//updateTime=getUpdatetime()?getUpdatetime():updateTime;
-	//if(updateTime)
-//	Qstring uptime;
-
-	getUpdatetime(updateTime);
-	qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
-	if(!terminatedFlag&&!updateTime.isEmpty())
-		settings->setValue("updateTime", updateTime);
-	setUpdatetime("");	//set null
-//close the firefox db
-
-	if(firefox_enabled){
-		if(firefoxReader)
-			delete firefoxReader;
-#ifdef FIREFOX_SQLITE_UNIQUE
-#else
-		if(ff_db.isOpen())	ff_db.close();
-		QSqlDatabase::removeDatabase("dbFirefox");		
-	
-		if(!localFirefoxPlaceSqlite.isEmpty()&&QFile::exists(localFirefoxPlaceSqlite))
+		i = 0;
+		while(!browserInfo[i].name.isEmpty())
 		{
-			if(QFile::rename(ff_path,tr("%1.%2").arg(ff_path).arg(".bak")))
-			{
-				if(QFile::copy(localFirefoxPlaceSqlite,ff_path))
+			int browserid = browserInfo[i].id;
+			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result_bc[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,updateTime);	
+	
+			i++;
+		}		
+		localfile.close();
+}
+
+getUpdatetime(updateTime);
+qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
+if(!terminatedFlag&&!updateTime.isEmpty())
+	settings->setValue("updateTime", updateTime);
+setUpdatetime("");	//set null
+
+i = 0;
+//clear somethings
+while(!browserInfo[i].name.isEmpty())
+{
+	int browserid = browserInfo[i].id;
+	if( browserenable[i])
+		{
+			switch( browserid )
 				{
-					qDebug()<<"Copy sqlite file to firefox successfully! ";
-					QFile::remove(localFirefoxPlaceSqlite);
-				}else{
-					qDebug()<<"Copy sqlite file to firefox failed,MayBe fifefox is running!! ";
-				}
-			}else{
-					qDebug()<<"rename sqlite file to firefox failed,MayBe fifefox is running!! ";
-			}
+					case BROWSE_TYPE_IE:
+						break;
+					case BROWSE_TYPE_FIREFOX:
+							tz::closeFirefox3Db(ff_db);
+						break;
+					case BROWSE_TYPE_OPERA:
+						break;
+				}			
+			delete fromServer[browserid];
 		}
-#endif
-	}
-
-}
-#if 0
-
-int mergeThread::testFirefoxDbLock(QSqlDatabase& db)
-{
-	db.setConnectOptions(tr("QSQLITE_BUSY_TIMEOUT=%1").arg(TEST_DB_MAXINUM_TIMEOUT));
-	QString queryStr=QString("select * from moz_bookmarks limit 1");
-	qDebug()<<queryStr<<"\n";
-	QSqlQuery   query(queryStr, db);
-	if(query.exec()){
-		qDebug("test firefox db successfuly!");
-		db.setConnectOptions();
-		return 1;
-	}else{
-		qDebug("test firefox db failed!");
-		db.setConnectOptions();
-		return 0;
-	}
+	delete lastUpdate[i];
+	clearBrowserInfoOpFlag(browserid);
+	i++;
 }
 
-
-
-int mergeThread::isExistInLastUpdateList(QString path, bookmark_catagory * bm)
-{
-	QDEBUG("%s %d path=%s link=%s", __FUNCTION__, __LINE__, qPrintable(path + "/" + bm->name), qPrintable(bm->link));
-	QFile file(LOCAL_BM_SETTING_FILE_NAME);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return 0;
-	bool isRel = false;
-	while (!file.atEnd())
-	  {
-		  QString line = file.readLine();
-		  if (line.contains(path + "/" + bm->name))
-		    {
-			    QStringList spl = line.split(LOCAL_BM_SETTING_INTERVAL);
-			    spl[1].remove("\n");
-			    QDEBUG("%s %d path=%s link=%s", __FUNCTION__, __LINE__, qPrintable(spl[0]), qPrintable(spl[1]));
-			    if ((spl[0] == (path + "/" + bm->name)) && (spl[1] == bm->link))
-				    return 1;
-		    }
-	  }
-	return 0;
 }
-
-//return 3 result
-//BM_ADD BM_DELETE BM_EQUAL
-//int BookmarkSync::findItemFromBMList(QString path,bookmark_catagory bm,QList<bookmark_catagory> *bmList,bookmark_catagory*  bx,QDateTime LastUpdateTime,int flag)
-int mergeThread::findItemFromBMList(QString path, bookmark_catagory bm, QList < bookmark_catagory > *bmList, int *bx, QDateTime LastUpdateTime, int flag)
-{
-	int ret = 0;
-	for (int i = 0; i < bmList->count(); i++)
-	  {
-		  *bx = i;
-		  if ((ret = isBmEntryEqual(bm, (*bmList)[i])) != BM_DIFFERENT)	//find the name
-			  return ret;
-	  }
-	//don't find the name entry
-	if (LastUpdateTime.toString(TIME_FORMAT) == TIME_INIT_STR)	//first update
-	  {
-#ifdef CONFIG_LOG_ENABLE
-		  logToFile("Client update firstly.should add ....");
-#endif
-		  return BM_ADD;
-	  }
-#ifdef CONFIG_LOG_ENABLE
-	logToFile("LastUpdateTime=%s modifyDate=%s", qPrintable(LastUpdateTime.toString(TIME_FORMAT)), qPrintable(bm.modifyDate.toString(TIME_FORMAT)));
-#endif
-
-//	if local,time equal--add
-//	if server ,time equal--delete
-
-// start--- for the copy &cut url
-	if (flag == MERGE_FROM_LOCAL)
-	  {
-		  if (isExistInLastUpdateList(path, &bm))
-		    {
-			    logToFile("exist in lastupdatelist");
-			    return BM_DELETE;
-		  } else
-		    {
-			    logToFile("not exist in lastupdatelist");
-			    return BM_ADD;
-		    }
-	  }
-//end--for the copy url
-	if (bm.modifyDate > LastUpdateTime)
-		return BM_ADD;
-	else
-		return BM_DELETE;
-}
-#endif
 
 int mergeThread::copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src)
 {
@@ -618,7 +435,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 	QString urlContent;
 	HANDLE hFile;
 	//if firefox version is 2,then return directly
-	if(browserType==BROWSER_TYPE_FIREFOX&&firefox_version==FIREFOX_VERSION_2)
+	if(browserType==BROWSE_TYPE_FIREFOX&&firefox_version==FIREFOX_VERSION_2)
 		return;
 	switch (bc->flag)
 	  {
@@ -628,7 +445,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 		    {
 		    case ACTION_ITEM_ADD:
 			switch(browserType){
-				case BROWSER_TYPE_IE:
+				case BROWSE_TYPE_IE:
 						{
 						    dirPath = path + "\\" + bc->name;
 						    if (!CreateDirectory(dirPath.utf16(), NULL))
@@ -642,7 +459,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 						    }
 						}
 					break;
-				case BROWSER_TYPE_FIREFOX:
+				case BROWSE_TYPE_FIREFOX:
 					{
 							QString queryStr;
 							QSqlQuery query("",ff_db);			
@@ -664,13 +481,13 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 							return;
 					}
 					break;
-				case BROWSER_TYPE_OPERA:
+				case BROWSE_TYPE_OPERA:
 					break;  
 				}
 			   break;
 		    case ACTION_ITEM_DELETE:
 				switch(browserType){
-						 case BROWSER_TYPE_IE:
+						 case BROWSE_TYPE_IE:
 						 	 dirPath = path + "\\" + bc->name;
 						    if (!deleteDirectory(dirPath))
 						      {
@@ -678,7 +495,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 							      return;
 						      }
 						break;
-						case BROWSER_TYPE_FIREFOX:
+						case BROWSE_TYPE_FIREFOX:
 							{
 							QString queryStr;
 							QSqlQuery query("",ff_db);
@@ -696,7 +513,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 							return;
 							}
 							break;
-						case BROWSER_TYPE_OPERA:
+						case BROWSE_TYPE_OPERA:
 						break;
 				}
 			    break;
@@ -708,7 +525,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 		    {
 		    case ACTION_ITEM_ADD:
 			switch(browserType){
-				case BROWSER_TYPE_IE:
+				case BROWSE_TYPE_IE:
 				   filePath = path + "\\" + bc->name + ".url";
 				    hFile = CreateFile(filePath.utf16(),	// open MYFILE.TXT 
 						       GENERIC_READ | GENERIC_WRITE,	// open for reading 
@@ -728,7 +545,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 				    CloseHandle(hFile);
 				   // setFileTime(filePath, gLastUpdateTime.toString(TIME_FORMAT), NULL, NULL, NAME_IS_FILE);
 				    break;
-			    case BROWSER_TYPE_FIREFOX:
+			    case BROWSE_TYPE_FIREFOX:
 					{
 							QString queryStr;
 							QSqlQuery query("",ff_db);
@@ -757,13 +574,13 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 							return;
 						}
 				  break;
-			     case BROWSER_TYPE_OPERA:
+			     case BROWSE_TYPE_OPERA:
 				break;  
 			}
 			break;
 		    case ACTION_ITEM_DELETE:
 				switch(browserType){
-					 case BROWSER_TYPE_IE:
+					 case BROWSE_TYPE_IE:
 					      filePath = path + "\\" + bc->name + ".url";
 					    if (!DeleteFile(filePath.utf16()))
 					      {
@@ -771,7 +588,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 						      return;
 					      }
 					    break;
-					case BROWSER_TYPE_FIREFOX:
+					case BROWSE_TYPE_FIREFOX:
 							{
 							QString queryStr;
 							QSqlQuery query("",ff_db);
@@ -786,7 +603,7 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 							return;
 							}
 							break;
-					case BROWSER_TYPE_OPERA:
+					case BROWSE_TYPE_OPERA:
 					break;
 					}
 				 break;
@@ -811,7 +628,7 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 	  case 0:		//never exist 
 		  break;
 	  case 1:		//only exist in server,need download to local
-	  	  if(browserType==BROWSER_TYPE_FIREFOX)
+	  	  if(browserType==BROWSE_TYPE_FIREFOX)
 	  	  	{
 	  	  		item->id.append("rdf:#$");
 				item->addDate=QDateTime::currentDateTime();
