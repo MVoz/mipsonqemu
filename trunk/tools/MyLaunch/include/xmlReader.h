@@ -126,7 +126,7 @@ public:
 	   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	//   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	   /*for firefox*/
-	   static int readFirefoxBookmark3(QSettings* settings,QSqlDatabase *db,QList<bookmark_catagory>* list);
+	   static int readFirefoxBookmark3(QSqlDatabase *db,QList<bookmark_catagory>* list);
    	   static int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString& excludeid);
     	   static QString productExcludeIdStr(QSqlDatabase *db);
 	   static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime);

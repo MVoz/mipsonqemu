@@ -20,12 +20,10 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	   modifiedFlag=0;
 	   terminatedFlag=0;
    }
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
 void mergeThread::setRandomFileFromserver(QString& s)
 {
 	filename_fromserver = s;
 }
-#endif
 bool mergeThread::checkXmlfileFromServer()
 {
 
@@ -199,7 +197,7 @@ while(!browserInfo[i].name.isEmpty())
 								if(firefox_version==FIREFOX_VERSION_3){
 									if(!tz::openFirefox3Db(ff_db,ff_path))
 										goto ffout;									
-									if(!XmlReader::readFirefoxBookmark3(settings,&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+									if(!XmlReader::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
 										goto ffout;								
 								}
 								setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);

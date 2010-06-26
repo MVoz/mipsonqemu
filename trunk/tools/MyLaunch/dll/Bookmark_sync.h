@@ -114,9 +114,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	mergeThread *mgthread;
 	int error;
 	uint httpProxyEnable;
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
 	QString filename_fromserver;
-#endif
 #ifdef CONFIG_HTTP_TIMEOUT
 //	uint httpTimeout;
 //	uint httpTimerId;

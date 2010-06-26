@@ -256,9 +256,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 		mgthread = new mergeThread(this,db,settings,iePath);
 		//emit updateStatusNotify(UPDATE_PROCESSING);
-#ifdef CONFIG_RANDOMFILE_FROM_SERVER
 		mgthread->setRandomFileFromserver(filename_fromserver);
-#endif
 
 		
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
