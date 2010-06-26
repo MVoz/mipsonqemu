@@ -145,6 +145,7 @@ class BMAPI_DLL_CLASSEXPORT  tz {
 public:
 	tz(){};
 	~tz(){};
+
 public :
 	static QString tr(const char* index);
 	static QString encrypt(QString para,uint secindex);
@@ -161,6 +162,7 @@ public :
 	static bool checkFirefoxDir(QString& path);//get & check firefox directory
 	static bool openFirefox3Db(QSqlDatabase& db,QString path);
 	static void closeFirefox3Db(QSqlDatabase& db);
+	static QString getIePath();
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

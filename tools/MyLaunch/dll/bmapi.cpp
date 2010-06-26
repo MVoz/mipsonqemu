@@ -16,7 +16,10 @@ bool gPostError=0;
 uint gPostResponse=0;
 uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
+static QString iePath;
 char* gLanguageList[]={"chinese","english"};
+
+
 struct browserinfo browserInfo[]={
 	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
 	{QString("Firefox"), false, false , false,false,false, BROWSE_TYPE_FIREFOX},
@@ -343,6 +346,7 @@ bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest)
 	dest +=filename;
 	return true;
 }
+
 int getDesktop()
 {
 	return DESKTOP_WINDOWS;
@@ -915,6 +919,12 @@ void tz::closeFirefox3Db(QSqlDatabase& db)
 	if(db.isOpen())	
 		db.close();
 	QSqlDatabase::removeDatabase("dbFirefox");		
+}
+QString tz::getIePath()
+{
+	if(iePath.isEmpty())
+		GetShellDir(CSIDL_FAVORITES, iePath);
+	return iePath;
 }
 
 #if 0

@@ -93,6 +93,7 @@ void CatBuilder::clearDb(int type,uint delId)
 }
 void CatBuilder::buildCatalog_bookmark(uint delId)
 {
+#if 0
 	QList < CatItem > pitems;
 #if 1
 	//load from xml file
@@ -118,6 +119,96 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 			 qDebug("fullpath=%s iconpath=%s useage=%d name=%s delId=%d comeFrom=%d",  qPrintable(item.fullPath), qPrintable(item.icon), item.usage,qPrintable(item.shortName),delId,item.comeFrom);
 			 cat->addItem(item,item.comeFrom,delId);
 		}
+#endif
+struct browserinfo* browserInfo =tz::getbrowserInfo();
+bool browserenable[BROWSE_TYPE_MAX];
+ QList < bookmark_catagory > current_bc[BROWSE_TYPE_MAX];
+int ff_version = 0;
+QString ff_path;
+QSqlDatabase ff_db;
+ int i = 0;
+while(!browserInfo[i].name.isEmpty())
+{
+	browserenable[i] =browserInfo[i].enable;
+	i++;
+}
+
+i = 0;
+while(!browserInfo[i].name.isEmpty())
+{
+	int browserid = browserInfo[i].id;
+	if( browserenable[i])
+		{
+			switch( browserid )
+				{
+					case BROWSE_TYPE_IE:						
+						tz::readDirectory(tz::getIePath(), &current_bc[BROWSE_TYPE_IE], 0);	
+						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+						break;
+					case BROWSE_TYPE_FIREFOX:
+						if(!tz::checkFirefoxDir(ff_path))
+								goto ffout;
+						ff_version = tz::getFirefoxVersion();
+						if(!ff_version)
+						{	
+							QDir ffdir(ff_path);
+							if(ffdir.exists("places.sqlite"))
+								ff_version=FIREFOX_VERSION_3;
+							else if(ffdir.exists("bookmarks.html"))
+								ff_version=FIREFOX_VERSION_2;
+							else 
+								goto ffout;									
+						}
+						if(ff_version==FIREFOX_VERSION_3){
+							if(!tz::openFirefox3Db(ff_db,ff_path))
+								goto ffout;									
+							if(!XmlReader::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+								goto ffout;								
+						}
+						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+						ffout:
+						break;
+					case BROWSE_TYPE_OPERA:
+						break;
+				}			
+		}
+	i++;
+}
+QSqlQuery q("", *db);
+db->transaction();
+i = 0;
+while(!browserInfo[i].name.isEmpty())
+{
+	 int browserid = browserInfo[i].id;
+	if( browserenable[i]&&browserInfo[i].local)
+		{
+			mergeThread::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_IE,delId);
+		}
+	i++;
+}		
+db->commit();
+q.clear();
+//clear something
+i = 0;
+while(!browserInfo[i].name.isEmpty())
+{
+	int browserid = browserInfo[i].id;
+	if( browserenable[i])
+		{
+			switch( browserid )
+				{
+					case BROWSE_TYPE_IE:
+						break;
+					case BROWSE_TYPE_FIREFOX:
+							tz::closeFirefox3Db(ff_db);
+						break;
+					case BROWSE_TYPE_OPERA:
+						break;
+				}			
+		}
+	clearBrowserInfoOpFlag(browserid);
+	i++;
+}
 
 }
 void CatBuilder::buildCatalog_directory(uint delId)

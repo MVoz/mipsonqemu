@@ -1116,15 +1116,15 @@ QString XmlReader::productExcludeIdStr(QSqlDatabase *db)
 		return ff_excludeId;
 }
 
-int XmlReader::readFirefoxBookmark3(QSettings* settings,QSqlDatabase* db,QList < bookmark_catagory > *list)
+int XmlReader::readFirefoxBookmark3(QSqlDatabase* db,QList < bookmark_catagory > *list)
 {
 #ifdef CONFIG_LOG_ENABLE
 	 QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
 	 qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
 //	 ff_excludeId.clear();
 	
-	 QString dest_filepath;
-	  getUserLocalFullpath(settings,QString(BM_XML_FROM_FIREFOX),dest_filepath);
+	 QString dest_filepath(BM_XML_FROM_FIREFOX);
+	//  getUserLocalFullpath(settings,QString(BM_XML_FROM_FIREFOX),dest_filepath);
 	  QFile file(dest_filepath);
 	  file.open(QIODevice::WriteOnly | QIODevice::Text /*| QIODevice::Append*/);
 	 QTextStream os(&file);
