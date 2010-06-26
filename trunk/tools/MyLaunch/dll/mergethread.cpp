@@ -6,14 +6,14 @@
 mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString path):QThread(parent),db(b),settings(s),iePath(path)
    {
 	   file = NULL;
-	   localxmlFile = NULL;
-	   serverxmlFile = NULL;;
-	   ie_xmlLastUpdate = NULL;;
-	   firefox_xmlLastUpdate = NULL;;
-	   opera_xmlLastUpdate = NULL;;
-	   ie_xmlHttpServer = NULL;;
-	   firefox_xmlHttpServer = NULL;;
-	   opera_xmlHttpServer = NULL;;
+	 //  localxmlFile = NULL;
+	 //  serverxmlFile = NULL;;
+	//   ie_xmlLastUpdate = NULL;;
+	//   firefox_xmlLastUpdate = NULL;;
+	//   opera_xmlLastUpdate = NULL;;
+	//   ie_xmlHttpServer = NULL;;
+	//   firefox_xmlHttpServer = NULL;;
+	//   opera_xmlHttpServer = NULL;;
 //	   firefoxReader = NULL;;
 
 	   firefox_version=0;
