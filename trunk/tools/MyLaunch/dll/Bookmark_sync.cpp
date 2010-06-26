@@ -158,7 +158,14 @@ void BookmarkSync::run()
 	{
 		connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)));
 		qDebug("BookmarkSync run...........");
+#ifdef CONFIG_RANDOMFILE_FROM_SERVER
+		filename_fromserver.clear();
+		getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
+		qDebug("random file from server:%s",qPrintable(filename_fromserver));
+		file = new QFile(filename_fromserver);
+#else
 		file = new QFile(BM_XML_FROM_SERVER);
+#endif		
 		int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 		http->setHost(host);
 	//	QDEBUG("http=0x%08x url=%s ret1=%d",http,qPrintable(url),ret1);
@@ -251,6 +258,10 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 		mgthread = new mergeThread(this,db,settings,iePath);
 		//emit updateStatusNotify(UPDATE_PROCESSING);
+#ifdef CONFIG_RANDOMFILE_FROM_SERVER
+		mgthread->setRandomFileFromserver(filename_fromserver);
+#endif
+
 		
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
 		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int,QString)), this, SLOT(mgUpdateStatus(int,int,QString)));
