@@ -10,6 +10,12 @@ del /s /q *.obj
 cd ..
 cd ..
 
+cd /d dll
+cd /d release
+del /s /q *.obj
+cd ..
+cd ..
+
 cd /d src
 cd /d build
 del /s /q *.obj

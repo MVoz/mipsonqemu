@@ -2223,6 +2223,8 @@ int main(int argc, char *argv[])
 	shared_ptr < QApplication > app(platform->init(argc, argv));
 #endif
 	//Q_INIT_RESOURCE(systray);
+	//qApp->addLibraryPath("e:\Qt\MyLaunch\release\dll");
+	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath() + '/' + "dll");
 
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
@@ -2248,7 +2250,7 @@ int main(int argc, char *argv[])
 #endif
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
-
+	
 	QString locale = QLocale::system().name();
 
 	QTranslator translator;

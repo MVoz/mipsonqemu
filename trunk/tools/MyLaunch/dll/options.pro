@@ -34,13 +34,13 @@ if(!debug_and_release|build_pass) {
    }
    CONFIG(release, debug|release) {
  #   CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/
-	LIBS +=   ../release/bmapi.lib
-	LIBS +=   ../release/xmlreader.lib
-	LIBS +=   ../release/posthttp.lib
-	LIBS +=   ../release/bookmark_sync.lib
-	LIBS +=   ../release/synchronizeDlg.lib
-	LIBS +=   ../release/catalog.lib
-	LIBS +=   ../release/updaterThread.lib
+    DESTDIR = ../release/dll/
+	LIBS +=   ../release/dll/bmapi.lib
+	LIBS +=   ../release/dll/xmlreader.lib
+	LIBS +=   ../release/dll/posthttp.lib
+	LIBS +=   ../release/dll/bookmark_sync.lib
+	LIBS +=   ../release/dll/synchronizeDlg.lib
+	LIBS +=   ../release/dll/catalog.lib
+	LIBS +=   ../release/dll/updaterThread.lib
    }
  }
