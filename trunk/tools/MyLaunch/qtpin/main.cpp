@@ -91,29 +91,41 @@ bool createDbFile(QSqlDatabase& db)
 		return true;
 
 }
+QString getPinyin(const char* s)
+{
+		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
+		db.setDatabaseName(PINYIN_DB_FILENAME);	
+		db.open();
+		QSqlQuery q("",db);
 
+		QString r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx(s,1)).arg(s);
+
+		if(q.exec(r)){					
+			while(q.next()) { 
+					qDebug()<<q.value(0).toString();	
+			}
+		}	
+		db.close();
+		QSqlDatabase::removeDatabase("pinyindb");
+		return r;
+}
 int main(int argc, char *argv[])
 {
 		QStringList args = qApp->arguments();
 		QApplication *app=new QApplication(argc, argv);
 	    app->setQuitOnLastWindowClosed(true);
 		//load db
+#if 1
 		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
 		db.setDatabaseName(PINYIN_DB_FILENAME);	
 		db.open();
 		createDbFile(db);
-		
 		importfile(db);
-
-		QSqlQuery q("",db);
-
-		QString s=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx("一",1)).arg("一");
-
-		if(q.exec(s)){					
-			while(q.next()) { 
-					qDebug()<<q.value(0).toString();	
-			}
-		}	
 		db.close();
+		QSqlDatabase::removeDatabase("pinyindb");
+#else
+		char *s ="";
+		qDebug()<<getPinyin(s);
+#endif
 		//app->exec();
 }

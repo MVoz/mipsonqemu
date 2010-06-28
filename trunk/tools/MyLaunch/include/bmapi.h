@@ -163,6 +163,7 @@ public :
 	static bool openFirefox3Db(QSqlDatabase& db,QString path);
 	static void closeFirefox3Db(QSqlDatabase& db);
 	static QString getIePath();
+	static QString getPinyin(const char* s);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

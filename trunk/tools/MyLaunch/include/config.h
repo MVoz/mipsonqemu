@@ -184,6 +184,11 @@
 #define FIREFOX_VERSION_2 2
 #define FIREFOX_VERSION_3 3
 
+#define PINYIN_DB_FILENAME "pinyin.db"
+#define PINYIN_DB_TABLENAME "pytable"
+
+#define CONFIG_PINYIN_FROM_DB
+
 
 #endif
 

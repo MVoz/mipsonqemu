@@ -260,8 +260,9 @@ public:
 					continue;
 				}
 			int numbers=0;/*the number by split by "|"*/
+#ifndef CONFIG_PINYIN_FROM_DB
 			int ret=get_pinyin(strUnit.toUtf8());	
-			//qDebug("%s ret=0x%08x",__FUNCTION__,ret);
+						//qDebug("%s ret=0x%08x",__FUNCTION__,ret);
 			if(ret!=-1)
 			{
 				isHasPinyin=HAS_PINYIN_FLAG;
@@ -308,6 +309,57 @@ public:
 					pinyinReg.append(strUnit);			
 					numbers=1;
 	    		 	}
+#else
+			QString  r=tz::getPinyin(strUnit.toUtf8());	
+		//qDebug("%s ret=0x%08x",__FUNCTION__,ret);
+		if(r != QString(strUnit.toUtf8()))
+		{
+			isHasPinyin=HAS_PINYIN_FLAG;
+			if(!pinyinReg.endsWith(BROKEN_TOKEN_STR))
+					pinyinReg.append(BROKEN_TOKEN_STR);
+
+			QStringList list2 = r.split(" ", QString::SkipEmptyParts);	
+			
+			for(int i=0;i<list2.size();i++)
+			{
+				pinyinReg.append(list2.at(i).at(0));
+				numbers++;
+				if(list2.at(i).size()>1)
+					   pinyinReg.append("|");
+				//start check shengmo
+				for(int j=0;j<shengmo.size();j++)
+				{
+					if(list2.at(i).startsWith (shengmo.at(j),Qt::CaseInsensitive))
+					{
+						pinyinReg.append(shengmo.at(j));
+						pinyinReg.append("|");
+						numbers++;
+						break;
+					}
+				}
+				//end check shengmo
+				if(list2.at(i).size()>1)
+					{
+						pinyinReg.append(list2.at(i));
+						numbers++;
+					}
+				if(i!=(list2.size()-1))
+					pinyinReg.append("|");
+				else
+					{
+						pinyinReg.append(PINYIN_TOKEN_FLAG);
+						 pinyinReg.append(BROKEN_TOKEN_STR);
+					}
+			}
+		}else
+			{
+				pinyinReg.append(strUnit);			
+				numbers=1;
+				}
+
+#endif
+			
+
 
 				pinyinDepth=pinyinDepth*numbers;
 			}
