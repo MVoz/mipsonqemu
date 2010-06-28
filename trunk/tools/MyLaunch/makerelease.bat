@@ -8,8 +8,8 @@ qmake log.pro
 nmake release
 qmake bmapi.pro 
 nmake release
-qmake pinyin.pro 
-nmake release
+rem qmake pinyin.pro 
+rem nmake release
 qmake catalog.pro
 nmake release
 qmake weby.pro 
