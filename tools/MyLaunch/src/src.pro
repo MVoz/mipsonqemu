@@ -6,7 +6,7 @@ win32 {
   TARGET = Launchy
 }
 CONFIG += debug_and_release
-CONFIG += console
+
 #CONFIG += qt release
 QT += network
 QT += xml
@@ -75,10 +75,9 @@ win32 {
 
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
+    CONFIG += console
     DESTDIR =     ../debug/
       LIBS +=   ../debug/bmapi.lib
-      LIBS +=   ../debug/log.lib
-      LIBS +=   ../debug/pinyin.lib
       LIBS +=   ../debug/xmlreader.lib
       LIBS +=   ../debug/posthttp.lib
       LIBS +=   ../debug/mergethread.lib
@@ -94,8 +93,6 @@ win32 {
    }
    CONFIG(release, debug|release) {
       LIBS +=   ../release/bmapi.lib
-      LIBS +=   ../release/log.lib
-      LIBS +=   ../release/pinyin.lib
       LIBS +=   ../release/xmlreader.lib
       LIBS +=   ../release/posthttp.lib
       LIBS +=   ../release/mergethread.lib
