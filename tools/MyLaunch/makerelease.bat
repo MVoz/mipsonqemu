@@ -72,7 +72,7 @@ copy options.rcc ..\debug
 copy options.rcc ..\release
 cd ..
 
-cd .\debug
+cd .\release
 launchy.exe
 cd ..
 
