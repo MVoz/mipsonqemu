@@ -930,20 +930,28 @@ QString tz::getPinyin(const char* s)
 {
 		if(!s) 
 			return "";
-		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
-		db.setDatabaseName(PINYIN_DB_FILENAME);	
-		db.open();
-		QSqlQuery q("",db);
+		
+		QString r;
 
-		QString r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx(s,1)).arg(s);
+		{
+			QSqlDatabase db ;
+			db= QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
+			db.setDatabaseName(PINYIN_DB_FILENAME);	
+		
+			db.open();
+			QSqlQuery q("",db);
 
-		if(q.exec(r)){					
-			while(q.next()) { 
-					r = q.value(0).toString();
-					//qDebug()<<q.value(0).toString();	
-			}
-		}	
-		db.close();
+			r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx(s,1)).arg(s);
+
+			if(q.exec(r)){					
+				while(q.next()) { 
+						r = q.value(0).toString();
+						//qDebug()<<q.value(0).toString();	
+				}
+			}	
+			db.close();
+		}
+
 		QSqlDatabase::removeDatabase("pinyindb");
 		if(r.isEmpty())
 			r=QString(s);

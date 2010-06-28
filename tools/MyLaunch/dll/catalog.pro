@@ -20,13 +20,13 @@ if(!debug_and_release|build_pass) {
     DESTDIR =     ../debug/
     LIBS +=../debug/log.lib
     LIBS +=../debug/bmapi.lib
-    LIBS +=../debug/pinyin.lib
+#    LIBS +=../debug/pinyin.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
     DESTDIR = ../release/
     LIBS +=../release/log.lib
     LIBS +=../release/bmapi.lib
-    LIBS +=../release/pinyin.lib
+ #   LIBS +=../release/pinyin.lib
    }
  }

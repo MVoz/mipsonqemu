@@ -100,7 +100,10 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	if (platform->isAlreadyRunning())
 		exit(1);
 	//inital language
+#ifdef CONFIG_PINYIN_FROM_DB
+#else
 	init_pinyin_utf8_list();
+#endif
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
 	connect(fader, SIGNAL(finishedFade(double)), this, SLOT(finishedFade(double)));
