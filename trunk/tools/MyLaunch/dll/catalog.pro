@@ -23,7 +23,7 @@ if(!debug_and_release|build_pass) {
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/dll/
-    LIBS +=../release/dll/bmapi.lib
+    DESTDIR = ../release/
+    LIBS +=../release/bmapi.lib
    }
  }

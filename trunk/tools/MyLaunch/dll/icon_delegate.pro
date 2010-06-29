@@ -21,6 +21,6 @@ if(!debug_and_release|build_pass) {
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/dll/
+    DESTDIR = ../release/
    }
  }

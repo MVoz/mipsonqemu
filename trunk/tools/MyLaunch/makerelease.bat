@@ -73,7 +73,9 @@ copy options.rcc ..\release
 cd ..
 
 cd .\release
-launchy.exe
+del /s /q *.exp
+del /s /q *.lib
+tanzhi.exe
 cd ..
 
 
