@@ -2,43 +2,32 @@
 <ul>
 <!--{loop $digglist $key $value}-->			
 			<li>
-				<div class="left">
-						<div class="left_top">
+				<div class="lf">
+						<div class="lt">
 							<a href="space.php?do=digg&type=$value[categoryid]" class="$_SGLOBAL['diggcategory'][$value[categoryid]]['categoryname']" >&nbsp;</a>
 						</div>
-						<div class="left_bot">
-							<div class="support"><a href="javascript:void(0)" onclick="updatediggup($value[diggid])"><img src="./template/default/image/icon_support.jpg" /></a></div>
-							<div class="data">(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)</div>
-							<div class="support"><a href="javascript:void(0)" onclick="updatediggdown($value[diggid])"><img src="./template/default/image/icon_bury.jpg" /></a></div>
-							<div class="data">(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)</div>
+						<div class="lb">
+							<a href="javascript:void(0)" onclick="updatediggup($value[diggid])"><img src="./template/default/image/icon_support.jpg" /></a>
+							(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)
+							<a href="javascript:void(0)" onclick="updatediggdown($value[diggid])"><img src="./template/default/image/icon_bury.jpg" /></a>
+							(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
 						</div>
 				</div>
-				<div class="right_top">
+				<div class="rt">
 						<!--{if $value[picflag] }-->
-						<div class="leftx_pic">
+						<div class="lfx_p">
 						<!--{else}-->
-						<div class="leftx">
+						<div class="lfx">
 						<!--{/if}-->	
-							 <div class="dig_title">
+							 <div class="tle">
 								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[subject]</a>
 								<span class="gray">时间:<!--{date('Y-m-d',$value[dateline],1)}--></span>
 							 </div>
-							 <div class="descript">
+							 <div class="ds">
 								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[description]...</a> 
 							</div>
 						</div>
-						<!--{if $value[picflag] }-->	
-						<div class="rightx">						
-							<div class="d_avatar avatar125">
-							   <a title=$value[subject] href="$value[url]" target=_blank onclick="updatediggview($value[diggid])">
-									<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
-										src="$value[pic]">
-							   </a>
-						  </div>				  
-						</div>
-					 <!--{/if}-->	
-				</div>
-				<div class="rb gray">
+						<div class="rb gray">
 							 						
 							   标签:
 								<!--{loop $value[tag] $tagid $tagname}-->
@@ -53,7 +42,20 @@
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>					<!--{/if}-->
+						</div>
+				
 				</div>
+							<!--{if $value[picflag] }-->	
+						<div class="rightx">						
+							<div class="d_avatar avatar125">
+							   <a title=$value[subject] href="$value[url]" target=_blank onclick="updatediggview($value[diggid])">
+									<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+										src="$value[pic]">
+							   </a>
+						  </div>				  
+						</div>
+					 <!--{/if}-->
+				
 				
 			</li>
 <!--{/loop}-->    
