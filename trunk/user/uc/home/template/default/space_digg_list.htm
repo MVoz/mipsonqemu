@@ -38,31 +38,21 @@
 						</div>
 					 <!--{/if}-->	
 				</div>
-				<div class="right_bottom">
-							 <div class="action">						
-							   <span style="float:left;min-width:100px;max-width:200px;overflow:hidden;">标签:
-											<!--{loop $value[tag] $tagid $tagname}-->
-											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
-											<!--{/loop}-->					
-							   </span>
-						
-							 
-							 <div style="float:right;padding-left:3px;">
-							    
+				<div class="rb gray">
+							 						
+							   标签:
+								<!--{loop $value[tag] $tagid $tagname}-->
+									<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
+								<!--{/loop}-->					
+							   						
+							   发布者:
+							   <a href="space.php?do=digg&uid=$value[postuid]" >$value[username]</a>
+								     有
+							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
+								弹指人参与围观	
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
-								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
-								<!--{/if}--> 								
-								
-							 </div>
-							  <div style="float:left;padding-left:5px;">
-									发布者:	<a href="space.php?do=digg&uid=$value[postuid]" >$value[username]</a>
-								    
-									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>弹指人参与围观
-									</span>
-									
-							 </div>
-						 </div>
+								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>					<!--{/if}-->
 				</div>
 				
 			</li>
