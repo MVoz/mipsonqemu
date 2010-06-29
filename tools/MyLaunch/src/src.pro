@@ -3,7 +3,7 @@ unix {
   TARGET = launchy
 }
 win32 {
-  TARGET = Launchy
+  TARGET = Tanzhi
 }
 CONFIG += debug_and_release
 
@@ -68,7 +68,7 @@ unix {
 
 win32 {
   INCLUDEPATH += c:/boost/
-  FORMS =   options.ui
+  #FORMS =   options.ui
   RC_FILE =   ../win/launchy.rc
   LIBS +=   shell32.lib
   CONFIG += embed_manifest_exe
@@ -92,19 +92,19 @@ win32 {
       LIBS +=   ../debug/updaterThread.lib
    }
    CONFIG(release, debug|release) {
-      LIBS +=   ../release/dll/bmapi.lib
-      LIBS +=   ../release/dll/xmlreader.lib
-      LIBS +=   ../release/dll/posthttp.lib
-      LIBS +=   ../release/dll/mergethread.lib
-      LIBS +=   ../release/dll/bookmark_sync.lib
-      LIBS +=   ../release/dll/synchronizeDlg.lib
-      LIBS +=   ../release/dll/options.lib
-      LIBS +=   ../release/dll/catalog.lib
-      LIBS +=   ../release/dll/catalog_types.lib
-      LIBS +=   ../release/dll/icon_delegate.lib
-      LIBS +=   ../release/dll/weby.lib
-      LIBS +=   ../release/dll/runner.lib
-      LIBS +=   ../release/dll/updaterThread.lib
+      LIBS +=   ../release/bmapi.lib
+      LIBS +=   ../release/xmlreader.lib
+      LIBS +=   ../release/posthttp.lib
+      LIBS +=   ../release/mergethread.lib
+      LIBS +=   ../release/bookmark_sync.lib
+      LIBS +=   ../release/synchronizeDlg.lib
+      LIBS +=   ../release/options.lib
+      LIBS +=   ../release/catalog.lib
+      LIBS +=   ../release/catalog_types.lib
+      LIBS +=   ../release/icon_delegate.lib
+      LIBS +=   ../release/weby.lib
+      LIBS +=   ../release/runner.lib
+      LIBS +=   ../release/updaterThread.lib
       DESTDIR =    ../release/
   }
 }

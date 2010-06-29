@@ -2224,7 +2224,7 @@ int main(int argc, char *argv[])
 #endif
 	//Q_INIT_RESOURCE(systray);
 	//qApp->addLibraryPath("e:\Qt\MyLaunch\release\dll");
-	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath() + '/' + "dll");
+	//QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath() + '/' + "dll");
 
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);

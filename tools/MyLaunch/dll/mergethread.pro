@@ -31,10 +31,10 @@ if(!debug_and_release|build_pass) {
    }
    CONFIG(release, debug|release) {
  #   CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/dll/
-	LIBS +=   ../release/dll/bmapi.lib
-	LIBS +=   ../release/dll/xmlreader.lib
-	LIBS +=   ../release/dll/posthttp.lib
-	LIBS +=   ../release/dll/catalog.lib
+    DESTDIR = ../release/
+	LIBS +=   ../release/bmapi.lib
+	LIBS +=   ../release/xmlreader.lib
+	LIBS +=   ../release/posthttp.lib
+	LIBS +=   ../release/catalog.lib
    }
  }
