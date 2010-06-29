@@ -19,7 +19,10 @@
 						<!--{else}-->
 						<div class="leftx">
 						<!--{/if}-->	
-							 <div class="dig_title"><a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[subject]</a></div>
+							 <div class="dig_title">
+								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[subject]</a>
+								<span class="gray">时间:<!--{date('Y-m-d',$value[dateline],1)}--></span>
+							 </div>
 							 <div class="descript">
 								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[description]...</a> 
 							</div>
@@ -36,28 +39,27 @@
 					 <!--{/if}-->	
 				</div>
 				<div class="right_bottom">
-						 <div class="action">						
-							 <div style="float:left;min-width:100px;max-width:200pxoverflow:hidden;">
-								    <span style="float:left">标签:
+							 <div class="action">						
+							   <span style="float:left;min-width:100px;max-width:200px;overflow:hidden;">标签:
 											<!--{loop $value[tag] $tagid $tagname}-->
 											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid">$tagname</a>
 											<!--{/loop}-->					
-									</span>
-							 </div>
+							   </span>
+						
 							 
 							 <div style="float:right;padding-left:3px;">
 							    
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
-								<!--{/if}-->
-								
+								<!--{/if}--> 								
 								
 							 </div>
 							  <div style="float:left;padding-left:5px;">
 									发布者:	<a href="space.php?do=digg&uid=$value[postuid]" >$value[username]</a>
-								    <span>时间:</span><span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>弹指人参与围观</span>
+								    
+									<span class="gray">有<span style="color:#8ABC2B;font-weight:bold;" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>弹指人参与围观
+									</span>
 									
 							 </div>
 						 </div>
