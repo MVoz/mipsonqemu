@@ -1,0 +1,209 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>network managment</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function getHtml(path)
+{
+	OptionsDlg.getHtml(path);
+}
+function syncClick()
+{
+	OptionsDlg.startSync();
+}
+function apply(key)
+{
+	with(document){
+	OptionsDlg.apply('Account/Username',getElementById('Username').value);
+	OptionsDlg.apply('Account/Userpasswd',getElementById('Userpasswd').value);
+	OptionsDlg.apply('HttpProxy/proxyEnable',getElementById('proxyEnable').checked);
+	OptionsDlg.apply('HttpProxy/proxyAddress',getElementById('proxyAddress').value);
+	OptionsDlg.apply('HttpProxy/proxyPort',getElementById('proxyPort').value);
+	OptionsDlg.apply('HttpProxy/proxyUsername',getElementById('proxyUsername').value);
+	OptionsDlg.apply('HttpProxy/proxyPassword',getElementById('proxyPassword').value);
+	OptionsDlg.accept();
+	}
+}
+function proxyEnableClick()
+{
+		with(document){
+			if(getElementById('proxyEnable').checked)
+					{
+						getElementById('proxyAddress').disabled=false;
+						getElementById('proxyPort').disabled=false;
+						getElementById('proxyUsername').disabled=false;
+						getElementById('proxyPassword').disabled=false;
+					}
+			 else{
+						getElementById('proxyAddress').disabled=true;
+						getElementById('proxyPort').disabled=true;
+						getElementById('proxyUsername').disabled=true;
+						getElementById('proxyPassword').disabled=true;
+			 }
+		}
+}
+function checkUsername()
+{
+ 
+  var   supported   =   0;     
+  if   (window.RegExp)   {     
+  var   tempStr   =   "a";     
+  var   tempReg   =   new   RegExp(tempStr);     
+  if   (tempReg.test(tempStr))   supported   =   1;     
+  }     
+  if   (!supported)     
+  return   (str.indexOf(".")   >   2)   &&   (str.indexOf("@")   >   0);     
+//  var   r1   =   new   RegExp("(@.*@)|(\\.\\.)|(@\\.)|(^\\.)");     
+//  var   r2   =   new   RegExp("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$");     
+ // return   (!r1.test(str)   &&   r2.test(str)); 
+	str=document.getElementById('Username').value;
+	var r=new RegExp("^[a-zA-Z0-9]{1}[\.a-zA-Z0-9_-]*[a-zA-Z0-9]{1}@[a-zA-Z0-9]+[-]{0,1}[a-zA-Z0-9]+[\.]{1}[a-zA-Z]+[\.]{0,1}[a-zA-Z]+$");
+	if(!r.test(str))
+	{
+		alert('错误的用户名！请输入一个合法的用户名');
+		document.getElementById('Username').value='';
+	}
+}
+function accountTestClick()
+{
+	with(document){
+			OptionsDlg.accountTestClick(getElementById('Username').value,getElementById('Userpasswd').value);
+		}
+}
+function testProxyClick()
+{
+		with(document){
+			OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
+		}
+}
+</script>
+</head>
+<body>
+<div id="wrap">
+	<div id="header"></div>
+	<div class="main">
+	<div id="lm">
+	<ul id="menu">
+		<li>
+			<a href="#" onclick="getHtml('./html/general.html');">通用</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/net_mg.html');" style="font-weight:bold;">网络管理</a></li>
+			</ul>
+		</li>
+		<li>
+		<a href="#" onclick="getHtml('./html/adv.html');" >高级</a>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
+				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/about.html');">关于</a>
+		</li>		
+	</ul>
+
+	</div>
+	<div id="rm">
+				<div id="taitou">当前状态</div>
+				<div id="area">
+					<table width="600" >
+						<tr>
+							<td width="15%">状态:</td>
+							<td width="20%" align=left><img src="qrc:image/loading.gif"></td>
+							<td width="25%" >上次同步时间:</td>
+							<td width="50%" >2009-05-12 20:03:40</td>
+						</tr>					
+					</table>
+				</div>
+		<div id="taitou">帐号</div>
+			<div id="area">
+			<table width="600" >
+				<tr>
+					<td width="10%">用户:</td>
+					<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();"/></td>
+					<td width="30%" align=right>
+					<div class="btn">
+					<a href="#" style="width:113px;" onclick="accountTestClick();"><label style="width:113px;height:25px;">测试</label></a>
+					</div>
+					</td>
+				</tr>
+				<tr >
+					<td width="10%">密码:</td>
+					<td width="50%" align=left><input name="Userpasswd" type="password" id="Userpasswd" size=20/></td>
+					<td width="30%" align=right>
+					<div class="btn">
+					<a href="#" style="width:113px;" onclick="syncClick();"><label style="width:113px;height:25px;">同步</label></a>
+					</div>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<div id="taitou">HTTP代理</div>
+			<div id="area">
+			<table width="600" >
+				<tr>
+					<td width="100%" colspan="4"><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();" />&nbsp启用HTTP代理</td>	
+				</tr>
+				<tr>
+					<td width="10%">地址:</td>
+					<td width="40%" align=left><input name="proxyAddress" type="text" id="proxyAddress" size=20/></td>
+					<td width="10%" >端口:</td>
+					<td width="40%" align=right>
+						<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
+						<tr >
+						<td width="15" ><img src="qrc:image/button01.gif" height="20"/></td>
+						<td width="50" style="margin-left:-2px;" ><input name="proxyPort" type="text" id="proxyPort" size="5" style="border:0px;height:20px;" /></td>
+						<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20"/></td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td width="10%">用户:</td>
+					<td width="60%" align=left><input name="proxyUsername" type="text" id="proxyUsername" size=20/></td>
+					<td width="30%" align=right colspan=2>
+					
+					</td>
+				</tr>
+				<tr >
+					<td width="10%">密码:</td>
+					<td width="60%" align=left><input name="proxyPassword" type="password" id="proxyPassword" size=20/></td>
+					<td width="30%" align=right colspan=2>
+					<div class="btn">
+					<a href="#" style="width:113px;" onclick="testProxyClick();"><label style="width:113px;height:25px;">测试</label></a>
+					</div>
+					</td>
+				</tr>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="applybtn">
+			<table width="100%">
+				<tr>
+					<td width="50%">&nbsp</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="apply('net_mg_html');" >应用</a>
+								</div>
+					</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="reject();" >取消</a>
+								</div>
+					</td>
+				</tr>
+			</table>
+	</div>
+</body>
+<script>
+	OptionsDlg.loading('net_mg_html');
+</script>
+</html>

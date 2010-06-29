@@ -1,0 +1,158 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>index</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function getHtml(path)
+{
+	OptionsDlg.getHtml(path);
+}
+function reject()
+{
+	OptionsDlg.reject();
+}
+function apply(key)
+{
+	with(document){
+	OptionsDlg.apply('generalOpt/ckStartWithSystem',getElementById('ckStartWithSystem').checked);
+	OptionsDlg.apply('generalOpt/ckShowTray',getElementById('ckShowTray').checked);
+	OptionsDlg.apply('generalOpt/ckShowMainwindow',getElementById('ckShowMainwindow').checked);
+	OptionsDlg.apply('generalOpt/ckAutoUpdate',getElementById('ckAutoUpdate').checked);
+	OptionsDlg.apply('generalOpt/ckScanDir',getElementById('ckScanDir').checked);
+	OptionsDlg.apply('GenOps/hotkeyModifier',getElementById('hotkey_0').value);
+	OptionsDlg.apply('GenOps/hotkeyAction',getElementById('hotkey_1').value);
+	OptionsDlg.accept();
+	}
+}
+function   set_selected(s_value,id){   
+	  if(s_value!=""){   
+	  s_obj   =   document.getElementById(id).options;   
+	  len   =   s_obj.length;   
+		  for   (i   =   0;   i   <   len;   i++ ){   
+			  if(s_value   ==   s_obj[i].value){
+				s_obj[i].selected=   true; 
+				}   
+		  }   
+	  }   
+  }   
+
+</script>
+</head>
+<body>
+<div id="wrap">
+	<div id="header"></div>
+	<div class="main">
+	<div id="lm">
+	<ul id="menu">
+		<li>
+			<a href="#" onclick="getHtml('./html/general.html');" style="font-weight:bold;">通用</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
+			</ul>
+		</li>
+		<li>
+		<a href="#" onclick="getHtml('./html/adv.html');" >高级</a>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
+				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/processDlg.html');">关于</a>
+		</li>		
+	</ul>
+
+	</div>
+	<div id="rm">
+		<div id="taitou">启动</div>
+	<div id="area">
+		<table width="400">
+		 <tr>
+			<td width="50%"><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</td>
+			<td width="50%" align="right" cellspacing="0"></td>
+		</tr>		
+		 <tr>
+			<td width="50%"><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</td>
+			<td width="50%" align="right" cellspacing="0"></td>
+		</tr>	
+		 <tr>
+			<td width="50%"><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</td>
+			<td width="50%" align="right" cellspacing="0"></td>
+		</tr>
+		 <tr>
+			<td width="50%"><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</td>
+			<td width="50%" align="right" cellspacing="0"></td>
+		</tr>
+		 <tr>
+			<td width="50%"><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</td>
+			<td width="50%" align="right" cellspacing="0"></td>
+		</tr>
+	</table>
+	</div>
+	<div id="taitou">快捷键</div>
+	<div id="area">
+	<table width="400" border=0>
+		<tr>
+			<td width="10%">快捷键:</td>
+			<td width="40%" align=left>
+			<div class="select_b">
+				<select id="hotkey_0" width=40 class="select">	
+					<option value="134217728" > Alt</option>
+					<option value="33554432" > Shift</option>
+					<option value="268435456" > Win</option>
+					<option value="67108864"> Ctrl</option>				
+				</select>
+			</div>
+			</td>
+			<td width="40%">
+				<div class="select_b">
+				<select id="hotkey_1" width=30 class="select" >
+					<option value="16777216" > Space</option>
+					<option value="16777217"> Tab</option>
+					<option value="16777219" > Backspace</option>
+					<option value="16777221" > Enter</option>
+				</select>
+				</div>
+			</td>
+		</tr>		
+	</table>
+	</div>
+	</div>
+	</div>
+</div>
+	<div id="applybtn">
+			<table width="100%">
+				<tr>
+					<td width="50%">&nbsp</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="apply('general_html');" >应用</a>
+								</div>
+					</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="reject();" >取消</a>
+								</div>
+					</td>
+				</tr>
+			</table>
+	</div>
+</body>
+<script>
+	OptionsDlg.loading('general_html');
+	//var objOption=document.createElement('option');
+	//objOption.value='6';
+	//objOption.text='content';
+	//var oOption=new Option('456','123');
+	//document.getElementById('hotkey_0').options[0]=oOption;
+	
+	//document.getElementById('hotkey_0').add(objOption);
+	//set_selected('16777217','hotkey_1');
+</script>
+</html>
