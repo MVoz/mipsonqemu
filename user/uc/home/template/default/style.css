@@ -119,27 +119,7 @@ body { background: #FFF; }
 #ad_contentbottom { margin: 10px 0 0 0; padding: 10px 0 0 0; width: 100%; border-top: 1px solid #EBE6C9; overflow: hidden; }
 
 /*************************************************HEADER***/
-/*
-#header { margin: 0 0 20px; }
-  .headerwarp { margin: 0 auto; padding: 0 20px; width: 930px; height: 40px; background: #FF8E00 url(image/header_bg.gif); color: #FFF; }
-    .headerwarp a { color: #FFF; }
-      .headerwarp .logo { float: left; margin: 0 30px 0 0; }
 
-.menu { float: left; height: 40px; font-size: 14px; font-weight: bold; }
-  .menu li { float: left; padding: 10px; line-height: 20px; vertical-align: top; }
-    .menu .edit { padding-left: 4px; color: #FFF; font-size: 12px; font-weight: normal; }
-
-.nav_account { float: right; width: 200px; white-space:nowrap; overflow: hidden; }
-  .login_thumb { float: left; margin: 6px 6px 0 0; padding: 3px 0 0 3px; width: 24px; height: 24px; background: url(image/thumb20bg.gif) no-repeat; display: block; }
-  .login_thumb img{ width: 20px; height: 20px; }
-    li.notify { margin: 9px 0 0; padding: 0 0 0 18px; width: 72px; height: 20px; background: url(image/notify_bg.gif); color: #FFF; font-size: 12px; font-weight: normal; }
-
-.menu li.dropmenu { margin: 0 10px 0 0; padding: 10px 15px 10px 10px; height: 20px; background: url(image/triangle.gif) no-repeat right center; overflow: hidden; }
-  .dropmenu_drop { margin: -1px 0 0; padding: 0 10px 10px; width: 150px; border: 1px solid #EBE6C9; background: #FFF; z-index: 200; }
-      .dropmenu_drop li { padding: 5px 10px; border-bottom: 1px solid #EEE; }
-        .dropmenu_drop li a { color: #2C629E; font-size: 12px; font-weight: normal; }
-		.dropmenu_drop .active { font-weight: bold; }
-*/
 #main { margin: 0 0 20px; width: 100%;  overflow: hidden; }
 
 .searchForm { float:left;width: 720px; height: 30px; text-align: left;/* background: url('bg_cautare.jpg') no-repeat; */position: relative;  left: 20px;margin-top:10px; }
@@ -228,18 +208,6 @@ a.button { padding: 5px; }
             .formtable td, .formtable th { padding: 5px; }
             .formtable th { padding-right: 1em; text-align: right; }
 
-.infotable { width: 100%; }
-    .infotable th { padding-right: 1em; text-align: right; color:#999; }
-    .infotable .td_title {  text-align: right; font-weight:bold; border-bottom: 1px solid #ECF1F3; color:#999; padding:10px 0 0 10px;  }
-
-.listtable { width: 100%; }
-    .listtable caption { padding: 10px 0; color: #666; font-size: 12px; }
-        .listtable caption h2 { padding-bottom: 8px; border-bottom: 1px solid #CCC; color: #333; font-size: 14px; }
-        .listtable caption p { margin-top: 8px; }
-        .listtable td, .listtable th { padding: 5px; border-bottom: 1px dashed #ECF1F3; }
-        .listtable .title td, .listtable .title th { border-bottom: 1px solid #CCC; font-weight: bold; }
-        .listtable .line td { background: #FCFCFC; }
-
 .h_status { margin-bottom: 8px; padding: 5px; border-bottom: 1px solid #F5F5F5; color: #999; }
     .h_status .active { font-weight: bold; }
 .d_content form { padding: 4px 9px; background: #EEE; }
@@ -260,19 +228,6 @@ a.button { padding: 5px; }
 .box { padding: 10px 0 10px 0; }
     .box h2 { margin: 10px 0; font-size: 14px; }
     .box h3 { margin: 10px 0; font-size: 12px; }
-
-.topic_list { margin: 0 0 20px; }
-    .topic_list table { margin: 5px 0 20px; width: 100%; }
-        .topic_list td { padding: 8px 10px; color: #999; line-height: 150%; overflow: hidden; }
-    .topic_list thead td { border-bottom: 1px solid #EBE6C9; color: #333; }
-      .topic_list td.subject img{ margin: 0 3px 0 0; vertical-align: middle; }
-      .topic_list td.mtag { width: 120px; }
-      .topic_list td.author { width: 100px; }
-      .topic_list td.author em { font-size: 11px; font-style: normal; }
-      .topic_list td.lastpost { width: 90px; text-align: right; }
-.topic_list tbody tr td { border-bottom: 1px solid #EBE6C9; }
-    .topic_list tbody tr.alt td { background: #FCF9E6; }
-        .topic_list p { padding-top: 6px; }
 
 /*************************************************CP SIDEBAR***/
 #sidebar { float: right; padding: 0; width: 250px; overflow: hidden; }
@@ -298,9 +253,11 @@ a.button { padding: 5px; }
 
 #ajaxwaitid { position: absolute; width: 100px; height: 1.6em; background: #DD0000; color: #FFF; line-height: 1.6em; z-index: 100; top: 0px; right: 0px; overflow: hidden; display: none; }
 .pipe { padding: 0 0.4em; color: #DDD; }
+/*
 .article { padding: 0.5em; font-size: 14px; }
     .article table { table-layout: fixed; }
     .article ul li { margin-left: 1.6em; list-style: disc; }
+*/
 .quote { margin: 0.5em 0; padding-left: 20px; background: url(image/q_start.gif) no-repeat 0 0; overflow: hidden; zoom: 1; }
     .quote .q, .quote blockquote { margin: 0; padding: 0 20px 0 0; background: url(image/q_end.gif) no-repeat right bottom; color: #666; display: inline-block; }
 .notice { margin-bottom: 2px; padding: 8px; border-bottom: 1px solid #EBE6C9; background: #FCF9E6; }
@@ -317,15 +274,6 @@ a.button { padding: 5px; }
     .popupmenu_popup td { padding-bottom: 0.4em; }
     .popupmenu_popup .float_del{ background-image: url(image/delete2.gif); }
 
-.popupmenu_centerbox { border: 0px solid #FFAE4A; background: #FCF9E6; text-align: left; min-width:250px; max-width:550px; }
-    .popupmenu_centerbox h1 { padding: 0 10px; color: #FF9919; font-size: 14px; line-height: 26px; cursor: move; }
-
-    .popupmenu_centerbox .popupmenu_inner { padding: 10px; color: #444; }
-        .popupmenu_centerbox .popupmenu_inner td{ line-height: 200%; }
-            .popupmenu_centerbox .popupmenu_inner .t_input, .popupmenu_centerbox .popupmenu_inner textarea{ margin: 5px 0; border-color: #EBE6C9; }
-            
-            .popupmenu_centerbox .float_del{ background-image: url(image/delete2.gif); }
-    .popupmenu_centerbox .box { width: 400px; }
 
 .popupmenu_layer{ padding: 3px 6px 6px 1px; width: 220px; height: 80px; background: url(image/ilayer.gif) no-repeat; text-align: center; }
 	.popupmenu_layer p{ line-height: 20px; color: #333; }
@@ -347,27 +295,12 @@ a.button { padding: 5px; }
 
 .m_box { margin: 0 0 20px; width: 100%; overflow: hidden; }
 
-    .news_list, .task { line-height: 190%; }
-    .news_list li, .task li { padding: 0 0 0 20px; height: 24px; background: url(image/d.gif) no-repeat 5px 10px; font-size: 12px; line-height: 24px; overflow: hidden; }
-    li.news_title { padding: 0; height: 40px; background: none; font-size: 18px; font-weight: bold; line-height: 40px; text-align: center; }
 
-.searchfriend { margin: 0 0 20px; background: #FCF9E6; }
-    .searchfriend .ye_l_b { padding: 5px 10px 10px 10px; }
-.searchfriend p { margin: 8px 0; color: #999; }
-    .searchfriend .t_input { border-color: #EBE6C9; }
 .showmessage { margin: 50px auto; width: 600px; background: #FCF9E6; }
     .showmessage h2 { font-size: 14px; }
     .showmessage .ye_l_b { padding: 15px 20px 20px; }
     .showmessage p { padding: 2em 1em;  font-size: 14px; overflow: hidden; }
     .showmessage .op { font-size: 12px; text-align: right; }
-
-.pm_list { margin: 0; padding: 0; list-style: none; }
-    .pm_list li { margin: 0 0 20px; width: 100%; overflow: hidden; }
-    .pm_list .pm_body { float: left; background: url(image/pm_bg.gif) repeat-y 100% 0; }
-      .pm_list .pm_h { position: relative; padding: 5px 0 0 15px; width: 560px; background: url(image/pm_bg.gif) no-repeat 0 0; }
-        .pm_list .pm_f { padding: 0 10px 5px; background: url(image/pm_bg.gif) no-repeat -590px 100%; }
-        .pm_list .pm_c { padding: 10px; color: #444; line-height: 200%; }
-    .pm_list .avatar48 { float: left; margin: 0 5px 0 0; }
 
 /*************************************************FEED***/
 
