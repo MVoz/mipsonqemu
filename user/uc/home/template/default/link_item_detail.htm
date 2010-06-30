@@ -3,14 +3,14 @@
 		<h2 class="ntitle">
 			$item[link_subject]			
 		</h2>
-		<div class="movieInfo">
-					<div class="link200">
-					<a target="_target" class="playpic" href="$item['url']" onclick="updatelinkview($item[linkid])">
-					<img alt="$item['$link_subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
-					<em></em>
-					</a>
+		<div class="siteinfo">
+					<div class="sitepic">
+						<a target="_target" href="$item['url']" onclick="updatelinkview($item[linkid])">
+						<img alt="$item['$link_subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
+						<em></em>
+						</a>
 					</div>
-					<div class="movieDetail">
+					<div class="sitedetail">
 						<p>
 							<strong>名称: </strong>
 							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a>
@@ -44,18 +44,21 @@
 							<!--{/if}-->
 						<!--{/if}-->
 						</p>
-						</div>
-						<div class="movieScore">
-							<p><strong id="pj_title">评价</strong> <span id="my_score">(点击顶踩评价)</span></p>
-							<span>
-								<span class="rate"><a id="movie_item_t_1" target="_self" onclick="updatelinkup($item[linkid])"  href="javascript:void(0)"></a></span>
-								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
-								<span class="rate"><a id="movie_item_t_1" target="_self"  onclick="updatelinkdown($item[linkid])"  href="javascript:void(0)"></a></span>
-								(<span id="down_num">$item['down']</span>人踩)</span>
-
-						</div>
-						</p>
 					</div>
+					<div class="sitescore">
+							<p><strong>评价</strong> <span>(点击顶踩评价)</span></p>
+							<span>
+								<span class="rate">
+									<a target="_self" onclick="updatelinkup($item[linkid])"  href="javascript:void(0)"></a>
+								</span>
+								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
+								<span class="rate">
+									<a  target="_self"  onclick="updatelinkdown($item[linkid])"  href="javascript:void(0)"></a>
+								</span>
+								(<span id="down_num">$item['down']</span>人踩)
+							</span>	  
+					</div>
+				</div>
 					
 
 
