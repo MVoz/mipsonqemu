@@ -58,6 +58,7 @@ div.content #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 	margin:5px 45px 0
 
 }
+/*
 div.slideshow-container a.advance-link:hover, div.slideshow a.advance-link:active, div.slideshow a.advance-link:visited {
 	text-decoration: none;
 }
@@ -65,26 +66,9 @@ div.slideshow-container a.advance-link:hover, div.slideshow a.advance-link:activ
 div.slideshow-container img {
 	height: 120px;
 	width:150px;
-/*	vertical-align: middle;*/
 	border: 1px solid #ccc;
 	margin:5px 15px 0;
 	padding:2px;
 	text-align:center;
-
 }
-.txt_tag {
-clear:both;
-background:none repeat scroll 0 0 #F2F2F3;
-border:1px solid #E0E0E0;
-color:#D2D2D2;
-line-height:20px;
-margin:0 10px;
-padding:5px 10px;
-}
-.txt_tag p span {
-color:#717171;
-font-weight:bold;
-}
-.txt_tag p a {
-margin:0 5px;
-}
+*/
