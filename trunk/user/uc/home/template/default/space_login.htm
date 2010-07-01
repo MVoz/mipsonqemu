@@ -53,75 +53,69 @@
 		</h2> 
 		<div class="side_rbox_c" >
 
-	<div  class="wbbg">
-		 <div style="border-bottom: 3px solid rgb(116, 174, 0);" class="right1">
-		<span class="green1">弹指登录&raquo;</span>&nbsp;请使用email登录</div>
+	<div  class="slogin">
+		 <h2>
+			<span class="greenb">弹指登录&raquo;</span>&nbsp;请使用email登录
+		</h2>
 		<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" onsubmit="return login_validate(this);">
 			<div class="zc_index">
-				<div class="ward_border">
-				<div class="ward_borderl">登录账号：</div>
-				<div class="ward_borderr">
-				<label>
-				<input type="text" name="username" id="username" value="$membername" onfocus="clearwarning($('username_tip'));" class="srkuanga">
-				<p name="username_tip" id="username_tip"> </p>
-				</label>
-				</div>
-				</div>
-				<div class="ward_border">
-				<div class="ward_borderl">密&nbsp;&nbsp; 码：</div>
-				<div class="ward_borderr">
-				<label>
-				<input type="password" name="password" id="password" value="$password" class="srkuanga"><span id="html_uperr" class="cwxx"></span>
-				</label>
-				</div>
-				</div>
-				<div class="ward_border">
-				<label>
-					<span style="float:left;margin-top:5px;">记住我</span>
-					<input style="float:left;margin-top:14px;" type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck>						
-					<a class="linkf" href="do.php?ac=lostpasswd" style="margin-left: 20px;float:left;margin-top: 10px;">忘记密码</a>
-					<input type="submit" value="登  录" class="buttong1" id="loginsubmit" name="loginsubmit" style="float: right; margin-right: 43px; margin-top: 5px;">
-				</label>
-				</div>
-				<div class="ward_border">				
-				<input type="hidden" name="refer" value="space.php?do=all" />
-				<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
-				</div>
-				</div>
+				<p>
+					<span>账&nbsp;&nbsp;号:</span>
+					<label>
+						<input type="text" name="username" id="username" value="$membername" onfocus="clearwarning($('username_tip'));" >
+						<p name="username_tip" id="username_tip"></p>
+					</label>
+				</p>
+				<p>
+					<span>密&nbsp;&nbsp;码:</span>
+					<label>
+						<input type="password" name="password" id="password" value="$password">
+					</label>
+				</p>
+		
+				<em>
+					<span>记住我</span>
+					<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck>					
+					<a  href="do.php?ac=lostpasswd">忘记密码</a>
+					<input type="submit" value="登  录" class="button" id="loginsubmit" name="loginsubmit" >
+					<a href="do.php?ac=lostpasswd">注册</a>
+					<input type="hidden" name="refer" value="space.php?do=all" />
+					<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /> 
+				</em>
+
+				
 			</div>
 		</form>
     </div>
 
-
-<div style="width: 280px; overflow: hidden;">
-	<h2 style="color: rgb(244, 149, 13); font-weight: bold; font-size: 110%;">
-	过去几分钟弹友动态......
-	<!--
-	<span style="color:#ccc;font-weight:normal;font-size:90%;float:right;">
-	<a href="space.php?do=feed">更多</a>
-	</span>
-	-->
-	</h2>
-	<ul class="sitefeed">
-	<li style="height: 60px; overflow: hidden;">
-	<div style="float: left;" class="avatar48">
-	<a href="space.php?uid=3">
-	<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif"></a>
-	</div>
-	<div style="float: left; padding: 8px 2px; width: 215px;">
-	<a href="#"></a><a href="space.php?uid=3" target="_blank">lele</a> 发表了新日志<a href="#"><b></b></a><b><a href="space.php?uid=3&amp;do=blog&amp;id=24" target="_blank">用户栈开始内容</a></b><br>when the userspace receives control, the stack layout has a fixed format. The rough order is this:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;lt;ar <span class="gray">01-29 16:11</span>
-	</div>
-	</li>
-	<li style="height: 60px; overflow: hidden;">
-	<div style="float: left;" class="avatar48">
-	<a href="space.php?uid=1">
-	<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/data/avatar/000/00/00/01_avatar_small.jpg"></a>
-	</div>
-	<div style="float: left; padding: 8px 2px; width: 215px;">
-	<a href="#"></a><a href="space.php?uid=1" target="_blank">admin</a> 发表了新日志<a href="#"><b></b></a><b><a href="space.php?uid=1&amp;do=blog&amp;id=18" target="_blank">ppp 获取IP</a></b><br>osk中PPPoe 获取IP后，调用sys-stub.c 中的sifaddr设置vip，    而其他方式则是setItfIp <span class="gray">01-29 16:11</span>
-	</div>
-	</li>
-	</ul>                       
+	<div class="wbbg" id="htm_user_register">
+		<div style="border-bottom: 3px solid rgb(120, 171, 215);" class="right1">
+		<span class="green2">过去几分钟弹友动态......</span>
+		</div>
+		<div style="width: 280px; overflow: hidden;">
+			<h2 style="color: rgb(244, 149, 13); font-weight: bold; font-size: 110%;">
+			</h2>
+			<ul class="sitefeed">
+			<li style="height: 60px; overflow: hidden;">
+			<div style="float: left;" class="avatar48">
+			<a href="space.php?uid=3">
+			<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif"></a>
+			</div>
+			<div style="float: left; padding: 8px 2px; width: 215px;">
+			<a href="#"></a><a href="space.php?uid=3" target="_blank">lele</a> 发表了新日志<a href="#"><b></b></a><b><a href="space.php?uid=3&amp;do=blog&amp;id=24" target="_blank">用户栈开始内容</a></b><br>when the userspace receives control, the stack layout has a fixed format. The rough order is this:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;lt;ar <span class="gray">01-29 16:11</span>
+			</div>
+			</li>
+			<li style="height: 60px; overflow: hidden;">
+			<div style="float: left;" class="avatar48">
+			<a href="space.php?uid=1">
+			<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/data/avatar/000/00/00/01_avatar_small.jpg"></a>
+			</div>
+			<div style="float: left; padding: 8px 2px; width: 215px;">
+			<a href="#"></a><a href="space.php?uid=1" target="_blank">admin</a> 发表了新日志<a href="#"><b></b></a><b><a href="space.php?uid=1&amp;do=blog&amp;id=18" target="_blank">ppp 获取IP</a></b><br>osk中PPPoe 获取IP后，调用sys-stub.c 中的sifaddr设置vip，    而其他方式则是setItfIp <span class="gray">01-29 16:11</span>
+			</div>
+			</li>
+			</ul>                       
+		</div>
 </div>
 
 
