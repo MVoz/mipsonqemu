@@ -11,6 +11,13 @@ a:hover, a:link, a:visited{ text-decoration:none; }
 
 a img { border: none; }
 
+.gray { color: #999; font-size:12px; font-weight:normal; }
+    .gray a { color: #999; }
+.green{color: green;}
+	.green a{ color: green; }
+.aqua{color:#8FC320;}
+.yellow{color:#EF9822;}
+
 .blocklink a { padding-left: 0.5em; line-height: 2em; display: block; }
   .blocklink a:hover { background: #2C629E; color: #FFF; text-decoration: none; }
   .blocklink .active a { color: #333; font-weight: bold; }
@@ -39,10 +46,7 @@ caption, th { text-align: left; }
 
 .online_icon_p { padding: 0 0 0 10px; width: auto; background: transparent url(image/online_icon.gif) no-repeat left center; text-align: left; }
 
-.gray { color: #999; font-size:12px; font-weight:normal; }
-    .gray a { color: #999; }
-.green{color: green;}
-	.green a{ color: green; }
+
 
 .face { margin: 0 1px; vertical-align: middle; }
 .r_option { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:5px; }
