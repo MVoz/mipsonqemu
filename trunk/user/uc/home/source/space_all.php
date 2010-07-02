@@ -32,7 +32,7 @@ if(check_network_cache('digg')) {
     $theurl="space.php?do=digg";
 
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline LIMIT $start,$shownum");
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline DESC LIMIT $start,$shownum");
 
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['subject'] = getstr($value['subject'], 50);
