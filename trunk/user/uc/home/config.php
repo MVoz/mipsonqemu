@@ -34,6 +34,9 @@ $_SC['founder'] 		= '1'; //创始人 UID, 可以支持多个创始人，之间�
 $_SC['allowedittpl']	= 0; //是否允许在线编辑模板。为了服务器安全，强烈建议关闭
 
 $_SC['bookmark_show_maxnum'] =8;
+
+$_SC['digg_show_maxnum'] =5;
+
 $_SC['bookmark_type_site']=0;
 $_SC['bookmark_type_dir']=1;
 //Link origin 类型
