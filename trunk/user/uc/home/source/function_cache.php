@@ -684,6 +684,49 @@ function everydayhotcollect_cache()
 
 	swritefile( S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
 }
+//digg cache 操作,最多前($maxpages*$_SC['digg_show_maxnum'])
+
+function digg_cache()
+{
+	global $_SGLOBAL,$_SC;
+	//create lock
+	 while(check_cachelock()){
+		 usleep(1000);//1ms
+	 }
+	 create_cachelock('digg');
+	
+  //显示数量
+	$maxpages = 6;
+	$shownum = $_SC['digg_show_maxnum']; 
+
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
+
+	$total = $maxpages*$shownum; 
+	$i = 0;
+	$digglist = array();
+
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline DESC LIMIT 0,$total");
+
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+
+					$digglist[] = $value;
+					if(sizeof($digglist) == $shownum )
+					{
+						cache_write_x('diggcache'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+						$digglist = array();
+						$i++;
+					}
+	}
+	if(sizeof($digglist))
+	{
+	  cache_write_x('diggcache'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+	} 
+	//记录总数
+	swritefile(S_ROOT.'./data/diggcache/digg_count.txt', $count) ;
+	//delete
+	delete_cachelock('digg');
+				
+}
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
@@ -729,6 +772,18 @@ function cache_write($name, $var, $values) {
 		exit("File: $cachefile write error.");
 	}
 }
+//add by ramen 20100703 for pruduct digg cache
+function cache_write_x($name, $var, $values,$dir) {
+	$cachefile = S_ROOT.'./data/'.$dir.'/data_'.$name.'.php';
+	$cachetext = "<?php\r\n".
+		"if(!defined('IN_UCHOME')) exit('Access Denied');\r\n".
+		'$'.$var.'='.arrayeval($values).
+		"\r\n?>";
+	if(!swritefile($cachefile, $cachetext)) {
+		exit("File: $cachefile write error.");
+	}
+}
+
 //add by ramen to extend
 function cache_write_extend($name, $var, $values) {
 	global $_SGLOBAL,$_SC;

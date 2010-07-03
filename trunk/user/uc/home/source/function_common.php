@@ -2768,4 +2768,31 @@ function showerrmessage($err)
 	global $_SGLOBAL,$_SC;
 	showmessage($_SC['error'][-1*$err]);
 }
+function create_cachelock($type)
+{
+	$lockfile = S_ROOT.'./data/lock/'.$type.'.lock';
+	while(1)
+	{
+		touch($lockfile);
+		if(file_exists($lockfile))
+			break;
+	}
+}
+function delete_cachelock($type)
+{
+	$lockfile = S_ROOT.'./data/lock/'.$type.'.lock';
+	while(1)
+	{
+	   unlink($lockfile);
+	   if(!file_exists($lockfile))
+		   break;
+	}
+}
+function check_cachelock($type)
+{
+	$lockfile = S_ROOT.'./data/lock/'.$type.'.lock';	
+	if(file_exists($lockfile)) 
+		return true;
+	return false;
+}
 ?>

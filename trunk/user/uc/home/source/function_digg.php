@@ -89,6 +89,8 @@ function digg_post($POST, $olds=array()) {
 	$tagarr=digg_tag_batch($diggid,$POST['tag']);
 	$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
 	updatetable('digg', array('tag'=>$tag), array('diggid'=>$diggid));
+	//¸üÐÂdigg cache
+	digg_cache();
 	//½ÇÉ«ÇÐ»»
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
