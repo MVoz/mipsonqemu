@@ -17,21 +17,22 @@ include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
 //digg
 $digglist = array();
-$cachefile = S_ROOT.'./data/cache_network_digg.txt';
-if(check_network_cache('digg')) {
-	$digglist = unserialize(sreadfile($cachefile));
+$theurl="space.php?do=digg";
+//显示数量
+$shownum = $_SC['digg_show_maxnum'];
+//获取总条数
+$page=empty($_GET['page'])?0:intval($_GET['page']);
+$perpage=$shownum;
+
+if(!check_cachelock('digg')) {
+	//没有lock,则可以读取
+	include_once(S_ROOT.'./data/diggcache/data_diggcache'.$page.'.php');
+	$count=sreadfile(S_ROOT.'./data/diggcache/digg_count.txt');
+	$digglist = $_SGLOBAL['diggcache'][$page];
 } else {
 
-	//显示数量
-	$shownum = 5;
-	
-	 //获取总条数
-    $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=$shownum;
     $start=$page?(($page-1)*$perpage):0;
-    $theurl="space.php?do=digg";
-
-    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
+   	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
 	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline DESC LIMIT $start,$shownum");
 
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
@@ -39,9 +40,7 @@ if(check_network_cache('digg')) {
 		$value['cutsubject'] = getstr(trim($value['subject']), 28);
 		$digglist[] = $value;
 	}
-	if($_SGLOBAL['network']['digg']['cache']) {
-		swritefile($cachefile, serialize($digglist));
-	}
+	
 }
 foreach($digglist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
