@@ -261,7 +261,7 @@ function deletelink($linkid){
 	}
 	//È¥µôfeed
 	include_once(S_ROOT.'./source/function_feed.php');
-	function feed_delete($diggid, 'linkid');
+	feed_delete($linkid, 'linkid');
 	return 1;
 }
 function link_pass($link)
