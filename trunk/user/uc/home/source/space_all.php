@@ -23,10 +23,11 @@ $shownum = $_SC['digg_show_maxnum'];
 //获取总条数
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $perpage=$shownum;
+$cachefile =  S_ROOT.'./data/diggcache/data_diggcache'.$page.'.php';
 
-if(!check_cachelock('digg')) {
+if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	//没有lock,则可以读取
-	include_once(S_ROOT.'./data/diggcache/data_diggcache'.$page.'.php');
+	include_once($cachefile);
 	$count=sreadfile(S_ROOT.'./data/diggcache/digg_count.txt');
 	$digglist = $_SGLOBAL['diggcache'][$page];
 } else {

@@ -21,23 +21,43 @@ if(!isbetween($type,0,count($_SGLOBAL['diggcategory'])))
 	  $type=0;
 //根据postuser来查看
 $uid = empty($_GET['uid'])?0:intval($_GET['uid']);
+//显示数量
+$shownum = $_SC['digg_show_maxnum'];
+	
+//获取总条数
+$page=empty($_GET['page'])?0:intval($_GET['page']);
+$perpage=$shownum;
+$start=$page?(($page-1)*$perpage):0;
+$theurl="space.php?do=$do";
 
 //digg
 $digglist = array();
-$cachefile = S_ROOT.'./data/cache_network_digg.txt';
-if(check_network_cache('digg')) {
-	$digglist = unserialize(sreadfile($cachefile));
-} else {
 
-	//显示数量
-	$shownum = 5;
+//修正一下page ，0不变，其它情况减1
+$nowpage=($page)?($page-1):0;
+
+if($type)
+	{
+		$cachefile = S_ROOT.'./data/diggcache/data_diggcache_'.$type.'_'.$nowpage.'.php';
+		$count=sreadfile(S_ROOT.'./data/diggcache/digg_'.$type.'_count.txt');
+		$theurl = $theurl.'&type='.$type;
+	}
+else if($uid){
+		$cachefile = S_ROOT.'./data/diggcache/data_diggcache_user_'.$uid.'_'.$nowpage.'.php';
+		$count=sreadfile(S_ROOT.'./data/diggcache/digg_user_'.$uid.'_count.txt');
+		$theurl = $theurl.'&uid='.$uid;
+}
+else {
 	
-	 //获取总条数
-    $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=$shownum;
-    $start=$page?(($page-1)*$perpage):0;
-    $theurl="space.php?do=$do";
-
+	$cachefile = S_ROOT.'./data/diggcache/data_diggcache'.$nowpage.'.php';
+	$count=sreadfile(S_ROOT.'./data/diggcache/digg_count.txt');
+}
+if(!check_cachelock('digg')&&file_exists($cachefile)) {
+	//没有lock,则可以读取
+	include_once($cachefile);	
+	$digglist = $_SGLOBAL['diggcache'][$nowpage];
+} else {
+   
 	$wherearr='';
 	if(!empty($type))
 		 $wherearr=' where main.categoryid='.$type;

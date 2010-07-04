@@ -685,8 +685,80 @@ function everydayhotcollect_cache()
 	swritefile( S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
 }
 //digg cache 操作,最多前($maxpages*$_SC['digg_show_maxnum'])
+function digg_cache_user($user)
+{
+	global $_SGLOBAL,$_SC;
+	if(!$user)
+		return;
+	$maxpages = 6;
+	$shownum = $_SC['digg_show_maxnum']; 
 
-function digg_cache()
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')." where postuid=$user"),0);
+
+	$total = $maxpages*$shownum; 
+	$i = 0;
+	$digglist = array();
+
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	where main.postuid=$user ORDER BY  main.dateline DESC LIMIT 0,$total");
+
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+
+					$digglist[] = $value;
+					if(sizeof($digglist) == $shownum )
+					{
+						cache_write_x('diggcache_user_'.$user.'_'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+						$digglist = array();
+						$i++;
+					}
+	}
+	if(sizeof($digglist))
+	{
+	  cache_write_x('diggcache_user_'.$user.'_'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+	} 
+	//记录总数
+	swritefile(S_ROOT.'./data/diggcache/digg_user_'.$user.'_count.txt', $count) ;
+}
+/*
+	$category:digg分类，为0不考虑
+*/
+function digg_cache_category($category)
+{
+	global $_SGLOBAL,$_SC;
+	if(!$category)
+		return;
+	$maxpages = 6;
+	$shownum = $_SC['digg_show_maxnum']; 
+
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')." where categoryid=$category"),0);
+
+	$total = $maxpages*$shownum; 
+	$i = 0;
+	$digglist = array();
+
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	where main.categoryid=$category ORDER BY  main.dateline DESC LIMIT 0,$total");
+
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+
+					$digglist[] = $value;
+					if(sizeof($digglist) == $shownum )
+					{
+						cache_write_x('diggcache_'.$category.'_'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+						$digglist = array();
+						$i++;
+					}
+	}
+	if(sizeof($digglist))
+	{
+	  cache_write_x('diggcache_'.$category.'_'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
+	} 
+	//记录总数
+	swritefile(S_ROOT.'./data/diggcache/digg_'.$category.'_count.txt', $count) ;
+}
+/*
+	$nowcategory:现在的digg分类
+	$oldcategory:过去的digg分类，为0不考虑
+*/
+function digg_cache($nowcategory,$oldcategory,$user)
 {
 	global $_SGLOBAL,$_SC;
 	//create lock
@@ -723,10 +795,41 @@ function digg_cache()
 	} 
 	//记录总数
 	swritefile(S_ROOT.'./data/diggcache/digg_count.txt', $count) ;
+//更新分类的cache
+	digg_cache_category($nowcategory);
+	if($nowcategory != $oldcategory)
+		digg_cache_category($oldcategory);
+	digg_cache_user($user);
 	//delete
 	delete_cachelock('digg');
 				
 }
+
+function digg_cacheall()
+{
+	global $_SGLOBAL;
+	digg_cache(0,0);
+	$query = $_SGLOBAL['db']->query("SELECT categoryid FROM ".tname('diggcategory'));
+
+	//create lock
+	 while(check_cachelock()){
+		 usleep(1000);//1ms
+	 }
+	 create_cachelock('digg');
+
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+		digg_cache_category($value['categoryid']);
+	}
+
+	$query = $_SGLOBAL['db']->query("SELECT  DISTINCT postuid FROM ".tname('digg'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+		digg_cache_user($value['postuid']);
+	}
+
+	//delete
+	delete_cachelock('digg');
+}
+
 //递归清空目录
 function deltreedir($dir) {
 	$files = sreaddir($dir);
