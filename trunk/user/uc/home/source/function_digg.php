@@ -152,6 +152,8 @@ function   updatediggdownnum($diggid){
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET downnum=downnum+1 WHERE diggid=".$diggid);
+		include_once(S_ROOT.'./source/function_feed.php');
+		feed_publish($diggid, 'downdiggid', 1);
 }
 function   updatediggupnum($diggid){
 	//更新digg顶统计信息
@@ -159,6 +161,8 @@ function   updatediggupnum($diggid){
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET upnum=upnum+1 WHERE diggid=".$diggid);
+		include_once(S_ROOT.'./source/function_feed.php');
+		feed_publish($diggid, 'updiggid', 1);
 }
 function   updatediggviewnum($diggid){
 	//更新digg踩统计信息
@@ -183,6 +187,9 @@ function deletedigg($diggid){
 	$_SGLOBAL['db']->query("DELETE  from ".tname('digg')." WHERE diggid=".$diggid);
 	//更新digg cache
 	digg_cache($$values['categoryid'],0);
+	//去掉feed
+	include_once(S_ROOT.'./source/function_feed.php');
+	function feed_delete($diggid, 'diggid');
 	return 1;
 }
 ?>

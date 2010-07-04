@@ -282,7 +282,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['uid'] = $value['postuid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
-				$setarr['dateline'] = $value['dateline'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
 				$setarr['hot'] = $value['hot'];
 				
 				//详细
@@ -294,6 +294,136 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
 				$arr['body_data'] = serialize($arr['body_data']);//数组转化
 				$setarr['body_general'] = $value['description'];
+				//$setarr['image_1'] = $value['image'];
+				//$setarr['image_1_link'] = $value['image_link'];
+			}
+			break;
+		case 'updiggid':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." WHERE diggid='$id'");
+			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+				//基本
+				$setarr['icon'] = 'digg';
+				$setarr['id'] = $value['diggid'];
+				$setarr['idtype'] = $idtype;
+				$setarr['uid'] = $value['postuid'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
+				$setarr['hot'] = $value['hot'];
+				
+				//详细
+				$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
+				
+				$setarr['title_template'] = cplang('updigg_link'); 
+				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
+				$setarr['body_template'] = '{link}';
+				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
+				$arr['body_data'] = serialize($arr['body_data']);//数组转化
+				$setarr['body_general'] = $value['description'];
+				//$setarr['image_1'] = $value['image'];
+				//$setarr['image_1_link'] = $value['image_link'];
+			}
+			break;
+		case 'downdiggid':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." WHERE diggid='$id'");
+			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+				//基本
+				$setarr['icon'] = 'digg';
+				$setarr['id'] = $value['diggid'];
+				$setarr['idtype'] = $idtype;
+				$setarr['uid'] = $value['postuid'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
+				$setarr['hot'] = $value['hot'];
+				
+				//详细
+				$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
+				
+				$setarr['title_template'] = cplang('downdigg_link'); 
+				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
+				$setarr['body_template'] = '{link}';
+				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
+				$arr['body_data'] = serialize($arr['body_data']);//数组转化
+				$setarr['body_general'] = $value['description'];
+				//$setarr['image_1'] = $value['image'];
+				//$setarr['image_1_link'] = $value['image_link'];
+			}
+			break;
+		case 'linkid':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid='$id'");
+			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+				//基本
+				$setarr['icon'] = 'link';
+				$setarr['id'] = $value['linkid'];
+				$setarr['idtype'] = $idtype;
+				$setarr['uid'] = $value['postuid'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
+				$setarr['hot'] = $value['hot'];
+				
+				//详细
+				//$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
+				
+				$setarr['title_template'] = cplang('share_link'); 
+				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
+				$setarr['body_template'] = '{link}';
+				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[link_subject]</a>", 'data'=>$value[url]);
+				$arr['body_data'] = serialize($arr['body_data']);//数组转化
+			//	$setarr['body_general'] = $value['description'];
+				//$setarr['image_1'] = $value['image'];
+				//$setarr['image_1_link'] = $value['image_link'];
+			}
+			break;
+		case 'uplinkid':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid='$id'");
+			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+				//基本
+				$setarr['icon'] = 'link';
+				$setarr['id'] = $value['linkid'];
+				$setarr['idtype'] = $idtype;
+				$setarr['uid'] = $value['postuid'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
+				$setarr['hot'] = $value['hot'];
+				
+				//详细
+				//$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
+				
+				$setarr['title_template'] = cplang('upshare_link'); 
+				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
+				$setarr['body_template'] = '{link}';
+				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[link_subject]</a>", 'data'=>$value[url]);
+				$arr['body_data'] = serialize($arr['body_data']);//数组转化
+			//	$setarr['body_general'] = $value['description'];
+				//$setarr['image_1'] = $value['image'];
+				//$setarr['image_1_link'] = $value['image_link'];
+			}
+			break;
+		case 'downlinkid':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid='$id'");
+			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+				//基本
+				$setarr['icon'] = 'link';
+				$setarr['id'] = $value['linkid'];
+				$setarr['idtype'] = $idtype;
+				$setarr['uid'] = $value['postuid'];
+				//$setarr['username'] = $value['username'];
+				$setarr['username'] = $_SGLOBAL['name'];
+				$setarr['dateline'] = $_SGLOBAL['timestamp'];
+				$setarr['hot'] = $value['hot'];
+				
+				//详细
+				//$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
+				
+				$setarr['title_template'] = cplang('downshare_link'); 
+				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
+				$setarr['body_template'] = '{link}';
+				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[link_subject]</a>", 'data'=>$value[url]);
+				$arr['body_data'] = serialize($arr['body_data']);//数组转化
+			//	$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
 			}
@@ -327,5 +457,19 @@ function feed_publish($id, $idtype, $add=0) {
 	}
 	
 }
-
+function feed_delete($id, $idtype)
+{
+	global $_SGLOBAL;
+	
+	switch ($idtype) {
+		case 'blogid':
+			break;
+		case 'diggid':
+			 $query = $_SGLOBAL['db']->query("DELETE FROM ".tname('feed')." WHERE id='$id' AND icon='digg'");
+			break;
+		case 'linkid':
+			 $query = $_SGLOBAL['db']->query("DELETE FROM ".tname('feed')." WHERE id='$id' AND icon='link'");
+			break;
+	}
+}
 ?>
