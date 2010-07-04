@@ -13,32 +13,27 @@
 	<div id="slider">
 			<ul>
 				<li>
-					<dl style="display: block;" class="rank">
+					<dl  class="drank">
 						<!--{loop $_SGLOBAL['hotdigg'] $key $value}-->	
 								<!--{if $key }-->
 										<!--{eval $key=$key+1;}-->
-											<dt class="n$key">
-												<a target="new" title="$value[subject]" href="$value[url]" coords="_eB">$value[subject]</a>
+											<dt class="l$key">
+												<a target="new" title="$value[subject]" href="$value[url]">$value[subject]</a>
 											</dt>
 										<!--{else}-->
-											<dt class="n1">
-												<div class="pack pack_video_brief  ">
-														<div class="pic">							
-															<a href="$value[url]" title="$value[subject]" target="new" class="inner">
-																<img height="90" width="120" class="pack_clipImg" src="$value[pic]" coords="_eAA"></a>
-														</div>
-														<div class="txt">
-																<h6 class="caption">
-																	<a title="$value[subject]" target="new" href="$value[url]" coords="_eAB"> $value[subject]</a>
-																	</h6>
-																	<dl class="info">
-																		<dt>分&nbsp;类:
-																			<a target="_blank" href="http://www.tudou.com/home/kenny1234/"  coords="_eK">$_SGLOBAL['diggcategory'][$value[categoryid]][categoryalias]</a>
-																		</dt>
-																	</dl>
-															  </div>
-														</div>
-													</dt>
+											<dt class="l1">
+												<div class="pack ">
+													<h6><a title="妖精的尾巴 第26话" target="new" href="#" coords="_eAB"> $value[subject] </a></h6>
+													<div class="pic">
+														<a href="#" title="妖精的尾巴 第26话" target="new" >
+															<img  src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg">
+														</a>
+													</div>
+													<div class="info">
+														来越多的人在抱怨南非世界杯乏味无聊。文尼亚队与利亚队交手带来的劳..<span class="gray">2010-06-12</span> <a class="publisher" href="space.php?do=digg&amp;uid=10">城市森林</a>
+													</div>
+												</div>										
+											 </dt>
 									<!--{/if}-->			
 						<!--{/loop}--> 
 					</dl>
