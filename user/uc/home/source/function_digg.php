@@ -90,7 +90,10 @@ function digg_post($POST, $olds=array()) {
 	$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
 	updatetable('digg', array('tag'=>$tag), array('diggid'=>$diggid));
 	//更新digg cache
-	digg_cache();
+	if(empty($olds))
+		digg_cache($diggarr['categoryid'],$olds['categoryid'],$_SGLOBAL['supe_uid']);
+	else
+		digg_cache($diggarr['categoryid'],0,$_SGLOBAL['supe_uid']);
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
@@ -178,6 +181,8 @@ function deletedigg($diggid){
 	$_SGLOBAL['db']->query("DELETE  from ".tname('diggtagdigg')." WHERE diggid=".$diggid);
 	//处理digg
 	$_SGLOBAL['db']->query("DELETE  from ".tname('digg')." WHERE diggid=".$diggid);
+	//更新digg cache
+	digg_cache($$values['categoryid'],0);
 	return 1;
 }
 ?>
