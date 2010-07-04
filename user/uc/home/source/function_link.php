@@ -191,6 +191,8 @@ function   updatelinkupnum($linkid){
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET up=up+1 WHERE linkid=".$linkid);
+		include_once(S_ROOT.'./source/function_feed.php');
+		feed_publish($linkid, 'uplinkid', 1);
 }
 function   updatelinkdownnum($linkid){
 //更新link“踩”的统计信息
@@ -198,6 +200,8 @@ function   updatelinkdownnum($linkid){
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET down=down+1 WHERE linkid=".$linkid);
+		include_once(S_ROOT.'./source/function_feed.php');
+		feed_publish($linkid, 'downlinkid', 1);
 }
 function   updatelinkviewnum($linkid){
 //更新link访问的统计信息
@@ -255,7 +259,9 @@ function deletelink($linkid){
 				link_delete_tag($linkid);
 		break;
 	}
-
+	//去掉feed
+	include_once(S_ROOT.'./source/function_feed.php');
+	function feed_delete($diggid, 'linkid');
 	return 1;
 }
 function link_pass($link)
