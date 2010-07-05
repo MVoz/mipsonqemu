@@ -1,0 +1,41 @@
+<!--{template bm_header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+	  
+<!--{else}-->	
+<script language="javascript" type="text/javascript" >
+	jQuery("#nav_menu li").removeClass("current"); 
+	jQuery("#nav_menu #nav_mytanzhi").addClass("current");
+</script>
+<div id="network">
+<!--{template login}-->
+<div  style="height:705px;padding-top:10px;">
+	<div class="nbox_c" style="height:700px;">		
+				<!--{template space_bookmark_title}-->
+		<div id="bmcontent">
+				<ul class="sitefeed" style="padding:0px 10px;">
+								<!--{loop $sitefeed_list $value}-->
+									<!--{eval $value = mkfeed($value);}-->
+									<li style="height:60px;overflow: hidden;border-bottom:1px dashed #999;">
+										<div class="avatar48" style="float:left">
+											<a href="space.php?uid=$value[uid]">
+												<!--{avatar($value[uid],small)}-->
+											</a>
+										</div>
+										<div style="float:left;padding:2px;width:550px;">
+											<a href="#">$value[title_template]</a><a href="#">$value[body_template]</a> <span class="gray">01-29 16:11</span>
+											<p>
+												来越多的人在抱怨南非世界杯乏味无聊。斯洛文尼亚队与阿尔及利亚队交手带来的视觉疲劳尚未消除，紧接着登场的新西兰队和斯洛伐克队依然难以提起人们的兴致。又是一场平局，两粒进球均来自异常老套的“高空轰炸”
+											</p>
+										</div>
+									</li>
+								<!--{/loop}-->
+			    </ul>                      
+		</div>
+	</div>
+
+	<div class="nbox_s side_rbox side_rbox_w" style="height:700px;">	
+			  
+	</div> 						
+</div>
+<!--{template bm_footer}-->
+<!--{/if}-->
