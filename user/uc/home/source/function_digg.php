@@ -189,7 +189,7 @@ function deletedigg($diggid){
 	digg_cache($$values['categoryid'],0);
 	//È¥µôfeed
 	include_once(S_ROOT.'./source/function_feed.php');
-	function feed_delete($diggid, 'diggid');
+	feed_delete($diggid, 'diggid');
 	return 1;
 }
 ?>

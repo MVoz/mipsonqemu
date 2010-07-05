@@ -12,6 +12,9 @@ if(!defined('IN_UCHOME')) {
 function feed_publish($id, $idtype, $add=0) {
 	global $_SGLOBAL;
 	
+	//24小时之内只记录一次
+	if($add&&check_feed_exist($id,$idtype,3600*24))
+		return;
 	$setarr = array();
 	switch ($idtype) {
 		case 'blogid':
@@ -279,7 +282,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['icon'] = 'digg';
 				$setarr['id'] = $value['diggid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -299,13 +302,14 @@ function feed_publish($id, $idtype, $add=0) {
 			}
 			break;
 		case 'updiggid':
+
 			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." WHERE diggid='$id'");
 			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
 				//基本
 				$setarr['icon'] = 'digg';
 				$setarr['id'] = $value['diggid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -331,7 +335,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['icon'] = 'digg';
 				$setarr['id'] = $value['diggid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -357,7 +361,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['icon'] = 'link';
 				$setarr['id'] = $value['linkid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -383,7 +387,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['icon'] = 'link';
 				$setarr['id'] = $value['linkid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -409,7 +413,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['icon'] = 'link';
 				$setarr['id'] = $value['linkid'];
 				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $value['postuid'];
+				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
@@ -459,7 +463,7 @@ function feed_publish($id, $idtype, $add=0) {
 }
 function feed_delete($id, $idtype)
 {
-	global $_SGLOBAL;
+	global $_SGLOBAL,$_SC;
 	
 	switch ($idtype) {
 		case 'blogid':
@@ -471,5 +475,15 @@ function feed_delete($id, $idtype)
 			 $query = $_SGLOBAL['db']->query("DELETE FROM ".tname('feed')." WHERE id='$id' AND icon='link'");
 			break;
 	}
+}
+function check_feed_exist($id,$idtype,$range)
+{
+	 global $_SGLOBAL,$_SC;	
+
+	 $datelimit = $_SGLOBAL['timestamp']-$range;
+	 $query = $_SGLOBAL['db']->query("SELECT feedid FROM ".tname('feed')." WHERE id='$id' AND uid=".$_SGLOBAL['supe_uid']." AND idtype='$idtype' AND dateline >$datelimit");
+	 $feedid = $_SGLOBAL['db']->result($query, 0);
+	 return $feedid;
+			
 }
 ?>
