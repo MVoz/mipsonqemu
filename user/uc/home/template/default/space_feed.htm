@@ -12,24 +12,98 @@
 	<div class="nbox_c" style="height:700px;">		
 				<!--{template space_bookmark_title}-->
 		<div id="bmcontent">
-				<ul class="sitefeed" style="padding:0px 10px;">
-								<!--{loop $sitefeed_list $value}-->
-									<!--{eval $value = mkfeed($value);}-->
-									<li style="height:60px;overflow: hidden;border-bottom:1px dashed #999;">
-										<div class="avatar48" style="float:left">
-											<a href="space.php?uid=$value[uid]">
-												<!--{avatar($value[uid],small)}-->
-											</a>
+				<div class="tlist">		
+					<ul>
+						<!--{loop $sitefeed_list $value}-->	
+						<!--{eval $value = mkfeed($value);}-->
+						<li>
+							<div class="lf">
+								<div class="avatar48" style="float:left">
+										<a href="space.php?uid=$value[uid]">
+										<!--{avatar($value[uid],small)}-->
+										</a>
+								</div>
+							</div>
+							<!--{if $value[icon]=='digg' }-->
+								<div class="rt">							
+								<!--{if $value[relate][picflag] }-->
+								<div class="lfx_p">
+								<!--{else}-->
+								<div class="lfx">
+								<!--{/if}-->	
+									 <div class="tle">										
+										<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+									 </div>
+									 <div class="ds">
+										<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
+									</div>
+								</div>
+								<div class="rb gray">
+															
+									   标签:
+										<!--{loop $value[relate][tag] $tagid $tagname}-->
+											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
+										<!--{/loop}-->					
+															
+									   发布者:
+									   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
+											 有
+									   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+										弹指人参与围观	
+								</div>
+						
+								</div>
+								<!--{if $value[relate][picflag] }-->	
+									<div class="rightx">						
+										<div class="d_avatar avatar125">
+										   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatediggview($value[relate][diggid])">
+												<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+													src="$value[relate][pic]">
+										   </a>
+									  </div>				  
+									</div>
+								 <!--{/if}-->
+						 <!--{else}-->
+								<!--{if $value[icon]=='link' }-->
+										<div class="rt">							
+										<div class="lfx_p">
+											 <div class="tle">
+												
+												<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+											 </div>
+											 <div class="ds">
+												<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][link_description]...</a> 
+											</div>
 										</div>
-										<div style="float:left;padding:2px;width:550px;">
-											<a href="#">$value[title_template]</a><a href="#">$value[body_template]</a> <span class="gray">01-29 16:11</span>
-											<p>
-												来越多的人在抱怨南非世界杯乏味无聊。斯洛文尼亚队与阿尔及利亚队交手带来的视觉疲劳尚未消除，紧接着登场的新西兰队和斯洛伐克队依然难以提起人们的兴致。又是一场平局，两粒进球均来自异常老套的“高空轰炸”
-											</p>
+										<div class="rb gray">
+																	
+											   标签:
+												<!--{loop $value[relate][link_tag] $tagid $tagname}-->
+													<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
+												<!--{/loop}-->					
+																	
+											   发布者:
+											   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
+													 有
+											   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+												弹指人参与围观	
 										</div>
-									</li>
-								<!--{/loop}-->
-			    </ul>                      
+								
+										</div>
+										<div class="rightx">						
+												<div class="d_avatar avatar125">
+												   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatelinkview($value[relate][linkid])">
+														<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">
+												   </a>
+											  </div>				  
+										</div> 
+							 	<!--{else}-->
+								<!--{/if}-->
+						 <!--{/if}-->
+						</li>
+						<!--{/loop}-->
+					</ul>
+				</div>
 		</div>
 	</div>
 
