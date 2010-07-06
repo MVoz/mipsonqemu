@@ -1,6 +1,30 @@
 <!--{template bm_header}-->
 <!--{if !empty($_SGLOBAL[inajax])}-->
-	  
+	<div class="tlist">		
+		<ul>
+			<!--{loop $sitefeed_list $value}-->	
+			<!--{eval $value = mkfeed($value);}-->
+			<li>
+				<div class="lf">
+					<div class="avatar48" style="float:left">
+						<a href="space.php?uid=$value[uid]">
+							<!--{avatar($value[uid],small)}-->
+						</a>
+					</div>
+				</div>
+				<!--{if $value[icon]=='digg' }-->
+					   <!--{template space_feed_digg_li}-->
+			    <!--{else}-->
+					<!--{if $value[icon]=='link' }-->
+							<!--{template space_feed_link_li}-->
+				 	<!--{else}-->
+					<!--{/if}-->
+				<!--{/if}-->
+			</li>
+			<!--{/loop}-->
+		</ul>
+		<div class="page">$feedmulti</div>
+	</div>
 <!--{else}-->	
 <script language="javascript" type="text/javascript" >
 	jQuery("#nav_menu li").removeClass("current"); 
@@ -11,7 +35,10 @@
 <div  style="height:705px;padding-top:10px;">
 	<div class="nbox_c" style="height:700px;">		
 				<h2 class="ntitle">
-					<div class="groupname" id="groupname">弹友最近动态 &raquo;</div>
+					<div class="groupname" id="groupname"><span>$username</span>最近动态 &raquo;</div>
+					<!--{if !empty($username) }-->
+						<a href="space.php?do=feed" style="float:right;padding-right:5px;">全部</a>
+					<!--{/if}-->
 				</h2>
 		<div id="bmcontent">
 				<div class="tlist">		
@@ -27,79 +54,10 @@
 								</div>
 							</div>
 							<!--{if $value[icon]=='digg' }-->
-								<div class="rt">							
-								<!--{if $value[relate][picflag] }-->
-								<div class="lfx_p">
-								<!--{else}-->
-								<div class="lfx">
-								<!--{/if}-->	
-									 <div class="tle">										
-										<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-									 </div>
-									 <div class="ds">
-										<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
-									</div>
-								</div>
-								<div class="rb gray">
-									   <span class="tags">						
-									   标签:
-										<!--{loop $value[relate][tag] $tagid $tagname}-->
-											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
-										<!--{/loop}-->					
-									   </span>					
-									   发布者:
-									   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
-											 有
-									   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
-										弹指人参与围观	
-								</div>
-						
-								</div>
-								<!--{if $value[relate][picflag] }-->	
-									<div class="rightx">						
-										<div class="d_avatar avatar125">
-										   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatediggview($value[relate][diggid])">
-												<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
-													src="$value[relate][pic]">
-										   </a>
-									  </div>				  
-									</div>
-								 <!--{/if}-->
-						 <!--{else}-->
+								   <!--{template space_feed_digg_li}-->
+						    <!--{else}-->
 								<!--{if $value[icon]=='link' }-->
-										<div class="rt">							
-										<div class="lfx_p">
-											 <div class="tle">
-												
-												<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-											 </div>
-											 <div class="ds">
-												<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][link_description]...</a> 
-											</div>
-										</div>
-										<div class="rb gray">
-												 
-											    <span class="tags">
-												标签:
-												<!--{loop $value[relate][link_tag] $tagid $tagname}-->
-													<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
-												<!--{/loop}-->					
-												</span>					
-											   发布者:
-											   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
-													 有
-											   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
-												弹指人参与围观	
-										</div>
-								
-										</div>
-										<div class="rightx">						
-												<div class="d_avatar avatar125">
-												   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatelinkview($value[relate][linkid])">
-														<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">
-												   </a>
-											  </div>				  
-										</div> 
+									<!--{template space_feed_link_li}-->
 							 	<!--{else}-->
 								<!--{/if}-->
 						 <!--{/if}-->
