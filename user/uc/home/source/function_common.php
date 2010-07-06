@@ -212,7 +212,7 @@ function checkauth() {
 	} else {
 		$_SGLOBAL['username'] = $member['username'];
 		$_SGLOBAL['name'] = $member['name'];
-		realname_set($_SGLOBAL['supe_uid'],$_SGLOBAL['username'] );
+		realname_set($_SGLOBAL['supe_uid'],$_SGLOBAL['name'] );
 		realname_get();
 	}
 	if(D_BUG){
@@ -387,7 +387,8 @@ function getspace($key, $indextype='uid', $auto_open=0) {
 			}
 		}
 		if($space) {			
-			$_SN[$space['uid']] = ($_SCONFIG['realname'] && $space['name'] && $space['namestatus'])?$space['name']:$space['username'];
+			//$_SN[$space['uid']] = ($_SCONFIG['realname'] && $space['name'] && $space['namestatus'])?$space['name']:$space['username'];
+			$_SN[$space['uid']] = $space['name'];
 			$space['self'] = ($space['uid']==$_SGLOBAL['supe_uid'])?1:0;
 
 			//好友缓存
@@ -1724,6 +1725,7 @@ function sub_url($url, $length) {
 
 //获取用户名
 function realname_set($uid, $username, $name='', $namestatus=0) {
+	/*
 	global $_SGLOBAL, $_SN, $_SCONFIG;
 	if($name) {
 		$_SN[$uid] = ($_SCONFIG['realname'] && $namestatus)?$name:$username;
@@ -1731,10 +1733,12 @@ function realname_set($uid, $username, $name='', $namestatus=0) {
 		$_SN[$uid] = $username;
 		$_SGLOBAL['select_realname'][$uid] = $uid;//需要检索
 	}
+	*/
 }
 
 //获取实名
 function realname_get() {
+	/*
 	global $_SGLOBAL, $_SCONFIG, $_SN, $space;
 
 	if(empty($_SGLOBAL['_realname_get']) && $_SCONFIG['realname'] && $_SGLOBAL['select_realname']) {
@@ -1759,6 +1763,7 @@ function realname_get() {
 			}
 		}
 	}
+	*/
 }
 
 //群组信息
@@ -2794,5 +2799,16 @@ function check_cachelock($type)
 	if(file_exists($lockfile)) 
 		return true;
 	return false;
+}
+
+function getnamefromuid($uid)
+{
+	global $_SGLOBAL,$_SC,$_SN;
+	if(!empty($_SN[$uid]))
+		return 	$_SN[$uid];
+	$name = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT name FROM ".tname('member')." where uid=".$uid),0);
+	if(!empty($name))
+		$_SN[$uid] =  $name;
+	return $name;
 }
 ?>
