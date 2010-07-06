@@ -1499,7 +1499,7 @@ function mkfeed($feed, $actors=array()) {
 	}
 
 	$searchs[] = '{actor}';
-	$replaces[] = empty($actors)?"<a href=\"space.php?uid=$feed[uid]\">".$feed[username]."</a>":implode(lang('dot'), $actors);
+	$replaces[] = empty($actors)?"<a href=\"space.php?do=feed&uid=$feed[uid]\">".$feed[username]."</a>":implode(lang('dot'), $actors);
 
 	$searchs[] = '{app}';
 	if(empty($_SGLOBAL['app'][$feed['appid']])) {
@@ -1530,7 +1530,7 @@ function mkfeed($feed, $actors=array()) {
 	}
 	
 	$searchs[] = '{actor}';
-	$replaces[] = "<a href=\"space.php?uid=$feed[uid]\">$feed[username]</a>";
+	$replaces[] = "<a href=\"space.php?do=feed&uid=$feed[uid]\">$feed[username]</a>";
 	$feed['body_template'] = mktarget(str_replace($searchs, $replaces, $feed['body_template']));
 
 	$feed['body_general'] = mktarget($feed['body_general']);
