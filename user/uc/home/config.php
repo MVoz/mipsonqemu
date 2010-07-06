@@ -37,6 +37,8 @@ $_SC['bookmark_show_maxnum'] =8;
 
 $_SC['digg_show_maxnum'] =5;
 
+$_SC['per_page_num'] =10;
+
 $_SC['bookmark_type_site']=0;
 $_SC['bookmark_type_dir']=1;
 //Link origin 类型
