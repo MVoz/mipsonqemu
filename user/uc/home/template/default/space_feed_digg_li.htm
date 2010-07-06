@@ -1,0 +1,41 @@
+								<div class="rt">							
+								<!--{if $value[relate][picflag] }-->
+								<div class="lfx_p">
+								<!--{else}-->
+								<div class="lfx">
+								<!--{/if}-->	
+									 <div class="tle">										
+										<a href="$value[relate][url]">$value[title_template]</a>
+										<a href="$value[relate][url]">$value[body_template]</a> 
+										<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+									 </div>
+									 <div class="ds">
+										<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
+									</div>
+								</div>
+								<div class="rb gray">
+									   <span class="tags">						
+									   标签:
+										<!--{loop $value[relate][tag] $tagid $tagname}-->
+											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
+										<!--{/loop}-->					
+									   </span>					
+									   发布者:
+									   <a href="space.php?do=feed&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
+											 有
+									   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+										弹指人参与围观	
+								</div>
+						
+								</div>
+								<!--{if $value[relate][picflag] }-->	
+									<div class="rightx">						
+										<div class="d_avatar avatar125">
+										   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatediggview($value[relate][diggid])">
+												<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
+													src="$value[relate][pic]">
+										   </a>
+									  </div>				  
+									</div>
+								<!--{/if}-->
+						
