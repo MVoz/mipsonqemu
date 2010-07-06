@@ -10,7 +10,9 @@
 <!--{template login}-->
 <div  style="height:705px;padding-top:10px;">
 	<div class="nbox_c" style="height:700px;">		
-				<!--{template space_bookmark_title}-->
+				<h2 class="ntitle">
+					<div class="groupname" id="groupname">弹友最近动态 &raquo;</div>
+				</h2>
 		<div id="bmcontent">
 				<div class="tlist">		
 					<ul>
@@ -39,12 +41,12 @@
 									</div>
 								</div>
 								<div class="rb gray">
-															
+									   <span class="tags">						
 									   标签:
 										<!--{loop $value[relate][tag] $tagid $tagname}-->
 											<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
 										<!--{/loop}-->					
-															
+									   </span>					
 									   发布者:
 									   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
 											 有
@@ -76,12 +78,13 @@
 											</div>
 										</div>
 										<div class="rb gray">
-																	
-											   标签:
+												 
+											    <span class="tags">
+												标签:
 												<!--{loop $value[relate][link_tag] $tagid $tagname}-->
 													<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&diggid=$tagid" >$tagname</a>
 												<!--{/loop}-->					
-																	
+												</span>					
 											   发布者:
 											   <a href="space.php?do=digg&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
 													 有
