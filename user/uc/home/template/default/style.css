@@ -28,19 +28,16 @@ caption, th { text-align: left; }
 
 .avatar48 { padding: 5px 0 0 5px; width: 55px; height: 55px; background: url(image/48_avatar_bg.gif) no-repeat; }
   .avatar48 img { width: 48px; height: 48px; }
-.avatar125 {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 5px; BACKGROUND: url(image/125x95_thumb_bg.gif) no-repeat; PADDING-BOTTOM: 0px; WIDTH: 125px; PADDING-TOP: 5px; HEIGHT: 95px
-}
-.avatar125 IMG {
-	WIDTH: 112px; HEIGHT: 83px
-}
 
-.avatar125_1 {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 5px; BACKGROUND: url(image/125x95_thumb_bg.gif) no-repeat; PADDING-BOTTOM: 0px; WIDTH: 125px; PADDING-TOP: 5px; HEIGHT: 95px
-}
-.avatar125_1 IMG {
-	WIDTH: 112px; HEIGHT: 83px;margin-left:-13px;
-}
+.avatar125 {padding:5px 0 0 5px; background: url(image/125x95_thumb_bg.gif) no-repeat; width: 125px; height: 95px }
+	.avatar125 img {width: 112px; height: 83px}
+
+.link200 {float: left;margin:5px 0 0 20px; background: url(image/200x150_thumb_bg) no-repeat; width: 200px;  height: 140px;padding:7px 8px;}
+	.link200 img { width: 180px; height: 135px}
+	
+.avatar125_1 {padding:5px 0 0 5px; background: url(image/125x95_thumb_bg.gif) no-repeat; width: 125px; height: 95px }
+.avatar125_1 img {	width: 112px; height: 83px;margin-left:-13px;}
+
 .threadimg60 { padding: 5px 0 0 5px; width: 67px; height: 67px; background: url(image/60_threadimg_bg.gif) no-repeat; }
     .threadimg60 img { width: 60px; height: 60px; }
 
