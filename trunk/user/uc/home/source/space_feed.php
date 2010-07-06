@@ -26,7 +26,10 @@ $wherearr='';
 if(!empty($uid))
 	 $wherearr=' where main.uid='.$uid;
 
-$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('feed')),0);
+$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('feed')." main ".$wherearr),0);
+
+$username = getnamefromuid($uid);
+
 $query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('feed')." main ".$wherearr." ORDER BY main.dateline desc LIMIT $start,$shownum");
 
 while ($value = $_SGLOBAL['db']->fetch_array($query)) {
@@ -54,7 +57,7 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 						continue;
 					break;
 			}
-			realname_set($value['uid'], $value['username']);
+			//realname_set($value['uid'], $value['username']);
 			$sitefeed_list[] = $value; 
 };
 
