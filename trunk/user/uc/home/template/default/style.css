@@ -437,7 +437,7 @@ a.c_link {
 /**/
 #slider{padding:2px 0px 5px 0px;float:right;}	
 #slider ul, #slider li, {margin:0;padding:0;list-style:none;}
-#slider li{	width:275px;height:217px;overflow:hidden;background:#fff; }	
+#slider li{	width:275px;height:250px;overflow:hidden;background:#fff; }	
 #slider li h2{margin:0 10px;	padding-top:10px;}	
 #slider li p{margin:10px;}
 #slider dl{	margin:4px;font-size:12px;}
