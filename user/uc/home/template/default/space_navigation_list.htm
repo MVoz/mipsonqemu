@@ -2,7 +2,7 @@
 <ul class="thumbs noscript">
 <!--{loop $bookmarklist['son'] $key $value}-->
 <!--{if $key>=3}-->
-<li class="mgn5">
+<li>
 	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
 	<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
 	</a>
@@ -24,11 +24,13 @@
 					<a style="color: #74AE00;" href="$value[url]">$value[link_subject]</a>:
 					$value['link_description']...
 				</p>
+				<!--
 				<p style="height: 20px; line-height: 20px;">
 					<span style="float: right;">
 						<a href="cp.php?ac=link&amp;linkid=1&amp;op=bookmark" id="bookmark_add_1">我要收藏</a>
 					</span>
 				</p>
+				-->
 		</div>
 <!--{/if}-->
 <!--{/loop}-->

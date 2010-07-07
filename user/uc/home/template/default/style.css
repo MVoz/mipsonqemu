@@ -32,7 +32,7 @@ caption, th { text-align: left; }
 .avatar125 {padding:5px 0 0 5px; background: url(image/125x95_thumb_bg.gif) no-repeat; width: 125px; height: 95px }
 	.avatar125 img {width: 112px; height: 83px}
 
-.link200 {float: left;margin:5px 0 0 20px; background: url(image/200x150_thumb_bg) no-repeat; width: 200px;  height: 140px;padding:7px 8px;}
+.link200 {float: left;margin:5px 0 0 30px; background: url(image/200x150_thumb_bg) no-repeat; width: 200px;  height: 140px;padding:7px 8px;}
 	.link200 img { width: 180px; height: 135px}
 	
 .avatar125_1 {padding:5px 0 0 5px; background: url(image/125x95_thumb_bg.gif) no-repeat; width: 125px; height: 95px }
