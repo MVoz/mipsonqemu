@@ -4,14 +4,14 @@
 		</a>
 	</div>
 	<p class="relate_desc">
-			<a href="$relatedlist[0]['url']" style="color:red;">$relatedlist[0]['link_subject']</a>:
+			<a href="$relatedlist[0]['url']" class="aqua">$relatedlist[0]['link_subject']</a>:
 			$relatedlist[0]['link_description']...
 	</p>
 	<p class="relate_tag">
 			<span style="float:left;"> 标签:</span>
 			<span style="float:left;height:20px;width:160px;overflow:hidden;">
 				<!--{loop $relatedlist[0]['link_tag'] $subkey $subvalue}-->
-								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+						<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 				<!--{/loop}-->
 			</span>
 			<span style="float:right;">

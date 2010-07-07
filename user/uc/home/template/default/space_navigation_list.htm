@@ -1,22 +1,22 @@
-<div class="navigation floatleft nav_1ogin" id="thumbs">
-<ul class="thumbs noscript">
+<div  id="thumbs">
+<ul style="width:265px;">
 <!--{loop $bookmarklist['son'] $key $value}-->
 <!--{if $key>=3}-->
 <li>
-	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
-	<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" class="thumb">
+		<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
 	</a>
 	<p><a href="$value[url]">$value[link_subject]</a></p>							
 </li>
 <!--{/if}-->
 <!--{/loop}-->
 </ul>
-</div> 
 
-<div class="content_login_r" >
+
+<div class="big" >
 <!--{loop $bookmarklist['son'] $key $value}-->
 <!--{if $key<3}-->
-		<div class="content_login_r_1">
+		<div class="big_l">
 				<a href="$value[url]" title="{$value[link_subject]}">
 					<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
 				</a>
@@ -51,4 +51,5 @@
 						</p>
 		</div>
 
-</div>	
+</div>
+</div> 
