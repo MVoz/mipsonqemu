@@ -48,17 +48,12 @@ caption, th { text-align: left; }
 
 
 .face { margin: 0 1px; vertical-align: middle; }
-.r_option { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:5px; }
-.r_option .addcomment, .r_option .addtrackback {display:block;float:left;font-size:11px;height:16px;line-height:16px;margin-right:5px;margin-top:4px !important;padding-left:20px;}
-.r_option .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -112px transparent;}
-.r_option .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
+
 
 /*
 .groupname {float:left;padding:0px 10px;overflow:hidden;white-space:nowrap;color:#FF6A00;font-size:110%;font-weight: blod;}
 */
-.lgpnm,.rgpnm {float:left;overflow:hidden;white-space:nowrap;font-size:110%;font-weight: blod;}
-.lgpnm {color:#FF6A00;}
-.rgpnm {color:#8FC320;}
+
 
 #diggscroll {float:left;width:300px;height:25px;line-height:25px;overflow:hidden;}
 #diggscroll ul {width:300px;margin:0;padding:0;height:25px;}
@@ -228,9 +223,7 @@ a.button { padding: 5px; }
 
 .l_status { margin: 5px 0; padding-bottom: 5px; border-bottom: 1px solid #EBE6C9; }
 	.l_status .active { font-weight:bold; }
-.box { padding: 10px 0 10px 0; }
-    .box h2 { margin: 10px 0; font-size: 14px; }
-    .box h3 { margin: 10px 0; font-size: 12px; }
+
 
 /*************************************************CP SIDEBAR***/
 #sidebar { float: right; padding: 0; width: 250px; overflow: hidden; }

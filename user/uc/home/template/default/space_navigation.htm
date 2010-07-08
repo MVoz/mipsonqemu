@@ -12,14 +12,14 @@
 </div>
 
 <!--{if empty($classid)}-->
-<div style="padding-top:10px;">
+<div class="box">
 	<div class="box_l">
 	<!--{loop $navlist $key $bookmarklist}-->
 		<div  style="height:135px;">		
 			<h2 class="ntitle">
-				<div class="lgpnm" id="groupname">$bookmarklist['classname']&raquo;</div>
+				<p id="groupname">$bookmarklist['classname']&raquo;</p>
 			</h2>
-			<div id="bmcontent"> 			  
+			<div> 			  
 				<!--{template space_navigation_class}-->				  
 			</div>
 		</div>	
@@ -30,10 +30,10 @@
 			 <!--{template navigation}-->	 
 	</div> 
 <!--{else}-->	
-<div  style="height:805px;padding-top:10px;">
+<div class="box" style="height:805px;">
 <div class="box_l" style="height:800px;">		
 	<h2 class="ntitle">
-			<div class="lgpnm" id="groupname">$classitem['classname']&raquo;</div>
+			<p id="groupname">$classitem['classname']&raquo;</p>
 			<!--{template space_catelog_tab}-->	
 	</h2>
 	<div id="bmcontent"> 			  
