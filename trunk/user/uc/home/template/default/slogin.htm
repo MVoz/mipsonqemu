@@ -1,0 +1,29 @@
+<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" onsubmit="return login_validate(this);">
+					<div class="zc_index">
+						<p>
+							<span>账&nbsp;&nbsp;号:</span>
+							<label>
+								<input type="text" name="username" id="username" value="$membername" onfocus="clearwarning($('username_tip'));" >
+								<p name="username_tip" id="username_tip"></p>
+							</label>
+						</p>
+						<p>
+							<span>密&nbsp;&nbsp;码:</span>
+							<label>
+								<input type="password" name="password" id="password" value="$password">
+							</label>
+						</p>
+				
+						<em>
+							<span>记住我</span>
+							<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck>					
+							<a  href="do.php?ac=lostpasswd">忘记密码</a>
+							<input type="submit" value="登  录" class="button" id="loginsubmit" name="loginsubmit" >
+							<a href="do.php?ac=lostpasswd">注册</a>
+							<input type="hidden" name="refer" value="space.php?do=all" />
+							<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /> 
+						</em>
+
+						
+					</div>
+</form>
