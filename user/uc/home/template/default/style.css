@@ -6,6 +6,8 @@ h1, h2, h3, h4, h5, h6 { font-size: 1em; }
 ul li { list-style: none; }
 select { margin-right: 2px; }
 
+
+
 a { color: #2C629E; text-decoration: none; }
 a:hover, a:link, a:visited{ text-decoration:none; }
 
@@ -450,5 +452,27 @@ a.c_link {
 	.feeds li {height:60px;overflow: hidden;}
 	.feeds p  {float:left;padding:2px;width:215px;}
 	.feeds .more{font-weight:normal;font-size:90%;float:right;}
+
+#thumbs *{overflow:hidden;padding:0;margin:0;}
+#thumbs {height:220px;float:left;}	
+#thumbs ul{float:left;}
+#thumbs li {float: left;padding: 4px 3px;list-style: none;height:100px;width:82px;}
+#thumbs li img {height:75px;width:75px;	border: none;display: block;}
+#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
+#thumbs li p{text-align:center;width:70px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
+
+#thumbs .big{float:left;width:405px;height:220px;border:1px solid #eee;border-width:0px 1px 0px 1px;}
+#thumbs .big .big_l{float:left;width:120px;height:150px;overflow:hidden;padding:5px;margin-bottom:3px;;}
+#thumbs .big .big_l a img{height: 90px;width:110px;	border: 1px solid #ccc;	padding:5px;text-align:center;}
+
+#thumbs .big .hottag {clear:both;background:none repeat scroll 0 0 #F2F2F3;border:1px solid #E0E0E0;color:#D2D2D2;line-height:20px;margin:2px 5px;padding:5px 10px;}
+#thumbs .big .hottag p {height:20px;overflow:hidden;}
+#thumbs .big .hottag p span {color:#717171;font-weight:bold;}
+#thumbs .big .hottag p a {margin:0 5px;}
+
+#relatedsitecontent{float:right;width:270px;height:220px;}
+#relatedsitecontent p{clear:both;}
+#relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;}
+#relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 
 
