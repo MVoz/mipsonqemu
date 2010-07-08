@@ -29,36 +29,23 @@
 .forecastIcon  {  border:medium none;  margin:-3px -10px -4px; vertical-align:middle;}
 .currentIcon  {border:medium none;margin:-3px -15px;vertical-align:middle; }
 */
-#suggests {
-background:none repeat scroll 0 0 #FFF;
-border:1px solid #CCC;
-display:none;
-left:20px;
-position:absolute;
-top:72px;
-width:383px;
-z-index:5;
-}
-
+#suggests {background:none repeat scroll 0 0 #FFF;border:1px solid #ccc;display:none;left:20px;position:absolute;top:72px;width:383px;z-index:5;}
 </style>
 <script language="javascript" type="text/javascript" src="source/suggest.js"></script>
 <script language="javascript" type="text/javascript" >
-jQuery(document).ready(function(){
-		jQuery(".popular_site span:first").addClass("currentx");  // 为第一个span添加 .current 的样式，默认选中
-			jQuery(".popular_site ul:not(:first)").hide();  //ul 不是第一个时隐藏
-			jQuery(".popular_site span").click(function(){  // 鼠标移到 span 上时触发函数
-				jQuery(".popular_site span").removeClass("currentx");  //为第一个 span 移除 .current 样式
-				jQuery(this).addClass("currentx");  //为触发的 span 添加样式
-				jQuery(".popular_site ul").hide();  // 隐藏 ul
-				jQuery("."+jQuery(this).attr("id")).show();  // 这句是核心，class(.) 和触发 span 的ID 一致的 fadeIn(渐显)
+	jQuery(document).ready(function(){
+		jQuery(".popular_site span:first").addClass("currentx");  
+			jQuery(".popular_site ul:not(:first)").hide(); 
+			jQuery(".popular_site span").click(function(){ 
+				jQuery(".popular_site span").removeClass("currentx"); 
+				jQuery(this).addClass("currentx"); 
+				jQuery(".popular_site ul").hide(); 
+				jQuery("."+jQuery(this).attr("id")).show();
 		});
-});
-</script>
+	});
 
-<script language="javascript" type="text/javascript" >
-jQuery(document).ready(function(){
+	jQuery(document).ready(function(){
 			jQuery(".search_area span:first").addClass("currentx");
-			//alert(getCookie(getSearchTabCookieName()));
 			currentid= getCookie(getSearchTabCookieName());
 			jQuery(".search_area span").click(function(){
 				jQuery(".search_area span").removeClass("currentx");  
@@ -129,93 +116,12 @@ jQuery(document).ready(function(){
 
 <div  style="padding:8px 0px 8px 8px;">
 	<div class="nbox_c_1">
-		<div class="search_area">
-		<p>
-			<span id="web_page" class="currentx">网页</span>
-			<span id="tanzhi">弹指</span>
-			<span id="music" >音乐</span>
-			<span id="video" >视频</span>
-			<span id="image" >图片</span>
-			<span id="wenda" >知道</span>
-			<span id="map" >地图</span>
-			<span id="shopping" >购物</span>
-		</p>
-    
-    <ul class="web_page" >
-        <li>
-          <form id="searchform" target="_blank" action=""  method="get" style="float:left" onsubmit="return searchsubmit();">
-               
-			   <input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px 0px;color:#333" size="60"  onkeyup="javascript:myhint(event);" autocomplete="off">
-                <input class="submit" type="submit" id="searchbtn" value="搜索" onclick="return searchsubmit();">					
-		  </form>
-		  <span id="suggests" style="display: none;"></span>
-		  <div id="hidden_form" style="display:none;">
-		  </div>
-        </li>
-    </ul>
-<!--
-    <div style="float:left;">
-			<span style="float:left;padding:0px 10px 0px 10px;line-height:25px;height:25px;"><a href="#">掘客&raquo;</a></span>
-			<div id="diggscroll">                   
-						  <ul>
-							  <!--{loop $digglist $key $value}-->		
-								<li>
-									<a class="diggscroll_l" href="$value[url]" class="digg_qi">$value[cutsubject]</a>
-									<a class="diggscroll_r" href="#">更多&raquo;</a>
-								</li>
-							  <!--{/loop}-->
-						  </ul>
-			</div>
-	</div>
-<script type="text/javascript">
-	function AutoScroll(obj){
-		jQuery(obj).find("ul:first").animate({
-			marginTop:"-25px"
-		},500,function(){
-			jQuery(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
-		});	
-	}
-	
-	jQuery(document).ready(function(){
-		setInterval('AutoScroll("#diggscroll")',5000);
-	});
-	
-</script>
--->	
-</div>
-<div class="popular_site">
-    <p>
-		<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
-					<!--{if $key==1 }-->
-						<span id="toolbar_$key" class="currentx">$value</span>
-					<!--{else}-->
-						<span id="toolbar_$key">$value</span>
-					<!--{/if}-->
-		<!--{/loop}--> 
-    </p>
-	<!--{loop $_SGLOBAL['linktoolbar'] $key $value}-->
-			<!--{if $key==1 }-->
-				<ul class="toolbar_$key" style="display: block;">
-			<!--{else}-->
-				<ul class="toolbar_$key" style="display: none;">
-			<!--{/if}-->
-			<!--{loop $value $k $val}-->
-						<!--{if ($k%8)==0 }-->
-							<!--{if (($k%16)==0)&&$k }-->
-								<li class="row-list_1">
-							<!--{else}-->
-								<li class="row-list">
-							<!--{/if}-->
-						<!--{/if}-->
-						<!--{if $ac=='linktoolbar'}-->
-							<em><a title="$val[subject]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[subject]</a></em>  
-						<!--{else}-->
-							<em><a title="$val[subject]" target="_blank" href="$val[url]">$val[subject]</a></em>  
-						<!--{/if}-->
-			<!--{/loop}-->
-			</ul>
-	<!--{/loop}-->    
-</div>
+						<div class="search_area">
+								<!--{template search_area}-->	
+						</div>
+						<div class="popular_site">
+								<!--{template popular_site}-->	
+						</div>
 	</div>
 <!--{template highlight}-->	
 </div>
