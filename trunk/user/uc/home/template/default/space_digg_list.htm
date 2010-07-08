@@ -3,15 +3,13 @@
 <!--{loop $digglist $key $value}-->			
 			<li>
 				<div class="lf">
-						<div class="lt">
-							<a href="space.php?do=digg&type=$value[categoryid]" class="$_SGLOBAL['diggcategory'][$value[categoryid]]['categoryname']" >&nbsp;</a>
+						<div style="float: left;" class="avatar48">
+							<a href="space.php?do=digg&type=$value[categoryid]" class="$_SGLOBAL['diggcategory'][$value[categoryid]]['categoryname']" >
+								<!--<img src="template/default/image/diggtype.jpg">-->
+								<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif">
+							</a>
 						</div>
-						<div class="lb aqua">
-							<a href="javascript:void(0)" onclick="updatediggup($value[diggid])"><img src="./template/default/image/icon_support.jpg" /></a>
-							<span style="float:left;line-height:15px;height:15px;font-size:11px;">(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)</span>
-							<a href="javascript:void(0)" onclick="updatediggdown($value[diggid])"><img src="./template/default/image/icon_bury.jpg" /></a>
-							(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
-						</div>
+						
 				</div>
 				<div class="rt">
 						<!--{if $value[picflag] }-->
@@ -39,6 +37,21 @@
 								     有
 							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
 								弹指人参与围观	
+
+								
+								<span class="rateup">
+										<a href="javascript:void(0)" onclick="updatediggup($value[diggid])" target="_self"></a>
+								</span>
+								(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)
+								
+
+								
+								<span class="ratedown">
+										<a href="javascript:void(0)" onclick="updatediggdown($value[diggid])" target="_self"></a>
+								</span>
+								(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
+								
+
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>					<!--{/if}-->
