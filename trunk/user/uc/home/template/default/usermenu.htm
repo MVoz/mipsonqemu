@@ -21,26 +21,28 @@
                         </a>
 						</div>
 						-->
-						<div style="width: 280px; overflow: hidden;" >
-							<h2 style="color:#F4950D;font-weight:bold;font-size:110%;">
+						<div class="feeds" >
+							<h2>
 								过去几分钟弹友动态......
-								<span style="color:#ccc;font-weight:normal;font-size:90%;float:right;">
+								<span class="more">
 									<a href="space.php?do=feed">更多</a>
 								</span>
 								
 							</h2>
-							<ul class="sitefeed">
+							<ul>
 								<!--{loop $sitefeed_list $value}-->
 									<!--{eval $value = mkfeed($value);}-->
-									<li style="height:60px;overflow: hidden">
-									<div class="avatar48" style="float:left">
-										<a href="space.php?do=feed&uid=$value[uid]">
-										<!--{avatar($value[uid],small)}-->
-										</a>
-									</div>
-									<div style="float:left;padding:2px;width:215px;">
-									<a href="#">$value[title_template]</a><a href="#">$value[body_template]</a> <span class="gray">01-29 16:11</span>
-									</div>
+									<li>
+										<div class="avatar48" style="float:left">
+											<a href="space.php?do=feed&uid=$value[uid]">
+												<!--{avatar($value[uid],small)}-->
+											</a>
+										</div>
+										<p>
+											<a href="#">$value[title_template]</a>
+											<a href="#">$value[body_template]</a>
+											<span class="gray">01-29 16:11</span>
+										</p>
 									</li>
 								<!--{/loop}-->
 							</ul>                       
