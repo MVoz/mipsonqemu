@@ -13,7 +13,7 @@
 
 <!--{if empty($classid)}-->
 <div style="padding-top:10px;">
-	<div class="nbox_c">
+	<div class="box_l">
 	<!--{loop $navlist $key $bookmarklist}-->
 		<div  style="height:135px;">		
 			<h2 class="ntitle">
@@ -26,12 +26,12 @@
 
 	<!--{/loop}-->
 	</div>
-	<div class="nbox_s side_rbox side_rbox_w" >	
+	<div class="box_r" >	
 			 <!--{template navigation}-->	 
 	</div> 
 <!--{else}-->	
 <div  style="height:805px;padding-top:10px;">
-<div class="nbox_c" style="height:800px;">		
+<div class="box_l" style="height:800px;">		
 	<h2 class="ntitle">
 			<div class="lgpnm" id="groupname">$classitem['classname']&raquo;</div>
 			<!--{template space_catelog_tab}-->	
@@ -40,7 +40,7 @@
 		    <!--{template space_link_list_sub}-->				  
 	</div>
 </div>
-	<div class="nbox_s side_rbox side_rbox_w" style="height:800px;">	
+	<div class="box_r" style="height:800px;">	
 			 <!--{template navigation}-->	 
 	</div> 
 <!--{/if}-->
