@@ -49,69 +49,18 @@
  <!--login-->
 	<div class="nbox_s side_rbox side_rbox_w" style="height:500px;">
 		<h2 class="ntitle" >
-			<span class="rgpnm">弹指登录&raquo;<span style="color:#aaa;font-size:90%;font-weight:normal;">&nbsp;&nbsp;请使用email登录</span></span>
+			<span class="rgpnm">弹指登录&raquo;
+				<span style="color:#aaa;font-size:90%;font-weight:normal;">&nbsp;&nbsp;请使用email登录</span>
+			</span>
 		</h2> 
 		<div class="side_rbox_c" >
+				<div  class="slogin">
+						<!--{template slogin}-->	
+				</div>
 
-	<div  class="slogin">
-			<form name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" onsubmit="return login_validate(this);">
-			<div class="zc_index">
-				<p>
-					<span>账&nbsp;&nbsp;号:</span>
-					<label>
-						<input type="text" name="username" id="username" value="$membername" onfocus="clearwarning($('username_tip'));" >
-						<p name="username_tip" id="username_tip"></p>
-					</label>
-				</p>
-				<p>
-					<span>密&nbsp;&nbsp;码:</span>
-					<label>
-						<input type="password" name="password" id="password" value="$password">
-					</label>
-				</p>
-		
-				<em>
-					<span>记住我</span>
-					<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck>					
-					<a  href="do.php?ac=lostpasswd">忘记密码</a>
-					<input type="submit" value="登  录" class="button" id="loginsubmit" name="loginsubmit" >
-					<a href="do.php?ac=lostpasswd">注册</a>
-					<input type="hidden" name="refer" value="space.php?do=all" />
-					<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /> 
-				</em>
-
-				
-			</div>
-		</form>
-    </div>
-
-		<div class="feeds" >
-							<h2>
-								过去几分钟弹友动态......
-								<span class="more">
-									<a href="space.php?do=feed">更多</a>
-								</span>
-								
-							</h2>
-							<ul>
-								<!--{loop $sitefeed_list $value}-->
-									<!--{eval $value = mkfeed($value);}-->
-									<li>
-										<div class="avatar48" style="float:left">
-											<a href="space.php?do=feed&uid=$value[uid]">
-												<!--{avatar($value[uid],small)}-->
-											</a>
-										</div>
-										<p>
-											<a href="#">$value[title_template]</a>
-											<a href="#">$value[body_template]</a>
-											<span class="gray">01-29 16:11</span>
-										</p>
-									</li>
-								<!--{/loop}-->
-							</ul>                       
-		</div>
-
+				<div class="feeds" >
+						<!--{template feeds}-->	
+				</div>
 		</div>
 	</div>	  						
 </div>
