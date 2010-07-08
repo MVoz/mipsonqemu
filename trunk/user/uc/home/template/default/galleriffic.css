@@ -1,10 +1,9 @@
-.nbox h4 {margin-bottom:5px;font: 12px;color:#8ABC2B; overflow: hidden; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
 
 
 
-
-.container{float:left;width:400px;height:220px;}
 /*
+.container{float:left;width:400px;height:220px;}
+
 div.navigation {height:220px;}
 .nav_1ogin {padding-left:5px;width:265px;}
 .nav_relate {padding-left:2px;width:360px;}
@@ -18,22 +17,7 @@ div.navigation a:focus, div.navigation a:hover, div.navigation a:active {
 
 
 
-#thumbs *{overflow:hidden;padding:0;margin:0;}
-#thumbs {height:220px;float:left;}	
-#thumbs ul{float:left;}
-#thumbs li {float: left;padding: 4px 3px;list-style: none;height:100px;width:82px;}
-#thumbs li img {height:75px;width:75px;	border: none;display: block;}
-#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
-#thumbs li p{text-align:center;width:70px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
 
-#thumbs .big{float:left;width:405px;height:220px;border:1px solid #eee;border-width:0px 1px 0px 1px;}
-#thumbs .big .big_l{float:left;width:120px;height:150px;overflow:hidden;padding:5px;margin-bottom:3px;;}
-#thumbs .big .big_l a img{height: 90px;width:110px;	border: 1px solid #ccc;	padding:5px;text-align:center;}
-
-#thumbs .big .hottag {clear:both;background:none repeat scroll 0 0 #F2F2F3;border:1px solid #E0E0E0;color:#D2D2D2;line-height:20px;margin:2px 5px;padding:5px 10px;}
-#thumbs .big .hottag p {height:20px;overflow:hidden;}
-#thumbs .big .hottag p span {color:#717171;font-weight:bold;}
-#thumbs .big .hottag p a {margin:0 5px;}
 /*
 ul.thumbs {clear: both;	margin: 0;	padding: 0;}
 ul.thumbs li { 	float: left; 	padding: 0 3px;	list-style: none;height:100px;width:82px;}
@@ -45,10 +29,7 @@ ul.thumbs li.selected a.thumb {	background: #000; }
 a.thumb:focus {	outline: none; }
 ul.thumbs img {		height:75px;	width:75px;		border: none;	display: block;}
 */
-#relatedsitecontent{float:right;width:270px;height:220px;}
-#relatedsitecontent p{clear:both;}
-#relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;}
-#relatedsitecontent .relate_tag{height:20px;line-height:20px;}
+
 
 /*
 .content_login .slideshow a img {
