@@ -7,50 +7,49 @@
 	jQuery("#nav_menu li").removeClass("current"); 
 	jQuery("#nav_menu #nav_mytanzhi").addClass("current");
 </script>
-<div id="login">
-	<!--{template login}-->
-</div>
-<div  style="height:705px;padding-top:10px;">
-	<div class="nbox_c" style="height:700px;">		
-				<!--{template space_bookmark_title}-->
-		<div id="bmcontent">
-				<!--{template space_bookmark_list}-->
-		</div>
+	<div id="login">
+		<!--{template login}-->
 	</div>
+	<div  class="boxb" style="height:705px;">
+		<div class="box_l" style="height:700px;">		
+					<!--{template space_bookmark_title}-->
+			<div id="bmcontent">
+					<!--{template space_bookmark_list}-->
+			</div>
+		</div>
 
-	<div class="nbox_s side_rbox side_rbox_w" style="height:700px;">	
-			 <!--{template usermenu}-->	 
-	</div> 						
-</div>
-<div  class="nbox">
-		<!--{template todayhot}-->
-	<div id="relatedcontent">  
-		
-	</div>	
-</div>
+		<div class="box_r" style="height:700px;">	
+				 <!--{template usermenu}-->	 
+		</div> 						
+	</div>
+	<div  class="box">
+			<!--{template todayhot}-->
+		<div id="relatedcontent">  
+			
+		</div>	
+	</div>
 <script language="javascript"  type="text/javascript">
 	$('relatedcontent').innerHTML=$('relatehtm').innerHTML;
 	$('relatehtm').parentNode.removeChild($('relatehtm'));
 </script>
-<div class="nbox">
-	<div class="nbox_c">
-		<h2 class="ntitle">
-			<span class="r_option"><a href="space.php?do=digg">更多话题</a></span>
-			<div class="lgpnm">话题 &raquo;</div>
-		</h2>
-		<div id="diggcontent">
-			<!--{template space_digg_list}-->
+	<div class="box">
+		<div class="box_l">
+			<h2 class="ntitle">
+				<span class="r_option"><a href="space.php?do=digg">更多话题</a></span>
+				<div class="lgpnm">话题 &raquo;</div>
+			</h2>
+			<div id="diggcontent">
+				<!--{template space_digg_list}-->
+			</div>
+		</div>
+		<div class="box_r">
+				<h2 class="ntitle">
+				</h2>
+				<!--{template space_digg_sortlist}-->
 		</div>
 	</div>
-	<div id="npoll" class="nbox_s side_rbox side_rbox_w">
-		<div class="side_rbox_c">
-			<h2 class="ntitle"><span class="r_option"></span></h2>
-			<!--{template space_digg_sortlist}-->
-		</div>
-	</div>
+	<div class="fbbottom"></div>
 </div>
-		<div class="fbbottom"></div>
-	</div>
 
 </div>
 <!--{template bm_footer}-->
