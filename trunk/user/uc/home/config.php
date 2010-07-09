@@ -35,7 +35,7 @@ $_SC['allowedittpl']	= 0; //是否允许在线编辑模板。为了服务器安�
 
 $_SC['bookmark_show_maxnum'] =8;
 
-$_SC['digg_show_maxnum'] =5;
+$_SC['digg_show_maxnum'] =8;
 
 $_SC['per_page_num'] =10;
 
