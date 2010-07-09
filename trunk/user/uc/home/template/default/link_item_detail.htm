@@ -14,9 +14,10 @@
 						<p>
 							<strong>名称: </strong>
 							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['link_subject']</a>
-							<span class="num_con"><span><strong><!--{eval linkaward($item[award],0);}--></strong>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
+							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a></p>		<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a></p>		
+						<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
 						<p>
 						<strong>标签: </strong>
 						<!--{loop $item['link_tag'] $subkey $subvalue}-->

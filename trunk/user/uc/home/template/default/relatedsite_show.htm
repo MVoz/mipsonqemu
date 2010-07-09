@@ -8,8 +8,7 @@
 			$relatedlist[0]['link_description']...
 	</p>
 	<p class="relate_tag">
-			<span style="float:left;"> 标签:</span>
-			<span style="float:left;height:20px;width:160px;overflow:hidden;">
+			<span class="tag" style="width:180px;">
 				<!--{loop $relatedlist[0]['link_tag'] $subkey $subvalue}-->
 						<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 				<!--{/loop}-->
