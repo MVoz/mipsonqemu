@@ -53,7 +53,9 @@
 								
 
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
-								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑</a>
+								<a onclick="ajaxmenu(event, this.id,1)" id="digg_edit_$value[diggid]" 
+								href="cp.php?ac=digg&diggid=$value[diggid]&op=edit" class="diggbtn">编辑
+								</a>
 								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>					<!--{/if}-->
 						</div>
 				
