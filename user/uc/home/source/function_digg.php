@@ -90,6 +90,7 @@ function digg_post($POST, $olds=array()) {
 	$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
 	updatetable('digg', array('tag'=>$tag), array('diggid'=>$diggid));
 	//更新digg cache
+	include_once(S_ROOT.'./source/function_cache.php');
 	if(empty($olds))
 		digg_cache($diggarr['categoryid'],$olds['categoryid'],$_SGLOBAL['supe_uid']);
 	else
@@ -186,6 +187,7 @@ function deletedigg($diggid){
 	//处理digg
 	$_SGLOBAL['db']->query("DELETE  from ".tname('digg')." WHERE diggid=".$diggid);
 	//更新digg cache
+	include_once(S_ROOT.'./source/function_cache.php');
 	digg_cache($$values['categoryid'],0);
 	//去掉feed
 	include_once(S_ROOT.'./source/function_feed.php');
