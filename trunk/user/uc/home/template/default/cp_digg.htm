@@ -1,6 +1,4 @@
-<!--{template bm_header}-->
-<script language="javascript" type="text/javascript" src="source/script_digg.js">
-</script>
+<!--{template bm_header}-->	 
 <!--{if $op == 'delete'}-->
 <div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
 <h1>删除话题</h1>
@@ -17,9 +15,6 @@
 </form>
 </div>
 </div>
-	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:expression(this.previousSibling.offsetTop);left:expression(this.previousSibling.offsetLeft);background-color:#FCF9E6;"   frameborder="0"></iframe>
-
-
 <!--{elseif $op == 'edithot'}-->
 
 <h1>调整热度</h1>
@@ -41,7 +36,7 @@
 <!--{if $op == 'add'}-->
 <div>
 <!--{else}-->
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;">
 <a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <!--{/if}-->
@@ -58,25 +53,28 @@
 	<tr>
 		<th width="40"><label for="subject">名称</label></th>
 		<td>	
-		<input type="text" id="subject" name="subject" value="$diggitem[subject]" style="width: 396px;" class="t_input" tabindex="1"  />
+		<input type="text" id="subject" name="subject" value="$diggitem[subject]" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+		<p id="subject_tip"></p>
 		</td>
 	</tr>
 	<tr>
 		<th width="40"><label for="address">地址</label></th>
 		<td>
 	<!--{if empty($diggitem[url])}-->
-		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" value="http://" />
+		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='';clearwarning($('address_tip'));" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" value="http://" />
 	<!--{else}-->
-		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';clearwarning($('address_tip'));" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
 	<!--{/if}-->
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+		<p id="address_tip"></p>
 		</td>
 	</tr>
 	<tr>
 		<th width="40"><label for="tag">标签</label></th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$diggitem[tag]" style="width: 396px;" class="t_input" tabindex="3"  />
+		<input type="text" id="tag" name="tag" value="$diggitem[tag]" onfocus="clearwarning($('tag_tip'));" style="width: 396px;" class="t_input" tabindex="3"  />
 		<p style="color:gray">多个标签请用空格隔开</p>
+		<p id="tag_tip"></p>
 		</td>
 	</tr>
 	<tr>
@@ -108,8 +106,9 @@
 	<tr width="40">
 		<th style="vertical-align: top;"><label for="description">描述</label></th>
 		<td>
-		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5">$diggitem[description]</textarea>
+		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" onfocus="clearwarning($('description_tip'));" tabindex="5">$diggitem[description]</textarea>
 		<p style="color:gray">简要描述(10~200字符)</p>
+		<p id="description_tip"></p>
 		</td>
 	</tr>
 <tr>
@@ -121,7 +120,7 @@
 		<!--{else}-->
 		<input type="hidden" name="editsubmit" value="true" />
 		<!--{/if}-->
-		<input type="button" id="diggbutton" name="diggbutton" value="提交发布" onclick="validate(this);" style="display: none;" />
+		<input type="button" id="diggbutton" name="diggbutton" value="提交发布" onclick="digg_validate(this,'seccode');" style="display: none;" />
 	</td>
 </tr>
 </table>
@@ -166,7 +165,7 @@
 						<option value="1">我的相册</option>
 						<option value="addoption" style="color:red;">+新建相册</option>
 						</select>
-					<script src="source/script_upload.js" type="text/javascript"></script>
+					
 					<iframe id="uploadframe" name="uploadframe" width="0" height="0" marginwidth="0" frameborder="0" src="about:blank"></iframe>
 					</td>
 				</tr>
@@ -189,9 +188,17 @@
 	<tr>
 		<th width="40" style="vertical-align: top;">验证码</th>
 		<td>
-			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="7" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+			<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  onfocus="clearwarning($('checkseccode'));" tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$diggitem[diggid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="5" autocomplete="off" />
+			<p id="checkseccode"></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$diggitem[diggid]')">更换一张</a></p>
+		<!--{/if}-->
 		</td>
 	</tr>
 	<!--{/if}-->
@@ -199,15 +206,12 @@
 	<tr>
 		<th width="40">&nbsp;</th>
 		<td>
-			<input type="button" id="issuance" name="issuance" onclick="$('diggbutton').click();" value="保存发布" class="submit"  />
+			<input type="button" name="btnsubmit" value="确定" class="submit"   onclick="$('diggbutton').click();"/>
 		</td>
 	</tr>
 </table>
 
 </div>
 </div>
-	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
-
-</script>	
 <!--{/if}-->
 <!--{template footer}-->
