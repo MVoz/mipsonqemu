@@ -465,7 +465,7 @@ a.c_link {
 
 #relatedsitecontent{float:right;width:270px;height:220px;}
 #relatedsitecontent p{clear:both;}
-#relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;}
+#relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 
 .search_area {height:95px;}
