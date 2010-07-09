@@ -822,7 +822,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 			} else {
 				$multipage .= "href=\"{$mpurl}page=".($curpage-1)."$urlplus\"";
 			}
-			$multipage .= " class=\"prev\">&lsaquo;&lsaquo;</a>";
+			$multipage .= " class=\"prev\">前一页</a>";
 		}
 		for($i = $from; $i <= $to; $i++) {
 			if($i == $curpage) {
@@ -844,7 +844,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 			} else {
 				$multipage .= "href=\"{$mpurl}page=".($curpage+1)."{$urlplus}\"";
 			}
-			$multipage .= " class=\"next\">&rsaquo;&rsaquo;</a>";
+			$multipage .= " class=\"next\">后一页</a>";
 		}
 		if($to < $pages) {
 			$multipage .= "<a ";
@@ -856,7 +856,10 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 			$multipage .= " class=\"last\">... $realpages</a>";
 		}
 		if($multipage) {
-			$multipage = '<em>&nbsp;'.$num.'&nbsp;</em>'.$multipage;
+			//$multipage = '<em>&nbsp;'.$num.'&nbsp;</em>'.$multipage;
+			$totalpages = ceil($num/$perpage);
+			$multipage = '<em>&nbsp;共'.$totalpages.'页&nbsp;</em>'.$multipage;
+
 		}
 	}
 	$_SGLOBAL['inajax']=$inajax;
