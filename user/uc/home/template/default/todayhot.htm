@@ -9,8 +9,16 @@
 			</div>
 			<div class="s_cnts">
 					<h3><a href="$todayhot['url']" title="{$value['link_subject']}">$todayhot['link_short_subject']</a></h3>
+					<p>
+						推荐指数: 
+						<span class="num_con">
+							<span>
+								<cite><!--{eval linkaward($todayhot[award],0);}--></cite>.<!--{eval linkaward($todayhot[award],1);}-->
+							</span>
+						</span>
+					</p>
 					<p>收藏数: $todayhot['storenum']</p>
-					<p>推荐指数: $todayhot[up]</p>
+					<p>浏览数: $todayhot['viewnum']</p>
 					<hr />
 					<p><a href="cp.php?ac=link">我要上榜</a></p>
 			</div>	
@@ -20,7 +28,7 @@
 					$todayhot['link_short_description']...
 	</p>
 	<p class="rlt_line">
-			<span class="tag"> 标签:
+			<span class="tag" style="width:220px;">
 					<!--{loop $todayhot['link_tag'] $subkey $subvalue}-->
 					<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 					<!--{/loop}-->
