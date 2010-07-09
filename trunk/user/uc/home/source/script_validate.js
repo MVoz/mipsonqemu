@@ -59,6 +59,35 @@ function check_subject(id, min, max, specialchar)
     }
 	return true;
 }
+function check_tag(id, min, max)
+{
+	if ($(id)) {
+		if(!rangelen_validate($(id).value,min,max))    	
+		{
+            warning($(id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
+            return false;
+        }
+		if(illegachar_validate($(id).value))//不支持特殊字符
+		{
+		   warning($(id+'_tip'),"标签不允许含有特殊字符");
+		   return false;
+		}
+	
+    }
+	return true;
+}
+function check_description(id, min, max)
+{
+	if ($(id)) {
+		if(!rangelen_validate($(id).value,min,max))    	
+		{
+            warning($(id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
+            return false;
+        }
+    }
+	return true;
+}
+
 function check_url(id, min, max)
 {
 	if ($(id)) {
@@ -185,4 +214,19 @@ function login_validate(obj)
 			return false;
 	obj.submit();
    	return true;
+}
+function digg_validate(obj,seccode_id)
+{
+	if(!check_subject('subject', 1, 80, 1))
+		return false;
+	if(!check_url('address',1,512))
+		return false;
+	if(!check_tag('tag', 1, 20, 0))
+		return false;
+	if(!check_description('description', 10, 200, 1))
+		return false;
+
+	if(!check_seccode(obj,seccode_id))
+	    return false;
+	return true;
 }
