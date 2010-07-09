@@ -51,14 +51,6 @@ if(empty($diggitem)) {
 		showmessage('no_authority_to_add_digg');
 	}
 	
-	//实名认证
-	ckrealname('blog');
-	
-	//视频认证
-	ckvideophoto('blog');
-	
-	//新用户见习
-	cknewuser();
 	
 	//判断是否发布太快
 	$waittime = interval_check('post');
@@ -98,10 +90,11 @@ if(submitcheck('editsubmit')) {
 		showmessage('incorrect_code');
 	}
 	include_once(S_ROOT.'./source/function_digg.php');
-	if($digg = digg_post($_POST, $diggitem)) {
-	//	$url = 'space.php?do=bookmark&groupid='.$newbmdir['groupid'];		
-		$url=$_SGLOBAL['refer'];
-		showmessage('do_success', $url, 0);
+	$digg = digg_post($_POST, $diggitem);
+	if(!empty($digg)) {
+	//	$url=$_SGLOBAL['refer'];
+	//	showmessage('do_success', $url, 0);
+		showmessage('do_success');
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}
