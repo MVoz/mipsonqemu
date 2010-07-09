@@ -45,17 +45,6 @@ jQuery(document).ready(function(){
 <!--{/if}-->
 <style type="text/css">
 @import url(template/default/style.css);
-<!--{if $_TPL['css']}-->
-@import url(template/default/{$_TPL[css]}.css);
-<!--{/if}-->
-<!--{if !empty($_SGLOBAL['space_theme'])}-->
-@import url(theme/$_SGLOBAL[space_theme]/style.css);
-<!--{elseif $_SCONFIG[template] != 'default'}-->
-@import url(template/$_SCONFIG[template]/style.css);
-<!--{/if}-->
-<!--{if !empty($_SGLOBAL['space_css'])}-->
-$_SGLOBAL[space_css]
-<!--{/if}-->
 @import url(template/$_SCONFIG[template]/network.css);
 </style>
 <link rel="shortcut icon" href="image/favicon.ico" />
