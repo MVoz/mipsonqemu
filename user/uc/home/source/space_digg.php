@@ -23,7 +23,10 @@ if(!isbetween($type,0,count($_SGLOBAL['diggcategory'])))
 $uid = empty($_GET['uid'])?0:intval($_GET['uid']);
 //显示数量
 $shownum = empty($_GET['show'])?$_SC['digg_show_maxnum']:intval($_GET['show']);
-	
+if($shownum<=$_SC['digg_show_maxnum']/2)	
+		$shownum = $_SC['digg_show_maxnum']/2;
+else
+		$shownum = $_SC['digg_show_maxnum'];
 //获取总条数
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $perpage=$shownum;
@@ -54,11 +57,11 @@ else {
 }
 if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	//没有lock,则可以读取
-	include_once($cachefile);	
-	$realpage = floor((($nowpage+1)*$shownum)/$_SC['digg_show_maxnum']);
-	$digglist = $_SGLOBAL['diggcache'][$realpage];
+	include_once($cachefile);		
 	if($shownum!=$_SC['digg_show_maxnum'])
 	{
+		$realpage = floor((($nowpage+1)*$shownum)/$_SC['digg_show_maxnum']);
+		$digglist = $_SGLOBAL['diggcache'][$realpage];
 		//偶数去前8个，奇数取后8个
 		if($page==0)
 			$page = 1;
@@ -71,6 +74,8 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 			//移除前8个
 			$digglist = $tmpdigglist[1];
 		}
+	}else{
+		$digglist = $_SGLOBAL['diggcache'][$nowpage];
 	}
 } else {
    
