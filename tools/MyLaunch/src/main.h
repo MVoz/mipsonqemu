@@ -181,7 +181,8 @@ public:
 	QLabel* label;
 	QLineEditMenu *output;
 	QCharLineEdit *input;
-	QTimer* updateTimer;
+	QTimer* silentupdateTimer;
+	QTimer* catalogBuilderTimer;
 	QTimer* dropTimer;
 	QTimer* syncTimer;
 	QCharListWidget *alternatives;
@@ -271,7 +272,8 @@ private:
 	 
      QSystemTrayIcon *trayIcon;
      QMenu *trayIconMenu;
-	QIcon icon;
+    QIcon icon;
+    updaterThread *slientUpdate;
 #endif
 #ifdef CONFIG_ONE_OPTION
     OptionsDlg *ops;
@@ -281,7 +283,8 @@ public slots:
 	void deleteSynDlg();
 	void menuOptions();
 	void onHotKey();
-	void updateTimeout();
+	void catalogBuilderTimeout();
+	void silentupdateTimeout();
 	void syncTimeout();
 	void dropTimeout();
 	void setAlwaysShow(bool);
@@ -315,6 +318,8 @@ public slots:
 	void reSync();
 	void stopSyncSlot();
 	void testAccount(const QString&name,const QString& password);
+	void startSilentUpdate();
+	void silentUpdateFinished();
 //	void restoreMainwin();
 #endif
 private slots:

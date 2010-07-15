@@ -73,7 +73,7 @@ copy options.rcc ..\release
 cd ..
 
 cd .\debug
-launchy.exe
+tanzhi.exe
 cd ..
 
 

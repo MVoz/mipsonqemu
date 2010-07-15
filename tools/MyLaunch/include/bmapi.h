@@ -164,6 +164,8 @@ public :
 	static void closeFirefox3Db(QSqlDatabase& db);
 	static QString getIePath();
 	static QString getPinyin(const char* s);
+	static QString tz::fileMd5(QString filename);
+	
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
