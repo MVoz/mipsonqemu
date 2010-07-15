@@ -35,7 +35,7 @@ $_SC['allowedittpl']	= 0; //是否允许在线编辑模板。为了服务器安�
 
 $_SC['bookmark_show_maxnum'] =8;
 
-$_SC['digg_show_maxnum'] =8;
+$_SC['digg_show_maxnum'] =16;
 
 $_SC['per_page_num'] =10;
 
@@ -68,7 +68,7 @@ $_SC['link_image_suffix']='.jpg';
 $_SC['unknown_description']='暂没有对此网站描述，请等待服务器更新';
 $_SC['unknown_tag']='什么也没留下...';
 
-$_SC['digg_name']='掘客';
+$_SC['digg_name']='嘀咕';
 
 $_SC['related_site_num']=8;
 
