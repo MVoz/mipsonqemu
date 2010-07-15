@@ -771,6 +771,8 @@ function sstrtotime($string) {
 //分页
 function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0) {
 	global $_SCONFIG, $_SGLOBAL;
+	if($curpage==0)
+			$curpage=1;
 	$inajax=$_SGLOBAL['inajax'];
 	$_SGLOBAL['inajax']=empty($_SGLOBAL['inajax'])?$ajax:$_SGLOBAL['inajax'];
 	if(empty($ajaxdiv) && $_SGLOBAL['inajax']) {
