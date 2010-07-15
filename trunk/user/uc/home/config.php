@@ -74,6 +74,8 @@ $_SC['related_site_num']=8;
 
 $_SC['favorite_tag_maxnum']=30;
 
+$_SC['digg_content_height']='1800px';
+
 /*
 	计算link的award
 */
