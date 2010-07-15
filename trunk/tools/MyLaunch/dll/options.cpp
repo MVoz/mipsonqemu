@@ -801,7 +801,7 @@ void OptionsDlg::startUpdater()
 	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
 	
-		updaterThread* updaterthread=new updaterThread(updaterDlg);	
+		updaterThread* updaterthread=new updaterThread(updaterDlg,UPDATE_DLG_MODE);	
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
 		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));
 		updaterthread->start(QThread::IdlePriority);		

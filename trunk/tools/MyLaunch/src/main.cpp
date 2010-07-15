@@ -90,7 +90,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
     QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-    platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
+    platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 {
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
@@ -272,15 +272,20 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		  rescue = true;
 	  }
 	// Set the timers
-	updateTimer = new QTimer(this);
+	catalogBuilderTimer = new QTimer(this);
+	slientUpdate =NULL;
+	silentupdateTimer = new QTimer(this);
 	syncTimer = new QTimer(this);
 	dropTimer = new QTimer(this);
 	dropTimer->setSingleShot(true);
-	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimeout()));
+	connect(catalogBuilderTimer, SIGNAL(timeout()), this, SLOT(catalogBuilderTimeout()));
+	connect(silentupdateTimer, SIGNAL(timeout()), this, SLOT(silentupdateTimeout()));
 	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
-	if (gSettings->value("GenOps/updatetimer", 10).toInt() != 0)
-		updateTimer->start(60000);//1m
+	if (gSettings->value("GenOps/catalogBuildertimer", 10).toInt() != 0)
+		catalogBuilderTimer->start(60000);//1m
+	if (gSettings->value("GenOps/silentupdatetimer", 10).toInt() != 0)
+		silentupdateTimer->start(10000);//1m
 	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
 		syncTimer->start(5*60000);//5m
 
@@ -926,6 +931,7 @@ void MyWidget::catalogBuilt()
 
 void MyWidget::checkForUpdate()
 {
+#if 0
 	http = new QHttp(this);
 	verBuffer = new QBuffer(this);
 	counterBuffer = new QBuffer(this);
@@ -936,6 +942,7 @@ void MyWidget::checkForUpdate()
 	connect(http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
 	http->setHost("www.launchy.net");
 	http->get("http://www.launchy.net/version2.html", verBuffer);
+#endif	
 
 	/*
 	   QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
@@ -1092,14 +1099,27 @@ void MyWidget::syncTimeout()
 	if (time != 0)
 		syncTimer->start(time * 60000);//minutes
 }
-void MyWidget::updateTimeout()
+
+void MyWidget::silentupdateTimeout()
+{
+	int time = gSettings->value("GenOps/silentupdatetimer", 10).toInt();
+	
+	catalogBuilderTimer->stop();
+	
+	qDebug("silentupdateTimeout !!!startSilentUpdate.....isActive=%d",catalogBuilderTimer->isActive());
+	//do something
+	startSilentUpdate();
+//	catalogBuilderTimer->start(time * 60000);//minutes
+}
+
+void MyWidget::catalogBuilderTimeout()
 {
 	// Save the settings periodically
 	savePosition();
 	gSettings->sync();
 	updateTimes++;
 	bool includeDir=false;
-	int time = gSettings->value("GenOps/updatetimer", 10).toInt();
+	int time = gSettings->value("GenOps/catalogBuildertimer", 10).toInt();
 	if(updateTimes*time>3600)
 		{
 			includeDir=true;
@@ -1112,9 +1132,9 @@ void MyWidget::updateTimeout()
 		  connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		  gBuilder->start(QThread::IdlePriority);
 	  }		
-	updateTimer->stop();
+	catalogBuilderTimer->stop();
 	if (time != 0)
-		updateTimer->start(time * 60000);//minutes
+		catalogBuilderTimer->start(time * 60000);//minutes
 }
 
 void MyWidget::dropTimeout()
@@ -1188,7 +1208,7 @@ void MyWidget::updateSuccess()
 MyWidget::~MyWidget()
 {
 
-	delete updateTimer;
+	delete catalogBuilderTimer;
 	delete dropTimer;
 /*
 	if (platform)
@@ -2158,6 +2178,26 @@ void MyWidget::freeOccupyMemeory()
 	dlg.showMinimized();
 	dlg.accept();
 //#endif
+}
+void MyWidget::silentUpdateFinished()
+{
+	qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+	qDebug("silent update finished!!!!!");
+	if(slientUpdate)
+		{
+			delete slientUpdate;
+			slientUpdate =NULL;
+		}
+}
+void MyWidget::startSilentUpdate()
+{
+		qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+		if(!slientUpdate||slientUpdate->isFinished()){
+		
+			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE); 
+			connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
+			slientUpdate->start(QThread::IdlePriority);		
+		}
 }
 
 #ifdef CONFIG_LOG_ENABLE

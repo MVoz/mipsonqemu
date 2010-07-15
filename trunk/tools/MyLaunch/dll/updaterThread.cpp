@@ -46,7 +46,7 @@ void GetFileHttp::on_http_stateChanged(int stat)
 
 void GetFileHttp::on_http_dataReadProgress(int done, int total)
 {
-//	qDebug("Downloaded:get file %s %d bytes out of %d", qPrintable(updaterFilename),done, total);
+	//qDebug("Downloaded:get file %s %d bytes out of %d", qPrintable(updaterFilename),done, total);
 //	emit readDateProgressNotify(done, total);
 }
 
@@ -126,17 +126,18 @@ void GetFileHttp::run()
 void GetFileHttp::httpTimerSlot()
 {
 	qDebug("httpTimerSlot.......");
-	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));
+	if(mode==UPDATE_DLG_MODE) 
+		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));
 	httpTimer[retryTime]->stop();
 	http[retryTime]->abort();	
 }
-GetFileHttp::GetFileHttp(QObject* parent,int mode,uint c): QThread(parent),mode(mode)
+GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): QThread(parent),mode(mode),md5(c)
 {
 	errCode=0;
 	statusCode=0;
 	retryTime=0;
 	mode=0;
-	checksum=c;
+	
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 		{
 			http[i]=NULL;
@@ -163,16 +164,19 @@ void GetFileHttp::getFileDone(bool error)
 				switch(statusCode)
 				{
 				case HTTP_OK:
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL,tz::tr(HTTP_GET_INI_SUCCESSFUL_STRING));
+					if(mode==UPDATE_DLG_MODE) 
+						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL,tz::tr(HTTP_GET_INI_SUCCESSFUL_STRING));
 					emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
 
 					break;
-				case HTTP_FILE_NOT_FOUND:				
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED,tz::tr(HTTP_GET_INI_NOT_EXISTED_STRING));
+				case HTTP_FILE_NOT_FOUND:	
+					if(mode==UPDATE_DLG_MODE) 
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED,tz::tr(HTTP_GET_INI_NOT_EXISTED_STRING));
 					errCode=HTTP_GET_INI_NOT_EXISTED;
 					break;
 				default:
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
+					if(mode==UPDATE_DLG_MODE) 
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
 					errCode=HTTP_GET_INI_FAILED;		
 					break;
 				}
@@ -187,7 +191,8 @@ void GetFileHttp::getFileDone(bool error)
 				}
 				else
 					{
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
+						if(mode==UPDATE_DLG_MODE) 
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
 						errCode=HTTP_GET_INI_FAILED;						
 					}
 			}
@@ -198,15 +203,20 @@ void GetFileHttp::getFileDone(bool error)
 					{
 					case HTTP_OK:
 						{
+						int isEqual=(tz::fileMd5(downloadFilename)==md5);
+						qDebug("downloadFilename=%s md5=%s caclmd5=%s isEqual=%d",qPrintable(downloadFilename),qPrintable(md5),qPrintable(tz::fileMd5(downloadFilename)),isEqual);
+						/*	
 						QFile fileCkSum(downloadFilename);
-						int isEqual=0;
+						
 						if(fileCkSum.open(QIODevice::ReadOnly)){
 							//qDebug("ini file's checkSum is %d",getFileChecksum(&fileCkSum));
 							isEqual=(checksum==getFileChecksum(&fileCkSum));
 							fileCkSum.close();
 						}	
+						*/
 						if(isEqual){
-								emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,tz::tr(HTTP_GET_FILE_SUCCESSFUL_STRING));
+								if(mode==UPDATE_DLG_MODE) 
+									emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,tz::tr(HTTP_GET_FILE_SUCCESSFUL_STRING));
 					         		emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);		
 							}else{
 								if(retryTime<UPDATE_MAX_RETRY_TIME)
@@ -217,7 +227,8 @@ void GetFileHttp::getFileDone(bool error)
 										errCode=HTTP_NEED_RETRY;
 								}else
 								{
-									emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+									if(mode==UPDATE_DLG_MODE) 
+										emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 									errCode=HTTP_GET_FILE_FAILED;							
 								}
 
@@ -225,11 +236,13 @@ void GetFileHttp::getFileDone(bool error)
 						}
 						break;
 					case HTTP_FILE_NOT_FOUND:	
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED,tz::tr(HTTP_GET_FILE_NOT_EXISTED_STRING));
+						if(mode==UPDATE_DLG_MODE) 
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED,tz::tr(HTTP_GET_FILE_NOT_EXISTED_STRING));
 						errCode=HTTP_GET_FILE_NOT_EXISTED;						
 						break;
 					default:
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+							if(mode==UPDATE_DLG_MODE) 
+								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 							errCode=HTTP_GET_FILE_FAILED;	
 							break;
 					}
@@ -243,7 +256,8 @@ void GetFileHttp::getFileDone(bool error)
 					}
 					else
 						{
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+							if(mode==UPDATE_DLG_MODE) 
+								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
 							errCode=HTTP_GET_FILE_FAILED;							
 						}
 				}
@@ -256,7 +270,8 @@ void GetFileHttp::getFileDone(bool error)
 	
 			switch(errCode){
 					case HTTP_NEED_RETRY:
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,tz::tr(HTTP_NEED_RETRY_STRING));
+						if(mode==UPDATE_DLG_MODE) 
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,tz::tr(HTTP_NEED_RETRY_STRING));
 						qDebug("%d times to get %s from server!",retryTime,qPrintable(updaterFilename));
 						break;
 					case HTTP_GET_INI_NOT_EXISTED:
@@ -310,9 +325,10 @@ void updaterThread::testNetFinished(QNetworkReply* reply)
 //	testNet.release(1);
 	if(!error)
 	{
-			downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,0);
+			downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
 	}else{
-		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
+		if(mode==UPDATE_DLG_MODE) 
+			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
 		quit();
 	}
 }
@@ -325,6 +341,7 @@ void updaterThread::testNetTimeout()
 void updaterThread::run()
 {
 #if 1
+		if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
 
 		manager=new QNetworkAccessManager();
@@ -345,16 +362,23 @@ void updaterThread::run()
 	1---newer
 	-1---older
 */
-int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,const QString& version1)
+int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1)
 {
 	int ret=-2;
-	int count = settings->beginReadArray("files");
+	int count = settings->beginReadArray("portable");
 		  for (int i = 0; i < count; i++)
 		    {
 			    settings->setArrayIndex(i);
 			         QString filename2=settings->value("name").toString();
-				QString version2=settings->value("version").toString();	
+				 uint version2=settings->value("version").toUInt();	
 				if(filename1!=filename2) continue;
+				if(version2 ==version1 )
+					ret= 0;
+				else if(version2 < version1 )
+					ret = 1;
+				else if(version2 > version1 )
+					ret = -1;
+				/*
 				qDebug("filename1=%s version1=%s version2=%s",qPrintable(filename1),qPrintable(version1),qPrintable(version2));
 				QStringList version1_list = version1.split(".");
 				QStringList version2_list = version2.split(".");
@@ -365,6 +389,7 @@ int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,c
 					ret=1;
 			       if(VERSION_INFO(version1_list)<VERSION_INFO(version2_list))
 					ret= -1;
+				*/
 				break;
 		    }
 		  settings->endArray();
@@ -378,13 +403,14 @@ int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,c
 void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode)
 {
 	//merge local with server
-			  int count = srcSettings->beginReadArray("files");
+			  int count = srcSettings->beginReadArray("portable");
 			  for (int i = 0; i < count; i++)
 				{
 					srcSettings->setArrayIndex(i);
 					QString filename=srcSettings->value("name").toString();
-					QString version=srcSettings->value("version").toString(); 
-					uint checkSum=srcSettings->value("checksum",0).toUInt(); 
+					uint version=srcSettings->value("version").toUInt(); 
+					QString md5=srcSettings->value("md5",0).toString(); 
+					qDebug("%s filename=%s version=%d",__FUNCTION__,qPrintable(filename),version);
 					switch(checkToSetiing(dstSetting,filename,version))
 					{
 						case -2://no found
@@ -392,7 +418,7 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 								{
 									qDebug("The file %s doesn't exist on the local ,need download from server!",qPrintable(filename));
 									needed=1;
-									downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,checkSum);
+									downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);
 								}
 							break;
 						case -1:
@@ -400,7 +426,7 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 							{
 								qDebug("The server file %s version is newer than local.need download from server!",qPrintable(filename));
 								needed=1;
-								downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,checkSum);								
+								downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);								
 							}
 							break;
 						case 0:
@@ -416,51 +442,123 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 			  srcSettings->endArray();
 
 }
-void updaterThread::getIniDone(int error)
+void updaterThread::getIniDone(int err)
 {
-	if(error==HTTP_GET_INI_SUCCESSFUL){
-		//merge local with server
-		if (QFile::exists(UPDATE_FILE_NAME))
-			localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
-		else
-			localSettings=new QSettings(NULL,QSettings::IniFormat, NULL);
-			serverSettings = new QSettings(QString("temp/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+
+	switch(mode){
+		case UPDATE_SILENT_MODE:				
+			if(err==HTTP_GET_INI_SUCCESSFUL){
+			//merge local with server
+			//if (QFile::exists(UPDATE_FILE_NAME))
+				localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+			//else
+			//	localSettings=new QSettings(NULL,QSettings::IniFormat, NULL);
+			serverSettings = new QSettings(QString("temp/portable/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
 			qDebug(" Merger localsetting with serverSettings! ");
 			mergeSettings(localSettings,serverSettings,SETTING_MERGE_LOCALTOSERVER);
 			qDebug("Merger serverSettings with localsetting!");
 			mergeSettings(serverSettings,localSettings,SETTING_MERGE_SERVERTOLOCAL);
 			//update all downloaded files
-			qDebug("%s error %d happened",__FUNCTION__,__LINE__);
+			//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
 			if(error){
-					//sem_downfile_success.acquire(1);
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+						//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
 			}else if(needed) 
 				{
-					sem_downfile_success.acquire(1);
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
+						sem_downfile_success.acquire(1);
+						//write update.ini
+						  int count = serverSettings->beginReadArray("portable");
+						  localSettings->beginWriteArray("portable");
+						  for (int i = 0; i < count; i++)
+							{
+								serverSettings->setArrayIndex(i);								
+								localSettings->setArrayIndex(i);
+								localSettings->setValue("version",serverSettings->value("version").toUInt());
+								localSettings->setValue("name",serverSettings->value("name").toString());
+								localSettings->setValue("md5",serverSettings->value("md5").toString());	
+								
+						  	}
+						  serverSettings->endArray();
+						  localSettings->endArray();
+						  localSettings->sync();
+						//emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
 				}
-			else
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
-			quit();
-			//msleep(500);
-			//find the "lanuchy"
-			
-			//HWND   hWnd   = ::FindWindow(NULL, (LPCWSTR) QString("debug").utf16());
-			//qDebug("hWnd=0x%08x\n",hWnd);
-			//::SendMessage(hWnd, WM_CLOSE, 0, 0);
-			
+			else{
+						//emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
+				}			
 
-	}else
-		{
-			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
-			qDebug("%s error %d happened",__FUNCTION__,error);
-			quit();
-		}	
+			}else
+			{
+					//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+					qDebug("%s error %d happened",__FUNCTION__,error);
+				
+			}
+			break;
+		case UPDATE_DLG_MODE:
+			if(err==HTTP_GET_INI_SUCCESSFUL){
+				serverSettings = new QSettings(QString("temp/setup/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+				QString sversion =  serverSettings->value("setup/version", "").toString();
+				QString filename = serverSettings->value("setup/name", "").toString();
+				QString md5 = serverSettings->value("setup/md5", "").toString();
+				if (QFile::exists(UPDATE_FILE_NAME))
+				{
+					localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+					
+
+					QString lversion =  localSettings->value("setup/version", "").toString();
+					
+					if( lversion == sversion)
+						{
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));					
+							goto end;
+						}
+				}
+				//start get setup.exe
+				if(!filename.isEmpty()&&!md5.isEmpty())
+					{
+						needed = 1;
+						downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);
+						
+					}
+				if(error){
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+				}else if(needed) 
+					{
+							sem_downfile_success.acquire(1);
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
+							//write update.ini
+							if(!localSettings)
+								localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+							localSettings->setValue("setup/version",sversion);
+							localSettings->setValue("setup/name",filename);
+							localSettings->setValue("setup/md5",md5);
+							localSettings->sync();
+							
+					}
+				else{
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
+					}			
+				
+			}else{
+				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+			}
+			break;
+		default:
+			break;
+	}
+
+	//msleep(500);
+		//find the "lanuchy"
+		
+		//HWND	 hWnd	= ::FindWindow(NULL, (LPCWSTR) QString("debug").utf16());
+		//qDebug("hWnd=0x%08x\n",hWnd);
+		//::SendMessage(hWnd, WM_CLOSE, 0, 0);
+end:
+	quit();
 
 }
-void updaterThread::getFileDone(int error)
+void updaterThread::getFileDone(int err)
 {
-		if(error==HTTP_GET_FILE_SUCCESSFUL){
+		if(err==HTTP_GET_FILE_SUCCESSFUL){
 		//	SetColor(FOREGROUND_GREEN,0);
 			sem_downfile_start.acquire(1);
 			sem_downfile_success.release(1);
@@ -473,28 +571,42 @@ void updaterThread::getFileDone(int error)
 		//	this->quit();			
 		}
 }
-void updaterThread::downloadFileFromServer(QString pathname,int mode,uint checksum)
+void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 {
-	if(mode==UPDATE_MODE_GET_FILE)	{
+	if(m==UPDATE_MODE_GET_FILE)	{
 		sem_downfile_start.release(1);		
 	
 		}
-	if((mode==UPDATE_MODE_GET_FILE)&&(timers>0))
+	if((m==UPDATE_MODE_GET_FILE)&&(timers>0))
 	{	
 		
 		sem_downfile_success.acquire(1);
 			if(error) return;
 		msleep(500);
 	}
-	if(mode==UPDATE_MODE_GET_FILE) timers++;
-		fprintf(stderr,"%s pathname=%s checksum=%d  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),checksum,sem_downfile_success.available(),sem_downfile_start.available());	
-		GetFileHttp *fh=new GetFileHttp(NULL,mode,checksum);
+	if(m==UPDATE_MODE_GET_FILE) timers++;
+	
+		qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
+		GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
 		connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
-		connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);		
-		connect(fh, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
-		connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+		connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);	
+		if(mode==UPDATE_DLG_MODE) {
+			connect(fh, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+		}
 		fh->setHost(UPDATE_SERVER_HOST);
-		fh->setUrl(pathname);
+		//htttp://www.tanzhi.com/download/setup/tanzhi.exe
+		//htttp://www.tanzhi.com/download/portable/tanzhi.exe
+		switch(mode)
+		{
+			case UPDATE_DLG_MODE:
+				fh->setUrl(QString("setup/").append(pathname));
+				break;
+			case UPDATE_SILENT_MODE:
+				fh->setUrl(QString("portable/").append(pathname));
+				break;
+		}
+		
 		fh->start(QThread::IdlePriority);
 
 }

@@ -9,6 +9,7 @@
 #include <QUrl>
 #include <QCoreApplication>
 #include <QSettings>
+#include <QCryptographicHash>
 #include <QSqlRecord>
 uint gMaxGroupId=0;
 QString gUpdatetime;
@@ -557,6 +558,7 @@ int handleUrlString(QString& url)
 
 uint qhashEx(QString str, int len)
 {
+
     uint h = 0;
     int g=0;
 	int i=0;
@@ -957,39 +959,42 @@ QString tz::getPinyin(const char* s)
 			r=QString(s);
 		return r;
 }
-#if 0
-void tz::prepareInsertQuery(QSqlQuery* q,CatItem& item)
+QString tz::fileMd5(QString filename)
 {
-	q->prepare("INSERT INTO "DB_TABLE_NAME
-							"(fullPath, shortName, lowName,icon,usage,hashId,"
-						   "groupId, parentId, isHasPinyin,comeFrom,hanziNums,pinyinDepth,"
-						   "pinyinReg,alias1,alias2,shortCut,delId,args)"
-						   "values("
-							"? , ? , ? , ? , ? , ? ,"
-							 "? , ? , ? , ? , ? , ? ,"
-							  "? , ? , ? , ? , ? , ? "
-						   ")");
-						   q->bindValue("fullPath", item.fullPath);
-						   q->bindValue("shortName", item.shortName);
-						   q->bindValue("lowName", item.lowName);
-						   q->bindValue("icon", item.icon);
-						   q->bindValue("usage", item.usage);
-						   q->bindValue("hashId", qHash(item.shortName));
-						   q->bindValue("groupId", item.groupId);
-						   q->bindValue("parentId", item.parentId);
-						   q->bindValue("isHasPinyin", item.isHasPinyin);
-						   q->bindValue("comeFrom", item.comeFrom);
-						   q->bindValue("hanziNums", item.hanziNums);
-						   q->bindValue("pinyinDepth", item.pinyinDepth);
-						   q->bindValue("pinyinReg", item.pinyinReg);
-						   q->bindValue("alias1", item.alias1);
-						   q->bindValue("alias2", item.alias2);
-						   q->bindValue("shortCut", item.shortCut);
-						   q->bindValue("delId", item.delId);
-						   q->bindValue("args", item.args
-	);
-
+	QByteArray  md5res;
+	QCryptographicHash md(QCryptographicHash::Md5);
+	if(!QFile::exists(filename))
+		{
+			//fprintf(stdout,"file %s doesn't existed!\n",qPrintable(filename));
+			return "";
+		}
+	QFile infile(filename);
+	if (infile.open(QIODevice::ReadOnly)) {
+		QDataStream ins(&infile);
+		while(!ins.atEnd())
+		{
+			char tmp[1024]={0};
+			int reads=0;
+			if((reads=ins.readRawData(tmp,sizeof(tmp)))!=-1)
+			{
+				md.addData(tmp,reads);
+			}else
+			{
+				//fprintf(stdout,"read file %s error!\n",qPrintable(filename));
+				goto end;		
+			}
+		}
+	  md5res = md.result();
+	//  fprintf(stdout,"file %s's MD5 is %s!\n",qPrintable(filename),qPrintable(QString(md5res.toHex())));
+	}
+end:
+	if(infile.isOpen())
+			infile.close();
+	return QString(md5res.toHex());
 }
+
+
+#if 0
 
 void tz::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
 {

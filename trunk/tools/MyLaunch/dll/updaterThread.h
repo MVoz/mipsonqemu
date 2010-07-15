@@ -26,6 +26,9 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+#define UPDATE_SILENT_MODE 0
+#define UPDATE_DLG_MODE 1
+
 #if defined(UPDATER_THREAD_DLL)
 #define UPDATER_THREAD_DLL_CLASS_EXPORT __declspec(dllexport)
 #else
@@ -59,7 +62,7 @@ public:
 //	QString filename;
 	QString updaterFilename;
 	QString downloadFilename;
-	uint checksum;
+	QString md5;
 	
 	QDateTime* updateTime;
 	QSettings *localSettings;
@@ -70,7 +73,7 @@ public:
 	int statusCode;
 	int errCode;
 public:
-	 GetFileHttp(QObject * parent = 0,int mode=0,uint checksum=0);	
+	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
 	{
 		/*
@@ -145,29 +148,36 @@ public:
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
+	int mode;
 	
 
 public:
-	 updaterThread(QObject * parent = 0):QThread(parent)
+	 updaterThread(QObject * parent = 0,int m=0):QThread(parent),mode(m)
 	 	{
 	 		timers=0;
 			needed=0;
 			error=0;
+			localSettings =NULL;
+			serverSettings =NULL;
 	 	}
 	~updaterThread()
 	{
 		sem_downfile_success.release(sem_downfile_success.available());
 		sem_downfile_start.release(sem_downfile_start.available());
+		if(localSettings)
+			delete localSettings;
+		if(serverSettings)
+			delete serverSettings;
 		//testNet.release(testNet.available());
 	}
 	void run();
-	void downloadFileFromServer(QString pathname,int mode,uint checksum);
-	int checkToSetiing(QSettings *settings,const QString &filename1,const QString& version1);
+	void downloadFileFromServer(QString pathname,int mode,QString checksum);
+	int checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
 
 public slots: 
-	void getIniDone(int error);
-    	void getFileDone(int error);
+	void getIniDone(int err);
+    	void getFileDone(int err);
 	void testNetFinished(QNetworkReply*);
 	void testNetTimeout();
 

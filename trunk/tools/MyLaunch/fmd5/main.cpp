@@ -18,8 +18,8 @@ QString fileMd5(QString filename)
 	QCryptographicHash md(QCryptographicHash::Md5);
 	if(!QFile::exists(filename))
 		{
-			fprintf(stdout,"file %s doesn't existed!\n",qPrintable(filename));
-			return 0;
+			//fprintf(stdout,"file %s doesn't existed!\n",qPrintable(filename));
+			return "";
 		}
 	QFile infile(filename);
 	if (infile.open(QIODevice::ReadOnly)) {
@@ -33,20 +33,22 @@ QString fileMd5(QString filename)
 				md.addData(tmp,reads);
 			}else
 			{
-				fprintf(stdout,"read file %s error!\n",qPrintable(filename));
-				return 0;		
+				//fprintf(stdout,"read file %s error!\n",qPrintable(filename));
+				goto end;		
 			}
 		}
 	  md5res = md.result();
 	  fprintf(stdout,"file %s's MD5 is %s!\n",qPrintable(filename),qPrintable(QString(md5res.toHex())));
 	}
+end:
 	if(infile.isOpen())
 			infile.close();
 	return QString(md5res.toHex());
 }
+
 uint getVersion(QString name,QSettings* s,QString md5)
 {
-		  int count = s->beginReadArray("files");
+		  int count = s->beginReadArray("portable");
 		  uint ret = 0;
 		  for (int i = 0; i < count; i++)
 			{
@@ -104,7 +106,7 @@ int main(int argc, char* argv[])
 	QSettings tmps(TEMP_UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
 	//if(argc!=2)
 	//		goto usage;
-	s.beginWriteArray("files");
+	s.beginWriteArray("portable");
 
 	dirMd5(".",1,&s,&tmps);
 
