@@ -22,13 +22,13 @@ if(!isbetween($type,0,count($_SGLOBAL['diggcategory'])))
 //根据postuser来查看
 $uid = empty($_GET['uid'])?0:intval($_GET['uid']);
 //显示数量
-$shownum = $_SC['digg_show_maxnum'];
+$shownum = empty($_GET['show'])?$_SC['digg_show_maxnum']:intval($_GET['show']);
 	
 //获取总条数
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $perpage=$shownum;
 $start=$page?(($page-1)*$perpage):0;
-$theurl="space.php?do=$do";
+$theurl="space.php?do=$do&show=".$shownum;
 
 //digg
 $digglist = array();
@@ -55,7 +55,23 @@ else {
 if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	//没有lock,则可以读取
 	include_once($cachefile);	
-	$digglist = $_SGLOBAL['diggcache'][$nowpage];
+	$realpage = floor((($nowpage+1)*$shownum)/$_SC['digg_show_maxnum']);
+	$digglist = $_SGLOBAL['diggcache'][$realpage];
+	if($shownum!=$_SC['digg_show_maxnum'])
+	{
+		//偶数去前8个，奇数取后8个
+		if($page==0)
+			$page = 1;
+		$tmpdigglist = array_chunk($digglist, $shownum);
+		if($page%2)//奇数
+		{
+			//取前8个
+			$digglist = $tmpdigglist[0];
+		}else{
+			//移除前8个
+			$digglist = $tmpdigglist[1];
+		}
+	}
 } else {
    
 	$wherearr='';

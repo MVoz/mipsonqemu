@@ -17,9 +17,9 @@ include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
 //digg
 $digglist = array();
-$theurl="space.php?do=digg";
+$theurl="space.php?do=digg&show=".($_SC['digg_show_maxnum']/2);
 //显示数量
-$shownum = $_SC['digg_show_maxnum'];
+$shownum = $_SC['digg_show_maxnum']/2;
 //获取总条数
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $perpage=$shownum;
@@ -29,7 +29,23 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	//没有lock,则可以读取
 	include_once($cachefile);
 	$count=sreadfile(S_ROOT.'./data/diggcache/digg_count.txt');
-	$digglist = $_SGLOBAL['diggcache'][$page];
+	//由于digg页面与all页面显示数量的不同，需要调整，默认为16个
+	//重计算真正的页面
+	$realpage = floor(($page*$shownum)/$_SC['digg_show_maxnum']);
+	$digglist = $_SGLOBAL['diggcache'][$realpage ];
+	//偶数去前8个，奇数取后8个
+	if($page==0)
+		$page = 1;
+	$tmpdigglist = array_chunk($digglist, $shownum);
+	if($page%2)//奇数
+	{
+		//取前8个
+		$digglist = $tmpdigglist[0];
+	}else{
+		//移除前8个
+		$digglist = $tmpdigglist[1];
+	}
+
 } else {
 
     $start=$page?(($page-1)*$perpage):0;
