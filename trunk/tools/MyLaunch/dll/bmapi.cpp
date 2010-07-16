@@ -992,7 +992,32 @@ end:
 			infile.close();
 	return QString(md5res.toHex());
 }
-
+uint tz::registerInt(int mode,const QString& path,const QString&  name,uint val)
+{
+	uint ret = 0;
+	QSettings s(path,QSettings::NativeFormat);	
+	if(mode == REGISTER_GET_MODE)
+	{
+		ret = s.value(name,0).toUInt();
+	}else{
+		s.setValue(name,val);	
+		s.sync();
+	}
+	return ret;
+}
+QString  tz::registerString(int mode,const QString& path,const QString& name,QString val)
+{
+	QString ret="";
+	QSettings s(path,QSettings::NativeFormat);	
+	if(mode == REGISTER_GET_MODE)
+	{
+		ret = s.value(name,"").toString();
+	}else{
+		s.setValue(name,val);	
+		s.sync();
+	}
+	return ret;
+}
 
 #if 0
 

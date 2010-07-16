@@ -12,6 +12,7 @@
  #include <QSqlQuery>
  #include <QDateTime>
  #include <QSqlDatabase>
+#include <QtCore/QVariant>
  #ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
@@ -164,8 +165,9 @@ public :
 	static void closeFirefox3Db(QSqlDatabase& db);
 	static QString getIePath();
 	static QString getPinyin(const char* s);
-	static QString tz::fileMd5(QString filename);
-	
+	static QString fileMd5(QString filename);
+	static uint registerInt(int mode,const QString& path,const QString& name,uint val);
+	static QString registerString(int mode,const QString& path,const QString& name,QString val);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
