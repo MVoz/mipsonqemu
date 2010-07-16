@@ -1195,14 +1195,20 @@ void MyWidget::closeEvent(QCloseEvent * event)
 
 void MyWidget::updateSuccess()
 {
-	QSettings s(QString(APP_HKEY_PATH),QSettings::NativeFormat);	
-	QString filepath=qApp->applicationFilePath().replace(QString("/"), QString("\\"));
-	s.setValue(APP_HEKY_UPDATE_ITEM,1);	
-	//	s.remove(APP_NAME);
-	s.sync();
-
-	runProgram(QString(APP_SILENT_UPDATE_NAME),QString(""));
-	close();
+	/*
+		QSettings s(QString(APP_HKEY_PATH),QSettings::NativeFormat);	
+		QString filepath=qApp->applicationFilePath().replace(QString("/"), QString("\\"));
+		s.setValue(APP_HEKY_UPDATE_ITEM,1);	
+		//	s.remove(APP_NAME);
+		s.sync();
+	*/
+	qDebug("%s start temp/setup/tanzhi.exe !",__FUNCTION__);
+	if(QFile::exists(QString("temp/setup/tanzhi.exe")))
+	{
+		runProgram(QString("temp/setup/tanzhi.exe"),QString(""));
+		close();
+	}
+	
 }
 
 MyWidget::~MyWidget()
@@ -1594,8 +1600,16 @@ void MyWidget::_startSync(int mode,int silence)
 			password=testAccountPassword;
 			break;
 	}
-	if(gSyncer||name.isEmpty()||password.isEmpty())
-			return;		
+	if(name.isEmpty()||password.isEmpty())
+			return;	
+	if(gSyncer){
+		if((silence ==SYN_MODE_NOSILENCE)&&syncDlg)
+			{
+				syncDlg->setModal(1);
+				syncDlg->show();
+			}
+		return;
+	}
 	
 	deleteSynDlgTimer();
 	if(!syncDlg)

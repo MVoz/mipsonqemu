@@ -410,7 +410,7 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 					QString filename=srcSettings->value("name").toString();
 					uint version=srcSettings->value("version").toUInt(); 
 					QString md5=srcSettings->value("md5",0).toString(); 
-					qDebug("%s filename=%s version=%d",__FUNCTION__,qPrintable(filename),version);
+					//qDebug("%s filename=%s version=%d",__FUNCTION__,qPrintable(filename),version);
 					int  flag = checkToSetiing(dstSetting,filename,version);
 					switch(flag)
 					{
@@ -462,6 +462,14 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 			  srcSettings->endArray();
 
 }
+void  updaterThread::checkSilentUpdateApp()
+{
+	if(QFile::exists(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME)))		
+		{
+			QFile::copy(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME),APP_SILENT_UPDATE_NAME);
+			QFile::remove(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME));
+		}
+}
 void updaterThread::getIniDone(int err)
 {
 
@@ -474,6 +482,9 @@ void updaterThread::getIniDone(int err)
 			//else
 			//	localSettings=new QSettings(NULL,QSettings::IniFormat, NULL);
 			serverSettings = new QSettings(QString("temp/portable/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+			//get newer.exe independently
+			
+			
 			qDebug(" Merger localsetting with serverSettings! ");
 			mergeSettings(localSettings,serverSettings,SETTING_MERGE_LOCALTOSERVER);
 			qDebug("Merger serverSettings with localsetting!");
@@ -487,6 +498,7 @@ void updaterThread::getIniDone(int err)
 					if(needed) 
 						{
 							sem_downfile_success.acquire(1);
+							checkSilentUpdateApp();
 							tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,1);
 						//	emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
 						}
@@ -521,6 +533,13 @@ void updaterThread::getIniDone(int err)
 				QString sversion =  serverSettings->value("setup/version", "").toString();
 				QString filename = serverSettings->value("setup/name", "").toString();
 				QString md5 = serverSettings->value("setup/md5", "").toString();
+				if(sversion.isEmpty()||filename.isEmpty()||md5.isEmpty())
+					{
+						//get wrong content form server
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+						error = 1;
+						goto end;
+					}
 				if (QFile::exists(UPDATE_FILE_NAME))
 				{
 					localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -534,7 +553,7 @@ void updaterThread::getIniDone(int err)
 							goto end;
 						}
 				}
-				//start get setup.exe
+				//start download setup.exe
 				if(!filename.isEmpty()&&!md5.isEmpty())
 					{
 						needed = 1;

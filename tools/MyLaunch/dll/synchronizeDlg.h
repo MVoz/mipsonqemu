@@ -47,7 +47,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 		void reject();
 		void retry();
 		void populateJavaScriptWindowObject();
-		void updateStatus(int type,int status,QString str);
+		void updateStatus(int type,int s,QString str);
 		void readDateProgress(int done,int total);
 		void reSyncSlot();
 	signals:

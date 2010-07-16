@@ -174,6 +174,7 @@ public:
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
 	int checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
+	void checkSilentUpdateApp();
 
 public slots: 
 	void getIniDone(int err);

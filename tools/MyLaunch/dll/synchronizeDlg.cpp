@@ -69,7 +69,7 @@ void synchronizeDlg::accept()
 	if(status==UPDATE_SUCCESSFUL)
 		emit updateSuccessNotify();
 			
-	qDebug("synchronizeDlg::accept()");
+	qDebug("synchronizeDlg::accept() status=%d UPDATE_SUCCESSFUL=%d",status,UPDATE_SUCCESSFUL);
 	QDialog::accept();
 }
 
@@ -88,11 +88,11 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 {
 	webView->page()->mainFrame()->addToJavaScriptWindowObject("processDlg", this);
 }
-void synchronizeDlg::updateStatus(int type,int status,QString str)
+void synchronizeDlg::updateStatus(int type,int s,QString str)
 {
 	QString jsStr;
-	qDebug("%s type=%d\n",__FUNCTION__,type);
-	status=status;
+	qDebug("%s type=%d status=%d str=%s\n",__FUNCTION__,type,status,qPrintable(str));
+	status=s;
 	switch(type)
 		{
 		case UPDATESTATUS_FLAG_APPLY:
