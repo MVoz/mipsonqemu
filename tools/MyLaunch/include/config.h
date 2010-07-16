@@ -194,6 +194,8 @@
 #define REGISTER_GET_MODE 0
 #define REGISTER_SET_MODE 1
 
+#define APP_SILENT_UPDATE_NAME "newer.exe"
+#define APP_PROGRAM_NAME  "tanzhi.exe"
 
 
 #define SECONDS 1000

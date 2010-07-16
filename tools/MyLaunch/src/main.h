@@ -320,6 +320,7 @@ public slots:
 	void testAccount(const QString&name,const QString& password);
 	void startSilentUpdate();
 	void silentUpdateFinished();
+	
 //	void restoreMainwin();
 #endif
 private slots:
@@ -331,4 +332,5 @@ private slots:
 		//void reSync();
 		void stopSyncNotify();
 };
+void kickoffSilentUpdate();
 #endif

@@ -1201,7 +1201,7 @@ void MyWidget::updateSuccess()
 	//	s.remove(APP_NAME);
 	s.sync();
 
-	runProgram(QString("newer.exe"),QString(""));
+	runProgram(QString(APP_SILENT_UPDATE_NAME),QString(""));
 	close();
 }
 
@@ -2253,6 +2253,16 @@ void myMessageOutput(QtMsgType type, const char *msg)
      }
  }
 #endif
+void kickoffSilentUpdate()
+{
+	if(QFile::exists(APP_SILENT_UPDATE_NAME))
+	{
+		qDebug("run %s",APP_SILENT_UPDATE_NAME);
+		runProgram(QString(APP_SILENT_UPDATE_NAME),QString("-r"));
+		exit(0);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN
@@ -2291,6 +2301,17 @@ int main(int argc, char *argv[])
 	//check update in register
 	uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
 	qDebug("updateflag = %d ",updateflag);
+	if(updateflag)
+		{
+			//kickoffSilentUpdate();
+			if(QFile::exists(APP_SILENT_UPDATE_NAME))
+			{
+				qDebug("run %s",APP_SILENT_UPDATE_NAME);
+				runProgram(QString(APP_SILENT_UPDATE_NAME),QString("-r"));
+				app.reset();
+				exit(0);
+			}
+		}
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
 	

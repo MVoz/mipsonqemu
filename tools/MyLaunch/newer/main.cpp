@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <QSettings>
+#include <qDebug>
 #include "../include/config.h"
 void copyFile(const QString& filepath,const QString& dstDir)
 {
@@ -98,9 +99,11 @@ void runProgram(QString path, QString args) {
 }
 int main(int argc, char *argv[])
 {
-		QStringList args = qApp->arguments();
+		
 		QApplication *app=new QApplication(argc, argv);
-	    app->setQuitOnLastWindowClosed(true);
+	    	app->setQuitOnLastWindowClosed(true);
+		QStringList args = qApp->arguments();
+
 		int retry=0;
 		QSettings s(QString(APP_HKEY_PATH),QSettings::NativeFormat);	
 		int updateFlag=s.value(APP_HEKY_UPDATE_ITEM,0).toInt();
@@ -109,12 +112,12 @@ int main(int argc, char *argv[])
 refind:
 		if(retry>5) 
 					goto out;
-		HWND   hWnd   = ::FindWindow(NULL, (LPCWSTR) QString("Lanuchy").utf16());
+		HWND   hWnd   = ::FindWindow(NULL, (LPCWSTR) QString(APP_PROGRAM_NAME).utf16());
 		if(!hWnd)
 		 {
 				updateAllFiles("temp/","./");
 				deleteDirectory("temp/");
-				s.setValue("updateFlag",0);
+				s.setValue(APP_HEKY_UPDATE_ITEM,0);
 				s.sync();
 				goto out;
 		 }else{
@@ -123,7 +126,10 @@ refind:
 				 goto refind;
 		 }					 
 out:
-
-		runProgram(QString("Launchy.exe"),QString(""));
+		if (args.size() > 1&&args[1] == "-r")
+		  {
+			runProgram(QString(APP_PROGRAM_NAME),QString(""));
+		  }
+			
 	//	app->exec();
 }
