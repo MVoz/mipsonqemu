@@ -277,25 +277,25 @@ void GetFileHttp::getFileDone(bool error)
 					case HTTP_GET_INI_NOT_EXISTED:
 						 emit getIniDoneNotify(HTTP_GET_INI_NOT_EXISTED);
 						qDebug("The file %s doesn't exist in server!",qPrintable(updaterFilename));
-						deleteDirectory(QString("temp"));
+						//deleteDirectory(QString("temp"));
 						this->quit();
 						break;
 					case HTTP_GET_FILE_NOT_EXISTED:
 						emit getFileDoneNotify(HTTP_GET_FILE_NOT_EXISTED);
 						qDebug("The file %s doesn't exist in server!",qPrintable(updaterFilename));
-						deleteDirectory(QString("temp"));
+						//deleteDirectory(QString("temp"));
 						this->quit();
 						break;
 					case HTTP_GET_INI_FAILED:
 						emit getIniDoneNotify(HTTP_GET_INI_FAILED);
 						qDebug("get file %s from server failed at %d times!\n",qPrintable(updaterFilename),retryTime);
-						deleteDirectory(QString("temp"));
+						//deleteDirectory(QString("temp"));
 						this->quit();
 						break;
 					case HTTP_GET_FILE_FAILED:
 						emit getFileDoneNotify(HTTP_GET_FILE_FAILED);
 						qDebug("get file %s from server failed at %d times!\n",qPrintable(updaterFilename),retryTime);
-						deleteDirectory(QString("temp"));
+						//deleteDirectory(QString("temp"));
 						this->quit();
 						break;
 				}
@@ -400,7 +400,7 @@ int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,c
 	mode:
 		0--local to server ,1--server to local
 */
-void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode)
+void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m)
 {
 	//merge local with server
 			  int count = srcSettings->beginReadArray("portable");
@@ -411,22 +411,42 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 					uint version=srcSettings->value("version").toUInt(); 
 					QString md5=srcSettings->value("md5",0).toString(); 
 					qDebug("%s filename=%s version=%d",__FUNCTION__,qPrintable(filename),version);
-					switch(checkToSetiing(dstSetting,filename,version))
+					int  flag = checkToSetiing(dstSetting,filename,version);
+					switch(flag)
 					{
 						case -2://no found
-							if(mode==SETTING_MERGE_SERVERTOLOCAL)
+						
+							if(m==SETTING_MERGE_SERVERTOLOCAL)
 								{
 									qDebug("The file %s doesn't exist on the local ,need download from server!",qPrintable(filename));
-									needed=1;
-									downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);
+									
+									if(
+										(!QFile::exists(QString("temp/portable/").append(filename))||(md5!=tz::fileMd5(QString("temp/portable/").append(filename))))
+										&&
+										(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
+									 )
+										{
+											needed=1;
+											downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);		
+										}
 								}
 							break;
+						
 						case -1:
-							if(mode==SETTING_MERGE_LOCALTOSERVER)
+							if(m==SETTING_MERGE_LOCALTOSERVER)
 							{
-								qDebug("The server file %s version is newer than local.need download from server!",qPrintable(filename));
-								needed=1;
-								downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);								
+									qDebug("The server file %s version is newer than local.need download from server!",qPrintable(filename));
+									
+									//check whether existes in temp directory!
+									if(
+										(!QFile::exists(QString("temp/portable/").append(filename))||(md5!=tz::fileMd5(QString("temp/portable/").append(filename))))
+										&&
+										(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
+									 )
+									 {
+											needed=1;
+											downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);								
+									}
 							}
 							break;
 						case 0:
@@ -460,32 +480,31 @@ void updaterThread::getIniDone(int err)
 			mergeSettings(serverSettings,localSettings,SETTING_MERGE_SERVERTOLOCAL);
 			//update all downloaded files
 			//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
-			if(error){
-						//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
-			}else if(needed) 
-				{
-						sem_downfile_success.acquire(1);
-						//write update.ini
-						  int count = serverSettings->beginReadArray("portable");
-						  localSettings->beginWriteArray("portable");
-						  for (int i = 0; i < count; i++)
-							{
-								serverSettings->setArrayIndex(i);								
-								localSettings->setArrayIndex(i);
-								localSettings->setValue("version",serverSettings->value("version").toUInt());
-								localSettings->setValue("name",serverSettings->value("name").toString());
-								localSettings->setValue("md5",serverSettings->value("md5").toString());	
-								
-						  	}
-						  serverSettings->endArray();
-						  localSettings->endArray();
-						  localSettings->sync();
-						//emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
-				}
-			else{
+				if(error){
+							//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+				}else{
+					if(needed) 
+						{
+							sem_downfile_success.acquire(1);
+						//	emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
+						}
+					//else
 						//emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
-				}			
-
+					//write update.ini
+					int count = serverSettings->beginReadArray("portable");
+					localSettings->beginWriteArray("portable");
+					for (int i = 0; i < count; i++)
+					{
+						serverSettings->setArrayIndex(i);								
+						localSettings->setArrayIndex(i);
+						localSettings->setValue("version",serverSettings->value("version").toUInt());
+						localSettings->setValue("name",serverSettings->value("name").toString());
+						localSettings->setValue("md5",serverSettings->value("md5").toString());	
+					}
+					  serverSettings->endArray();
+					 localSettings->endArray();
+					 localSettings->sync();
+				}
 			}else
 			{
 					//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
