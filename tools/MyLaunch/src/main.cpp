@@ -1195,9 +1195,9 @@ void MyWidget::closeEvent(QCloseEvent * event)
 
 void MyWidget::updateSuccess()
 {
-	QSettings s(QString("HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"),QSettings::NativeFormat);	
+	QSettings s(QString(APP_HKEY_PATH),QSettings::NativeFormat);	
 	QString filepath=qApp->applicationFilePath().replace(QString("/"), QString("\\"));
-	s.setValue("updateFlag",1);	
+	s.setValue(APP_HEKY_UPDATE_ITEM,1);	
 	//	s.remove(APP_NAME);
 	s.sync();
 
@@ -2288,6 +2288,9 @@ int main(int argc, char *argv[])
 		  logDir.remove("log.txt");
 	  }
 #endif
+	//check update in register
+	uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
+	qDebug("updateflag = %d ",updateflag);
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
 	

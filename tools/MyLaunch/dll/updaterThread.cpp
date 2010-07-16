@@ -342,8 +342,9 @@ void updaterThread::run()
 {
 #if 1
 		if(mode == UPDATE_DLG_MODE )
-		connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
-
+			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+		else if(mode ==UPDATE_SILENT_MODE )
+			tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
 		manager=new QNetworkAccessManager();
 		testNetTimer=new QTimer();
 		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)));
@@ -482,10 +483,12 @@ void updaterThread::getIniDone(int err)
 			//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
 				if(error){
 							//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+							
 				}else{
 					if(needed) 
 						{
 							sem_downfile_success.acquire(1);
+							tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,1);
 						//	emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
 						}
 					//else
@@ -508,6 +511,7 @@ void updaterThread::getIniDone(int err)
 			}else
 			{
 					//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+					
 					qDebug("%s error %d happened",__FUNCTION__,error);
 				
 			}

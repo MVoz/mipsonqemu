@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <QSettings>
+#include "../include/config.h"
 void copyFile(const QString& filepath,const QString& dstDir)
 {
 
@@ -101,8 +102,8 @@ int main(int argc, char *argv[])
 		QApplication *app=new QApplication(argc, argv);
 	    app->setQuitOnLastWindowClosed(true);
 		int retry=0;
-		QSettings s(QString("HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"),QSettings::NativeFormat);	
-		int updateFlag=s.value("updateFlag",0).toInt();
+		QSettings s(QString(APP_HKEY_PATH),QSettings::NativeFormat);	
+		int updateFlag=s.value(APP_HEKY_UPDATE_ITEM,0).toInt();
 		if(updateFlag!=1)
 					goto out;
 refind:

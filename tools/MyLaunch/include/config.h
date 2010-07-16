@@ -189,7 +189,16 @@
 
 #define CONFIG_PINYIN_FROM_DB
 
+#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
+#define APP_HEKY_UPDATE_ITEM "updaterflag"
+#define REGISTER_GET_MODE 0
+#define REGISTER_SET_MODE 1
 
 
+
+#define SECONDS 1000
+#define MINUTES  (60*SECONDS)
+#define HOURS (60*MINUTES)
+#define DAYS (24*HOURS)
 #endif
 
