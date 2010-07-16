@@ -1104,9 +1104,9 @@ void MyWidget::silentupdateTimeout()
 {
 	int time = gSettings->value("GenOps/silentupdatetimer", 10).toInt();
 	
-	catalogBuilderTimer->stop();
+	silentupdateTimer->stop();
 	
-	qDebug("silentupdateTimeout !!!startSilentUpdate.....isActive=%d",catalogBuilderTimer->isActive());
+	qDebug("silentupdateTimeout !!!startSilentUpdate.....isActive=%d",silentupdateTimer->isActive());
 	//do something
 	startSilentUpdate();
 //	catalogBuilderTimer->start(time * 60000);//minutes

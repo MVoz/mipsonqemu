@@ -71,7 +71,7 @@ uint getVersion(QString name,QSettings* s,QString md5)
 }
 int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
 {
-	path= QDir::toNativeSeparators(path);
+//	path= QDir::toNativeSeparators(path);
 	QDir dir(path);
 //	QString dirPath = dir.absolutePath();
 	if(!dir.exists()) return 0;
@@ -89,7 +89,8 @@ int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
 		}
 	QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
 	for(int i=0;i<dirs.size();i++)
-	{
+	{		
+			fprintf(stdout,"file path=%s dirs[i]=%s\n",qPrintable(path),qPrintable(dirs[i]));
 			dirMd5(root?(dirs[i]):(path+ "/"+dirs[i]),0,s,tmps);
 	}
 	return 1;	
