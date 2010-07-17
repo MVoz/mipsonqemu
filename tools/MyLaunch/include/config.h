@@ -151,7 +151,7 @@
 #define UPDATE_SUCCESSFUL_STRING "update_successful"
 #define UPDATE_NO_NEED_STRING "update_no_need"
 #define LOGIN_FALIL_STRING   "login_failure_please_re_login"
-
+#define UPDATE_SERVER_REFUSE_STRING "server_refuse"
 
 
 
@@ -202,6 +202,8 @@
 
 #define APP_SILENT_UPDATE_NAME "newer.exe"
 #define APP_PROGRAM_NAME  "tanzhi.exe"
+#define APP_SETUP_NAME "tanzhi.exe"
+#define APP_FILEMD5_NAME "fmd5.exe"
 
 #define UPDATE_SERVER_HOST HTTP_SERVER_HOST
 

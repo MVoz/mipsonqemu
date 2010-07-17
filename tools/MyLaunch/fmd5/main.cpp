@@ -79,7 +79,7 @@ int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
 	QStringList files = dir.entryList(QDir::Files);
 	for(int i=0;i<files.size();i++)
 		{
-			if(root&&(files[i]=="fmd5.exe"||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
+			if(root&&(files[i]==APP_FILEMD5_NAME||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
 					continue;
 			s->setArrayIndex(filenums++);
 			QString md5 = fileMd5(path+ "/"+files[i]);
