@@ -159,6 +159,8 @@ public:
 			error=0;
 			localSettings =NULL;
 			serverSettings =NULL;
+			updateTime =NULL;
+			testNetTimer =NULL;
 	 	}
 	~updaterThread()
 	{
@@ -168,6 +170,10 @@ public:
 			delete localSettings;
 		if(serverSettings)
 			delete serverSettings;
+		if(testNetTimer)
+			delete testNetTimer;
+		if(updateTime)
+			delete updateTime;
 		//testNet.release(testNet.available());
 	}
 	void run();

@@ -319,8 +319,10 @@ updaterThread::updaterThread(QObject* parent): QThread(parent)
 */
 void updaterThread::testNetFinished(QNetworkReply* reply)
 {
-	qDebug("network reply error code %d",reply->error());
-	testNetTimer->stop();
+	qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
+	if(testNetTimer->isActive())
+		testNetTimer->stop();
+	//qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
 	error=reply->error();
 //	testNet.release(1);
 	if(!error)
@@ -335,7 +337,8 @@ void updaterThread::testNetFinished(QNetworkReply* reply)
 void updaterThread::testNetTimeout()
 {
 	qDebug("%s %d",__FUNCTION__,__LINE__);
-	testNetTimer->stop();
+	if(testNetTimer->isActive())
+		testNetTimer->stop();
 	reply->abort();
 }
 void updaterThread::run()
@@ -345,10 +348,12 @@ void updaterThread::run()
 			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
 
 		manager=new QNetworkAccessManager();
+		manager->moveToThread(this);
 		testNetTimer=new QTimer();
-		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)));
+		testNetTimer->moveToThread(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
 		reply=manager->get(QNetworkRequest(QUrl("http://192.168.115.2/")));
-		testNetTimer->start(30*1000);//1 
+		testNetTimer->start(30*SECONDS);
 		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
 
 #endif

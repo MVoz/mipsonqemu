@@ -100,7 +100,8 @@ void postHttp::run()
 
 void postHttp::httpDone(bool error)
 {
-	postTimer->stop();
+	if(postTimer->isActive())
+		postTimer->stop();
 	if(!error)
 		{
 			uint newgroupid=0;
@@ -163,6 +164,8 @@ void postHttp::httpDone(bool error)
 void postHttp::postTimerSlot()
 {
 	qDebug("postTimerSlot.......");
+	if(postTimer->isActive())
+		postTimer->stop();
 	posthttp->abort();
 }
 
