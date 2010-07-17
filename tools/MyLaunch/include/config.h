@@ -197,6 +197,9 @@
 #define APP_SILENT_UPDATE_NAME "newer.exe"
 #define APP_PROGRAM_NAME  "tanzhi.exe"
 
+#define HTTP_SERVER_URL "http://192.168.115.2/"
+
+#define TEST_NET_URL "testnet.php"
 
 #define SECONDS 1000
 #define MINUTES  (60*SECONDS)
