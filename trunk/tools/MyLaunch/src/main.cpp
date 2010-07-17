@@ -1207,10 +1207,10 @@ void MyWidget::updateSuccessTimeout()
 	if(gBuilder||gSyncer)
 		updateSuccessTimer->start(1*SECONDS);
 	else{
-		qDebug("%s start temp/setup/tanzhi.exe !",__FUNCTION__);
-		if(QFile::exists(QString("temp/setup/tanzhi.exe")))
+		qDebug("%s start %s !",__FUNCTION__,qPrintable(QString(UPDATE_SETUP_DIRECTORY).append(APP_SETUP_NAME)));
+		if(QFile::exists(QString(UPDATE_SETUP_DIRECTORY).append(APP_SETUP_NAME)))
 		{
-			runProgram(QString("temp/setup/tanzhi.exe"),QString(""));
+			runProgram(QString(UPDATE_SETUP_DIRECTORY).append(APP_SETUP_NAME),QString(""));
 			close();
 		}
 	}

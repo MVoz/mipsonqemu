@@ -327,7 +327,16 @@ void updaterThread::testNetFinished(QNetworkReply* reply)
 //	testNet.release(1);
 	if(!error)
 	{
-			downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
+			QString replybuf(reply->readAll());
+			qDebug("%s replly=%s",__FUNCTION__,qPrintable(replybuf));
+			if(replybuf == "1")
+				downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
+			else{
+				if(mode==UPDATE_DLG_MODE) 
+					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));
+				quit();
+			}
+			
 	}else{
 		if(mode==UPDATE_DLG_MODE) 
 			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
