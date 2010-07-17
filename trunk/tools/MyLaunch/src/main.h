@@ -205,6 +205,7 @@ public:
 	bool optionsOpen;
 	uint updateTimes;// update times
 	QTimer* syncDlgTimer;
+	QTimer* updateSuccessTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
 	QString testAccountName;
@@ -285,6 +286,7 @@ public slots:
 	void onHotKey();
 	void catalogBuilderTimeout();
 	void silentupdateTimeout();
+	void updateSuccessTimeout();
 	void syncTimeout();
 	void dropTimeout();
 	void setAlwaysShow(bool);
