@@ -272,6 +272,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		  rescue = true;
 	  }
 	// Set the timers
+	updateSuccessTimer = NULL;
 	catalogBuilderTimer = new QTimer(this);
 	slientUpdate =NULL;
 	silentupdateTimer = new QTimer(this);
@@ -293,10 +294,13 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	// Load the catalog
 	updateTimes=0;
+	/*
 	gBuilder.reset(new CatBuilder(buildDbWithStart,CAT_BUILDMODE_ALL,&db));
 	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	
 	gBuilder->start();
+	*/
+	buildCatalog();
 
 	//      setTabOrder(combo, combo);
 
@@ -1114,6 +1118,7 @@ void MyWidget::silentupdateTimeout()
 
 void MyWidget::catalogBuilderTimeout()
 {
+
 	// Save the settings periodically
 	savePosition();
 	gSettings->sync();
@@ -1126,12 +1131,15 @@ void MyWidget::catalogBuilderTimeout()
 			updateTimes=0;
 		}
 	// Perform the database update
+	/*
 	if (gBuilder == NULL)
 	  {
 		  gBuilder.reset(new CatBuilder(includeDir,CAT_BUILDMODE_ALL,&db));
 		  connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		  gBuilder->start(QThread::IdlePriority);
-	  }		
+	  }
+	 */
+	buildCatalog();
 	catalogBuilderTimer->stop();
 	if (time != 0)
 		catalogBuilderTimer->start(time * 60000);//minutes
@@ -1192,7 +1200,21 @@ void MyWidget::closeEvent(QCloseEvent * event)
 
 	qApp->quit();
 }
-
+void MyWidget::updateSuccessTimeout()
+{
+	updateSuccessTimer->stop();
+	//check syn , catebulder...
+	if(gBuilder||gSyncer)
+		updateSuccessTimer->start(1*SECONDS);
+	else{
+		qDebug("%s start temp/setup/tanzhi.exe !",__FUNCTION__);
+		if(QFile::exists(QString("temp/setup/tanzhi.exe")))
+		{
+			runProgram(QString("temp/setup/tanzhi.exe"),QString(""));
+			close();
+		}
+	}
+}
 void MyWidget::updateSuccess()
 {
 	/*
@@ -1202,12 +1224,9 @@ void MyWidget::updateSuccess()
 		//	s.remove(APP_NAME);
 		s.sync();
 	*/
-	qDebug("%s start temp/setup/tanzhi.exe !",__FUNCTION__);
-	if(QFile::exists(QString("temp/setup/tanzhi.exe")))
-	{
-		runProgram(QString("temp/setup/tanzhi.exe"),QString(""));
-		close();
-	}
+	updateSuccessTimer = new QTimer(this);
+	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));
+	updateSuccessTimer->start(1*SECONDS);
 	
 }
 
@@ -1498,6 +1517,8 @@ void MyWidget::contextMenuEvent(QContextMenuEvent * event)
 }
 void MyWidget::_buildCatalog(catbuildmode mode)
 {
+	if(updateSuccessTimer)
+		return;
 	if (gBuilder == NULL)
 	  {
 		  gBuilder.reset(new CatBuilder(true,mode,&db));
@@ -1585,6 +1606,8 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
+	if(updateSuccessTimer)
+		return;
 	syncMode = mode;
 	QString name,password;
 	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
