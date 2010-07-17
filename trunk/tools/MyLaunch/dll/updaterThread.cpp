@@ -317,6 +317,7 @@ updaterThread::updaterThread(QObject* parent): QThread(parent)
 	timers=0;
 }
 */
+/*
 void updaterThread::testNetFinished(QNetworkReply* reply)
 {
 	qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
@@ -350,12 +351,39 @@ void updaterThread::testNetTimeout()
 		testNetTimer->stop();
 	reply->abort();
 }
+*/
+void updaterThread::testNetFinishedx()
+{
+	qDebug("testNetFinishedx result=%d",tz::testNetResult(GET_MODE,0));
+	if(testThread)
+			delete testThread;
+	switch(tz::testNetResult(GET_MODE,0))
+				{
+					case -1:
+						if(mode==UPDATE_DLG_MODE) 
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));	
+						quit();
+					break;
+					case 0:
+						if(mode==UPDATE_DLG_MODE) 
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));		
+						quit();
+					break;
+					case 1:
+						downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
+					break;
+		}	
+
+	
+	//qDebug("testNetFinishedx result=%d",testThread->result);
+
+}
 void updaterThread::run()
 {
-#if 1
+
 		if(mode == UPDATE_DLG_MODE )
 			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
-
+#if 0
 		manager=new QNetworkAccessManager();
 		manager->moveToThread(this);
 		testNetTimer=new QTimer();
@@ -364,11 +392,22 @@ void updaterThread::run()
 		reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
 		testNetTimer->start(30*SECONDS);
 		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
+#else
+		//testServerThread *testThread = new testServerThread(NULL);
+		{
+			testThread = new testServerThread(NULL);
 
+			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinishedx()));
+			qDebug("start testServerThread::");
+			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
+			testThread->start(QThread::IdlePriority);
+		}	
+		
 #endif
-
+		
 		exec();
 		qDebug("sync thread quit.............");
+
 
 }
 /*
@@ -642,7 +681,10 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 	if(m==UPDATE_MODE_GET_FILE) timers++;
 	
 		qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
-		GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
+		//GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
+		if(fh)
+			delete fh;
+		fh=new GetFileHttp(NULL,m,md5);
 		connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
 		connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);	
 		if(mode==UPDATE_DLG_MODE) {
@@ -681,4 +723,45 @@ int updaterThread::getRandString(QString & randString){
 	return 0;
 }  
 */
+void testServerThread::testNetFinished(QNetworkReply* reply)
+{
+		qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
+		if(testNetTimer->isActive())
+			testNetTimer->stop();
+		int error=reply->error();
+		if(!error)
+		{
+				QString replybuf(reply->readAll());
+				qDebug("%s replly=%s",__FUNCTION__,qPrintable(replybuf));
+				if(replybuf.startsWith(QString("1")))
+					{
+						qDebug("set testNetResult 1");
+						tz::testNetResult(SET_MODE,1);			
+					}
+				
+		}else
+				tz::testNetResult(SET_MODE,-1);
+		quit();
+}
+void testServerThread::testNetTimeout()
+{
+		qDebug("%s %d",__FUNCTION__,__LINE__);
+		if(testNetTimer->isActive())
+			testNetTimer->stop();
+		reply->abort();
+}
+void testServerThread::run()
+{
+		qDebug("testServerThread::run");
+		tz::testNetResult(SET_MODE,0);
+		manager=new QNetworkAccessManager();
+		manager->moveToThread(this);
+		testNetTimer=new QTimer();
+		testNetTimer->moveToThread(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
+		reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
+		testNetTimer->start(30*SECONDS);
+		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
+		exec();
+}
 

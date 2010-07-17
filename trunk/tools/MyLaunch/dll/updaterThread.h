@@ -75,6 +75,7 @@ public:
 	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
 	{
+		qDebug("~GetFileHttp");
 		/*
 		if(file){
 			file->close();
@@ -130,6 +131,38 @@ public slots:
 	void updateStatusNotify(int type,int status,QString str);
 	
 };
+class  UPDATER_THREAD_DLL_CLASS_EXPORT testServerThread:public QThread
+{
+	Q_OBJECT;
+public:
+	QNetworkAccessManager *manager;
+	QNetworkReply *reply;
+	QTimer* testNetTimer;
+public:
+	 testServerThread(QObject * parent = 0):QThread(parent)
+	 {
+	 	manager = NULL;
+		reply = NULL;
+	 	testNetTimer = NULL;
+	 }
+	 ~testServerThread()
+	 {
+	 	qDebug("~testServerThread");
+	
+	 	if(manager)
+			manager->deleteLater();
+		if(reply)
+			reply->deleteLater();
+	 	if(testNetTimer)
+			testNetTimer->deleteLater();		
+	
+	 }
+	 void run();
+public slots: 
+	void testNetFinished(QNetworkReply*);
+	void testNetTimeout();
+	
+};
 class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
 {
 	Q_OBJECT;
@@ -139,14 +172,16 @@ public:
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
+	testServerThread *testThread;
+	GetFileHttp *fh;
 	QSemaphore sem_downfile_success;
 	QSemaphore sem_downfile_start;
 	int needed;
 	int error;
 	//QSemaphore testNet;
-	QNetworkAccessManager *manager;
-	QNetworkReply *reply;
-	QTimer* testNetTimer;
+	//QNetworkAccessManager *manager;
+	//QNetworkReply *reply;
+	//QTimer* testNetTimer;
 	int mode;
 	
 
@@ -159,20 +194,25 @@ public:
 			localSettings =NULL;
 			serverSettings =NULL;
 			updateTime =NULL;
-			testNetTimer =NULL;
+			//testNetTimer =NULL;
+			testThread =NULL;
+			fh = NULL;
 	 	}
 	~updaterThread()
 	{
+		qDebug("~~updaterThread");
 		sem_downfile_success.release(sem_downfile_success.available());
 		sem_downfile_start.release(sem_downfile_start.available());
 		if(localSettings)
 			delete localSettings;
 		if(serverSettings)
 			delete serverSettings;
-		if(testNetTimer)
-			delete testNetTimer;
+		//if(testNetTimer)
+		//	delete testNetTimer;
 		if(updateTime)
 			delete updateTime;
+		if(fh)
+			delete fh;
 		//testNet.release(testNet.available());
 	}
 	void run();
@@ -184,8 +224,9 @@ public:
 public slots: 
 	void getIniDone(int err);
     	void getFileDone(int err);
-	void testNetFinished(QNetworkReply*);
-	void testNetTimeout();
+	//void testNetFinished(QNetworkReply*);
+	void testNetFinishedx();
+	//void testNetTimeout();
 
       signals:
 //	void  updaterDoneNotify(bool error);

@@ -19,7 +19,7 @@ uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 static QString iePath;
 char* gLanguageList[]={"chinese","english"};
-
+static int testnetresult = 0;
 
 struct browserinfo browserInfo[]={
 	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
@@ -1017,6 +1017,17 @@ QString  tz::registerString(int mode,const QString& path,const QString& name,QSt
 		s.sync();
 	}
 	return ret;
+}
+int tz::testNetResult(int mode,int ret)
+{
+	switch(mode)
+		{
+		case GET_MODE://get
+			return testnetresult;
+		case SET_MODE://set
+			testnetresult = ret;
+		break;
+		}
 }
 
 #if 0

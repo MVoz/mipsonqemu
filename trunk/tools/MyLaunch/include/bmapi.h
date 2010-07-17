@@ -26,6 +26,8 @@
 #define BMAPI_DLL_FUNCEXPORT  extern "C" __declspec(dllimport)
 #endif
 
+#define GET_MODE 0
+#define SET_MODE 1
 
 extern uint gMaxGroupId;
 /*
@@ -168,6 +170,7 @@ public :
 	static QString fileMd5(QString filename);
 	static uint registerInt(int mode,const QString& path,const QString& name,uint val);
 	static QString registerString(int mode,const QString& path,const QString& name,QString val);
+	static int testNetResult(int,int);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
