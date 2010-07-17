@@ -8,9 +8,10 @@
 #include <QCryptographicHash>
 #include <QDataStream>
 #include <QSettings>
+#include "../include/config.h"
 
-#define UPDATE_FILE_NAME "update.ini"
-#define TEMP_UPDATE_FILE_NAME  "update.ini.tmp"
+
+#define TEMP_UPDATE_FILE_NAME  UPDATE_FILE_NAME".tmp"
 static int filenums=0;
 QString fileMd5(QString filename)
 {
@@ -48,7 +49,7 @@ end:
 
 uint getVersion(QString name,QSettings* s,QString md5)
 {
-		  int count = s->beginReadArray("portable");
+		  int count = s->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 		  uint ret = 0;
 		  for (int i = 0; i < count; i++)
 			{
@@ -107,7 +108,7 @@ int main(int argc, char* argv[])
 	QSettings tmps(TEMP_UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
 	//if(argc!=2)
 	//		goto usage;
-	s.beginWriteArray("portable");
+	s.beginWriteArray(UPDATE_PORTABLE_KEYWORD);
 
 	dirMd5(".",1,&s,&tmps);
 

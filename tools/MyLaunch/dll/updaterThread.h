@@ -42,9 +42,8 @@
 #define HTTP_OK 200
 #define HTTP_FILE_NOT_FOUND 404
 
-#define UPDATE_FILE_NAME "update.ini"
-#define UPDATE_SERVER_HOST "192.168.115.2"
-#define UPDATE_SERVER_URL "update.ini"
+
+
 
 #define SETTING_MERGE_LOCALTOSERVER  0
 #define SETTING_MERGE_SERVERTOLOCAL  1

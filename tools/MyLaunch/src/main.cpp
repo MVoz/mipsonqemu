@@ -2337,7 +2337,7 @@ int main(int argc, char *argv[])
 #endif
 	//check update in register
 	uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
-	qDebug("updateflag = %d ",updateflag);
+	qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s ",updateflag,(UPDATE_PORTABLE_DIRECTORY));
 	if(updateflag)
 		{
 			//kickoffSilentUpdate();

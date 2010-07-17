@@ -33,14 +33,20 @@
 
 #define APP_NAME "MyLaunchy"
 
-#define BM_SERVER_ADDRESS "www.tanzhi.com"
+#define HTTP_SERVER_HOST "192.168.115.2"
+
+#define HTTP_SERVER_URL "http://"HTTP_SERVER_HOST"/"
+
+//#define BM_SERVER_ADDRESS "www.tanzhi.com"
+#define BM_SERVER_ADDRESS HTTP_SERVER_HOST
+
 #ifdef CONFIG_AUTH_ENCRYPTION
 #ifdef CONFIG_SYNC_TIMECHECK
-#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
+#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
 #else
-#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
+#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
 #endif
-#define BM_SERVER_TESTACCOUNT_URL "http://www.tanzhi.com/do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
+#define BM_SERVER_TESTACCOUNT_URL HTTP_SERVER_URL"do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
 #define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
 #define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
@@ -48,7 +54,7 @@
 
 #else
 //#define BM_SERVER_GET_BMLIST_URL "http://192.168.1.115/bookmark.php"
-#define BM_SERVER_GET_BMXML_URL "http://www.tanzhi.com/do.php?ac=bmxml&source=client&username=%1&password=%2"
+#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&username=%1&password=%2"
 
 
 #define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
@@ -197,9 +203,24 @@
 #define APP_SILENT_UPDATE_NAME "newer.exe"
 #define APP_PROGRAM_NAME  "tanzhi.exe"
 
-#define HTTP_SERVER_URL "http://192.168.115.2/"
+#define UPDATE_SERVER_HOST HTTP_SERVER_HOST
 
-#define TEST_NET_URL "testnet.php"
+
+
+#define TEST_NET_URL HTTP_SERVER_URL"testnet.php"
+
+#define UPDATE_DIRECTORY "temp/"
+#define UPDATE_PORTABLE_DIRECTORY    UPDATE_DIRECTORY"portable/"
+#define UPDATE_SETUP_DIRECTORY    UPDATE_DIRECTORY"setup/"
+
+#define UPDATE_FILE_NAME "update.ini"
+#define UPDATE_SERVER_URL UPDATE_FILE_NAME
+
+
+#define UPDATE_PORTABLE_KEYWORD    "portable"
+#define UPDATE_SETUP_KEYWORD    "setup"
+
+
 
 #define SECONDS 1000
 #define MINUTES  (60*SECONDS)
