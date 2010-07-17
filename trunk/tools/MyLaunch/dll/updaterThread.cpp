@@ -352,7 +352,7 @@ void updaterThread::run()
 		testNetTimer=new QTimer();
 		testNetTimer->moveToThread(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
-		reply=manager->get(QNetworkRequest(QUrl("http://192.168.115.2/")));
+		reply=manager->get(QNetworkRequest(QUrl(QString(HTTP_SERVER_URL).append(TEST_NET_URL))));
 		testNetTimer->start(30*SECONDS);
 		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
 
