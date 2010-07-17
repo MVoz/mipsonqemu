@@ -352,7 +352,7 @@ void updaterThread::run()
 		testNetTimer=new QTimer();
 		testNetTimer->moveToThread(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
-		reply=manager->get(QNetworkRequest(QUrl(QString(HTTP_SERVER_URL).append(TEST_NET_URL))));
+		reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
 		testNetTimer->start(30*SECONDS);
 		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
 
@@ -370,7 +370,7 @@ void updaterThread::run()
 int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1)
 {
 	int ret=-2;
-	int count = settings->beginReadArray("portable");
+	int count = settings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 		  for (int i = 0; i < count; i++)
 		    {
 			    settings->setArrayIndex(i);
@@ -408,7 +408,7 @@ int updaterThread::checkToSetiing(QSettings *settings,const QString &filename1,c
 void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m)
 {
 	//merge local with server
-			  int count = srcSettings->beginReadArray("portable");
+			  int count = srcSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 			  for (int i = 0; i < count; i++)
 				{
 					srcSettings->setArrayIndex(i);
@@ -426,7 +426,7 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 									qDebug("The file %s doesn't exist on the local ,need download from server!",qPrintable(filename));
 									
 									if(
-										(!QFile::exists(QString("temp/portable/").append(filename))||(md5!=tz::fileMd5(QString("temp/portable/").append(filename))))
+										(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))||(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))))
 										&&
 										(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
 									 )
@@ -444,7 +444,7 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 									
 									//check whether existes in temp directory!
 									if(
-										(!QFile::exists(QString("temp/portable/").append(filename))||(md5!=tz::fileMd5(QString("temp/portable/").append(filename))))
+										(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))||(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))))
 										&&
 										(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
 									 )
@@ -469,10 +469,10 @@ void updaterThread::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,i
 }
 void  updaterThread::checkSilentUpdateApp()
 {
-	if(QFile::exists(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME)))		
+	if(QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(APP_SILENT_UPDATE_NAME)))		
 		{
-			QFile::copy(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME),APP_SILENT_UPDATE_NAME);
-			QFile::remove(QString("temp/portable/").append(APP_SILENT_UPDATE_NAME));
+			QFile::copy(QString(UPDATE_PORTABLE_DIRECTORY).append(APP_SILENT_UPDATE_NAME),APP_SILENT_UPDATE_NAME);
+			QFile::remove(QString(UPDATE_PORTABLE_DIRECTORY).append(APP_SILENT_UPDATE_NAME));
 		}
 }
 void updaterThread::getIniDone(int err)
@@ -486,7 +486,7 @@ void updaterThread::getIniDone(int err)
 				localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
 			//else
 			//	localSettings=new QSettings(NULL,QSettings::IniFormat, NULL);
-			serverSettings = new QSettings(QString("temp/portable/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+			serverSettings = new QSettings(QString(UPDATE_PORTABLE_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
 			//get newer.exe independently
 			
 			
@@ -510,8 +510,8 @@ void updaterThread::getIniDone(int err)
 					//else
 						//emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
 					//write update.ini
-					int count = serverSettings->beginReadArray("portable");
-					localSettings->beginWriteArray("portable");
+					int count = serverSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
+					localSettings->beginWriteArray(UPDATE_PORTABLE_KEYWORD);
 					for (int i = 0; i < count; i++)
 					{
 						serverSettings->setArrayIndex(i);								
