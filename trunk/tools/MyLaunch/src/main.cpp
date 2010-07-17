@@ -130,12 +130,12 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	opsButton = new QPushButton(label);
 	opsButton->setObjectName("opsButton");
-	opsButton->setToolTip(tr("Launchy Options"));
+	opsButton->setToolTip(tr(APP_NAME" Options"));
 	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
 
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
-	closeButton->setToolTip(tr("Close Launchy"));
+	closeButton->setToolTip(tr("Close "APP_NAME));
 	connect(closeButton, SIGNAL(pressed()), qApp, SLOT(quit()));
 
 
@@ -268,7 +268,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction))
 	  {
-		  QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
+		  QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
 		  rescue = true;
 	  }
 	// Set the timers
@@ -969,7 +969,7 @@ void MyWidget::httpGetFinished(bool error)
 			    QMessageBox box;
 			    box.setIcon(QMessageBox::Information);
 			    box.setTextFormat(Qt::RichText);
-			    box.setWindowTitle(tr("A new version of Launchy is available"));
+			    box.setWindowTitle(tr("A new version of "APP_NAME" is available"));
 			    box.setText(tr("A new version of Launchy is available.\n\nYou can download it at \
 				   <qt><a href=\"http://www.launchy.net/\">http://www.launchy.net</a></qt>"));
 			    box.exec();
@@ -2349,8 +2349,8 @@ int main(int argc, char *argv[])
 				exit(0);
 			}
 		}
-	QCoreApplication::setApplicationName("Launchy");
-	QCoreApplication::setOrganizationDomain("Launchy");
+	QCoreApplication::setApplicationName(APP_NAME);
+	QCoreApplication::setOrganizationDomain(APP_NAME);
 	
 	QString locale = QLocale::system().name();
 
