@@ -78,3 +78,7 @@ chinese=update_successful
 [update_no_need]
 english=update_no_need
 chinese=update_no_need
+
+[server_refuse]
+english=server_refuse
+chinese=服务器正在维护中，暂停此项服务，请等待一段时间再重试，谢谢！
