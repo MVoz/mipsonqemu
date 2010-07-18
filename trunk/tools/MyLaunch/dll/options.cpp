@@ -210,6 +210,7 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 	
 	//delete manager;
 	//manager=NULL;
+	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
 }
 void OptionsDlg::proxtTestTimerSlot()
 {
@@ -221,23 +222,27 @@ void OptionsDlg::proxtTestTimerSlot()
 void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
 
+	tz::netProxy(SET_MODE,settings,NULL);
 
 	qDebug("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s manager=0x%08x reply=0x%08x\n",
 	__FUNCTION__,qPrintable(proxyAddr),qPrintable(proxyPort),qPrintable(proxyUsername),qPrintable(proxyPassword),manager,reply);
 	if(!manager)
 	{
-	 proxy.setType(QNetworkProxy::HttpProxy);
-	 proxy.setHostName(proxyAddr);
-	
-	 proxy.setPort(proxyPort.toInt());
-	 proxy.setUser(proxyUsername);
-	 proxy.setPassword(proxyPassword);
+	/*
+		 proxy.setType(QNetworkProxy::HttpProxy);
+		 proxy.setHostName(proxyAddr);
+		
+		 proxy.setPort(proxyPort.toInt());
+		 proxy.setUser(proxyUsername);
+		 proxy.setPassword(proxyPassword);
+	 */
 	// QNetworkProxy::setApplicationProxy(proxy);
 	// QNetworkRequest request; 
 	 request.setUrl(QUrl(QString("http://www.sohu.com")));
 	 request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 	 manager = new QNetworkAccessManager(this);
-	 manager->setProxy(proxy);
+	// manager->setProxy(proxy);
+	SET_NET_PROXY(manager);
 	 manager->setObjectName(tr("manager"));
  	// connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(replyFinished(QNetworkReply*)));
 
@@ -801,7 +806,7 @@ void OptionsDlg::startUpdater()
 	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
 	
-		updaterThread* updaterthread=new updaterThread(updaterDlg,UPDATE_DLG_MODE);	
+		updaterThread* updaterthread=new updaterThread(updaterDlg,UPDATE_DLG_MODE,settings);	
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
 		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));
 		updaterthread->start(QThread::IdlePriority);		

@@ -8,6 +8,7 @@
 postHttp::postHttp(QObject * parent,int type ):QThread(parent)
 {
 	postType=type;
+	//proxyEnable = 0;
 	//QDEBUG("construction postHttp......");
 }
 postHttp::~postHttp(){
@@ -16,7 +17,13 @@ postHttp::~postHttp(){
 	delete resultBuffer;
 	resultBuffer=NULL;
 }
-
+/*
+void postHttp::setProxy(QNetworkProxy& p)
+{
+	proxyEnable = 1;
+	proxy = p;
+}
+*/
 void postHttp::run()
 {
 	postTimer=new QTimer();
@@ -24,6 +31,9 @@ void postHttp::run()
      	postTimer->start(10*1000);
 		
 	posthttp = new QHttp();
+
+	SET_NET_PROXY(posthttp);
+	
 	//QDEBUG("this thread is 0x%p\n",this);
 	posthttp->moveToThread(this);
 	//quitFlag=1;

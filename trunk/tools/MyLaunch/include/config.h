@@ -228,5 +228,13 @@
 #define MINUTES  (60*SECONDS)
 #define HOURS (60*MINUTES)
 #define DAYS (24*HOURS)
+
+#define SET_NET_PROXY(x) \
+	 if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
+				 tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
+				 QNetworkProxy* netProxy = NULL;\
+				 tz::netProxy(GET_MODE,NULL,netProxy);\
+				 (x)->setProxy(*netProxy);	\
+	  }
 #endif
 

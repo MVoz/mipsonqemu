@@ -14,6 +14,7 @@
  #include <QSqlDatabase>
 #include <QtCore/QVariant>
 #include <QThread>
+#include <QtNetwork/QNetworkProxy>
 
 #include <QTimer>
  #ifdef Q_WS_WIN
@@ -146,6 +147,14 @@ struct BMAPI_DLL_CLASSEXPORT  bookmark_catagory{
    QList<bookmark_catagory> list;
    
 };
+
+enum BMAPI_DLL_CLASSEXPORT RUNPARAMETER{
+	RUN_PARAMETER_START = 0,
+	RUN_PARAMETER_TESTNET_RESULT,
+	RUN_PARAMETER_NETPROXY_ENABLE,
+	RUN_PARAMETER_NETPROXY_USING,
+	RUN_PARAMETER_END	
+};
 class BMAPI_DLL_CLASSEXPORT  tz {
 public:
 	tz(){};
@@ -172,7 +181,9 @@ public :
 	static QString fileMd5(QString filename);
 	static uint registerInt(int mode,const QString& path,const QString& name,uint val);
 	static QString registerString(int mode,const QString& path,const QString& name,QString val);
-	static int testNetResult(int,int);
+	//static int testNetResult(int,int);
+	static int runParameter(int,int,int);
+	static void netProxy(int ,QSettings*,QNetworkProxy*);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

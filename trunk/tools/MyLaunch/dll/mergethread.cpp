@@ -339,6 +339,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	  {
 	  case BOOKMARK_CATAGORY_FLAG:
 	  	   posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+
 		  if (action)	//add
 		    {
 			    bc->parentId = parentId;
@@ -382,6 +383,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		  break;
 	  case BOOKMARK_ITEM_FLAG:
 	  	  posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+
 		  if (action)
 		    {
 		    //add
