@@ -17,7 +17,7 @@ CONFIG -= embed_manifest_dll
 DEFINES += WIN32
 DEFINES += BMAPI_DLL
 QT += sql
-
+QT += network
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/

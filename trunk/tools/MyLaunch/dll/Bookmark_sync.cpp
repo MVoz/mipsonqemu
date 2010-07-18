@@ -24,7 +24,7 @@ void BookmarkSync::setNetworkProxy()
 		 netProxy->setType(QNetworkProxy::HttpProxy);
 		 netProxy->setHostName(settings->value("HttpProxy/proxyAddress", "").toString());
 		
-		 netProxy->setPort(settings->value("HttpProxy/proxyPort", "").toUInt());
+		 netProxy->setPort(settings->value("HttpProxy/proxyPort", 0).toUInt());
 		 netProxy->setUser(settings->value("HttpProxy/proxyUsername", "").toString());
 		 netProxy->setPassword(settings->value("HttpProxy/proxyPassword", "").toString());
 		
@@ -137,7 +137,8 @@ void BookmarkSync::stopSync()
 }
 void BookmarkSync::testNetFinished()
 {
-	testServerResult = tz::testNetResult(GET_MODE,0);
+	//testServerResult = tz::testNetResult(GET_MODE,0);
+	testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 	qDebug("testNetFinishedx result=%d",testServerResult);
 	if(testThread)
 			delete testThread;
