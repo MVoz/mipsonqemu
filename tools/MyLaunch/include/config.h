@@ -202,7 +202,7 @@
 
 #define APP_SILENT_UPDATE_NAME "newer.exe"
 #define APP_PROGRAM_NAME  "tanzhi.exe"
-#define APP_SETUP_NAME "tanzhi.exe"
+#define APP_SETUP_NAME "setup.exe"
 #define APP_FILEMD5_NAME "fmd5.exe"
 
 #define UPDATE_SERVER_HOST HTTP_SERVER_HOST

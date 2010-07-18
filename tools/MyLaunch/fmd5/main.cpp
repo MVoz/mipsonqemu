@@ -12,6 +12,10 @@
 
 
 #define TEMP_UPDATE_FILE_NAME  UPDATE_FILE_NAME".tmp"
+
+#define FMD5_MODE_PORTABLE 0
+#define FMD5_MODE_SETUP 1
+
 static int filenums=0;
 QString fileMd5(QString filename)
 {
@@ -70,7 +74,7 @@ uint getVersion(QString name,QSettings* s,QString md5)
 		  s->endArray();
 	return ret;
 }
-int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
+int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 {
 //	path= QDir::toNativeSeparators(path);
 	QDir dir(path);
@@ -81,18 +85,30 @@ int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
 		{
 			if(root&&(files[i]==APP_FILEMD5_NAME||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
 					continue;
-			s->setArrayIndex(filenums++);
-			QString md5 = fileMd5(path+ "/"+files[i]);
-			s->setValue("name",root?(files[i]):(path+ "/"+files[i]));
-			s->setValue("md5", md5);	
-			s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
+			if((mode==FMD5_MODE_SETUP)&&(files[i]!=APP_SETUP_NAME))
+					continue;
+			if(mode==FMD5_MODE_PORTABLE)
+			{
+				s->setArrayIndex(filenums++);
+				QString md5 = fileMd5(path+ "/"+files[i]);
+				s->setValue("name",root?(files[i]):(path+ "/"+files[i]));
+				s->setValue("md5", md5);	
+				s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
+			}else if(mode==FMD5_MODE_SETUP){
+				QString md5 = fileMd5(path+ "/"+files[i]);
+				s->setValue("setup/name",root?(files[i]):(path+ "/"+files[i]));
+				s->setValue("setup/md5", md5);	
+				s->setValue("setup/version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
+			}
 			
 		}
-	QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-	for(int i=0;i<dirs.size();i++)
-	{		
-			fprintf(stdout,"file path=%s dirs[i]=%s\n",qPrintable(path),qPrintable(dirs[i]));
-			dirMd5(root?(dirs[i]):(path+ "/"+dirs[i]),0,s,tmps);
+	if(mode==FMD5_MODE_PORTABLE){
+		QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+		for(int i=0;i<dirs.size();i++)
+		{		
+				fprintf(stdout,"file path=%s dirs[i]=%s\n",qPrintable(path),qPrintable(dirs[i]));
+				dirMd5(root?(dirs[i]):(path+ "/"+dirs[i]),0,mode,s,tmps);
+		}
 	}
 	return 1;	
 }
@@ -100,22 +116,41 @@ int dirMd5(QString path,int root,QSettings* s,QSettings* tmps)
 
 int main(int argc, char* argv[])
 {
-	if(QFile::exists(UPDATE_FILE_NAME))
-		QFile::copy(UPDATE_FILE_NAME,TEMP_UPDATE_FILE_NAME);
-
-	QSettings s(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
-
-	QSettings tmps(TEMP_UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
-	//if(argc!=2)
-	//		goto usage;
-	s.beginWriteArray(UPDATE_PORTABLE_KEYWORD);
-
-	dirMd5(".",1,&s,&tmps);
-
-	s.endArray();
 	
-	if(QFile::exists(TEMP_UPDATE_FILE_NAME))
-		QFile::remove(TEMP_UPDATE_FILE_NAME);
+	if (argc > 1) {
+		if(!strcmp(argv[1],"-p")){
+			   if(QFile::exists(UPDATE_FILE_NAME))
+				QFile::copy(UPDATE_FILE_NAME,TEMP_UPDATE_FILE_NAME);
+
+				QSettings s(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+
+				QSettings tmps(TEMP_UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+				s.beginWriteArray(UPDATE_PORTABLE_KEYWORD);
+
+				dirMd5(".",1,FMD5_MODE_PORTABLE,&s,&tmps);
+
+				s.endArray();
+				
+				if(QFile::exists(TEMP_UPDATE_FILE_NAME))
+					QFile::remove(TEMP_UPDATE_FILE_NAME);
+		}else if(!strcmp(argv[1],"-s")) {
+				if(QFile::exists(UPDATE_FILE_NAME))
+					QFile::copy(UPDATE_FILE_NAME,TEMP_UPDATE_FILE_NAME);
+
+				QSettings s(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+
+				QSettings tmps(TEMP_UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+			//	s.beginWriteArray(UPDATE_PORTABLE_KEYWORD);
+
+				dirMd5(".",1,FMD5_MODE_SETUP,&s,&tmps);
+
+			//	s.endArray();
+				
+				if(QFile::exists(TEMP_UPDATE_FILE_NAME))
+					QFile::remove(TEMP_UPDATE_FILE_NAME);
+		}
+		return 0;
+	}
 //	s.setValue("size", (filenums-1));
 	return 0;
 //usage:

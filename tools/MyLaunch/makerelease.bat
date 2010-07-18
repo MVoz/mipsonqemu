@@ -77,6 +77,12 @@ cd ..
 cd .\release
 del /s /q *.exp
 del /s /q *.lib
+cd /d portable
+fmd5 -p
+cd ..
+cd /d setup
+fmd5 -s
+cd ..
 tanzhi.exe
 cd ..
 
