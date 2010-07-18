@@ -2231,7 +2231,7 @@ void MyWidget::startSilentUpdate()
 		qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 		if(!slientUpdate||slientUpdate->isFinished()){
 		
-			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE); 
+			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
 			connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
 			slientUpdate->start(QThread::IdlePriority);		
 		}

@@ -50,6 +50,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include <QtNetwork/QHttpResponseHeader>
+#include <QtNetwork/QNetworkProxy>
+
 #include <QTimer>
 #include <QFile>
 #include <config.h>
@@ -81,6 +83,7 @@ class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
 	 ~postHttp();
        public:
 	 void run();
+	// void setProxy(QNetworkProxy& p);
       public:
 	QHttp * posthttp;
 	QString postString;
@@ -94,6 +97,8 @@ class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
 	QTimer* postTimer;
 	uint bmid;
 	uint action;
+	//uint proxyEnable;
+	//QNetworkProxy proxy;
 	public slots: 
 		//void httpRequestFinished(int id, bool error);
 		void httpDone(bool error);

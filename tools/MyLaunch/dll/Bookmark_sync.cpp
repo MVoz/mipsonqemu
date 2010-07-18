@@ -12,7 +12,7 @@
 // header.setValue("cookie", "jblog_authkey=MQkzMmJlNmM1OGRmODFkNGExMThiMmNhZjcyMGVjOTUwMA");			
 // postString.sprintf("name=%s&link=%s",qPrintable(bc.name),qPrintable(bc.link));
 //resuleBuffer=new QBuffer(NUll); //this will bring out "create"
-
+/*
 void BookmarkSync::setNetworkProxy()
 {
 	//check proxy
@@ -30,7 +30,7 @@ void BookmarkSync::setNetworkProxy()
 		
 	}
 }
-
+*/
 void BookmarkSync::on_http_stateChanged(int stat)
 {
 
@@ -94,7 +94,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 //	updateTime=d;
 	this->db=db;
 	mgthread=NULL;
-	netProxy=NULL;
+//	netProxy=NULL;
 	httpProxyEnable=0;
 	http_finish=0;
 	 http_timerover=0;
@@ -155,9 +155,17 @@ void BookmarkSync::testNetFinished()
 					case 1:
 						{
 								http = new QHttp();
-								if(httpProxyEnable)
-									http->setProxy(*netProxy);
-
+								//if(httpProxyEnable)
+								//	http->setProxy(*netProxy);
+								SET_NET_PROXY(http);
+								/*
+									httpProxyEnable = tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, httpProxyEnable);
+									if(httpProxyEnable){
+										 tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);
+										 tz::netProxy(GET_MODE,settings,netProxy);
+										 http->setProxy(*netProxy);	
+									}
+								*/
 								httpTimer=new QTimer();
 								connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
 						     		httpTimer->start(10*1000);
@@ -199,6 +207,7 @@ void BookmarkSync::testNetFinished()
 
 void BookmarkSync::run()
 {
+		 tz::netProxy(SET_MODE,settings,NULL);
 		//check server status
 		{
 			testThread = new testServerThread(NULL);
@@ -212,7 +221,10 @@ void BookmarkSync::run()
 		qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
 		 qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	
-		 setNetworkProxy();
+		  //setNetworkProxy();
+		
+		
+		
 
 		int ret=exec();
 		if(testServerResult==1){
@@ -239,6 +251,7 @@ void BookmarkSync::run()
 				qDebug("kill http timer!");
 				httpTimer->stop();		
 			}	
+			 tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);
 	}
 }
 
@@ -326,10 +339,12 @@ void BookmarkSync::mergeDone()
 		mgthread->deleteLater();
 		mgthread=NULL;
 	}
+	/*
 	if(netProxy){
 		delete netProxy;
 		netProxy=NULL;
 	}
+	*/
 	exit(error);
 }
 

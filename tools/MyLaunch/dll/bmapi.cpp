@@ -1056,6 +1056,8 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
 			r = netproxy;
 		break;
 		case SET_MODE://set
+			if(runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
+				return;
 			if(s->value("HttpProxy/proxyEnable", false).toBool())
 			{
 				 runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,1);
@@ -1071,7 +1073,7 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
 				
 			}else	{
 					runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,0);
-					if(netproxy&&!runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
+					if(netproxy&&!runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
 						{
 							delete netproxy;
 							netproxy =NULL;

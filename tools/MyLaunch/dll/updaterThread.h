@@ -23,8 +23,8 @@
 #include <log.h>
 #include <QtCore/qobject.h>
 #include <QSemaphore>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkAccessManager>
 #include "testserver.h"
 
 #define UPDATE_SILENT_MODE 0
@@ -116,6 +116,7 @@ public:
 	void run();
 //	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
 	void newHttp();
+	void setProxy(QNetworkProxy& p);
 public slots: 
 	//void updaterDone(bool error);
 	void getFileDone(bool error);
@@ -139,6 +140,7 @@ class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
 
 public:
 	QDateTime* updateTime;
+	QSettings *settings;
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
@@ -156,7 +158,7 @@ public:
 	
 
 public:
-	 updaterThread(QObject * parent = 0,int m=0):QThread(parent),mode(m)
+	 updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):QThread(parent),mode(m),settings(s)
 	 	{
 	 		timers=0;
 			needed=0;

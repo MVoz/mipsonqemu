@@ -39,6 +39,9 @@ void testServerThread::run()
 		qDebug("testServerThread::run");
 		tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 		manager=new QNetworkAccessManager();
+
+		SET_NET_PROXY(manager);
+				
 		manager->moveToThread(this);
 		testNetTimer=new QTimer();
 		testNetTimer->moveToThread(this);

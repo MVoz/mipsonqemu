@@ -97,7 +97,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
       public:
 	QHttp * http;
 	postHttp *accountTestHttp;
-	QNetworkProxy* netProxy;
+	//QNetworkProxy* netProxy;
 	QTimer* httpTimer;
 	QString host;
 	QString url;
@@ -166,7 +166,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void mergeDone();
 	void httpTimerSlot();
 	void stopSync();
-	void setNetworkProxy();
+	//void setNetworkProxy();
 	void mgUpdateStatus(int flag,int status,QString str);
 	void testNetFinished();
       signals:
