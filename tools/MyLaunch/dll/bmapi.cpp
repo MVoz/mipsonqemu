@@ -19,8 +19,11 @@ uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 static QString iePath;
 char* gLanguageList[]={"chinese","english"};
-static int testnetresult = 0;
 
+//static int testnetresult = 0;
+//static int netProxyEnable = 0;
+static int runparameters[RUN_PARAMETER_END]={0};
+static QNetworkProxy *netproxy = NULL;
 struct browserinfo browserInfo[]={
 	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
 	{QString("Firefox"), false, false , false,false,false, BROWSE_TYPE_FIREFOX},
@@ -1018,6 +1021,7 @@ QString  tz::registerString(int mode,const QString& path,const QString& name,QSt
 	}
 	return ret;
 }
+/*
 int tz::testNetResult(int mode,int ret)
 {
 	switch(mode)
@@ -1029,6 +1033,55 @@ int tz::testNetResult(int mode,int ret)
 		break;
 		}
 }
+*/
+int tz::runParameter(int mode,int type,int ret)
+{
+	if(ret<=RUN_PARAMETER_START||ret>=RUN_PARAMETER_END)
+		return 0;
+	switch(mode)
+		{
+		case GET_MODE://get
+			return runparameters[type];
+		case SET_MODE://set
+			runparameters[type] = ret;
+		break;
+		}
+	return 0;
+}
+void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
+{
+	switch(mode)
+		{
+		case GET_MODE://get
+			r = netproxy;
+		break;
+		case SET_MODE://set
+			if(s->value("HttpProxy/proxyEnable", false).toBool())
+			{
+				 runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,1);
+				 if(netproxy ==NULL)
+				 {
+					 netproxy=new QNetworkProxy();
+					 netproxy->setType(QNetworkProxy::HttpProxy);
+					 netproxy->setHostName(s->value("HttpProxy/proxyAddress", "").toString());		
+					 netproxy->setPort(s->value("HttpProxy/proxyPort", 0).toUInt());
+					 netproxy->setUser(s->value("HttpProxy/proxyUsername", "").toString());
+					 netproxy->setPassword(s->value("HttpProxy/proxyPassword", "").toString());
+				 }
+				
+			}else	{
+					runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,0);
+					if(netproxy&&!runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
+						{
+							delete netproxy;
+							netproxy =NULL;
+						}
+			}		
+		break;
+		}
+	
+}
+
 
 #if 0
 

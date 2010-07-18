@@ -20,11 +20,11 @@ void testServerThread::testNetFinished(QNetworkReply* reply)
 				if(replybuf.startsWith(QString("1")))
 					{
 						qDebug("set testNetResult 1");
-						tz::testNetResult(SET_MODE,1);			
+						tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,1);			
 					}
 				
 		}else
-				tz::testNetResult(SET_MODE,-1);
+				tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,-1);
 		quit();
 }
 void testServerThread::testNetTimeout()
@@ -37,7 +37,7 @@ void testServerThread::testNetTimeout()
 void testServerThread::run()
 {
 		qDebug("testServerThread::run");
-		tz::testNetResult(SET_MODE,0);
+		tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 		manager=new QNetworkAccessManager();
 		manager->moveToThread(this);
 		testNetTimer=new QTimer();

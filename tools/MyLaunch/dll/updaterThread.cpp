@@ -354,10 +354,10 @@ void updaterThread::testNetTimeout()
 */
 void updaterThread::testNetFinishedx()
 {
-	qDebug("testNetFinishedx result=%d",tz::testNetResult(GET_MODE,0));
+	qDebug("testNetFinishedx result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	if(testThread)
 			delete testThread;
-	switch(tz::testNetResult(GET_MODE,0))
+	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
 				{
 					case -1:
 						if(mode==UPDATE_DLG_MODE) 
