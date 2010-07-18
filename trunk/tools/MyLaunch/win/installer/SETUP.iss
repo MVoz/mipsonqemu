@@ -5,7 +5,7 @@
 #define MyAppVerName "Tanzhi 2.1.2"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.tanzhi.com"
-#define MyAppExeName "Tanzhi.exe"
+#define MyAppExeName "setup.exe"
 #define MyAppUrlName "Tanzhi.url"
 
 [Setup]
@@ -197,4 +197,5 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
