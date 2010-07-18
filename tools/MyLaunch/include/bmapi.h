@@ -13,6 +13,9 @@
  #include <QDateTime>
  #include <QSqlDatabase>
 #include <QtCore/QVariant>
+#include <QThread>
+
+#include <QTimer>
  #ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
@@ -143,7 +146,6 @@ struct BMAPI_DLL_CLASSEXPORT  bookmark_catagory{
    QList<bookmark_catagory> list;
    
 };
-
 class BMAPI_DLL_CLASSEXPORT  tz {
 public:
 	tz(){};

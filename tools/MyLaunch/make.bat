@@ -8,6 +8,8 @@ qmake log.pro
 nmake debug
 qmake bmapi.pro 
 nmake debug
+qmake testserver.pro 
+nmake debug
 rem qmake pinyin.pro 
 rem nmake debug
 qmake catalog.pro
