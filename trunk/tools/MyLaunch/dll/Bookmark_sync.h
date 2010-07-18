@@ -27,6 +27,7 @@
 
 #include <QSqlDatabase>
 #include <QtSql>
+#include "testserver.h"
 
 
 #include "posthttp.h"
@@ -116,12 +117,14 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	int error;
 	uint httpProxyEnable;
 	QString filename_fromserver;
+	testServerThread *testThread;
+	int testServerResult;
 #ifdef CONFIG_HTTP_TIMEOUT
 //	uint httpTimeout;
 //	uint httpTimerId;
 #endif
       public:
-	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);	
+	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync()
 	{
 	qDebug("~BookmarkSync.....");
@@ -165,6 +168,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void stopSync();
 	void setNetworkProxy();
 	void mgUpdateStatus(int flag,int status,QString str);
+	void testNetFinished();
       signals:
 	void bookmarkFinished(bool error);
 	void updateStatusNotify(int type,int status,QString str);

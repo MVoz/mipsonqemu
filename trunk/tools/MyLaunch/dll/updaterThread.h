@@ -25,6 +25,7 @@
 #include <QSemaphore>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include "testserver.h"
 
 #define UPDATE_SILENT_MODE 0
 #define UPDATE_DLG_MODE 1
@@ -131,38 +132,7 @@ public slots:
 	void updateStatusNotify(int type,int status,QString str);
 	
 };
-class  UPDATER_THREAD_DLL_CLASS_EXPORT testServerThread:public QThread
-{
-	Q_OBJECT;
-public:
-	QNetworkAccessManager *manager;
-	QNetworkReply *reply;
-	QTimer* testNetTimer;
-public:
-	 testServerThread(QObject * parent = 0):QThread(parent)
-	 {
-	 	manager = NULL;
-		reply = NULL;
-	 	testNetTimer = NULL;
-	 }
-	 ~testServerThread()
-	 {
-	 	qDebug("~testServerThread");
-	
-	 	if(manager)
-			manager->deleteLater();
-		if(reply)
-			reply->deleteLater();
-	 	if(testNetTimer)
-			testNetTimer->deleteLater();		
-	
-	 }
-	 void run();
-public slots: 
-	void testNetFinished(QNetworkReply*);
-	void testNetTimeout();
-	
-};
+
 class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
 {
 	Q_OBJECT;
