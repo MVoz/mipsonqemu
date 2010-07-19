@@ -318,9 +318,9 @@ RETRY:
 								item->parentId=query.value(parentId_Idx).toUInt();
 								item->isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
 								item->comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
-								if(IS_FROM_BROWSER(item->comeFrom))
-									item->icon=QString("ico/1412882717.ico");
-								else
+								//if(IS_FROM_BROWSER(item->comeFrom))
+								//	item->icon=QString("ico/1412882717.ico");
+								//else
 									item->icon=query.value(icon_Idx).toString();
 								item->hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
 								item->pinyinDepth=query.value(pinyinDepth_Idx).toUInt();
@@ -382,9 +382,9 @@ RETRY:
 								item.parentId=query.value(parentId_Idx).toUInt();
 								item.isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
 								item.comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
-								if(IS_FROM_BROWSER(item.comeFrom))
-									item.icon=QString("ico/1412882717.ico");
-								else
+								//if(IS_FROM_BROWSER(item.comeFrom))
+								//	item.icon=QString("ico/1412882717.ico");
+								//else
 									item.icon=query.value(icon_Idx).toString();
 								item.hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
 								item.pinyinDepth=query.value(pinyinDepth_Idx).toUInt();

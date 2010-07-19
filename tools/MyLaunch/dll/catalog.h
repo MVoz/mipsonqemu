@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QSet>
 #include <bmapi.h>
 #include <pinyin>
+#include <QUrl>
 #if defined(CATALOG_DLL)
 #define CATALOG_DLL_CLASS_EXPORT __declspec(dllexport)
 #else
@@ -133,6 +134,17 @@ public:
 		shortCut="";
 		delId=0;
 		args="";
+		if(IS_FROM_BROWSER(flag))
+			{
+				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
+					{
+						QUrl url(fullPath);
+						if(url.isValid()){
+							QString site = url.host();
+							icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));
+						}
+					}
+			}
 	}
 
 	CatItem(QString full, QString shortN, uint i_d,int flag)  
