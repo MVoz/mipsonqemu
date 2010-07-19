@@ -311,14 +311,17 @@ RETRY:
 					 			CatItem* item=&searchResults[i++];
 								item->fullPath=query.value(fullPath_Idx).toString();
 								item->shortName=query.value(shortName_Idx).toString();
-								item->lowName=query.value(lowName_Idx).toString();
-								item->icon=query.value(icon_Idx).toString();
+								item->lowName=query.value(lowName_Idx).toString();								
 								item->usage=query.value(usage_Idx).toUInt();
 								item->hash_id=query.value(hashId_Idx).toUInt();
 								item->groupId=query.value(groupId_Idx).toUInt();
 								item->parentId=query.value(parentId_Idx).toUInt();
 								item->isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
 								item->comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
+								if(IS_FROM_BROWSER(item->comeFrom))
+									item->icon=QString("ico/1412882717.ico");
+								else
+									item->icon=query.value(icon_Idx).toString();
 								item->hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
 								item->pinyinDepth=query.value(pinyinDepth_Idx).toUInt();
 								item->pinyinReg=query.value(pinyinReg_Idx).toString();
@@ -372,14 +375,17 @@ RETRY:
 								CatItem item;
 								item.fullPath=query.value(fullPath_Idx).toString();
 								item.shortName=query.value(shortName_Idx).toString();
-								item.lowName=query.value(lowName_Idx).toString();
-								item.icon=query.value(icon_Idx).toString();
+								item.lowName=query.value(lowName_Idx).toString();								
 								item.usage=query.value(usage_Idx).toUInt();
 								item.hash_id=query.value(hashId_Idx).toUInt();
 								item.groupId=query.value(groupId_Idx).toUInt();
 								item.parentId=query.value(parentId_Idx).toUInt();
 								item.isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
 								item.comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
+								if(IS_FROM_BROWSER(item.comeFrom))
+									item.icon=QString("ico/1412882717.ico");
+								else
+									item.icon=query.value(icon_Idx).toString();
 								item.hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
 								item.pinyinDepth=query.value(pinyinDepth_Idx).toUInt();
 								item.pinyinReg=query.value(pinyinReg_Idx).toString();

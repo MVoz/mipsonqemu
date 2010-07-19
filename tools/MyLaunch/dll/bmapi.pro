@@ -21,7 +21,7 @@ QT += network
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/
-    LIBS +=../debug/log.lib
+#    LIBS +=../debug/log.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
