@@ -14,7 +14,7 @@ void copyFile(const QString& filepath,const QString& dstDir)
 
 		QString newfileName;
 		QString srcfilename=filepath;
-		newfileName.append(srcfilename.remove(0,QString("temp/").count()));
+		newfileName.append(srcfilename.remove(0,QString(UPDATE_DIRECTORY_SUFFIX).count()));
 		qDebug("Copy %s from %s dstDir=%s\n",qPrintable(newfileName),qPrintable(filepath),qPrintable(dstDir));
 	
 		QFile newf(newfileName);
@@ -37,12 +37,12 @@ void updateAllFiles(const QString& path,const QString& dstDir)
 			qDebug("[dir=%d] path=%s name=%s",fi.isDir(),qPrintable(fi.filePath()),qPrintable(fi.fileName()));
 			if(fi.isDir())
 				{
-					QString newdirName=QString("").append(QString(fi.filePath()).remove(0,QString("temp/").count()));
+					QString newdirName=QString("").append(QString(fi.filePath()).remove(0,QString(UPDATE_DIRECTORY_SUFFIX).count()));
 					qDebug("newdirName=%s\n",qPrintable(newdirName));
 					QDir newdir(".");
 					if(!newdir.exists(newdirName))
 							newdir.mkdir(newdirName);		
-					updateAllFiles(fi.filePath(),QString("./").append(QString(fi.filePath()).remove(0,QString("temp/").count())));
+					updateAllFiles(fi.filePath(),QString("./").append(QString(fi.filePath()).remove(0,QString(UPDATE_DIRECTORY_SUFFIX).count())));
 				}
 			else
 			{
@@ -115,8 +115,8 @@ refind:
 		HWND   hWnd   = ::FindWindow(NULL, (LPCWSTR) QString(APP_PROGRAM_NAME).utf16());
 		if(!hWnd)
 		 {
-				updateAllFiles("temp/","./");
-				deleteDirectory("temp/");
+				updateAllFiles(UPDATE_DIRECTORY_SUFFIX,"./");
+				deleteDirectory(UPDATE_DIRECTORY_SUFFIX);
 				s.setValue(APP_HEKY_UPDATE_ITEM,0);
 				s.sync();
 				goto out;

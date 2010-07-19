@@ -85,7 +85,7 @@ void GetFileHttp::newHttp()
 		if(downloadFilename.isNull())
 		{
 			QStringList na = updaterFilename.split("/");
-			QString  dirPath=QString("temp\\");
+			QString  dirPath=QString(destdir).append("\\");
 			int i=0;
 			int count=na.count();
 			for(i=0;i<count-1&&count>1;i++)
@@ -95,14 +95,17 @@ void GetFileHttp::newHttp()
 					dir.mkdir(dirPath);		
 				 dirPath.append("\\");
 			}
-			downloadFilename=QString(dirPath.append(na.at(count-1)));
+			if(savefilename.isEmpty())
+				downloadFilename=QString(dirPath.append(na.at(count-1)));//real filename
+			else
+				downloadFilename=QString(dirPath.append(savefilename));//real filename
 		}		
 		qDebug("downloadFilename=%s",qPrintable(downloadFilename));
 		file[retryTime] = new QFile(downloadFilename);
 		file[retryTime]->open(QIODevice::ReadWrite | QIODevice::Truncate);
 		
 
-		url=QString("/download/").append(updaterFilename);
+		url=QString(branch).append("/").append(updaterFilename);
 		//qDebug("url=%s filename=%s\n",qPrintable(url),qPrintable(dirPath));
 		http[retryTime]->get(url, file[retryTime]);
 		httpTimer[retryTime]=new QTimer();
@@ -116,8 +119,8 @@ void GetFileHttp::run()
 		
 		
 		QDir dir(".");
-		if(!dir.exists("temp"))
-			dir.mkdir("temp");
+		if(!dir.exists(destdir))
+			dir.mkdir(destdir);
 
 		this->mode=mode;
 		newHttp();
@@ -204,7 +207,9 @@ void GetFileHttp::getFileDone(bool error)
 					{
 					case HTTP_OK:
 						{
-						int isEqual=(tz::fileMd5(downloadFilename)==md5);
+						int isEqual=0;
+						if(md5.isEmpty()||tz::fileMd5(downloadFilename)==md5)
+							isEqual = 1;
 						qDebug("downloadFilename=%s md5=%s caclmd5=%s isEqual=%d",qPrintable(downloadFilename),qPrintable(md5),qPrintable(tz::fileMd5(downloadFilename)),isEqual);
 						/*	
 						QFile fileCkSum(downloadFilename);
@@ -585,7 +590,7 @@ void updaterThread::getIniDone(int err)
 			break;
 		case UPDATE_DLG_MODE:
 			if(err==HTTP_GET_INI_SUCCESSFUL){
-				serverSettings = new QSettings(QString("temp/setup/").append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+				serverSettings = new QSettings(QString(UPDATE_SETUP_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
 				QString sversion =  serverSettings->value("setup/version", "").toString();
 				QString filename = serverSettings->value("setup/name", "").toString();
 				QString md5 = serverSettings->value("setup/md5", "").toString();
@@ -688,15 +693,23 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 		if(fh)
 			delete fh;
 		fh=new GetFileHttp(NULL,m,md5);
-
-	
+		
 		connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
 		connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);	
 		if(mode==UPDATE_DLG_MODE) {
 			connect(fh, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
 			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
 		}
+		
 		fh->setHost(UPDATE_SERVER_HOST);
+		fh->setDestdir(UPDATE_DIRECTORY);
+		fh->setServerBranch("/download");
+		/*
+		if(pathname.lastIndexOf("/")==-1){
+			fh->setSaveFilename(pathname.section( '/', -1 ))
+		}else
+			fh->setSaveFilename(pathname);
+		*/	
 		//htttp://www.tanzhi.com/download/setup/tanzhi.exe
 		//htttp://www.tanzhi.com/download/portable/tanzhi.exe
 		switch(mode)
