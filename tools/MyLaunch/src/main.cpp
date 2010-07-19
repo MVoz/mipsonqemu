@@ -839,7 +839,20 @@ QIcon MyWidget::getIcon(CatItem & item)
 //#ifdef Q_WS_X11 // Windows needs this too for .png files
 		  if (QFile::exists(item.icon))
 		    {
-			    return QIcon(item.icon);
+		    	   if(!IS_FROM_BROWSER(item.comeFrom))
+			   	 return QIcon(item.icon);
+			   else{
+			   	//maybe the wrong file
+			   	QImageReader imgread(item.icon);
+				//qDebug("error %s",qPrintable(imgread.errorString()));
+				
+			   	QIcon in = QIcon(item.icon);
+				//qDebug("itemicon = %s actualSize=%d height=%d",qPrintable(item.icon),in.actualSize().width(),in.actualSize().height());
+				if(imgread.format().isEmpty())
+					  return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()));
+				else
+					  return in;
+			   }
 		    }else if(IS_FROM_BROWSER(item.comeFrom)&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()))){
 		    	    return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()));
 		    }
@@ -2285,12 +2298,15 @@ void MyWidget::scanDbFavicon()
 					{
 							QUrl url(fullPath);									
 							if(url.isValid()){
-									getFavico(url.host(),"favicon.ico");
+									QString host = url.host();
+									if(!QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(qhashEx(host,host.length()))))
+											getFavico(host,"favicon.ico");
 							}
 					}
 					
 		 	}
 	}	
+	q.clear();
 }
 
 
