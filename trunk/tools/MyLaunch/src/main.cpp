@@ -840,6 +840,8 @@ QIcon MyWidget::getIcon(CatItem & item)
 		  if (QFile::exists(item.icon))
 		    {
 			    return QIcon(item.icon);
+		    }else if(IS_FROM_BROWSER(item.comeFrom)&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()))){
+		    	    return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()));
 		    }
 //#endif
 
