@@ -1036,7 +1036,7 @@ int tz::testNetResult(int mode,int ret)
 */
 int tz::runParameter(int mode,int type,int ret)
 {
-	if(ret<=RUN_PARAMETER_START||ret>=RUN_PARAMETER_END)
+	if(type<=RUN_PARAMETER_START||type>=RUN_PARAMETER_END)
 		return 0;
 	switch(mode)
 		{

@@ -72,6 +72,9 @@ public:
 	int mode;
 	int statusCode;
 	int errCode;
+	QString destdir;
+	QString branch;
+	QString savefilename;
 public:
 	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
@@ -104,19 +107,30 @@ public:
 				}
 		}
 	}
-	void setHost(QString str)
+	void setHost(const QString& str)
 	{
 		host = str;
 	}
-	void setUrl(QString str)
+	void setUrl(const QString &str)
 	{
 		url = str;
 		updaterFilename=str;
+	}
+	void setServerBranch(const QString &s)
+	{
+		branch = s;
+	}
+	void setSaveFilename(const QString &s)
+	{
+		savefilename = s;
 	}
 	void run();
 //	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
 	void newHttp();
 	void setProxy(QNetworkProxy& p);
+	void setDestdir(const QString& s){
+		destdir = s;
+	}
 public slots: 
 	//void updaterDone(bool error);
 	void getFileDone(bool error);

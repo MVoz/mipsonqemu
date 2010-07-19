@@ -322,6 +322,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	}
 
 #endif
+	getFavico("www.sohu.com","favicon.ico");
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -2125,7 +2126,7 @@ void MyWidget::updateApp()
 		{
 			qDebug("update process finished!");
 			QDir dir(".");
-			if(dir.exists("temp/"))
+			if(dir.exists(UPDATE_DIRECTORY))
 			{
 						
 						 QFile file("out.txt");
@@ -2236,6 +2237,37 @@ void MyWidget::startSilentUpdate()
 			slientUpdate->start(QThread::IdlePriority);		
 		}
 }
+void MyWidget::getFavicoFinished()
+{
+	qDebug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	int i =getfavicolist.size();
+	while((--i)>=0){
+		GetFileHttp* icogh = getfavicolist.at(i);
+		if(icogh->isFinished())
+			{
+				getfavicolist.removeOne(icogh);
+				delete icogh;
+			}
+	}
+}
+
+void MyWidget::getFavico(const QString& host,const QString& filename)
+{
+	GetFileHttp* icogh =  new GetFileHttp(NULL,UPDATE_MODE_GET_FILE,"");
+	getfavicolist.append(icogh);
+	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
+	icogh->setHost(host);
+	icogh->setUrl(filename);
+	
+	icogh->setDestdir(FAVICO_DIRECTORY);
+	QString extension = filename.section( '.', -1 );
+	if(extension.isEmpty())
+		icogh->setSaveFilename(QString("%1").arg(qhashEx(host,host.length())));
+	else
+		icogh->setSaveFilename(QString("%1.%2").arg(qhashEx(host,host.length())).arg(extension));
+	icogh->start(QThread::IdlePriority);
+}
+
 
 #ifdef CONFIG_LOG_ENABLE
 void MyWidget::dumpBuffer(char* addr,int length)

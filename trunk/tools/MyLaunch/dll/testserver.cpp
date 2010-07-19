@@ -20,7 +20,8 @@ void testServerThread::testNetFinished(QNetworkReply* reply)
 				if(replybuf.startsWith(QString("1")))
 					{
 						qDebug("set testNetResult 1");
-						tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,1);			
+						tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,1);		
+						qDebug("set testNetResult %d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 					}
 				
 		}else

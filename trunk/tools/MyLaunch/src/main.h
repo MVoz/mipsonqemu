@@ -211,6 +211,7 @@ public:
 	QString testAccountName;
 	QString testAccountPassword;
 	int syncMode;
+	QList<GetFileHttp*> getfavicolist;
 
 	shared_ptr < synchronizeDlg> syncDlg;
 
@@ -258,6 +259,7 @@ public:
 #endif
 	void createSynDlgTimer();
 	void deleteSynDlgTimer();
+	void getFavico(const QString& host,const QString& filename);
 private:
     QHttp *http;
     QBuffer *verBuffer;
@@ -322,6 +324,7 @@ public slots:
 	void testAccount(const QString&name,const QString& password);
 	void startSilentUpdate();
 	void silentUpdateFinished();
+	void getFavicoFinished();
 	
 //	void restoreMainwin();
 #endif
