@@ -322,7 +322,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	}
 
 #endif
-	getFavico("www.sohu.com","favicon.ico");
+	
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -932,6 +932,8 @@ void MyWidget::catalogBuilt()
 	// Do a search here of the current input text
 	searchOnInput();
 	updateDisplay();
+	
+	scanDbFavicon();
 }
 
 void MyWidget::checkForUpdate()
@@ -2266,6 +2268,27 @@ void MyWidget::getFavico(const QString& host,const QString& filename)
 	else
 		icogh->setSaveFilename(QString("%1.%2").arg(qhashEx(host,host.length())).arg(extension));
 	icogh->start(QThread::IdlePriority);
+}
+void MyWidget::scanDbFavicon()
+{
+	QSqlQuery	q("", db);
+	QString s=QString("select * from %1 where comefrom between %2 and %3").arg(DB_TABLE_NAME).arg(COME_FROM_BROWSER_START).arg(COME_FROM_BROWSER_END);
+	if(q.exec(s)){
+		//getFavico("www.sohu.com","favicon.ico");
+		 while(q.next()) {
+
+					QString fullPath = q.value(q.record().indexOf("fullPath")).toString();		
+					
+					if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
+					{
+							QUrl url(fullPath);									
+							if(url.isValid()){
+									getFavico(url.host(),"favicon.ico");
+							}
+					}
+					
+		 	}
+	}	
 }
 
 

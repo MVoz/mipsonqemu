@@ -260,6 +260,7 @@ public:
 	void createSynDlgTimer();
 	void deleteSynDlgTimer();
 	void getFavico(const QString& host,const QString& filename);
+	void scanDbFavicon();
 private:
     QHttp *http;
     QBuffer *verBuffer;
