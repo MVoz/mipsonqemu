@@ -273,23 +273,28 @@ void Catalog::checkHistory(QString txt, QList < CatItem > &list)
 QList < CatItem * >SlowCatalog::search(QString searchTxt)
 {
 	QList < CatItem * >ret;
+	uint hanzi_flag = 0;
 	if (searchTxt == "")
 		return ret;
 //      QString lowSearch = searchTxt.toLower();
 
 	// Find the smallest char list
 #if 1
-		QSqlQuery	query("", *dbs);
-		int i=0;
+		QSqlQuery	q("", *dbs);
+		uint i=0;
 		int retry=0;
 		int bookmark_retry=0;
-		int numresults=settings->value("GenOps/numresults",10).toInt();
+		//uint numresults=settings->value("GenOps/numresults",10).toInt();
+		uint numresults=get_search_result_num(settings);
 		//db.transaction();
 		//QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
-		QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
+		QString s=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
 RETRY:
-		qDebug("queryStr=%s",qPrintable(queryStr));
-		if(query.exec(queryStr)){
+		if(hanzi_flag)
+			s=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
+		qDebug("s=%s",qPrintable(s));
+		if(q.exec(s)){
+			/*
 					   QSqlRecord rec = query.record();
 					   int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
 					   int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
@@ -306,33 +311,49 @@ RETRY:
 					   int pinyinReg_Idx = rec.indexOf("pinyinReg"); // index of the field "name"
 					   int alias1_Idx = rec.indexOf("alias1"); // index of the field "name"
 					   int alias2_Idx = rec.indexOf("alias2"); // index of the field "name"
-
-					 while(query.next()) {
+		*/
+					 while(q.next()&&(numresults>i)) {
+					 			unsigned short hanziNums=(unsigned short )(q.value(Q_RECORD_INDEX(q,"hanziNums")).toUInt());
+								uint pinyinDepth=q.value(Q_RECORD_INDEX(q,"pinyinDepth")).toUInt();
+					 			if(hanzi_flag){
+									QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
+									QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
+									bool matched=0;
+									if(hanziNums<=PINYIN_MAX_NUMBER&&pinyinDepth<=PINYIN_MAX_DEPTH)
+										//pinyinMatches(regStr,0,regStr.size(),"",searchTxt,matched);
+										pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
+									else{
+										pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
+									}
+									if(!matched) 
+										continue;
+					 			}
+						
 					 			CatItem* item=&searchResults[i++];
-								item->fullPath=query.value(fullPath_Idx).toString();
-								item->shortName=query.value(shortName_Idx).toString();
-								item->lowName=query.value(lowName_Idx).toString();								
-								item->usage=query.value(usage_Idx).toUInt();
-								item->hash_id=query.value(hashId_Idx).toUInt();
-								item->groupId=query.value(groupId_Idx).toUInt();
-								item->parentId=query.value(parentId_Idx).toUInt();
-								item->isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
-								item->comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
+								item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
+								item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
+								item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
+								item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
+								item->hash_id=q.value(Q_RECORD_INDEX(q,"hashId")).toUInt();
+								item->groupId=q.value(Q_RECORD_INDEX(q,"groupId")).toUInt();
+								item->parentId=q.value(Q_RECORD_INDEX(q,"parentId")).toUInt();
+								item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
+								item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
 								//if(IS_FROM_BROWSER(item->comeFrom))
 								//	item->icon=QString("ico/1412882717.ico");
 								//else
-									item->icon=query.value(icon_Idx).toString();
-								item->hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
-								item->pinyinDepth=query.value(pinyinDepth_Idx).toUInt();
-								item->pinyinReg=query.value(pinyinReg_Idx).toString();
-								item->alias1=query.value(alias1_Idx).toString();
-								item->alias2=query.value(alias2_Idx).toString();
-								item->args=query.value(rec.indexOf("args")).toString();
+									item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
+								item->hanziNums=hanziNums;
+								item->pinyinDepth=pinyinDepth;
+								item->pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
+								item->alias1=q.value(Q_RECORD_INDEX(q,"alias1")).toString();
+								item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
+								item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
 								qDebug("%s",qPrintable(item->fullPath));
 								ret.push_back(item);
 					 	}
-					  numresults-=i;
-					  query.clear();
+					 // numresults-=i;
+					  q.clear();
 			}
 /*
 	//	db.commit();
@@ -350,11 +371,17 @@ RETRY:
 			goto RETRY;
 			}
 */
+		if((numresults>i)&&!hanzi_flag)
+			{
+				hanzi_flag = 1;
+				goto RETRY;
+			}
+/*
 		if(numresults){
 			//find from pinyin
-				queryStr=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
-				if(query.exec(queryStr)){
-						 QSqlRecord rec = query.record();
+				s=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
+				if(q.exec(s)){
+						 QSqlRecord rec = q.record();
 						   int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
 						   int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
 						   int lowName_Idx = rec.indexOf("lowName"); // index of the field "name"
@@ -413,6 +440,7 @@ RETRY:
 						  	query.clear();
 					}
 			}
+*/
 #else
 	QChar leastCommon = -1;
 	foreach(QChar c, searchTxt)
