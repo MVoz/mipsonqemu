@@ -189,6 +189,12 @@ public :
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
 };
+inline uint get_search_result_num(QSettings* s)
+{
+	uint num =s->value("GenOps/numresults",10).toUInt();
+	return num>10?(10):((num==0)?1:num);
+	
+}
 
 //int setDirectoryTimeIncludeAllFiles(QString path);
 #endif
