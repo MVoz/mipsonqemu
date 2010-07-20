@@ -53,8 +53,50 @@ enum CATITEM_ITEM{
 	  CATITEM_COMEFROM,
 	  CATITEM_MAX
 };
-
-
+#define INIT_CATITEM_PART  do{\
+			lowName = shortName.toLower();\
+			getPinyinReg(shortName);\
+			data = NULL;\
+			usage = 0;\
+			groupId=0;\
+			parentId=0;\
+			hash_id = qHash(shortName);\
+			alias1="";\
+			alias2="";\
+			shortCut="";\
+			delId=0;\
+			args="";\
+			if(IS_FROM_BROWSER(flag)){\
+				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
+						QUrl url(fullPath);\
+						if(url.isValid()){\
+							QString site = url.host();\
+							icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
+						}\
+					}\
+			}\
+		}while(0);
+#define COPY_CATITEM(x) do{\
+		fullPath = (x).fullPath;\
+		shortName = (x).shortName;\
+		lowName = (x).lowName;\
+		icon = (x).icon;\
+		usage = (x).usage;\
+		data = (x).data;\
+		groupId=(x).groupId;\
+		parentId=(x).parentId;\
+		hash_id = (x).hash_id;\
+		comeFrom=(x).comeFrom;\
+		isHasPinyin=(x).isHasPinyin;\
+		pinyinDepth=(x).pinyinDepth;\
+		hanziNums=(x).hanziNums;\
+		pinyinReg=(x).pinyinReg;\
+		alias1=(x).alias1;\
+		alias2=(x).alias2;\
+		shortCut=(x).shortCut;\
+		delId=(x).delId;\
+		args=(x).args;\
+}while(0);
 class CATALOG_DLL_CLASS_EXPORT CatItem {
 public:
     
@@ -104,24 +146,15 @@ public:
 					shortName = shortName.mid(0,shortName.lastIndexOf("."));
 			}
 
-			lowName = shortName.toLower();
-			getPinyinReg(shortName);
-			data = NULL;
-			usage = 0;
-			groupId=0;
-			parentId=0;
-			hash_id = qHash(shortName);
-			alias1="";
-			alias2="";
-			shortCut="";
-			delId=0;
-			args="";
+			INIT_CATITEM_PART;
 	}
 
 
 	CatItem(QString full, QString shortN,int flag) 
 		: fullPath(full), shortName(shortN),comeFrom(flag)
 	{
+		INIT_CATITEM_PART;
+		/*
 		lowName = shortName.toLower();
 		getPinyinReg(shortName);
 		data = NULL;
@@ -145,11 +178,15 @@ public:
 						}
 					}
 			}
+		*/
 	}
 
 	CatItem(QString full, QString shortN, uint i_d,int flag)  
 	    :  fullPath(full), shortName(shortN), hash_id(i_d),comeFrom(flag)
 	{
+		INIT_CATITEM_PART;
+		hash_id = i_d;
+		/*
 		lowName = shortName.toLower();
 		getPinyinReg(shortName);
 		data = NULL;
@@ -162,10 +199,14 @@ public:
 		shortCut="";
 		delId=0;
 		args="";
+		*/
 	}
 	CatItem(QString full, QString shortN,QString arg, int flag)  
 	    :  fullPath(full), shortName(shortN), args(arg),comeFrom(flag)
 	{
+		INIT_CATITEM_PART;
+		args = arg;
+		/*
 		lowName = shortName.toLower();
 		getPinyinReg(shortName);
 		data = NULL;
@@ -177,6 +218,7 @@ public:
 		alias2="";
 		shortCut="";
 		delId=0;
+		*/
 	}
 	/** This is the constructor most used by plugins 
 	\param full The full path of the file to execute
@@ -189,6 +231,10 @@ public:
 	CatItem(QString full, QString shortN, uint i_d, QString iconPath,int flag)   
 	    : fullPath(full), shortName(shortN), icon(iconPath), hash_id(i_d),comeFrom(flag)
 	{
+		INIT_CATITEM_PART;
+		icon = iconPath;
+		hash_id = i_d;
+		/*
 		lowName = shortName.toLower();
 		getPinyinReg(shortName);
 		data = NULL;
@@ -201,10 +247,16 @@ public:
 		shortCut="";
 		delId=0;
 		args="";
+		*/
 	}
 	CatItem(QString full, QString shortN,QString arg, uint i_d, QString iconPath,int flag)   
 	    : fullPath(full), shortName(shortN),args(arg), icon(iconPath), hash_id(i_d),comeFrom(flag)
 	{
+		INIT_CATITEM_PART;
+		args = arg;
+		icon = iconPath;
+		hash_id = i_d;
+		/*
 		lowName = shortName.toLower();
 		getPinyinReg(shortName);
 		data = NULL;
@@ -216,9 +268,12 @@ public:
 		alias2="";
 		shortCut="";
 		delId=0;
+		*/
 	}
 
 	CatItem(const CatItem &s) {
+		COPY_CATITEM(s);
+		/*
 		fullPath = s.fullPath;
 		shortName = s.shortName;
 		lowName = s.lowName;
@@ -238,6 +293,7 @@ public:
 		shortCut=s.shortCut;
 		delId=s.delId;
 		args=s.args;
+		*/
 	}
 	void getPinyinReg(QString& str){
 	isHasPinyin=NO_PINYIN_FLAG;
@@ -380,6 +436,8 @@ public:
 		//qDebug("shortName=%s regstr=%s pinyinDepth=%u",qPrintable(shortName),qPrintable(pinyinReg),pinyinDepth);
 	}
 	CatItem& operator=( const CatItem &s ) {
+		COPY_CATITEM(s);
+		/*
 		fullPath = s.fullPath;
 		shortName = s.shortName;
 		lowName = s.lowName;
@@ -399,6 +457,7 @@ public:
 		shortCut=s.shortCut;
 		delId=s.delId;
 		args=s.args;
+		*/
 		return *this;
 	}
 

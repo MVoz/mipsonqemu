@@ -1549,6 +1549,8 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 		return;
 	
 	qDebug("Current cpu usage:%d",tz::GetCpuUsage());
+	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
+		return;
 
 	if (gBuilder == NULL)
 	  {
@@ -1638,6 +1640,8 @@ void MyWidget::startSync()
 void MyWidget::_startSync(int mode,int silence)      
 {
 	if(updateSuccessTimer)
+		return;
+	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
 		return;
 	syncMode = mode;
 	QString name,password;
@@ -2259,6 +2263,8 @@ void MyWidget::silentUpdateFinished()
 }
 void MyWidget::startSilentUpdate()
 {
+		if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
+		return;
 		qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 		if(!slientUpdate||slientUpdate->isFinished()){
 		
@@ -2423,7 +2429,10 @@ int main(int argc, char *argv[])
 #endif
 	//check update in register
 	uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
-	qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s ",updateflag,(UPDATE_PORTABLE_DIRECTORY));
+	qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s CPU_USAGE_THRESHOLD=%d ",updateflag,(UPDATE_PORTABLE_DIRECTORY),CPU_USAGE_THRESHOLD);
+	 QMessageBox msgBox;
+	 msgBox.setText(QString("%1").arg(CPU_USAGE_THRESHOLD));
+	 msgBox.exec();
 	if(updateflag)
 		{
 			//kickoffSilentUpdate();

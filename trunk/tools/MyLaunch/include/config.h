@@ -214,6 +214,9 @@
 #define APP_SETUP_NAME "setup.exe"
 #define APP_FILEMD5_NAME "fmd5.exe"
 
+#define APP_DATA_PATH "data"
+#define APP_DEFINE_DB_NAME "defines.db"
+
 #define UPDATE_SERVER_HOST HTTP_SERVER_HOST
 
 
@@ -251,6 +254,12 @@
 
 #define IS_URL(x)\
 		(((x).trimmed().startsWith("http://",Qt::CaseInsensitive))||((x).trimmed().startsWith("https://",Qt::CaseInsensitive)))
+
+#ifdef QT_NO_DEBUG
+#define CPU_USAGE_THRESHOLD 20
+#else
+#define CPU_USAGE_THRESHOLD 100
+#endif
 
 #endif
 

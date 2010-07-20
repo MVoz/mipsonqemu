@@ -75,14 +75,14 @@ copy options.rcc ..\release
 cd ..
 
 cd .\release
-del /s /q *.exp
-del /s /q *.lib
-cd /d portable
-fmd5 -p
-cd ..
-cd /d setup
-fmd5 -s
-cd ..
+rem del /s /q *.exp
+rem del /s /q *.lib
+rem cd /d portable
+rem fmd5 -p
+rem cd ..
+rem cd /d setup
+rem fmd5 -s
+rem cd ..
 tanzhi.exe
 cd ..
 
