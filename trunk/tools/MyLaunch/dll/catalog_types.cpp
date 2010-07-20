@@ -327,6 +327,7 @@ RETRY:
 								item->pinyinReg=query.value(pinyinReg_Idx).toString();
 								item->alias1=query.value(alias1_Idx).toString();
 								item->alias2=query.value(alias2_Idx).toString();
+								item->args=query.value(rec.indexOf("args")).toString();
 								qDebug("%s",qPrintable(item->fullPath));
 								ret.push_back(item);
 					 	}
@@ -391,6 +392,7 @@ RETRY:
 								item.pinyinReg=query.value(pinyinReg_Idx).toString();
 								item.alias1=query.value(alias1_Idx).toString();
 								item.alias2=query.value(alias2_Idx).toString();
+								item.args=query.value(rec.indexOf("args")).toString();
 								//qDebug("pinyinReg=%s shortname=%s txt=%s pinyinDepth=%u\n",qPrintable(item->pinyinReg),qPrintable(item->shortName),qPrintable(txt),item->pinyinDepth);
 								bool matched=0;
 								if(item.hanziNums<=PINYIN_MAX_NUMBER&&item.pinyinDepth<=PINYIN_MAX_DEPTH)
