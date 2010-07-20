@@ -20,7 +20,7 @@ SOURCES += main.cpp
 HEADERS = 
 win32 {
   INCLUDEPATH += c:/boost/
-  LIBS 		+= shell32.lib user32.lib
+  LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib 
   CONFIG += embed_manifest_exe
 
   if(!debug_and_release|build_pass) {
