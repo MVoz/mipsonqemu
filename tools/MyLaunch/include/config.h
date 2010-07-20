@@ -248,5 +248,9 @@
 				 tz::netProxy(GET_MODE,NULL,netProxy);\
 				 (x)->setProxy(*netProxy);	\
 	  }
+
+#define IS_URL(x)\
+		(((x).trimmed().startsWith("http://",Qt::CaseInsensitive))||((x).trimmed().startsWith("https://",Qt::CaseInsensitive)))
+
 #endif
 

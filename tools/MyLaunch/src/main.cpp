@@ -425,18 +425,25 @@ void MyWidget::launchObject()
 {
 	CatItem res = inputData[0].getTopResult();
 	//if (res.id == HASH_LAUNCHY)
-	qDebug("%s comeFrom=%d fullpath=%s",__FUNCTION__,res.comeFrom,qPrintable(res.fullPath));
+	qDebug("%s comeFrom=%d fullpath=%s args=%s",__FUNCTION__,res.comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
 		  QString args = "";
 		  if (inputData.count() > 1)
 			  for (int i = 1; i < inputData.count(); ++i)
 				  args += inputData[i].getText() + " ";
-		  qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
-		  if (!platform->Execute(res.fullPath, args))
+		 // qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
+		  res.args.replace("%s",args);
+		  qDebug("input=%s args=%s res.args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
+		  if (!platform->Execute(res.fullPath, res.args))
 			  {
 			  	increaseUsage(res.fullPath,inputData[0].getText());
-			  	runProgram(res.fullPath, args);
+				if(IS_URL(res.fullPath)){
+						QString urlpath = res.fullPath.append(res.args);
+						runProgram(urlpath, "");
+					}
+				else
+			  		runProgram(res.fullPath, res.args);
 		  	  }
 	} else if(IS_FROM_BROWSER(res.comeFrom)){
 			//Weby web(gSettings);
