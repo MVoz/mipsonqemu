@@ -41,6 +41,8 @@ CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
 
 void CatBuilder::run()
 {
+	QString dest;
+/*
 	QString dest = gSettings->fileName();
 	int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
 	if (lastSlash == -1)
@@ -48,6 +50,9 @@ void CatBuilder::run()
 	dest = dest.mid(0, lastSlash);
 	dest += "/";
 	dest +=DB_DATABASE_NAME;
+*/
+	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
+	
 
 	qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
 	//if buildWithStart is true,rescan all item
@@ -252,17 +257,62 @@ void CatBuilder::buildCatelog_command(uint delId)
 {
 }
 
+void CatBuilder::buildCatelog_define(uint delId)
+{
+	
+	QString  dbfile= QString("%1/%2").arg(APP_DATA_PATH).arg(APP_DEFINE_DB_NAME);
+	 qDebug("connect database %s successfully!!!!!!!!!!!!!",qPrintable(dbfile));  
+	if(!gSettings->value("builddefine",0).toUInt()&&QFile::exists(dbfile))
+	{
+		
+		{
+			QSqlDatabase  d = QSqlDatabase::addDatabase("QSQLITE", APP_DEFINE_DB_NAME);
+			d.setDatabaseName(dbfile);		
+			if ( !d.open())	 
+			 {
+						qDebug("connect database %s failure!\n",qPrintable(dbfile)) 	;
+						return;
+			 } 
+			 else{
+	  			       	 qDebug("connect database %s successfully!\n",qPrintable(dbfile));  
+					 QSqlQuery q("",d);
+					if(q.exec("select * from defines")){
+							while(q.next()) { 
+									uint comeFrom=q.value(q.record().indexOf("comeFrom")).toUInt();
+									CatItem item(
+											q.value(q.record().indexOf("fullPath")).toString(),
+											q.value(q.record().indexOf("shortName")).toString(),
+											q.value(q.record().indexOf("args")).toString(),
+											comeFrom											
+											);									
+								        cat->addItem(item,comeFrom,delId);
+							}
+							q.clear();
+					}				
+				d.close();
+				gSettings->setValue("builddefine",1);
+				
+			}
+			 
+		}
+		QSqlDatabase::removeDatabase(APP_DEFINE_DB_NAME);
+	}
+}
+
 void CatBuilder::buildCatalog(uint delId)
 {
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (main == NULL)
 		return;
+	QDEBUG_LINE;
 	switch(buildMode)
 	{
 		case CAT_BUILDMODE_ALL:
+			QDEBUG_LINE;
 			buildCatalog_directory(delId);
 			buildCatalog_bookmark(delId);
 			buildCatelog_command(delId);
+			buildCatelog_define(delId);
 		break;
 		case CAT_BUILDMODE_DIRECTORY:
 			buildCatalog_directory(delId);

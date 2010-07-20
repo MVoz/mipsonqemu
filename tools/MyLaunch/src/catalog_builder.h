@@ -58,6 +58,7 @@ public:
 	void buildCatalog_bookmark(uint);
 	void buildCatalog_directory(uint);
 	void buildCatelog_command(uint);
+	void buildCatelog_define(uint);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId);
 	//void produceInsetQueryStr(CatItem& item,QString& s );
 	bool createDbFile();

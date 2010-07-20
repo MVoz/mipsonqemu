@@ -996,6 +996,7 @@ QString tz::getPinyin(const char* s)
 						r = q.value(0).toString();
 						//qDebug()<<q.value(0).toString();	
 				}
+				q.clear();
 			}	
 			db.close();
 		}
