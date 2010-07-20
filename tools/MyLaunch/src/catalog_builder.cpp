@@ -278,11 +278,11 @@ void CatBuilder::buildCatelog_define(uint delId)
 					 QSqlQuery q("",d);
 					if(q.exec("select * from defines")){
 							while(q.next()) { 
-									uint comeFrom=q.value(q.record().indexOf("comeFrom")).toUInt();
+									uint comeFrom=q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt();
 									CatItem item(
-											q.value(q.record().indexOf("fullPath")).toString(),
-											q.value(q.record().indexOf("shortName")).toString(),
-											q.value(q.record().indexOf("args")).toString(),
+											q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),
+											q.value(Q_RECORD_INDEX(q,"shortName")).toString(),
+											q.value(Q_RECORD_INDEX(q,"args")).toString(),
 											comeFrom											
 											);									
 								        cat->addItem(item,comeFrom,delId);

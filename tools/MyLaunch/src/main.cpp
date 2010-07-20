@@ -2430,9 +2430,7 @@ int main(int argc, char *argv[])
 	//check update in register
 	uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
 	qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s CPU_USAGE_THRESHOLD=%d ",updateflag,(UPDATE_PORTABLE_DIRECTORY),CPU_USAGE_THRESHOLD);
-	 QMessageBox msgBox;
-	 msgBox.setText(QString("%1").arg(CPU_USAGE_THRESHOLD));
-	 msgBox.exec();
+
 	if(updateflag)
 		{
 			//kickoffSilentUpdate();
