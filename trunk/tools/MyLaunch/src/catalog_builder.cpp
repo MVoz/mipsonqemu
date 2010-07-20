@@ -65,30 +65,30 @@ void CatBuilder::run()
 }
 void CatBuilder::clearDb(int type,uint delId)
 {
-		QSqlQuery query("", *db);
-		QString queryStr;
+		QSqlQuery q("", *db);
+		QString s;
 		switch(buildMode)
 		{
 			case CAT_BUILDMODE_ALL:
-				queryStr=QString("delete  from %1 where comeFrom!=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PREDEFINE).arg(delId);
+				s=QString("delete  from %1 where comeFrom>=%2  and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
 			break;
 			case CAT_BUILDMODE_DIRECTORY:
-				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+				s=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
 			break;
 			case CAT_BUILDMODE_BOOKMARK:
 				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
 				//queryStr=QString("delete  from %1 where (comeFrom between %2 and %3) and delId!=%4").arg(DB_TABLE_NAME).arg(COME_FROM_IE).arg(COME_FROM_OPERA).arg(delId);
 				//mergeThread::deletebmgarbarge(&query,delId);
-				tz::clearbmgarbarge(&query,delId);
+				tz::clearbmgarbarge(&q,delId);
 			break;
 			case CAT_BUILDMODE_COMMAND:
-				queryStr=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
+				s=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
 			break;
 		}
 		
-		qDebug("queryStr=%s",qPrintable(queryStr));
-		if(query.exec(queryStr)){
-				query.clear();
+		qDebug("s=%s",qPrintable(s));
+		if(q.exec(s)){
+				q.clear();
 		}
 }
 void CatBuilder::buildCatalog_bookmark(uint delId)
