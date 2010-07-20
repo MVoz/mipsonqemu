@@ -433,13 +433,17 @@ void MyWidget::launchObject()
 			  for (int i = 1; i < inputData.count(); ++i)
 				  args += inputData[i].getText() + " ";
 		 // qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
-		  res.args.replace("%s",args);
+		  res.args.replace("%s",args.trimmed());
 		  qDebug("input=%s args=%s res.args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
 		  if (!platform->Execute(res.fullPath, res.args))
 			  {
 			  	increaseUsage(res.fullPath,inputData[0].getText());
 				if(IS_URL(res.fullPath)){
-						QString urlpath = res.fullPath.append(res.args);
+						QString urlpath="";
+						if(res.fullPath.trimmed().endsWith("/",Qt::CaseInsensitive))
+							urlpath = res.fullPath.append(res.args);
+						else
+							urlpath = res.fullPath.append("/").append(res.args);
 						runProgram(urlpath, "");
 					}
 				else
