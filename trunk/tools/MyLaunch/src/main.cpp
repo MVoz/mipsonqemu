@@ -594,7 +594,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent * key)
 
 void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 {
-	LOG_RUN_LINE;
 	if (key->key() == Qt::Key_Tab)
 	  {
 		  keyPressEvent(key);
@@ -602,8 +601,6 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 	  {
 		  key->ignore();
 	  }
-
-	LOG_RUN_LINE;
 }
 
 void MyWidget::parseInput(QString text)
