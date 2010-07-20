@@ -426,7 +426,7 @@ void MyWidget::launchObject()
 	CatItem res = inputData[0].getTopResult();
 	//if (res.id == HASH_LAUNCHY)
 	qDebug("%s comeFrom=%d fullpath=%s",__FUNCTION__,res.comeFrom,qPrintable(res.fullPath));
-	if (res.comeFrom==COME_FROM_PROGRAM)
+	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
 		  QString args = "";
 		  if (inputData.count() > 1)
@@ -438,7 +438,7 @@ void MyWidget::launchObject()
 			  	increaseUsage(res.fullPath,inputData[0].getText());
 			  	runProgram(res.fullPath, args);
 		  	  }
-	} else if((res.comeFrom==COME_FROM_IE)||(res.comeFrom==COME_FROM_FIREFOX)||(res.comeFrom==COME_FROM_OPERA)){
+	} else if(IS_FROM_BROWSER(res.comeFrom)){
 			//Weby web(gSettings);
 			//web.launchItem(&inputData, &res);
 			if(res.comeFrom==COME_FROM_FIREFOX)
