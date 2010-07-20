@@ -10,8 +10,10 @@
 #define BOOKMARK_ITEM_FLAG 2
 #define MASK_TYPE 0x03
 
-
-
+#include <QUrl>
+#include <qDebug>
+#include <QTextCodec>
+/*
 class Firefox_BM{
 public:
 	Firefox_BM(QString n,QString s,QRegExp r,int t,int d):name(n),str(s),reg(r),type(t),dataType(d)
@@ -136,15 +138,7 @@ void indexFirefox(QString path)
 				outToFile(ff_in);
 				now_type=BOOKMARK_ITEM_FLAG;	
 				now_finish=0;
-				/*
-				if (regex_shortcut.indexIn(line) != -1) {
-					QString shortcut = regex_shortcut.cap(1);
-						qDebug("url=%s name=%s",qPrintable(url),qPrintable(name));
-				} else {
 
-				}
-				*/
-	
 			}			
 		}
 	
@@ -152,20 +146,138 @@ void indexFirefox(QString path)
 	item_end(ff_in,now_type,now_finish);
 	ff_in<<"</bookmark>"<<"\n";
 }
+*/
+
+
+//#define _WIN32_WINNT   0x0501
+
+#include <Windows.h>
+
+
+#define SystemBasicInformation 0 
+#define SystemPerformanceInformation 2 
+#define SystemTimeInformation 3
+
+#define Li2Double(x) ((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
+
+typedef struct 
+{ 
+ DWORD dwUnknown1; 
+ ULONG uKeMaximumIncrement; 
+ ULONG uPageSize; 
+ ULONG uMmNumberOfPhysicalPages; 
+ ULONG uMmLowestPhysicalPage; 
+ ULONG uMmHighestPhysicalPage; 
+ ULONG uAllocationGranularity; 
+ PVOID pLowestUserAddress; 
+ PVOID pMmHighestUserAddress; 
+ ULONG uKeActiveProcessors; 
+ BYTE bKeNumberProcessors; 
+ BYTE bUnknown2; 
+ WORD wUnknown3; 
+} SYSTEM_BASIC_INFORMATION;
+
+typedef struct 
+{ 
+ LARGE_INTEGER liIdleTime; 
+ DWORD dwSpare[76]; 
+} SYSTEM_PERFORMANCE_INFORMATION;
+
+typedef struct 
+{ 
+ LARGE_INTEGER liKeBootTime; 
+ LARGE_INTEGER liKeSystemTime; 
+ LARGE_INTEGER liExpTimeZoneBias; 
+ ULONG uCurrentTimeZoneId; 
+ DWORD dwReserved; 
+} SYSTEM_TIME_INFORMATION;
+
+typedef LONG (WINAPI *PROCNTQSI)(UINT,PVOID,ULONG,PULONG);
+
+PROCNTQSI NtQuerySystemInformation;
+
+
+int GetCpuUsage()
+{ 
+ SYSTEM_PERFORMANCE_INFORMATION SysPerfInfo; 
+ SYSTEM_TIME_INFORMATION SysTimeInfo; 
+ SYSTEM_BASIC_INFORMATION SysBaseInfo; 
+ double dbIdleTime; 
+ double dbSystemTime; 
+ LONG status; 
+ static LARGE_INTEGER liOldIdleTime = {0,0}; 
+ static LARGE_INTEGER liOldSystemTime = {0,0};
+ 
+ NtQuerySystemInformation = (PROCNTQSI)GetProcAddress(GetModuleHandle(TEXT("ntdll")),"NtQuerySystemInformation");
+ if (!NtQuerySystemInformation) 
+  return -1;
+
+ // get number of processors in the system 
+ status = NtQuerySystemInformation(SystemBasicInformation,&SysBaseInfo,sizeof(SysBaseInfo),NULL); 
+ if (status != NO_ERROR) 
+  return -1;
+
+  // get new system time 
+  status = NtQuerySystemInformation(SystemTimeInformation,&SysTimeInfo,sizeof(SysTimeInfo),0); 
+  if (status!=NO_ERROR) 
+   return -1;
+
+  // get new CPU's idle time 
+  status =NtQuerySystemInformation(SystemPerformanceInformation,&SysPerfInfo,sizeof(SysPerfInfo),NULL); 
+  if (status != NO_ERROR) 
+   return -1;
+
+  // if it's a first call - skip it 
+  if (liOldIdleTime.QuadPart != 0) 
+  { 
+   // CurrentValue = NewValue - OldValue 
+   dbIdleTime = Li2Double(SysPerfInfo.liIdleTime) - Li2Double(liOldIdleTime); 
+   dbSystemTime = Li2Double(SysTimeInfo.liKeSystemTime) - Li2Double(liOldSystemTime);
+   
+   // CurrentCpuIdle = IdleTime / SystemTime 
+   dbIdleTime = dbIdleTime / dbSystemTime;
+   
+   // CurrentCpuUsage% = 100 - (CurrentCpuIdle * 100) / NumberOfProcessors 
+   dbIdleTime = 100.0 - dbIdleTime * 100.0 / (double)SysBaseInfo.bKeNumberProcessors + 0.5;
+   
+  }
+  
+  // store new CPU's idle and system time 
+  liOldIdleTime = SysPerfInfo.liIdleTime; 
+  liOldSystemTime = SysTimeInfo.liKeSystemTime;
+  
+  return (int)dbIdleTime;
+}
+
+
 int main(int argc, char *argv[])
 {
+		QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+	    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	//	QTextCodec::setCodecForLocale(QTextCodec::codecForName("GB18030"));
 		QStringList args = qApp->arguments();
 		QApplication *app=new QApplication(argc, argv);
 	    app->setQuitOnLastWindowClosed(true);
+	/*
 		init_ff_bm();
 		indexFirefox("./bookmarks.html");
 
 		QRegExp rxlen("<DT><H3 [\\s\\S]*>([\\s\\S]*)</H3>", Qt::CaseInsensitive);
-	 int pos = rxlen.indexIn("<DT><H3 >◊„«Ú</H3>");
+	 int pos = rxlen.indexIn("<DT><H3 >Ë∂≥ÁêÉ</H3>");
 	 if (pos > -1) {
 		 QString value = rxlen.cap(0); // "189"
 		 QString unit = rxlen.cap(1);  // "cm"
 		 qDebug("value=%s unit=%s",qPrintable(value),qPrintable(unit));
 	 }
 		//app->exec();
+*/	
+	for (;;)
+ {
+  qDebug()<<GetCpuUsage();
+  Sleep(1000);
+ }
+ return 0;
+return 0;  
+
+	
 }

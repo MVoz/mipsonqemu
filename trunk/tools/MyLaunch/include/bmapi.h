@@ -184,6 +184,7 @@ public :
 	//static int testNetResult(int,int);
 	static int runParameter(int,int,int);
 	static void netProxy(int ,QSettings*,QNetworkProxy*);
+	static int GetCpuUsage();
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	

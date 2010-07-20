@@ -1547,6 +1547,9 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 {
 	if(updateSuccessTimer)
 		return;
+	
+	qDebug("Current cpu usage:%d",tz::GetCpuUsage());
+
 	if (gBuilder == NULL)
 	  {
 		  gBuilder.reset(new CatBuilder(true,mode,&db));
@@ -2453,7 +2456,7 @@ int main(int argc, char *argv[])
 	app->setFont(QFont("ËÎÌו", 9, QFont::Normal, false));	//
 #endif
 
-	
+	tz::GetCpuUsage();
 	MyWidget widget(NULL, platform, rescue);
 	//widget.setObjectName("main");
 	widget.freeOccupyMemeory();
