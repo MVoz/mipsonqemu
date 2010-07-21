@@ -9,10 +9,12 @@
 #define BOOKMARK_CATAGORY_FLAG 1
 #define BOOKMARK_ITEM_FLAG 2
 #define MASK_TYPE 0x03
-
+#include <QPair>
+#include <QList>
 #include <QUrl>
 #include <qDebug>
 #include <QTextCodec>
+#include <QTime>
 /*
 class Firefox_BM{
 public:
@@ -152,104 +154,78 @@ void indexFirefox(QString path)
 //#define _WIN32_WINNT   0x0501
 
 #include <Windows.h>
+ #define PINYIN_TOKEN_FLAG "(p)"
+void pinyinMatchesEx(QStringList& strlist,QString &txt,bool& ret,bool CaseSensitive)
+{
+		QString regToken("");
+		QString pinyin_token(PINYIN_TOKEN_FLAG);
+		foreach(QString token,strlist){
+				qDebug()<<token;
+				if(token.contains(pinyin_token))
+				{
+					token.remove(token.size()-pinyin_token.size(),token.size()-1);
+					regToken.append("(");
+					regToken.append(token);
+					regToken.append(")?");
+						
+				}else{
+					//firtst check regToken
+					if(regToken.size()){
+							QRegExp rx(regToken);
+							qDebug("txt=%s regToken=%s",qPrintable(txt),qPrintable(regToken));
+							int res=rx.indexIn(txt);
+							if(res>=0&&(rx.matchedLength()==txt.size())){
+								ret=true;
+								return;
+							}
+						}
+					if(token.contains(txt, (CaseSensitive)?Qt::CaseSensitive:Qt::CaseInsensitive))
+						{
+							ret=true;
+							return;
+						}
+					regToken="";
+				}				
+			}
+		if(regToken.size()){
+							qDebug()<<__FUNCTION__<<regToken;
+							QRegExp rx(regToken);
+							//qDebug("txt=%s regToken=%s",qPrintable(txt),qPrintable(regToken));
+							int res=rx.indexIn(txt);
+							if(res>=0&&(rx.matchedLength()==txt.size())){
+								qDebug()<<__FUNCTION__<<" found! ";
+								ret=true;
+								return;
+							}
+			}
+		return ;
 
-
-#define SystemBasicInformation 0 
-#define SystemPerformanceInformation 2 
-#define SystemTimeInformation 3
-
-#define Li2Double(x) ((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
-
-typedef struct 
-{ 
- DWORD dwUnknown1; 
- ULONG uKeMaximumIncrement; 
- ULONG uPageSize; 
- ULONG uMmNumberOfPhysicalPages; 
- ULONG uMmLowestPhysicalPage; 
- ULONG uMmHighestPhysicalPage; 
- ULONG uAllocationGranularity; 
- PVOID pLowestUserAddress; 
- PVOID pMmHighestUserAddress; 
- ULONG uKeActiveProcessors; 
- BYTE bKeNumberProcessors; 
- BYTE bUnknown2; 
- WORD wUnknown3; 
-} SYSTEM_BASIC_INFORMATION;
-
-typedef struct 
-{ 
- LARGE_INTEGER liIdleTime; 
- DWORD dwSpare[76]; 
-} SYSTEM_PERFORMANCE_INFORMATION;
-
-typedef struct 
-{ 
- LARGE_INTEGER liKeBootTime; 
- LARGE_INTEGER liKeSystemTime; 
- LARGE_INTEGER liExpTimeZoneBias; 
- ULONG uCurrentTimeZoneId; 
- DWORD dwReserved; 
-} SYSTEM_TIME_INFORMATION;
-
-typedef LONG (WINAPI *PROCNTQSI)(UINT,PVOID,ULONG,PULONG);
-
-PROCNTQSI NtQuerySystemInformation;
-
-
-int GetCpuUsage()
-{ 
- SYSTEM_PERFORMANCE_INFORMATION SysPerfInfo; 
- SYSTEM_TIME_INFORMATION SysTimeInfo; 
- SYSTEM_BASIC_INFORMATION SysBaseInfo; 
- double dbIdleTime; 
- double dbSystemTime; 
- LONG status; 
- static LARGE_INTEGER liOldIdleTime = {0,0}; 
- static LARGE_INTEGER liOldSystemTime = {0,0};
- 
- NtQuerySystemInformation = (PROCNTQSI)GetProcAddress(GetModuleHandle(TEXT("ntdll")),"NtQuerySystemInformation");
- if (!NtQuerySystemInformation) 
-  return -1;
-
- // get number of processors in the system 
- status = NtQuerySystemInformation(SystemBasicInformation,&SysBaseInfo,sizeof(SysBaseInfo),NULL); 
- if (status != NO_ERROR) 
-  return -1;
-
-  // get new system time 
-  status = NtQuerySystemInformation(SystemTimeInformation,&SysTimeInfo,sizeof(SysTimeInfo),0); 
-  if (status!=NO_ERROR) 
-   return -1;
-
-  // get new CPU's idle time 
-  status =NtQuerySystemInformation(SystemPerformanceInformation,&SysPerfInfo,sizeof(SysPerfInfo),NULL); 
-  if (status != NO_ERROR) 
-   return -1;
-
-  // if it's a first call - skip it 
-  if (liOldIdleTime.QuadPart != 0) 
-  { 
-   // CurrentValue = NewValue - OldValue 
-   dbIdleTime = Li2Double(SysPerfInfo.liIdleTime) - Li2Double(liOldIdleTime); 
-   dbSystemTime = Li2Double(SysTimeInfo.liKeSystemTime) - Li2Double(liOldSystemTime);
-   
-   // CurrentCpuIdle = IdleTime / SystemTime 
-   dbIdleTime = dbIdleTime / dbSystemTime;
-   
-   // CurrentCpuUsage% = 100 - (CurrentCpuIdle * 100) / NumberOfProcessors 
-   dbIdleTime = 100.0 - dbIdleTime * 100.0 / (double)SysBaseInfo.bKeNumberProcessors + 0.5;
-   
-  }
-  
-  // store new CPU's idle and system time 
-  liOldIdleTime = SysPerfInfo.liIdleTime; 
-  liOldSystemTime = SysTimeInfo.liKeSystemTime;
-  
-  return (int)dbIdleTime;
+}
+int isAllIn(QString src,QString all)
+{
+	int i = 0;
+	for(i = 0; i < src.size();i++)
+	{
+		if(all.indexOf(src.at(i))==-1)
+			return 0;
+	}
+	return 1;
 }
 
+struct SearchStatistic{
+	QChar c;
+	uint n;
+};
+bool searchLess(struct SearchStatistic a,struct SearchStatistic b)
+{
+	if(a.n<b.n)
+		return true;
+	else
+		return false;
 
+}
+
+bool search(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);
 int main(int argc, char *argv[])
 {
 		QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
@@ -271,13 +247,136 @@ int main(int argc, char *argv[])
 	 }
 		//app->exec();
 */	
-	for (;;)
- {
-  qDebug()<<GetCpuUsage();
-  Sleep(1000);
- }
- return 0;
-return 0;  
+	#define BROKEN_TOKEN_STR "$#@#$"
+	//QString s("$#@#$j|ji|x|xi(p)$#@#$t|tong(p)$#@#$g|gong(p)$#@#$j|ju(p)$#@#$p|pi(p)$#@#$c|ch|chu(p)$#@#$l|li(p)$#@#$");
+
+	QString s("j|ji|x|xi$#@#$t|tong$#@#$g|gong$#@#$j|ju$#@#$p|pi$#@#$c|ch|chu$#@#$l|li");
+
+
+	QStringList regStr=s.split(BROKEN_TOKEN_STR);
+	QString allchars;
+	bool matched=0;
+	int i =0;
+	QString ss = s.replace(BROKEN_TOKEN_STR,"");
+	ss = ss.replace(PINYIN_TOKEN_FLAG,"");
+	ss = ss.replace("|","");
+	qDebug()<<ss;
+	for(i =0; i < ss.length();i++)
+	{
+		if(allchars.indexOf(ss.at(i))==-1)
+			allchars.append(ss.at(i));
+	}
+	qDebug()<<allchars;
+
+	QString searchtxt(argv[1]);
+
+	QString searchs;
+
+
+	QList<struct SearchStatistic> s_ch_list;
+
+	for(i =0; i < searchtxt.length();i++)
+	{
+		if(searchs.indexOf(searchtxt.at(i))==-1)
+		{
+			searchs.append(searchtxt.at(i));
+			
+		}
+		int j=0;
+		for (j = 0; j < s_ch_list.size(); ++j) {
+				   struct SearchStatistic m=s_ch_list.at(j);
+			 if (m.c == searchtxt.at(i))
+				{
+					m.n++;
+					s_ch_list.replace(j,m);
+					break;
+				}
+		}
+		if(j==s_ch_list.size())
+		{
+			struct SearchStatistic t;
+			t.c= searchtxt.at(i);
+			t.n=1;
+			s_ch_list.append(t)	;
+		}
+		
+
+	}
+	qDebug()<<searchs;
 
 	
-}
+	/*
+	 qSort(s_ch_list.begin(), s_ch_list.end(),searchLess);
+
+	  	 for (int j = 0; j < s_ch_list.size(); ++j) {
+			qDebug() << s_ch_list.at(j).c << ": " << s_ch_list.at(j).n;
+		}
+	  */
+
+	QTime t;
+	t.start();
+	 i=0;
+	while((i++)<1)
+	{
+
+			if(allchars.size()<searchs.size())
+				break;
+			if(!isAllIn(searchs,allchars))
+				break;
+			 //QString s("$#@#$j|ji|x|xi(p)$#@#$t|tong(p)$#@#$g|gong(p)$#@#$j|ju(p)$#@#$p|pi(p)$#@#$c|ch|chu(p)$#@#$l|li(p)$#@#$");
+			   for (int i = 0; i < regStr.size(); ++i)
+					qDebug()<<regStr.at(i);
+			
+		//	pinyinMatchesEx(regStr,QString(argv[1]),matched,Qt::CaseInsensitive);
+				int regsize = regStr.size();
+				for (int i = 0; i <regsize ; ++i)
+				{
+					int depth=0;
+					if(!(matched=search(regStr,regStr.size(),0,searchtxt,searchtxt.size(),depth,"")))
+					{
+						qDebug()<<"removeFirst";
+						
+						 regStr.removeFirst();
+					}else
+						break;
+				}
+	}
+
+	qDebug("Time elapsed:matched=%d %d ms",matched, t.elapsed());
+	return 0;  	
+}	
+bool search(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix)
+ {
+	 if(depth < pos)
+			depth=pos;
+   if( (size == pos)||(ssize<=suffix.size()) )
+	   return false;
+    QStringList sdiv =  list.at(pos).split("|") ;
+
+
+    int i =0;
+   for( i =0 ; i <sdiv.size(); i++ )
+	{
+	//	qDebug()<<pos << " :: " << depth;
+		if((pos==depth)&&i>0&&(sdiv.at(i).at(0)==sdiv.at(i-1).at(0)))
+			continue;
+		
+		QString t=QString(suffix).append(sdiv.at(i));
+		int r= searchtxt.indexOf(t);
+		qDebug()<<	searchtxt<<" : "<<t;
+		if(searchtxt.startsWith(t))
+		{
+			 if(ssize==t.size())
+				 return true;
+			 else
+			{
+				 if(search(list,size,pos+1,searchtxt,ssize,depth,t))
+					 return true; 				
+			}
+
+		} 
+	}  
+	return false;
+ }
+ 			 //QString s("$#@#$j|ji|x|xi(p)$#@#$t|tong(p)$#@#$g|gong(p)$#@#$j|ju(p)$#@#$p|pi(p)$#@#$c|ch|chu(p)$#@#$l|li(p)$#@#$");
+	//		 QString s("j|ji|x|xi$#@#$t|tong$#@#$g|gong$#@#$j|ju$#@#$p|pi$#@#$c|ch|chu$#@#$l|li");
