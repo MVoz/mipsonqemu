@@ -53,7 +53,7 @@ private:
 
 public:
 	//bool loadCatalog(QString);
-	void storeCatalog(QString,uint);
+	void storeCatalog(uint);
 	void buildCatalog(uint);
 	void buildCatalog_bookmark(uint);
 	void buildCatalog_directory(uint);

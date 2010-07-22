@@ -67,6 +67,18 @@ char* gLanguageList[]={"chinese","english"};
 //static int netProxyEnable = 0;
 static int runparameters[RUN_PARAMETER_END]={0};
 static QNetworkProxy *netproxy = NULL;
+QList<struct dbtableinfo*> dbtableInfolist;
+
+struct dbtableinfo dbtableInfo[]={
+		{COME_FROM_SHORTCUT,QString(DB_TABLE_SUFFIX"_shortcut"),COME_FROM_SHORTCUT},
+		{COME_FROM_PREDEFINE,QString(DB_TABLE_SUFFIX"_predefine"),COME_FROM_PREDEFINE},
+		{COME_FROM_COMMAND,QString(DB_TABLE_SUFFIX"_command"),COME_FROM_COMMAND},
+		{COME_FROM_PROGRAM,QString(DB_TABLE_SUFFIX"_program"),COME_FROM_PROGRAM},
+		{COME_FROM_BROWSER_START,QString(DB_TABLE_SUFFIX"_browser"),COME_FROM_BROWSER_START},
+		{0,QString(),0}
+};
+
+
 struct browserinfo browserInfo[]={
 	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
 	{QString("Firefox"), false, false , false,false,false, BROWSE_TYPE_FIREFOX},
@@ -755,13 +767,13 @@ QString tz::getBrowserName(uint id)
 void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 {
 	//uint comefrom_s=0,comefrom_e=0;
-	QString queryStr;
+	QString s;
 	int i = 0;
 	while(!browserInfo[i].name.isEmpty())
 	{
-			queryStr.clear();
-			queryStr=QString("delete from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(browserInfo[i].id).arg(delId);
-			q->exec(queryStr);		
+			s.clear();
+			s=QString("delete from %1 where comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id).arg(delId);
+			q->exec(s);		
 			i++;
 	}
 }
@@ -772,7 +784,20 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 		QString queryStr;
 		uint id=0;
 #if 1
-		q->prepare("select id from "DB_TABLE_NAME" where comeFrom = ? and hashId=? and shortName = ? and fullPath=? limit 1");
+		q->prepare(QString("select id from %1 where comeFrom =:comeFrom and hashId=:hashId and shortName =:shortName and fullPath=:fullPath limit 1").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
+		q->bindValue(":comeFrom", frombrowsertype);
+		q->bindValue(":hashId", qHash(name));
+		q->bindValue(":shortName", name);
+		q->bindValue(":fullPath", fullpath);
+		q->exec();
+		if(q->next())
+		{
+			id=q->value(q->record().indexOf("id")).toUInt();
+		}
+		q->clear();
+
+/*
+		q->prepare(QString("select id from "DB_TABLE_NAME" where comeFrom = ? and hashId=? and shortName = ? and fullPath=? limit 1").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
 		int i=0;
 		q->bindValue(i++, frombrowsertype);
 		q->bindValue(i++, qHash(name));
@@ -784,6 +809,7 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 			id=q->value(q->record().indexOf("id")).toUInt();
 		}
 		q->clear();
+*/
 #else
 		queryStr=QString("select id from %1 where comeFrom=%2 and hashId=%3 and shortName='%4' and fullPath='%5' limit 1").arg(DB_TABLE_NAME).arg(frombrowsertype).arg(qHash(name)).arg(name).arg(fullpath);
 		qDebug("queryStr=%s",qPrintable(queryStr));
@@ -1178,6 +1204,46 @@ int tz::GetCpuUsage()
   liOldSystemTime = SysTimeInfo.liKeSystemTime;
   
   return (int)dbIdleTime;
+}
+void  tz::initDbTables(QSqlDatabase& db)
+{
+	
+
+	int i = 0;	
+	while(dbtableInfo[i].id){
+		dbtableInfolist<<&dbtableInfo[i];
+		i++;
+	}	
+	foreach(struct dbtableinfo* info, dbtableInfolist) {
+		QString s=QString("DROP TABLE %1").arg(info->name);
+		QSqlQuery q(s,db);
+		q.exec();	
+		s=QString("CREATE TABLE %1 ("
+				   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+				   "fullPath VARCHAR(1024) NOT NULL, "
+				   "shortName VARCHAR(1024) NOT NULL, "
+				   "lowName VARCHAR(1024) NOT NULL, "
+				   "icon VARCHAR(1024), "
+				   "usage INTEGER NOT NULL,"
+				   "hashId INTEGER NOT NULL,"		   
+				   "isHasPinyin INTEGER NOT NULL, "
+				   "comeFrom INTEGER NOT NULL, "
+				   "pinyinReg VARCHAR(1024), "
+				   "allchars VARCHAR(1024), "
+				   "alias2 VARCHAR(1024),"
+				   "shortCut INTEGER NOT NULL,"
+				   "delId INTEGER NOT NULL,"
+				   "args VARCHAR(1024))").arg(info->name);
+		q=QSqlQuery(s,db);
+		q.exec(s);
+		q.clear();
+			
+	}		
+}
+
+struct dbtableinfo* tz::dbTableInfo(uint id)
+{
+	return &dbtableInfo[id-1];
 }
 
 #if 0

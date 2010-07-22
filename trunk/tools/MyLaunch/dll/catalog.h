@@ -206,8 +206,6 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.hash_id;
 	out << item.isHasPinyin;
 	out << item.comeFrom;
-	//out << item.hanziNums;
-	//out << item.pinyinDepth;	
 	out << item.pinyinReg;
 	out << item.allchars;
 	out << item.alias2;
@@ -226,8 +224,6 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.hash_id;
 	in >> item.isHasPinyin;
 	in >> item.comeFrom;
-	//in >> item.hanziNums;
-	//in >> item.pinyinDepth;
 	in >> item.pinyinReg;
 	in >> item.allchars;
 	in >> item.alias2;

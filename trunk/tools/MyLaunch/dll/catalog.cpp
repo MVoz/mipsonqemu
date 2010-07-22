@@ -171,7 +171,7 @@ void CatItem:: getPinyinReg(const QString& str){
 void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
 {
 	q->prepare(
-				"INSERT INTO "DB_TABLE_NAME
+				QString("INSERT INTO %1"
 				"("
 					"fullPath, shortName, lowName,icon,usage,hashId,"
 					"isHasPinyin,comeFrom,"
@@ -180,7 +180,7 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
 					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
 					":isHasPinyin,:comeFrom,"
 					":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
-			   	")"
+			   	")").arg(DBTABLEINFO_NAME(item.comeFrom))
 			   );
 	 BIND_CATITEM_QUERY(q,item);
 }

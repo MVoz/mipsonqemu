@@ -14,8 +14,8 @@ rem qmake pinyin.pro
 rem nmake release
 qmake catalog.pro
 nmake release
-qmake weby.pro 
-nmake release
+rem qmake weby.pro 
+rem nmake release
 qmake runner.pro 
 nmake release
 qmake xmlreader.pro 

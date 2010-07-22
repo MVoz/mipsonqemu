@@ -414,7 +414,7 @@ void OptionsDlg::loading(const QString & name)
 		  settings->endArray();
 		*/
 		  QSqlQuery query("",*db_p);
-		  QString  queryStr=QString("select * from %1 where comeFrom=%2").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER);
+		  QString  queryStr=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
 		  if(query.exec(queryStr))
 		  	{
 		  		  	   QSqlRecord rec = query.record();
@@ -561,11 +561,12 @@ void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 {
 	QSqlQuery q("",*db_p);
 	q.prepare(
-				"UPDATE "DB_TABLE_NAME" SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
+				QString("UPDATE %1 SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
 				"icon=:icon,usage=:usage,hashId=:hashId,"
 				"isHasPinyin=:isHasPinyin,"
 				"comeFrom=:comeFrom,"
 				"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2',shortCut=:shortCut,delId=:delId where id=:id"
+				).arg(DBTABLEINFO_NAME(item.comeFrom))
 			);
 	BIND_CATITEM_QUERY(&q,item);
 	q.bindValue("id", index);
@@ -586,7 +587,7 @@ void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 void OptionsDlg::deleteCatitemFromDb(CatItem& item,uint index)
 {
 	QSqlQuery q("",*db_p);
-	q.prepare("DELETE FROM "DB_TABLE_NAME" where id=:id");
+	q.prepare(QString("DELETE FROM %1 where id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
 	q.bindValue("id", index);
 	q.exec();
 	q.clear();
@@ -597,7 +598,7 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 {
 	//CMD_LIST cl;
 	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
-	CatItem item(cmdCommand,cmdName,cmdParameter,COME_FROM_RUNNER);
+	CatItem item(cmdCommand,cmdName,cmdParameter,COME_FROM_COMMAND);
 	if(cmdCommand.isEmpty()) return;
 	switch (type)
 	  {

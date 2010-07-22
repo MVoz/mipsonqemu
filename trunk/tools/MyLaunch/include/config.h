@@ -123,7 +123,9 @@
 
 #define MAX_SEARCH_RESULT 10
 #define DB_DATABASE_NAME APP_NAME".db"
-#define DB_TABLE_NAME "launch_db"
+//#define DB_TABLE_NAME "launch_db"
+#define DB_TABLE_SUFFIX APP_NAME
+
 #define LAUNCH_BM_TABLE "launch_bm"
 
 #define FIREFOX_SQLITE_UNIQUE 1
@@ -168,9 +170,9 @@
 
 
 
-#define COME_FROM_DEFINE 1
+#define COME_FROM_SHORTCUT 1
 #define COME_FROM_PREDEFINE 2
-#define COME_FROM_RUNNER 3
+#define COME_FROM_COMMAND 3
 
 #define COME_FROM_PROGRAM 4
 
@@ -179,9 +181,12 @@
 #define COME_FROM_OPERA	 (COME_FROM_IE+2)
 #define COME_FROM_MAX	(COME_FROM_IE+3)
 
+
+
 #define COME_FROM_BROWSER_START COME_FROM_IE
 #define COME_FROM_BROWSER_END (COME_FROM_MAX-1)
 
+#define COME_FROM_BROWSER COME_FROM_BROWSER_START
 
 #define IS_FROM_BROWSER(x) (((x)>=COME_FROM_IE)&&((x)<COME_FROM_MAX))
 
@@ -269,20 +274,20 @@
 #define BROKEN_TOKEN_STR "$#@#$"
 
 #define BIND_CATITEM_QUERY(x,y) do{\
-			(x)->bindValue("fullPath", (y).fullPath);\
-			(x)->bindValue("shortName", (y).shortName);\
-			(x)->bindValue("lowName", (y).lowName);\
-			(x)->bindValue("icon", (y).icon);\
-			(x)->bindValue("usage", (y).usage);\
-			(x)->bindValue("hashId", qHash((y).shortName));\
-			(x)->bindValue("isHasPinyin", (y).isHasPinyin);\
-			(x)->bindValue("comeFrom", (y).comeFrom);\
-			(x)->bindValue("pinyinReg", (y).pinyinReg);\
-			(x)->bindValue("allchars", (y).allchars);\
-			(x)->bindValue("alias2", (y).alias2);\
-			(x)->bindValue("shortCut", (y).shortCut);\
-			(x)->bindValue("delId", (y).delId);\
-			(x)->bindValue("args", (y).args);\
+			(x)->bindValue(":fullPath", (y).fullPath);\
+			(x)->bindValue(":shortName", (y).shortName);\
+			(x)->bindValue(":lowName", (y).lowName);\
+			(x)->bindValue(":icon", (y).icon);\
+			(x)->bindValue(":usage", (y).usage);\
+			(x)->bindValue(":hashId", qHash((y).shortName));\
+			(x)->bindValue(":isHasPinyin", (y).isHasPinyin);\
+			(x)->bindValue(":comeFrom", (y).comeFrom);\
+			(x)->bindValue(":pinyinReg", (y).pinyinReg);\
+			(x)->bindValue(":allchars", (y).allchars);\
+			(x)->bindValue(":alias2", (y).alias2);\
+			(x)->bindValue(":shortCut", (y).shortCut);\
+			(x)->bindValue(":delId", (y).delId);\
+			(x)->bindValue(":args", (y).args);\
 }while(0);
 
 
