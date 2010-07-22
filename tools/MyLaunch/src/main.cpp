@@ -207,7 +207,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 					if(buildDbWithStart)
 						createDbFile();
 		}
-
+	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
 	gLastUpdateTime = QDateTime::fromString(gSettings->value("updateTime", TIME_INIT_STR).toString(), TIME_FORMAT);
 	GetShellDir(CSIDL_FAVORITES, gIeFavPath);
 #ifdef CONFIG_LOG_ENABLE
@@ -779,12 +779,11 @@ void MyWidget::searchOnInput()
 	searchResults.clear();
 
 
-	if (catalog != NULL)
-	  {
-		  if (inputData.count() <= 1)
+
+	  if (inputData.count() <= 1)
 			  catalog->searchCatalogs(gSearchTxt, searchResults);
 
-	  }
+	
 
 	if (searchResults.count() != 0)
 		inputData.last().setTopResult(searchResults[0]);
@@ -944,8 +943,8 @@ void MyWidget::searchFiles(const QString & input, QList < CatItem > &searchResul
 
 void MyWidget::catalogBuilt()
 {
-	catalog.reset();
-	catalog = gBuilder->getCatalog();
+	//catalog.reset();
+	//catalog = gBuilder->getCatalog();
 
 	gBuilder->wait();
 	gBuilder.reset();
@@ -1274,7 +1273,8 @@ MyWidget::~MyWidget()
 		syncDlgTimer->stop();
 		delete syncDlgTimer;
 	}
-
+	if(catalog)
+		catalog.reset();
 	platform.reset();
 	if(gSearchResult)
 		delete[] gSearchResult;
