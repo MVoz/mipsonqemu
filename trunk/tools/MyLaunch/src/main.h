@@ -196,6 +196,7 @@ public:
 	QScrollBar* altScroll;
 	shared_ptr<Catalog> catalog;
 	shared_ptr<CatBuilder> catBuilder;
+	//shared_ptr<SlowCatalog*> main_catalog;;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
 	PluginHandler plugins;

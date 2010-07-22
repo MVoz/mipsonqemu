@@ -70,7 +70,10 @@ public:
 
 	shared_ptr<Catalog> getCatalog() { return cat; }
 	CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs);
-	CatBuilder(shared_ptr<Catalog> catalog,QSqlDatabase *dbs) :  buildWithStart(false),db(dbs),cat(catalog){}
+	//CatBuilder(shared_ptr<Catalog> catalog,QSqlDatabase *dbs) :  buildWithStart(false),db(dbs),cat(catalog){}
+	~CatBuilder(){
+		cat.reset();
+	}
 	void run();
 	void clearDb(int type,uint delId);
 	//uint isExistInDb(CatItem &item);
