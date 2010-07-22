@@ -54,7 +54,7 @@ bool MyWidget::createDbFile()
 		s=QString("DROP TABLE %1").arg(DB_TABLE_NAME);
 		QSqlQuery q(s,db);
 		q.exec();	
-		q=QString("CREATE TABLE %1 ("
+		s=QString("CREATE TABLE %1 ("
 				   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 				   "fullPath VARCHAR(1024) NOT NULL, "
 				   "shortName VARCHAR(1024) NOT NULL, "
@@ -65,9 +65,9 @@ bool MyWidget::createDbFile()
 				   "isHasPinyin INTEGER NOT NULL, "
 				   "comeFrom INTEGER NOT NULL, "
 				   "pinyinReg VARCHAR(1024), "
-				   "alias1 VARCHAR(1024), "
+				   "allchars VARCHAR(1024), "
 				   "alias2 VARCHAR(1024),"
-				   "shortCut VARCHAR(1024),"
+				   "shortCut INTEGER NOT NULL,"
 				   "delId INTEGER NOT NULL,"
 				   "args VARCHAR(1024))").arg(DB_TABLE_NAME);
 		q=QSqlQuery(s,db);
@@ -410,11 +410,11 @@ void MyWidget::showAlternatives(bool show)
 
 void MyWidget::increaseUsage(QString &fullPath,QString& shortCut)
 {
-		QSqlQuery	query("", db);
-		QString queryStr;
-		queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
-		query.exec(queryStr);
-		query.clear();
+		QSqlQuery	q("", db);
+		QString s;
+		//queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
+		q.exec(s);
+		q.clear();
 }
 void MyWidget::launchObject()
 {
