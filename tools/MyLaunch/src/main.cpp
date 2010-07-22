@@ -2407,6 +2407,10 @@ int main(int argc, char *argv[])
 
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
+	
+	HANDLE hProcessThis=GetCurrentProcess();
+	SetPriorityClass(hProcessThis,HIGH_PRIORITY_CLASS); 
+
 	bool rescue = false;
 
 	if (args.size() > 1)
