@@ -770,6 +770,7 @@ void MyWidget::inputMethodEvent(QInputMethodEvent * e)
 
 void MyWidget::searchOnInput()
 {
+	qDebug()<<__FUNCTION__<<" catalog: "<<catalog;
 	if (catalog == NULL)
 		return;
 
