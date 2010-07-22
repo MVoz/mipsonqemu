@@ -559,7 +559,7 @@ void CatBuilder::storeCatalog(QString dest,uint delId)
 				 	// produceInsetQueryStr(item,queryStr);
 					//  qDebug("queryStr:%s",qPrintable(queryStr));				  	
 					//query.exec(queryStr);
-					mergeThread::prepareInsertQuery(&query,item);
+					CatItem::prepareInsertQuery(&query,item);
 				  }
 				  query.exec();
 		  	}

@@ -794,8 +794,8 @@ void XmlReader::importCatItem(CatItem *item,int im)
 					 item->fullPath = text().toString().trimmed();
 				   	 item->hash_id=qHash(item->fullPath);			   
 				    	 item->usage = 0;
-				  	 item->groupId=0;
-				   	 item->parentId=0;
+				  	// item->groupId=0;
+				   	// item->parentId=0;
 					 item->alias1="";
 					 item->alias2="";
 					 item->shortCut="";

@@ -2,7 +2,7 @@
 #include <QDir>
 #include <QUrl>
 #include <QMessageBox>
-#include "globals.h"
+#include <globals.h>
 mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString path):QThread(parent),db(b),settings(s),iePath(path)
    {
 	   file = NULL;
@@ -926,38 +926,7 @@ uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fu
 }
 
 #endif 
-void mergeThread::prepareInsertQuery(QSqlQuery* q,CatItem& item)
-{
-	q->prepare("INSERT INTO "DB_TABLE_NAME
-							"(fullPath, shortName, lowName,icon,usage,hashId,"
-						   "groupId, parentId, isHasPinyin,comeFrom,hanziNums,pinyinDepth,"
-						   "pinyinReg,alias1,alias2,shortCut,delId,args)"
-						   "values("
-							"? , ? , ? , ? , ? , ? ,"
-							 "? , ? , ? , ? , ? , ? ,"
-							  "? , ? , ? , ? , ? , ? "
-						   ")");
-						   q->bindValue("fullPath", item.fullPath);
-						   q->bindValue("shortName", item.shortName);
-						   q->bindValue("lowName", item.lowName);
-						   q->bindValue("icon", item.icon);
-						   q->bindValue("usage", item.usage);
-						   q->bindValue("hashId", qHash(item.shortName));
-						   q->bindValue("groupId", item.groupId);
-						   q->bindValue("parentId", item.parentId);
-						   q->bindValue("isHasPinyin", item.isHasPinyin);
-						   q->bindValue("comeFrom", item.comeFrom);
-						   q->bindValue("hanziNums", item.hanziNums);
-						   q->bindValue("pinyinDepth", item.pinyinDepth);
-						   q->bindValue("pinyinReg", item.pinyinReg);
-						   q->bindValue("alias1", item.alias1);
-						   q->bindValue("alias2", item.alias2);
-						   q->bindValue("shortCut", item.shortCut);
-						   q->bindValue("delId", item.delId);
-						   q->bindValue("args", item.args
-	);
 
-}
 
 void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
 {
@@ -983,7 +952,7 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 				{
 					   CatItem citem(item.link,item.name,frombrowsertype);
 #if 1
-					   prepareInsertQuery(q,citem);
+					   CatItem::prepareInsertQuery(q,citem);
 #else
 					   queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
 					   "icon,usage,hashId,"

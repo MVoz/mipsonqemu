@@ -52,7 +52,7 @@
 #include <QtNetwork/QHttpResponseHeader>
 #include <QTimer>
 #include <QFile>
-#include <config.h>
+#include "config.h"
 #include <QSettings>
 #include <QTimerEvent>
 #include <windows.h>
@@ -158,7 +158,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 public:
 	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
-	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);	
+	//static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);	
 //	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };
 

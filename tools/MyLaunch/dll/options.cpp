@@ -538,7 +538,8 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 }
 void OptionsDlg::addCatitemToDb(CatItem& item)
 {
-	QSqlQuery query("",*db_p);
+	QSqlQuery q("",*db_p);
+	/*
 	QString queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
 				   "icon,usage,hashId,"
 				   "groupId, parentId, isHasPinyin,"
@@ -550,13 +551,25 @@ void OptionsDlg::addCatitemToDb(CatItem& item)
 				   .arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
 				   .arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(item.args);
 	qDebug("queryStr=%s",qPrintable(queryStr));
-	query.exec(queryStr);
-	query.clear();
+	*/
+	CatItem::prepareInsertQuery(&q,item);
+	q.exec();
+	q.clear();
 	
 }
 void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 {
-	QSqlQuery query("",*db_p);
+	QSqlQuery q("",*db_p);
+	q.prepare(
+				"UPDATE "DB_TABLE_NAME" SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
+				"icon=:icon,usage=:usage,hashId=:hashId,"
+				"isHasPinyin=:isHasPinyin,"
+				"comeFrom=:comeFrom,"
+				"pinyinReg=:pinyinReg,alias1=:alias1,alias2=:alias2',shortCut=:shortCut,delId=:delId where id=:id"
+			);
+	BIND_CATITEM_QUERY(&q,item);
+	q.bindValue("id", index);
+/*	
 	QString queryStr=QString("update %1 set fullPath='%2', shortName='%3', lowName='%4',"
 				   "icon='%5',usage=%6,hashId=%7,"
 				   "groupId=%8, parentId=%9, isHasPinyin=%10,"
@@ -566,15 +579,17 @@ void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 				   .arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
 				   .arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
 				   .arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(index);
-	query.exec(queryStr);
-	query.clear();
+*/
+	q.exec();
+	q.clear();
 }
 void OptionsDlg::deleteCatitemFromDb(CatItem& item,uint index)
 {
-	QSqlQuery query("",*db_p);
-	QString queryStr=QString("delete from %1 where id=%2").arg(DB_TABLE_NAME).arg(index) ;;
-	query.exec(queryStr);
-	query.clear();
+	QSqlQuery q("",*db_p);
+	q.prepare("DELETE FROM "DB_TABLE_NAME" where id=:id");
+	q.bindValue("id", index);
+	q.exec();
+	q.clear();
 }
 
 
