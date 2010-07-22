@@ -122,7 +122,7 @@
 #define    POST_HTTP_TYPE_HANDLE_ITEM 2
 
 #define MAX_SEARCH_RESULT 10
-#define DB_DATABASE_NAME "launchy.dbs"
+#define DB_DATABASE_NAME APP_NAME".db"
 #define DB_TABLE_NAME "launch_db"
 #define LAUNCH_BM_TABLE "launch_bm"
 
