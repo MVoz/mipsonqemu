@@ -565,7 +565,7 @@ void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 				"icon=:icon,usage=:usage,hashId=:hashId,"
 				"isHasPinyin=:isHasPinyin,"
 				"comeFrom=:comeFrom,"
-				"pinyinReg=:pinyinReg,alias1=:alias1,alias2=:alias2',shortCut=:shortCut,delId=:delId where id=:id"
+				"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2',shortCut=:shortCut,delId=:delId where id=:id"
 			);
 	BIND_CATITEM_QUERY(&q,item);
 	q.bindValue("id", index);

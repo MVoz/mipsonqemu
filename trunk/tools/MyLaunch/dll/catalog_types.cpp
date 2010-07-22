@@ -306,39 +306,31 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		//db.transaction();
 		//QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
 		//QString s=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
-		QString s=QString("select * from %1  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
+		//QString s=QString("select * from %1  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
+		QString s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
 RETRY:
 		if(hanzi_flag)
-			s=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
+			s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(DB_TABLE_NAME);
 		//qDebug("s=%s",qPrintable(s));
 		if(q.exec(s)){
 					 while(q.next()&&(numresults>i)) {					 			
 					 			if(hanzi_flag){
 #if 1
-									unsigned short hanziNums=(unsigned short )(q.value(Q_RECORD_INDEX(q,"hanziNums")).toUInt());
-									uint pinyinDepth=q.value(Q_RECORD_INDEX(q,"pinyinDepth")).toUInt();
+									//unsigned short hanziNums=(unsigned short )(q.value(Q_RECORD_INDEX(q,"hanziNums")).toUInt());
+									//uint pinyinDepth=q.value(Q_RECORD_INDEX(q,"pinyinDepth")).toUInt();
 									QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
+									QString allchars=q.value(Q_RECORD_INDEX(q,"allchars")).toString();
 									/*
 									if(q.value(Q_RECORD_INDEX(q,"id")).toUInt()==978)
 										debugon=1;
 									else
 										debugon = 0;
 									*/
-									QString allchars,searchs;
+									QString searchs;
 									
-									int m =0;
-									QString ss = pinyinReg;
-									ss.replace(BROKEN_TOKEN_STR,"");
-									//ss.replace(PINYIN_TOKEN_FLAG,"");
-									ss.replace("|","");
-
-									for(m =0; m < ss.length();m++)
-									{
-										if(allchars.indexOf(ss.at(m))==-1)
-											allchars.append(ss.at(m));
-									}	
-
-									for(m =0; m < searchTxt.length();m++)
+							
+									
+									for(int m =0; m < searchTxt.length();m++)
 									{
 										if(searchs.indexOf(searchTxt.at(m))==-1)
 										{
@@ -361,7 +353,7 @@ RETRY:
 									//   for (int i = 0; i < regStr.size(); ++i)
 									//		qDebug()<<regStr.at(i);
 									//}
-									for (m = 0; m <regsize ; m++)
+									for(int m = 0; m <regsize ; m++)
 									{
 										int depth=0;
 										if(!(matched=pinyinsearch(regStr,regStr.size(),0,searchTxt,searchTxt.size(),depth,"")))

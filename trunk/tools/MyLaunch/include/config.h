@@ -278,7 +278,7 @@
 			(x)->bindValue("isHasPinyin", (y).isHasPinyin);\
 			(x)->bindValue("comeFrom", (y).comeFrom);\
 			(x)->bindValue("pinyinReg", (y).pinyinReg);\
-			(x)->bindValue("alias1", (y).alias1);\
+			(x)->bindValue("allchars", (y).allchars);\
 			(x)->bindValue("alias2", (y).alias2);\
 			(x)->bindValue("shortCut", (y).shortCut);\
 			(x)->bindValue("delId", (y).delId);\

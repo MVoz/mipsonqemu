@@ -29,9 +29,8 @@ QString searchTxt;
 			data = NULL;\
 			usage = 0;\
 			hash_id = qHash(shortName);\
-			alias1="";\
 			alias2="";\
-			shortCut="";\
+			shortCut=0;\
 			delId=0;\
 			args="";\
 			if(IS_FROM_BROWSER(flag)){\
@@ -158,6 +157,15 @@ void CatItem:: getPinyinReg(const QString& str){
 				pinyinReg.append(strUnit);				
 			}			
 		}
+	//get allchars
+	QString allchar = pinyinReg;
+	allchar.replace(BROKEN_TOKEN_STR,"");
+	allchar.replace("|","");
+	for(int m =0; m < allchar.length();m++)
+	{
+		if(allchars.indexOf(allchar.at(m))==-1)
+			allchars.append(allchar.at(m));
+	}	
 }
 
 void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
@@ -167,11 +175,11 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
 				"("
 					"fullPath, shortName, lowName,icon,usage,hashId,"
 					"isHasPinyin,comeFrom,"
-					"pinyinReg,alias1,alias2,shortCut,delId,args"
+					"pinyinReg,allchars,alias2,shortCut,delId,args"
 				") VALUES ("
 					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
 					":isHasPinyin,:comeFrom,"
-					":pinyinReg,:alias1,:alias2,:shortCut,:delId,:args"		
+					":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
 			   	")"
 			   );
 	 BIND_CATITEM_QUERY(q,item);

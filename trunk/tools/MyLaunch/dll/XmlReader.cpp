@@ -796,9 +796,9 @@ void XmlReader::importCatItem(CatItem *item,int im)
 				    	 item->usage = 0;
 				  	// item->groupId=0;
 				   	// item->parentId=0;
-					 item->alias1="";
+					 item->allchars="";
 					 item->alias2="";
-					 item->shortCut="";
+					 item->shortCut=0;
 				break;
 				case  CATITEM_SHORTNAME:
 					 item->shortName = text().toString().trimmed();
