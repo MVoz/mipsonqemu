@@ -23,6 +23,160 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QtAlgorithms>
 QString searchTxt;
+#define INIT_CATITEM_PART  do{\
+			lowName = shortName.toLower();\
+			getPinyinReg(shortName);\
+			data = NULL;\
+			usage = 0;\
+			hash_id = qHash(shortName);\
+			alias1="";\
+			alias2="";\
+			shortCut="";\
+			delId=0;\
+			args="";\
+			if(IS_FROM_BROWSER(flag)){\
+				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
+						QUrl url(fullPath);\
+						if(url.isValid()){\
+							QString site = url.host();\
+							icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
+						}\
+					}\
+			}\
+		}while(0);
+
+CatItem::CatItem(QString full,int flag,bool isDir ) : fullPath(full),comeFrom(flag) {
+			int last = fullPath.lastIndexOf("/");
+			if (last == -1) {
+				shortName = fullPath;
+
+			} else {
+				shortName = fullPath.mid(last+1);
+				if (!isDir)
+					shortName = shortName.mid(0,shortName.lastIndexOf("."));
+			}
+
+			INIT_CATITEM_PART;
+}
+CatItem::CatItem(QString full, QString shortN,int flag): fullPath(full), shortName(shortN),comeFrom(flag)
+{
+		INIT_CATITEM_PART;		
+}
+CatItem::CatItem(QString full, QString shortN, uint i_d,int flag)  :  fullPath(full), shortName(shortN), hash_id(i_d),comeFrom(flag)
+{
+		INIT_CATITEM_PART;
+		hash_id = i_d;
+}
+CatItem::CatItem(QString full, QString shortN,QString arg, int flag)  :  fullPath(full), shortName(shortN), args(arg),comeFrom(flag)
+{
+		INIT_CATITEM_PART;
+		args = arg;	
+}
+CatItem::CatItem(QString full, QString shortN, uint i_d, QString iconPath,int flag)  : fullPath(full), shortName(shortN), icon(iconPath), hash_id(i_d),comeFrom(flag)
+{
+		INIT_CATITEM_PART;
+		icon = iconPath;
+		hash_id = i_d;
+
+}
+CatItem::CatItem(QString full, QString shortN,QString arg, uint i_d, QString iconPath,int flag) : fullPath(full), shortName(shortN),args(arg), icon(iconPath), hash_id(i_d),comeFrom(flag)
+{
+		INIT_CATITEM_PART;
+		args = arg;
+		icon = iconPath;
+		hash_id = i_d;
+}
+
+CatItem::CatItem(const CatItem &s) {
+		COPY_CATITEM(s);
+}
+void CatItem:: getPinyinReg(const QString& str){
+	isHasPinyin=NO_PINYIN_FLAG;
+	if(str.size()==0)
+		return;
+	if(str.toLocal8Bit().length()==str.size())
+		return;
+	//hanziNums=str.toLocal8Bit().length()-str.size();
+	QStringList  shengmo;
+	shengmo<<"sh"<<"zh"<<"ch";
+
+	QStringList src_list = str.split(QRegExp("\\s+"));
+	foreach (QString s_s, src_list) {
+			if(s_s.toLocal8Bit().length()==s_s.size())	{
+					pinyinReg.append(s_s+" ");
+					continue;
+			}
+		
+			 for(int i=0;i<s_s.size();i++)
+			{
+				QString strUnit=QString(s_s.at(i));
+				if(strUnit.toLocal8Bit().length()==strUnit.size()){
+						pinyinReg.append(strUnit);	
+						continue;
+					}
+				QString  r=tz::getPinyin(strUnit.toUtf8());	
+				if(r != QString(strUnit.toUtf8()))
+				{
+					isHasPinyin=HAS_PINYIN_FLAG;
+					if(pinyinReg.size()>0&&!pinyinReg.endsWith(BROKEN_TOKEN_STR))
+							pinyinReg.append(BROKEN_TOKEN_STR);
+
+					QStringList list2 = r.split(" ", QString::SkipEmptyParts);	
+					
+					QStringList singlePinyinreg;
+					for(int i=0;i<list2.size();i++)
+					{
+						singlePinyinreg<<QString(list2.at(i).at(0));
+						//start check shengmo
+						for(int j=0;j<shengmo.size();j++)
+						{
+							if(list2.at(i).startsWith (shengmo.at(j),Qt::CaseInsensitive))
+							{
+								singlePinyinreg<<shengmo.at(j);
+								break;
+							}
+						}
+						//end check shengmo
+						if(list2.at(i).size()>1)
+								singlePinyinreg<<list2.at(i);		
+					}
+
+					//clear the same string
+					for(int i=0;i<singlePinyinreg.size();i++){
+						for(int j=i+1;j<singlePinyinreg.size();)
+							{
+								if(singlePinyinreg.at(i)==singlePinyinreg.at(j))
+								 {
+								 	singlePinyinreg.removeAt(j);							
+								 }else
+								 	j++;						
+							}
+					}					
+					pinyinReg.append(singlePinyinreg.join("|"));
+					pinyinReg.append(BROKEN_TOKEN_STR);					
+				}else			
+				pinyinReg.append(strUnit);				
+			}			
+		}
+}
+
+void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
+{
+	q->prepare(
+				"INSERT INTO "DB_TABLE_NAME
+				"("
+					"fullPath, shortName, lowName,icon,usage,hashId,"
+					"isHasPinyin,comeFrom,"
+					"pinyinReg,alias1,alias2,shortCut,delId,args"
+				") VALUES ("
+					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
+					":isHasPinyin,:comeFrom,"
+					":pinyinReg,:alias1,:alias2,:shortCut,:delId,:args"		
+			   	")"
+			   );
+	 BIND_CATITEM_QUERY(q,item);
+}
+
 bool CatLessNoPtr(CatItem & a, CatItem & b)
 {
 	return CatLess(&a,&b);

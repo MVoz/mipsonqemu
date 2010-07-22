@@ -264,7 +264,26 @@
 #define Q_RECORD_INDEX(x,y) (x).record().indexOf(y)
 
 
+#define NO_PINYIN_FLAG 0
+#define HAS_PINYIN_FLAG 1
+#define BROKEN_TOKEN_STR "$#@#$"
 
+#define BIND_CATITEM_QUERY(x,y) do{\
+			(x)->bindValue("fullPath", (y).fullPath);\
+			(x)->bindValue("shortName", (y).shortName);\
+			(x)->bindValue("lowName", (y).lowName);\
+			(x)->bindValue("icon", (y).icon);\
+			(x)->bindValue("usage", (y).usage);\
+			(x)->bindValue("hashId", qHash((y).shortName));\
+			(x)->bindValue("isHasPinyin", (y).isHasPinyin);\
+			(x)->bindValue("comeFrom", (y).comeFrom);\
+			(x)->bindValue("pinyinReg", (y).pinyinReg);\
+			(x)->bindValue("alias1", (y).alias1);\
+			(x)->bindValue("alias2", (y).alias2);\
+			(x)->bindValue("shortCut", (y).shortCut);\
+			(x)->bindValue("delId", (y).delId);\
+			(x)->bindValue("args", (y).args);\
+}while(0);
 
 
 #endif

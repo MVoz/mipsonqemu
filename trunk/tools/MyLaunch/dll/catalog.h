@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <bmapi.h>
 #include <pinyin>
 #include <QUrl>
+#include <QSqlQuery>
+
 #if defined(CATALOG_DLL)
 #define CATALOG_DLL_CLASS_EXPORT __declspec(dllexport)
 #else
@@ -40,12 +42,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /** 
 \brief CatItem (Catalog Item) stores a single item in the index
 */
-#define NO_PINYIN_FLAG 0
-#define HAS_PINYIN_FLAG 1
-#define BROKEN_TOKEN_STR "$#@#$"
-#define PINYIN_MAX_DEPTH 16
-#define PINYIN_MAX_NUMBER 4
-#define PINYIN_TOKEN_FLAG "(p)"
+
+
 
 enum CATITEM_ITEM{
 	  CATITEM_FULLPATH=0,
@@ -53,29 +51,6 @@ enum CATITEM_ITEM{
 	  CATITEM_COMEFROM,
 	  CATITEM_MAX
 };
-#define INIT_CATITEM_PART  do{\
-			lowName = shortName.toLower();\
-			getPinyinReg(shortName);\
-			data = NULL;\
-			usage = 0;\
-			groupId=0;\
-			parentId=0;\
-			hash_id = qHash(shortName);\
-			alias1="";\
-			alias2="";\
-			shortCut="";\
-			delId=0;\
-			args="";\
-			if(IS_FROM_BROWSER(flag)){\
-				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
-						QUrl url(fullPath);\
-						if(url.isValid()){\
-							QString site = url.host();\
-							icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
-						}\
-					}\
-			}\
-		}while(0);
 #define COPY_CATITEM(x) do{\
 		fullPath = (x).fullPath;\
 		shortName = (x).shortName;\
@@ -83,13 +58,9 @@ enum CATITEM_ITEM{
 		icon = (x).icon;\
 		usage = (x).usage;\
 		data = (x).data;\
-		groupId=(x).groupId;\
-		parentId=(x).parentId;\
 		hash_id = (x).hash_id;\
 		comeFrom=(x).comeFrom;\
 		isHasPinyin=(x).isHasPinyin;\
-		pinyinDepth=(x).pinyinDepth;\
-		hanziNums=(x).hanziNums;\
 		pinyinReg=(x).pinyinReg;\
 		alias1=(x).alias1;\
 		alias2=(x).alias2;\
@@ -97,6 +68,7 @@ enum CATITEM_ITEM{
 		delId=(x).delId;\
 		args=(x).args;\
 }while(0);
+
 class CATALOG_DLL_CLASS_EXPORT CatItem {
 public:
     
@@ -115,14 +87,14 @@ public:
 	/** The plugin id of the creator of this CatItem */
 	uint hash_id;
 
-        uint groupId;
-        uint parentId;
+     //   uint groupId;
+     //   uint parentId;
 	/*is has pingyin*/
 	unsigned short isHasPinyin;
 	unsigned short comeFrom;
-	unsigned short hanziNums;
+	//unsigned short hanziNums;
 	/*pinyin depth*/
-	unsigned int pinyinDepth;
+	//unsigned int pinyinDepth;
 	/*pinyin reg*/
 	QString pinyinReg;
 	QString alias1;
@@ -132,94 +104,13 @@ public:
 	QString args;
 	CatItem() {}
 
+	CatItem(QString full,int flag,bool isDir=false) ;
+	CatItem(QString full, QString shortN,int flag) ;
 
+	CatItem(QString full, QString shortN, uint i_d,int flag)  ;
+	 
+	CatItem(QString full, QString shortN,QString arg, int flag) ;
 
-	CatItem(QString full,int flag,bool isDir = false) 
-		: fullPath(full),comeFrom(flag) {
-			int last = fullPath.lastIndexOf("/");
-			if (last == -1) {
-				shortName = fullPath;
-
-			} else {
-				shortName = fullPath.mid(last+1);
-				if (!isDir)
-					shortName = shortName.mid(0,shortName.lastIndexOf("."));
-			}
-
-			INIT_CATITEM_PART;
-	}
-
-
-	CatItem(QString full, QString shortN,int flag) 
-		: fullPath(full), shortName(shortN),comeFrom(flag)
-	{
-		INIT_CATITEM_PART;
-		/*
-		lowName = shortName.toLower();
-		getPinyinReg(shortName);
-		data = NULL;
-		usage = 0;
-		groupId=0;
-		parentId=0;
-		hash_id = qHash(shortName);
-		alias1="";
-		alias2="";
-		shortCut="";
-		delId=0;
-		args="";
-		if(IS_FROM_BROWSER(flag))
-			{
-				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
-					{
-						QUrl url(fullPath);
-						if(url.isValid()){
-							QString site = url.host();
-							icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));
-						}
-					}
-			}
-		*/
-	}
-
-	CatItem(QString full, QString shortN, uint i_d,int flag)  
-	    :  fullPath(full), shortName(shortN), hash_id(i_d),comeFrom(flag)
-	{
-		INIT_CATITEM_PART;
-		hash_id = i_d;
-		/*
-		lowName = shortName.toLower();
-		getPinyinReg(shortName);
-		data = NULL;
-		usage = 0;
-		groupId=0;
-		parentId=0;
-		hash_id = qHash(shortName);
-		alias1="";
-		alias2="";
-		shortCut="";
-		delId=0;
-		args="";
-		*/
-	}
-	CatItem(QString full, QString shortN,QString arg, int flag)  
-	    :  fullPath(full), shortName(shortN), args(arg),comeFrom(flag)
-	{
-		INIT_CATITEM_PART;
-		args = arg;
-		/*
-		lowName = shortName.toLower();
-		getPinyinReg(shortName);
-		data = NULL;
-		usage = 0;
-		groupId=0;
-		parentId=0;
-		hash_id = qHash(shortName);
-		alias1="";
-		alias2="";
-		shortCut="";
-		delId=0;
-		*/
-	}
 	/** This is the constructor most used by plugins 
 	\param full The full path of the file to execute
 	\param The abbreviated name for the entry
@@ -228,253 +119,14 @@ public:
 	\warning It is usually a good idea to append ".your_plugin_name" to the end of the full parameter
 	so that there are not multiple items in the index with the same full path.
 	*/
-	CatItem(QString full, QString shortN, uint i_d, QString iconPath,int flag)   
-	    : fullPath(full), shortName(shortN), icon(iconPath), hash_id(i_d),comeFrom(flag)
-	{
-		INIT_CATITEM_PART;
-		icon = iconPath;
-		hash_id = i_d;
-		/*
-		lowName = shortName.toLower();
-		getPinyinReg(shortName);
-		data = NULL;
-		usage = 0;
-		groupId=0;
-		parentId=0;
-		hash_id = qHash(shortName);
-		alias1="";
-		alias2="";
-		shortCut="";
-		delId=0;
-		args="";
-		*/
-	}
-	CatItem(QString full, QString shortN,QString arg, uint i_d, QString iconPath,int flag)   
-	    : fullPath(full), shortName(shortN),args(arg), icon(iconPath), hash_id(i_d),comeFrom(flag)
-	{
-		INIT_CATITEM_PART;
-		args = arg;
-		icon = iconPath;
-		hash_id = i_d;
-		/*
-		lowName = shortName.toLower();
-		getPinyinReg(shortName);
-		data = NULL;
-		usage = 0;
-		groupId=0;
-		parentId=0;
-		hash_id = qHash(shortName);
-		alias1="";
-		alias2="";
-		shortCut="";
-		delId=0;
-		*/
-	}
+	CatItem(QString full, QString shortN, uint i_d, QString iconPath,int flag) ;
+	CatItem(QString full, QString shortN,QString arg, uint i_d, QString iconPath,int flag);
 
-	CatItem(const CatItem &s) {
-		COPY_CATITEM(s);
-		/*
-		fullPath = s.fullPath;
-		shortName = s.shortName;
-		lowName = s.lowName;
-		icon = s.icon;
-		usage = s.usage;
-		data = s.data;
-		groupId=s.groupId;
-		parentId=s.parentId;
-		hash_id = s.hash_id;
-		comeFrom=s.comeFrom;
-		isHasPinyin=s.isHasPinyin;
-		pinyinDepth=s.pinyinDepth;
-		hanziNums=s.hanziNums;
-		pinyinReg=s.pinyinReg;
-		alias1=s.alias1;
-		alias2=s.alias2;
-		shortCut=s.shortCut;
-		delId=s.delId;
-		args=s.args;
-		*/
-	}
-	void getPinyinReg(QString& str){
-	isHasPinyin=NO_PINYIN_FLAG;
-	pinyinReg="";
-	pinyinDepth=1;
-	hanziNums=0;
-	if(str.size()==0)
-		return;
-	if(str.toLocal8Bit().length()==str.size())
-		return;
-	hanziNums=str.toLocal8Bit().length()-str.size();
-	QStringList  shengmo;
-	shengmo<<"sh"<<"zh"<<"ch";
-
-	QStringList src_list = str.split(QRegExp("\\s+"));
-	//qDebug("shortName=%s",qPrintable(shortName));
-	foreach (QString s_s, src_list) {
-		//QString s_s=QString::fromLocal8Bit(s);
-		if(s_s.toLocal8Bit().length()==s_s.size())
-			{
-				pinyinReg.append(s_s+" ");
-				//pinyinReg.append(" ");
-				continue;
-			}
-		//qDebug("%s str=%s s_s=%s",__FUNCTION__,qPrintable(str),qPrintable(s_s));
-		
-		 for(int i=0;i<s_s.size();i++)
-		{
-			QString strUnit=QString(s_s.at(i));
-			if(strUnit.toLocal8Bit().length()==strUnit.size()){
-		//		if(pinyinReg.size()>0&&!pinyinReg.endsWith(BROKEN_TOKEN_STR))
-			//			pinyinReg.append(BROKEN_TOKEN_STR);
-					pinyinReg.append(strUnit);	
-					continue;
-				}
-			int numbers=0;/*the number by split by "|"*/
-#ifndef CONFIG_PINYIN_FROM_DB
-			int ret=get_pinyin(strUnit.toUtf8());	
-						//qDebug("%s ret=0x%08x",__FUNCTION__,ret);
-			if(ret!=-1)
-			{
-				isHasPinyin=HAS_PINYIN_FLAG;
-				if(!pinyinReg.endsWith(BROKEN_TOKEN_STR))
-						pinyinReg.append(BROKEN_TOKEN_STR);
-				QString str1=pinyin_list[ret>>16]->at(ret&0xffff);
-				str1.remove(0,2);
-
-				QStringList list2 = str1.split(" ", QString::SkipEmptyParts);	
-				
-				for(int i=0;i<list2.size();i++)
-				{
-					pinyinReg.append(list2.at(i).at(0));
-					numbers++;
-					if(list2.at(i).size()>1)
-						   pinyinReg.append("|");
-					//start check shengmo
-					for(int j=0;j<shengmo.size();j++)
-					{
-						if(list2.at(i).startsWith (shengmo.at(j),Qt::CaseInsensitive))
-						{
-							pinyinReg.append(shengmo.at(j));
-							pinyinReg.append("|");
-							numbers++;
-							break;
-						}
-					}
-					//end check shengmo
-					if(list2.at(i).size()>1)
-						{
-							pinyinReg.append(list2.at(i));
-							numbers++;
-						}
-					if(i!=(list2.size()-1))
-						pinyinReg.append("|");
-					else
-						{
-						pinyinReg.append(PINYIN_TOKEN_FLAG);
-					         pinyinReg.append(BROKEN_TOKEN_STR);
-						}
-				}
-			}else
-				{
-					pinyinReg.append(strUnit);			
-					numbers=1;
-	    		 	}
-#else
-			QString  r=tz::getPinyin(strUnit.toUtf8());	
-		//qDebug("%s ret=0x%08x",__FUNCTION__,ret);
-		if(r != QString(strUnit.toUtf8()))
-		{
-			isHasPinyin=HAS_PINYIN_FLAG;
-			if(pinyinReg.size()>0&&!pinyinReg.endsWith(BROKEN_TOKEN_STR))
-					pinyinReg.append(BROKEN_TOKEN_STR);
-
-			QStringList list2 = r.split(" ", QString::SkipEmptyParts);	
-			
-			QStringList singlePinyinreg;
-			for(int i=0;i<list2.size();i++)
-			{
-				//pinyinReg.append(list2.at(i).at(0));
-				singlePinyinreg<<QString(list2.at(i).at(0));
-				numbers++;
-				//if(list2.at(i).size()>1)
-				//	   pinyinReg.append("|");
-				//start check shengmo
-				for(int j=0;j<shengmo.size();j++)
-				{
-					if(list2.at(i).startsWith (shengmo.at(j),Qt::CaseInsensitive))
-					{
-						//pinyinReg.append(shengmo.at(j));
-						singlePinyinreg<<shengmo.at(j);
-						//pinyinReg.append("|");
-						numbers++;
-						break;
-					}
-				}
-				//end check shengmo
-				if(list2.at(i).size()>1)
-					{
-						//pinyinReg.append(list2.at(i));
-						singlePinyinreg<<list2.at(i);
-						numbers++;
-					}
-				//if(i!=(list2.size()-1))
-				//	pinyinReg.append("|");				
-			}
-
-			//clear the same string
-			for(int i=0;i<singlePinyinreg.size();i++){
-				for(int j=i+1;j<singlePinyinreg.size();)
-					{
-						if(singlePinyinreg.at(i)==singlePinyinreg.at(j))
-						 {
-						 	singlePinyinreg.removeAt(j);							
-						 }else
-						 	j++;						
-					}
-			}
-			
-			pinyinReg.append(singlePinyinreg.join("|"));
-			pinyinReg.append(BROKEN_TOKEN_STR);
-			
-		}else
-			{
-				pinyinReg.append(strUnit);			
-				numbers=1;
-				}
-
-#endif
-			
-
-
-				pinyinDepth=pinyinDepth*numbers;
-			}
-			
-		}
-		//qDebug("shortName=%s regstr=%s pinyinDepth=%u",qPrintable(shortName),qPrintable(pinyinReg),pinyinDepth);
-	}
+	CatItem(const CatItem &s);
+	void getPinyinReg(const QString& str);
+	static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);
 	CatItem& operator=( const CatItem &s ) {
-		COPY_CATITEM(s);
-		/*
-		fullPath = s.fullPath;
-		shortName = s.shortName;
-		lowName = s.lowName;
-		icon = s.icon;
-		usage = s.usage;
-		data = s.data;
-		hash_id = s.hash_id;
-		groupId=s.groupId;
-		parentId=s.parentId;
-		comeFrom=s.comeFrom;
-		isHasPinyin=s.isHasPinyin;
-		pinyinDepth=s.pinyinDepth;
-		pinyinReg=s.pinyinReg;
-		hanziNums=s.hanziNums;
-		alias1=s.alias1;
-		alias2=s.alias2;
-		shortCut=s.shortCut;
-		delId=s.delId;
-		args=s.args;
-		*/
+		COPY_CATITEM(s);		
 		return *this;
 	}
 
@@ -552,12 +204,10 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.icon;
 	out << item.usage;
 	out << item.hash_id;
-	out << item.groupId;
-	out << item.parentId;
 	out << item.isHasPinyin;
 	out << item.comeFrom;
-	out << item.hanziNums;
-	out << item.pinyinDepth;	
+	//out << item.hanziNums;
+	//out << item.pinyinDepth;	
 	out << item.pinyinReg;
 	out << item.alias1;
 	out << item.alias2;
@@ -574,12 +224,10 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.icon;
 	in >> item.usage;
 	in >> item.hash_id;
-	in >> item.groupId;
-	in >> item.parentId;
 	in >> item.isHasPinyin;
 	in >> item.comeFrom;
-	in >> item.hanziNums;
-	in >> item.pinyinDepth;
+	//in >> item.hanziNums;
+	//in >> item.pinyinDepth;
 	in >> item.pinyinReg;
 	in >> item.alias1;
 	in >> item.alias2;

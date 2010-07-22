@@ -102,6 +102,7 @@ void SlowCatalog::clearItem()
 	catList.clear();
 }
 #endif
+/*
 void Catalog::pinyinMatches(QStringList& strlist,int i,int max,QString e_s,QString &txt,bool& ret)
 {
 		QString match_s=e_s;
@@ -168,6 +169,7 @@ void Catalog::pinyinMatchesEx(QStringList& strlist,QString &txt,bool& ret,bool C
 		return ;
 
 }
+*/
 #if 0
 bool Catalog::matches(CatItem * item, QString & txt)
 {
