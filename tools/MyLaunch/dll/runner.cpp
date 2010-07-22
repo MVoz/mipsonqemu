@@ -92,7 +92,7 @@ void runner::getCatalog(QList<CatItem>* items)
 	init();
 	foreach(runnerCmd cmd, cmds) {
 		//items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner, getIcon(),COME_FROM_RUNNER));
-		items->push_back(CatItem(cmd.file ,  cmd.name, cmd.args,HASH_runner, getIcon(),COME_FROM_RUNNER));
+		items->push_back(CatItem(cmd.file ,  cmd.name, cmd.args,HASH_runner, getIcon(),COME_FROM_COMMAND));
 	}
 	cmds.clear();
 }
@@ -100,10 +100,10 @@ void runner::getCatalog(QList<CatItem>* items)
 
 void runner::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
-    if ( id->count() > 1 && (unsigned int)id->first().getTopResult().comeFrom == COME_FROM_RUNNER) {
+    if ( id->count() > 1 && (unsigned int)id->first().getTopResult().comeFrom == COME_FROM_COMMAND) {
 		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
-		results->push_front(CatItem(text, text, HASH_runner, getIcon(),COME_FROM_RUNNER));
+		results->push_front(CatItem(text, text, HASH_runner, getIcon(),COME_FROM_COMMAND));
 	}
 }
 

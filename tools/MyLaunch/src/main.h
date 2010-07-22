@@ -248,7 +248,7 @@ public:
 	QChar sepChar();
 	QString printInput();
 	void processKey();
-	bool createDbFile();
+	//bool createDbFile();
 	void	increaseUsage(QString &fullPath,QString& shortCut);
 #ifdef CONFIG_LOG_ENABLE
 	void dumpBuffer(char* addr,int length);

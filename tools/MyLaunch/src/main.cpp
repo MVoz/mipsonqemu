@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 extern shared_ptr < BookmarkSync> gSyncer;
 
-
+/*
 bool MyWidget::createDbFile()
 {
 		QString s;
@@ -76,7 +76,7 @@ bool MyWidget::createDbFile()
 		return true;
 
 }
-
+*/
 MyWidget::MyWidget(QWidget * parent, PlatformBase * plat, bool rescue):
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
@@ -199,8 +199,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		 else{
 
   			        qDebug("connect database %s successfully!\n",qPrintable(dest));  
-					if(buildDbWithStart)
-						createDbFile();
+				if(buildDbWithStart)
+						tz::initDbTables(db);
+						//createDbFile();
 		}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
 	gLastUpdateTime = QDateTime::fromString(gSettings->value("updateTime", TIME_INIT_STR).toString(), TIME_FORMAT);
@@ -2303,7 +2304,7 @@ void MyWidget::getFavico(const QString& host,const QString& filename)
 void MyWidget::scanDbFavicon()
 {
 	QSqlQuery	q("", db);
-	QString s=QString("select * from %1 where comefrom between %2 and %3").arg(DB_TABLE_NAME).arg(COME_FROM_BROWSER_START).arg(COME_FROM_BROWSER_END);
+	QString s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER));
 	if(q.exec(s)){
 		//getFavico("www.sohu.com","favicon.ico");
 		 while(q.next()) {

@@ -87,7 +87,7 @@ win32 {
       LIBS +=   ../debug/catalog.lib
       LIBS +=   ../debug/catalog_types.lib
       LIBS +=   ../debug/icon_delegate.lib
-      LIBS +=   ../debug/weby.lib
+#      LIBS +=   ../debug/weby.lib
       LIBS +=   ../debug/runner.lib
       LIBS +=   ../debug/updaterThread.lib
    }
@@ -102,7 +102,7 @@ win32 {
       LIBS +=   ../release/catalog.lib
       LIBS +=   ../release/catalog_types.lib
       LIBS +=   ../release/icon_delegate.lib
-      LIBS +=   ../release/weby.lib
+#      LIBS +=   ../release/weby.lib
       LIBS +=   ../release/runner.lib
       LIBS +=   ../release/updaterThread.lib
       DESTDIR =    ../release/

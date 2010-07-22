@@ -307,10 +307,10 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		//QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
 		//QString s=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
 		//QString s=QString("select * from %1  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
-		QString s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
+		QString s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(searchTxt).arg(numresults);
 RETRY:
 		if(hanzi_flag)
-			s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(DB_TABLE_NAME);
+			s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM));
 		//qDebug("s=%s",qPrintable(s));
 		if(q.exec(s)){
 					 while(q.next()&&(numresults>i)) {					 			

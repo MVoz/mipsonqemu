@@ -942,7 +942,7 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 				uint id=0;
 				if(id=tz::isExistInDb(q,item.name,item.link,frombrowsertype)){
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
-					q->prepare("update "DB_TABLE_NAME" set delId = ? where id= ? ");
+					q->prepare(QString("update %1 set delId = ? where id= ? ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
 					int i=0;
 					q->bindValue(i++, delId);
 					q->bindValue(i++, id);

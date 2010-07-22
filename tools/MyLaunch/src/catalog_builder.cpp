@@ -51,7 +51,7 @@ void CatBuilder::run()
 	dest += "/";
 	dest +=DB_DATABASE_NAME;
 */
-	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
+	//getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
 	
 
 	qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
@@ -63,7 +63,7 @@ void CatBuilder::run()
 	 	  uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
 		  qDebug("delId=%d",delId);
 		  buildCatalog(delId);
-		  storeCatalog(dest,delId);
+		  storeCatalog(delId);
 		  clearDb(0,delId);
 	  }
 	emit catalogFinished();
@@ -75,10 +75,10 @@ void CatBuilder::clearDb(int type,uint delId)
 		switch(buildMode)
 		{
 			case CAT_BUILDMODE_ALL:
-				s=QString("delete  from %1 where comeFrom>=%2  and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+				s=QString("delete  from %1 where delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
 			break;
 			case CAT_BUILDMODE_DIRECTORY:
-				s=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_PROGRAM).arg(delId);
+				s=QString("delete  from %1 where delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
 			break;
 			case CAT_BUILDMODE_BOOKMARK:
 				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
@@ -87,7 +87,7 @@ void CatBuilder::clearDb(int type,uint delId)
 				tz::clearbmgarbarge(&q,delId);
 			break;
 			case CAT_BUILDMODE_COMMAND:
-				s=QString("delete  from %1 where comeFrom=%2 and delId!=%3").arg(DB_TABLE_NAME).arg(COME_FROM_RUNNER).arg(delId);
+				s=QString("delete  from %1 where  delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND)).arg(delId);
 			break;
 		}
 		
@@ -530,41 +530,41 @@ uint CatBuilder::isExistInDb(CatItem &item)
 	
 }
 */
-void CatBuilder::storeCatalog(QString dest,uint delId)
+void CatBuilder::storeCatalog(uint delId)
 {
 #if 1
 
 		qDebug("count=%d",this->cat->count());
-		QString queryStr;
+		QString s;
 		if(this->cat->count())
 		{
-			QSqlQuery	query("", *db);
+			QSqlQuery	q("", *db);
 			db->transaction();
 			for (int i = 0; i < this->cat->count(); i++)
 		  	{
 				  CatItem item = cat->getItem(i);
 				//uint id=isExistInDb(item);
-				uint id=tz::isExistInDb(&query,item.shortName,item.fullPath,item.comeFrom);
+				uint id=tz::isExistInDb(&q,item.shortName,item.fullPath,item.comeFrom);
 				//qDebug("%s id=%d",__FUNCTION__,id);
 				  if(id){
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 					//qDebug("queryStr=%s",qPrintable(queryStr));
 					//query.exec(queryStr);
-					query.prepare("update "DB_TABLE_NAME" set delId=? where id=?");
+					q.prepare(QString("update %1 set delId=? where id=?").arg(DBTABLEINFO_NAME(item.comeFrom)));
 					int i=0;
-					query.bindValue(i++, delId);
-					query.bindValue(i++, id);
+					q.bindValue(i++, delId);
+					q.bindValue(i++, id);
 				  }else
 				  {			
 				 	// produceInsetQueryStr(item,queryStr);
 					//  qDebug("queryStr:%s",qPrintable(queryStr));				  	
 					//query.exec(queryStr);
-					CatItem::prepareInsertQuery(&query,item);
+					CatItem::prepareInsertQuery(&q,item);
 				  }
-				  query.exec();
+				  q.exec();
 		  	}
 			db->commit();
-			query.clear();
+			q.clear();
 			this->cat->clearItem();
 		}
 //}

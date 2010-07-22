@@ -51,6 +51,11 @@ enum BROWSERINFO_OP{
 	BROWSERINFO_OP_FROMSERVER,
 	BROWSERINFO_OP_LOCAL
 };
+struct BMAPI_DLL_CLASSEXPORT dbtableinfo{
+	unsigned char id;
+	QString name;
+	unsigned char priority;//more less more priority
+};
 
 struct BMAPI_DLL_CLASSEXPORT browserinfo{
 		QString name;
@@ -185,10 +190,15 @@ public :
 	static int runParameter(int,int,int);
 	static void netProxy(int ,QSettings*,QNetworkProxy*);
 	static int GetCpuUsage();
+	static void  initDbTables(QSqlDatabase& db);
+	static QString dbTableName(uint);
+	static struct dbtableinfo* dbTableInfo(uint id);
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
 };
+
+#define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
 inline uint get_search_result_num(QSettings* s)
 {
 	uint num =s->value("GenOps/numresults",10).toUInt();
