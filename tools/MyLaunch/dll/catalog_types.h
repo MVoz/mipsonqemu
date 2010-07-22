@@ -80,6 +80,9 @@ public:
 		}
 	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
+	bool pinyinsearch(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);
+	int isAllIn(const QString& src,const QString& all);
+	//int debugon;
 //	uint isExistInDb(CatItem &item);
 };
 

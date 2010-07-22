@@ -250,8 +250,8 @@ int main(int argc, char *argv[])
 	#define BROKEN_TOKEN_STR "$#@#$"
 	//QString s("$#@#$j|ji|x|xi(p)$#@#$t|tong(p)$#@#$g|gong(p)$#@#$j|ju(p)$#@#$p|pi(p)$#@#$c|ch|chu(p)$#@#$l|li(p)$#@#$");
 
-	QString s("j|ji|x|xi$#@#$t|tong$#@#$g|gong$#@#$j|ju$#@#$p|pi$#@#$c|ch|chu$#@#$l|li");
-
+//	QString s("j|ji|x|xi$#@#$t|tong$#@#$g|gong$#@#$j|ju$#@#$p|pi$#@#$c|ch|chu$#@#$l|li");
+QString s("$#@#$q|qiang|j|jiang$#@#$l|li$#@#$x|xie$#@#$z|zai|z|zi$#@#$d|dian$#@#$n|nao$#@#$s|sh|shang$#@#$d|de|d|di$#@#$r|ruan$#@#$j|jian|m|mou$#@#$");
 
 	QStringList regStr=s.split(BROKEN_TOKEN_STR);
 	QString allchars;
