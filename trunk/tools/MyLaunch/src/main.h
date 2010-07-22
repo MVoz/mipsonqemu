@@ -197,7 +197,7 @@ public:
 	shared_ptr<Catalog> catalog;
 	shared_ptr<CatBuilder> catBuilder;
 	//shared_ptr<SlowCatalog*> main_catalog;;
-	QList<CatItem> searchResults;
+	QList<CatItem*> searchResults;
 	QList<InputData> inputData;
 	PluginHandler plugins;
 	bool visible;
@@ -217,7 +217,7 @@ public:
 	shared_ptr < synchronizeDlg> syncDlg;
 
 	void connectAlpha();
-	QIcon getIcon(CatItem & item);
+	QIcon getIcon(CatItem * item);
 	void MoveFromAlpha(QPoint pos);
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
@@ -231,7 +231,7 @@ public:
 	bool setHotkey(int, int);
 	void showAlternatives(bool show=true);
 	void launchObject();
-	void searchFiles(const QString & input, QList<CatItem>& searchResults);
+	void searchFiles(const QString & input, QList<CatItem*>& searchResults);
 	void parseInput(QString text);
 	void resetLaunchy();
 	void applySkin2(QString directory);

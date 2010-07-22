@@ -212,18 +212,18 @@ bool Catalog::matches(CatItem * item, QString & txt)
 	return false;
 }
 #endif
-void Catalog::searchCatalogs(QString txt, QList < CatItem > &out)
+void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 {
 	bool fuzzyMatch=settings->value("adv/ckFuzzyMatch", false).toBool();	
 	bool CaseSensitive=settings->value("adv/ckCaseSensitive", false).toBool();	
 
 	if(!fuzzyMatch&&!CaseSensitive)
 		txt = txt.toLower();
-	QList < CatItem * >catMatches = search(txt);
-	qDebug("%s found count=%d",__FUNCTION__,catMatches.count());
+	out= search(txt);
+	qDebug("%s found count=%d",__FUNCTION__,out.count());
 	// Now prioritize the catalog items
 	searchText = txt;
-	qSort(catMatches.begin(), catMatches.end(), CatLess);
+	qSort(out.begin(), out.end(), CatLess);
 
 	// Check for history matches
 	QString location = "History/" + txt;
@@ -231,25 +231,27 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem > &out)
 	hist = settings->value(location, hist).toStringList();
 	if (hist.count() == 2)
 	  {
-		  for (int i = 0; i < catMatches.count(); i++)
+		  for (int i = 0; i < out.count(); i++)
 		    {
-			    if (catMatches[i]->lowName == hist[0] && catMatches[i]->fullPath == hist[1])
+			    if (out[i]->lowName == hist[0] && out[i]->fullPath == hist[1])
 			      {
-				      CatItem *tmp = catMatches[i];
-				      catMatches.removeAt(i);
-				      catMatches.push_front(tmp);
+				      CatItem *tmp = out[i];
+				      out.removeAt(i);
+				      out.push_front(tmp);
 			      }
 		    }
 	  }
 	// Load up the results
 //	int max = settings->value("GenOps/numresults", 10).toInt();
+/*
 	for (int i = 0;  i < catMatches.count(); i++)	  {
 		  out.push_back(*catMatches[i]);
 	  }
+*/
 }
 
 
-void Catalog::checkHistory(QString txt, QList < CatItem > &list)
+void Catalog::checkHistory(QString txt, QList < CatItem *> &list)
 {
 	// Check for history matches
 	QString location = "History/" + txt;
@@ -259,9 +261,9 @@ void Catalog::checkHistory(QString txt, QList < CatItem > &list)
 	  {
 		  for (int i = 0; i < list.count(); i++)
 		    {
-			    if (list[i].lowName == hist[0] && list[i].fullPath == hist[1])
+			    if (list[i]->lowName == hist[0] && list[i]->fullPath == hist[1])
 			      {
-				      CatItem tmp = list[i];
+				      CatItem* tmp = list[i];
 				      list.removeAt(i);
 				      list.push_front(tmp);
 			      }
@@ -325,7 +327,7 @@ RETRY:
 									int m =0;
 									QString ss = pinyinReg;
 									ss.replace(BROKEN_TOKEN_STR,"");
-									ss.replace(PINYIN_TOKEN_FLAG,"");
+									//ss.replace(PINYIN_TOKEN_FLAG,"");
 									ss.replace("|","");
 
 									for(m =0; m < ss.length();m++)
@@ -349,7 +351,7 @@ RETRY:
 									if(allchars.size()<searchs.size()||!isAllIn(searchs,allchars))
 										continue;
 									
-									pinyinReg.replace(PINYIN_TOKEN_FLAG,"");
+									//pinyinReg.replace(PINYIN_TOKEN_FLAG,"");
 									QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
 									
 									int regsize = regStr.size();

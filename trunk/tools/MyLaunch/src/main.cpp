@@ -372,16 +372,16 @@ void MyWidget::showAlternatives(bool show)
 
 		  for (int i = 0; i < searchResults.size(); ++i)
 		    {
-			    QFileInfo fileInfo(searchResults[i].fullPath);
+			    QFileInfo fileInfo(searchResults[i]->fullPath);
 
 			    QIcon icon = getIcon(searchResults[i]);
-			    QListWidgetItem *item = new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
+			    QListWidgetItem *item = new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i]->fullPath), alternatives);
 			    //                      QListWidgetItem *item = new QListWidgetItem(alternatives);
-			    item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
+			    item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i]->fullPath));
 			  //  qDebug("size=%d fullPath=%s\n",searchResults.size(),qPrintable(searchResults[i].fullPath));
-			    item->setData(ROLE_SHORT, searchResults[i].shortName);
+			    item->setData(ROLE_SHORT, searchResults[i]->shortName);
 			    item->setData(ROLE_ICON, icon);
-			    item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));
+			    item->setToolTip(QDir::toNativeSeparators(searchResults[i]->fullPath));
 			    alternatives->addItem(item);
 			    alternatives->setFocus();
 		    }
@@ -544,10 +544,10 @@ void MyWidget::altKeyPressEvent(QKeyEvent * key)
 			      {
 				      QString location = "History/" + input->text();
 				      QStringList hist;
-				      hist << searchResults[row].lowName << searchResults[row].fullPath;
+				      hist << searchResults[row]->lowName << searchResults[row]->fullPath;
 				      gSettings->setValue(location, hist);
 
-				      CatItem tmp = searchResults[row];
+				      CatItem* tmp = searchResults[row];
 				      searchResults[row] = searchResults[0];
 				      searchResults[0] = tmp;
 
@@ -653,7 +653,7 @@ void MyWidget::doTab()
 	if (inputData.count() > 0 && searchResults.count() > 0)
 	  {
 		  // If it's an incomplete file or dir, complete it
-		  QFileInfo info(searchResults[0].fullPath);
+		  QFileInfo info(searchResults[0]->fullPath);
 
 		  if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir()))	//     && input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		    {
@@ -661,7 +661,7 @@ void MyWidget::doTab()
 			    if (info.isSymLink())
 				    path = info.symLinkTarget();
 			    else
-				    path = searchResults[0].fullPath;
+				    path = searchResults[0]->fullPath;
 
 			    if (info.isDir() && !path.endsWith(QDir::separator()))
 				    path += QDir::separator();
@@ -671,8 +671,8 @@ void MyWidget::doTab()
 		    {
 			    // Looking for a plugin
 			    input->setText(input->text() + " " + sepChar() + " ");
-			    inputData.last().setText(searchResults[0].shortName);
-			    input->setText(printInput() + searchResults[0].shortName + " " + sepChar() + " ");
+			    inputData.last().setText(searchResults[0]->shortName);
+			    input->setText(printInput() + searchResults[0]->shortName + " " + sepChar() + " ");
 		    }
 	  }
 }
@@ -770,7 +770,6 @@ void MyWidget::inputMethodEvent(QInputMethodEvent * e)
 
 void MyWidget::searchOnInput()
 {
-	qDebug()<<__FUNCTION__<<" catalog: "<<catalog;
 	if (catalog == NULL)
 		return;
 
@@ -786,7 +785,7 @@ void MyWidget::searchOnInput()
 	
 
 	if (searchResults.count() != 0)
-		inputData.last().setTopResult(searchResults[0]);
+		inputData.last().setTopResult(*(searchResults[0]));
 
 //	plugins.getLabels(&inputData);
 //	plugins.getResults(&inputData, &searchResults);
@@ -798,7 +797,7 @@ void MyWidget::searchOnInput()
 		  qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
 	  }
 #endif
-	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+	qSort(searchResults.begin(), searchResults.end(), CatLess);
 
 
 	//          qDebug() << gSearchTxt;
@@ -819,13 +818,13 @@ void MyWidget::updateDisplay()
 		  QIcon icon = getIcon(searchResults[0]);
 
 		  licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
-		  output->setText(searchResults[0].shortName);
+		  output->setText(searchResults[0]->shortName);
 
 		  // Did the plugin take control of the input?
 		  if (inputData.last().getID() != 0)
-			  searchResults[0].comeFrom = inputData.last().getID();
+			  searchResults[0]->comeFrom = inputData.last().getID();
 
-		  inputData.last().setTopResult(searchResults[0]);
+		  inputData.last().setTopResult(*(searchResults[0]));
 
 	} else
 	  {
@@ -834,46 +833,47 @@ void MyWidget::updateDisplay()
 	  }
 }
 
-QIcon MyWidget::getIcon(CatItem & item)
+QIcon MyWidget::getIcon(CatItem * item)
 {
 
-	if (item.icon.isEmpty()||item.icon.isNull())
+	if (item->icon.isEmpty()||item->icon.isNull())
 	  {
-		  QDir dir(item.fullPath);
+		  QDir dir(item->fullPath);
 		  if (dir.exists())
 			  return platform->icons->icon(QFileIconProvider::Folder);
 
-		  return platform->icon(QDir::toNativeSeparators(item.fullPath));
+		  return platform->icon(QDir::toNativeSeparators(item->fullPath));
 	} else
 	  {
 //#ifdef Q_WS_X11 // Windows needs this too for .png files
-		  if (QFile::exists(item.icon))
+		  if (QFile::exists(item->icon))
 		    {
-		    	   if(!IS_FROM_BROWSER(item.comeFrom))
-			   	 return QIcon(item.icon);
+		    	   if(!IS_FROM_BROWSER(item->comeFrom))
+			   	 return QIcon(item->icon);
 			   else{
 			   	//maybe the wrong file
-			   	QImageReader imgread(item.icon);
+			   	QImageReader imgread(item->icon);
 				//qDebug("error %s",qPrintable(imgread.errorString()));
 				
-			   	QIcon in = QIcon(item.icon);
+			   	QIcon in = QIcon(item->icon);
 				//qDebug("itemicon = %s actualSize=%d height=%d",qPrintable(item.icon),in.actualSize().width(),in.actualSize().height());
 				if(imgread.format().isEmpty())
-					  return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()));
+					  return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
 				else
 					  return in;
 			   }
-		    }else if(IS_FROM_BROWSER(item.comeFrom)&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()))){
-		    	    return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item.comeFrom-COME_FROM_BROWSER_START).toLower()));
+		    }else if(IS_FROM_BROWSER(item->comeFrom)&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()))){
+		    	    return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
 		    }
 //#endif
 
-		  return platform->icon(QDir::toNativeSeparators(item.icon));
+		  return platform->icon(QDir::toNativeSeparators(item->icon));
 	  }
 }
 
-void MyWidget::searchFiles(const QString & input, QList < CatItem > &searchResults)
+void MyWidget::searchFiles(const QString & input, QList < CatItem* > &searchResults)
 {
+/*
 	// Split the string on the last slash
 
 	QString path = QDir::fromNativeSeparators(input);
@@ -937,6 +937,7 @@ void MyWidget::searchFiles(const QString & input, QList < CatItem > &searchResul
 		  CatItem item(n,COME_FROM_PROGRAM);
 		  searchResults.push_front(item);
 	  }
+*/
 	return;
 }
 
