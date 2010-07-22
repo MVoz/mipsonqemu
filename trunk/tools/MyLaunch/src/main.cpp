@@ -50,30 +50,29 @@ extern shared_ptr < BookmarkSync> gSyncer;
 
 bool MyWidget::createDbFile()
 {
-		qDebug("%s %d\n",__FUNCTION__,__LINE__);
-		QString queryStr;
-		queryStr=QString("DROP TABLE %1").arg(DB_TABLE_NAME);
-		QSqlQuery query(queryStr,db);
-		query.exec();	
-		queryStr=QString("CREATE TABLE %1 ("
+		QString s;
+		s=QString("DROP TABLE %1").arg(DB_TABLE_NAME);
+		QSqlQuery q(s,db);
+		q.exec();	
+		q=QString("CREATE TABLE %1 ("
 				   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 				   "fullPath VARCHAR(1024) NOT NULL, "
 				   "shortName VARCHAR(1024) NOT NULL, "
 				   "lowName VARCHAR(1024) NOT NULL, "
 				   "icon VARCHAR(1024), "
 				   "usage INTEGER NOT NULL,"
-				    "hashId INTEGER NOT NULL,"		   
-				    "isHasPinyin INTEGER NOT NULL, "
-				    "comeFrom INTEGER NOT NULL, "
-				    "pinyinReg VARCHAR(1024), "
-				     "alias1 VARCHAR(1024), "
-				     "alias2 VARCHAR(1024),"
-				     "shortCut VARCHAR(1024),"
-				     "delId INTEGER NOT NULL,"
-				     "args VARCHAR(1024))").arg(DB_TABLE_NAME);
-		query=QSqlQuery(queryStr,db);
-		query.exec(queryStr);
-		query.clear();
+				   "hashId INTEGER NOT NULL,"		   
+				   "isHasPinyin INTEGER NOT NULL, "
+				   "comeFrom INTEGER NOT NULL, "
+				   "pinyinReg VARCHAR(1024), "
+				   "alias1 VARCHAR(1024), "
+				   "alias2 VARCHAR(1024),"
+				   "shortCut VARCHAR(1024),"
+				   "delId INTEGER NOT NULL,"
+				   "args VARCHAR(1024))").arg(DB_TABLE_NAME);
+		q=QSqlQuery(s,db);
+		q.exec(s);
+		q.clear();
 		return true;
 
 }
