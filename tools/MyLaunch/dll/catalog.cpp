@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 QString searchTxt;
 bool CatLessNoPtr(CatItem & a, CatItem & b)
 {
-	return CatLess(&a, &b);
+	return CatLess(&a,&b);
 }
 
 bool CatLess(CatItem * a, CatItem * b)

@@ -314,8 +314,8 @@ public:
 		//QString s_s=QString::fromLocal8Bit(s);
 		if(s_s.toLocal8Bit().length()==s_s.size())
 			{
-				pinyinReg.append(s_s);
-				pinyinReg.append(" ");
+				pinyinReg.append(s_s+" ");
+				//pinyinReg.append(" ");
 				continue;
 			}
 		//qDebug("%s str=%s s_s=%s",__FUNCTION__,qPrintable(str),qPrintable(s_s));
@@ -324,6 +324,8 @@ public:
 		{
 			QString strUnit=QString(s_s.at(i));
 			if(strUnit.toLocal8Bit().length()==strUnit.size()){
+		//		if(pinyinReg.size()>0&&!pinyinReg.endsWith(BROKEN_TOKEN_STR))
+			//			pinyinReg.append(BROKEN_TOKEN_STR);
 					pinyinReg.append(strUnit);	
 					continue;
 				}
@@ -383,24 +385,27 @@ public:
 		if(r != QString(strUnit.toUtf8()))
 		{
 			isHasPinyin=HAS_PINYIN_FLAG;
-			if(!pinyinReg.endsWith(BROKEN_TOKEN_STR))
+			if(pinyinReg.size()>0&&!pinyinReg.endsWith(BROKEN_TOKEN_STR))
 					pinyinReg.append(BROKEN_TOKEN_STR);
 
 			QStringList list2 = r.split(" ", QString::SkipEmptyParts);	
 			
+			QStringList singlePinyinreg;
 			for(int i=0;i<list2.size();i++)
 			{
-				pinyinReg.append(list2.at(i).at(0));
+				//pinyinReg.append(list2.at(i).at(0));
+				singlePinyinreg<<QString(list2.at(i).at(0));
 				numbers++;
-				if(list2.at(i).size()>1)
-					   pinyinReg.append("|");
+				//if(list2.at(i).size()>1)
+				//	   pinyinReg.append("|");
 				//start check shengmo
 				for(int j=0;j<shengmo.size();j++)
 				{
 					if(list2.at(i).startsWith (shengmo.at(j),Qt::CaseInsensitive))
 					{
-						pinyinReg.append(shengmo.at(j));
-						pinyinReg.append("|");
+						//pinyinReg.append(shengmo.at(j));
+						singlePinyinreg<<shengmo.at(j);
+						//pinyinReg.append("|");
 						numbers++;
 						break;
 					}
@@ -408,17 +413,29 @@ public:
 				//end check shengmo
 				if(list2.at(i).size()>1)
 					{
-						pinyinReg.append(list2.at(i));
+						//pinyinReg.append(list2.at(i));
+						singlePinyinreg<<list2.at(i);
 						numbers++;
 					}
-				if(i!=(list2.size()-1))
-					pinyinReg.append("|");
-				else
+				//if(i!=(list2.size()-1))
+				//	pinyinReg.append("|");				
+			}
+
+			//clear the same string
+			for(int i=0;i<singlePinyinreg.size();i++){
+				for(int j=i+1;j<singlePinyinreg.size();)
 					{
-						pinyinReg.append(PINYIN_TOKEN_FLAG);
-						 pinyinReg.append(BROKEN_TOKEN_STR);
+						if(singlePinyinreg.at(i)==singlePinyinreg.at(j))
+						 {
+						 	singlePinyinreg.removeAt(j);							
+						 }else
+						 	j++;						
 					}
 			}
+			
+			pinyinReg.append(singlePinyinreg.join("|"));
+			pinyinReg.append(BROKEN_TOKEN_STR);
+			
 		}else
 			{
 				pinyinReg.append(strUnit);			

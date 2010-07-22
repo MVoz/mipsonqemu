@@ -26,10 +26,10 @@ public:
 	//bool matches(CatItem* item, QString& txt);
 	void pinyinMatches(QStringList& strlist,int i,int max,QString e_s,QString &txt,bool& ret);
 	void pinyinMatchesEx(QStringList& strlist,QString &txt,bool& ret,bool CaseSensitive);
-	void searchCatalogs(QString, QList<CatItem> & );
+	void searchCatalogs(QString, QList<CatItem*> & );
 	virtual void incrementUsage(const CatItem& item) = 0;
 	virtual int getUsage(const QString& path) = 0;
-	void checkHistory(QString txt, QList<CatItem> & list);
+	void checkHistory(QString txt, QList<CatItem*> & list);
 private:	
 	virtual QList<CatItem*> search(QString) = 0;
 public:

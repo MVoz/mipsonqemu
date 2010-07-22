@@ -984,7 +984,7 @@ QString tz::getPinyin(const char* s)
 		{
 			QSqlDatabase db ;
 			db= QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
-			db.setDatabaseName(PINYIN_DB_FILENAME);	
+			db.setDatabaseName(APP_DATA_PATH"/"PINYIN_DB_FILENAME);	
 		
 			db.open();
 			QSqlQuery q("",db);
