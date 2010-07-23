@@ -498,15 +498,15 @@ void MyWidget::launchObject()
 		  if (inputData.count() > 1)
 			  for (int i = 1; i < inputData.count(); ++i)
 				  arg += inputData[i].getText() + " ";
-		 // qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
-		  arg = QUrl::toPercentEncoding(arg.trimmed());
+		if(IS_URL(res.fullPath))
+		 	 arg = QUrl::toPercentEncoding(arg.trimmed());
+		else
+			 arg.trimmed();
 		 if(args.indexOf("%s",Qt::CaseInsensitive)!=-1)
 		  	args.replace("%s",arg);
 		 else
 		 	args.append(" ").append(arg);
-		 qDebug("%s comefrom=%d shortname=%s args=%s",__FUNCTION__,res.shortCut,res.comeFrom,qPrintable(res.shortName),qPrintable(args));
-		//  qDebug("input=%s args=%s res.args=%s ",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
-		//  qDebug()<<QUrl::toPercentEncoding(res.args);
+		 qDebug()<<" "<<res.shortName <<" with argument: "<<args<< " from "<<res.comeFrom;
 		  if (!platform->Execute(res.fullPath, args))
 			  {
 			  	
@@ -676,6 +676,11 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 void MyWidget::parseInput(QString text)
 {
 	//      QStringList spl = text.split(" | ");
+	if(text.endsWith(QString(" ") + sepChar()))
+		{
+			text.chop(QString(" ").append(sepChar()).size());
+			input->setText(text);
+		}
 	QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
 	if (spl.count() < inputData.count())
 	  {
@@ -702,7 +707,8 @@ void MyWidget::parseInput(QString text)
 		  InputData data(spl[i]);
 		  inputData.push_back(data);
 	  }
-
+	if(  text.indexOf(QString(" ") + sepChar()+QString(" ")) == -1)
+		inputMode&=(~(1<<INPUT_MODE_TAB));
 }
 
 // Print all of the input up to the last entry
@@ -724,7 +730,7 @@ void MyWidget::doTab()
 	  {
 		  // If it's an incomplete file or dir, complete it
 		  QFileInfo info(searchResults[0]->fullPath);
-
+		  inputMode |=(1<<INPUT_MODE_TAB);
 		  if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir()))	//     && input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		    {
 			    QString path;
@@ -743,12 +749,14 @@ void MyWidget::doTab()
 			    input->setText(input->text() + " " + sepChar() + " ");
 			    inputData.last().setText(searchResults[0]->shortName);
 			    input->setText(printInput() + searchResults[0]->shortName + " " + sepChar() + " ");
+			    input->repaint();
 		    }
 	  }
 }
 
 void MyWidget::doEnter()
 {
+	inputMode&=(~(1<<INPUT_MODE_TAB));
 	if (dropTimer->isActive())
 		dropTimer->stop();
 
@@ -899,7 +907,7 @@ void MyWidget::searchOnInput()
 	gSearchTxt = searchText;
 	searchResults.clear();
 
-
+	qDebug()<<inputData.count() <<"  : "<<gSearchTxt;
 
 	  if (inputData.count() <= 1)
 			  catalog->searchCatalogs(gSearchTxt, searchResults);
@@ -950,8 +958,11 @@ void MyWidget::updateDisplay()
 
 	} else
 	  {
-		  licon->clear();
-		  output->clear();
+	   	 if( !(inputMode&(1<<INPUT_MODE_TAB)))
+		 {
+		 	licon->clear();
+		  	output->clear();
+	   	 }
 	  }
 }
 
