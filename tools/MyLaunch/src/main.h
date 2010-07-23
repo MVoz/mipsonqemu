@@ -252,6 +252,7 @@ public:
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
+	void doPageDown();
 	QChar sepChar();
 	QString printInput();
 	void processKey();

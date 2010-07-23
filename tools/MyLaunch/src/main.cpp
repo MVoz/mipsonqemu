@@ -486,11 +486,17 @@ void MyWidget::increaseUsage(CatItem& item,const QString& alias)
 }
 void MyWidget::launchObject()
 {
-	CatItem& res = inputData[0].getTopResult();
-
-	//if (res.id == HASH_LAUNCHY)
-	//res.alias2 = inputData[0].getText();
-	increaseUsage(res,inputData[0].getText());
+	CatItem res;
+	if((inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN))||inputData.isEmpty())
+	{
+		res = *(searchResults[0]);
+		increaseUsage(res,"");
+		
+	}else{
+		CatItem& r = inputData[0].getTopResult();
+		increaseUsage(r,inputData[0].getText());
+		res = r;
+	}
 	
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
@@ -676,6 +682,13 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 void MyWidget::parseInput(QString text)
 {
 	//      QStringList spl = text.split(" | ");
+	if(!text.isEmpty())
+		inputMode&=(~(1<<INPUT_MODE_NULL_PAGEDOWN));
+	else{
+		inputData.clear();
+		return;
+	}
+		
 	if(text.endsWith(QString(" ") + sepChar()))
 		{
 			text.chop(QString(" ").append(sepChar()).size());
@@ -725,13 +738,13 @@ QString MyWidget::printInput()
 
 void MyWidget::doTab()
 {
-	LOG_RUN_LINE;
-	if (inputData.count() > 0 && searchResults.count() > 0)
+//	LOG_RUN_LINE;
+	if ( ((inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN))||inputData.count() > 0) && searchResults.count() > 0)
 	  {
 		  // If it's an incomplete file or dir, complete it
 		  QFileInfo info(searchResults[0]->fullPath);
 		  inputMode |=(1<<INPUT_MODE_TAB);
-		  if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir()))	//     && input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+		  if ((/*inputData.last().hasLabel(LABEL_FILE) ||*/ info.isDir()))	//     && input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		    {
 			    QString path;
 			    if (info.isSymLink())
@@ -746,9 +759,16 @@ void MyWidget::doTab()
 		  } else
 		    {
 			    // Looking for a plugin
-			    input->setText(input->text() + " " + sepChar() + " ");
-			    inputData.last().setText(searchResults[0]->shortName);
-			    input->setText(printInput() + searchResults[0]->shortName + " " + sepChar() + " ");
+			    if(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN))
+			   {
+			   	 input->setText(searchResults[0]->shortName + " " + sepChar() + " ");	
+				 parseInput(input->text());
+				 inputData[0].setTopResult(*searchResults[0]);
+			   }else{
+				     input->setText(input->text() + " " + sepChar() + " ");
+				     inputData.last().setText(searchResults[0]->shortName);
+				     input->setText(printInput() + searchResults[0]->shortName + " " + sepChar() + " ");				   
+			   }
 			    input->repaint();
 		    }
 	  }
@@ -756,15 +776,22 @@ void MyWidget::doTab()
 
 void MyWidget::doEnter()
 {
-	inputMode&=(~(1<<INPUT_MODE_TAB));
+	
 	if (dropTimer->isActive())
 		dropTimer->stop();
 
 	if (searchResults.count() > 0 || inputData.count() > 1)
 		launchObject();
 	hideLaunchy();
+	inputMode=0;;
 
 }
+void MyWidget::doPageDown()
+{
+	inputMode|=(1<<INPUT_MODE_NULL_PAGEDOWN);
+}
+
+
 
 void MyWidget::keyPressEvent(QKeyEvent * key)
 {
@@ -813,6 +840,12 @@ void MyWidget::keyPressEvent(QKeyEvent * key)
 				    doTab();
 			    processKey();
 		break;
+		case Qt::Key_PageDown:
+			if(input->text().isEmpty())
+				doPageDown();
+			   key->ignore();
+			   processKey();
+			break;
 		default:
 			 key->ignore();
 			   processKey();
@@ -903,9 +936,15 @@ void MyWidget::searchOnInput()
 	if (catalog == NULL)
 		return;
 
-	QString searchText = inputData.count() > 0 ? inputData.last().getText() : "";
-	gSearchTxt = searchText;
 	searchResults.clear();
+	if(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN))
+	{
+		catalog->getHistory(searchResults);
+		return;
+	}
+
+	gSearchTxt = inputData.count() > 0 ? inputData.last().getText() : "";
+
 
 	qDebug()<<inputData.count() <<"  : "<<gSearchTxt;
 
@@ -933,9 +972,9 @@ void MyWidget::searchOnInput()
 	//          qDebug() << gSearchTxt;
 	// Is it a file?
 
-	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") || (searchText.size() == 2 && searchText[1] == ':'))
+	if (gSearchTxt.contains(QDir::separator()) || gSearchTxt.startsWith("~") || (gSearchTxt.size() == 2 && gSearchTxt[1] == ':'))
 	  {
-		  searchFiles(searchText, searchResults);
+		  searchFiles(gSearchTxt, searchResults);
 
 	  }
 	catalog->checkHistory(gSearchTxt, searchResults);
@@ -953,8 +992,8 @@ void MyWidget::updateDisplay()
 		  // Did the plugin take control of the input?
 		  // if (inputData.last().getID() != 0)
 		  //	  searchResults[0]->comeFrom = inputData.last().getID();
-
-		  inputData.last().setTopResult(*(searchResults[0]));
+		  if(!inputData.isEmpty())
+		 	 inputData.last().setTopResult(*(searchResults[0]));
 
 	} else
 	  {
@@ -1309,7 +1348,7 @@ void MyWidget::catalogBuilderTimeout()
 
 void MyWidget::dropTimeout()
 {
-	if (input->text() != "")
+	if (input->text() != ""||(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN)))
 		showAlternatives();
 }
 
