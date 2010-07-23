@@ -199,8 +199,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		 else{
 
   			        qDebug("connect database %s successfully!\n",qPrintable(dest));  
-				if(buildDbWithStart)
-						tz::initDbTables(db);
+					tz::initDbTables(db,buildDbWithStart);
 						//createDbFile();
 		}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
@@ -409,18 +408,75 @@ void MyWidget::showAlternatives(bool show)
 	  }
 }
 
-void MyWidget::increaseUsage(QString &fullPath,QString& shortCut)
+void MyWidget::increaseUsage(CatItem &item,const QString& alias)
 {
 		QSqlQuery	q("", db);
-		QString s;
 		//queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
-		q.exec(s);
-		q.clear();
+		
+		if(item.comeFrom!=COME_FROM_SHORTCUT){
+			item.usage = 1;
+			item.alias2 = alias;
+			item.shortCut = 1;
+			CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
+			q.exec();
+			q.clear();
+
+			q.prepare(
+					QString(
+						"UPDATE %1 set shortCut=1 where id=:id"
+					).arg(DBTABLEINFO_NAME(item.comeFrom))
+			);
+			qDebug()<<QString("UPDATE %1 set shortCut=1 where id=%2").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.idInTable);
+			q.bindValue(":id", item.idInTable);
+			q.exec();
+			q.clear();
+		}
+		else
+		{
+				//check similar
+				int similar = -1;
+				
+				if(item.alias2.size()>=alias.size())
+				{
+					similar = item.alias2.indexOf(alias);
+				}else
+					similar = alias.indexOf(item.alias2);
+
+				if(similar >= 0)//similar
+				{
+					if( item.alias2.size()< alias.size())
+					{
+						q.prepare(
+							QString(
+								"UPDATE %1 set usage=usage+1,alias2=:alias2 where id=:id"
+							).arg(DBTABLEINFO_NAME(item.comeFrom))
+						);
+						q.bindValue(":alias2", alias);
+					}else{
+						q.prepare(
+							QString(
+								"UPDATE %1 set usage=usage+1 where id=:id"
+							).arg(DBTABLEINFO_NAME(item.comeFrom))
+						);
+					}
+					q.bindValue(":id", item.idInTable);
+					q.exec();
+					q.clear();
+				}else{//not similar
+					item.usage = 1;
+					item.alias2 = alias;
+					CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
+					q.exec();
+					q.clear();					
+				}				
+		}		
 }
 void MyWidget::launchObject()
 {
 	CatItem res = inputData[0].getTopResult();
 	//if (res.id == HASH_LAUNCHY)
+	//res.alias2 = inputData[0].getText();
+	increaseUsage(res,inputData[0].getText());
 	qDebug("%s comeFrom=%d fullpath=%s args=%s",__FUNCTION__,res.comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
@@ -435,7 +491,7 @@ void MyWidget::launchObject()
 		//  qDebug()<<QUrl::toPercentEncoding(res.args);
 		  if (!platform->Execute(res.fullPath, res.args))
 			  {
-			  	increaseUsage(res.fullPath,inputData[0].getText());
+			  	
 				if(IS_URL(res.fullPath)){
 						QString urlpath="";
 						if(res.fullPath.trimmed().endsWith("/",Qt::CaseInsensitive))

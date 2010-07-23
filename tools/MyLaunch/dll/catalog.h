@@ -67,6 +67,7 @@ enum CATITEM_ITEM{
 		shortCut=(x).shortCut;\
 		delId=(x).delId;\
 		args=(x).args;\
+		idInTable=(x).idInTable;\
 }while(0);
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
@@ -102,6 +103,7 @@ public:
 	unsigned char shortCut;
 	uint delId;
 	QString args;
+	uint idInTable;
 	CatItem() {}
 
 	CatItem(QString full,int flag,bool isDir=false) ;
@@ -124,7 +126,7 @@ public:
 
 	CatItem(const CatItem &s);
 	void getPinyinReg(const QString& str);
-	static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);
+	static void prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid=0);
 	CatItem& operator=( const CatItem &s ) {
 		COPY_CATITEM(s);		
 		return *this;
@@ -212,6 +214,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.shortCut;
 	out << item.delId;
 	out << item.args;
+	out << item.idInTable;
 	return out;
 }
 
@@ -230,6 +233,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.shortCut;
 	in >> item.delId;
 	in >> item.args;
+	in >> item.idInTable;
 	return in;
 }
 

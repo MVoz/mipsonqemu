@@ -68,6 +68,31 @@ void CatBuilder::run()
 	  }
 	emit catalogFinished();
 }
+void CatBuilder::clearShortcut(int type)
+{
+		QSqlQuery q("", *db);
+		QString s;
+		switch(buildMode)
+		{
+			case CAT_BUILDMODE_ALL:
+				
+			break;
+			case CAT_BUILDMODE_DIRECTORY:
+				
+			break;
+			case CAT_BUILDMODE_BOOKMARK:
+				
+			break;
+			case CAT_BUILDMODE_COMMAND:
+				
+			break;
+		}
+		
+		qDebug("s=%s",qPrintable(s));
+		if(q.exec(s)){
+				q.clear();
+		}
+}
 void CatBuilder::clearDb(int type,uint delId)
 {
 		QSqlQuery q("", *db);
@@ -95,6 +120,7 @@ void CatBuilder::clearDb(int type,uint delId)
 		if(q.exec(s)){
 				q.clear();
 		}
+	clearShortcut(type);
 }
 void CatBuilder::buildCatalog_bookmark(uint delId)
 {
