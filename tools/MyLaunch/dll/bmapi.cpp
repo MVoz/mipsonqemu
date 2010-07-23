@@ -1207,8 +1207,6 @@ int tz::GetCpuUsage()
 }
 void  tz::initDbTables(QSqlDatabase& db,int flag)
 {
-	
-
 	int i = 0;	
 	while(dbtableInfo[i].id){
 		dbtableInfolist<<&dbtableInfo[i];
