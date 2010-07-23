@@ -33,8 +33,7 @@ enum catbuildmode{
 	CAT_BUILDMODE_ALL=0,
 	CAT_BUILDMODE_DIRECTORY,
 	CAT_BUILDMODE_BOOKMARK,
-	CAT_BUILDMODE_COMMAND,
-	
+	CAT_BUILDMODE_COMMAND,	
 };
 class CatBuilder : public QThread
 {
@@ -59,6 +58,8 @@ public:
 	void buildCatalog_directory(uint);
 	void buildCatelog_command(uint);
 	void buildCatelog_define(uint);
+	void clearShortcut(int type);
+	void _clearShortcut(int type);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId);
 	//void produceInsetQueryStr(CatItem& item,QString& s );
 	bool createDbFile();

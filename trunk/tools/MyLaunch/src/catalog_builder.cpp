@@ -68,30 +68,44 @@ void CatBuilder::run()
 	  }
 	emit catalogFinished();
 }
+void CatBuilder::_clearShortcut(int type)
+{
+	QSqlQuery q("", *db);
+	q.prepare(QString("SELECT * FROM %1 WHERE comeFrom=%2").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)).arg(type));
+	if(q.exec()){
+				QSqlQuery qq("", *db);
+				while(q.next()){
+				if(!tz::isExistInDb(&qq,q.value(Q_RECORD_INDEX(q,"shortName")).toString(),q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),type);
+					{
+							qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT))));
+							qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+							if(qq.exec())
+								qq.clear();					
+					}
+				}
+		q.clear();
+	}
+}
 void CatBuilder::clearShortcut(int type)
 {
-		QSqlQuery q("", *db);
-		QString s;
+		
 		switch(buildMode)
 		{
 			case CAT_BUILDMODE_ALL:
-				
+				_clearShortcut(CAT_BUILDMODE_DIRECTORY);
+				_clearShortcut(CAT_BUILDMODE_COMMAND);
+				_clearShortcut(CAT_BUILDMODE_BOOKMARK);
 			break;
 			case CAT_BUILDMODE_DIRECTORY:
-				
+				_clearShortcut(CAT_BUILDMODE_DIRECTORY);				
 			break;
 			case CAT_BUILDMODE_BOOKMARK:
-				
+				_clearShortcut(CAT_BUILDMODE_BOOKMARK);
 			break;
 			case CAT_BUILDMODE_COMMAND:
-				
+				_clearShortcut(CAT_BUILDMODE_COMMAND);
 			break;
-		}
-		
-		qDebug("s=%s",qPrintable(s));
-		if(q.exec(s)){
-				q.clear();
-		}
+		}		
 }
 void CatBuilder::clearDb(int type,uint delId)
 {
