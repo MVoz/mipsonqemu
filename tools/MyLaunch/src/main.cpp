@@ -408,7 +408,7 @@ void MyWidget::showAlternatives(bool show)
 	  }
 }
 
-void MyWidget::increaseUsage(CatItem item,const QString& alias)
+void MyWidget::increaseUsage(CatItem& item,const QString& alias)
 {
 		QSqlQuery	q("", db);
 		uint time = QDateTime::currentDateTime().toTime_t();
@@ -419,7 +419,7 @@ void MyWidget::increaseUsage(CatItem item,const QString& alias)
 			item.alias2 = alias;
 			item.shortCut = 1;
 			item.time = time;
-			inputData[0].setTopResult(item);
+			//inputData[0].setTopResult(item);
 			CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
 			q.exec();
 			q.clear();
@@ -485,12 +485,12 @@ void MyWidget::increaseUsage(CatItem item,const QString& alias)
 }
 void MyWidget::launchObject()
 {
-	CatItem res = inputData[0].getTopResult();
+	CatItem& res = inputData[0].getTopResult();
 
 	//if (res.id == HASH_LAUNCHY)
 	//res.alias2 = inputData[0].getText();
 	increaseUsage(res,inputData[0].getText());
-	qDebug("%s comeFrom=%d comefrom=%d fullpath=%s args=%s",__FUNCTION__,res.comeFrom,inputData[0].getTopResult().comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
+	qDebug("%s shortCut=%d comefrom=%d fullpath=%s args=%s",__FUNCTION__,res.shortCut,inputData[0].getTopResult().comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
 		  QString args = "";

@@ -249,7 +249,7 @@ public:
 	QString printInput();
 	void processKey();
 	//bool createDbFile();
-	void	increaseUsage(CatItem item,const QString& alias);
+	void	increaseUsage(CatItem& item,const QString& alias);
 #ifdef CONFIG_LOG_ENABLE
 	void dumpBuffer(char* addr,int length);
 #endif
