@@ -1,5 +1,5 @@
 cd /d debug
-del Launchy.exe
+del tanzhi.exe
 del options.rcc
 del /s /q *.dll
 cd ..

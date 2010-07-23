@@ -108,6 +108,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	optionsOpen = false;
 	gSearchTxt = "";
 	syncDlgTimer=NULL;
+	inputMode = 0;
 //      gBuilder = NULL;
 //      catalog = NULL;
 //	gMaxGroupId=0;
@@ -490,31 +491,35 @@ void MyWidget::launchObject()
 	//if (res.id == HASH_LAUNCHY)
 	//res.alias2 = inputData[0].getText();
 	increaseUsage(res,inputData[0].getText());
-	qDebug("%s shortCut=%d comefrom=%d fullpath=%s args=%s",__FUNCTION__,res.shortCut,inputData[0].getTopResult().comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
+	
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
-		  QString args = "";
+		  QString arg,args(res.args);
 		  if (inputData.count() > 1)
 			  for (int i = 1; i < inputData.count(); ++i)
-				  args += inputData[i].getText() + " ";
+				  arg += inputData[i].getText() + " ";
 		 // qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
-		  args = QUrl::toPercentEncoding(args.trimmed());
-		  res.args.replace("%s",args.trimmed());
+		  arg = QUrl::toPercentEncoding(arg.trimmed());
+		 if(args.indexOf("%s",Qt::CaseInsensitive)!=-1)
+		  	args.replace("%s",arg);
+		 else
+		 	args.append(" ").append(arg);
+		 qDebug("%s comefrom=%d shortname=%s args=%s",__FUNCTION__,res.shortCut,res.comeFrom,qPrintable(res.shortName),qPrintable(args));
 		//  qDebug("input=%s args=%s res.args=%s ",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
 		//  qDebug()<<QUrl::toPercentEncoding(res.args);
-		  if (!platform->Execute(res.fullPath, res.args))
+		  if (!platform->Execute(res.fullPath, args))
 			  {
 			  	
 				if(IS_URL(res.fullPath)){
-						QString urlpath="";
+						QString urlpath(res.fullPath);
 						if(res.fullPath.trimmed().endsWith("/",Qt::CaseInsensitive))
-							urlpath = res.fullPath.append(res.args);
+							urlpath.append(args);
 						else
-							urlpath = res.fullPath.append("/").append(res.args);
+							urlpath.append("/").append(args);
 						runProgram(urlpath, "");
 					}
 				else
-			  		runProgram(res.fullPath, res.args);
+			  		runProgram(res.fullPath, args);
 		  	  }
 	} else if(IS_FROM_BROWSER(res.comeFrom)){
 			//Weby web(gSettings);
@@ -755,6 +760,57 @@ void MyWidget::doEnter()
 
 void MyWidget::keyPressEvent(QKeyEvent * key)
 {
+	//LOG_RUN_LINE;
+	switch(key->key())
+	{
+		case Qt::Key_Escape:
+			  if (alternatives->isVisible())
+			  alternatives->hide();
+		 	 else
+			  hideLaunchy();
+		break;
+		case Qt::Key_Return:
+		case Qt::Key_Enter:
+			  doEnter();
+		break;
+		case Qt::Key_Down:
+			if (!alternatives->isVisible())
+			    {
+				    dropTimer->stop();
+				    showAlternatives();
+			    }
+			  if (alternatives->isVisible() && this->isActiveWindow())
+			    {
+				    alternatives->setFocus();
+				    if (alternatives->count() > 0)
+				      {
+					      alternatives->setCurrentRow(0);
+				      }
+
+
+				    alternatives->activateWindow();
+
+			    }
+		break;
+		case Qt::Key_Up:
+			 // Prevent alternatives from being hidden on up key
+		break;
+		case Qt::Key_Tab:
+			  doTab();
+			  processKey();
+		break;
+		case Qt::Key_Slash:
+		case Qt::Key_Backslash:
+			  if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
+				    doTab();
+			    processKey();
+		break;
+		default:
+			 key->ignore();
+			   processKey();
+		break;
+	}
+/*	
 	if (key->key() == Qt::Key_Escape)
 	  {
 		  if (alternatives->isVisible())
@@ -812,6 +868,7 @@ void MyWidget::keyPressEvent(QKeyEvent * key)
 		  processKey();
 
 	  }
+*/
 }
 
 
@@ -886,8 +943,8 @@ void MyWidget::updateDisplay()
 		  output->setText(searchResults[0]->shortName);
 
 		  // Did the plugin take control of the input?
-		  if (inputData.last().getID() != 0)
-			  searchResults[0]->comeFrom = inputData.last().getID();
+		  // if (inputData.last().getID() != 0)
+		  //	  searchResults[0]->comeFrom = inputData.last().getID();
 
 		  inputData.last().setTopResult(*(searchResults[0]));
 
@@ -2320,7 +2377,7 @@ void MyWidget::freeOccupyMemeory()
 }
 void MyWidget::silentUpdateFinished()
 {
-	qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	qDebug("silent update finished!!!!!");
 	if(slientUpdate)
 		{

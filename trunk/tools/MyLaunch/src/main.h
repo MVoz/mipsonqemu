@@ -71,6 +71,7 @@ public:
 		    setAttribute(Qt::WA_InputMethodEnabled);
 		}
 		void keyPressEvent(QKeyEvent* key) {
+		//	LOG_RUN_LINE;
 			QLineEdit::keyPressEvent(key);
 			emit keyPressed(key);
 		}
@@ -164,6 +165,12 @@ enum {
 	SYNC_MODE_REBOOKMARK,	
 	SYNC_MODE_TESTACCOUNT
 };
+enum{
+	INPUT_MODE_NULL=0,
+	INPUT_MODE_TAB,
+	INPUT_MODE_NULL_PAGEDOWN,
+	INPUT_MODE_PAGEDOWN
+};
 class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
@@ -191,7 +198,7 @@ public:
 	QRect altRect;
 	QLabel * licon;
 	QSqlDatabase db;
-
+	uint inputMode;
 
 	QScrollBar* altScroll;
 	shared_ptr<Catalog> catalog;

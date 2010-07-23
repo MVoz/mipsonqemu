@@ -1,5 +1,5 @@
 cd /d debug
-del Launchy.exe
+del tanzhi.exe
 del options.rcc
 cd ..
 
@@ -16,8 +16,8 @@ qmake catalog.pro
 nmake debug
 rem qmake weby.pro 
 rem nmake debug
-qmake runner.pro 
-nmake debug
+rem qmake runner.pro 
+rem nmake debug
 qmake xmlreader.pro 
 nmake debug
 qmake updaterThread.pro
