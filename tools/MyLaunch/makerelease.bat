@@ -1,5 +1,5 @@
 cd /d release
-del Launchy.exe
+del tanzhi.exe
 del options.rcc
 cd ..
 
