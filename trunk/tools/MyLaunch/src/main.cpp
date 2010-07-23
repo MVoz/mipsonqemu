@@ -408,17 +408,18 @@ void MyWidget::showAlternatives(bool show)
 	  }
 }
 
-void MyWidget::increaseUsage(CatItem &item,const QString& alias)
+void MyWidget::increaseUsage(CatItem item,const QString& alias)
 {
 		QSqlQuery	q("", db);
 		uint time = QDateTime::currentDateTime().toTime_t();
 		//queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
 		
-		if(item.comeFrom!=COME_FROM_SHORTCUT){
+		if(item.shortCut==0){
 			item.usage = 1;
 			item.alias2 = alias;
 			item.shortCut = 1;
 			item.time = time;
+			inputData[0].setTopResult(item);
 			CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
 			q.exec();
 			q.clear();
@@ -485,10 +486,11 @@ void MyWidget::increaseUsage(CatItem &item,const QString& alias)
 void MyWidget::launchObject()
 {
 	CatItem res = inputData[0].getTopResult();
+
 	//if (res.id == HASH_LAUNCHY)
 	//res.alias2 = inputData[0].getText();
 	increaseUsage(res,inputData[0].getText());
-	qDebug("%s comeFrom=%d fullpath=%s args=%s",__FUNCTION__,res.comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
+	qDebug("%s comeFrom=%d comefrom=%d fullpath=%s args=%s",__FUNCTION__,res.comeFrom,inputData[0].getTopResult().comeFrom,qPrintable(res.fullPath),qPrintable(res.args));
 	if (res.comeFrom<=COME_FROM_PROGRAM)
 	  {
 		  QString args = "";
@@ -498,7 +500,7 @@ void MyWidget::launchObject()
 		 // qDebug("input=%s args=%s",qPrintable(inputData[0].getText()) ,qPrintable(args));
 		  args = QUrl::toPercentEncoding(args.trimmed());
 		  res.args.replace("%s",args.trimmed());
-		  qDebug("input=%s args=%s res.args=%s ",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
+		//  qDebug("input=%s args=%s res.args=%s ",qPrintable(inputData[0].getText()) ,qPrintable(args),qPrintable(res.args));
 		//  qDebug()<<QUrl::toPercentEncoding(res.args);
 		  if (!platform->Execute(res.fullPath, res.args))
 			  {

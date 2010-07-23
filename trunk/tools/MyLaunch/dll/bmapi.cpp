@@ -337,7 +337,7 @@ int deleteDirectory(QString path)
 void runProgram(QString path, QString args) {
 #ifdef Q_WS_WIN
 	SHELLEXECUTEINFO ShExecInfo;
-	qDebug("runProgram path=%s args=%s",qPrintable(path),qPrintable(args));
+	//qDebug("runProgram path=%s args=%s",qPrintable(path),qPrintable(args));
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;

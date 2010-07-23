@@ -377,8 +377,9 @@ RETRY:
 								item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
 								item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
 								item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
-								//item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
-								item->comeFrom = info->id;
+								item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
+								item->shortCut=(unsigned char )(q.value(Q_RECORD_INDEX(q,"shortCut")).toUInt());
+								//item->comeFrom = info->id;
 								item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
 								item->pinyinReg=pinyinReg;
 								item->allchars=allchars;
