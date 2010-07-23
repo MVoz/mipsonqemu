@@ -411,12 +411,14 @@ void MyWidget::showAlternatives(bool show)
 void MyWidget::increaseUsage(CatItem &item,const QString& alias)
 {
 		QSqlQuery	q("", db);
+		uint time = QDateTime::currentDateTime().toTime_t();
 		//queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
 		
 		if(item.comeFrom!=COME_FROM_SHORTCUT){
 			item.usage = 1;
 			item.alias2 = alias;
 			item.shortCut = 1;
+			item.time = time;
 			CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
 			q.exec();
 			q.clear();
@@ -426,7 +428,7 @@ void MyWidget::increaseUsage(CatItem &item,const QString& alias)
 						"UPDATE %1 set shortCut=1 where id=:id"
 					).arg(DBTABLEINFO_NAME(item.comeFrom))
 			);
-			qDebug()<<QString("UPDATE %1 set shortCut=1 where id=%2").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.idInTable);
+			//qDebug()<<QString("UPDATE %1 set shortCut=1 where id=%2").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.idInTable);
 			q.bindValue(":id", item.idInTable);
 			q.exec();
 			q.clear();
@@ -448,27 +450,36 @@ void MyWidget::increaseUsage(CatItem &item,const QString& alias)
 					{
 						q.prepare(
 							QString(
-								"UPDATE %1 set usage=usage+1,alias2=:alias2 where id=:id"
-							).arg(DBTABLEINFO_NAME(item.comeFrom))
+								"UPDATE %1 set usage=usage+1,alias2=:alias2,time=:time where id=:id"
+							).arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT))
 						);
 						q.bindValue(":alias2", alias);
+						q.bindValue(":time", time);
 					}else{
 						q.prepare(
 							QString(
-								"UPDATE %1 set usage=usage+1 where id=:id"
-							).arg(DBTABLEINFO_NAME(item.comeFrom))
+								"UPDATE %1 set usage=usage+1,time=:time where id=:id"
+							).arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT))
 						);
 					}
+					q.bindValue(":time", time);
 					q.bindValue(":id", item.idInTable);
 					q.exec();
 					q.clear();
-				}else{//not similar
-					item.usage = 1;
-					item.alias2 = alias;
-					CatItem::prepareInsertQuery(&q,item,COME_FROM_SHORTCUT);
+				}				
+				else{//not similar,join original
+					q.prepare(
+							QString(
+								"UPDATE %1 set usage=usage+1,alias2=:alias2,time=:time where id=:id"
+							).arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT))
+					);
+					q.bindValue(":alias2", item.alias2.append(" ").append(alias));
+					q.bindValue(":time", time);
+					q.bindValue(":id", item.idInTable);
 					q.exec();
 					q.clear();					
-				}				
+				}
+				
 		}		
 }
 void MyWidget::launchObject()

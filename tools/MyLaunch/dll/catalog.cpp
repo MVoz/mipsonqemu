@@ -26,7 +26,7 @@ QString searchTxt;
 #define INIT_CATITEM_PART  do{\
 			lowName = shortName.toLower();\
 			getPinyinReg(shortName);\
-			data = NULL;\
+			time = 0;\
 			usage = 0;\
 			hash_id = qHash(shortName);\
 			alias2="";\
@@ -175,11 +175,11 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 				QString("INSERT INTO %1"
 				"("
 					"fullPath, shortName, lowName,icon,usage,hashId,"
-					"isHasPinyin,comeFrom,"
+					"isHasPinyin,comeFrom,time,"
 					"pinyinReg,allchars,alias2,shortCut,delId,args"
 				") VALUES ("
 					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
-					":isHasPinyin,:comeFrom,"
+					":isHasPinyin,:comeFrom,:time,"
 					":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
 			   	")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 			   );

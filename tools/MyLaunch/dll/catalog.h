@@ -57,7 +57,7 @@ enum CATITEM_ITEM{
 		lowName = (x).lowName;\
 		icon = (x).icon;\
 		usage = (x).usage;\
-		data = (x).data;\
+		time = (x).time;\
 		hash_id = (x).hash_id;\
 		comeFrom=(x).comeFrom;\
 		isHasPinyin=(x).isHasPinyin;\
@@ -81,29 +81,32 @@ public:
 	QString lowName;
 	/** A path to an icon for the item */
 	QString icon;
+	QString args;
+	QString pinyinReg;
+	QString allchars;
+	QString alias2;
 	/** How many times this item has been called by the user */
 	uint usage;
 	/** This is unused, and meant for plugin writers and future extensions */
-	void* data;
+	uint time;
 	/** The plugin id of the creator of this CatItem */
 	uint hash_id;
+	uint delId;
+	uint idInTable;
 
      //   uint groupId;
      //   uint parentId;
 	/*is has pingyin*/
 	unsigned char isHasPinyin;
 	unsigned char comeFrom;
+	unsigned char shortCut;
 	//unsigned short hanziNums;
 	/*pinyin depth*/
 	//unsigned int pinyinDepth;
 	/*pinyin reg*/
-	QString pinyinReg;
-	QString allchars;
-	QString alias2;
-	unsigned char shortCut;
-	uint delId;
-	QString args;
-	uint idInTable;
+
+	
+
 	CatItem() {}
 
 	CatItem(QString full,int flag,bool isDir=false) ;
@@ -205,6 +208,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.lowName;
 	out << item.icon;
 	out << item.usage;
+	out << item.time;
 	out << item.hash_id;
 	out << item.isHasPinyin;
 	out << item.comeFrom;
@@ -224,6 +228,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.lowName;
 	in >> item.icon;
 	in >> item.usage;
+	in >> item.time;
 	in >> item.hash_id;
 	in >> item.isHasPinyin;
 	in >> item.comeFrom;
