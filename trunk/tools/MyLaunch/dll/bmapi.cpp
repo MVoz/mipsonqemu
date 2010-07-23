@@ -784,7 +784,7 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 		QString queryStr;
 		uint id=0;
 #if 1
-		q->prepare(QString("select id from %1 where comeFrom =:comeFrom and hashId=:hashId and shortName =:shortName and fullPath=:fullPath limit 1").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
+		q->prepare(QString("select id from %1 where comeFrom =:comeFrom and hashId=:hashId and shortName =:shortName and fullPath=:fullPath limit 1").arg(DBTABLEINFO_NAME(frombrowsertype)));
 		q->bindValue(":comeFrom", frombrowsertype);
 		q->bindValue(":hashId", qHash(name));
 		q->bindValue(":shortName", name);
@@ -1205,7 +1205,7 @@ int tz::GetCpuUsage()
   
   return (int)dbIdleTime;
 }
-void  tz::initDbTables(QSqlDatabase& db)
+void  tz::initDbTables(QSqlDatabase& db,int flag)
 {
 	
 
@@ -1214,37 +1214,47 @@ void  tz::initDbTables(QSqlDatabase& db)
 		dbtableInfolist<<&dbtableInfo[i];
 		i++;
 	}	
-	foreach(struct dbtableinfo* info, dbtableInfolist) {
-		QString s=QString("DROP TABLE %1").arg(info->name);
-		QSqlQuery q(s,db);
-		q.exec();	
-		s=QString("CREATE TABLE %1 ("
-				   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-				   "fullPath VARCHAR(1024) NOT NULL, "
-				   "shortName VARCHAR(1024) NOT NULL, "
-				   "lowName VARCHAR(1024) NOT NULL, "
-				   "icon VARCHAR(1024), "
-				   "usage INTEGER NOT NULL,"
-				   "hashId INTEGER NOT NULL,"		   
-				   "isHasPinyin INTEGER NOT NULL, "
-				   "comeFrom INTEGER NOT NULL, "
-				   "pinyinReg VARCHAR(1024), "
-				   "allchars VARCHAR(1024), "
-				   "alias2 VARCHAR(1024),"
-				   "shortCut INTEGER NOT NULL,"
-				   "delId INTEGER NOT NULL,"
-				   "args VARCHAR(1024))").arg(info->name);
-		q=QSqlQuery(s,db);
-		q.exec(s);
-		q.clear();
-			
-	}		
+	if(flag){
+		foreach(struct dbtableinfo* info, dbtableInfolist) {
+			QString s=QString("DROP TABLE %1").arg(info->name);
+			QSqlQuery q(s,db);
+			q.exec();	
+			s=QString("CREATE TABLE %1 ("
+					   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					   "fullPath VARCHAR(1024) NOT NULL, "
+					   "shortName VARCHAR(1024) NOT NULL, "
+					   "lowName VARCHAR(1024) NOT NULL, "
+					   "icon VARCHAR(1024), "
+					   "usage INTEGER NOT NULL,"
+					   "hashId INTEGER NOT NULL,"		   
+					   "isHasPinyin INTEGER NOT NULL, "
+					   "comeFrom INTEGER NOT NULL, "
+					   "pinyinReg VARCHAR(1024), "
+					   "allchars VARCHAR(1024), "
+					   "alias2 VARCHAR(1024),"
+					   "shortCut INTEGER NOT NULL,"
+					   "delId INTEGER NOT NULL,"
+					   "args VARCHAR(1024))").arg(info->name);
+			q=QSqlQuery(s,db);
+			q.exec(s);
+			q.clear();
+				
+		}	
+	}
 }
 
 struct dbtableinfo* tz::dbTableInfo(uint id)
 {
+	if(id>COME_FROM_BROWSER)
+			id=COME_FROM_BROWSER;
 	return &dbtableInfo[id-1];
 }
+
+QList<struct dbtableinfo*> tz::dbTableInfoList()
+{
+	return dbtableInfolist;
+}
+
 
 #if 0
 

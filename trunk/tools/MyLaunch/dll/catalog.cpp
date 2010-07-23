@@ -33,6 +33,7 @@ QString searchTxt;
 			shortCut=0;\
 			delId=0;\
 			args="";\
+			idInTable=0;\
 			if(IS_FROM_BROWSER(flag)){\
 				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
 						QUrl url(fullPath);\
@@ -168,7 +169,7 @@ void CatItem:: getPinyinReg(const QString& str){
 	}	
 }
 
-void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
+void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 {
 	q->prepare(
 				QString("INSERT INTO %1"
@@ -180,7 +181,7 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item)
 					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
 					":isHasPinyin,:comeFrom,"
 					":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
-			   	")").arg(DBTABLEINFO_NAME(item.comeFrom))
+			   	")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 			   );
 	 BIND_CATITEM_QUERY(q,item);
 }

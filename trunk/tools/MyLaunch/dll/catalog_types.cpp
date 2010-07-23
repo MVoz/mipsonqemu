@@ -286,237 +286,122 @@ int SlowCatalog::isAllIn(const QString& src,const QString& all)
 QList < CatItem * >SlowCatalog::search(QString searchTxt)
 {
 	QList < CatItem * >ret;
-	uint hanzi_flag = 0;
+	
 	if (searchTxt == "")
 		return ret;
 //      QString lowSearch = searchTxt.toLower();
 
 	// Find the smallest char list
-	QTime t;
-	 t.start();
+	 QTime t;
+	 t.start(); 
 
- 
-#if 1
 		QSqlQuery	q("", *dbs);
 		uint i=0;
 		int retry=0;
 		int bookmark_retry=0;
-		//uint numresults=settings->value("GenOps/numresults",10).toInt();
 		uint numresults=get_search_result_num(settings);
+		uint leftnums = numresults;
 		//db.transaction();
 		//QString queryStr=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%' or fullpath LIKE '%%4%' limit %5").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(numresults);
 		//QString s=QString("select * from (select * from %1 order by usage desc )  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
 		//QString s=QString("select * from %1  where shortCut='%2' or shortName LIKE '%%3%'  limit %4").arg(DB_TABLE_NAME).arg(searchTxt).arg(searchTxt).arg(numresults);
-		QString s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(searchTxt).arg(numresults);
+		QList<struct dbtableinfo*> dblist = tz::dbTableInfoList();
+		QString s;
+foreach(struct dbtableinfo* info, dblist) {
+		uint hanzi_flag = 0;
+		uint shortName_flag = 0;
+		leftnums = numresults - i;
+		QStringList ids;
+		if(info->id == COME_FROM_SHORTCUT){
+			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+		}else
+			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND shortName LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
 RETRY:
-		if(hanzi_flag)
-			s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM));
-		//qDebug("s=%s",qPrintable(s));
+		if(shortName_flag){
+			if(ids.size())
+				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND shortName LIKE '%%3%'  limit %4").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(leftnums);
+			else
+				s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+		}
+		if(hanzi_flag){
+			if(info->id == COME_FROM_SHORTCUT)
+			{
+				if(ids.size())
+					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);
+				else
+					s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(info->name);
+			}
+			else
+			{
+				if(ids.size())
+					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND shortCut=0 AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);
+				else
+					s=QString("SELECT * FROM %1 WHERE shortCut=0 AND isHasPinyin=1").arg(info->name);
+			}
+		}
 		if(q.exec(s)){
-					 while(q.next()&&(numresults>i)) {					 			
-					 			if(hanzi_flag){
-#if 1
-									//unsigned short hanziNums=(unsigned short )(q.value(Q_RECORD_INDEX(q,"hanziNums")).toUInt());
-									//uint pinyinDepth=q.value(Q_RECORD_INDEX(q,"pinyinDepth")).toUInt();
+					 while(q.next()&&(numresults>i)) {	
 									QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
 									QString allchars=q.value(Q_RECORD_INDEX(q,"allchars")).toString();
-									/*
-									if(q.value(Q_RECORD_INDEX(q,"id")).toUInt()==978)
-										debugon=1;
-									else
-										debugon = 0;
-									*/
-									QString searchs;
-									
-							
-									
-									for(int m =0; m < searchTxt.length();m++)
-									{
-										if(searchs.indexOf(searchTxt.at(m))==-1)
+					 			if(hanzi_flag){
+										QString searchs;
+										for(int m =0; m < searchTxt.length();m++)
 										{
-											searchs.append(searchTxt.at(m));
-											
+											if(searchs.indexOf(searchTxt.at(m))==-1)										
+												searchs.append(searchTxt.at(m));
 										}
-									}
-									
+										bool matched=0;
+										if(allchars.size()<searchs.size()||!isAllIn(searchs,allchars))
+											continue;								
 
-
-									bool matched=0;
-									if(allchars.size()<searchs.size()||!isAllIn(searchs,allchars))
-										continue;
-									
-									//pinyinReg.replace(PINYIN_TOKEN_FLAG,"");
-									QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
-									
-									int regsize = regStr.size();
-									//if(debugon){	
-									//   for (int i = 0; i < regStr.size(); ++i)
-									//		qDebug()<<regStr.at(i);
-									//}
-									for(int m = 0; m <regsize ; m++)
-									{
-										int depth=0;
-										if(!(matched=pinyinsearch(regStr,regStr.size(),0,searchTxt,searchTxt.size(),depth,"")))
+										QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
+										
+										int regsize = regStr.size();
+										for(int m = 0; m <regsize ; m++)
 										{
-											//if(debugon)
-											//	qDebug()<<"removeFirst";
-
-											 regStr.removeFirst();
-										}else
-											break;
-									}
-															
-									if(!matched) 
-											continue;
-									
-	
-#else
-									unsigned short hanziNums=(unsigned short )(q.value(Q_RECORD_INDEX(q,"hanziNums")).toUInt());
-									uint pinyinDepth=q.value(Q_RECORD_INDEX(q,"pinyinDepth")).toUInt();
-									QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
-									QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
-									bool matched=0;
-									if(hanziNums<=PINYIN_MAX_NUMBER&&pinyinDepth<=PINYIN_MAX_DEPTH)
-										//pinyinMatches(regStr,0,regStr.size(),"",searchTxt,matched);
-										pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
-									else{
-										pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
-									}
-									if(!matched) 
-										continue;
-#endif
+											int depth=0;
+											if(!(matched=pinyinsearch(regStr,regStr.size(),0,searchTxt,searchTxt.size(),depth,"")))										
+												 regStr.removeFirst();
+											else
+													break;
+										}
+																
+										if(!matched) continue;
 					 			}
 						
 					 			CatItem* item=&searchResults[i++];
+								item->idInTable = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
+								ids<<QString(item->idInTable);
 								item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
 								item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
 								item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
 								item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
-								//item->hash_id=q.value(Q_RECORD_INDEX(q,"hashId")).toUInt();
-								//item->groupId=q.value(Q_RECORD_INDEX(q,"groupId")).toUInt();
-								//item->parentId=q.value(Q_RECORD_INDEX(q,"parentId")).toUInt();
-								//item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
-								item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
+								item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
+								//item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
+								item->comeFrom = info->id;
 								item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
-								//item->hanziNums=hanziNums;
-								//item->pinyinDepth=pinyinDepth;
-								//item->pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
-								//item->alias1=q.value(Q_RECORD_INDEX(q,"alias1")).toString();
-								//item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
+								item->pinyinReg=pinyinReg;
+								item->allchars=allchars;
+								item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
 								item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
 								//qDebug("%s",qPrintable(item->fullPath));
 								ret.push_back(item);
 					 	}
-					 // numresults-=i;
 					  q.clear();
 			}
-/*
-	//	db.commit();
-		if(!retry&&numresults){	
-			retry=1;
-			//select * from (select * from launch_db order by usage) where shortName like '%tc%' limit 10;
-			queryStr=QString("select * from (select * from %1 order by usage desc ) where shortName LIKE '%%2%' limit %3 ").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
-			goto RETRY;
-			}
-//look for the bookmark address 
-		if(!bookmark_retry&&numresults){	
-			bookmark_retry=1;
-			//select * from (select * from launch_db order by usage) where shortName like '%tc%' limit 10;
-			queryStr=QString("select * from (select * from %1 order by usage desc ) where fullpath LIKE '%%2%' limit %3 ").arg(DB_TABLE_NAME).arg(searchTxt).arg(numresults);
-			goto RETRY;
-			}
-*/
+
 		if((numresults>i)&&!hanzi_flag)
 			{
 				hanzi_flag = 1;
 				goto RETRY;
 			}
-		qDebug("Time elapsed: %d ms", t.elapsed());
-/*
-		if(numresults){
-			//find from pinyin
-				s=QString("select * from %1 where hanziNums>0").arg(DB_TABLE_NAME);
-				if(q.exec(s)){
-						 QSqlRecord rec = q.record();
-						   int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
-						   int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
-						   int lowName_Idx = rec.indexOf("lowName"); // index of the field "name"
-						   int icon_Idx = rec.indexOf("icon"); // index of the field "name"
-						   int usage_Idx = rec.indexOf("usage"); // index of the field "name"
-						   int hashId_Idx = rec.indexOf("hashId"); // index of the field "name"
-						   int groupId_Idx = rec.indexOf("groupId"); // index of the field "name"
-						   int parentId_Idx = rec.indexOf("parentId"); // index of the field "name"
-						   int isHasPinyin_Idx = rec.indexOf("isHasPinyin"); // index of the field "name"
-						   int comeFrom_Idx = rec.indexOf("comeFrom"); // index of the field "name"
-						   int hanziNums_Idx = rec.indexOf("hanziNums"); // index of the field "name"
-						   int pinyinDepth_Idx = rec.indexOf("pinyinDepth"); // index of the field "name"
-						   int pinyinReg_Idx = rec.indexOf("pinyinReg"); // index of the field "name"
-						   int alias1_Idx = rec.indexOf("alias1"); // index of the field "name"
-						   int alias2_Idx = rec.indexOf("alias2"); // index of the field "name"
-						  while(query.next()&&numresults) {
-						  		QString pinyinReg=query.value(pinyinReg_Idx).toString();
-								QStringList regStr=pinyinReg.split(BROKEN_TOKEN_STR);
-								CatItem item;
-								item.fullPath=query.value(fullPath_Idx).toString();
-								item.shortName=query.value(shortName_Idx).toString();
-								item.lowName=query.value(lowName_Idx).toString();								
-								item.usage=query.value(usage_Idx).toUInt();
-								item.hash_id=query.value(hashId_Idx).toUInt();
-								item.groupId=query.value(groupId_Idx).toUInt();
-								item.parentId=query.value(parentId_Idx).toUInt();
-								item.isHasPinyin=(unsigned char )(query.value(isHasPinyin_Idx).toUInt());
-								item.comeFrom=(unsigned char )(query.value(comeFrom_Idx).toUInt());
-								//if(IS_FROM_BROWSER(item.comeFrom))
-								//	item.icon=QString("ico/1412882717.ico");
-								//else
-									item.icon=query.value(icon_Idx).toString();
-								item.hanziNums=(unsigned short )(query.value(hanziNums_Idx).toUInt());
-								item.pinyinDepth=query.value(pinyinDepth_Idx).toUInt();
-								item.pinyinReg=query.value(pinyinReg_Idx).toString();
-								item.alias1=query.value(alias1_Idx).toString();
-								item.alias2=query.value(alias2_Idx).toString();
-								item.args=query.value(rec.indexOf("args")).toString();
-								//qDebug("pinyinReg=%s shortname=%s txt=%s pinyinDepth=%u\n",qPrintable(item->pinyinReg),qPrintable(item->shortName),qPrintable(txt),item->pinyinDepth);
-								bool matched=0;
-								if(item.hanziNums<=PINYIN_MAX_NUMBER&&item.pinyinDepth<=PINYIN_MAX_DEPTH)
-									//pinyinMatches(regStr,0,regStr.size(),"",searchTxt,matched);
-									pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
-								else{
-									pinyinMatchesEx(regStr,searchTxt,matched,Qt::CaseInsensitive);
-								}
-						
-								if(matched){
-											qDebug("pinyinReg=%s shortname=%s txt=%s ret=%d\n",qPrintable(item.pinyinReg),qPrintable(item.shortName),qPrintable(searchTxt),ret);
-											CatItem* it=&searchResults[i++];
-											*it=item;
-											ret.push_back(it);
-											numresults--;
-									}
-						  	}
-						  	query.clear();
-					}
+		if((numresults>i)&&(info->id == COME_FROM_SHORTCUT)&&!shortName_flag)
+			{
+				shortName_flag = 1;
+				goto RETRY;
 			}
-*/
-#else
-	QChar leastCommon = -1;
-	foreach(QChar c, searchTxt)
-	{
-		if (leastCommon == -1 || catIndex[c].count() < leastCommon)
-			leastCommon = c;
 	}
-
-	if (catIndex[leastCommon].count() == 0)
-		return ret;
-
-	// Search the list
-	for (int i = 0; i < catIndex[leastCommon].count(); ++i)
-	  {
-		  if (matches(catIndex[leastCommon][i], searchTxt))
-		    {
-			    ret.push_back(catIndex[leastCommon][i]);
-		    }
-	  }
-#endif
+		qDebug("Time elapsed: %d ms", t.elapsed());
 	return ret;
 }
 #if 0

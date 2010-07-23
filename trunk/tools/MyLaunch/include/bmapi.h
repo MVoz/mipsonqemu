@@ -190,9 +190,10 @@ public :
 	static int runParameter(int,int,int);
 	static void netProxy(int ,QSettings*,QNetworkProxy*);
 	static int GetCpuUsage();
-	static void  initDbTables(QSqlDatabase& db);
+	static void  initDbTables(QSqlDatabase& db,int flag);
 	static QString dbTableName(uint);
 	static struct dbtableinfo* dbTableInfo(uint id);
+	static QList<struct dbtableinfo*> dbTableInfoList();
 //	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
 //	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	
