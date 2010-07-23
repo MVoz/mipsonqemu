@@ -253,6 +253,31 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 }
 
 
+void Catalog::getHistory(QList < CatItem *> &out)
+{
+		QSqlQuery	q("", *dbs);
+		uint i=0;
+		uint numresults=get_search_result_num(settings);
+		QString s=QString("SELECT * FROM %1  ORDER BY time DESC LIMIT %3").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)).arg(numresults);
+		if(q.exec(s)){
+			while(q.next()){
+					CatItem* item=&searchResults[i++];
+					item->idInTable = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
+					item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
+					item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
+					item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
+					item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
+					item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
+					item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
+					item->shortCut=(unsigned char )(q.value(Q_RECORD_INDEX(q,"shortCut")).toUInt());
+					item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
+					item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
+					item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
+					out.push_back(item);
+			}
+			q.clear();
+		}
+}
 void Catalog::checkHistory(QString txt, QList < CatItem *> &list)
 {
 	// Check for history matches
