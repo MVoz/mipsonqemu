@@ -1218,20 +1218,21 @@ void  tz::initDbTables(QSqlDatabase& db,int flag)
 			QSqlQuery q(s,db);
 			q.exec();	
 			s=QString("CREATE TABLE %1 ("
-					   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					   "fullPath VARCHAR(1024) NOT NULL, "
+					   "id INTEGER PRIMARY KEY AUTOINCREMENT, "					   
 					   "shortName VARCHAR(1024) NOT NULL, "
-					   "lowName VARCHAR(1024) NOT NULL, "
-					   "icon VARCHAR(1024), "
+					   "alias2 VARCHAR(1024),"					   
+					   "time INTEGER NOT NULL,"
 					   "usage INTEGER NOT NULL,"
-					   "hashId INTEGER NOT NULL,"		   
-					   "isHasPinyin INTEGER NOT NULL, "
 					   "comeFrom INTEGER NOT NULL, "
+					   "isHasPinyin INTEGER NOT NULL, "
+					   "shortCut INTEGER NOT NULL,"
+					   "hashId INTEGER NOT NULL,"
+					   "delId INTEGER NOT NULL,"
 					   "pinyinReg VARCHAR(1024), "
 					   "allchars VARCHAR(1024), "
-					   "alias2 VARCHAR(1024),"
-					   "shortCut INTEGER NOT NULL,"
-					   "delId INTEGER NOT NULL,"
+					   "icon VARCHAR(1024), "					   
+					   "lowName VARCHAR(1024) NOT NULL, "					  
+					   "fullPath VARCHAR(1024) NOT NULL, "
 					   "args VARCHAR(1024))").arg(info->name);
 			q=QSqlQuery(s,db);
 			q.exec(s);

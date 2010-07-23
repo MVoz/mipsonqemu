@@ -282,6 +282,7 @@
 			(x)->bindValue(":hashId", qHash((y).shortName));\
 			(x)->bindValue(":isHasPinyin", (y).isHasPinyin);\
 			(x)->bindValue(":comeFrom", (y).comeFrom);\
+			(x)->bindValue(":time", (y).time);\
 			(x)->bindValue(":pinyinReg", (y).pinyinReg);\
 			(x)->bindValue(":allchars", (y).allchars);\
 			(x)->bindValue(":alias2", (y).alias2);\
