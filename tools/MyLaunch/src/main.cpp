@@ -699,7 +699,7 @@ void MyWidget::parseInput(QString text)
 	  {
 		  inputData = inputData.mid(0, spl.count());
 	  }
-#ifdef CONFIG_LOG_ENABLE
+#ifdef CONFIG_LOG_ENABLE_1
 	for (int i = 0; i < inputData.size(); i++)
 	  {
 		  qDebug("%s inputData[%d] %s", __FUNCTION__, i, TOCHAR(inputData[i].getText()));
@@ -946,7 +946,7 @@ void MyWidget::searchOnInput()
 	gSearchTxt = inputData.count() > 0 ? inputData.last().getText() : "";
 
 
-	qDebug()<<inputData.count() <<"  : "<<gSearchTxt;
+	//qDebug()<<inputData.count() <<"  : "<<gSearchTxt;
 
 	  if (inputData.count() <= 1)
 			  catalog->searchCatalogs(gSearchTxt, searchResults);
@@ -2590,7 +2590,11 @@ bool CatLess(CatItem * a, CatItem * b)
 		return true;
 	if (a->usage < b->usage)
 		return false;
-
+	if(a->isHasPinyin&&b->isHasPinyin)
+	{
+		if(a->pos<b->pos)
+			return true; 
+	}
 
 	int localFind = a->lowName.indexOf(gSearchTxt);
 	int otherFind = b->lowName.indexOf(gSearchTxt);

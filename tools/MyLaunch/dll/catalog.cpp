@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			delId=0;\
 			args="";\
 			idInTable=0;\
+			pos = 0;\
 			if(IS_FROM_BROWSER(flag)){\
 				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
 						QUrl url(fullPath);\

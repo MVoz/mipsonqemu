@@ -68,6 +68,7 @@ enum CATITEM_ITEM{
 		delId=(x).delId;\
 		args=(x).args;\
 		idInTable=(x).idInTable;\
+		pos = (x).pos;\
 }while(0);
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
@@ -93,6 +94,7 @@ public:
 	uint hash_id;
 	uint delId;
 	uint idInTable;
+	uint pos;//record the postion when isHasPinyin  true
 
      //   uint groupId;
      //   uint parentId;
@@ -219,6 +221,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.delId;
 	out << item.args;
 	out << item.idInTable;
+	out << item.pos;
 	return out;
 }
 
@@ -239,6 +242,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.delId;
 	in >> item.args;
 	in >> item.idInTable;
+	in >> item.pos;
 	return in;
 }
 
