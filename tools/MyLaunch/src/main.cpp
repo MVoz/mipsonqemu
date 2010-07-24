@@ -200,7 +200,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		 else{
 
   			        qDebug("connect database %s successfully!\n",qPrintable(dest));  
-					tz::initDbTables(db,buildDbWithStart);
+					tz::initDbTables(db,gSettings,buildDbWithStart);
 						//createDbFile();
 		}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
@@ -600,7 +600,7 @@ void MyWidget::focusOutEvent(QFocusEvent * evt)
 
 void MyWidget::altKeyPressEvent(QKeyEvent * key)
 {
-	LOG_RUN_LINE;
+	//LOG_RUN_LINE;
 	if (key->key() == Qt::Key_Escape)
 	  {
 		  alternatives->hide();

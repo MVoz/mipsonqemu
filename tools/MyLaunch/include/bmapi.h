@@ -190,7 +190,7 @@ public :
 	static int runParameter(int,int,int);
 	static void netProxy(int ,QSettings*,QNetworkProxy*);
 	static int GetCpuUsage();
-	static void  initDbTables(QSqlDatabase& db,int flag);
+	static void  initDbTables(QSqlDatabase& db,QSettings *s,int flag);
 	static QString dbTableName(uint);
 	static struct dbtableinfo* dbTableInfo(uint id);
 	static QList<struct dbtableinfo*> dbTableInfoList();

@@ -1205,7 +1205,7 @@ int tz::GetCpuUsage()
   
   return (int)dbIdleTime;
 }
-void  tz::initDbTables(QSqlDatabase& db,int flag)
+void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 {
 	int i = 0;	
 	while(dbtableInfo[i].id){
@@ -1239,6 +1239,8 @@ void  tz::initDbTables(QSqlDatabase& db,int flag)
 			q.clear();
 				
 		}	
+		s->setValue("builddefine",0);
+		s->sync();
 	}
 }
 

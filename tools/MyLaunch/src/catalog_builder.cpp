@@ -301,7 +301,7 @@ void CatBuilder::buildCatelog_define(uint delId)
 {
 	
 	QString  dbfile= QString("%1/%2").arg(APP_DATA_PATH).arg(APP_DEFINE_DB_NAME);
-	 qDebug("connect database %s successfully!!!!!!!!!!!!!",qPrintable(dbfile));  
+	// qDebug("connect database %s successfully!!!!!!!!!!!!!",qPrintable(dbfile));  
 	if(!gSettings->value("builddefine",0).toUInt()&&QFile::exists(dbfile))
 	{
 		
@@ -316,16 +316,16 @@ void CatBuilder::buildCatelog_define(uint delId)
 			 else{
 	  			       	 qDebug("connect database %s successfully!\n",qPrintable(dbfile));  
 					 QSqlQuery q("",d);
-					if(q.exec("select * from defines")){
+					if(q.exec("SELECT * FROM defines")){
 							while(q.next()) { 
-									uint comeFrom=q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt();
+									//uint comeFrom=q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt();
 									CatItem item(
 											q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),
 											q.value(Q_RECORD_INDEX(q,"shortName")).toString(),
 											q.value(Q_RECORD_INDEX(q,"args")).toString(),
-											comeFrom											
+											COME_FROM_PREDEFINE											
 											);									
-								        cat->addItem(item,comeFrom,delId);
+								        cat->addItem(item,COME_FROM_PREDEFINE,delId);
 							}
 							q.clear();
 					}				
