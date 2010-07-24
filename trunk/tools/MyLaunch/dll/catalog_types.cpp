@@ -371,6 +371,7 @@ RETRY:
 					 while(q.next()&&(numresults>i)) {	
 									QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
 									QString allchars=q.value(Q_RECORD_INDEX(q,"allchars")).toString();
+									uint pos = 0;
 					 			if(hanzi_flag){
 										QString searchs;
 										for(int m =0; m < searchTxt.length();m++)
@@ -390,8 +391,10 @@ RETRY:
 											int depth=0;
 											if(!(matched=pinyinsearch(regStr,regStr.size(),0,searchTxt,searchTxt.size(),depth,"")))										
 												 regStr.removeFirst();
-											else
+											else{
+													pos = regsize-regStr.size();
 													break;
+											}
 										}
 																
 										if(!matched) continue;
@@ -413,6 +416,7 @@ RETRY:
 								item->allchars=allchars;
 								item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
 								item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
+								item->pos = pos;
 								//qDebug("%s",qPrintable(item->fullPath));
 								ret.push_back(item);
 					 	}
