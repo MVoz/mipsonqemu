@@ -812,7 +812,7 @@ void MyWidget::doPageDown(int mode)
 									dropTimer->stop();
 								
 								hideLaunchy();
-								inputMode=0;;
+								inputMode=0;
 							}
 			}
 		}

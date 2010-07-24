@@ -299,6 +299,9 @@ void CatBuilder::buildCatelog_command(uint delId)
 
 void CatBuilder::buildCatelog_define(uint delId)
 {
+	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
+	if (main == NULL)
+			return;
 	
 	QString  dbfile= QString("%1/%2").arg(APP_DATA_PATH).arg(APP_DEFINE_DB_NAME);
 	// qDebug("connect database %s successfully!!!!!!!!!!!!!",qPrintable(dbfile));  
@@ -319,8 +322,9 @@ void CatBuilder::buildCatelog_define(uint delId)
 					if(q.exec("SELECT * FROM defines")){
 							while(q.next()) { 
 									//uint comeFrom=q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt();
+									 QString fullpath = main->platform->expandEnvironmentVars(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
 									CatItem item(
-											q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),
+											fullpath,
 											q.value(Q_RECORD_INDEX(q,"shortName")).toString(),
 											q.value(Q_RECORD_INDEX(q,"args")).toString(),
 											COME_FROM_PREDEFINE											
