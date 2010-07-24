@@ -786,9 +786,37 @@ void MyWidget::doEnter()
 	inputMode=0;;
 
 }
-void MyWidget::doPageDown()
+void MyWidget::doPageDown(int mode)
 {
-	inputMode|=(1<<INPUT_MODE_NULL_PAGEDOWN);
+	inputMode|=(1<<mode);
+	if(mode == INPUT_MODE_PAGEDOWN)
+	{
+		if( searchResults.count() > 0 ){
+			CatItem *item = searchResults[0];
+			//qDebug()<<"shortName :"<<item->shortName<<" fullpath: "<<item->fullPath;
+			QFileInfo f(item->fullPath);
+			QFileInfo realfile ;
+			if(f.exists()){
+				//qDebug()<<"fileName :"<<f.fileName()<<" filePath: "<<f.filePath()<<" isSymLink"<<f.isSymLink();
+				if(f.isSymLink())
+					{
+						//qDebug()<<"symLinkTarget:"<<f.symLinkTarget();
+						realfile = QFileInfo(f.symLinkTarget());							
+					}
+				else
+					realfile = f;
+				if(realfile.exists())
+							{
+								runProgram(realfile.dir().absolutePath(),"");
+								if (dropTimer->isActive())
+									dropTimer->stop();
+								
+								hideLaunchy();
+								inputMode=0;;
+							}
+			}
+		}
+	}
 }
 
 
@@ -841,10 +869,14 @@ void MyWidget::keyPressEvent(QKeyEvent * key)
 			    processKey();
 		break;
 		case Qt::Key_PageDown:
-			if(input->text().isEmpty())
-				doPageDown();
-			   key->ignore();
-			   processKey();
+			if(input->text().isEmpty()){
+				doPageDown(INPUT_MODE_NULL_PAGEDOWN);
+			 	key->ignore();			   	
+			  	 processKey();
+			}else	{
+				doPageDown(INPUT_MODE_PAGEDOWN);
+			   	key->ignore();
+			}
 			break;
 		default:
 			 key->ignore();
