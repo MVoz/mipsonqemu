@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDesktopWidget>
 #include <catalog>
 
-OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QSqlDatabase *db,void* catalogbuilder):QDialog(parent),updateTime(d),settings(s),db_p(db),iePath(path)
+OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QSqlDatabase *b,void* catalogbuilder):QDialog(parent),updateTime(d),settings(s),db(b),iePath(path)
 {
 	//catalogBuilder=*(shared_ptr <CatBuilder>*)(catalogBuilder);
 	webView = new QWebView(this);
@@ -413,7 +413,7 @@ void OptionsDlg::loading(const QString & name)
 		    }
 		  settings->endArray();
 		*/
-		  QSqlQuery query("",*db_p);
+		  QSqlQuery query("",*db);
 		  QString  queryStr=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
 		  if(query.exec(queryStr))
 		  	{
@@ -534,11 +534,18 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		else
 			s.remove(APP_NAME);
 		s.sync();
+	}else if(name=="adv/ckCaseSensitive"){
+		QSqlQuery q("",*db);
+		QString s = QString("PRAGMA case_sensitive_like %1").arg(QVariant(value).toBool()?1:0);
+		qDebug() << s;
+		q.exec(s);
+		q.clear();
 	}
+	
 }
 void OptionsDlg::addCatitemToDb(CatItem& item)
 {
-	QSqlQuery q("",*db_p);
+	QSqlQuery q("",*db);
 	/*
 	QString queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
 				   "icon,usage,hashId,"
@@ -559,7 +566,7 @@ void OptionsDlg::addCatitemToDb(CatItem& item)
 }
 void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 {
-	QSqlQuery q("",*db_p);
+	QSqlQuery q("",*db);
 	q.prepare(
 				QString("UPDATE %1 SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
 				"icon=:icon,usage=:usage,hashId=:hashId,"
@@ -586,7 +593,7 @@ void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 }
 void OptionsDlg::deleteCatitemFromDb(CatItem& item,uint index)
 {
-	QSqlQuery q("",*db_p);
+	QSqlQuery q("",*db);
 	q.prepare(QString("DELETE FROM %1 where id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
 	q.bindValue("id", index);
 	q.exec();

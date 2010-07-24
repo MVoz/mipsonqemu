@@ -348,4 +348,5 @@ private slots:
 		void stopSyncNotify();
 };
 void kickoffSilentUpdate();
+bool CatLess(CatItem * a, CatItem * b);
 #endif

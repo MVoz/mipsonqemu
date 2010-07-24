@@ -198,9 +198,9 @@ public:
 	InputData() { id = 0; }
 	InputData(QString str) : text(str) { id = 0;}
 };
-extern QString searchTxt;
-CATALOG_DLL_CLASS_EXPORT bool  CatLess (CatItem* left, CatItem* right); 
-CATALOG_DLL_CLASS_EXPORT bool  CatLessNoPtr (CatItem & a, CatItem & b);
+//extern QString searchTxt;
+//CATALOG_DLL_CLASS_EXPORT bool  CatLess (CatItem* left, CatItem* right); 
+//CATALOG_DLL_CLASS_EXPORT bool  CatLessNoPtr (CatItem & a, CatItem & b);
 
 inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.fullPath;
