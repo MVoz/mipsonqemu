@@ -54,7 +54,7 @@ class OPTIONS_CLASS_EXPORT OptionsDlg:public QDialog
 {
 	Q_OBJECT
  public:
-	OptionsDlg(QWidget * parent = 0,QDateTime*d=0,QSettings *s=0,QString path="",QSqlDatabase *db=NULL,void* catalogbuilder=NULL);
+	OptionsDlg(QWidget * parent = 0,QDateTime*d=0,QSettings *s=0,QString path="",QSqlDatabase *b=NULL,void* catalogbuilder=NULL);
 	~OptionsDlg();
 public:
 	QWebView *webView;
@@ -78,7 +78,7 @@ public:
 	QNetworkProxy proxy;
 	QNetworkRequest request;
 	QTimer testProxyTimer;
-	QSqlDatabase *db_p;
+	QSqlDatabase *db;
 public:
 	int checkListDirExist(const QString& dirname);
 	int checkListDirSpecialchar(const QString& dirname);

@@ -582,7 +582,7 @@ void MyWidget::launchObject()
 			      }
 		    }
 	  }
-	catalog->incrementUsage(res);
+	//catalog->incrementUsage(res);
 }
 
 void MyWidget::focusOutEvent(QFocusEvent * evt)
@@ -977,7 +977,7 @@ void MyWidget::searchOnInput()
 		  searchFiles(gSearchTxt, searchResults);
 
 	  }
-	catalog->checkHistory(gSearchTxt, searchResults);
+	//catalog->checkHistory(gSearchTxt, searchResults);
 }
 
 void MyWidget::updateDisplay()
@@ -2564,6 +2564,63 @@ void kickoffSilentUpdate()
 		runProgram(QString(APP_SILENT_UPDATE_NAME),QString("-r"));
 		exit(0);
 	}
+}
+/*
+bool CatLessNoPtr(CatItem & a, CatItem & b)
+{
+	return CatLess(&a,&b);
+}
+*/
+bool CatLess(CatItem * a, CatItem * b)
+{
+/*
+	if (a->isHistory) { return true; }
+	if (b->isHistory) { return false; }
+*/
+	bool localEqual = a->lowName == gSearchTxt;
+	bool otherEqual = b->lowName == gSearchTxt;
+
+	if (localEqual && !otherEqual)
+		return true;
+	if (!localEqual && otherEqual)
+		return false;
+
+
+	if (a->usage > b->usage)
+		return true;
+	if (a->usage < b->usage)
+		return false;
+
+
+	int localFind = a->lowName.indexOf(gSearchTxt);
+	int otherFind = b->lowName.indexOf(gSearchTxt);
+
+	if (localFind != -1 && otherFind == -1)
+		return true;
+	else if (localFind == -1 && otherFind != -1)
+		return false;
+
+	if (localFind != -1 && otherFind != -1)
+	  {
+		  if (localFind < otherFind)
+			  return true;
+		  else if (otherFind < localFind)
+			  return false;
+	  }
+
+	int localLen = a->lowName.count();
+	int otherLen = b->lowName.count();
+
+	if (localLen < otherLen)
+		return true;
+	if (localLen > otherLen)
+		return false;
+
+
+	// Absolute tiebreaker to prevent loops
+	if (a->fullPath < b->fullPath)
+		return true;
+	return false;
 }
 
 int main(int argc, char *argv[])

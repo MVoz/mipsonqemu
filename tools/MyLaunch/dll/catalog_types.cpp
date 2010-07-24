@@ -51,7 +51,7 @@ int SlowCatalog::getUsage(const QString & path)
 	  }
 	return 0;
 }
-
+#if 0
 void SlowCatalog::incrementUsage(const CatItem & item)
 {
 	for (int i = 0; i < catList.size(); ++i)
@@ -63,6 +63,7 @@ void SlowCatalog::incrementUsage(const CatItem & item)
 		    }
 	  }
 }
+#endif
 /*
 uint SlowCatalog::isExistInDb(CatItem &item)
 {
@@ -222,11 +223,12 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 	if(!fuzzyMatch&&!CaseSensitive)
 		txt = txt.toLower();
 	out= search(txt);
-	qDebug("%s found count=%d",__FUNCTION__,out.count());
+	//qDebug("%s found count=%d",__FUNCTION__,out.count());
 	// Now prioritize the catalog items
-	searchText = txt;
-	qSort(out.begin(), out.end(), CatLess);
+//	searchText = txt;
+	//qSort(out.begin(), out.end(), CatLess);
 
+#if 0
 	// Check for history matches
 	QString location = "History/" + txt;
 	QStringList hist;
@@ -243,6 +245,7 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 			      }
 		    }
 	  }
+#endif
 	// Load up the results
 //	int max = settings->value("GenOps/numresults", 10).toInt();
 /*
@@ -255,7 +258,7 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 
 void Catalog::getHistory(QList < CatItem *> &out)
 {
-		QSqlQuery	q("", *dbs);
+		QSqlQuery	q("", *db);
 		uint i=0;
 		uint numresults=get_search_result_num(settings);
 		QString s=QString("SELECT * FROM %1  ORDER BY time DESC LIMIT %3").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)).arg(numresults);
@@ -320,7 +323,7 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 	 QTime t;
 	 t.start(); 
 
-		QSqlQuery	q("", *dbs);
+		QSqlQuery	q("", *db);
 		uint i=0;
 		int retry=0;
 		int bookmark_retry=0;

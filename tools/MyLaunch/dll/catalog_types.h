@@ -13,10 +13,10 @@
 #endif
 class CATALOG_TYPES_DLL_CLASS_EXPORT Catalog {
 public:
-	Catalog(QSettings* setting,CatItem* searchResult,QSqlDatabase* db) {
+	Catalog(QSettings* setting,CatItem* searchResult,QSqlDatabase* b) {
 		settings=setting;
 		searchResults=searchResult;
-		dbs=db;
+		db=b;
 		}
 	virtual ~Catalog() {}
 	virtual void addItem(CatItem& item,int type,uint delId) = 0;
@@ -27,17 +27,17 @@ public:
 	//void pinyinMatches(QStringList& strlist,int i,int max,QString e_s,QString &txt,bool& ret);
 	//void pinyinMatchesEx(QStringList& strlist,QString &txt,bool& ret,bool CaseSensitive);
 	void searchCatalogs(QString, QList<CatItem*> & );
-	virtual void incrementUsage(const CatItem& item) = 0;
+//	virtual void incrementUsage(const CatItem& item) = 0;
 	virtual int getUsage(const QString& path) = 0;
 	void checkHistory(QString txt, QList<CatItem*> & list);	
 	void getHistory(QList < CatItem *> &out);
 private:	
 	virtual QList<CatItem*> search(QString) = 0;
 public:
-	QString searchText;
+	//QString searchText;
 	QSettings* settings;
 	CatItem* searchResults;
-	QSqlDatabase* dbs;
+	QSqlDatabase* db;
 };
 
 #if 0
@@ -79,7 +79,7 @@ public:
 	const CatItem & getItem(int i){
 		return catList[i];
 		}
-	void incrementUsage(const CatItem& item);
+//	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 	bool pinyinsearch(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);
 	int isAllIn(const QString& src,const QString& all);
