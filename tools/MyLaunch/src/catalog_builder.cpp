@@ -30,6 +30,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDataStream>
 #include <weby>
 #include <runner>
+
+struct predefineoncomputer{
+	int csid;
+	QString name;
+	QString realname;
+};
+
+
+struct predefinedonsystem{
+	QString name;
+	QString realname;
+	QString suffix;
+} ;
+
+
 CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
  buildWithStart(fromArchive),buildMode(mode),db(dbs)
 {
@@ -336,15 +351,67 @@ void CatBuilder::buildCatelog_define(uint delId)
 					}				
 				d.close();
 				//add some defines need depend on programming
-				QString myDocuments;
-				if(GetShellDir(CSIDL_PERSONAL, myDocuments)){
-					myDocuments=QDir::fromNativeSeparators(myDocuments);
-					CatItem item(
-								myDocuments,
-								tz::tr("myDocuments"),
-								"My Documents"								 											
-							);			
-					cat->addItem(item,COME_FROM_PREDEFINE,delId);
+				int j = 0;
+				struct predefineoncomputer predefineOnComputer[]={
+						{CSIDL_PERSONAL,"mydocuments","My Documents"},
+						{CSIDL_FAVORITES,"favorites","Favorites"},
+						{CSIDL_MYMUSIC,"mymusic","My Music"},
+						{CSIDL_MYPICTURES,"mypictures","My Pictures"},
+						{CSIDL_MYVIDEO,"myvideos","My Videos"},
+						{0,"",""}
+							
+				};
+				while(predefineOnComputer[j].csid){
+					QString myDocuments;
+					if(GetShellDir(predefineOnComputer[j].csid, myDocuments)){
+						myDocuments=QDir::fromNativeSeparators(myDocuments);
+						if(!myDocuments.isEmpty()&&QFile::exists(myDocuments)){
+							CatItem item(
+										myDocuments,
+										tz::tr(predefineOnComputer[j].name.toLatin1().data()),
+										predefineOnComputer[j].realname
+									);			
+							cat->addItem(item,COME_FROM_PREDEFINE,delId);
+						}
+					}
+					j++;
+				}
+				//add some process on system32
+				struct predefinedonsystem predefinedOnSystem32[]={
+						{"controlpanel","control",".exe"},
+						{"taskmgr","taskmgr",".exe"},
+						{"","",""}
+				};
+				
+				QString system;
+				j =0 ;
+				if(GetShellDir(CSIDL_SYSTEM, system)&&!system.isEmpty()){			
+					system=QDir::fromNativeSeparators(system);
+					while(!predefinedOnSystem32[j].name.isEmpty()){
+							if(QFile::exists(system+"/"+predefinedOnSystem32[j].realname+predefinedOnSystem32[j].suffix)){
+								CatItem item(
+											system+"/"+predefinedOnSystem32[j].realname+predefinedOnSystem32[j].suffix,
+											tz::tr(predefinedOnSystem32[j].name.toLatin1().data()),
+											predefinedOnSystem32[j].realname
+										);			
+								cat->addItem(item,COME_FROM_PREDEFINE,delId);
+							}
+						j++;
+					}
+				}
+				
+				//add all drives
+				char driver;
+				for(driver='A';driver<'Z';driver++)
+				{
+					if(QFile::exists(QString(driver)+":"))
+					{
+						CatItem	item(
+										QString(driver)+":",
+										COME_FROM_PREDEFINE							 											
+									);			
+						cat->addItem(item,COME_FROM_PREDEFINE,delId);
+					}
 				}
 				gSettings->setValue("builddefine",1);
 				
