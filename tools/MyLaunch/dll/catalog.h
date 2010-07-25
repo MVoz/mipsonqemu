@@ -69,6 +69,7 @@ enum CATITEM_ITEM{
 		args=(x).args;\
 		idInTable=(x).idInTable;\
 		pos = (x).pos;\
+		realname = (x).realname;\
 }while(0);
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
@@ -85,6 +86,8 @@ public:
 	QString args;
 	QString pinyinReg;
 	QString allchars;
+	/* for link file*/
+	QString realname;
 	QString alias2;
 	/** How many times this item has been called by the user */
 	uint usage;
@@ -112,6 +115,7 @@ public:
 	CatItem() {}
 
 	CatItem(QString full,int flag,bool isDir=false) ;
+	CatItem(const QString& full,  const QString& shortN,const QString& realName) ;
 	CatItem(QString full, QString shortN,int flag) ;
 
 	CatItem(QString full, QString shortN, uint i_d,int flag)  ;
@@ -222,6 +226,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.args;
 	out << item.idInTable;
 	out << item.pos;
+	out << item.realname;
 	return out;
 }
 
@@ -243,6 +248,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.args;
 	in >> item.idInTable;
 	in >> item.pos;
+	in >> item.realname;
 	return in;
 }
 
