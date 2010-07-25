@@ -12,6 +12,8 @@
 #include <QCryptographicHash>
 #include <QSqlRecord>
 
+
+
 #define SystemBasicInformation 0 
 #define SystemPerformanceInformation 2 
 #define SystemTimeInformation 3
@@ -376,7 +378,8 @@ BOOL GetShellDir(int iType, QString & szPath)
 	  {
 		  return FALSE;
 	  }
-
+	
+	
 	HRESULT(__stdcall * pfnSHGetFolderPath) (HWND, int, HANDLE, DWORD, LPWSTR);
 
 
@@ -394,6 +397,48 @@ BOOL GetShellDir(int iType, QString & szPath)
 	FreeLibrary(hInst);	// <-- and here
 	return TRUE;
 }
+QString tz::GetShortcutTarget(const QString& LinkFileName)
+{
+	HRESULT hres;
+	TCHAR arg[1024]={0};
+	
+	QString Link, Temp = LinkFileName;
+	HRESULT (__stdcall * CoInitialize)(LPVOID);
+	void  (__stdcall * CoUninitialize)(void );
+	 CoInitialize = reinterpret_cast < HRESULT(__stdcall *) (LPVOID ) >(GetProcAddress(GetModuleHandle(TEXT("ole32")),"CoInitialize"));
+	 CoUninitialize = reinterpret_cast < void (__stdcall *) (void ) >(GetProcAddress(GetModuleHandle(TEXT("ole32")),"CoUninitialize"));
+	 if(!CoInitialize||!CoUninitialize)
+	 	return "";
+	if(SUCCEEDED(CoInitialize(NULL))){
+	HRESULT (__stdcall * CoCreateInstance)( REFCLSID ,   LPUNKNOWN ,   DWORD , REFIID ,	   LPVOID *);
+	 CoCreateInstance = reinterpret_cast < HRESULT(__stdcall *) ( REFCLSID ,LPUNKNOWN ,DWORD,REFIID ,LPVOID *) >(GetProcAddress(GetModuleHandle(TEXT("ole32")),"CoCreateInstance"));
+	
+
+	IShellLink* psl;
+
+	hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,IID_IShellLink, (LPVOID*) &psl);
+
+		if (SUCCEEDED(hres))
+		{
+			IPersistFile* ppf;
+			hres = psl->QueryInterface( IID_IPersistFile, (LPVOID *) &ppf);
+			if (SUCCEEDED(hres))
+			{
+				hres = ppf->Load((LPOLESTR )LinkFileName.utf16(), STGM_READ);
+
+				if (SUCCEEDED(hres))
+				{
+					hres = psl->GetArguments(arg, 1024);
+				}
+				  ppf->Release();
+			}
+			psl->Release();
+		}	
+	  CoUninitialize();
+	}
+	return QString::fromUtf16((ushort*)arg);
+} 
+
 bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest)
 {
 	 dest = settings->fileName();
@@ -1220,6 +1265,7 @@ void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 			s=QString("CREATE TABLE %1 ("
 					   "id INTEGER PRIMARY KEY AUTOINCREMENT, "					   
 					   "shortName VARCHAR(1024) NOT NULL, "
+					   "realname VARCHAR(1024) NOT NULL, "
 					   "alias2 VARCHAR(1024),"					   
 					   "time INTEGER NOT NULL,"
 					   "usage INTEGER NOT NULL,"

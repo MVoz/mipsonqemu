@@ -60,7 +60,7 @@ public:
 	void buildCatelog_define(uint);
 	void clearShortcut(int type);
 	void _clearShortcut(int type);
-	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId);
+	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int comeFrom,uint delId);
 	//void produceInsetQueryStr(CatItem& item,QString& s );
 	bool createDbFile();
 	//bool createConnection(QSqlDatabase& db,const QString &name);

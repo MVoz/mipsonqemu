@@ -65,6 +65,7 @@ void CatBuilder::run()
 		  buildCatalog(delId);
 		  storeCatalog(delId);
 		  clearDb(0,delId);
+		  qDebug()<<"index count"<<indexed.count();
 	  }
 	emit catalogFinished();
 }
@@ -287,7 +288,7 @@ void CatBuilder::buildCatalog_directory(uint delId)
 		  {
 			  emit(catalogIncrement(100.0 * (float) (i + 1) / (float) memDirs.count()));
 			  QString cur = main->platform->expandEnvironmentVars(memDirs[i].name);
-			  qDebug("scan directory %s......",qPrintable(memDirs[i].name));
+			  qDebug()<<"scan directory "<<memDirs[i].name;
 			  indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth,COME_FROM_PROGRAM,delId);
 		  }
 	}
@@ -334,6 +335,17 @@ void CatBuilder::buildCatelog_define(uint delId)
 							q.clear();
 					}				
 				d.close();
+				//add some defines need depend on programming
+				QString myDocuments;
+				if(GetShellDir(CSIDL_PERSONAL, myDocuments)){
+					myDocuments=QDir::fromNativeSeparators(myDocuments);
+					CatItem item(
+								myDocuments,
+								tz::tr("myDocuments"),
+								"My Documents"								 											
+							);			
+					cat->addItem(item,COME_FROM_PREDEFINE,delId);
+				}
 				gSettings->setValue("builddefine",1);
 				
 			}
@@ -373,7 +385,7 @@ void CatBuilder::buildCatalog(uint delId)
 
 }
 
-void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int flag,uint delId)
+void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int comeFrom,uint delId)
 {
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (!main)
@@ -392,7 +404,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			    QString cur = dirs[i];
 			    if (cur.contains(".lnk"))
 				    continue;
-			    indexDirectory(dir + "/" + dirs[i], filters, fdirs, fbin, depth - 1,flag,delId);
+			    indexDirectory(dir + "/" + dirs[i], filters, fdirs, fbin, depth - 1,comeFrom,delId);
 		    }
 	  }
 
@@ -407,10 +419,10 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 				      bool isShortcut = dirs[i].endsWith(".lnk", Qt::CaseInsensitive);
 
 
-				      CatItem item(dir + "/" + dirs[i],flag, !isShortcut);
+				      CatItem item(dir + "/" + dirs[i],comeFrom, !isShortcut);
 				      if (curcat != NULL)
 					      item.usage = curcat->getUsage(item.fullPath);
-				      cat->addItem(item,flag,delId);
+				      cat->addItem(item,comeFrom,delId);
 				      indexed[dir + "/" + dirs[i]] = true;
 			      }
 		    }
@@ -426,13 +438,10 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			      {
 				      if (!indexed.contains(dir + "/" + dirs[i]))
 					{
-						CatItem item(dir + "/" + dirs[i], flag,true);
+						CatItem item(dir + "/" + dirs[i], comeFrom,true);
 						if (curcat != NULL)
 							item.usage = curcat->getUsage(item.fullPath);
-#ifdef CONFIG_LOG_ENABLE
-						//logToFile("item address 0x%08x",&item);
-#endif
-						cat->addItem(item,flag,delId);
+						cat->addItem(item,comeFrom,delId);
 						indexed[dir + "/" + dirs[i]] = true;
 					}
 			      }
@@ -448,11 +457,11 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 		    {
 			    if (!indexed.contains(dir + "/" + bins[i]))
 			      {
-				      CatItem item(dir + "/" + bins[i],flag);
+				      CatItem item(dir + "/" + bins[i],comeFrom);
 				      if (curcat != NULL)
 					      item.usage = curcat->getUsage(item.fullPath);
-				      cat->addItem(item,flag,delId);
-				     qDebug("add item:fullpath=%s shortName=%s\n",qPrintable(item.fullPath),qPrintable(item.shortName));
+				      cat->addItem(item,comeFrom,delId);
+				    qDebug()<<__LINE__<<"path:"<<item.fullPath<<"Name:"<<item.shortName;
 				      indexed[dir + "/" + bins[i]] = true;
 			      }
 		    }
@@ -466,11 +475,20 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	  {
 		  if (!indexed.contains(dir + "/" + files[i]))
 		    {
-			    CatItem item(dir + "/" + files[i],flag);
-			    if (curcat != NULL)
-				    item.usage = curcat->getUsage(item.fullPath);
+		    		if(comeFrom = COME_FROM_PROGRAM){
+			    		QFileInfo f(dir + "/" + files[i]);
+					if(f.isSymLink())
+							{
+								if(!QFile::exists(f.symLinkTarget()))
+									continue;
+							}				
+				}
+			    CatItem item(dir + "/" + files[i],comeFrom);
+			   // if (curcat != NULL)
+			//	    item.usage = curcat->getUsage(item.fullPath);
 			    main->platform->alterItem(&item);
-			    cat->addItem(item,flag,delId);
+			//    qDebug()<<__LINE__<<"path:"<<item.fullPath<<"Name:"<<item.shortName;
+			    cat->addItem(item,comeFrom,delId);
 			    indexed[dir + "/" + files[i]] = true;
 		    }
 	  }
@@ -578,7 +596,7 @@ void CatBuilder::storeCatalog(uint delId)
 {
 #if 1
 
-		qDebug("count=%d",this->cat->count());
+		qDebug("store count=%d",this->cat->count());
 		QString s;
 		if(this->cat->count())
 		{
@@ -610,6 +628,7 @@ void CatBuilder::storeCatalog(uint delId)
 			db->commit();
 			q.clear();
 			this->cat->clearItem();
+			indexed.clear();
 		}
 //}
 

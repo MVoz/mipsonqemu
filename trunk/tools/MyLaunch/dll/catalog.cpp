@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			args="";\
 			idInTable=0;\
 			pos = 0;\
+			realname="";\
 			if(IS_FROM_BROWSER(flag)){\
 				if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
 						QUrl url(fullPath);\
@@ -56,9 +57,41 @@ CatItem::CatItem(QString full,int flag,bool isDir ) : fullPath(full),comeFrom(fl
 				if (!isDir)
 					shortName = shortName.mid(0,shortName.lastIndexOf("."));
 			}
-
 			INIT_CATITEM_PART;
+			
+			if( comeFrom == COME_FROM_PROGRAM){
+				QFileInfo f(full);
+				QFileInfo realfile ;
+				if(f.exists()){
+					//qDebug()<<"fileName :"<<f.fileName()<<" filePath: "<<f.filePath()<<" isSymLink"<<f.isSymLink();
+					if(f.isSymLink())
+						{
+							//qDebug()<<"symLinkTarget:"<<f.symLinkTarget();
+							args=tz::GetShortcutTarget(full);
+							realfile = QFileInfo(f.symLinkTarget());	
+							if(realfile.exists())
+							{
+								fullPath =realfile.absoluteFilePath();
+								realname = realfile.fileName();
+							}
+						}					
+				}
+			}
+			
+
+			
 }
+/*
+	just for defined catitem
+*/
+CatItem::CatItem(const QString& full,  const QString& shortN,const QString& realName):fullPath(full), shortName(shortN),realname(realName)
+{
+			int flag = COME_FROM_PREDEFINE;
+			INIT_CATITEM_PART;
+			comeFrom = COME_FROM_PREDEFINE;
+			realname = realName;			
+}
+
 CatItem::CatItem(QString full, QString shortN,int flag): fullPath(full), shortName(shortN),comeFrom(flag)
 {
 		INIT_CATITEM_PART;		
@@ -175,11 +208,11 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 	q->prepare(
 				QString("INSERT INTO %1"
 				"("
-					"fullPath, shortName, lowName,icon,usage,hashId,"
+					"fullPath, shortName, lowName,realname,icon,usage,hashId,"
 					"isHasPinyin,comeFrom,time,"
 					"pinyinReg,allchars,alias2,shortCut,delId,args"
 				") VALUES ("
-					":fullPath, :shortName, :lowName,:icon,:usage,:hashId,"
+					":fullPath, :shortName, :lowName,:realname,:icon,:usage,:hashId,"
 					":isHasPinyin,:comeFrom,:time,"
 					":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
 			   	")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))

@@ -343,11 +343,11 @@ foreach(struct dbtableinfo* info, dblist) {
 		if(info->id == COME_FROM_SHORTCUT){
 			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
 		}else
-			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND shortName LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or realname LIKE '%%3%')  limit %4").arg(info->name).arg(searchTxt).arg(searchTxt).arg(leftnums);
 RETRY:
 		if(shortName_flag){
 			if(ids.size())
-				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND shortName LIKE '%%3%'  limit %4").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(leftnums);
+				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%%3%' or realname LIKE '%%4%') limit %5").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(searchTxt).arg(leftnums);
 			else
 				s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
 		}
@@ -405,6 +405,7 @@ RETRY:
 								ids<<QString(item->idInTable);
 								item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
 								item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
+								item->realname=q.value(Q_RECORD_INDEX(q,"realname")).toString();
 								item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
 								item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
 								item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());

@@ -277,6 +277,7 @@
 			(x)->bindValue(":fullPath", (y).fullPath);\
 			(x)->bindValue(":shortName", (y).shortName);\
 			(x)->bindValue(":lowName", (y).lowName);\
+			(x)->bindValue(":realname", (y).realname);\
 			(x)->bindValue(":icon", (y).icon);\
 			(x)->bindValue(":usage", (y).usage);\
 			(x)->bindValue(":hashId", qHash((y).shortName));\

@@ -2343,6 +2343,7 @@ void MyWidget::hideLaunchy(bool now)
 	  }
 	// let the plugins know
 	plugins.hideLaunchy();
+	freeOccupyMemeory();
 }
 
 
