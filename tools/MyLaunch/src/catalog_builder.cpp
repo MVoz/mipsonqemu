@@ -75,7 +75,7 @@ void CatBuilder::run()
 	//includedir true--include dir
 	if (buildWithStart)
 	 {
-	 	  uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
+	 	  uint delId=NOW_SECONDS;
 		  qDebug("delId=%d",delId);
 		  buildCatalog(delId);
 		  storeCatalog(delId);
@@ -281,7 +281,7 @@ void CatBuilder::buildCatalog_directory(uint delId)
 	if(buildWithStart)
 	{
 		QList < Directory > memDirs;
-		int size = gSettings->beginReadArray("dirs");
+		int size = gSettings->beginReadArray("directories");
 		for (int i = 0; i < size; ++i)
 		  {
 			  gSettings->setArrayIndex(i);
@@ -427,11 +427,9 @@ void CatBuilder::buildCatalog(uint delId)
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (main == NULL)
 		return;
-	QDEBUG_LINE;
 	switch(buildMode)
 	{
 		case CAT_BUILDMODE_ALL:
-			QDEBUG_LINE;
 			buildCatalog_directory(delId);
 			buildCatalog_bookmark(delId);
 			buildCatelog_command(delId);

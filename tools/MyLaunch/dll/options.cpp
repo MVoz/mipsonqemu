@@ -60,7 +60,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QS
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 	
 	getHtml("./html/general.html");
-	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
+	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
 	manager=NULL;
 	reply=NULL;
@@ -196,7 +196,7 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 		testProxyTimer.stop();
 	switch (err){
 		case QNetworkReply::NoError:
-			QMessageBox::information(this, windowTitle(), QString::fromUtf8("代理服务器工作正常！"));
+			QMessageBox::information(this, windowTitle(), tz::tr("proxy_test_success"));
 			break;
 		case  QNetworkReply::ProxyAuthenticationRequiredError:
 			 QMessageBox::critical(0, windowTitle(), QObject::tr("The proxy server needs the right name and password"));			
@@ -349,10 +349,10 @@ void OptionsDlg::loading(const QString & name)
 	  {
 		  jsStr.append(QString("document.getElementById('cmd_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"8%\">选择</td>\
-							 <td width=\"8%\">名字</td>\
-							 <td width=\"64%\">命令</td>\
-							 <td width=\"20%\">参数</td>\
+							 <td width=\"8%\">"+tz::tr("html_select")+"</td>\
+							 <td width=\"8%\">"+tz::tr("html_name")+"</td>\
+							 <td width=\"64%\">"+tz::tr("html_command")+"</td>\
+							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
 		  cmdLists.clear();
 		  /*
@@ -459,14 +459,14 @@ void OptionsDlg::loading(const QString & name)
 	  {
 		  jsStr.append(QString("document.getElementById('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"10%\">选择</td>\
-							 <td width=\"50%\">路径</td>\
-							 <td width=\"20%\">后缀名　</td>\
-							 <td width=\"10%\">子目录　</td>\
-							 <td width=\"10%\">深度</td>\
+							 <td width=\"10%\">"+tz::tr("html_select")+"</td>\
+							 <td width=\"50%\">"+tz::tr("html_path")+"</td>\
+							 <td width=\"20%\">"+tz::tr("html_suffix")+"</td>\
+							 <td width=\"10%\">"+tz::tr("html_childdir")+"</td>\
+							 <td width=\"10%\">"+tz::tr("html_depth")+"</td>\
 							 </tr>"));
 		  dirLists.clear();
-		  int count = settings->beginReadArray("dirs");
+		  int count = settings->beginReadArray("directories");
 		  for (int i = 0; i < count; ++i)
 		    {
 			    settings->setArrayIndex(i);
@@ -777,10 +777,10 @@ ERR:
 	  QString errstr;
 	  switch(err){
 	  		case -1:
-				errstr=QString("alert('指定项已存在!');");
+				errstr=QString("alert('"+tz::tr("err_has_exist_item")+"');");
 				break;
 			case -2:
-				errstr=QString("alert('指定路径不存在!');");
+				errstr=QString("alert('"+tz::tr("err_no_exist_item")+"');");
 				break;
 			default:
 				break;

@@ -231,7 +231,7 @@ while(!browserInfo[i].name.isEmpty())
 	{
 		QSqlQuery	q("", *db);
 		db->transaction();
-		uint delId=QDateTime(QDateTime::currentDateTime()).toTime_t();
+		uint delId=NOW_SECONDS;
 		i = 0;
 		while(!browserInfo[i].name.isEmpty())
 		{

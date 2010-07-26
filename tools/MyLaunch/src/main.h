@@ -171,6 +171,12 @@ enum{
 	INPUT_MODE_NULL_PAGEDOWN,
 	INPUT_MODE_PAGEDOWN
 };
+
+enum{
+	REBUILD_CATALOG=0,
+	REBUILD_SILENT_UPDATER,
+	REBUILD_DATABASE
+};
 class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
@@ -211,6 +217,7 @@ public:
 	bool alwaysShowLaunchy;
 	bool menuOpen;
 	bool optionsOpen;
+	uint rebuildAll;
 	uint updateTimes;// update times
 	QTimer* syncDlgTimer;
 	QTimer* updateSuccessTimer;
