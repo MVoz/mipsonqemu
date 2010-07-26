@@ -293,5 +293,7 @@
 }while(0);
 
 
+#define NOW_SECONDS  (QDateTime::currentDateTime().toTime_t())
+
 #endif
 

@@ -57,7 +57,7 @@ void postHttp::run()
 				{
 					QString bm_handle_url;
 #ifdef CONFIG_AUTH_ENCRYPTION
-					qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
+					qsrand((unsigned) NOW_SECONDS);
 					uint key=qrand()%(getkeylength());
 					QString authstr=QString("username=%1 password=%2").arg(username).arg(password);
 					QString auth_encrypt_str=tz::encrypt(authstr,key);;

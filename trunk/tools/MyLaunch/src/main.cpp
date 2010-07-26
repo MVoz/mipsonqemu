@@ -190,7 +190,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	db = QSqlDatabase::addDatabase("QSQLITE", "dbManage");
 	QString dest ;
 	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
-	int buildDbWithStart=!QFile::exists(dest);
+	if(!QFile::exists(dest)){
+		rebuildAll|=(1<<REBUILD_CATALOG)|(1<<REBUILD_SILENT_UPDATER)||(1<<REBUILD_DATABASE);		
+	}
 	db.setDatabaseName(dest);		
 	if ( !db.open())	 
 		 {
@@ -199,8 +201,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 		 } 
 		 else{
 
-  			        qDebug("connect database %s successfully!\n",qPrintable(dest));  
-					tz::initDbTables(db,gSettings,buildDbWithStart);
+  			     //   qDebug("connect database %s successfully!\n",qPrintable(dest));  
+					tz::initDbTables(db,gSettings,rebuildAll&(1<<REBUILD_DATABASE));
+				 	rebuildAll&=~(1<<REBUILD_DATABASE);
 						//createDbFile();
 		}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
@@ -279,12 +282,12 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	connect(silentupdateTimer, SIGNAL(timeout()), this, SLOT(silentupdateTimeout()));
 	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
-	if (gSettings->value("GenOps/catalogBuildertimer", 10).toInt() != 0)
-		catalogBuilderTimer->start(60000);//1m
-	if (gSettings->value("GenOps/silentupdatetimer", 10).toInt() != 0)
-		silentupdateTimer->start(10000);//1m
+	if (gSettings->value("catalogBuilderTimer", 10).toInt() != 0)
+		catalogBuilderTimer->start(1*MINUTES);//1m
+	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
+		silentupdateTimer->start(1*MINUTES);//1m
 	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
-		syncTimer->start(5*60000);//5m
+		syncTimer->start(5*MINUTES);//5m
 
 
 
@@ -412,7 +415,7 @@ void MyWidget::showAlternatives(bool show)
 void MyWidget::increaseUsage(CatItem& item,const QString& alias)
 {
 		QSqlQuery	q("", db);
-		uint time = QDateTime::currentDateTime().toTime_t();
+		uint time = NOW_SECONDS;
 		//queryStr=QString("update  %1 set usage=usage+1,shortCut='%2' where hashId=%3 and fullPath='%4'").arg(DB_TABLE_NAME).arg(shortCut).arg(qHash(fullPath)).arg(fullPath);
 		
 		if(item.shortCut==0){
@@ -1164,6 +1167,8 @@ void MyWidget::catalogBuilt()
 	updateDisplay();
 	
 	scanDbFavicon();
+	gSettings->setValue("lastscan", NOW_SECONDS);
+	rebuildAll&=~(1<<REBUILD_CATALOG);
 }
 
 void MyWidget::checkForUpdate()
@@ -1339,11 +1344,11 @@ void MyWidget::syncTimeout()
 
 void MyWidget::silentupdateTimeout()
 {
-	int time = gSettings->value("GenOps/silentupdatetimer", 10).toInt();
+	//int time = gSettings->value("silentUpdateTimer", 10).toInt();
 	
 	silentupdateTimer->stop();
 	
-	qDebug("silentupdateTimeout !!!startSilentUpdate.....isActive=%d",silentupdateTimer->isActive());
+//	qDebug("silentupdateTimeout !!!startSilentUpdate.....isActive=%d",silentupdateTimer->isActive());
 	//do something
 	startSilentUpdate();
 //	catalogBuilderTimer->start(time * 60000);//minutes
@@ -1355,15 +1360,16 @@ void MyWidget::catalogBuilderTimeout()
 	// Save the settings periodically
 	savePosition();
 	gSettings->sync();
-	updateTimes++;
-	bool includeDir=false;
-	int time = gSettings->value("GenOps/catalogBuildertimer", 10).toInt();
-	if(updateTimes*time>3600)
-		{
-			includeDir=true;
-			updateTimes=0;
-		}
-	// Perform the database update
+	//updateTimes++;
+	//bool includeDir=false;
+	catalogBuilderTimer->stop();
+	
+	//if(updateTimes*time>3600)
+		//{
+		//	includeDir=true;
+		//	updateTimes=0;
+		//}
+	// //Perform the database update
 	/*
 	if (gBuilder == NULL)
 	  {
@@ -1372,10 +1378,12 @@ void MyWidget::catalogBuilderTimeout()
 		  gBuilder->start(QThread::IdlePriority);
 	  }
 	 */
-	buildCatalog();
-	catalogBuilderTimer->stop();
+	uint interval = NOW_SECONDS-gSettings->value("lastscan", 0).toUInt();
+	if((rebuildAll&(1<<REBUILD_CATALOG))||interval>DAYS)
+		buildCatalog();
+	int time = gSettings->value("catalogBuilderTimer", 10).toInt();
 	if (time != 0)
-		catalogBuilderTimer->start(time * 60000);//minutes
+		catalogBuilderTimer->start(time * MINUTES);//minutes
 }
 
 void MyWidget::dropTimeout()
@@ -1919,7 +1927,7 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 	
 #ifdef CONFIG_AUTH_ENCRYPTION
-	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
+	qsrand((unsigned) NOW_SECONDS);
 	uint key=qrand()%(getkeylength());
 	QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
 	QString auth_encrypt_str=tz::encrypt(authstr,key);
@@ -2465,14 +2473,19 @@ void MyWidget::silentUpdateFinished()
 	if(slientUpdate)
 		{
 			delete slientUpdate;
-			slientUpdate =NULL;
+			slientUpdate =NULL;			
+			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
+			rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
 		}
 }
 void MyWidget::startSilentUpdate()
 {
 		if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
-		return;
-		qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+			return;
+		uint interval=NOW_SECONDS-gSettings->value("lastSilentUpdate", 0).toUInt();
+		if(interval < DAYS)
+				return;
+		//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 		if(!slientUpdate||slientUpdate->isFinished()){
 		
 			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
@@ -2559,10 +2572,10 @@ void myMessageOutput(QtMsgType type, const char *msg)
 	       {
 		   	if(gSettings){
 				gSettings->sync();
-			   	if((gSettings->value("GenOps/debug",0).toUInt())&0x01)			
+			   	if((gSettings->value("debug",0).toUInt())&0x01)			
 					fprintf(stderr, "Debug: %s\n", msg);
 			   	
-				if((gSettings->value("GenOps/debug",0).toUInt())&0x02)
+				if((gSettings->value("debug",0).toUInt())&0x02)
 				{
 						 QFile debugfile("log.txt");
 						 debugfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
