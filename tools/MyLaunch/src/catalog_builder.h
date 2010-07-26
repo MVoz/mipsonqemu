@@ -35,6 +35,8 @@ enum catbuildmode{
 	CAT_BUILDMODE_BOOKMARK,
 	CAT_BUILDMODE_COMMAND,	
 };
+
+#define STOP_FLAG_CHECK if(stopflag) goto bad;
 class CatBuilder : public QThread
 {
 	Q_OBJECT
@@ -44,12 +46,14 @@ private:
 	shared_ptr<Catalog> curcat;
 	//PluginHandler* plugins;
 	bool buildWithStart;
+
 	
 	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
 	QSqlDatabase *db;
 	catbuildmode buildMode;
-
+public:
+		bool stopflag;
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(uint);
@@ -58,11 +62,11 @@ public:
 	void buildCatalog_directory(uint);
 	void buildCatelog_command(uint);
 	void buildCatelog_define(uint);
-	void clearShortcut(int type);
+	void clearShortcut();
 	void _clearShortcut(int type);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int comeFrom,uint delId);
 	//void produceInsetQueryStr(CatItem& item,QString& s );
-	bool createDbFile();
+	//bool createDbFile();
 	//bool createConnection(QSqlDatabase& db,const QString &name);
 	//void setPreviousCatalog(shared_ptr<Catalog> cata) {	
 	//	curcat = cata;
@@ -76,11 +80,11 @@ public:
 		cat.reset();
 	}
 	void run();
-	void clearDb(int type,uint delId);
+	void clearDb(uint delId);
 	//uint isExistInDb(CatItem &item);
 
 signals:
-	void catalogFinished();
+	void catalogFinished(int);
 	void catalogIncrement(float);
 
 };

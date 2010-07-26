@@ -52,6 +52,7 @@ CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
 	//	cat.reset((Catalog *) new FastCatalog(gSettings));
 	//else
 		cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));
+		stopflag=0;
 }
 
 void CatBuilder::run()
@@ -76,13 +77,17 @@ void CatBuilder::run()
 	if (buildWithStart)
 	 {
 	 	  uint delId=NOW_SECONDS;
-		  qDebug("delId=%d",delId);
 		  buildCatalog(delId);
+		  STOP_FLAG_CHECK;
 		  storeCatalog(delId);
-		  clearDb(0,delId);
-		  qDebug()<<"index count"<<indexed.count();
+		  STOP_FLAG_CHECK;
 	  }
-	emit catalogFinished();
+	emit catalogFinished(1);
+	return;
+bad:
+	this->cat->clearItem();
+	indexed.clear();
+	emit catalogFinished(0);
 }
 void CatBuilder::_clearShortcut(int type)
 {
@@ -102,7 +107,7 @@ void CatBuilder::_clearShortcut(int type)
 				q.clear();
 	}
 }
-void CatBuilder::clearShortcut(int type)
+void CatBuilder::clearShortcut()
 {
 		
 		switch(buildMode)
@@ -123,17 +128,17 @@ void CatBuilder::clearShortcut(int type)
 			break;
 		}		
 }
-void CatBuilder::clearDb(int type,uint delId)
+void CatBuilder::clearDb(uint delId)
 {
 		QSqlQuery q("", *db);
 		QString s;
 		switch(buildMode)
 		{
 			case CAT_BUILDMODE_ALL:
-				s=QString("delete  from %1 where delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
+				s=QString("DELETE  FROM %1 WHERE delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
 			break;
 			case CAT_BUILDMODE_DIRECTORY:
-				s=QString("delete  from %1 where delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
+				s=QString("DELETE  FROM %1 WHERE delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
 			break;
 			case CAT_BUILDMODE_BOOKMARK:
 				//select * from `launch_db` where (comefrom between 2 and 2) and delid=1277131483;
@@ -142,15 +147,15 @@ void CatBuilder::clearDb(int type,uint delId)
 				tz::clearbmgarbarge(&q,delId);
 			break;
 			case CAT_BUILDMODE_COMMAND:
-				s=QString("delete  from %1 where  delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND)).arg(delId);
+				s=QString("DELETE  FROM %1 WHERE  delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND)).arg(delId);
 			break;
 		}
 		
-		qDebug("s=%s",qPrintable(s));
+		//qDebug("s=%s",qPrintable(s));
 		if(q.exec(s)){
 				q.clear();
 		}
-	clearShortcut(type);
+		clearShortcut();
 }
 void CatBuilder::buildCatalog_bookmark(uint delId)
 {
@@ -301,11 +306,14 @@ void CatBuilder::buildCatalog_directory(uint delId)
 		  }
 		for (int i = 0; i < memDirs.count(); ++i)
 		  {
+		  	  STOP_FLAG_CHECK;
 			  emit(catalogIncrement(100.0 * (float) (i + 1) / (float) memDirs.count()));
 			  QString cur = main->platform->expandEnvironmentVars(memDirs[i].name);
 			  qDebug()<<"scan directory "<<memDirs[i].name;
 			  indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth,COME_FROM_PROGRAM,delId);
 		  }
+	bad:
+		return;
 	}
 
 }
@@ -455,11 +463,13 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
 	if (!main)
 		return;
+	
 	dir = QDir::toNativeSeparators(dir);
-
+	QStringList files;
 	QDir qd(dir);
 	dir = qd.absolutePath();
 	QStringList dirs = qd.entryList(QDir::AllDirs);
+	STOP_FLAG_CHECK;
 	if (depth > 0)
 	  {
 		  for (int i = 0; i < dirs.count(); ++i)
@@ -535,7 +545,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	if (filters.count() == 0)
 		return;
 
-	QStringList files = qd.entryList(filters, QDir::Files | QDir::System, QDir::Unsorted);
+	files = qd.entryList(filters, QDir::Files | QDir::System, QDir::Unsorted);
 	for (int i = 0; i < files.count(); ++i)
 	  {
 		  if (!indexed.contains(dir + "/" + files[i]))
@@ -557,6 +567,8 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			    indexed[dir + "/" + files[i]] = true;
 		    }
 	  }
+bad:
+	return;
 }
 #if 0
 bool CatBuilder::createConnection(QSqlDatabase& db,const QString &name)
@@ -662,13 +674,14 @@ void CatBuilder::storeCatalog(uint delId)
 #if 1
 
 		qDebug("store count=%d",this->cat->count());
-		QString s;
+		//QString s;
 		if(this->cat->count())
 		{
 			QSqlQuery	q("", *db);
 			db->transaction();
 			for (int i = 0; i < this->cat->count(); i++)
 		  	{
+		  		  STOP_FLAG_CHECK;
 				  CatItem item = cat->getItem(i);
 				//uint id=isExistInDb(item);
 				uint id=tz::isExistInDb(&q,item.shortName,item.fullPath,item.comeFrom);
@@ -677,7 +690,7 @@ void CatBuilder::storeCatalog(uint delId)
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 					//qDebug("queryStr=%s",qPrintable(queryStr));
 					//query.exec(queryStr);
-					q.prepare(QString("update %1 set delId=? where id=?").arg(DBTABLEINFO_NAME(item.comeFrom)));
+					q.prepare(QString("UPDATE %1 SET delId=? WHERE id=?").arg(DBTABLEINFO_NAME(item.comeFrom)));
 					int i=0;
 					q.bindValue(i++, delId);
 					q.bindValue(i++, id);
@@ -696,7 +709,8 @@ void CatBuilder::storeCatalog(uint delId)
 			indexed.clear();
 		}
 //}
-
+		clearDb(delId);
+		return;
 #else
 	QByteArray ba;
 	QDataStream out(&ba, QIODevice::ReadWrite);
@@ -720,4 +734,8 @@ void CatBuilder::storeCatalog(uint delId)
 	file.write(ba);
 #endif
 #endif
+	bad:
+		this->cat->clearItem();
+		indexed.clear();
+	return;
 }
