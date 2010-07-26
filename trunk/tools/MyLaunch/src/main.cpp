@@ -109,6 +109,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	gSearchTxt = "";
 	syncDlgTimer=NULL;
 	inputMode = 0;
+	rebuildAll = 0;
 //      gBuilder = NULL;
 //      catalog = NULL;
 //	gMaxGroupId=0;
@@ -299,7 +300,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	
 	gBuilder->start();
 	*/
-	buildCatalog();
+	//buildCatalog();
 
 	//      setTabOrder(combo, combo);
 
@@ -1379,6 +1380,7 @@ void MyWidget::catalogBuilderTimeout()
 	  }
 	 */
 	uint interval = NOW_SECONDS-gSettings->value("lastscan", 0).toUInt();
+	qDebug()<<interval<<" :"<<rebuildAll;
 	if((rebuildAll&(1<<REBUILD_CATALOG))||interval>DAYS)
 		buildCatalog();
 	int time = gSettings->value("catalogBuilderTimer", 10).toInt();
