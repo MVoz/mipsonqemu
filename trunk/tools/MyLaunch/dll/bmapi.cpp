@@ -817,7 +817,7 @@ void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 	while(!browserInfo[i].name.isEmpty())
 	{
 			s.clear();
-			s=QString("delete from %1 where comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id).arg(delId);
+			s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id).arg(delId);
 			q->exec(s);		
 			i++;
 	}

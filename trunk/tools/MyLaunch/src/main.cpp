@@ -192,7 +192,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	QString dest ;
 	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
 	if(!QFile::exists(dest)){
-		rebuildAll|=(1<<REBUILD_CATALOG)|(1<<REBUILD_SILENT_UPDATER)||(1<<REBUILD_DATABASE);		
+		rebuildAll|=(1<<REBUILD_CATALOG)|(1<<REBUILD_SILENT_UPDATER)|(1<<REBUILD_DATABASE);		
 	}
 	db.setDatabaseName(dest);		
 	if ( !db.open())	 
@@ -284,9 +284,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
 	if (gSettings->value("catalogBuilderTimer", 10).toInt() != 0)
-		catalogBuilderTimer->start(1*MINUTES);//1m
+		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
-		silentupdateTimer->start(1*MINUTES);//1m
+		silentupdateTimer->start(1*SECONDS);//1m
 	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
 		syncTimer->start(5*MINUTES);//5m
 
@@ -1150,11 +1150,11 @@ void MyWidget::searchFiles(const QString & input, QList < CatItem* > &searchResu
 }
 
 
-void MyWidget::catalogBuilt()
+void MyWidget::catalogBuilt(int type)
 {
 	//catalog.reset();
 	//catalog = gBuilder->getCatalog();
-
+	qDebug()<<__FUNCTION__<<gBuilder<<type;
 	gBuilder->wait();
 	gBuilder.reset();
 	//QDEBUG("%s gBuilder=0x%08x\n",__FUNCTION__,gBuilder);
@@ -1164,12 +1164,15 @@ void MyWidget::catalogBuilt()
 	*/
 	//      qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
 	// Do a search here of the current input text
-	searchOnInput();
-	updateDisplay();
-	
-	scanDbFavicon();
-	gSettings->setValue("lastscan", NOW_SECONDS);
-	rebuildAll&=~(1<<REBUILD_CATALOG);
+	if(type){//successful
+		searchOnInput();
+		updateDisplay();
+		
+		scanDbFavicon();
+		gSettings->setValue("lastscan", NOW_SECONDS);
+		rebuildAll&=~(1<<REBUILD_CATALOG);
+	}else
+		close();
 }
 
 void MyWidget::checkForUpdate()
@@ -1417,13 +1420,23 @@ void MyWidget::onHotKey()
 
 void MyWidget::closeEvent(QCloseEvent * event)
 {
+		qDebug()<<"emit erminateNotify"<<gBuilder;
+		if(gBuilder)
+		{
+			qDebug()<<"emit erminateNotify"<<gBuilder;
+			//emit catalogTerminateNotify();
+			gBuilder->stopflag = 1;
+			event->ignore();
+			return;
+			
+		}
 	//      gSettings->setValue("Display/pos", relativePosition());
 	savePosition();
 	gSettings->sync();
 	if (trayIcon->isVisible()) {
 			trayIcon->hide();
 	}
-
+	
 	QDir dest(gSettings->fileName());
 	dest.cdUp();
 	//CatBuilder builder(catalog, &plugins);
@@ -1770,9 +1783,13 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 
 	if (gBuilder == NULL)
 	  {
+	  	 //just for exception
+	  	  gSettings->setValue("lastscan", 0);
 		  gBuilder.reset(new CatBuilder(true,mode,&db));
 		//  gBuilder->setPreviousCatalog(catalog);
-		  connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		  connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
+		
+	//	  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		  gBuilder->start(QThread::IdlePriority);
 	  }
 }
@@ -2370,6 +2387,8 @@ QChar MyWidget::sepChar()
 #ifdef CONFIG_SYSTEM_TRAY
 void MyWidget::updateApp()
 {
+
+/*
 	QProcess updatePrc;
 	updatePrc.start("updater.exe"); 
 	qDebug("update process start!");
@@ -2391,6 +2410,7 @@ void MyWidget::updateApp()
 						close();
 			}
 		}
+*/
 }
 void MyWidget::createActions()
 {
@@ -2489,7 +2509,7 @@ void MyWidget::startSilentUpdate()
 				return;
 		//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 		if(!slientUpdate||slientUpdate->isFinished()){
-		
+			gSettings->setValue("lastSilentUpdate", 0);
 			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
 			connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
 			slientUpdate->start(QThread::IdlePriority);		

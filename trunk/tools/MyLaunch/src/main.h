@@ -315,7 +315,7 @@ public slots:
 	void mouseMoveEvent(QMouseEvent *e);
 	void setSkin(QString, QString);
 	void httpGetFinished(bool result);
-	void catalogBuilt();
+	void catalogBuilt(int);
 	void inputMethodEvent(QInputMethodEvent* e);
 	void keyPressEvent(QKeyEvent*);
 	void inputKeyPressEvent(QKeyEvent* key);
@@ -353,6 +353,7 @@ private slots:
 	signals:
 		//void reSync();
 		void stopSyncNotify();
+		void catalogTerminateNotify();
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);
