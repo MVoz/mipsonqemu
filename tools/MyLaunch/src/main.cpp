@@ -2483,7 +2483,7 @@ void MyWidget::startSilentUpdate()
 		if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
 			return;
 		uint interval=NOW_SECONDS-gSettings->value("lastSilentUpdate", 0).toUInt();
-		if(interval < DAYS)
+		if((!(rebuildAll&(1<<REBUILD_SILENT_UPDATER)))&&interval < DAYS)
 				return;
 		//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 		if(!slientUpdate||slientUpdate->isFinished()){
