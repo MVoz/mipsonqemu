@@ -99,7 +99,17 @@ class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
 	uint action;
 	//uint proxyEnable;
 	//QNetworkProxy proxy;
-	public slots: 
+public:
+			int terminateFlag;
+			QTimer* monitorTimer;
+			void setTerminateFlag(int f)
+			{
+					terminateFlag=f;
+			}
+public slots:
+			void monitorTimerSlot();
+
+public slots: 
 		//void httpRequestFinished(int id, bool error);
 		void httpDone(bool error);
 		//void httpStateChanged(int state);

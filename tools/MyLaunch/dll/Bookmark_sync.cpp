@@ -102,7 +102,10 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 	error=0;
 	testServerResult = 0;
 	resultBuffer = NULL;
+	monitorTimer = NULL;
+	terminateFlag = 0;
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
+
 
 }
 void BookmarkSync::httpTimerSlot()
@@ -134,6 +137,7 @@ void BookmarkSync::stopSync()
 			
 	}
 */
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	terminateThread();
 
 }
@@ -208,33 +212,51 @@ void BookmarkSync::testNetFinished()
 }
 void BookmarkSync::terminateThread()
 {
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+	if(monitorTimer&&monitorTimer->isActive())
+		monitorTimer->stop();
 	if(testThread&&testThread->isRunning())
-		emit testNetTerminateNotify();
+		testThread->setTerminateFlag(1);
 	if(httpTimer&&httpTimer->isActive())
 			httpTimerSlot();
 	if(mgthread&&mgthread->isRunning())
 		{
 			mgthread->setTerminated(1);
 			if(mgthread->posthp&&mgthread->posthp->isRunning())
-				emit posthttpTerminateNotify();
+				mgthread->posthp->setTerminateFlag(1);
 			//emit mergeTerminateNotify();
 		}
 }
-
+void BookmarkSync::monitorTimerSlot()
+{
+	if(monitorTimer&&monitorTimer->isActive())
+		monitorTimer->stop();
+	if(terminateFlag)
+		terminateThread();
+	else
+		monitorTimer->start(10);
+}
 void BookmarkSync::run()
 {
+		
+		qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+		monitorTimer = new QTimer();
+		connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
+		monitorTimer->start(10);
+		monitorTimer->moveToThread(this);
+		
 		 tz::netProxy(SET_MODE,settings,NULL);
 		//check server status
 		{
 			testThread = new testServerThread(NULL);
 
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-			connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()),Qt::DirectConnection);
+			//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(testThreadterminateThread()),Qt::DirectConnection);
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 			testThread->start(QThread::IdlePriority);
 		}	
-		
+		//connect(this->parent(), SIGNAL(stopSyncNotify()), this, SLOT(stopSync()));
 		// qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
 		 qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	

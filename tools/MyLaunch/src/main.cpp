@@ -1449,7 +1449,7 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		}
 		if(gSyncer&&gSyncer->isRunning())
 		{
-			emit syncerTerminateNotify();
+			gSyncer->setTerminateFlag(1);
 			event->ignore();
 			return;
 		}
@@ -1833,8 +1833,9 @@ void MyWidget::stopSyncSlot()
 {
 	if(gSyncer){
 			qDebug("stop sync.................");
-			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
-			emit stopSyncNotify();
+			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThreadId());
+			//emit stopSyncNotify();
+			gSyncer->setTerminateFlag(1);
 	
 		}
 }
@@ -1908,6 +1909,7 @@ void MyWidget::_startSync(int mode,int silence)
 		return;
 	syncMode = mode;
 	QString name,password;
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(mode)
 	{
@@ -1961,7 +1963,7 @@ void MyWidget::_startSync(int mode,int silence)
 
 	//connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
 	
-	connect(this, SIGNAL(stopSyncNotify()), gSyncer.get(), SLOT(stopSync()));
+	
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_syncer_finished(bool)));
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
@@ -1971,7 +1973,7 @@ void MyWidget::_startSync(int mode,int silence)
 	
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 
-	connect(this, SIGNAL(syncerTerminateNotify()), gSyncer.get(), SLOT(terminateThread()));
+//	connect(this, SIGNAL(syncerTerminateNotify()), gSyncer.get(), SLOT(terminateThread()));
 	
 	
 	syncAction->setDisabled(TRUE);
@@ -2549,7 +2551,7 @@ void MyWidget::startSilentUpdate()
 			gSettings->setValue("lastSilentUpdate", 0);
 			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
 			connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
-			connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
+			//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
 			slientUpdate->start(QThread::IdlePriority);		
 		}
 }

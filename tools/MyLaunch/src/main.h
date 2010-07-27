@@ -353,10 +353,10 @@ private slots:
 #endif
 	signals:
 		//void reSync();
-		void stopSyncNotify();
-		void catalogTerminateNotify();
+	//	void stopSyncNotify();
+	//	void catalogTerminateNotify();
 		void silentUpdateTerminateNotify();
-		void syncerTerminateNotify();
+	//	void syncerTerminateNotify();
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);

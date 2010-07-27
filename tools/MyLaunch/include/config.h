@@ -295,5 +295,14 @@
 
 #define NOW_SECONDS  (QDateTime::currentDateTime().toTime_t())
 
+#define CLASS_MONITER_TERMINATE_FLAG       \
+	public:\
+      		int terminateFlag;\
+		void setTerminateFlag(int f)\
+		{\
+			terminateFlag=f;\
+		}\
+	public slots:\
+	void monitorTimerSlot();
 #endif
 
