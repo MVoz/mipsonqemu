@@ -94,13 +94,14 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 //	updateTime=d;
 	this->db=db;
 	mgthread=NULL;
+	httpTimer = NULL;
 //	netProxy=NULL;
 	httpProxyEnable=0;
 	http_finish=0;
-	 http_timerover=0;
-	 error=0;
-	 testServerResult = 0;
-	 resultBuffer = NULL;
+	http_timerover=0;
+	error=0;
+	testServerResult = 0;
+	resultBuffer = NULL;
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 }
@@ -228,7 +229,7 @@ void BookmarkSync::run()
 			testThread = new testServerThread(NULL);
 
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-			connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()));
+			connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()),Qt::DirectConnection);
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 			testThread->start(QThread::IdlePriority);

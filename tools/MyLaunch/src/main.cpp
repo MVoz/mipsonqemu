@@ -1172,6 +1172,10 @@ void MyWidget::catalogBuilt(int type)
 		scanDbFavicon();
 		gSettings->setValue("lastscan", NOW_SECONDS);
 		rebuildAll&=~(1<<REBUILD_CATALOG);
+		
+		int time = gSettings->value("catalogBuilderTimer", 10).toInt();
+		if (time != 0)
+		catalogBuilderTimer->start(time * MINUTES);//minutes
 	}else
 		close();
 }
@@ -1387,9 +1391,7 @@ void MyWidget::catalogBuilderTimeout()
 	qDebug()<<interval<<" :"<<rebuildAll;
 	if((rebuildAll&(1<<REBUILD_CATALOG))||interval>DAYS)
 		buildCatalog();
-	int time = gSettings->value("catalogBuilderTimer", 10).toInt();
-	if (time != 0)
-		catalogBuilderTimer->start(time * MINUTES);//minutes
+
 }
 
 void MyWidget::dropTimeout()
@@ -1422,6 +1424,14 @@ void MyWidget::onHotKey()
 void MyWidget::closeEvent(QCloseEvent * event)
 {
 		closeflag = 1;
+		if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
+			catalogBuilderTimer->stop();
+		if(silentupdateTimer&&silentupdateTimer->isActive())
+			silentupdateTimer->stop();
+		if(syncTimer&&syncTimer->isActive())
+			syncTimer->stop();
+		
+			
 		qDebug()<<"emit erminateNotify"<<gBuilder;
 		if(gBuilder&&gBuilder->isRunning())
 		{
@@ -1494,6 +1504,12 @@ void MyWidget::updateSuccess()
 		//	s.remove(APP_NAME);
 		s.sync();
 	*/
+	if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
+			catalogBuilderTimer->stop();
+	if(silentupdateTimer&&silentupdateTimer->isActive())
+			silentupdateTimer->stop();
+	if(syncTimer&&syncTimer->isActive())
+			syncTimer->stop();
 	updateSuccessTimer = new QTimer(this);
 	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));
 	updateSuccessTimer->start(1*SECONDS);
