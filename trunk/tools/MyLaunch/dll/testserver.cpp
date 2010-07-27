@@ -30,18 +30,19 @@ void testServerThread::testNetFinished(QNetworkReply* reply)
 }
 void testServerThread::testNetTimeout()
 {
-		qDebug("%s %d",__FUNCTION__,__LINE__);
+		qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 		if(testNetTimer->isActive())
 			testNetTimer->stop();
 		reply->abort();
 }
 void testServerThread::terminateThread()
 {
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	testNetTimeout();
 }
 void testServerThread::run()
 {
-		qDebug("testServerThread::run");
+		qDebug("%s %d testServerThread run currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 		tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 		manager=new QNetworkAccessManager();
 
