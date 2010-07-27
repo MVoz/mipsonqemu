@@ -35,6 +35,10 @@ void testServerThread::testNetTimeout()
 			testNetTimer->stop();
 		reply->abort();
 }
+void testServerThread::terminateThread()
+{
+	testNetTimeout();
+}
 void testServerThread::run()
 {
 		qDebug("testServerThread::run");

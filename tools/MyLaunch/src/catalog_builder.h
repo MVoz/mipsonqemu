@@ -36,7 +36,7 @@ enum catbuildmode{
 	CAT_BUILDMODE_COMMAND,	
 };
 
-#define STOP_FLAG_CHECK if(stopflag) goto bad;
+#define STOP_FLAG_CHECK if(terminateflag) goto bad;
 class CatBuilder : public QThread
 {
 	Q_OBJECT
@@ -53,7 +53,7 @@ private:
 	QSqlDatabase *db;
 	catbuildmode buildMode;
 public:
-		bool stopflag;
+		bool terminateflag;
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(uint);

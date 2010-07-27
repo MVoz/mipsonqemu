@@ -169,11 +169,15 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	//void setNetworkProxy();
 	void mgUpdateStatus(int flag,int status,QString str);
 	void testNetFinished();
+	void terminateThread();
       signals:
 	void bookmarkFinished(bool error);
 	void updateStatusNotify(int type,int status,QString str);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(bool error,QString result);
+	void testNetTerminateNotify();
+	void mergeTerminateNotify();
+	void posthttpTerminateNotify();
 
 };
 

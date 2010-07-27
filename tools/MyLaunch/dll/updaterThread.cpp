@@ -6,6 +6,11 @@
 #include <QStringList>
 #include <bmapi.h>
 #include "config.h"
+void GetFileHttp::terminateThread()
+{
+	httpTimerSlot();
+	retryTime = UPDATE_MAX_RETRY_TIME;
+}
 void GetFileHttp::on_http_stateChanged(int stat)
 {
 
@@ -384,6 +389,13 @@ void updaterThread::testNetFinishedx()
 	//qDebug("testNetFinishedx result=%d",testThread->result);
 
 }
+void updaterThread::terminateThread()
+{
+	if(testThread&&testThread->isRunning())
+		emit testNetTerminateNotify();
+	if(fh&&fh->isRunning())
+		emit getFileTerminateNotify();
+}
 void updaterThread::run()
 {
 		 tz::netProxy(SET_MODE,settings,NULL);
@@ -405,6 +417,7 @@ void updaterThread::run()
 			testThread = new testServerThread(NULL);
 
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinishedx()));
+			connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()));
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 			testThread->start(QThread::IdlePriority);
@@ -696,6 +709,8 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 		
 		connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
 		connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);	
+		connect(this,SIGNAL(getFileTerminateNotify()),fh, SLOT(terminateThread()),Qt::DirectConnection);
+		
 		if(mode==UPDATE_DLG_MODE) {
 			connect(fh, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
 			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));

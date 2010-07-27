@@ -59,6 +59,7 @@ public:
 public slots: 
 	void testNetFinished(QNetworkReply*);
 	void testNetTimeout();
+	void terminateThread();
 	
 };
 #endif

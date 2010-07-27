@@ -8,6 +8,7 @@
 postHttp::postHttp(QObject * parent,int type ):QThread(parent)
 {
 	postType=type;
+	postTimer = NULL;
 	//proxyEnable = 0;
 	//QDEBUG("construction postHttp......");
 }
@@ -177,5 +178,9 @@ void postHttp::postTimerSlot()
 	if(postTimer->isActive())
 		postTimer->stop();
 	posthttp->abort();
+}
+void postHttp::terminateThread()
+{
+	postTimerSlot();
 }
 

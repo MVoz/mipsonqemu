@@ -19,6 +19,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	   firefox_version=0;
 	   modifiedFlag=0;
 	   terminatedFlag=0;
+	   posthp = NULL;
    }
 void mergeThread::setRandomFileFromserver(QString& s)
 {
@@ -335,10 +336,19 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 {
 	QString postString;
 	 uint nowparentid=0;
+	 if(posthp)
+	 	delete posthp;
+	  posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+	  posthp->parentid=parentId;
+	  posthp->browserid=browserType;
+	  posthp->username=settings->value("Account/Username","").toString();
+	  posthp->password=settings->value("Account/Userpasswd","").toString();
+	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
+
 	switch (bc->flag)
 	  {
 	  case BOOKMARK_CATAGORY_FLAG:
-	  	   posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+	  	  
 
 		  if (action)	//add
 		    {
@@ -351,19 +361,14 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 			    posthp->action = POST_HTTP_ACTION_DELETE_DIR;
 			    posthp->bmid =  bc->groupId;
 		    }
-		 
-		
-		  posthp->parentid=parentId;
-		  posthp->browserid=browserType;
-		 
-		  posthp->username=settings->value("Account/Username","").toString();
-		  posthp->password=settings->value("Account/Userpasswd","").toString();
+		 	
 		  posthp->postString = postString;
 		  posthp->start();
 		  posthp->wait();
 		   if(getPostError())
 		  	{
 		  		qDebug("post error happen!");
+				terminatedFlag = 1;
 				return;
 		  	}
 		  if(action)//add
@@ -397,13 +402,9 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		    	      postString = QString("deletesubmit=true&source=client");
 			      posthp->action = POST_HTTP_ACTION_DELETE_URL;
 		    	}
-		 
-		
-		  posthp->parentid=parentId;
-		  posthp->browserid=browserType;
+			
 		  posthp->bmid =  bc->bmid;
-		  posthp->username=settings->value("Account/Username","").toString();
-		  posthp->password=settings->value("Account/Userpasswd","").toString();
+
 		  posthp->postString = postString;
 		  posthp->start();
 		  posthp->wait();
@@ -412,6 +413,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		   if(getPostError())
 		  	{
 		  		qDebug("post error happen!");
+				terminatedFlag  = 1;
 				return;
 		  	}
 		  break;
