@@ -343,7 +343,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	  posthp->browserid=browserType;
 	  posthp->username=settings->value("Account/Username","").toString();
 	  posthp->password=settings->value("Account/Userpasswd","").toString();
-	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
+//	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
 
 	switch (bc->flag)
 	  {

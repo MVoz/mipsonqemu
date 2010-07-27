@@ -99,6 +99,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	postHttp *accountTestHttp;
 	//QNetworkProxy* netProxy;
 	QTimer* httpTimer;
+	
 	QString host;
 	QString url;
 	QString username;
@@ -119,10 +120,31 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	QString filename_fromserver;
 	testServerThread *testThread;
 	int testServerResult;
+	
 #ifdef CONFIG_HTTP_TIMEOUT
 //	uint httpTimeout;
 //	uint httpTimerId;
 #endif
+/*
+      public:
+      		int terminateFlag;
+		void setTerminateFlag(int f)
+		{
+			terminateFlag=f;
+		}
+	public slots:
+	void monitorTimerSlot();
+	*/
+public:
+		int terminateFlag;
+		QTimer* monitorTimer;
+		void setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+public slots:
+		void monitorTimerSlot();
+
       public:
 	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync()
@@ -145,6 +167,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	{
 		password = str;
 	}
+	
 	void run();
 	//void quit();
 #ifdef CONFIG_HTTP_TIMEOUT
@@ -175,9 +198,9 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	void updateStatusNotify(int type,int status,QString str);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(bool error,QString result);
-	void testNetTerminateNotify();
-	void mergeTerminateNotify();
-	void posthttpTerminateNotify();
+//	void testNetTerminateNotify();
+//	void mergeTerminateNotify();
+//	void posthttpTerminateNotify();
 
 };
 

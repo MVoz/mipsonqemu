@@ -75,6 +75,16 @@ public:
 	QString destdir;
 	QString branch;
 	QString savefilename;
+
+public:
+		int terminateFlag;
+		QTimer* monitorTimer;
+		void setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+public slots:
+		void monitorTimerSlot();
 public:
 	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
@@ -105,6 +115,8 @@ public:
 					file[i]->close();
 					file[i]->deleteLater();
 				}
+			if(monitorTimer)
+				monitorTimer->deleteLater();
 		}
 	}
 	void setHost(const QString& str)
@@ -171,7 +183,15 @@ public:
 	//QTimer* testNetTimer;
 	int mode;
 	
-
+public:
+		int terminateFlag;
+		QTimer* monitorTimer;
+		void setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+public slots:
+		void monitorTimerSlot();
 public:
 	 updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):QThread(parent),mode(m),settings(s)
 	 	{
@@ -181,6 +201,8 @@ public:
 			localSettings =NULL;
 			serverSettings =NULL;
 			updateTime =NULL;
+			monitorTimer =NULL;
+			terminateFlag = 0;
 			//testNetTimer =NULL;
 			testThread =NULL;
 			fh = NULL;
@@ -198,6 +220,8 @@ public:
 		//	delete testNetTimer;
 		if(updateTime)
 			delete updateTime;
+		if(monitorTimer)
+			delete monitorTimer;
 		if(fh)
 			delete fh;
 		//testNet.release(testNet.available());
@@ -219,8 +243,8 @@ public slots:
       signals:
 //	void  updaterDoneNotify(bool error);
 	void updateStatusNotify(int type,int status,QString str);
-	void testNetTerminateNotify();
-	void getFileTerminateNotify();
+//	void testNetTerminateNotify();
+//	void getFileTerminateNotify();
 	
 };
 #endif

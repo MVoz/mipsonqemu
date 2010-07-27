@@ -37,11 +37,22 @@ public:
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
 public:
+      		int terminateFlag;
+		QTimer* monitorTimer; 
+		void setTerminateFlag(int f)
+		{
+			terminateFlag=f;
+		}
+	public slots:
+	void monitorTimerSlot();
+public:
 	 testServerThread(QObject * parent = 0):QThread(parent)
 	 {
 	 	manager = NULL;
 		reply = NULL;
+		terminateFlag = 0;
 	 	testNetTimer = NULL;
+		monitorTimer =NULL;
 	 }
 	 ~testServerThread()
 	 {
@@ -52,7 +63,9 @@ public:
 		if(reply)
 			reply->deleteLater();
 	 	if(testNetTimer)
-			testNetTimer->deleteLater();		
+			testNetTimer->deleteLater();	
+		if(monitorTimer)
+			monitorTimer->deleteLater();		
 	
 	 }
 	 void run();

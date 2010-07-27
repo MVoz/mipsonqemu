@@ -31,6 +31,8 @@ void testServerThread::testNetFinished(QNetworkReply* reply)
 void testServerThread::testNetTimeout()
 {
 		qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+		if(monitorTimer&&monitorTimer->isActive())
+			monitorTimer->stop();
 		if(testNetTimer->isActive())
 			testNetTimer->stop();
 		reply->abort();
@@ -43,6 +45,11 @@ void testServerThread::terminateThread()
 void testServerThread::run()
 {
 		qDebug("%s %d testServerThread run currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+		monitorTimer = new QTimer();
+		connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
+		monitorTimer->start(10);
+		monitorTimer->moveToThread(this);
+		
 		tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 		manager=new QNetworkAccessManager();
 
@@ -56,5 +63,16 @@ void testServerThread::run()
 		testNetTimer->start(30*SECONDS);
 		connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
 		exec();
+}
+void testServerThread::monitorTimerSlot()
+{
+	if(monitorTimer&&monitorTimer->isActive())
+		monitorTimer->stop();
+	if(terminateFlag)
+		terminateThread();
+	else
+		monitorTimer->start(10);
+
+	
 }
 
