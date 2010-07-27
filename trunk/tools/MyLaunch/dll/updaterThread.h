@@ -141,6 +141,7 @@ public slots:
 	void on_http_requestStarted(int id);
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 	void httpTimerSlot();
+	void terminateThread();
       signals:
 	void  getIniDoneNotify(int error);
 	void  getFileDoneNotify(int error);
@@ -212,11 +213,14 @@ public slots:
     	void getFileDone(int err);
 	//void testNetFinished(QNetworkReply*);
 	void testNetFinishedx();
+	void terminateThread();
 	//void testNetTimeout();
 
       signals:
 //	void  updaterDoneNotify(bool error);
 	void updateStatusNotify(int type,int status,QString str);
+	void testNetTerminateNotify();
+	void getFileTerminateNotify();
 	
 };
 #endif

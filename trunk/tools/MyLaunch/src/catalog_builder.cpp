@@ -52,7 +52,7 @@ CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
 	//	cat.reset((Catalog *) new FastCatalog(gSettings));
 	//else
 		cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));
-		stopflag=0;
+		terminateflag=0;
 }
 
 void CatBuilder::run()

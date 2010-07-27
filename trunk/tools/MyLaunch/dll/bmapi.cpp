@@ -1187,8 +1187,8 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
 				 }
 				
 			}else	{
-					runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,0);
-					if(netproxy&&!runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
+						runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,0);
+						if(netproxy&&!runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
 						{
 							delete netproxy;
 							netproxy =NULL;

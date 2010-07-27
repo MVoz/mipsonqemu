@@ -100,6 +100,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 	 http_timerover=0;
 	 error=0;
 	 testServerResult = 0;
+	 resultBuffer = NULL;
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 }
@@ -108,18 +109,15 @@ void BookmarkSync::httpTimerSlot()
 	qDebug("httpTimerSlot.......");
 	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));	
 	http_timerover=1;
-	httpTimer->stop();
+	if(httpTimer->isActive())
+		httpTimer->stop();
 	
 	if(!http_finish)
 		http->abort();
 }
 void BookmarkSync::stopSync()
 {
-	//emit updateStatusNotify(HTTP_TIMEOUT);	
-	QDEBUG_LINE;
-		qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
-//	if(httpTimer->isActive())
-//		httpTimer->stop();
+/*
 	switch (http_finish)
 	{
 		case 0:			
@@ -134,6 +132,9 @@ void BookmarkSync::stopSync()
 			break;			
 			
 	}
+*/
+	terminateThread();
+
 }
 void BookmarkSync::testNetFinished()
 {
@@ -175,7 +176,7 @@ void BookmarkSync::testNetFinished()
 								if(mode==BOOKMARK_SYNC_MODE)	
 								{
 									connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)));
-									qDebug("BookmarkSync run...........");
+									//qDebug("BookmarkSync run...........");
 									filename_fromserver.clear();
 									getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
 									qDebug("random file from server:%s",qPrintable(filename_fromserver));
@@ -204,6 +205,20 @@ void BookmarkSync::testNetFinished()
 					break;
 		}	
 }
+void BookmarkSync::terminateThread()
+{
+	if(testThread&&testThread->isRunning())
+		emit testNetTerminateNotify();
+	if(httpTimer&&httpTimer->isActive())
+			httpTimerSlot();
+	if(mgthread&&mgthread->isRunning())
+		{
+			mgthread->setTerminated(1);
+			if(mgthread->posthp&&mgthread->posthp->isRunning())
+				emit posthttpTerminateNotify();
+			//emit mergeTerminateNotify();
+		}
+}
 
 void BookmarkSync::run()
 {
@@ -213,12 +228,13 @@ void BookmarkSync::run()
 			testThread = new testServerThread(NULL);
 
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
+			connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()));
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 			testThread->start(QThread::IdlePriority);
 		}	
 		
-		qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
+		// qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
 		 qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	
 		  //setNetworkProxy();
@@ -237,11 +253,7 @@ void BookmarkSync::run()
 					break;
 				case BOOKMARK_TESTACCOUNT_MODE:
 					if(!http_timerover)
-						emit testAccountFinishedNotify(ret,QString(resultBuffer->data()));
-
-						resultBuffer->close();
-						delete resultBuffer;
-						resultBuffer=NULL;
+						emit testAccountFinishedNotify(ret,QString(resultBuffer->data()));						
 						qDebug("testAccount thread quit.............\n");
 					break;
 			}
@@ -251,6 +263,11 @@ void BookmarkSync::run()
 				qDebug("kill http timer!");
 				httpTimer->stop();		
 			}	
+			if(resultBuffer){
+				resultBuffer->close();
+				delete resultBuffer;
+				resultBuffer=NULL;
+			}
 			 tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);
 	}
 }
@@ -271,6 +288,8 @@ void BookmarkSync::quit()
 */
 void BookmarkSync::testAccountFinished(bool error)
 {
+	if(httpTimer->isActive())
+		httpTimer->stop();
 	http_finish=1;
 	this->error=error;
 	QDEBUG_LINE;
@@ -286,6 +305,8 @@ void BookmarkSync::mgUpdateStatus(int flag,int status,QString str)
 
 void BookmarkSync::bookmarkGetFinished(bool error)
 {
+	if(httpTimer->isActive())
+		httpTimer->stop();
 	http_finish=1;
 	this->error=error;
 #ifdef CONFIG_HTTP_TIMEOUT
@@ -306,6 +327,8 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
 		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int,QString)), this, SLOT(mgUpdateStatus(int,int,QString)));
+		//connect(this, SIGNAL(mergeTerminateNotify()), mgthread, SLOT(terminateThread()));
+		
 		mgthread->start();
 		qDebug("start merge thread...........");
 	}

@@ -294,6 +294,7 @@ private:
      QMenu *trayIconMenu;
     QIcon icon;
     updaterThread *slientUpdate;
+    volatile int closeflag;
 #endif
 #ifdef CONFIG_ONE_OPTION
     OptionsDlg *ops;
@@ -354,6 +355,8 @@ private slots:
 		//void reSync();
 		void stopSyncNotify();
 		void catalogTerminateNotify();
+		void silentUpdateTerminateNotify();
+		void syncerTerminateNotify();
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);

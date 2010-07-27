@@ -104,6 +104,7 @@ class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
 		void httpDone(bool error);
 		//void httpStateChanged(int state);
 		void postTimerSlot();
+		void terminateThread();
 };
 
 #endif

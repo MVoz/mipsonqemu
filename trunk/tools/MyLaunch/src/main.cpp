@@ -110,6 +110,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	syncDlgTimer=NULL;
 	inputMode = 0;
 	rebuildAll = 0;
+	closeflag = 0;
 //      gBuilder = NULL;
 //      catalog = NULL;
 //	gMaxGroupId=0;
@@ -1420,16 +1421,29 @@ void MyWidget::onHotKey()
 
 void MyWidget::closeEvent(QCloseEvent * event)
 {
+		closeflag = 1;
 		qDebug()<<"emit erminateNotify"<<gBuilder;
-		if(gBuilder)
+		if(gBuilder&&gBuilder->isRunning())
 		{
-			qDebug()<<"emit erminateNotify"<<gBuilder;
 			//emit catalogTerminateNotify();
-			gBuilder->stopflag = 1;
+			gBuilder->terminateflag = 1;
 			event->ignore();
 			return;
 			
 		}
+		if(slientUpdate&&slientUpdate->isRunning())
+		{
+			emit silentUpdateTerminateNotify();
+			event->ignore();
+			return;
+		}
+		if(gSyncer&&gSyncer->isRunning())
+		{
+			emit syncerTerminateNotify();
+			event->ignore();
+			return;
+		}
+		
 	//      gSettings->setValue("Display/pos", relativePosition());
 	savePosition();
 	gSettings->sync();
@@ -1940,6 +1954,9 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
+
+	connect(this, SIGNAL(syncerTerminateNotify()), gSyncer.get(), SLOT(terminateThread()));
+	
 	
 	syncAction->setDisabled(TRUE);
 	 
@@ -2100,6 +2117,8 @@ void MyWidget::syncer_finished()
 		gSyncer->wait();								
 		gSyncer.reset();
 		syncAction->setDisabled(FALSE);
+		if(closeflag)
+			close();
 }
 
 
@@ -2499,6 +2518,8 @@ void MyWidget::silentUpdateFinished()
 			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
 			rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
 		}
+	if(closeflag)
+		close();
 }
 void MyWidget::startSilentUpdate()
 {
@@ -2512,6 +2533,7 @@ void MyWidget::startSilentUpdate()
 			gSettings->setValue("lastSilentUpdate", 0);
 			slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
 			connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
+			connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
 			slientUpdate->start(QThread::IdlePriority);		
 		}
 }
