@@ -157,7 +157,7 @@ public slots:
       signals:
 	void  getIniDoneNotify(int error);
 	void  getFileDoneNotify(int error);
-	void updateStatusNotify(int type,int status,QString str);
+	void updateStatusNotify(int type,int status);
 	
 };
 
@@ -242,7 +242,7 @@ public slots:
 
       signals:
 //	void  updaterDoneNotify(bool error);
-	void updateStatusNotify(int type,int status,QString str);
+	void updateStatusNotify(int type,int status);
 //	void testNetTerminateNotify();
 //	void getFileTerminateNotify();
 	

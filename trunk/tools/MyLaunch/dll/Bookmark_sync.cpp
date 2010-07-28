@@ -111,7 +111,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 void BookmarkSync::httpTimerSlot()
 {
 	qDebug("httpTimerSlot.......");
-	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));	
+	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);	
 	http_timerover=1;
 	/*
 	if(httpTimer->isActive())
@@ -157,12 +157,12 @@ void BookmarkSync::testNetFinished()
 				{
 					case -1:
 						if(!terminateFlag)
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));	
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);	
 						quit();
 					break;
 					case 0:
 						if(!terminateFlag)
-							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));		
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);		
 						quit();
 					break;
 					case 1:
@@ -197,7 +197,7 @@ void BookmarkSync::testNetFinished()
 									int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 									http->setHost(host);
 									if(!terminateFlag)
-										emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START,tz::tr(BOOKMARK_SYNC_START_STRING));	
+										emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START);	
 									http->get(url, file);
 							
 								 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
@@ -337,10 +337,10 @@ void BookmarkSync::testAccountFinished(bool error)
 	//httpTimer->stop();
 	exit(error);
 }
-void BookmarkSync::mgUpdateStatus(int flag,int status,QString str)
+void BookmarkSync::mgUpdateStatus(int flag,int status)
 {
-	qDebug()<<flag<<"  "<<str;
-	emit updateStatusNotify(flag,status,str);
+	//qDebug()<<flag<<"  "<<str;
+	emit updateStatusNotify(flag,status);
 	
 }
 
@@ -370,7 +370,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 
 		
 		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
-		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int,QString)), this, SLOT(mgUpdateStatus(int,int,QString)));
+		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
 		//connect(this, SIGNAL(mergeTerminateNotify()), mgthread, SLOT(terminateThread()));
 		
 		mgthread->start();
@@ -382,7 +382,7 @@ else
 			{
 				qDebug("http error %s",qPrintable(http->errorString()));
 				if(!terminateFlag)
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
+					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
 			}
 		else
 			qDebug("http error %s",qPrintable(http->errorString()));
@@ -401,7 +401,7 @@ void BookmarkSync::mergeDone()
 {
 	qDebug("quit merge thread...........");
 	if(!error&&!terminateFlag){
-		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL,tz::tr(SYNC_SUCCESSFUL_STRING));
+		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 	}
 	DELETE_OBJECT(mgthread);
 	/*

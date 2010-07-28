@@ -41,6 +41,34 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	setFixedSize(360, 100);
 	getHtml("./html/processDlg.html");
 	status=0;
+	statusMap[HTTP_UNCONNECTED]="http_unconnected";
+	statusMap[HTTP_HOSTLOOKUP]="http_hostlookup";
+	statusMap[HTTP_CONNECTING]="http_connecting";
+	statusMap[HTTP_SENDING]="http_sending";
+	statusMap[HTTP_READING]="http_reading";
+	statusMap[HTTP_CONNECTED]="http_connected";
+	statusMap[HTTP_CLOSING]="http_closing";
+	statusMap[HTTP_TIMEOUT]="http_timeout";
+	statusMap[HTTP_TEST_ACCOUNT_SUCCESS]="http_test_account_success";
+	statusMap[HTTP_TEST_ACCOUNT_FAIL]="http_test_account_fail";
+	statusMap[HTTP_GET_INI_FAILED]="http_get_ini_failed";
+	statusMap[HTTP_GET_INI_SUCCESSFUL]="http_get_ini_successful";
+	statusMap[HTTP_GET_INI_NOT_EXISTED]="http_get_ini_not_existed";
+	statusMap[HTTP_GET_FILE_SUCCESSFUL]="http_get_file_successful";
+	statusMap[HTTP_GET_FILE_NOT_EXISTED]="http_get_file_not_existed";
+	statusMap[HTTP_GET_FILE_FAILED]="http_get_file_failed";
+	statusMap[UPDATE_FAILED]="update_failed";
+	statusMap[UPDATE_SUCCESSFUL]="update_successful";
+	statusMap[HTTP_NEED_RETRY]="http_need_retry";
+	statusMap[UPDATE_NO_NEED]="update_no_need";
+	statusMap[UPDATE_NET_ERROR]="update_net_error";
+	statusMap[BOOKMARK_SYNC_START]="bookmark_sync_start";
+	statusMap[UPDATE_PROCESSING]="update_processing";
+	statusMap[SYNC_SUCCESSFUL]="sync_successful";	
+	statusMap[LOGIN_FALIL]="login_falil";
+	statusMap[UPDATE_SERVER_REFUSE]="update_server_refuse";
+	
+	
 	/*
 	httpStateString << "Unconnected......." << "Host lookup......" << "Connecting......" << "Send request......" << "Getting data......" 
 		<< "Connected......." << "Closing......"<<"Timeout......."<<"ÕË»§²âÊÔ³É¹¦"<<"ÕË»§²âÊÔÊ§°Ü"<<"get ini failed"<<"Get ini successfully"
@@ -92,23 +120,23 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 {
 	webView->page()->mainFrame()->addToJavaScriptWindowObject("processDlg", this);
 }
-void synchronizeDlg::updateStatus(int type,int s,QString str)
+void synchronizeDlg::updateStatus(int type,int s)
 {
 	QString jsStr;
-	qDebug("%s type=%d status=%d str=%s\n",__FUNCTION__,type,status,qPrintable(str));
+	//qDebug("%s type=%d status=%d str=%s\n",__FUNCTION__,type,status,qPrintable(statusMap[s]));
 	status=s;
 	switch(type)
 		{
 		case UPDATESTATUS_FLAG_APPLY:
 			jsStr.append(QString("$$('loading').style.display='block';"));
 			jsStr.append(QString("$$('arrow').style.display='none';"));
-			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(statusMap[s]));
 			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 			break;
 		case UPDATESTATUS_FLAG_RETRY:
 			jsStr.append(QString("$$('loading').style.display='block';"));
 			jsStr.append(QString("$$('arrow').style.display='none';"));
-			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(str));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(statusMap[s]));
 			//jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
 			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 			show();
