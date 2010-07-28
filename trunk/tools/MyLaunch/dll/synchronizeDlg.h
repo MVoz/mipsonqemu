@@ -42,6 +42,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 	//	QStringList httpStateString;
 		QMap <int,QString> statusMap;
 		int status;
+		uint statusTime;//second
 	public slots:
 		void getHtml(const QString &path);
 		void accept();

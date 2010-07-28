@@ -219,7 +219,7 @@ public:
 	bool optionsOpen;
 	uint rebuildAll;
 	uint updateTimes;// update times
-	QTimer* syncDlgTimer;
+//	QTimer* syncDlgTimer;
 	QTimer* updateSuccessTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
@@ -273,8 +273,8 @@ public:
 	void createActions();
 	void freeOccupyMemeory();
 #endif
-	void createSynDlgTimer();
-	void deleteSynDlgTimer();
+	//void createSynDlgTimer();
+//	void deleteSynDlgTimer();
 	void getFavico(const QString& host,const QString& filename);
 	void scanDbFavicon();
 private:
@@ -302,8 +302,8 @@ private:
 #endif
 public slots:
 	void monitorTimerTimeout();
-	void syncDlgTimeout();
-	void deleteSynDlg();
+	//void syncDlgTimeout();
+//	void deleteSynDlg();
 	void menuOptions();
 	void onHotKey();
 	void catalogBuilderTimeout();
