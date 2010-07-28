@@ -104,6 +104,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 	resultBuffer = NULL;
 	monitorTimer = NULL;
 	terminateFlag = 0;
+
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 
@@ -111,7 +112,8 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 void BookmarkSync::httpTimerSlot()
 {
 	qDebug("httpTimerSlot.......");
-	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);	
+	if(!terminateFlag)
+		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);	
 	http_timerover=1;
 	/*
 	if(httpTimer->isActive())
@@ -146,6 +148,7 @@ void BookmarkSync::stopSync()
 void BookmarkSync::testNetFinished()
 {
 	//testServerResult = tz::testNetResult(GET_MODE,0);
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 	qDebug("testNetFinishedx result=%d",testServerResult);
 	/*
@@ -182,22 +185,23 @@ void BookmarkSync::testNetFinished()
 								httpTimer=new QTimer();
 								connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
 						     		httpTimer->start(10*1000);
-								httpTimer->moveToThread(this);
+							//	httpTimer->moveToThread(this);
 								httpTimer->setSingleShot(true);
 
 								if(mode==BOOKMARK_SYNC_MODE)	
 								{
-									connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)));
+									connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)),Qt::DirectConnection);
 									//qDebug("BookmarkSync run...........");
 									filename_fromserver.clear();
 									getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
-									qDebug("random file from server:%s",qPrintable(filename_fromserver));
+									//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 									file = new QFile(filename_fromserver);
 								
 									int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 									http->setHost(host);
 									if(!terminateFlag)
 										emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START);	
+									qDebug()<<"url:"<<url;
 									http->get(url, file);
 							
 								 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
@@ -262,9 +266,10 @@ void BookmarkSync::run()
 		 tz::netProxy(SET_MODE,settings,NULL);
 		//check server status
 		{
-			testThread = new testServerThread(NULL);
-
+			testThread = new testServerThread();
+			testThread->moveToThread(this);
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
+			
 			//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(testThreadterminateThread()),Qt::DirectConnection);
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
@@ -346,11 +351,14 @@ void BookmarkSync::mgUpdateStatus(int flag,int status)
 
 void BookmarkSync::bookmarkGetFinished(bool error)
 {
+	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	/*
 	if(httpTimer->isActive())
 		httpTimer->stop();
 	*/
+	qDebug()<<httpTimer->isActive();
 	STOP_TIMER(httpTimer);
+	qDebug()<<httpTimer->isActive();
 	http_finish=1;
 	this->error=error;
 #ifdef CONFIG_HTTP_TIMEOUT
