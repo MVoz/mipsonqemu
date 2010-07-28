@@ -67,6 +67,8 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	statusMap[SYNC_SUCCESSFUL]="sync_successful";	
 	statusMap[LOGIN_FALIL]="login_falil";
 	statusMap[UPDATE_SERVER_REFUSE]="update_server_refuse";
+	statusMap[HTTP_CONNECT_SERVER]="http_connect_server";
+	
 	
 	
 	/*
@@ -131,13 +133,13 @@ void synchronizeDlg::updateStatus(int type,int s)
 		case UPDATESTATUS_FLAG_APPLY:
 			jsStr.append(QString("$$('loading').style.display='block';"));
 			jsStr.append(QString("$$('arrow').style.display='none';"));
-			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(statusMap[s]));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(TOCHAR(statusMap[s]))));
 			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 			break;
 		case UPDATESTATUS_FLAG_RETRY:
 			jsStr.append(QString("$$('loading').style.display='block';"));
 			jsStr.append(QString("$$('arrow').style.display='none';"));
-			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(statusMap[s]));
+			jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(TOCHAR(statusMap[s]))));
 			//jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
 			jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 			show();

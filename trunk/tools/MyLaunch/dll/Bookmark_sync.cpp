@@ -269,7 +269,8 @@ void BookmarkSync::run()
 			testThread = new testServerThread();
 			testThread->moveToThread(this);
 			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-			
+			if(!terminateFlag)
+					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);	
 			//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(testThreadterminateThread()),Qt::DirectConnection);
 			qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
