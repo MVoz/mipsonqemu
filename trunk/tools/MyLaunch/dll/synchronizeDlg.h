@@ -39,7 +39,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 			~synchronizeDlg();
 	public:
 		QWebView *webView;
-		QStringList httpStateString;
+	//	QStringList httpStateString;
 		int status;
 	public slots:
 		void getHtml(const QString &path);

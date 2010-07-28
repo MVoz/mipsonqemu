@@ -6,6 +6,8 @@
 #include <QTextStream>
 #include <windows.h>
 #include <shlobj.h>
+#include <QThread>
+#include <QTimer>
 #define BOOKMARK_CATAGORY_FLAG 1
 #define BOOKMARK_ITEM_FLAG 2
 #define MASK_TYPE 0x03
@@ -15,6 +17,76 @@
 #include <qDebug>
 #include <QTextCodec>
 #include <QTime>
+#include <QtCore/qobject.h>
+#include <QEventLoop>
+
+class MyThread:public QThread
+{
+	Q_OBJECT
+public:
+	MyThread(QObject * parent = 0){}
+	~MyThread(){}
+public:
+		int terminateFlag;
+		QTimer* monitorTimer;
+		virtual void setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+public slots:
+		virtual void monitorTimerSlot(){
+			qDebug()<<QThread::currentThreadId();
+			if(monitorTimer&&monitorTimer->isActive())
+				monitorTimer->stop();
+			if(terminateFlag)
+				terminateThread();
+			else
+				monitorTimer->start(10);
+		}
+public:
+		void run(){
+			qDebug()<<__FUNCTION__;
+			monitorTimer = new QTimer();
+			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
+			monitorTimer->start(10);
+			monitorTimer->moveToThread(this);
+		}	
+		void terminateThread(){
+			qDebug()<<QThread::currentThreadId();
+			if(monitorTimer&&monitorTimer->isActive())
+				monitorTimer->stop();
+		}
+};
+/*
+class MyThread1:public MyThread
+{
+	//Q_OBJECT;
+public:
+	MyThread1(QObject * parent = 0){}
+	~MyThread1(){}
+public:
+		virtual void run(){
+			MyThread::run();
+			qDebug()<<__FUNCTION__;
+		}
+public slots:
+	 void monitorTimerSlot();
+};
+class MyThread2:public MyThread
+{
+	//Q_OBJECT;
+public:
+	MyThread2(QObject * parent = 0){}
+	~MyThread2(){}
+public:
+		virtual void run(){
+			MyThread::run();
+			qDebug()<<__FUNCTION__;
+		}
+public slots:
+	 void monitorTimerSlot();
+};
+*/
 /*
 class Firefox_BM{
 public:
@@ -234,6 +306,16 @@ int main(int argc, char *argv[])
 		QStringList args = qApp->arguments();
 		QApplication *app=new QApplication(argc, argv);
 	    app->setQuitOnLastWindowClosed(true);
+
+	//	MyThread1 thread1;
+	//	MyThread2 thread2;
+
+	//	thread1.start(QThread::IdlePriority);
+	//	thread2.start(QThread::IdlePriority);
+		MyThread* thread = new MyThread(NULL);
+		thread->start(QThread::IdlePriority);
+		app->exec();
+		
 	/*
 		init_ff_bm();
 		indexFirefox("./bookmarks.html");

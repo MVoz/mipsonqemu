@@ -33,6 +33,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 {
 	qDebug("register resource options.rcc");
 	QResource::registerResource("options.rcc");
+	setResult(2);
 	webView = new QWebView(this);
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
@@ -40,11 +41,13 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	setFixedSize(360, 100);
 	getHtml("./html/processDlg.html");
 	status=0;
+	/*
 	httpStateString << "Unconnected......." << "Host lookup......" << "Connecting......" << "Send request......" << "Getting data......" 
 		<< "Connected......." << "Closing......"<<"Timeout......."<<"ÕË»§²âÊÔ³É¹¦"<<"ÕË»§²âÊÔÊ§°Ü"<<"get ini failed"<<"Get ini successfully"
 		<<"ini doesn't exist"<<"Get file successfully"<<"file doesn't exist"<<"get file failed"<<"updating failed"
 		<<"updating successfully"<<"HTTP_NEED_RETRY"<<"UPDATE_NO_NEED"<<"UPDATE_NET_ERROR"<<"BOOKMARK_SYNC_START"
 		<<"UPDATE_PROCESSING"<<"SYNC_SUCCESSFUL";
+	*/
 }
 
 
@@ -165,14 +168,14 @@ void synchronizeDlg::updateStatus(int type,int s,QString str)
 void synchronizeDlg::readDateProgress(int done, int total)
 {
 	QString jsStr;
-	jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(httpStateString.at(HTTP_READING)));
+	jsStr.append(QString("$$('ps').innerHTML ='Getting data......';"));
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }
 void synchronizeDlg::reSyncSlot()
 {
 	QString jsStr;
-	jsStr.append(QString("$$('btn').innerHTML ='%1';").arg("<a href=\"#\"  onclick=\"reject();\" >ä¸­æ­¢</a>"));
+	jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"reject();\" >%1</a>';").arg(tz::tr(LANGUAGE_CANCEL)));
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }

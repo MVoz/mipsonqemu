@@ -113,9 +113,11 @@ void BookmarkSync::httpTimerSlot()
 	qDebug("httpTimerSlot.......");
 	emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));	
 	http_timerover=1;
+	/*
 	if(httpTimer->isActive())
 		httpTimer->stop();
-	
+	*/
+	STOP_TIMER(httpTimer);
 	if(!http_finish)
 		http->abort();
 }
@@ -146,16 +148,21 @@ void BookmarkSync::testNetFinished()
 	//testServerResult = tz::testNetResult(GET_MODE,0);
 	testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 	qDebug("testNetFinishedx result=%d",testServerResult);
+	/*
 	if(testThread)
 			delete testThread;
+	*/
+	DELETE_OBJECT(testThread);
 	switch(testServerResult)
 				{
 					case -1:
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));	
+						if(!terminateFlag)
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));	
 						quit();
 					break;
 					case 0:
-						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));		
+						if(!terminateFlag)
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));		
 						quit();
 					break;
 					case 1:
@@ -189,7 +196,8 @@ void BookmarkSync::testNetFinished()
 								
 									int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 									http->setHost(host);
-									emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START,tz::tr(BOOKMARK_SYNC_START_STRING));	
+									if(!terminateFlag)
+										emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START,tz::tr(BOOKMARK_SYNC_START_STRING));	
 									http->get(url, file);
 							
 								 }else if(mode==BOOKMARK_TESTACCOUNT_MODE){
@@ -213,8 +221,11 @@ void BookmarkSync::testNetFinished()
 void BookmarkSync::terminateThread()
 {
 	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+	/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+	*/
+	STOP_TIMER(monitorTimer);
 	if(testThread&&testThread->isRunning())
 		testThread->setTerminateFlag(1);
 	if(httpTimer&&httpTimer->isActive())
@@ -229,8 +240,11 @@ void BookmarkSync::terminateThread()
 }
 void BookmarkSync::monitorTimerSlot()
 {
+	STOP_TIMER(monitorTimer);
+	/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+	*/
 	if(terminateFlag)
 		terminateThread();
 	else
@@ -280,12 +294,14 @@ void BookmarkSync::run()
 						qDebug("testAccount thread quit.............\n");
 					break;
 			}
-			
+			/*
 			if(httpTimer->isActive())
 			{
 				qDebug("kill http timer!");
 				httpTimer->stop();		
-			}	
+			}
+			*/
+			STOP_TIMER(httpTimer);
 			if(resultBuffer){
 				resultBuffer->close();
 				delete resultBuffer;
@@ -311,11 +327,13 @@ void BookmarkSync::quit()
 */
 void BookmarkSync::testAccountFinished(bool error)
 {
+	/*
 	if(httpTimer->isActive())
 		httpTimer->stop();
+	*/
+	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
-	QDEBUG_LINE;
 	//httpTimer->stop();
 	exit(error);
 }
@@ -328,8 +346,11 @@ void BookmarkSync::mgUpdateStatus(int flag,int status,QString str)
 
 void BookmarkSync::bookmarkGetFinished(bool error)
 {
+	/*
 	if(httpTimer->isActive())
 		httpTimer->stop();
+	*/
+	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
 #ifdef CONFIG_HTTP_TIMEOUT
@@ -360,7 +381,8 @@ else
 		if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
 			{
 				qDebug("http error %s",qPrintable(http->errorString()));
-				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
+				if(!terminateFlag)
+					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
 			}
 		else
 			qDebug("http error %s",qPrintable(http->errorString()));
@@ -378,14 +400,16 @@ if (!IS_NULL(file))
 void BookmarkSync::mergeDone()
 {
 	qDebug("quit merge thread...........");
-	if(!error){
+	if(!error&&!terminateFlag){
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL,tz::tr(SYNC_SUCCESSFUL_STRING));
 	}
+	DELETE_OBJECT(mgthread);
+	/*
 	if(mgthread){
 		mgthread->deleteLater();
 		mgthread=NULL;
 	}
-	/*
+
 	if(netProxy){
 		delete netProxy;
 		netProxy=NULL;
