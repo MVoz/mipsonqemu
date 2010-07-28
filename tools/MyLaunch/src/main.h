@@ -295,11 +295,13 @@ private:
     QIcon icon;
     updaterThread *slientUpdate;
     volatile int closeflag;
+    QTimer* monitorTimer;
 #endif
 #ifdef CONFIG_ONE_OPTION
     OptionsDlg *ops;
 #endif
 public slots:
+	void monitorTimerTimeout();
 	void syncDlgTimeout();
 	void deleteSynDlg();
 	void menuOptions();
@@ -360,4 +362,76 @@ private slots:
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);
+#if 0
+class MyThread:public QThread
+{
+	Q_OBJECT
+public:
+	MyThread(QObject * parent = 0){
+		terminateFlag=0;
+	}
+	~MyThread(){}
+public:
+		int terminateFlag;
+		QTimer* monitorTimer;
+		virtual void setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+public slots:
+		virtual void monitorTimerSlot(){
+			qDebug()<<__FUNCTION__<<QThread::currentThreadId();
+			if(monitorTimer&&monitorTimer->isActive())
+				monitorTimer->stop();
+			if(terminateFlag)
+				terminateThread();
+			else
+			{
+				qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
+				monitorTimer->start(10);
+			}
+		}
+public:
+		void run(){
+			qDebug()<<__FUNCTION__;
+			monitorTimer = new QTimer();
+			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
+			monitorTimer->start(10);
+			monitorTimer->moveToThread(this);
+		}	
+		void terminateThread(){
+			qDebug()<<QThread::currentThreadId();
+			if(monitorTimer&&monitorTimer->isActive())
+				monitorTimer->stop();
+		}
+};
+class MyThread1:public MyThread
+{
+	Q_OBJECT;
+public:
+	MyThread1(QObject * parent = 0){}
+	~MyThread1(){}
+public:
+		void run(){
+			MyThread::run();
+			qDebug()<<__FUNCTION__;
+			exec();
+		}
+
+};
+class MyThread2:public MyThread
+{
+	Q_OBJECT;
+public:
+	MyThread2(QObject * parent = 0){}
+	~MyThread2(){}
+public:
+		void run(){
+			MyThread::run();
+			qDebug()<<__FUNCTION__;
+			exec();
+		}
+
+};
+#endif
 #endif

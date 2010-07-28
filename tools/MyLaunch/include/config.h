@@ -295,6 +295,7 @@
 
 #define NOW_SECONDS  (QDateTime::currentDateTime().toTime_t())
 
+/*
 #define CLASS_MONITER_TERMINATE_FLAG       \
 	public:\
       		int terminateFlag;\
@@ -304,5 +305,12 @@
 		}\
 	public slots:\
 	void monitorTimerSlot();
+*/
+#define DELETE_OBJECT(x) if(x){	(x)->deleteLater();(x)=NULL;}
+#define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
+#define DELETE_SHAREOBJ(x) if(x) (x).reset();
+#define DELETE_TIMER(x) \
+			STOP_TIMER(x)\
+			DELETE_OBJECT(x)
 #endif
 

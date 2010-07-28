@@ -291,7 +291,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
 		syncTimer->start(5*MINUTES);//5m
 
-
+	monitorTimer=new QTimer(this);
+	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
+        monitorTimer->start(10);
 
 	// Load the catalog
 	updateTimes=0;
@@ -1835,9 +1837,9 @@ void MyWidget::stopSyncSlot()
 			qDebug("stop sync.................");
 			qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThreadId());
 			//emit stopSyncNotify();
-			gSyncer->setTerminateFlag(1);
-	
+			gSyncer->setTerminateFlag(1);	
 		}
+		
 }
 void MyWidget::reSync()
 {
@@ -2097,6 +2099,16 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 	}
 	*/
 }
+void MyWidget::monitorTimerTimeout()
+{
+	STOP_TIMER(monitorTimer);
+	if(syncDlg&&(syncDlg->result()==QDialog::Accepted||syncDlg->result()==QDialog::Rejected)){
+		qDebug()<<__FUNCTION__<<syncDlg;
+		DELETE_SHAREOBJ(syncDlg);
+	}
+	monitorTimer->start(10);
+}
+
 void MyWidget::syncDlgTimeout()
 {
 	syncDlg->accept();
@@ -2105,22 +2117,23 @@ void MyWidget::syncDlgTimeout()
 void MyWidget::deleteSynDlg()
 {
 	qDebug()<<__FUNCTION__;
-	syncDlg.reset();
-
+	//syncDlg.reset();
+	DELETE_SHAREOBJ(syncDlg);
 	deleteSynDlgTimer();
 }
 void MyWidget::createSynDlgTimer()
 {
 	syncDlgTimer=new QTimer();
 	connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
-	connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-	connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+	//connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
+	//connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
 					
-     	syncDlgTimer->start(10*1000);
+        syncDlgTimer->start(10*1000);
 	syncDlgTimer->setSingleShot(true);
 }
 void MyWidget::deleteSynDlgTimer()
 {
+	/*
 	if(syncDlgTimer)
 	{
 			if(syncDlgTimer->isActive())
@@ -2128,10 +2141,14 @@ void MyWidget::deleteSynDlgTimer()
 			syncDlgTimer->deleteLater();
 			syncDlgTimer=NULL;
 	}
+	*/
+	DELETE_TIMER(syncDlgTimer);
 }
 
 void MyWidget::syncer_finished()
 {	
+		if(gSyncer->terminateFlag)
+				deleteSynDlg();
 		gSyncer->wait();								
 		gSyncer.reset();
 		syncAction->setDisabled(FALSE);
@@ -2814,6 +2831,7 @@ int main(int argc, char *argv[])
 	MyWidget widget(NULL, platform, rescue);
 	//widget.setObjectName("main");
 	widget.freeOccupyMemeory();
+
 	app->exec();
 	//app.reset();
 }
