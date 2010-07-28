@@ -107,7 +107,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	menuOpen = false;
 	optionsOpen = false;
 	gSearchTxt = "";
-	syncDlgTimer=NULL;
+	//syncDlgTimer=NULL;
 	inputMode = 0;
 	rebuildAll = 0;
 	closeflag = 0;
@@ -1528,11 +1528,14 @@ MyWidget::~MyWidget()
 		delete platform;
 		*/
 	delete alternatives;
+/*
 	if(syncDlgTimer&&syncDlgTimer->isActive())
 	{
 		syncDlgTimer->stop();
 		delete syncDlgTimer;
 	}
+*/
+	DELETE_TIMER(monitorTimer);
 	if(catalog)
 		catalog.reset();
 	platform.reset();
@@ -1936,12 +1939,14 @@ void MyWidget::_startSync(int mode,int silence)
 		return;
 	}
 	
-	deleteSynDlgTimer();
+	//deleteSynDlgTimer();
 	if(!syncDlg)
 		{
 			syncDlg.reset(new synchronizeDlg(this));
 			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 			connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+		}else{
+			syncDlg->status=HTTP_UNCONNECTED;
 		}
 	if(silence == SYN_MODE_NOSILENCE)
 	{
@@ -2031,7 +2036,7 @@ void MyWidget::bookmark_syncer_finished(bool error)
 			{
 				//if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
 				{
-					createSynDlgTimer();			//update catalog
+				//	createSynDlgTimer();			//update catalog
 					
 				}
 			}
@@ -2049,7 +2054,7 @@ void MyWidget::testAccountFinished(bool err,QString result)
 			if(result==SUCCESSSTRING)
 				{
 					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS) ;
-					createSynDlgTimer();
+					//createSynDlgTimer();
 				}
 			else
 				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL) ;
@@ -2102,13 +2107,29 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 void MyWidget::monitorTimerTimeout()
 {
 	STOP_TIMER(monitorTimer);
-	if(syncDlg&&(syncDlg->result()==QDialog::Accepted||syncDlg->result()==QDialog::Rejected)){
-		qDebug()<<__FUNCTION__<<syncDlg;
-		DELETE_SHAREOBJ(syncDlg);
+	if(syncDlg){
+		//qDebug()<<__FUNCTION__<<syncDlg;
+		switch(syncDlg->result())
+		{
+			case QDialog::Accepted:				
+			case QDialog::Rejected:
+				DELETE_SHAREOBJ(syncDlg);
+				break;
+			default:
+				if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==SYNC_SUCCESSFUL)
+				{
+					if((NOW_SECONDS-syncDlg->statusTime)>10)
+							{
+								DELETE_SHAREOBJ(syncDlg);
+							}
+				}
+				break;
+		}		
+			
 	}
 	monitorTimer->start(10);
 }
-
+/*
 void MyWidget::syncDlgTimeout()
 {
 	syncDlg->accept();
@@ -2133,22 +2154,17 @@ void MyWidget::createSynDlgTimer()
 }
 void MyWidget::deleteSynDlgTimer()
 {
-	/*
-	if(syncDlgTimer)
-	{
-			if(syncDlgTimer->isActive())
-				syncDlgTimer->stop();
-			syncDlgTimer->deleteLater();
-			syncDlgTimer=NULL;
-	}
-	*/
+
+
 	DELETE_TIMER(syncDlgTimer);
 }
-
+*/
 void MyWidget::syncer_finished()
 {	
 		if(gSyncer->terminateFlag)
-				deleteSynDlg();
+		{
+			DELETE_SHAREOBJ(syncDlg);
+		}
 		gSyncer->wait();								
 		gSyncer.reset();
 		syncAction->setDisabled(FALSE);

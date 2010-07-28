@@ -125,6 +125,7 @@ void synchronizeDlg::updateStatus(int type,int s)
 	QString jsStr;
 	//qDebug("%s type=%d status=%d str=%s\n",__FUNCTION__,type,status,qPrintable(statusMap[s]));
 	status=s;
+	statusTime = NOW_SECONDS;
 	switch(type)
 		{
 		case UPDATESTATUS_FLAG_APPLY:
