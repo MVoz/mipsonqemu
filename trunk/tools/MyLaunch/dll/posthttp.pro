@@ -26,11 +26,13 @@ if(!debug_and_release|build_pass) {
     DESTDIR =     ../debug/
 	LIBS +=   ../debug/bmapi.lib
 	LIBS +=   ../debug/xmlreader.lib
+	LIBS +=   ../debug/testserver.lib
    }
    CONFIG(release, debug|release) {
 #   CONFIG +=     embed_manifest_dll
      DESTDIR = ../release/
 	LIBS +=   ../release/bmapi.lib
 	LIBS +=   ../release/xmlreader.lib
+	LIBS +=   ../release/testserver.lib
    }
  }

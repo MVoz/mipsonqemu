@@ -28,6 +28,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../debug/xmlreader.lib
 	LIBS +=   ../debug/posthttp.lib
 	LIBS +=   ../debug/catalog.lib
+	LIBS +=   ../debug/testserver.lib
    }
    CONFIG(release, debug|release) {
  #   CONFIG +=     embed_manifest_dll
@@ -36,5 +37,6 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../release/xmlreader.lib
 	LIBS +=   ../release/posthttp.lib
 	LIBS +=   ../release/catalog.lib
+	LIBS +=   ../release/testserver.lib
    }
  }
