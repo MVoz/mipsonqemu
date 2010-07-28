@@ -60,6 +60,7 @@
 #include <windows.h>
 #include <bmapi.h>
 #include <QtCore/qobject.h>
+#include "testserver.h"
 using namespace boost;
 #if defined(POST_HTTP_DLL)
 #define POST_HTTP_CLASS_EXPORT __declspec(dllexport)
@@ -74,7 +75,7 @@ using namespace boost;
 #define POST_HTTP_ACTION_ADD_DIR 3
 
 
-class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
+class  POST_HTTP_CLASS_EXPORT postHttp:public MyThread
 {
 	Q_OBJECT
       public:
@@ -99,6 +100,7 @@ class  POST_HTTP_CLASS_EXPORT postHttp:public QThread
 	uint action;
 	//uint proxyEnable;
 	//QNetworkProxy proxy;
+#if 0
 public:
 			int terminateFlag;
 			QTimer* monitorTimer;
@@ -108,7 +110,7 @@ public:
 			}
 public slots:
 			void monitorTimerSlot();
-
+#endif
 public slots: 
 		//void httpRequestFinished(int id, bool error);
 		void httpDone(bool error);

@@ -32,44 +32,17 @@ class TEST_SERVER_DLL_CLASS_EXPORT MyThread:public QThread
 {
 	Q_OBJECT;
 public:
-	MyThread(QObject * parent = 0){
-		terminateFlag=0;
-		monitorTimer=0;
-	}
+	MyThread(QObject * parent = 0);
 	~MyThread(){}
 public:
 		int terminateFlag;
 		QTimer* monitorTimer;
-		virtual void setTerminateFlag(int f)
-		{
-				terminateFlag=f;
-		}
+		void setTerminateFlag(int f);
 public slots:
-		virtual void monitorTimerSlot(){
-			qDebug()<<__FUNCTION__<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
-			if(terminateFlag)
-				terminateThread();
-			else
-			{
-				qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
-				monitorTimer->start(10);
-			}
-		}
+		virtual void monitorTimerSlot()	;
 public:
-		void run(){
-			qDebug()<<__FUNCTION__;
-			monitorTimer = new QTimer();
-			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-			monitorTimer->start(10);
-			monitorTimer->moveToThread(this);
-		}
-		virtual void terminateThread(){
-			qDebug()<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
-		}
+		void run();
+		virtual void terminateThread();
 };
 class  TEST_SERVER_DLL_CLASS_EXPORT testServerThread:public MyThread
 {

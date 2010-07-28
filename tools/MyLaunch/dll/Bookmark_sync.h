@@ -62,7 +62,7 @@ using namespace boost;
 #endif
 #define BOOKMARK_SYNC_MODE	0
 #define BOOKMARK_TESTACCOUNT_MODE  1
-class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
+class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 {
 	Q_OBJECT;
 
@@ -107,6 +107,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public QThread
 	public slots:
 	void monitorTimerSlot();
 	*/
+/*
 public:
 		int terminateFlag;
 		QTimer* monitorTimer;
@@ -116,7 +117,7 @@ public:
 		}
 public slots:
 		void monitorTimerSlot();
-
+*/
       public:
 	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync()
@@ -141,6 +142,9 @@ public slots:
 	}
 	
 	void run();
+	//void setTerminateFlag(int f){
+	//	terminateFlag = f;
+	//}
 	//void quit();
 #ifdef CONFIG_HTTP_TIMEOUT
      	// protected:

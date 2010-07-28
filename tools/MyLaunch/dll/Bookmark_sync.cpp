@@ -87,7 +87,7 @@ void BookmarkSync::on_http_requestStarted(int id)
 void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 }
-BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString path,int m): QThread(parent),settings(s),iePath(path),mode(m)
+BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString path,int m): MyThread(parent),settings(s),iePath(path),mode(m)
 {
 	
 	//httpTimerId=startTimer(10*1000);
@@ -102,8 +102,8 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString
 	error=0;
 	testServerResult = 0;
 	resultBuffer = NULL;
-	monitorTimer = NULL;
-	terminateFlag = 0;
+	//monitorTimer = NULL;
+	//terminateFlag = 0;
 
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
@@ -185,7 +185,6 @@ void BookmarkSync::testNetFinished()
 								httpTimer=new QTimer();
 								connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
 						     		httpTimer->start(10*1000);
-							//	httpTimer->moveToThread(this);
 								httpTimer->setSingleShot(true);
 
 								if(mode==BOOKMARK_SYNC_MODE)	
@@ -241,28 +240,30 @@ void BookmarkSync::terminateThread()
 				mgthread->posthp->setTerminateFlag(1);
 			//emit mergeTerminateNotify();
 		}
+	 MyThread::terminateThread();
 }
+/*
 void BookmarkSync::monitorTimerSlot()
 {
 	STOP_TIMER(monitorTimer);
-	/*
-	if(monitorTimer&&monitorTimer->isActive())
-		monitorTimer->stop();
-	*/
+
 	if(terminateFlag)
 		terminateThread();
 	else
 		monitorTimer->start(10);
 }
+*/
 void BookmarkSync::run()
 {
 		
 		qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+		/*
 		monitorTimer = new QTimer();
 		connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 		monitorTimer->start(10);
 		monitorTimer->moveToThread(this);
-		
+		*/
+		MyThread::run();
 		 tz::netProxy(SET_MODE,settings,NULL);
 		//check server status
 		{

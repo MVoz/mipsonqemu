@@ -90,6 +90,7 @@ win32 {
 #      LIBS +=   ../debug/weby.lib
       LIBS +=   ../debug/runner.lib
       LIBS +=   ../debug/updaterThread.lib
+      LIBS +=   ../debug/testserver.lib
    }
    CONFIG(release, debug|release) {
       LIBS +=   ../release/bmapi.lib
@@ -105,6 +106,7 @@ win32 {
 #      LIBS +=   ../release/weby.lib
       LIBS +=   ../release/runner.lib
       LIBS +=   ../release/updaterThread.lib
+      LIBS +=   ../release/testserver.lib
       DESTDIR =    ../release/
   }
 }

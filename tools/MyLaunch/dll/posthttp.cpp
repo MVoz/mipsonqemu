@@ -5,12 +5,12 @@
 #include <QXmlStreamReader>
 //extern uint gMaxGroupId;
 
-postHttp::postHttp(QObject * parent,int type ):QThread(parent)
+postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
 {
 	postType=type;
 	postTimer = NULL;
-	monitorTimer = 0;
-	terminateFlag = 0;
+	//monitorTimer = 0;
+	//terminateFlag = 0;
 	//proxyEnable = 0;
 	//QDEBUG("construction postHttp......");
 }
@@ -33,12 +33,13 @@ void postHttp::setProxy(QNetworkProxy& p)
 */
 void postHttp::run()
 {
-
+	MyThread::run();
+#if 0
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 	monitorTimer->start(10);
 	monitorTimer->moveToThread(this);
-		
+#endif		
 	postTimer=new QTimer();
 	connect(postTimer, SIGNAL(timeout()), this, SLOT(postTimerSlot()), Qt::DirectConnection);
      	postTimer->start(10*1000);
@@ -196,14 +197,7 @@ void postHttp::postTimerSlot()
 void postHttp::terminateThread()
 {
 	postTimerSlot();
+	MyThread::terminateThread();
 }
-void postHttp::monitorTimerSlot()
-{
-	if(monitorTimer&&monitorTimer->isActive())
-		monitorTimer->stop();
-	if(terminateFlag)
-		terminateThread();
-	else
-		monitorTimer->start(10);
-}
+
 
