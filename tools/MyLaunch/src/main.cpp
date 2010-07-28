@@ -1970,7 +1970,7 @@ void MyWidget::_startSync(int mode,int silence)
 	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
 
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
+	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int)), syncDlg.get(), SLOT(updateStatus(int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
@@ -2048,11 +2048,11 @@ void MyWidget::testAccountFinished(bool err,QString result)
 		{
 			if(result==SUCCESSSTRING)
 				{
-					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,tz::tr(HTTP_TEST_ACCOUNT_SUCCESS_STRING)) ;
+					syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS) ;
 					createSynDlgTimer();
 				}
 			else
-				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,tz::tr(HTTP_TEST_ACCOUNT_FAIL_STRING)) ;
+				syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL) ;
 			
 		}
 }

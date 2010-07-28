@@ -44,7 +44,7 @@ bool mergeThread::checkXmlfileFromServer()
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
 			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
-			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL,tz::tr(LOGIN_FALIL_STRING));
+			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL);
 			goto bad;
 		}
 		else{

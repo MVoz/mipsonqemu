@@ -52,35 +52,7 @@ using namespace boost;
 
 #define	POST_HTTP_TYPE_TESTACCOUNT  1
 #define POST_HTTP_TYPE_HANDLE_ITEM 2
-enum httpState
-{
-	HTTP_UNCONNECTED,
-	HTTP_HOSTLOOKUP,
-	HTTP_CONNECTING,
-	HTTP_SENDING,
-	HTTP_READING,
-	HTTP_CONNECTED,
-	HTTP_CLOSING,
-	HTTP_TIMEOUT,
-	HTTP_TEST_ACCOUNT_SUCCESS,
-	HTTP_TEST_ACCOUNT_FAIL,
-	HTTP_GET_INI_FAILED,
-	HTTP_GET_INI_SUCCESSFUL,
-	HTTP_GET_INI_NOT_EXISTED,
-	HTTP_GET_FILE_SUCCESSFUL,
-	HTTP_GET_FILE_NOT_EXISTED,
-	HTTP_GET_FILE_FAILED,
-	UPDATE_FAILED,
-	UPDATE_SUCCESSFUL,
-	HTTP_NEED_RETRY,
-	UPDATE_NO_NEED,
-	UPDATE_NET_ERROR,
-	BOOKMARK_SYNC_START,
-	UPDATE_PROCESSING,
-	SYNC_SUCCESSFUL,	
-	LOGIN_FALIL,
-	UPDATE_SERVER_REFUSE
-};
+
 
 #if defined(BOOKMARK_SYNC_DLL)
 #define BOOKMARK_SYNC_CLASS_EXPORT __declspec(dllexport)
@@ -190,12 +162,12 @@ public slots:
 	void httpTimerSlot();
 	void stopSync();
 	//void setNetworkProxy();
-	void mgUpdateStatus(int flag,int status,QString str);
+	void mgUpdateStatus(int flag,int status);
 	void testNetFinished();
 	void terminateThread();
       signals:
 	void bookmarkFinished(bool error);
-	void updateStatusNotify(int type,int status,QString str);
+	void updateStatusNotify(int type,int status);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(bool error,QString result);
 //	void testNetTerminateNotify();

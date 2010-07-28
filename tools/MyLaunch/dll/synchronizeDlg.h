@@ -40,6 +40,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 	public:
 		QWebView *webView;
 	//	QStringList httpStateString;
+		QMap <int,QString> statusMap;
 		int status;
 	public slots:
 		void getHtml(const QString &path);
@@ -47,7 +48,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 		void reject();
 		void retry();
 		void populateJavaScriptWindowObject();
-		void updateStatus(int type,int s,QString str);
+		void updateStatus(int type,int s);
 		void readDateProgress(int done,int total);
 		void reSyncSlot();
 	signals:

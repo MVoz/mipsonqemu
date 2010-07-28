@@ -142,7 +142,7 @@ void GetFileHttp::httpTimerSlot()
 		monitorTimer->stop();
 	qDebug("httpTimerSlot.......");
 	if(mode==UPDATE_DLG_MODE) 
-		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,tz::tr(HTTP_TIMEOUT_STRING));
+		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
 	if(httpTimer[retryTime]&&httpTimer[retryTime]->isActive())
 		httpTimer[retryTime]->stop();
 	http[retryTime]->abort();	
@@ -191,18 +191,18 @@ void GetFileHttp::getFileDone(bool error)
 				{
 				case HTTP_OK:
 					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL,tz::tr(HTTP_GET_INI_SUCCESSFUL_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL);
 					emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
 
 					break;
 				case HTTP_FILE_NOT_FOUND:	
 					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED,tz::tr(HTTP_GET_INI_NOT_EXISTED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED);
 					errCode=HTTP_GET_INI_NOT_EXISTED;
 					break;
 				default:
 					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
 					errCode=HTTP_GET_INI_FAILED;		
 					break;
 				}
@@ -218,7 +218,7 @@ void GetFileHttp::getFileDone(bool error)
 				else
 					{
 						if(mode==UPDATE_DLG_MODE) 
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED,tz::tr(HTTP_GET_INI_FAILED_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
 						errCode=HTTP_GET_INI_FAILED;						
 					}
 			}
@@ -244,7 +244,7 @@ void GetFileHttp::getFileDone(bool error)
 						*/
 						if(isEqual){
 								if(mode==UPDATE_DLG_MODE) 
-									emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,tz::tr(HTTP_GET_FILE_SUCCESSFUL_STRING));
+									emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
 					         		emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);		
 							}else{
 								if(retryTime<UPDATE_MAX_RETRY_TIME)
@@ -256,7 +256,7 @@ void GetFileHttp::getFileDone(bool error)
 								}else
 								{
 									if(mode==UPDATE_DLG_MODE) 
-										emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+										emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 									errCode=HTTP_GET_FILE_FAILED;							
 								}
 
@@ -265,12 +265,12 @@ void GetFileHttp::getFileDone(bool error)
 						break;
 					case HTTP_FILE_NOT_FOUND:	
 						if(mode==UPDATE_DLG_MODE) 
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED,tz::tr(HTTP_GET_FILE_NOT_EXISTED_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED);
 						errCode=HTTP_GET_FILE_NOT_EXISTED;						
 						break;
 					default:
 							if(mode==UPDATE_DLG_MODE) 
-								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 							errCode=HTTP_GET_FILE_FAILED;	
 							break;
 					}
@@ -285,7 +285,7 @@ void GetFileHttp::getFileDone(bool error)
 					else
 						{
 							if(mode==UPDATE_DLG_MODE) 
-								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED,tz::tr(HTTP_GET_FILE_FAILED_STRING));
+								emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 							errCode=HTTP_GET_FILE_FAILED;							
 						}
 				}
@@ -299,7 +299,7 @@ void GetFileHttp::getFileDone(bool error)
 			switch(errCode){
 					case HTTP_NEED_RETRY:
 						if(mode==UPDATE_DLG_MODE) 
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,tz::tr(HTTP_NEED_RETRY_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY);
 						qDebug("%d times to get %s from server!",retryTime,qPrintable(updaterFilename));
 						break;
 					case HTTP_GET_INI_NOT_EXISTED:
@@ -389,12 +389,12 @@ void updaterThread::testNetFinishedx()
 				{
 					case -1:
 						if(mode==UPDATE_DLG_MODE) 
-							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));	
+							emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);	
 						quit();
 					break;
 					case 0:
 						if(mode==UPDATE_DLG_MODE) 
-							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));		
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);		
 						quit();
 					break;
 					case 1:
@@ -435,7 +435,7 @@ void updaterThread::run()
 		 tz::netProxy(SET_MODE,settings,NULL);
 		 
 		if(mode == UPDATE_DLG_MODE )
-			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+			connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
 #if 0
 		manager=new QNetworkAccessManager();
 		manager->moveToThread(this);
@@ -644,7 +644,7 @@ void updaterThread::getIniDone(int err)
 				if(sversion.isEmpty()||filename.isEmpty()||md5.isEmpty())
 					{
 						//get wrong content form server
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 						error = 1;
 						goto end;
 					}
@@ -657,7 +657,7 @@ void updaterThread::getIniDone(int err)
 					
 					if( lversion == sversion)
 						{
-							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));					
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);					
 							goto end;
 						}
 				}
@@ -669,11 +669,11 @@ void updaterThread::getIniDone(int err)
 						
 					}
 				if(error){
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 				}else if(needed) 
 					{
 							sem_downfile_success.acquire(1);
-							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,tz::tr(UPDATE_SUCCESSFUL_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL);
 							//write update.ini
 							if(!localSettings)
 								localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -684,11 +684,11 @@ void updaterThread::getIniDone(int err)
 							
 					}
 				else{
-							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,tz::tr(UPDATE_NO_NEED_STRING));
+							emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);
 					}			
 				
 			}else{
-				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
+				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 			}
 			break;
 		default:
@@ -746,8 +746,8 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 		//connect(this,SIGNAL(getFileTerminateNotify()),fh, SLOT(terminateThread()),Qt::DirectConnection);
 		
 		if(mode==UPDATE_DLG_MODE) {
-			connect(fh, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
-			connect(this, SIGNAL(updateStatusNotify(int,int,QString)), this->parent(), SLOT(updateStatus(int,int,QString)));
+			connect(fh, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
+			connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
 		}
 		
 		fh->setHost(UPDATE_SERVER_HOST);
