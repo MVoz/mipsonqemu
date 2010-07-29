@@ -75,8 +75,8 @@ public:
 	 }
 	 void run();
 public slots: 
-	void testNetFinished(QNetworkReply*);
-	void testNetTimeout();
+	void testServerFinished(QNetworkReply*);
+	void testServerTimeout();
 	void terminateThread();
 };
 /*

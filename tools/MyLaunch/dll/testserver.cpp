@@ -76,9 +76,9 @@ void testServerThread::monitorTimerSlot()
 	
 }
 */
-	void testServerThread::testNetFinished(QNetworkReply* reply)
+	void testServerThread::testServerFinished(QNetworkReply* reply)
 	{
-			qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
+			//qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
 			/*
 			if(testNetTimer->isActive())
 				testNetTimer->stop();
@@ -88,21 +88,21 @@ void testServerThread::monitorTimerSlot()
 			if(!error)
 			{
 					QString replybuf(reply->readAll());
-					qDebug("%s replly=%s",__FUNCTION__,qPrintable(replybuf));
+				//	qDebug()<<__FUNCTION__<<__LINE__<<"reply:"<<replybuf;
 					if(replybuf.startsWith(QString("1")))
 						{
-							qDebug("set testNetResult 1");
+							//qDebug("set testNetResult 1");
 							tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,1);		
-							qDebug("set testNetResult %d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
+							//qDebug("set testNetResult %d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 						}
 					
 			}else
 					tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,-1);
 			quit();
 	}
-	void testServerThread::testNetTimeout()
+	void testServerThread::testServerTimeout()
 	{
-			qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+			//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 			/*
 			if(monitorTimer&&monitorTimer->isActive())
 				monitorTimer->stop();
@@ -116,13 +116,13 @@ void testServerThread::monitorTimerSlot()
 	}
 	void testServerThread::terminateThread()
 	{
-		qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-		testNetTimeout();
+		//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+		testServerTimeout();
 		MyThread::terminateThread();
 	}
 	void testServerThread::run()
 	{
-			qDebug("%s %d testServerThread run currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+			//qDebug("%s %d testServerThread run currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 			//monitorTimer = new QTimer();
 			//connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 			//monitorTimer->start(10);
@@ -137,10 +137,10 @@ void testServerThread::monitorTimerSlot()
 			manager->moveToThread(this);
 			testNetTimer=new QTimer();
 			testNetTimer->moveToThread(this);
-			connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
+			connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
 			reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
 			testNetTimer->start(30*SECONDS);
-			connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
+			connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testServerTimeout()), Qt::DirectConnection);
 			exec();
 	}
 	  MyThread::MyThread(QObject * parent):QThread(parent){
@@ -173,7 +173,7 @@ void testServerThread::monitorTimerSlot()
 			monitorTimer->moveToThread(this);
 		}
 void MyThread::terminateThread(){
-			qDebug()<<QThread::currentThreadId();
+			//qDebug()<<QThread::currentThreadId();
 			//if(monitorTimer&&monitorTimer->isActive())
 			//	monitorTimer->stop();
 			STOP_TIMER(monitorTimer);

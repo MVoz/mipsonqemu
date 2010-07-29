@@ -9,6 +9,7 @@ postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
 {
 	postType=type;
 	postTimer = NULL;
+	resultBuffer = NULL;
 	//monitorTimer = 0;
 	//terminateFlag = 0;
 	//proxyEnable = 0;
@@ -16,13 +17,20 @@ postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
 }
 postHttp::~postHttp(){
 	//QDEBUG("delete ~postHttp......");
+	/*
 	resultBuffer->close();
 	delete resultBuffer;
 	resultBuffer=NULL;
+	*/
+	DELETE_FILE(resultBuffer);
+	DELETE_TIMER(monitorTimer);
+	DELETE_TIMER(postTimer)
+	/*
 	if(monitorTimer)
 		delete monitorTimer;
 	if(postTimer)
 		delete postTimer;
+	*/
 }
 /*
 void postHttp::setProxy(QNetworkProxy& p)
@@ -73,8 +81,7 @@ void postHttp::run()
 #ifdef CONFIG_AUTH_ENCRYPTION
 					qsrand((unsigned) NOW_SECONDS);
 					uint key=qrand()%(getkeylength());
-					QString authstr=QString("username=%1 password=%2").arg(username).arg(password);
-					QString auth_encrypt_str=tz::encrypt(authstr,key);;
+					QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(username).arg(password),key);;
 					//encryptstring(authstr,key,auth_encrypt_str);
 #endif
 
@@ -139,7 +146,6 @@ void postHttp::httpDone(bool error)
 				    {
 					    if (resultXml->name() == "status" )
 					      {
-					      		QDEBUG_LINE;
 						       lastModified=resultXml->attributes().value("lastmodified").toString();
 						       newgroupid=resultXml->attributes().value("groupid").toString().toUInt();
 						       bmid=resultXml->attributes().value("bmid").toString().toUInt();
@@ -188,10 +194,14 @@ void postHttp::httpDone(bool error)
 void postHttp::postTimerSlot()
 {
 	qDebug("postTimerSlot.......");
+	/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
 	if(postTimer->isActive())
 		postTimer->stop();
+	*/
+	STOP_TIMER(monitorTimer);
+	STOP_TIMER(postTimer);
 	posthttp->abort();
 }
 void postHttp::terminateThread()

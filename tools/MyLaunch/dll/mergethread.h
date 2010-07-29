@@ -86,18 +86,10 @@ using namespace boost;
 
 class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
-	Q_OBJECT
+	Q_OBJECT;
       public:
 	 mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path="");
-	 ~mergeThread()
-	{
-		if (!IS_NULL(file))
-		  {
-			  file->close();
-			  delete file;
-			  file = NULL;
-		  }
-	}
+	 ~mergeThread(){DELETE_FILE(file);}
       public:
 	 void run();
 	 int bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type);
