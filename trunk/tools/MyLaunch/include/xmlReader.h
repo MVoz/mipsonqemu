@@ -123,7 +123,7 @@ public:
 public:
 	/*for ie*/
 	//   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
-	static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
+	//static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	//   static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	/*for firefox*/
 	static int readFirefoxBookmark3(QSqlDatabase *db,QList<bookmark_catagory>* list);

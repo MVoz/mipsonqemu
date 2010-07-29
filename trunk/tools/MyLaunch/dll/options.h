@@ -54,7 +54,7 @@ class OPTIONS_CLASS_EXPORT OptionsDlg:public QDialog
 {
 	Q_OBJECT
 public:
-	OptionsDlg(QWidget * parent = 0,QDateTime*d=0,QSettings *s=0,QString path="",QSqlDatabase *b=NULL,void* catalogbuilder=NULL);
+	OptionsDlg(QWidget * parent = 0,QDateTime*d=0,QSettings *s=0,QString path="",QSqlDatabase *b=NULL);
 	~OptionsDlg();
 public:
 	QWebView *webView;

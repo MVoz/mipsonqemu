@@ -1302,9 +1302,11 @@ void XmlReader::item_end(QTextStream& os,int type,int& finish)
 		finish=1;
 	}
 }
+#if 0
+
 void XmlReader::productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os)
 {
-#if 0
+
 	if(!level)
 		writeToFile(os,"%s","<!DOCTYPE NETSCAPE-Bookmark-file-1>\n"
 		"<!-- This is an automatically generated file.\n"
@@ -1376,8 +1378,9 @@ void XmlReader::productFirefox2BM(int level,QList < bookmark_catagory > *list, Q
 	}
 	if(!level)
 		writeToFile(os,"%s","<DL><p>\n");
-#endif
+
 }
+#endif
 
 
 

@@ -88,15 +88,11 @@ return id;
 
 }
 */
-void SlowCatalog::addItem(CatItem& item,int type,uint delId)
+void SlowCatalog::addItem(CatItem& item,int comefrom,uint delId)
 {
-#if 1
+	item.comeFrom = comefrom;
 	item.delId=delId;
 	catList.push_back(item);
-
-#else
-	catList.push_back(item);
-#endif
 }
 void SlowCatalog::clearItem()
 {
@@ -325,8 +321,6 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 
 	QSqlQuery	q("", *db);
 	uint i=0;
-	int retry=0;
-	int bookmark_retry=0;
 	uint numresults=get_search_result_num(settings);
 	uint leftnums = numresults;
 	//db.transaction();
