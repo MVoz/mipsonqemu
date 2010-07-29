@@ -50,7 +50,7 @@
 #define SETTING_MERGE_SERVERTOLOCAL  1
 
 #define VERSION_INFO(x) (((x.at(0).toInt())<<24) | ((x.at(1).toInt())<<16) | ((x.at(2).toInt())<<8) | ((x.at(3).toInt())))
-class  UPDATER_THREAD_DLL_CLASS_EXPORT GetFileHttp:public QThread
+class  UPDATER_THREAD_DLL_CLASS_EXPORT GetFileHttp:public MyThread
 {
 	Q_OBJECT;
 public:
@@ -75,16 +75,17 @@ public:
 	QString destdir;
 	QString branch;
 	QString savefilename;
-
-public:
-		int terminateFlag;
-		QTimer* monitorTimer;
-		void setTerminateFlag(int f)
-		{
+#if 0
+//public:
+//		int terminateFlag;
+//		QTimer* monitorTimer;
+//		void setTerminateFlag(int f)
+//		{
 				terminateFlag=f;
 		}
 public slots:
 		void monitorTimerSlot();
+#endif
 public:
 	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
@@ -97,10 +98,10 @@ public:
 			file=NULL;
 		}
 		*/
-		int i=0;
-		for(i=0;i<retryTime;i++)
+		for(int i=0;i<retryTime;i++)
 		{
-			if(http[i])
+		/*
+				if(http[i])
 				{
 					//http[i]->close();
 					http[i]->deleteLater();
@@ -117,32 +118,22 @@ public:
 				}
 			if(monitorTimer)
 				monitorTimer->deleteLater();
+		*/
+			DELETE_OBJECT(http[i]);
+			DELETE_FILE(file[i]);
+			DELETE_TIMER(httpTimer[i]);
 		}
+		DELETE_TIMER(monitorTimer);
 	}
-	void setHost(const QString& str)
-	{
-		host = str;
-	}
-	void setUrl(const QString &str)
-	{
-		url = str;
-		updaterFilename=str;
-	}
-	void setServerBranch(const QString &s)
-	{
-		branch = s;
-	}
-	void setSaveFilename(const QString &s)
-	{
-		savefilename = s;
-	}
+	void setHost(const QString& s){host = s;}
+	void setUrl(const QString &s){url = s;updaterFilename=s;}
+	void setServerBranch(const QString &s){branch = s;}
+	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
 //	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
 	void newHttp();
 	void setProxy(QNetworkProxy& p);
-	void setDestdir(const QString& s){
-		destdir = s;
-	}
+	void setDestdir(const QString& s){destdir = s;}
 public slots: 
 	//void updaterDone(bool error);
 	void getFileDone(bool error);
@@ -161,12 +152,12 @@ public slots:
 	
 };
 
-class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public QThread
+class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public MyThread
 {
 	Q_OBJECT;
 
 public:
-	QDateTime* updateTime;
+	//QDateTime* updateTime;
 	QSettings *settings;
 	QSettings *localSettings;
 	QSettings *serverSettings;
@@ -182,7 +173,7 @@ public:
 	//QNetworkReply *reply;
 	//QTimer* testNetTimer;
 	int mode;
-	
+#if 0	
 public:
 		int terminateFlag;
 		QTimer* monitorTimer;
@@ -192,17 +183,18 @@ public:
 		}
 public slots:
 		void monitorTimerSlot();
+#endif
 public:
-	 updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):QThread(parent),mode(m),settings(s)
+	 updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):MyThread(parent),mode(m),settings(s)
 	 	{
 	 		timers=0;
 			needed=0;
 			error=0;
 			localSettings =NULL;
 			serverSettings =NULL;
-			updateTime =NULL;
-			monitorTimer =NULL;
-			terminateFlag = 0;
+			//updateTime =NULL;
+			//monitorTimer =NULL;
+			//terminateFlag = 0;
 			//testNetTimer =NULL;
 			testThread =NULL;
 			fh = NULL;
@@ -212,19 +204,11 @@ public:
 		qDebug("~~updaterThread");
 		sem_downfile_success.release(sem_downfile_success.available());
 		sem_downfile_start.release(sem_downfile_start.available());
-		if(localSettings)
-			delete localSettings;
-		if(serverSettings)
-			delete serverSettings;
-		//if(testNetTimer)
-		//	delete testNetTimer;
-		if(updateTime)
-			delete updateTime;
-		if(monitorTimer)
-			delete monitorTimer;
-		if(fh)
-			delete fh;
-		//testNet.release(testNet.available());
+		DELETE_OBJECT(localSettings);
+		DELETE_OBJECT(serverSettings);
+		//DELETE_TIMER(updateTime);
+		DELETE_TIMER(monitorTimer);
+		DELETE_OBJECT(fh);
 	}
 	void run();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
@@ -236,7 +220,7 @@ public slots:
 	void getIniDone(int err);
     	void getFileDone(int err);
 	//void testNetFinished(QNetworkReply*);
-	void testNetFinishedx();
+	void testNetFinished();
 	void terminateThread();
 	//void testNetTimeout();
 

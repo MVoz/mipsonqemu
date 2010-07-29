@@ -12,6 +12,7 @@ void GetFileHttp::terminateThread()
 	retryTime = UPDATE_MAX_RETRY_TIME;
 
 }
+
 void GetFileHttp::on_http_stateChanged(int stat)
 {
 
@@ -122,11 +123,13 @@ void GetFileHttp::newHttp()
 void GetFileHttp::run()
 {
 		qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
+		MyThread::run();
+		/*
 		monitorTimer = new QTimer();
 		connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 		monitorTimer->start(10);
 		monitorTimer->moveToThread(this);
-		
+		*/
 		QDir dir(".");
 		if(!dir.exists(destdir))
 			dir.mkdir(destdir);
@@ -153,14 +156,14 @@ void GetFileHttp::httpTimerSlot()
 	*/
 	http[retryTime]->abort();	
 }
-GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): QThread(parent),mode(mode),md5(c)
+GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): MyThread(parent),mode(mode),md5(c)
 {
 	errCode=0;
 	statusCode=0;
 	retryTime=0;
 	mode=0;
-	monitorTimer =NULL;
-	terminateFlag = 0;
+//	monitorTimer =NULL;
+//	terminateFlag = 0;
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 		{
 			http[i]=NULL;
@@ -168,19 +171,17 @@ GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): QThread(parent),mo
 			file[i]=NULL;
 		}
 }
+/*
 void GetFileHttp::monitorTimerSlot()
 {
 	STOP_TIMER(monitorTimer);
-/*
-	if(monitorTimer&&monitorTimer->isActive())
-		monitorTimer->stop();
-*/
+
 	if(terminateFlag)
 		terminateThread();
 	else
 		monitorTimer->start(10);
 }
-
+*/
 void GetFileHttp::getFileDone(bool error)
 {
 	/*
@@ -391,9 +392,9 @@ void updaterThread::testNetTimeout()
 	reply->abort();
 }
 */
-void updaterThread::testNetFinishedx()
+void updaterThread::testNetFinished()
 {
-	qDebug("testNetFinishedx result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
+	qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	if(testThread)
 			delete testThread;
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
@@ -429,6 +430,7 @@ void updaterThread::terminateThread()
 	if(fh&&fh->isRunning())
 		fh->setTerminateFlag(1);
 }
+#if 0
 void updaterThread::monitorTimerSlot()
 {
 /*
@@ -441,14 +443,16 @@ void updaterThread::monitorTimerSlot()
 	else
 		monitorTimer->start(10);
 }
-
+#endif
 void updaterThread::run()
 {
+		/*
 		monitorTimer = new QTimer();
 		connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 		monitorTimer->start(10);
 		monitorTimer->moveToThread(this);
-		
+		*/
+		MyThread::run();
 		 tz::netProxy(SET_MODE,settings,NULL);
 		 
 		if(mode == UPDATE_DLG_MODE )
@@ -467,9 +471,9 @@ void updaterThread::run()
 		{
 			testThread = new testServerThread(NULL);
 
-			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinishedx()));
+			connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
 			//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()));
-			qDebug("start testServerThread::");
+			//qDebug("start testServerThread::");
 			//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 			testThread->start(QThread::IdlePriority);
 		}	

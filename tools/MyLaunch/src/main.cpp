@@ -1390,7 +1390,7 @@ void MyWidget::catalogBuilderTimeout()
 	  }
 	 */
 	uint interval = NOW_SECONDS-gSettings->value("lastscan", 0).toUInt();
-	qDebug()<<interval<<" :"<<rebuildAll;
+	qDebug()<<__FUNCTION__<<interval<<" :"<<rebuildAll;
 	if((rebuildAll&(1<<REBUILD_CATALOG))||interval>DAYS)
 		buildCatalog();
 
