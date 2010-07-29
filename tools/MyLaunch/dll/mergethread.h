@@ -87,13 +87,13 @@ using namespace boost;
 class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT;
-      public:
-	 mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path="");
-	 ~mergeThread(){DELETE_FILE(file);}
-      public:
-	 void run();
-	 int bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type);
-	 int isBmEntryEqual(const bookmark_catagory& b,const bookmark_catagory& bm);
+public:
+	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path="");
+	~mergeThread(){DELETE_FILE(file);}
+public:
+	void run();
+	int bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type);
+	int isBmEntryEqual(const bookmark_catagory& b,const bookmark_catagory& bm);
 	//int findItemFromBMList(QString path,bookmark_catagory bm,QList<bookmark_catagory> *bmList,bookmark_catagory*  bx,QDateTime LastUpdateTime,int flag);
 	// int findItemFromBMList(QString path, bookmark_catagory bm, QList < bookmark_catagory > *bmList, int *bx, QDateTime LastUpdateTime, int flag);
 	int copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src);
@@ -103,7 +103,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
 	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
 	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
-	
+
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &iePath,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
@@ -111,14 +111,14 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 
 	//int testFirefoxDbLock(QSqlDatabase& db);
 	void setTerminated(uint flag){
-			terminatedFlag=flag;
-		}
+		terminatedFlag=flag;
+	}
 	bool checkXmlfileFromServer();
 	//bool checkFirefoxDir(QString& path);
-      signals:
+signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status);
-   public:
+public:
 	postHttp * posthp;
 	QFile *file;
 	QList < bookmark_catagory > mergeBmList;
@@ -146,13 +146,13 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	volatile uint terminatedFlag;
 	QString filename_fromserver;
 	//bool terminateflag;
-       void setRandomFileFromserver(QString &s);
+	void setRandomFileFromserver(QString &s);
 
 public:
 	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	//static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);	
-//	static void deletebmgarbarge(QSqlQuery* q,uint delId);
+	//	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };
 
 #endif

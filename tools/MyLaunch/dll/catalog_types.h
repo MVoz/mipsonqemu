@@ -17,7 +17,7 @@ public:
 		settings=setting;
 		searchResults=searchResult;
 		db=b;
-		}
+	}
 	virtual ~Catalog() {}
 	virtual void addItem(CatItem& item,int type,uint delId) = 0;
 	virtual void clearItem() = 0;
@@ -27,7 +27,7 @@ public:
 	//void pinyinMatches(QStringList& strlist,int i,int max,QString e_s,QString &txt,bool& ret);
 	//void pinyinMatchesEx(QStringList& strlist,QString &txt,bool& ret,bool CaseSensitive);
 	void searchCatalogs(QString, QList<CatItem*> & );
-//	virtual void incrementUsage(const CatItem& item) = 0;
+	//	virtual void incrementUsage(const CatItem& item) = 0;
 	virtual int getUsage(const QString& path) = 0;
 	void checkHistory(QString txt, QList<CatItem*> & list);	
 	void getHistory(QList < CatItem *> &out);
@@ -47,7 +47,7 @@ public:
 class CATALOG_TYPES_DLL_CLASS_EXPORT FastCatalog : public Catalog {
 private:
 	QVector<CatItem> catList;
-//	QList<CatItem> catList;
+	//	QList<CatItem> catList;
 	QHash<QChar, QList<CatItem*> > catIndex;
 public:
 	FastCatalog(QSettings* setting) : Catalog(setting) {}
@@ -56,7 +56,7 @@ public:
 	int count() { return catList.count(); }
 	const CatItem & getItem(int i) { 
 		return catList[i];
-		}
+	}
 	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 };
@@ -69,7 +69,7 @@ public:
 class CATALOG_TYPES_DLL_CLASS_EXPORT  SlowCatalog : public Catalog {
 private:
 	QVector<CatItem> catList;
-//	QList<CatItem> catList;
+	//	QList<CatItem> catList;
 public:
 	SlowCatalog(QSettings* setting,CatItem* searchResult,QSqlDatabase* db) : Catalog(setting,searchResult,db) {}
 	void addItem(CatItem& item,int type,uint delId);
@@ -78,12 +78,12 @@ public:
 	int count() { return catList.count(); }
 	const CatItem & getItem(int i){
 		return catList[i];
-		}
-//	void incrementUsage(const CatItem& item);
+	}
+	//	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 	bool pinyinsearch(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);
 	int isAllIn(const QString& src,const QString& all);
 	//int debugon;
-//	uint isExistInDb(CatItem &item);
+	//	uint isExistInDb(CatItem &item);
 };
 

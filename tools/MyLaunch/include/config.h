@@ -251,15 +251,15 @@
 #define DAYS (24*HOURS)
 
 #define SET_NET_PROXY(x) \
-	 if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
-				 tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
-				 QNetworkProxy* netProxy = NULL;\
-				 tz::netProxy(GET_MODE,NULL,netProxy);\
-				 (x)->setProxy(*netProxy);	\
-	  }
+	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
+	tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
+	QNetworkProxy* netProxy = NULL;\
+	tz::netProxy(GET_MODE,NULL,netProxy);\
+	(x)->setProxy(*netProxy);	\
+	}
 
 #define IS_URL(x)\
-		(((x).trimmed().startsWith("http://",Qt::CaseInsensitive))||((x).trimmed().startsWith("https://",Qt::CaseInsensitive)))
+	(((x).trimmed().startsWith("http://",Qt::CaseInsensitive))||((x).trimmed().startsWith("https://",Qt::CaseInsensitive)))
 
 #ifdef QT_NO_DEBUG
 #define CPU_USAGE_THRESHOLD 20
@@ -275,22 +275,22 @@
 #define BROKEN_TOKEN_STR "$#@#$"
 
 #define BIND_CATITEM_QUERY(x,y) do{\
-			(x)->bindValue(":fullPath", (y).fullPath);\
-			(x)->bindValue(":shortName", (y).shortName);\
-			(x)->bindValue(":lowName", (y).lowName);\
-			(x)->bindValue(":realname", (y).realname);\
-			(x)->bindValue(":icon", (y).icon);\
-			(x)->bindValue(":usage", (y).usage);\
-			(x)->bindValue(":hashId", qHash((y).shortName));\
-			(x)->bindValue(":isHasPinyin", (y).isHasPinyin);\
-			(x)->bindValue(":comeFrom", (y).comeFrom);\
-			(x)->bindValue(":time", (y).time);\
-			(x)->bindValue(":pinyinReg", (y).pinyinReg);\
-			(x)->bindValue(":allchars", (y).allchars);\
-			(x)->bindValue(":alias2", (y).alias2);\
-			(x)->bindValue(":shortCut", (y).shortCut);\
-			(x)->bindValue(":delId", (y).delId);\
-			(x)->bindValue(":args", (y).args);\
+	(x)->bindValue(":fullPath", (y).fullPath);\
+	(x)->bindValue(":shortName", (y).shortName);\
+	(x)->bindValue(":lowName", (y).lowName);\
+	(x)->bindValue(":realname", (y).realname);\
+	(x)->bindValue(":icon", (y).icon);\
+	(x)->bindValue(":usage", (y).usage);\
+	(x)->bindValue(":hashId", qHash((y).shortName));\
+	(x)->bindValue(":isHasPinyin", (y).isHasPinyin);\
+	(x)->bindValue(":comeFrom", (y).comeFrom);\
+	(x)->bindValue(":time", (y).time);\
+	(x)->bindValue(":pinyinReg", (y).pinyinReg);\
+	(x)->bindValue(":allchars", (y).allchars);\
+	(x)->bindValue(":alias2", (y).alias2);\
+	(x)->bindValue(":shortCut", (y).shortCut);\
+	(x)->bindValue(":delId", (y).delId);\
+	(x)->bindValue(":args", (y).args);\
 }while(0);
 
 
@@ -298,21 +298,21 @@
 
 /*
 #define CLASS_MONITER_TERMINATE_FLAG       \
-	public:\
-      		int terminateFlag;\
-		void setTerminateFlag(int f)\
-		{\
-			terminateFlag=f;\
-		}\
-	public slots:\
-	void monitorTimerSlot();
+public:\
+int terminateFlag;\
+void setTerminateFlag(int f)\
+{\
+terminateFlag=f;\
+}\
+public slots:\
+void monitorTimerSlot();
 */
 #define DELETE_OBJECT(x) if(x){	(x)->deleteLater();(x)=NULL;}
 #define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
 #define DELETE_SHAREOBJ(x) if(x) (x).reset();
 #define DELETE_TIMER(x) \
-			STOP_TIMER(x)\
-			DELETE_OBJECT(x)
+	STOP_TIMER(x)\
+	DELETE_OBJECT(x)
 #define DELETE_FILE(x)	if(x){ if((x)->isOpen()) (x)->close();delete (x);(x)=NULL; }
 
 enum httpState
@@ -350,7 +350,7 @@ enum httpState
 #define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value(y"/"x, defval).toString()+"';");
 #define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$("#x").checked ="+(settings->value(y"/"x, defval).toBool()?QString("true"):QString("false"))+";");
 #define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$("#x").value ='"+tz::decrypt(settings->value(y"/"x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
- 
+
 
 #define COMMAND(NAME) { NAME, NAME##_command }
 #define LINK_MULTIPLE(a,b,c,d) a##_##b##_##c##_##d

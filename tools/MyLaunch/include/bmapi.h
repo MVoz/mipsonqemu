@@ -7,17 +7,17 @@
 #include <windows.h>
 #include <log.h>
 #include <QSettings>
- #include <QDataStream>
- #include <QFile>
- #include <QSqlQuery>
- #include <QDateTime>
- #include <QSqlDatabase>
+#include <QDataStream>
+#include <QFile>
+#include <QSqlQuery>
+#include <QDateTime>
+#include <QSqlDatabase>
 #include <QtCore/QVariant>
 #include <QThread>
 #include <QtNetwork/QNetworkProxy>
 
 #include <QTimer>
- #ifdef Q_WS_WIN
+#ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
 #include <tchar.h>
@@ -38,11 +38,11 @@ extern uint gMaxGroupId;
 extern "C" __declspec(dllexport) void fun3();
 class CLASSEXPORT  mylibclass {
 public:
-	mylibclass(){};
-	~mylibclass(){};
+mylibclass(){};
+~mylibclass(){};
 public :
-	void func(){printf("\n mylibclass api \n");}
-	void func2();
+void func(){printf("\n mylibclass api \n");}
+void func2();
 
 };
 */
@@ -58,13 +58,13 @@ struct BMAPI_DLL_CLASSEXPORT dbtableinfo{
 };
 
 struct BMAPI_DLL_CLASSEXPORT browserinfo{
-		QString name;
-		bool enable; 
-		bool defenable;
-		bool lastupdate; //import lastupdate success?
-		bool fromserver;//import fromserver success?
-		bool local;//import local success
-		int id;
+	QString name;
+	bool enable; 
+	bool defenable;
+	bool lastupdate; //import lastupdate success?
+	bool fromserver;//import fromserver success?
+	bool local;//import local success
+	int id;
 };
 
 //BMAPI_DLL_FUNCEXPORT struct browserinfo* getbrowserInfo();
@@ -129,28 +129,28 @@ enum BOOKMARK_CATAGORY_ITEM{
 	BOOKMARK_CATAGORY_MAX
 };
 struct BMAPI_DLL_CLASSEXPORT  bookmark_catagory{
-   QString name;
-   QString link;
-   QString desciption;
-   QString icon;
-   QString feedurl;
-   QString last_charset;
-   QString personal_toolbar_folder;
-   QString id;
-   QDateTime  addDate;
-   QDateTime modifyDate;
-   QString last_visit;
-   uint flag;
-   uint groupId;
-   uint parentId;
-   uint bmid;
-   uint level;
-   uint hr;
-   /*for acclerate find*/
-   uint name_hash;
-   uint link_hash;
-   QList<bookmark_catagory> list;
-   
+	QString name;
+	QString link;
+	QString desciption;
+	QString icon;
+	QString feedurl;
+	QString last_charset;
+	QString personal_toolbar_folder;
+	QString id;
+	QDateTime  addDate;
+	QDateTime modifyDate;
+	QString last_visit;
+	uint flag;
+	uint groupId;
+	uint parentId;
+	uint bmid;
+	uint level;
+	uint hr;
+	/*for acclerate find*/
+	uint name_hash;
+	uint link_hash;
+	QList<bookmark_catagory> list;
+
 };
 
 enum BMAPI_DLL_CLASSEXPORT RUNPARAMETER{
@@ -176,7 +176,7 @@ public :
 	static QString getBrowserName(uint id);
 	static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
-	 static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
+	static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	static int getFirefoxVersion();
 	static bool checkFirefoxDir(QString& path);//get & check firefox directory
 	static bool openFirefox3Db(QSqlDatabase& db,QString path);
@@ -195,9 +195,9 @@ public :
 	static struct dbtableinfo* dbTableInfo(uint id);
 	static QList<struct dbtableinfo*> dbTableInfoList();
 	static QString GetShortcutTarget(const QString& LinkFileName);
-//	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
-//	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
-	
+	//	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
+	//	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
+
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
@@ -205,7 +205,7 @@ inline uint get_search_result_num(QSettings* s)
 {
 	uint num =s->value("GenOps/numresults",10).toUInt();
 	return num>10?(10):((num==0)?1:num);
-	
+
 }
 
 //int setDirectoryTimeIncludeAllFiles(QString path);

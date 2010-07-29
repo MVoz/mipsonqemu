@@ -66,12 +66,12 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 {
 	Q_OBJECT;
 
-      public:
+public:
 	QHttp * http;
 	postHttp *accountTestHttp;
 	//QNetworkProxy* netProxy;
 	QTimer* httpTimer;
-	
+
 	QString host;
 	QString url;
 	QString username;
@@ -92,91 +92,76 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 	QString filename_fromserver;
 	testServerThread *testThread;
 	int testServerResult;
-	
+
 #ifdef CONFIG_HTTP_TIMEOUT
-//	uint httpTimeout;
-//	uint httpTimerId;
+	//	uint httpTimeout;
+	//	uint httpTimerId;
 #endif
-/*
-      public:
-      		int terminateFlag;
-		void setTerminateFlag(int f)
-		{
-			terminateFlag=f;
-		}
+	/*
+	public:
+	int terminateFlag;
+	void setTerminateFlag(int f)
+	{
+	terminateFlag=f;
+	}
 	public slots:
 	void monitorTimerSlot();
 	*/
-/*
+	/*
+	public:
+	int terminateFlag;
+	QTimer* monitorTimer;
+	void setTerminateFlag(int f)
+	{
+	terminateFlag=f;
+	}
+	public slots:
+	void monitorTimerSlot();
+	*/
 public:
-		int terminateFlag;
-		QTimer* monitorTimer;
-		void setTerminateFlag(int f)
-		{
-				terminateFlag=f;
-		}
-public slots:
-		void monitorTimerSlot();
-*/
-      public:
-	 BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
-	~BookmarkSync()
-	{
-	qDebug("~BookmarkSync.....");
-	}
-	void setHost(QString str)
-	{
-		host = str;
-	}
-	void setUrl(QString str)
-	{
-		url = str;
-	}
-	void setUsername(QString str)
-	{
-		username = str;
-	}
-	void setPassword(QString str)
-	{
-		password = str;
-	}
-	
+	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
+	~BookmarkSync(){QDEBUG_LINE;}
+	void setHost(const QString& s){host = s;}
+	void setUrl(const QString& s){url = s;}
+	void setUsername(const QString& s){	username = s;}
+	void setPassword(const QString& s){password = s;}
+
 	void run();
 	//void setTerminateFlag(int f){
 	//	terminateFlag = f;
 	//}
 	//void quit();
 #ifdef CONFIG_HTTP_TIMEOUT
-     	// protected:
+	// protected:
 	//void timerEvent(QTimerEvent * event);
 #endif
 	public slots: 
-	void bookmarkGetFinished(bool error);
-	void testAccountFinished(bool error);
-//      void httpRequestFinished(int id,bool  error);
-//      void httpRequestStarted(int id);
-	void on_http_stateChanged(int stat);
-	void on_http_dataReadProgress(int done, int total);
-	void on_http_dataSendProgress(int done, int total);
-	// void on_http_done(bool error);
-	void on_http_requestFinished(int id, bool error);
-	void on_http_requestStarted(int id);
-	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-	void mergeDone();
-	void httpTimerSlot();
-	void stopSync();
-	//void setNetworkProxy();
-	void mgUpdateStatus(int flag,int status);
-	void testNetFinished();
-	void terminateThread();
-      signals:
-	void bookmarkFinished(bool error);
-	void updateStatusNotify(int type,int status);
-	void readDateProgressNotify(int done, int total);
-	void testAccountFinishedNotify(bool error,QString result);
-//	void testNetTerminateNotify();
-//	void mergeTerminateNotify();
-//	void posthttpTerminateNotify();
+		void bookmarkGetFinished(bool error);
+		void testAccountFinished(bool error);
+		//      void httpRequestFinished(int id,bool  error);
+		//      void httpRequestStarted(int id);
+		void on_http_stateChanged(int stat);
+		void on_http_dataReadProgress(int done, int total);
+		void on_http_dataSendProgress(int done, int total);
+		// void on_http_done(bool error);
+		void on_http_requestFinished(int id, bool error);
+		void on_http_requestStarted(int id);
+		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
+		void mergeDone();
+		void httpTimerSlot();
+		void stopSync();
+		//void setNetworkProxy();
+		void mgUpdateStatus(int flag,int status);
+		void testNetFinished();
+		void terminateThread();
+signals:
+		void bookmarkFinished(bool error);
+		void updateStatusNotify(int type,int status);
+		void readDateProgressNotify(int done, int total);
+		void testAccountFinishedNotify(bool error,QString result);
+		//	void testNetTerminateNotify();
+		//	void mergeTerminateNotify();
+		//	void posthttpTerminateNotify();
 
 };
 

@@ -47,13 +47,13 @@ private:
 	//PluginHandler* plugins;
 	bool buildWithStart;
 
-	
+
 	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
 	QSqlDatabase *db;
 	catbuildmode buildMode;
 public:
-		bool terminateflag;
+	bool terminateflag;
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(uint);

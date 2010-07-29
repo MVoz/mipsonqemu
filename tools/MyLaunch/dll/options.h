@@ -53,7 +53,7 @@ typedef struct cmd_list{
 class OPTIONS_CLASS_EXPORT OptionsDlg:public QDialog
 {
 	Q_OBJECT
- public:
+public:
 	OptionsDlg(QWidget * parent = 0,QDateTime*d=0,QSettings *s=0,QString path="",QSqlDatabase *b=NULL,void* catalogbuilder=NULL);
 	~OptionsDlg();
 public:
@@ -85,31 +85,31 @@ public:
 	void addCatitemToDb(CatItem& item);
 	void modifyCatitemFromDb(CatItem& item,uint index);
 	void deleteCatitemFromDb(CatItem& item,uint index);
-public slots: 
-	
-	void populateJavaScriptWindowObject();
-	void contextMenuEvent(QContextMenuEvent* event);
-	void startSync();
-	void getHtml(const QString &path);
-	void loading(const QString &name);
-	void accept();
-	void reject();
-	void apply(const QString& name,const QVariant &value);
-	void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
-	void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
-	void getListDirectory(const QString& id,const int& type);
-	//void bookmark_finished(bool error);
-	//void testAccountFinished(bool err,QString result);
-	void accountTestClick(const QString& name,const QString& password);
-	void proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/);
-	void proxyTestslotError(QNetworkReply::NetworkError err);
-	void  proxyTestslotFinished(QNetworkReply * testreply);
-	void proxtTestTimerSlot();
-	void rebuildcatalog();
-	void startUpdater();
+	public slots: 
+
+		void populateJavaScriptWindowObject();
+		void contextMenuEvent(QContextMenuEvent* event);
+		void startSync();
+		void getHtml(const QString &path);
+		void loading(const QString &name);
+		void accept();
+		void reject();
+		void apply(const QString& name,const QVariant &value);
+		void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
+		void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
+		void getListDirectory(const QString& id,const int& type);
+		//void bookmark_finished(bool error);
+		//void testAccountFinished(bool err,QString result);
+		void accountTestClick(const QString& name,const QString& password);
+		void proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/);
+		void proxyTestslotError(QNetworkReply::NetworkError err);
+		void  proxyTestslotFinished(QNetworkReply * testreply);
+		void proxtTestTimerSlot();
+		void rebuildcatalog();
+		void startUpdater();
 signals:
-	void rebuildcatalogSignal();
-	void optionStartSyncNotify();
-	void testAccountNotify(const QString&,const QString&);
+		void rebuildcatalogSignal();
+		void optionStartSyncNotify();
+		void testAccountNotify(const QString&,const QString&);
 };
 #endif

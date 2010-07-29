@@ -53,7 +53,7 @@ class QLineEditMenu : public QLineEdit
 	Q_OBJECT
 public:
 	QLineEditMenu(QWidget* parent = 0) :
-    QLineEdit(parent) {setAttribute(Qt::WA_InputMethodEnabled);}
+	QLineEdit(parent) {setAttribute(Qt::WA_InputMethodEnabled);}
 	void contextMenuEvent(QContextMenuEvent *evt) {
 		emit menuEvent(evt);
 	}
@@ -66,41 +66,41 @@ class QCharLineEdit : public QLineEdit
 	Q_OBJECT
 public:
 	QCharLineEdit(QWidget* parent = 0) : 
-		QLineEdit(parent) 
-		{
-		    setAttribute(Qt::WA_InputMethodEnabled);
-		}
-		void keyPressEvent(QKeyEvent* key) {
+	QLineEdit(parent) 
+	{
+		setAttribute(Qt::WA_InputMethodEnabled);
+	}
+	void keyPressEvent(QKeyEvent* key) {
 		//	LOG_RUN_LINE;
-			QLineEdit::keyPressEvent(key);
-			emit keyPressed(key);
-		}
-		// This is how you pick up the tab key
-		bool focusNextPrevChild(bool next) {
-			next = next; // Remove compiler warning
-			QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, NULL);
-			emit keyPressed(&key);
-			return true;
-		}
-		void focusOutEvent ( QFocusEvent * evt) {
-			emit focusOut(evt);
-		}
+		QLineEdit::keyPressEvent(key);
+		emit keyPressed(key);
+	}
+	// This is how you pick up the tab key
+	bool focusNextPrevChild(bool next) {
+		next = next; // Remove compiler warning
+		QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, NULL);
+		emit keyPressed(&key);
+		return true;
+	}
+	void focusOutEvent ( QFocusEvent * evt) {
+		emit focusOut(evt);
+	}
 
-		void inputMethodEvent(QInputMethodEvent *e) {
-			QLineEdit::inputMethodEvent(e);
-			if (e->commitString() != "") {
-				emit inputMethod(e);
-			}
+	void inputMethodEvent(QInputMethodEvent *e) {
+		QLineEdit::inputMethodEvent(e);
+		if (e->commitString() != "") {
+			emit inputMethod(e);
 		}
-		/*
-		void mouseReleaseEvent(QMouseEvent* e)
-			{
-				if (event->button() & RightButton) {
-					QContextMenuEvent
-					emit contextMenuEvent
-				}
-			}
-			*/
+	}
+	/*
+	void mouseReleaseEvent(QMouseEvent* e)
+	{
+	if (event->button() & RightButton) {
+	QContextMenuEvent
+	emit contextMenuEvent
+	}
+	}
+	*/
 signals:
 	void keyPressed(QKeyEvent*);
 	void focusOut(QFocusEvent* evt);
@@ -111,30 +111,30 @@ class QCharListWidget : public QListWidget
 {
 	Q_OBJECT
 public:
-    QCharListWidget(QWidget* parent = 0) : 
-    	QListWidget(NULL)
-		{
-		    parent = parent; // warning
-		    #ifdef Q_WS_X11
-		    setWindowFlags( windowFlags() |   Qt::Tool | Qt::SplashScreen);
-		    #endif
-			setAttribute(Qt::WA_AlwaysShowToolTips);
-			
-			setAlternatingRowColors(true);
-		}
-		void keyPressEvent(QKeyEvent* key) {
-			emit keyPressed(key);
-			QListWidget::keyPressEvent(key);
-			key->ignore();
-		}
-		void mouseDoubleClickEvent( QMouseEvent * event  ) {
-			event = event; // Remove compiler warning
-			QKeyEvent key(QEvent::KeyPress, Qt::Key_Enter, NULL);
-			emit keyPressed(&key);
-		}
-		void focusOutEvent ( QFocusEvent * evt) {
-			emit focusOut(evt);
-		}
+	QCharListWidget(QWidget* parent = 0) : 
+	QListWidget(NULL)
+	{
+		parent = parent; // warning
+#ifdef Q_WS_X11
+		setWindowFlags( windowFlags() |   Qt::Tool | Qt::SplashScreen);
+#endif
+		setAttribute(Qt::WA_AlwaysShowToolTips);
+
+		setAlternatingRowColors(true);
+	}
+	void keyPressEvent(QKeyEvent* key) {
+		emit keyPressed(key);
+		QListWidget::keyPressEvent(key);
+		key->ignore();
+	}
+	void mouseDoubleClickEvent( QMouseEvent * event  ) {
+		event = event; // Remove compiler warning
+		QKeyEvent key(QEvent::KeyPress, Qt::Key_Enter, NULL);
+		emit keyPressed(&key);
+	}
+	void focusOutEvent ( QFocusEvent * evt) {
+		emit focusOut(evt);
+	}
 
 signals:
 	void keyPressed(QKeyEvent*);
@@ -183,8 +183,8 @@ class MyWidget : public QWidget
 public:
 
 
-    MyWidget() {};
-    MyWidget(QWidget *parent, PlatformBase*, bool rescue );
+	MyWidget() {};
+	MyWidget(QWidget *parent, PlatformBase*, bool rescue );
 	~MyWidget();
 
 	QHash<QString, QList<QString> > dirs;
@@ -219,7 +219,7 @@ public:
 	bool optionsOpen;
 	uint rebuildAll;
 	uint updateTimes;// update times
-//	QTimer* syncDlgTimer;
+	//	QTimer* syncDlgTimer;
 	QTimer* updateSuccessTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
@@ -253,8 +253,8 @@ public:
 	void searchOnInput();
 	void fadeIn();
 	void fadeOut();
-//	QPair<double,double> relativePos();
-//	QPoint absolutePos(QPair<double,double> relPos);
+	//	QPair<double,double> relativePos();
+	//	QPoint absolutePos(QPair<double,double> relPos);
 	QPoint loadPosition();
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
@@ -269,169 +269,97 @@ public:
 	void dumpBuffer(char* addr,int length);
 #endif
 #ifdef CONFIG_SYSTEM_TRAY
- 	void createTrayIcon();
+	void createTrayIcon();
 	void createActions();
 	void freeOccupyMemeory();
 #endif
 	//void createSynDlgTimer();
-//	void deleteSynDlgTimer();
+	//	void deleteSynDlgTimer();
 	void getFavico(const QString& host,const QString& filename);
 	void scanDbFavicon();
 private:
-    QHttp *http;
-    QBuffer *verBuffer;
-    QBuffer *counterBuffer;
+	QHttp *http;
+	QBuffer *verBuffer;
+	QBuffer *counterBuffer;
 #ifdef CONFIG_SYSTEM_TRAY
- //    QAction *minimizeAction;
-     QAction *rebuildCatalogAction;
-     QAction *optionsAction;
-     QAction *restoreAction;
-     QAction* syncAction;
-     QAction* updateAction;
-     QAction *quitAction;
-	 
-     QSystemTrayIcon *trayIcon;
-     QMenu *trayIconMenu;
-    QIcon icon;
-    updaterThread *slientUpdate;
-    volatile int closeflag;
-    QTimer* monitorTimer;
+	//    QAction *minimizeAction;
+	QAction *rebuildCatalogAction;
+	QAction *optionsAction;
+	QAction *restoreAction;
+	QAction* syncAction;
+	QAction* updateAction;
+	QAction *quitAction;
+
+	QSystemTrayIcon *trayIcon;
+	QMenu *trayIconMenu;
+	QIcon icon;
+	updaterThread *slientUpdate;
+	volatile int closeflag;
+	QTimer* monitorTimer;
 #endif
 #ifdef CONFIG_ONE_OPTION
-    OptionsDlg *ops;
+	OptionsDlg *ops;
 #endif
-public slots:
-	void monitorTimerTimeout();
-	//void syncDlgTimeout();
-//	void deleteSynDlg();
-	void menuOptions();
-	void onHotKey();
-	void catalogBuilderTimeout();
-	void silentupdateTimeout();
-	void updateSuccessTimeout();
-	void syncTimeout();
-	void dropTimeout();
-	void setAlwaysShow(bool);
-	void setAlwaysTop(bool);
-	void setPortable(bool);
-	void mousePressEvent(QMouseEvent *e);
-	void mouseMoveEvent(QMouseEvent *e);
-	void setSkin(QString, QString);
-	void httpGetFinished(bool result);
-	void catalogBuilt(int);
-	void inputMethodEvent(QInputMethodEvent* e);
-	void keyPressEvent(QKeyEvent*);
-	void inputKeyPressEvent(QKeyEvent* key);
-	void altKeyPressEvent(QKeyEvent* key);
-	void focusOutEvent(QFocusEvent* evt);
-	void setOpaqueness(int val);
-	void setFadeLevel(double);
-	void finishedFade(double d);
-	void menuEvent(QContextMenuEvent*);
-	void buildCatalog();
-	void _buildCatalog(catbuildmode);
-	void updateSuccess();
+	public slots:
+		void monitorTimerTimeout();
+		//void syncDlgTimeout();
+		//	void deleteSynDlg();
+		void menuOptions();
+		void onHotKey();
+		void catalogBuilderTimeout();
+		void silentupdateTimeout();
+		void updateSuccessTimeout();
+		void syncTimeout();
+		void dropTimeout();
+		void setAlwaysShow(bool);
+		void setAlwaysTop(bool);
+		void setPortable(bool);
+		void mousePressEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e);
+		void setSkin(QString, QString);
+		void httpGetFinished(bool result);
+		void catalogBuilt(int);
+		void inputMethodEvent(QInputMethodEvent* e);
+		void keyPressEvent(QKeyEvent*);
+		void inputKeyPressEvent(QKeyEvent* key);
+		void altKeyPressEvent(QKeyEvent* key);
+		void focusOutEvent(QFocusEvent* evt);
+		void setOpaqueness(int val);
+		void setFadeLevel(double);
+		void finishedFade(double d);
+		void menuEvent(QContextMenuEvent*);
+		void buildCatalog();
+		void _buildCatalog(catbuildmode);
+		void updateSuccess();
 #ifdef CONFIG_SYSTEM_TRAY
-	void startSync();
-	void _startSync(int mode,int silence);
-	void updateApp();
-//	void bookmark_finished(bool error);
-	void testAccountFinished(bool err,QString result);
-	void bookmark_syncer_finished(bool error);
-	void syncer_finished();
-	void reSync();
-	void stopSyncSlot();
-	void testAccount(const QString&name,const QString& password);
-	void startSilentUpdate();
-	void silentUpdateFinished();
-	void getFavicoFinished();
-	
-//	void restoreMainwin();
+		void startSync();
+		void _startSync(int mode,int silence);
+		void updateApp();
+		//	void bookmark_finished(bool error);
+		void testAccountFinished(bool err,QString result);
+		void bookmark_syncer_finished(bool error);
+		void syncer_finished();
+		void reSync();
+		void stopSyncSlot();
+		void testAccount(const QString&name,const QString& password);
+		void startSilentUpdate();
+		void silentUpdateFinished();
+		void getFavicoFinished();
+
+		//	void restoreMainwin();
 #endif
-private slots:
+		private slots:
 #ifdef CONFIG_SYSTEM_TRAY
-	void setIcon();
-     	void iconActivated(QSystemTrayIcon::ActivationReason reason);
+			void setIcon();
+			void iconActivated(QSystemTrayIcon::ActivationReason reason);
 #endif
-	signals:
-		//void reSync();
-	//	void stopSyncNotify();
-	//	void catalogTerminateNotify();
-		void silentUpdateTerminateNotify();
-	//	void syncerTerminateNotify();
+signals:
+			//void reSync();
+			//	void stopSyncNotify();
+			//	void catalogTerminateNotify();
+			void silentUpdateTerminateNotify();
+			//	void syncerTerminateNotify();
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);
-#if 0
-class MyThread:public QThread
-{
-	Q_OBJECT
-public:
-	MyThread(QObject * parent = 0){
-		terminateFlag=0;
-	}
-	~MyThread(){}
-public:
-		int terminateFlag;
-		QTimer* monitorTimer;
-		virtual void setTerminateFlag(int f)
-		{
-				terminateFlag=f;
-		}
-public slots:
-		virtual void monitorTimerSlot(){
-			qDebug()<<__FUNCTION__<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
-			if(terminateFlag)
-				terminateThread();
-			else
-			{
-				qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
-				monitorTimer->start(10);
-			}
-		}
-public:
-		void run(){
-			qDebug()<<__FUNCTION__;
-			monitorTimer = new QTimer();
-			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-			monitorTimer->start(10);
-			monitorTimer->moveToThread(this);
-		}	
-		void terminateThread(){
-			qDebug()<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
-		}
-};
-class MyThread1:public MyThread
-{
-	Q_OBJECT;
-public:
-	MyThread1(QObject * parent = 0){}
-	~MyThread1(){}
-public:
-		void run(){
-			MyThread::run();
-			qDebug()<<__FUNCTION__;
-			exec();
-		}
-
-};
-class MyThread2:public MyThread
-{
-	Q_OBJECT;
-public:
-	MyThread2(QObject * parent = 0){}
-	~MyThread2(){}
-public:
-		void run(){
-			MyThread::run();
-			qDebug()<<__FUNCTION__;
-			exec();
-		}
-
-};
-#endif
 #endif

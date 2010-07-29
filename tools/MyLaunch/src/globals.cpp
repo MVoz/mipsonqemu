@@ -52,12 +52,12 @@ CatItem* gSearchResult;
 void log(QString str)
 {
 
-	QFile file("log.txt");
-	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-	QTextStream os(&file);
-	os << "[";
-	os << QDateTime::currentDateTime().toString("hh:mm:ss");
-	os << "] " << str << "\n";
+QFile file("log.txt");
+file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+QTextStream os(&file);
+os << "[";
+os << QDateTime::currentDateTime().toString("hh:mm:ss");
+os << "] " << str << "\n";
 }
 */
 #ifdef CONFIG_LOG_ENABLE
@@ -68,35 +68,35 @@ QString toQString(QVariant t)
 {
 	QString str;
 	switch (t.type())
-	  {
-	  case QVariant::Int:
-		  str.sprintf("%d", t.toUInt());
-		  break;
-	  case QVariant::String:
-		  str = t.toString();
-		  break;
-	  default:
-		  str.sprintf("%s", "unprocessed");
-		  break;
+	{
+	case QVariant::Int:
+		str.sprintf("%d", t.toUInt());
+		break;
+	case QVariant::String:
+		str = t.toString();
+		break;
+	default:
+		str.sprintf("%s", "unprocessed");
+		break;
 
-	  }
+	}
 	return str;
 }
 
 void dump_setting(const QString prefix)
 {
 	if (!prefix.isNull())
-	  {
-		  gSettings->beginGroup(prefix);
-		  QStringList keys = gSettings->childKeys();
-		  for (int j = 0; j < keys.size(); j++)
-			 qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
-		  gSettings->endGroup();
+	{
+		gSettings->beginGroup(prefix);
+		QStringList keys = gSettings->childKeys();
+		for (int j = 0; j < keys.size(); j++)
+			qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
+		gSettings->endGroup();
 	} else
-	  {
-		  QStringList keys = gSettings->allKeys();
-		  for (int j = 0; j < keys.size(); j++)
-			  qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
-	  }
+	{
+		QStringList keys = gSettings->allKeys();
+		for (int j = 0; j < keys.size(); j++)
+			qDebug("[gSettings]:%s=%s", qPrintable(keys.at(j)), qPrintable(toQString(gSettings->value(keys.at(j)))));
+	}
 }
 #endif
