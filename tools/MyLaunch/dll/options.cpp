@@ -107,47 +107,6 @@ void OptionsDlg::contextMenuEvent(QContextMenuEvent * event)
 void OptionsDlg::startSync()
 {
 	emit optionStartSyncNotify();
-#if 0
-	qDebug("%s gSyncer=0x%08x",__FUNCTION__,gSyncer);
-
-	if(!(settings->value("Account/Username","").toString().isEmpty())&&!(settings->value("Account/Userpasswd","").toString().isEmpty()))
-	{
-		if(!gSyncer)
-		{
-			syncDlg = new synchronizeDlg(this);
-			syncDlg->setModal(1);
-			syncDlg->show();
-			gSyncer.reset(new BookmarkSync(this,db_p,settings,iePath,BOOKMARK_SYNC_MODE));
-			connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
-			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
-			connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg, SLOT(readDateProgress(int, int)));
-			gSyncer->setHost(BM_SERVER_ADDRESS);
-			#ifdef CONFIG_AUTH_ENCRYPTION
-				qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
-				uint key=qrand()%(getkeylength());
-				QString authstr=QString("username=%1 password=%2").arg(settings->value("Account/Username","").toString()).arg(settings->value("Account/Userpasswd","").toString());
-				QString auth_encrypt_str="";
-				encryptstring(authstr,key,auth_encrypt_str);
-#ifdef CONFIG_SYNC_TIMECHECK
-				QString localBmFullPath;
-				QString bmxml_url;
-					if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
-					{
-						bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(settings->value("updateTime","0").toString());
-					}else{
-						bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-				}
-#else				
-				QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key);
-#endif
-			#else
-				QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(settings->value("Account/Username","").toString()).arg(settings->value("Account/Userpasswd","").toString());
-			#endif
-			gSyncer->setUrl(bmxml_url);
-			gSyncer->start();
-		}
-	}
-#endif
 }
 /*
 void OptionsDlg::bookmark_finished(bool error)
@@ -219,13 +178,11 @@ void OptionsDlg::proxtTestTimerSlot()
 		testProxyTimer.stop();
 	reply->abort();
 }
-void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
+void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/)
 {
 
 	tz::netProxy(SET_MODE,settings,NULL);
 
-	qDebug("%s proxyAddr=%s proxyPort=%s proxyUsername=%s proxyPassword=%s manager=0x%08x reply=0x%08x\n",
-	__FUNCTION__,qPrintable(proxyAddr),qPrintable(proxyPort),qPrintable(proxyUsername),qPrintable(proxyPassword),manager,reply);
 	if(!manager)
 	{
 	/*
@@ -265,44 +222,6 @@ void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 {
 	qDebug("username=%s password=%s......",qPrintable(name),qPrintable(password));
 	emit testAccountNotify(name,password);
-#if 1
-#if 0
-	if(!gSyncer)
-	{
-		syncDlg = new synchronizeDlg(this);
-		syncDlg->setModal(1);
-		syncDlg->show();	
-		gSyncer.reset(new BookmarkSync(this,db_p,settings,iePath,BOOKMARK_TESTACCOUNT_MODE));
-		connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
-		connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
-		connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg, SLOT(readDateProgress(int, int)));
-		gSyncer->setHost(BM_SERVER_ADDRESS);
-		gSyncer->setUrl(BM_TEST_ACCOUNT_URL);
-
-		qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
-		uint key=qrand()%(getkeylength());
-		QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
-		QString auth_encrypt_str="";
-		encryptstring(authstr,key,auth_encrypt_str);
-
-		QString testaccount_url;
-		
-		testaccount_url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);		
-
-		gSyncer->setUrl(testaccount_url);
-		gSyncer->setUsername(password);
-		gSyncer->setPassword(name);
-		gSyncer->start();
-	}
-#endif
-#else
-	postHttp accountTestHttp(this,POST_HTTP_TYPE_TESTACCOUNT);
-	QString postString = QString("name=%1&password=%2").arg(QString(QUrl::toPercentEncoding(name))).arg(QString(QUrl::toPercentEncoding(password)));
-	accountTestHttp.postString = postString;
-	accountTestHttp.start();
-	accountTestHttp.wait();
-	qDebug("account test complish........");
-#endif
 }
 void OptionsDlg::getHtml(const QString & path)
 {
@@ -318,11 +237,16 @@ void OptionsDlg::loading(const QString & name)
 	QString jsStr;
 	if (name == "general_html")
 	  {
-		  jsStr.append(QString("document.getElementById('ckStartWithSystem').checked =%1;").arg(settings->value("generalOpt/ckStartWithSystem", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckShowTray').checked =%1;").arg(settings->value("generalOpt/ckShowTray", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckShowMainwindow').checked =%1;").arg(settings->value("generalOpt/ckShowMainwindow", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckAutoUpdate').checked =%1;").arg(settings->value("generalOpt/ckAutoUpdate", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckScanDir').checked =%1;").arg(settings->value("generalOpt/ckScanDir", false).toBool()? "true" : "false"));
+		  JS_APPEND_CHECKED("ckStartWithSystem","generalOpt",false);
+		  JS_APPEND_CHECKED("ckShowTray","generalOpt",false);
+		  JS_APPEND_CHECKED("ckShowMainwindow","generalOpt",false);
+		  JS_APPEND_CHECKED("ckAutoUpdate","generalOpt",false);
+		  JS_APPEND_CHECKED("ckScanDir","generalOpt",false);
+		//  jsStr.append(QString("$('ckStartWithSystem').checked =%1;").arg(settings->value("generalOpt/ckStartWithSystem", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('ckShowTray').checked =%1;").arg(settings->value("generalOpt/ckShowTray", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('ckShowMainwindow').checked =%1;").arg(settings->value("generalOpt/ckShowMainwindow", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('ckAutoUpdate').checked =%1;").arg(settings->value("generalOpt/ckAutoUpdate", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('ckScanDir').checked =%1;").arg(settings->value("generalOpt/ckScanDir", false).toBool()? "true" : "false"));
 #ifdef Q_WS_WIN
 		  int curMeta = settings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
 #endif
@@ -336,18 +260,29 @@ void OptionsDlg::loading(const QString & name)
 
 	} else if (name == "net_mg_html")
 	  {
-		  jsStr.append(QString("document.getElementById('Username').value ='%1';").arg(settings->value("Account/Username", "").toString()));
-		  jsStr.append(QString("document.getElementById('Userpasswd').value ='%1';").arg(settings->value("Account/Userpasswd", "").toString()));
-		  jsStr.append(QString("document.getElementById('proxyEnable').checked =%1;").arg(settings->value("HttpProxy/proxyEnable", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('proxyAddress').value ='%1';").arg(settings->value("HttpProxy/proxyAddress", "").toString()));
-		  jsStr.append(QString("document.getElementById('proxyPort').value ='%1';").arg(settings->value("HttpProxy/proxyPort", "").toString()));
-		  jsStr.append(QString("document.getElementById('proxyUsername').value ='%1';").arg(settings->value("HttpProxy/proxyUsername", "").toString()));
-		  jsStr.append(QString("document.getElementById('proxyPassword').value ='%1';").arg(settings->value("HttpProxy/proxyPassword", "").toString()));
+		 
+		  //jsStr.append("$('Username').value ='"+settings->value("Account/Username", "").toString()+"';"); 	
+		  JS_APPEND_VALUE("Username","Account","");
+		  //jsStr.append("$('Userpasswd').value ='"+tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
+		  JS_APPEND_PASSWD("Userpasswd","Account","");
+		  JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
+		  JS_APPEND_VALUE("proxyAddress","HttpProxy","");
+		  JS_APPEND_VALUE("proxyPort","HttpProxy","");
+		  JS_APPEND_VALUE("proxyUsername","HttpProxy","");
+		  JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
+		//  jsStr.append("$('proxyPassword').value ='"+tz::decrypt(settings->value("Account/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
+		 // jsStr.append(QString("$('Userpasswd').value ='%1';").arg(tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)));
+		  
+		 // jsStr.append(QString("$('proxyEnable').checked =%1;").arg(settings->value("HttpProxy/proxyEnable", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('proxyAddress').value ='%1';").arg(settings->value("HttpProxy/proxyAddress", "").toString()));
+		 // jsStr.append(QString("$('proxyPort').value ='%1';").arg(settings->value("HttpProxy/proxyPort", "").toString()));
+		 // jsStr.append(QString("$('proxyUsername').value ='%1';").arg(settings->value("HttpProxy/proxyUsername", "").toString()));
+		 // jsStr.append(QString("$('proxyPassword').value ='%1';").arg(tz::decrypt(settings->value("HttpProxy/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)));
 		  jsStr.append(QString("proxyEnableClick();"));
 
 	} else if (name == "cmd_mg_html")
 	  {
-		  jsStr.append(QString("document.getElementById('cmd_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
+		  jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"8%\">"+tz::tr("html_select")+"</td>\
 							 <td width=\"8%\">"+tz::tr("html_name")+"</td>\
@@ -457,7 +392,7 @@ void OptionsDlg::loading(const QString & name)
 
 	} else if (name == "list_mg_html")
 	  {
-		  jsStr.append(QString("document.getElementById('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
+		  jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"10%\">"+tz::tr("html_select")+"</td>\
 							 <td width=\"50%\">"+tz::tr("html_path")+"</td>\
@@ -502,12 +437,18 @@ void OptionsDlg::loading(const QString & name)
 		  jsStr.append(QString("</table>';"));
 
 	  }else if(name == "adv_html"){
-	   	  jsStr.append(QString("document.getElementById('ckFuzzyMatch').checked =%1;").arg(settings->value("adv/ckFuzzyMatch", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckCaseSensitive').checked =%1;").arg(settings->value("adv/ckCaseSensitive", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckRebuilderCatalogTimer').checked =%1;").arg(settings->value("adv/ckRebuilderCatalogTimer", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckSupportIe').checked =%1;").arg(settings->value("adv/ckSupportIe", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckSupportFirefox').checked =%1;").arg(settings->value("adv/ckSupportFirefox", false).toBool()? "true" : "false"));
-		  jsStr.append(QString("document.getElementById('ckSupportOpera').checked =%1;").arg(settings->value("adv/ckSupportOpera", false).toBool()? "true" : "false"));
+		  JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);
+		  JS_APPEND_CHECKED("ckCaseSensitive","adv",false);
+		  JS_APPEND_CHECKED("ckRebuilderCatalogTimer","adv",false);
+		  JS_APPEND_CHECKED("ckSupportIe","adv",false);
+		  JS_APPEND_CHECKED("ckSupportFirefox","adv",false);
+		  JS_APPEND_CHECKED("ckSupportOpera","adv",false);
+	   	 // jsStr.append(QString("$('ckFuzzyMatch').checked =%1;").arg(settings->value("adv/ckFuzzyMatch", false).toBool()? "true" : "false"));
+		 // jsStr.append(QString("$('ckCaseSensitive').checked =%1;").arg(settings->value("adv/ckCaseSensitive", false).toBool()? "true" : "false"));
+		//  jsStr.append(QString("$('ckRebuilderCatalogTimer').checked =%1;").arg(settings->value("adv/ckRebuilderCatalogTimer", false).toBool()? "true" : "false"));
+		//  jsStr.append(QString("$('ckSupportIe').checked =%1;").arg(settings->value("adv/ckSupportIe", false).toBool()? "true" : "false"));
+		//  jsStr.append(QString("$('ckSupportFirefox').checked =%1;").arg(settings->value("adv/ckSupportFirefox", false).toBool()? "true" : "false"));
+		//  jsStr.append(QString("$('ckSupportOpera').checked =%1;").arg(settings->value("adv/ckSupportOpera", false).toBool()? "true" : "false"));
 	  	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
@@ -524,7 +465,6 @@ void OptionsDlg::reject()
 }
 void OptionsDlg::apply(const QString & name, const QVariant & value)
 {
-	settings->setValue(name, value);
 	if(name=="generalOpt/ckStartWithSystem"){
 		qDebug("set generalOpt/ckStartWithSystem! ");
 		QSettings s(QString("HKEY_LOCAL_MACHINE\\Software\\microsoft\\windows\\currentversion\\run"),QSettings::NativeFormat);	
@@ -540,8 +480,11 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		qDebug() << s;
 		q.exec(s);
 		q.clear();
+	}else if(name=="Account/Userpasswd"){
+		settings->setValue(name, tz::encrypt(value.toString(),PASSWORD_ENCRYPT_KEY));
+		return;
 	}
-	
+	settings->setValue(name, value);
 }
 void OptionsDlg::addCatitemToDb(CatItem& item)
 {
@@ -807,7 +750,7 @@ void OptionsDlg::getListDirectory(const QString & id,const int& type)
 	msgBox.setText(str);
 	msgBox.exec();
 
-	QString status = QString("document.getElementById('%1').value= '%2';").arg(id).arg(dir.replace("/", "\\\\"));
+	QString status = QString("$('%1').value= '%2';").arg(id).arg(dir.replace("/", "\\\\"));
 	webView->page()->mainFrame()->evaluateJavaScript(status);
 }
 void OptionsDlg::rebuildcatalog()

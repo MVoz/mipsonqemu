@@ -346,6 +346,15 @@ enum httpState
 	HTTP_CONNECT_SERVER
 };
 
+#define PASSWORD_ENCRYPT_KEY 98122130
+#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value(y"/"x, defval).toString()+"';");
+#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$("#x").checked ="+(settings->value(y"/"x, defval).toBool()?QString("true"):QString("false"))+";");
+#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$("#x").value ='"+tz::decrypt(settings->value(y"/"x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
+ 
 
+#define COMMAND(NAME) { NAME, NAME##_command }
+#define LINK_MULTIPLE(a,b,c,d) a##_##b##_##c##_##d
+//#define myprintf(templt,args...) fprintf(stderr,templt,args)
+//#define myprintf(templt,...) fprintf(stderr,templt,__VA_ARGS__)
 #endif
 

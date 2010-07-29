@@ -4,6 +4,9 @@
 <title>index</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
+function $(a) {
+        return document.getElementById(a);
+}
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
@@ -14,19 +17,17 @@ function reject()
 }
 function apply(key)
 {
-	with(document){
-		OptionsDlg.apply('adv/ckFuzzyMatch',getElementById('ckFuzzyMatch').checked);
-		OptionsDlg.apply('adv/ckCaseSensitive',getElementById('ckCaseSensitive').checked);
-		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',getElementById('ckRebuilderCatalogTimer').checked);
-		OptionsDlg.apply('adv/ckSupportIe',getElementById('ckSupportIe').checked);
-		OptionsDlg.apply('adv/ckSupportFirefox',getElementById('ckSupportFirefox').checked);
-		OptionsDlg.apply('adv/ckSupportOpera',getElementById('ckSupportOpera').checked);
+		OptionsDlg.apply('adv/ckFuzzyMatch',$('ckFuzzyMatch').checked);
+		OptionsDlg.apply('adv/ckCaseSensitive',$('ckCaseSensitive').checked);
+		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$('ckRebuilderCatalogTimer').checked);
+		OptionsDlg.apply('adv/ckSupportIe',$('ckSupportIe').checked);
+		OptionsDlg.apply('adv/ckSupportFirefox',$('ckSupportFirefox').checked);
+		OptionsDlg.apply('adv/ckSupportOpera',$('ckSupportOpera').checked);
 		OptionsDlg.accept();
-	}
 }
 function   set_selected(s_value,id){   
 	  if(s_value!=""){   
-	  s_obj   =   document.getElementById(id).options;   
+	  s_obj   =   $(id).options;   
 	  len   =   s_obj.length;   
 		  for   (i   =   0;   i   <   len;   i++ ){   
 			  if(s_value   ==   s_obj[i].value){

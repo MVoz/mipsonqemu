@@ -4,6 +4,9 @@
 <title>index</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
+function $(a) {
+        return document.getElementById(a);
+}
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
@@ -14,20 +17,18 @@ function reject()
 }
 function apply(key)
 {
-	with(document){
-	OptionsDlg.apply('generalOpt/ckStartWithSystem',getElementById('ckStartWithSystem').checked);
-	OptionsDlg.apply('generalOpt/ckShowTray',getElementById('ckShowTray').checked);
-	OptionsDlg.apply('generalOpt/ckShowMainwindow',getElementById('ckShowMainwindow').checked);
-	OptionsDlg.apply('generalOpt/ckAutoUpdate',getElementById('ckAutoUpdate').checked);
-	OptionsDlg.apply('generalOpt/ckScanDir',getElementById('ckScanDir').checked);
-	OptionsDlg.apply('GenOps/hotkeyModifier',getElementById('hotkey_0').value);
-	OptionsDlg.apply('GenOps/hotkeyAction',getElementById('hotkey_1').value);
+	OptionsDlg.apply('generalOpt/ckStartWithSystem',$('ckStartWithSystem').checked);
+	OptionsDlg.apply('generalOpt/ckShowTray',$('ckShowTray').checked);
+	OptionsDlg.apply('generalOpt/ckShowMainwindow',$('ckShowMainwindow').checked);
+	OptionsDlg.apply('generalOpt/ckAutoUpdate',$('ckAutoUpdate').checked);
+	OptionsDlg.apply('generalOpt/ckScanDir',$('ckScanDir').checked);
+	OptionsDlg.apply('GenOps/hotkeyModifier',$('hotkey_0').value);
+	OptionsDlg.apply('GenOps/hotkeyAction',$('hotkey_1').value);
 	OptionsDlg.accept();
-	}
 }
 function   set_selected(s_value,id){   
 	  if(s_value!=""){   
-	  s_obj   =   document.getElementById(id).options;   
+	  s_obj   =  $(id).options;   
 	  len   =   s_obj.length;   
 		  for   (i   =   0;   i   <   len;   i++ ){   
 			  if(s_value   ==   s_obj[i].value){

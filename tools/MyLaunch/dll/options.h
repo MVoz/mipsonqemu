@@ -101,7 +101,7 @@ public slots:
 	//void bookmark_finished(bool error);
 	//void testAccountFinished(bool err,QString result);
 	void accountTestClick(const QString& name,const QString& password);
-	void proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword);
+	void proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/);
 	void proxyTestslotError(QNetworkReply::NetworkError err);
 	void  proxyTestslotFinished(QNetworkReply * testreply);
 	void proxtTestTimerSlot();

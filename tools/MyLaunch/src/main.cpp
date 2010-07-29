@@ -1921,7 +1921,7 @@ void MyWidget::_startSync(int mode,int silence)
 		case SYNC_MODE_BOOKMARK:
 		case SYNC_MODE_REBOOKMARK:
 			name=gSettings->value("Account/Username","").toString();
-			password=gSettings->value("Account/Userpasswd","").toString();					
+			password=tz::decrypt(gSettings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);					
 			break;
 		case SYNC_MODE_TESTACCOUNT:
 			name=testAccountName;

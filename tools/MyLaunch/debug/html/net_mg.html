@@ -4,6 +4,9 @@
 <title>network managment</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
+function $(a) {
+        return document.getElementById(a);
+}
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
@@ -14,34 +17,32 @@ function syncClick()
 }
 function apply(key)
 {
-	with(document){
-	OptionsDlg.apply('Account/Username',getElementById('Username').value);
-	OptionsDlg.apply('Account/Userpasswd',getElementById('Userpasswd').value);
-	OptionsDlg.apply('HttpProxy/proxyEnable',getElementById('proxyEnable').checked);
-	OptionsDlg.apply('HttpProxy/proxyAddress',getElementById('proxyAddress').value);
-	OptionsDlg.apply('HttpProxy/proxyPort',getElementById('proxyPort').value);
-	OptionsDlg.apply('HttpProxy/proxyUsername',getElementById('proxyUsername').value);
-	OptionsDlg.apply('HttpProxy/proxyPassword',getElementById('proxyPassword').value);
+
+	OptionsDlg.apply('Account/Username',$('Username').value);
+	OptionsDlg.apply('Account/Userpasswd',$('Userpasswd').value);
+	OptionsDlg.apply('HttpProxy/proxyEnable',$('proxyEnable').checked);
+	OptionsDlg.apply('HttpProxy/proxyAddress',$('proxyAddress').value);
+	OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
+	OptionsDlg.apply('HttpProxy/proxyUsername',$('proxyUsername').value);
+	OptionsDlg.apply('HttpProxy/proxyPassword',$('proxyPassword').value);
 	OptionsDlg.accept();
-	}
+
 }
 function proxyEnableClick()
 {
-		with(document){
-			if(getElementById('proxyEnable').checked)
+			if($('proxyEnable').checked)
 					{
-						getElementById('proxyAddress').disabled=false;
-						getElementById('proxyPort').disabled=false;
-						getElementById('proxyUsername').disabled=false;
-						getElementById('proxyPassword').disabled=false;
+						$('proxyAddress').disabled=false;
+						$('proxyPort').disabled=false;
+						$('proxyUsername').disabled=false;
+						$('proxyPassword').disabled=false;
 					}
 			 else{
-						getElementById('proxyAddress').disabled=true;
-						getElementById('proxyPort').disabled=true;
-						getElementById('proxyUsername').disabled=true;
-						getElementById('proxyPassword').disabled=true;
+						$('proxyAddress').disabled=true;
+						$('proxyPort').disabled=true;
+						$('proxyUsername').disabled=true;
+						$('proxyPassword').disabled=true;
 			 }
-		}
 }
 function checkUsername()
 {
@@ -57,24 +58,28 @@ function checkUsername()
 //  var   r1   =   new   RegExp("(@.*@)|(\\.\\.)|(@\\.)|(^\\.)");     
 //  var   r2   =   new   RegExp("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$");     
  // return   (!r1.test(str)   &&   r2.test(str)); 
-	str=document.getElementById('Username').value;
+	str=$('Username').value;
 	var r=new RegExp("^[a-zA-Z0-9]{1}[\.a-zA-Z0-9_-]*[a-zA-Z0-9]{1}@[a-zA-Z0-9]+[-]{0,1}[a-zA-Z0-9]+[\.]{1}[a-zA-Z]+[\.]{0,1}[a-zA-Z]+$");
 	if(!r.test(str))
 	{
 		alert('错误的用户名！请输入一个合法的用户名');
-		document.getElementById('Username').value='';
+		$('Username').value='';
 	}
 }
 function accountTestClick()
 {
-	with(document){
-			OptionsDlg.accountTestClick(getElementById('Username').value,getElementById('Userpasswd').value);
-		}
+	OptionsDlg.accountTestClick($('Username').value,$('Userpasswd').value);
 }
 function testProxyClick()
 {
 		with(document){
-			OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
+			OptionsDlg.apply('HttpProxy/proxyEnable',$('proxyEnable').checked);
+			OptionsDlg.apply('HttpProxy/proxyAddress',$('proxyAddress').value);
+			OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
+			OptionsDlg.apply('HttpProxy/proxyUsername',$('proxyUsername').value);
+			OptionsDlg.apply('HttpProxy/proxyPassword',$('proxyPassword').value);
+			//OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
+			OptionsDlg.proxyTestClick();
 		}
 }
 </script>
