@@ -53,20 +53,20 @@ function rangeButtonClick(type)
 {
 	
 	with(document){
-				var deep=parseInt(getElementById('childDeep').value);
+				var deep=parseInt($('childDeep').value);
 			switch(type)
 			{
 				case  0:
 				  if(deep==0)
 						return;
 					else
-					getElementById('childDeep').value=(deep-1).toString(10);
+					$('childDeep').value=(deep-1).toString(10);
 					break;
 				case 1:
 					if(deep==200)
 						return;
 					else
-					getElementById('childDeep').value=(deep+1).toString(10);
+					$('childDeep').value=(deep+1).toString(10);
 					break;
 			}
 	}
@@ -74,7 +74,7 @@ function rangeButtonClick(type)
 function suffixCheck()
 {
 		with(document){
-				var suffix=getElementById('suffix').value;
+				var suffix=$('suffix').value;
 					 suffix=suffix.replace(/(^\s*)/g, ""); 
 				   suffix=suffix.replace(/(\s*$)/g, ""); 
 					 suffix=suffix.replace(/(\s*)/g, "");
