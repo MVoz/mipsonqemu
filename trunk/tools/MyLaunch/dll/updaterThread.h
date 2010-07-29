@@ -59,11 +59,11 @@ public:
 	QFile *file[UPDATE_MAX_RETRY_TIME];
 	QString host;
 	QString url;
-//	QString filename;
+	//	QString filename;
 	QString updaterFilename;
 	QString downloadFilename;
 	QString md5;
-	
+
 	QDateTime* updateTime;
 	QSettings *localSettings;
 	QSettings *serverSettings;
@@ -76,49 +76,49 @@ public:
 	QString branch;
 	QString savefilename;
 #if 0
-//public:
-//		int terminateFlag;
-//		QTimer* monitorTimer;
-//		void setTerminateFlag(int f)
-//		{
-				terminateFlag=f;
-		}
+	//public:
+	//		int terminateFlag;
+	//		QTimer* monitorTimer;
+	//		void setTerminateFlag(int f)
+	//		{
+	terminateFlag=f;
+}
 public slots:
-		void monitorTimerSlot();
+	void monitorTimerSlot();
 #endif
 public:
-	 GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
+	GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp()
 	{
 		qDebug("~GetFileHttp");
 		/*
 		if(file){
-			file->close();
-			delete file;
-			file=NULL;
+		file->close();
+		delete file;
+		file=NULL;
 		}
 		*/
 		for(int i=0;i<retryTime;i++)
 		{
-		/*
-				if(http[i])
-				{
-					//http[i]->close();
-					http[i]->deleteLater();
-				}
+			/*
+			if(http[i])
+			{
+			//http[i]->close();
+			http[i]->deleteLater();
+			}
 			if(httpTimer[i])
-				{
-					httpTimer[i]->stop();
-					httpTimer[i]->deleteLater();
-				}
+			{
+			httpTimer[i]->stop();
+			httpTimer[i]->deleteLater();
+			}
 			if(file[i])
-				{
-					file[i]->close();
-					file[i]->deleteLater();
-				}
+			{
+			file[i]->close();
+			file[i]->deleteLater();
+			}
 			if(monitorTimer)
-				monitorTimer->deleteLater();
-		*/
+			monitorTimer->deleteLater();
+			*/
 			DELETE_OBJECT(http[i]);
 			DELETE_FILE(file[i]);
 			DELETE_TIMER(httpTimer[i]);
@@ -130,26 +130,26 @@ public:
 	void setServerBranch(const QString &s){branch = s;}
 	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
-//	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
+	//	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
 	void newHttp();
 	void setProxy(QNetworkProxy& p);
 	void setDestdir(const QString& s){destdir = s;}
-public slots: 
-	//void updaterDone(bool error);
-	void getFileDone(bool error);
-	void on_http_stateChanged(int stat);
-	void on_http_dataReadProgress(int done, int total);
-	void on_http_dataSendProgress(int done, int total);
-	void on_http_requestFinished(int id, bool error);
-	void on_http_requestStarted(int id);
-	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-	void httpTimerSlot();
-	void terminateThread();
-      signals:
-	void  getIniDoneNotify(int error);
-	void  getFileDoneNotify(int error);
-	void updateStatusNotify(int type,int status);
-	
+	public slots: 
+		//void updaterDone(bool error);
+		void getFileDone(bool error);
+		void on_http_stateChanged(int stat);
+		void on_http_dataReadProgress(int done, int total);
+		void on_http_dataSendProgress(int done, int total);
+		void on_http_requestFinished(int id, bool error);
+		void on_http_requestStarted(int id);
+		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
+		void httpTimerSlot();
+		void terminateThread();
+signals:
+		void  getIniDoneNotify(int error);
+		void  getFileDoneNotify(int error);
+		void updateStatusNotify(int type,int status);
+
 };
 
 class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public MyThread
@@ -175,30 +175,30 @@ public:
 	int mode;
 #if 0	
 public:
-		int terminateFlag;
-		QTimer* monitorTimer;
-		void setTerminateFlag(int f)
-		{
-				terminateFlag=f;
-		}
-public slots:
+	int terminateFlag;
+	QTimer* monitorTimer;
+	void setTerminateFlag(int f)
+	{
+		terminateFlag=f;
+	}
+	public slots:
 		void monitorTimerSlot();
 #endif
 public:
-	 updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):MyThread(parent),mode(m),settings(s)
-	 	{
-	 		timers=0;
-			needed=0;
-			error=0;
-			localSettings =NULL;
-			serverSettings =NULL;
-			//updateTime =NULL;
-			//monitorTimer =NULL;
-			//terminateFlag = 0;
-			//testNetTimer =NULL;
-			testThread =NULL;
-			fh = NULL;
-	 	}
+	updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):MyThread(parent),mode(m),settings(s)
+	{
+		timers=0;
+		needed=0;
+		error=0;
+		localSettings =NULL;
+		serverSettings =NULL;
+		//updateTime =NULL;
+		//monitorTimer =NULL;
+		//terminateFlag = 0;
+		//testNetTimer =NULL;
+		testThread =NULL;
+		fh = NULL;
+	}
 	~updaterThread()
 	{
 		qDebug("~~updaterThread");
@@ -216,19 +216,19 @@ public:
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
 	void checkSilentUpdateApp();
 
-public slots: 
-	void getIniDone(int err);
-    	void getFileDone(int err);
-	//void testNetFinished(QNetworkReply*);
-	void testNetFinished();
-	void terminateThread();
-	//void testNetTimeout();
+	public slots: 
+		void getIniDone(int err);
+		void getFileDone(int err);
+		//void testNetFinished(QNetworkReply*);
+		void testNetFinished();
+		void terminateThread();
+		//void testNetTimeout();
 
-      signals:
-//	void  updaterDoneNotify(bool error);
-	void updateStatusNotify(int type,int status);
-//	void testNetTerminateNotify();
-//	void getFileTerminateNotify();
-	
+signals:
+		//	void  updaterDoneNotify(bool error);
+		void updateStatusNotify(int type,int status);
+		//	void testNetTerminateNotify();
+		//	void getFileTerminateNotify();
+
 };
 #endif

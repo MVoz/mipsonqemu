@@ -46,35 +46,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 enum CATITEM_ITEM{
-	  CATITEM_FULLPATH=0,
-	  CATITEM_SHORTNAME,	
-	  CATITEM_COMEFROM,
-	  CATITEM_MAX
+	CATITEM_FULLPATH=0,
+	CATITEM_SHORTNAME,	
+	CATITEM_COMEFROM,
+	CATITEM_MAX
 };
 #define COPY_CATITEM(x) do{\
-		fullPath = (x).fullPath;\
-		shortName = (x).shortName;\
-		lowName = (x).lowName;\
-		icon = (x).icon;\
-		usage = (x).usage;\
-		time = (x).time;\
-		hash_id = (x).hash_id;\
-		comeFrom=(x).comeFrom;\
-		isHasPinyin=(x).isHasPinyin;\
-		pinyinReg=(x).pinyinReg;\
-		allchars=(x).allchars;\
-		alias2=(x).alias2;\
-		shortCut=(x).shortCut;\
-		delId=(x).delId;\
-		args=(x).args;\
-		idInTable=(x).idInTable;\
-		pos = (x).pos;\
-		realname = (x).realname;\
-}while(0);
+	fullPath = (x).fullPath;\
+	shortName = (x).shortName;\
+	lowName = (x).lowName;\
+	icon = (x).icon;\
+	usage = (x).usage;\
+	time = (x).time;\
+	hash_id = (x).hash_id;\
+	comeFrom=(x).comeFrom;\
+	isHasPinyin=(x).isHasPinyin;\
+	pinyinReg=(x).pinyinReg;\
+	allchars=(x).allchars;\
+	alias2=(x).alias2;\
+	shortCut=(x).shortCut;\
+	delId=(x).delId;\
+	args=(x).args;\
+	idInTable=(x).idInTable;\
+	pos = (x).pos;\
+	realname = (x).realname;\
+	}while(0);
 
 class CATALOG_DLL_CLASS_EXPORT CatItem {
 public:
-    
+
 	/** The full path of the indexed item */
 	QString fullPath;
 	/** The abbreviated name of the indexed item */
@@ -99,8 +99,8 @@ public:
 	uint idInTable;
 	uint pos;//record the postion when isHasPinyin  true
 
-     //   uint groupId;
-     //   uint parentId;
+	//   uint groupId;
+	//   uint parentId;
 	/*is has pingyin*/
 	unsigned char isHasPinyin;
 	unsigned char comeFrom;
@@ -110,7 +110,7 @@ public:
 	//unsigned int pinyinDepth;
 	/*pinyin reg*/
 
-	
+
 
 	CatItem() {}
 
@@ -119,7 +119,7 @@ public:
 	CatItem(QString full, QString shortN,int flag) ;
 
 	CatItem(QString full, QString shortN, uint i_d,int flag)  ;
-	 
+
 	CatItem(QString full, QString shortN,QString arg, int flag) ;
 
 	/** This is the constructor most used by plugins 
@@ -151,11 +151,11 @@ public:
 
 
 /** InputData shows one segment (between tabs) of a user's query 
-	A user's query is typically represented by List<InputData>
-	and each element of the list represents a segment of the query.
+A user's query is typically represented by List<InputData>
+and each element of the list represents a segment of the query.
 
-	E.g.  query = "google <tab> this is my search" will have 2 InputData segments
-	in the list.  One for "google" and one for "this is my search"
+E.g.  query = "google <tab> this is my search" will have 2 InputData segments
+in the list.  One for "google" and one for "this is my search"
 */
 class CATALOG_DLL_CLASS_EXPORT InputData 
 {

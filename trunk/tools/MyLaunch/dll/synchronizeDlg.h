@@ -33,16 +33,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 {
-	  Q_OBJECT;
-		 public:
-			synchronizeDlg(QWidget *parent);
-			~synchronizeDlg();
-	public:
-		QWebView *webView;
+	Q_OBJECT;
+public:
+	synchronizeDlg(QWidget *parent);
+	~synchronizeDlg();
+public:
+	QWebView *webView;
 	//	QStringList httpStateString;
-		QMap <int,QString> statusMap;
-		int status;
-		uint statusTime;//second
+	QMap <int,QString> statusMap;
+	int status;
+	uint statusTime;//second
 	public slots:
 		void getHtml(const QString &path);
 		void accept();
@@ -52,7 +52,7 @@ class SYNC_DLG_CLASS_EXPORT synchronizeDlg:public QDialog
 		void updateStatus(int type,int s);
 		void readDateProgress(int done,int total);
 		void reSyncSlot();
-	signals:
+signals:
 		void reSyncNotify();
 		void stopSync();
 		void updateSuccessNotify();

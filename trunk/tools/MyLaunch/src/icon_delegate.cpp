@@ -11,10 +11,10 @@ void IconDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option
 {
 	painter->save();
 	if (option.state & QStyle::State_Selected)
-	  {
-		  painter->fillRect(option.rect, option.palette.highlight());
-		  painter->setPen(option.palette.color(QPalette::HighlightedText));
-	  }
+	{
+		painter->fillRect(option.rect, option.palette.highlight());
+		painter->setPen(option.palette.color(QPalette::HighlightedText));
+	}
 
 	QRect iconRect = option.rect;
 	iconRect.setWidth(32);
@@ -55,7 +55,7 @@ void IconDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option
 
 
 QSize IconDelegate::sizeHint(const QStyleOptionViewItem & /* option */ ,
-			     const QModelIndex & /* index */ ) const
+							 const QModelIndex & /* index */ ) const
 {
 	return QSize(10, 32);
 }

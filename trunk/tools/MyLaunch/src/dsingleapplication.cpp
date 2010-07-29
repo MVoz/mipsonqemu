@@ -1,26 +1,26 @@
 /*******************************************************************************
 
-  DSingleApplication is basically imitating QtSingleApplication commercial class
+DSingleApplication is basically imitating QtSingleApplication commercial class
 
-  The implementation is though quite different from what is described in
-  trolltech documetation for QtSingleApplication. DSingleApplication uses
-  tcp sockets to test/open a port in a range and then sed a message to that port
-  and expects a correct answer, if it's correct then the app is running and
-  we can talk to it.
+The implementation is though quite different from what is described in
+trolltech documetation for QtSingleApplication. DSingleApplication uses
+tcp sockets to test/open a port in a range and then sed a message to that port
+and expects a correct answer, if it's correct then the app is running and
+we can talk to it.
 
-  Messages sent are in text and start with APP_ID+":", unles message has this three 
-  bytes it is descarded. Each text message is prepended with int32 value of
-  it's size.
+Messages sent are in text and start with APP_ID+":", unles message has this three 
+bytes it is descarded. Each text message is prepended with int32 value of
+it's size.
 
-  Author: Dima Fedorov Levit <dimin@dimin.net> <http://www.dimin.net/>
-  Copyright (C) BioImage Informatics <www.bioimage.ucsb.edu>
+Author: Dima Fedorov Levit <dimin@dimin.net> <http://www.dimin.net/>
+Copyright (C) BioImage Informatics <www.bioimage.ucsb.edu>
 
-  Licence: GPL
+Licence: GPL
 
-  History:
-    02/08/2007 17:14 - First creation
-      
-  ver: 1       
+History:
+02/08/2007 17:14 - First creation
+
+ver: 1       
 *******************************************************************************/
 
 /*
@@ -100,25 +100,25 @@ void DSingleApplication::init()
 	DPortList ports;
 
 	while (port <= d_unique_port_finish)
-	  {
+	{
 
-		  // here check if the stuff running on port is our instance if not procede
-		  checker.check(port);
-		  checker.wait();
-		  DPortChecker::PortStatus port_status = checker.status();
+		// here check if the stuff running on port is our instance if not procede
+		checker.check(port);
+		checker.wait();
+		DPortChecker::PortStatus port_status = checker.status();
 
-		  if (port_status == DPortChecker::us)
-		    {
-			    other_instance_running = true;
-			    // here we have to connect to other instance to send messages
-			    tcpSocket = checker.transferSocketOwnership();
-			    return;
-		    }
+		if (port_status == DPortChecker::us)
+		{
+			other_instance_running = true;
+			// here we have to connect to other instance to send messages
+			tcpSocket = checker.transferSocketOwnership();
+			return;
+		}
 
-		  DPortInfo pi(port, checker.status() == DPortChecker::free);
-		  ports << pi;
-		  ++port;
-	  }			// while
+		DPortInfo pi(port, checker.status() == DPortChecker::free);
+		ports << pi;
+		++port;
+	}			// while
 
 	port = ports.firstFreePort();
 
@@ -202,34 +202,34 @@ void DPortChecker::run()
 
 	tcpSocket->connectToHost(QHostAddress(QHostAddress::LocalHost), port);
 	if (!tcpSocket->waitForConnected(d_timeout_try_connect))
-	  {
-		  tcpSocket->abort();
-		  return;
-	  }
+	{
+		tcpSocket->abort();
+		return;
+	}
 
 	result = DPortChecker::others;
 	if (!tcpSocket->waitForReadyRead(d_timeout_try_read))
-	  {
-		  tcpSocket->abort();
-		  return;
-	  }
+	{
+		tcpSocket->abort();
+		return;
+	}
 	// now compare received bytes with app_id
 	QDataStream in(tcpSocket);
 	in.setVersion(in.version());	// set to the current Qt version
 
 	if (tcpSocket->bytesAvailable() > 0)
-	  {
-		  QString msgString;
-		  in >> msgString;
-		  if (msgString.size() <= 1)
-		    {
-			    tcpSocket->abort();
-			    return;
-		    }
-		  int s = qMin(msgString.size(), app_id.size());
-		  if (QString::compare(msgString.left(s), app_id.left(s)) == 0)
-			  result = DPortChecker::us;
-	  }
+	{
+		QString msgString;
+		in >> msgString;
+		if (msgString.size() <= 1)
+		{
+			tcpSocket->abort();
+			return;
+		}
+		int s = qMin(msgString.size(), app_id.size());
+		if (QString::compare(msgString.left(s), app_id.left(s)) == 0)
+			result = DPortChecker::us;
+	}
 }
 
 QTcpSocket *DPortChecker::transferSocketOwnership()
@@ -283,9 +283,9 @@ void DListner::run()
 {
 	QTcpSocket tcpSocket;
 	if (!tcpSocket.setSocketDescriptor(socketDescriptor))
-	  {
-		  return;
-	  }
+	{
+		return;
+	}
 	// send app_id to client
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
@@ -295,12 +295,12 @@ void DListner::run()
 	//waitForBytesWritten ( int msecs ) 
 
 	while (1)
-	  {
-		  if (tcpSocket.state() != QAbstractSocket::ConnectedState)
-			  return;
-		  tcpSocket.waitForReadyRead(-1);
-		  read(&tcpSocket);
-	  }
+	{
+		if (tcpSocket.state() != QAbstractSocket::ConnectedState)
+			return;
+		tcpSocket.waitForReadyRead(-1);
+		read(&tcpSocket);
+	}
 }
 
 void DListner::read(QTcpSocket * tcpSocket)
@@ -314,11 +314,11 @@ void DListner::read(QTcpSocket * tcpSocket)
 	in.setVersion(in.version());	// set to the current Qt version instead
 
 	if (blockSize == 0)
-	  {
-		  if (tcpSocket->bytesAvailable() < (int) sizeof(quint32))
-			  return;
-		  in >> blockSize;
-	  }
+	{
+		if (tcpSocket->bytesAvailable() < (int) sizeof(quint32))
+			return;
+		in >> blockSize;
+	}
 	if (tcpSocket->bytesAvailable() < blockSize)
 		return;
 	QString msgString;
@@ -342,11 +342,11 @@ int DPortList::firstFreePort()
 {
 	DPortList::iterator it = this->begin();
 	while (it < this->end())
-	  {
-		  if (it->free == true)
-			  return it->port;
-		  ++it;
-	  }
+	{
+		if (it->free == true)
+			return it->port;
+		++it;
+	}
 	return -1;
 }
 
