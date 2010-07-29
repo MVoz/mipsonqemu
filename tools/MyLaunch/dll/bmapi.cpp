@@ -1006,8 +1006,7 @@ bool tz::checkFirefoxDir(QString& path)
 		return false;
 	if(path.isNull()||path.isEmpty())
 		return false;
-	QDir ff_dir(path);
-	if(!ff_dir.exists())
+	if(!QFile::exists(path))
 		return false;
 }
 bool tz::openFirefox3Db(QSqlDatabase& db,QString path)

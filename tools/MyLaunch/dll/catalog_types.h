@@ -19,7 +19,7 @@ public:
 		db=b;
 	}
 	virtual ~Catalog() {}
-	virtual void addItem(CatItem& item,int type,uint delId) = 0;
+	virtual void addItem(CatItem& item,int comefrom,uint delId) = 0;
 	virtual void clearItem() = 0;
 	virtual int count() = 0;
 	virtual const CatItem & getItem(int) = 0;
@@ -72,13 +72,11 @@ private:
 	//	QList<CatItem> catList;
 public:
 	SlowCatalog(QSettings* setting,CatItem* searchResult,QSqlDatabase* db) : Catalog(setting,searchResult,db) {}
-	void addItem(CatItem& item,int type,uint delId);
+	void addItem(CatItem& item,int comefrom,uint delId);
 	void clearItem() ;
 	QList<CatItem*> search(QString);
 	int count() { return catList.count(); }
-	const CatItem & getItem(int i){
-		return catList[i];
-	}
+	const CatItem & getItem(int i){return catList[i];}
 	//	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 	bool pinyinsearch(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);

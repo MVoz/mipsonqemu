@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDesktopWidget>
 #include <catalog>
 
-OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QSqlDatabase *b,void* catalogbuilder):QDialog(parent),updateTime(d),settings(s),db(b),iePath(path)
+OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QSqlDatabase *b):QDialog(parent),updateTime(d),settings(s),db(b),iePath(path)
 {
 	//catalogBuilder=*(shared_ptr <CatBuilder>*)(catalogBuilder);
 	webView = new QWebView(this);

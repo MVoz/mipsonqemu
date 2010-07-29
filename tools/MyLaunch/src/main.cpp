@@ -1847,7 +1847,7 @@ void MyWidget::stopSyncSlot()
 void MyWidget::reSync()
 {
 	int mode;
-	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
+//	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(syncMode)
 	{
 	case SYNC_MODE_BOOKMARK:
@@ -2208,7 +2208,7 @@ void MyWidget::menuOptions()
 		return;
 	}
 	optionsOpen = true;
-	ops = new OptionsDlg(this,&gLastUpdateTime,gSettings,gIeFavPath,&db,&gBuilder);
+	ops = new OptionsDlg(this,&gLastUpdateTime,gSettings,gIeFavPath,&db);
 	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
 	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
 	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(testAccount(const QString&,const QString&)));	
@@ -2808,7 +2808,7 @@ int main(int argc, char *argv[])
 		}
 #endif
 		//check update in register
-		uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,updateflag);
+		uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
 		//qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s CPU_USAGE_THRESHOLD=%d ",updateflag,(UPDATE_PORTABLE_DIRECTORY),CPU_USAGE_THRESHOLD);
 
 		if(updateflag)
