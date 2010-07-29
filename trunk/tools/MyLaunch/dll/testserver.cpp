@@ -79,8 +79,11 @@ void testServerThread::monitorTimerSlot()
 	void testServerThread::testNetFinished(QNetworkReply* reply)
 	{
 			qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
+			/*
 			if(testNetTimer->isActive())
 				testNetTimer->stop();
+			*/
+			STOP_TIMER(testNetTimer);
 			int error=reply->error();
 			if(!error)
 			{
@@ -100,10 +103,15 @@ void testServerThread::monitorTimerSlot()
 	void testServerThread::testNetTimeout()
 	{
 			qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+			/*
 			if(monitorTimer&&monitorTimer->isActive())
 				monitorTimer->stop();
+
 			if(testNetTimer->isActive())
 				testNetTimer->stop();
+			*/
+			STOP_TIMER(monitorTimer);
+			STOP_TIMER(testNetTimer);
 			reply->abort();
 	}
 	void testServerThread::terminateThread()
@@ -144,19 +152,21 @@ void testServerThread::monitorTimerSlot()
 				terminateFlag=f;
 		}
 	void MyThread::monitorTimerSlot(){
-			qDebug()<<__FUNCTION__<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
+			//qDebug()<<__FUNCTION__<<QThread::currentThreadId();
+			/*if(monitorTimer&&monitorTimer->isActive())
 				monitorTimer->stop();
+			*/
+			STOP_TIMER(monitorTimer);
 			if(terminateFlag)
 				terminateThread();
 			else
 			{
-				qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
+				//qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
 				monitorTimer->start(10);
 			}
 		}
 	void MyThread::run(){
-			qDebug()<<__FUNCTION__;
+			//qDebug()<<__FUNCTION__;
 			monitorTimer = new QTimer();
 			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 			monitorTimer->start(10);
@@ -164,6 +174,7 @@ void testServerThread::monitorTimerSlot()
 		}
 void MyThread::terminateThread(){
 			qDebug()<<QThread::currentThreadId();
-			if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
+			//if(monitorTimer&&monitorTimer->isActive())
+			//	monitorTimer->stop();
+			STOP_TIMER(monitorTimer);
 		}

@@ -1183,7 +1183,7 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
 					 netproxy->setHostName(s->value("HttpProxy/proxyAddress", "").toString());		
 					 netproxy->setPort(s->value("HttpProxy/proxyPort", 0).toUInt());
 					 netproxy->setUser(s->value("HttpProxy/proxyUsername", "").toString());
-					 netproxy->setPassword(s->value("HttpProxy/proxyPassword", "").toString());
+					 netproxy->setPassword(tz::decrypt(s->value("HttpProxy/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY));
 				 }
 				
 			}else	{

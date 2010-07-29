@@ -37,7 +37,7 @@ public:
 public:
 		int terminateFlag;
 		QTimer* monitorTimer;
-		void setTerminateFlag(int f);
+		virtual void setTerminateFlag(int f);
 public slots:
 		virtual void monitorTimerSlot()	;
 public:
@@ -61,13 +61,17 @@ public:
 	 ~testServerThread()
 	 {
 	 	qDebug("~testServerThread");
-	
+		DELETE_OBJECT(manager);
+		DELETE_OBJECT(reply);
+		DELETE_TIMER(testNetTimer);
+		/*
 	 	if(manager)
 			manager->deleteLater();
 		if(reply)
 			reply->deleteLater();
 	 	if(testNetTimer)
 			testNetTimer->deleteLater();		
+		*/
 	 }
 	 void run();
 public slots: 

@@ -4,37 +4,35 @@
 <title>command managment</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
+function $(a) {
+        return document.getElementById(a);
+}
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
 }
 function postItem(name,cmd,args,index)
 {
-	with(document){
-		getElementById('cmdName').value=name;
-		getElementById('cmdCommand').value=cmd;
-		getElementById('cmdParameter').value=args;
-		getElementById('cmdIndex').value=index;
-	}
+		$('cmdName').value=name;
+		$('cmdCommand').value=cmd;
+		$('cmdParameter').value=args;
+		$('cmdIndex').value=index;
 }
 function cmdApply(type)
 {
-with(document){
-	alert(getElementById('cmdIndex').value);
 	switch(type)
 	{
 		case 0://add
-			OptionsDlg.cmdApply(type,getElementById('cmdName').value,getElementById('cmdCommand').value,getElementById('cmdParameter').value,getElementById('cmdIndex').value);
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
 		break;
 		case 1://modify
-			OptionsDlg.cmdApply(type,getElementById('cmdName').value,getElementById('cmdCommand').value,getElementById('cmdParameter').value,getElementById('cmdIndex').value);
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
 		break
 		case 2://delete
-			OptionsDlg.cmdApply(type,getElementById('cmdName').value,getElementById('cmdCommand').value,getElementById('cmdParameter').value,getElementById('cmdIndex').value);			
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);			
 		break;
 	}
 	OptionsDlg.loading('cmd_mg_html');
-  }
 }
 function apply(key)
 {
