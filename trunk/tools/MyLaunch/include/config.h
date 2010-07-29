@@ -313,7 +313,7 @@
 #define DELETE_TIMER(x) \
 			STOP_TIMER(x)\
 			DELETE_OBJECT(x)
-
+#define DELETE_FILE(x)	if(x){ if((x)->isOpen()) (x)->close();delete (x);(x)=NULL; }
 
 enum httpState
 {

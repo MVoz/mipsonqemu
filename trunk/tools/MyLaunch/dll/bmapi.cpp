@@ -829,7 +829,7 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 		QString queryStr;
 		uint id=0;
 #if 1
-		q->prepare(QString("select id from %1 where comeFrom =:comeFrom and hashId=:hashId and shortName =:shortName and fullPath=:fullPath limit 1").arg(DBTABLEINFO_NAME(frombrowsertype)));
+		q->prepare(QString("SELECT id FROM %1 WHERE comeFrom =:comeFrom AND hashId=:hashId AND shortName =:shortName AND fullPath=:fullPath LIMIT 1").arg(DBTABLEINFO_NAME(frombrowsertype)));
 		q->bindValue(":comeFrom", frombrowsertype);
 		q->bindValue(":hashId", qHash(name));
 		q->bindValue(":shortName", name);
@@ -880,7 +880,7 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 int tz::testFirefoxDbLock(QSqlDatabase* db)
 {
 	db->setConnectOptions(tr("QSQLITE_BUSY_TIMEOUT=%1").arg(TEST_DB_MAXINUM_TIMEOUT));
-	QString queryStr=QString("select * from moz_bookmarks limit 1");
+	QString queryStr=QString("SELECT * FROM moz_bookmarks LIMIT 1");
 	QSqlQuery   query(queryStr, *db);
 	if(query.exec()){
 		qDebug("test firefox db successfuly!");

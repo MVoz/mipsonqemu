@@ -690,10 +690,9 @@ void CatBuilder::storeCatalog(uint delId)
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 					//qDebug("queryStr=%s",qPrintable(queryStr));
 					//query.exec(queryStr);
-					q.prepare(QString("UPDATE %1 SET delId=? WHERE id=?").arg(DBTABLEINFO_NAME(item.comeFrom)));
-					int i=0;
-					q.bindValue(i++, delId);
-					q.bindValue(i++, id);
+					q.prepare(QString("UPDATE %1 SET delId=:delId WHERE id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
+					q.bindValue(":delId", delId);
+					q.bindValue(":id", id);
 				  }else
 				  {			
 				 	// produceInsetQueryStr(item,queryStr);

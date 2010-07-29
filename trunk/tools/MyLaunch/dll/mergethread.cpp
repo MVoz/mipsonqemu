@@ -336,13 +336,12 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 {
 	QString postString;
 	 uint nowparentid=0;
-	 if(posthp)
-	 	delete posthp;
+	 DELETE_OBJECT(posthp);
 	  posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
 	  posthp->parentid=parentId;
 	  posthp->browserid=browserType;
 	  posthp->username=settings->value("Account/Username","").toString();
-	  posthp->password=settings->value("Account/Userpasswd","").toString();
+	  posthp->password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);
 //	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
 
 	switch (bc->flag)
@@ -377,10 +376,9 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 			  bc->groupId= nowparentid;
 			  bc->bmid= getBmId();
 			//  foreach(bookmark_catagory bm, bc->list)
-			  int i=0;
-			  for(i=0;i<bc->list.size();i++)
+			  for(int i=0;i<bc->list.size();i++)
 			  {
-				  qDebug("Post to Server[add]:name=%s groupId=%d", qPrintable((bc->list.at(i)).name), bc->groupId);			  
+				  qDebug()<<"Post to Server[add]:name:"<<bc->list.at(i).name<<" groupId:"<<bc->groupId;	
 				  postItemToHttpServer(&(bc->list[i]), action, nowparentid,browserType);
 			  }
 		  }
@@ -425,7 +423,7 @@ void mergeThread::deleteIdFromDb(uint id)
 {
 	QSqlQuery query("",ff_db);
 	QString queryStr;
-	queryStr=QString("select id from moz_bookmarks where parent=%1").arg(id);
+	queryStr=QString("SELECT id FROM moz_bookmarks WHERE parent=%1").arg(id);
 	uint delId=0;
 	if(query.exec(queryStr)){					
 			while(query.next()) { 
@@ -433,9 +431,9 @@ void mergeThread::deleteIdFromDb(uint id)
 					deleteIdFromDb(delId);
 					}
 		}	
-	queryStr=QString("delete from moz_places where id=(select fk from moz_bookmarks where id=%1)").arg(id);
+	queryStr=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE id=%1)").arg(id);
 	query.exec(queryStr);
-	queryStr=QString("delete from  moz_bookmarks where id=%1").arg(id);
+	queryStr=QString("DELETE FROM  moz_bookmarks WHERE id=%1").arg(id);
 	query.exec(queryStr);
 }
 
@@ -559,29 +557,36 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 				    break;
 			    case BROWSE_TYPE_FIREFOX:
 					{
-							QString queryStr;
-							QSqlQuery query("",ff_db);
+							//QString s;
+							QSqlQuery q("",ff_db);
 							//INSERT INTO "moz_places"(url,title) VALUES('http://www.dongua.com/');
 							//INSERT INTO "moz_bookmarks"(type,fk,parent,title) VALUES(1,32,36,'ÀúÊ·');
-							queryStr=QString("INSERT INTO moz_places(url) VALUES('%1')").arg(bc->link);
-							bool success=query.exec(queryStr);
-							qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
+							//s=QString("INSERT INTO moz_places(url) VALUES('")+bc->link+("')");
+							q.prepare("INSERT INTO moz_places(url) VALUES(':url')");
+							q.bindValue(":url",bc->link);
+							bool success=q.exec();
+							//qDebug()<<"query:"<<s<<" result:"<<success;
 							//get fk id
-							queryStr=QString("select id from moz_places where url='%1' order by id desc").arg(bc->link);
-							success=query.exec(queryStr);
-							 qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
+							q.prepare("SELECT id FROM moz_places WHERE url=':url' ORDER BY id DESC");
+							q.bindValue(":url",bc->link);
+							//s=QString("SELECT id FROM moz_places WHERE url='")+bc->link+("' ORDER BY id DESC");
+							success=q.exec();
+							//qDebug()<<"query:"<<s<<" result:"<<success;
 							uint fk_id=0;
 							if(success){		
-								      qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
-									while(query.next()) { 
-										fk_id=query.value(0).toUInt();
+									while(q.next()) { 
+										fk_id=q.value(0).toUInt();
 										break;
 									}
 							}
 							if(fk_id){
-							queryStr=QString("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,%1,%2,'%3');").arg(fk_id).arg(local_parentId).arg(bc->name);
-							success=query.exec(queryStr);
-							qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
+								//s=QString("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,%1,%2,'%3');").arg(fk_id).arg(local_parentId).arg(bc->name);
+								q.prepare("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,:type,:fk,':title');");
+								q.bindValue(":type",fk_id);
+								q.bindValue(":fk",local_parentId);
+								q.bindValue(":title",bc->name);
+								success=q.exec();
+								//qDebug()<<"query:"<<s<<" result:"<<success;
 							}
 							return;
 						}
@@ -602,16 +607,16 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 					    break;
 					case BROWSE_TYPE_FIREFOX:
 							{
-							QString queryStr;
-							QSqlQuery query("",ff_db);
+							QString s;
+							QSqlQuery q("",ff_db);
 							//delete from moz_places where id=(select fk from moz_bookmarks where title='sohu');
 							//delete from moz_bookmarks where parent
-							queryStr=QString("delete from moz_places where id=(select fk from moz_bookmarks where parent=%1 and title='%2')").arg(local_parentId).arg(bc->name);
-							bool success=query.exec(queryStr);
-							qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
-							queryStr=QString("delete from moz_bookmarks where parent=%1 and title='%2' and type=1").arg(local_parentId).arg(bc->name);
-							success=query.exec(queryStr);
-							qDebug("qetryStr=%s success=%d",qPrintable(queryStr),success);
+							s=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE parent=%1 AND title='%2')").arg(local_parentId).arg(bc->name);
+							bool success=q.exec(s);
+							qDebug()<<"query:"<<s<<" result:"<<success;
+							q=QString("DELETE FROM moz_bookmarks WHERE parent=%1 AND title='%2' AND type=1").arg(local_parentId).arg(bc->name);
+							success=q.exec(s);
+							qDebug()<<"query:"<<s<<" result:"<<success;
 							return;
 							}
 							break;
@@ -646,18 +651,18 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 				item->addDate=QDateTime::currentDateTime();
 	  	  		productFFId(item->id,6);
 	  	  	}	  	 
-		  qDebug("Down to Local[add]:name=%s local_parentId=%d", qPrintable(item->name),local_parentId);
+		  qDebug()<<"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId;
 		  downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? iePath : iePath + "/" + dir,browserType,local_parentId);
 		  list->push_back(*item);
 		  break;
 	  case 2:		//only exist in lastupdate,do nothing
 		  break;
 	  case 3:		//exist in server&lastupdate,need to delete from server
-		 qDebug("Post to Server[delete]:name=%s", qPrintable(item->name));
+		 qDebug()<<"Post to Server[delete]:name:"<<item->name;
 		  postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
 		  break;
 	  case 4:		//only exist in local,need post to server
-		  qDebug("Post to Server[add]:name=%s hr=%d", qPrintable(item->name),item->hr);		  
+		  qDebug()<<"Post to Server[add]:name="<<item->name<<" hr:"<<item->hr;		  
 		  postItemToHttpServer(item, ACTION_ITEM_ADD, parentId,browserType);
 		  list->push_back(*item);
 		  break;
@@ -667,7 +672,7 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 		//  		list->push_back(*item);
 		  break;
 	  case 6:		//exist in local&lastupdate,need delete from local
-		  qDebug("Down to Local[delete]:name=%s local_parentId=%d path=%s", qPrintable(item->name),local_parentId,qPrintable(QString( (dir == "") ? iePath : iePath + "/" + dir)));
+		  qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<QString( (dir == "") ? iePath : iePath + "/" + dir);
 		  downloadToLocal(item, ACTION_ITEM_DELETE, (dir == "") ? iePath : iePath + "/" + dir,browserType,local_parentId);
 		  break;
 	  case 7:		//exist in local,lastupdate&server,do nothing
@@ -679,11 +684,15 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 int mergeThread::isBmEntryEqual(const bookmark_catagory& b,const bookmark_catagory& bm)
 {
 	settings->sync();
+#ifdef QT_NO_DEBUG
+#else
+
 	if((settings->value("GenOps/debugmerge",1).toUInt()&0x01)!=1)		
 	{
-		qDebug("b:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(b.name),b.name_hash,qPrintable(b.link),b.link_hash,b.flag);
-		qDebug("bm:name=%s name_hash=%u link=%s link_hash=%u flag=%d",qPrintable(bm.name),bm.name_hash,qPrintable(bm.link),bm.link_hash,bm.flag);
+		qDebug()<<"b:name="<<b.name<<" name_hash="<<b.name_hash<<" link="<<b.link<<" link_hash="<<b.link_hash<<" flag="<<b.flag;
+		qDebug()<<"bm:name="<<bm.name<<" name_hash="<<bm.name_hash<<" link="<<bm.link<<" link_hash="<<bm.link_hash<<" flag="<<bm.flag;
 	}
+#endif
 	if ((b.name_hash!= bm.name_hash) || (b.link_hash!= bm.link_hash) || (b.flag != bm.flag)||(b.name != bm.name) || (b.link != bm.link))
 		return BM_DIFFERENT;
 	else
@@ -734,7 +743,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = bmItemInList(&item, serverList);
 		  ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		   qDebug("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
+		   qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
 		   if (ret != 7&&ret!=5)
 			{
 				/*
@@ -753,7 +762,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		    {
 			    bookmark_catagory tmp;
 			    copyBmCatagory(&tmp, &((*serverList)[inServer]));
-			    qDebug("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
+			    qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
 			    resultList->push_back(tmp);
 			    //when re=5,inLast=-1,use lastupdateList
 			    bmMerge(&(item.list), (inLast>=0)?(&((*lastupdateList)[inLast].list)):(lastupdateList), &((*serverList)[inServer].list), &(resultList->last().list), (localDirName == "") ? iePath : iePath + "/" + localDirName,iePath,browserType);
@@ -797,7 +806,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		  int inLast = bmItemInList(&item, lastupdateList);
 		  int inServer = inLast;
 		  ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		  qDebug("%s ret=%d name=%s",__FUNCTION__,ret,qPrintable(item.name));
+		  qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
 		  if (ret != 7&&ret!=5){
 			  handleItem(&item, ret, localDirName, parentId, resultList,iePath,browserType,local_parentId,HANDLE_ITEM_LOCAL);
 		  }
@@ -805,7 +814,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		    {
 			    bookmark_catagory tmp;
 			    copyBmCatagory(&tmp, &((*lastupdateList)[inLast]));
-			    qDebug("%s name=%s bmid=%u groupid=%u",__FUNCTION__,qPrintable(tmp.name),tmp.bmid,tmp.groupId);
+			       qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
 			    resultList->push_back(tmp);
 			   // resultList->push_back(lastupdateList->at(inLast));
 			    bmMergeWithoutModifyInServer(&(item.list), &((*lastupdateList)[inLast].list), &(resultList->last().list), (localDirName == "") ? iePath : iePath + "/" + localDirName,iePath,browserType);
@@ -828,9 +837,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 }
 void mergeThread::run()
 {
-	
-
-	qDebug("mergerThread running. iePath=%s.................",qPrintable(iePath));
+	QDEBUG_LINE;
 	handleBmData(iePath);
 	exit();
 	emit done(0);
@@ -944,10 +951,11 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 				uint id=0;
 				if(id=tz::isExistInDb(q,item.name,item.link,frombrowsertype)){
 					//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
-					q->prepare(QString("update %1 set delId = ? where id= ? ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
-					int i=0;
-					q->bindValue(i++, delId);
-					q->bindValue(i++, id);
+
+					q->prepare(QString("UPDATE %1 SET delId=:delId WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
+					q->bindValue(":delId", delId);
+					q->bindValue(":id", id);
+
 					
 				}				
 				else

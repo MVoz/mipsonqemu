@@ -138,13 +138,19 @@ void GetFileHttp::run()
 }
 void GetFileHttp::httpTimerSlot()
 {
+	/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+	*/
+	STOP_TIMER(monitorTimer);
 	qDebug("httpTimerSlot.......");
 	if(mode==UPDATE_DLG_MODE) 
 		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
+	STOP_TIMER(httpTimer[retryTime]);
+	/*
 	if(httpTimer[retryTime]&&httpTimer[retryTime]->isActive())
 		httpTimer[retryTime]->stop();
+	*/
 	http[retryTime]->abort();	
 }
 GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): QThread(parent),mode(mode),md5(c)
@@ -164,8 +170,11 @@ GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): QThread(parent),mo
 }
 void GetFileHttp::monitorTimerSlot()
 {
+	STOP_TIMER(monitorTimer);
+/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+*/
 	if(terminateFlag)
 		terminateThread();
 	else
@@ -174,7 +183,7 @@ void GetFileHttp::monitorTimerSlot()
 
 void GetFileHttp::getFileDone(bool error)
 {
-	
+	/*
 	if (!IS_NULL(file[retryTime]))
 	  {
 	  	  
@@ -182,6 +191,8 @@ void GetFileHttp::getFileDone(bool error)
 		  delete file[retryTime];
 		  file[retryTime] = NULL;
 	  }
+	  */
+	DELETE_FILE( file[retryTime] );
 	 
 	switch(mode){
 		case UPDATE_MODE_GET_INI:
@@ -408,8 +419,11 @@ void updaterThread::testNetFinishedx()
 }
 void updaterThread::terminateThread()
 {	
+	/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+	*/
+	STOP_TIMER(monitorTimer);
 	if(testThread&&testThread->isRunning())
 		testThread->setTerminateFlag(1);
 	if(fh&&fh->isRunning())
@@ -417,8 +431,11 @@ void updaterThread::terminateThread()
 }
 void updaterThread::monitorTimerSlot()
 {
+/*
 	if(monitorTimer&&monitorTimer->isActive())
 		monitorTimer->stop();
+*/
+	STOP_TIMER(monitorTimer);
 	if(terminateFlag)
 		terminateThread();
 	else

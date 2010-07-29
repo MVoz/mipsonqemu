@@ -37,7 +37,7 @@ PlatformBase *loadPlatform()
 	QObject *plugin = NULL;
 	foreach(QString file, files)
 	{
-		qDebug() << "try to load platform file"<<file<<"!\n";
+		//qDebug() << "try to load platform file"<<file<<"!\n";
 		QPluginLoader loader(file);
 		plugin = loader.instance();
 
