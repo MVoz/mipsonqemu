@@ -30,6 +30,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../debug/updaterThread.lib
 	LIBS +=   ../debug/synchronizeDlg.lib
 	LIBS +=   ../debug/catalog.lib
+	LIBS +=   ../debug/testserver.lib
 	
    }
    CONFIG(release, debug|release) {
@@ -42,5 +43,6 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../release/synchronizeDlg.lib
 	LIBS +=   ../release/catalog.lib
 	LIBS +=   ../release/updaterThread.lib
+	LIBS +=   ../release/testserver.lib
    }
  }

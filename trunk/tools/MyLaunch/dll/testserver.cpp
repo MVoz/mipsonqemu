@@ -76,6 +76,41 @@ void testServerThread::monitorTimerSlot()
 	
 }
 */
+	  MyThread::MyThread(QObject * parent):QThread(parent){
+		terminateFlag=0;
+		monitorTimer=0;
+	}
+	void MyThread::setTerminateFlag(int f)
+		{
+				terminateFlag=f;
+		}
+	void MyThread::monitorTimerSlot(){
+			//qDebug()<<__FUNCTION__<<QThread::currentThreadId();
+			/*if(monitorTimer&&monitorTimer->isActive())
+				monitorTimer->stop();
+			*/
+			STOP_TIMER(monitorTimer);
+			if(terminateFlag)
+				terminateThread();
+			else
+			{
+				//qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
+				monitorTimer->start(10);
+			}
+		}
+	void MyThread::run(){
+			//qDebug()<<__FUNCTION__;
+			monitorTimer = new QTimer();
+			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
+			monitorTimer->start(10);
+			monitorTimer->moveToThread(this);
+		}
+void MyThread::terminateThread(){
+			//qDebug()<<QThread::currentThreadId();
+			//if(monitorTimer&&monitorTimer->isActive())
+			//	monitorTimer->stop();
+			STOP_TIMER(monitorTimer);
+		}
 	void testServerThread::testServerFinished(QNetworkReply* reply)
 	{
 			//qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
@@ -143,38 +178,3 @@ void testServerThread::monitorTimerSlot()
 			connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testServerTimeout()), Qt::DirectConnection);
 			exec();
 	}
-	  MyThread::MyThread(QObject * parent):QThread(parent){
-		terminateFlag=0;
-		monitorTimer=0;
-	}
-	void MyThread::setTerminateFlag(int f)
-		{
-				terminateFlag=f;
-		}
-	void MyThread::monitorTimerSlot(){
-			//qDebug()<<__FUNCTION__<<QThread::currentThreadId();
-			/*if(monitorTimer&&monitorTimer->isActive())
-				monitorTimer->stop();
-			*/
-			STOP_TIMER(monitorTimer);
-			if(terminateFlag)
-				terminateThread();
-			else
-			{
-				//qDebug()<<"restart monitorTimer"<<QThread::currentThreadId();
-				monitorTimer->start(10);
-			}
-		}
-	void MyThread::run(){
-			//qDebug()<<__FUNCTION__;
-			monitorTimer = new QTimer();
-			connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-			monitorTimer->start(10);
-			monitorTimer->moveToThread(this);
-		}
-void MyThread::terminateThread(){
-			//qDebug()<<QThread::currentThreadId();
-			//if(monitorTimer&&monitorTimer->isActive())
-			//	monitorTimer->stop();
-			STOP_TIMER(monitorTimer);
-		}
