@@ -107,6 +107,7 @@ public:
 		void proxtTestTimerSlot();
 		void rebuildcatalog();
 		void startUpdater();
+		QString tr(const QString & s);
 signals:
 		void rebuildcatalogSignal();
 		void optionStartSyncNotify();

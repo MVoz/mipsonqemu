@@ -223,6 +223,9 @@ void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 	qDebug("username=%s password=%s......",qPrintable(name),qPrintable(password));
 	emit testAccountNotify(name,password);
 }
+QString OptionsDlg::tr(const QString & s){
+	 return tz::tr(TOCHAR(s));
+}
 void OptionsDlg::getHtml(const QString & path)
 {
 	QFile htmlFile(path);
