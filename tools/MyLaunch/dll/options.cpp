@@ -235,7 +235,59 @@ void OptionsDlg::getHtml(const QString & path)
 void OptionsDlg::loading(const QString & name)
 {
 	QString jsStr;
-	if (name == "general_html")
+	struct menuhtml{
+		QString name;
+		QList<QString> child;
+	}menuHtml[4];
+
+	menuHtml[0].name = "common";
+	menuHtml[0].child<<"list_mg"<<"cmd_mg"<<"net_mg";
+	menuHtml[1].name = "adv";
+	menuHtml[2].name = "interface";
+	menuHtml[2].child<<"skin_mg"<<"language_mg";
+	menuHtml[3].name = "about";
+    
+	
+	//menu parts
+	
+	QString menustring;
+	menustring.append("<ul id=\"menu\">");
+	for(int j = 0; j < 4 ; j++){
+		menustring.append("<li>");
+		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+menuHtml[j].name+".html');\" style=\""+((name==menuHtml[j].name)?"font-weight:bold;":"")+"\">"+tz::tr(TOCHAR(menuHtml[j].name))+"</a>");
+		if(menuHtml[j].child.count()){
+			menustring.append("<ul>");
+			foreach(QString childname,menuHtml[j].child){
+				menustring.append("<li>");
+				menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+childname+".html');\" style=\""+((name==childname)?"font-weight:bold;":"")+"\">"+tz::tr(TOCHAR(childname))+"</a>");
+				menustring.append("</li>");
+			}
+			menustring.append("</ul>");
+		}
+		menustring.append("</li>");
+	}
+	menustring.append("</ul>");	
+	menustring.replace("\"","\\\"");
+	jsStr.append("$('lm').innerHTML=\""+menustring+"\";");
+
+	//button parts
+	QString buttonstring;
+
+	buttonstring.append("<table width=\"100%\"><tr>");
+	buttonstring.append("<td width=\"50%\">&nbsp;</td>");
+	buttonstring.append("<td width=\"25%\">");
+	buttonstring.append("<div class=\"btn\">");
+	buttonstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
+	buttonstring.append("</div></td>");				
+	buttonstring.append("<td width=\"25%\">");	
+	buttonstring.append("<div class=\"btn\">");	
+	buttonstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");	
+	buttonstring.append("</div></td></tr></table>");
+	
+	buttonstring.replace("\"","\\\"");
+	jsStr.append("$('applybtn').innerHTML=\""+buttonstring+"\";");
+
+	if (name == "common")
 	{
 		JS_APPEND_CHECKED("ckStartWithSystem","generalOpt",false);
 		JS_APPEND_CHECKED("ckShowTray","generalOpt",false);
@@ -258,7 +310,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 
 
-	} else if (name == "net_mg_html")
+	} else if (name == "net_mg")
 	{
 
 		//jsStr.append("$('Username').value ='"+settings->value("Account/Username", "").toString()+"';"); 	
@@ -280,7 +332,7 @@ void OptionsDlg::loading(const QString & name)
 		// jsStr.append(QString("$('proxyPassword').value ='%1';").arg(tz::decrypt(settings->value("HttpProxy/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)));
 		jsStr.append(QString("proxyEnableClick();"));
 
-	} else if (name == "cmd_mg_html")
+	} else if (name == "cmd_mg")
 	{
 		jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
@@ -390,7 +442,7 @@ void OptionsDlg::loading(const QString & name)
 		query.clear();
 		jsStr.append(QString("</table>';"));
 
-	} else if (name == "list_mg_html")
+	} else if (name == "list_mg")
 	{
 		jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
@@ -436,7 +488,7 @@ void OptionsDlg::loading(const QString & name)
 
 		jsStr.append(QString("</table>';"));
 
-	}else if(name == "adv_html"){
+	}else if(name == "adv"){
 		JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);
 		JS_APPEND_CHECKED("ckCaseSensitive","adv",false);
 		JS_APPEND_CHECKED("ckRebuilderCatalogTimer","adv",false);

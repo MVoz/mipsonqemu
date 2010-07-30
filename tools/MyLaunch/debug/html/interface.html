@@ -8,6 +8,9 @@ function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
 }
+function $(a) {
+        return document.getElementById(a);
+}
 </script>
 </head>
 <body>
@@ -15,30 +18,6 @@ function getHtml(path)
 	<div id="header"></div>
 	<div class="main">
 	<div id="lm">
-	<ul id="menu">
-		<li>
-			<a href="#" onclick="getHtml('./html/general.html');">通用</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/adv.html');" >高级</a>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/interface.html');" style="font-weight:bold;">界面</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
-				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/about.html');">关于</a>
-		</li>		
-	</ul>
-
 	</div>
 	<div id="rm">
 		<div id="taitou">效果</div>
@@ -85,5 +64,10 @@ function getHtml(path)
 	</div>
 	</div>
 </div>
+<div id="applybtn"></div>
 </body>
+<script>
+	OptionsDlg.loading('interface');
+</script>
+
 </html>

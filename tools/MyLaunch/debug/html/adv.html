@@ -47,30 +47,6 @@ function updateClick(type)
 	<div id="header"></div>
 	<div class="main">
 	<div id="lm">
-	<ul id="menu">
-		<li>
-			<a href="#" onclick="getHtml('./html/general.html');" >通用</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
-			</ul>
-		</li>
-		<li>
-		<a href="#" onclick="getHtml('./html/adv.html');" style="font-weight:bold;" >高级</a>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
-				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/processDlg.html');">关于</a>
-		</li>		
-	</ul>
-
 	</div>
 <div id="rm">
 		<div id="taitou">高级</div>
@@ -118,25 +94,9 @@ function updateClick(type)
 	</table>
 </div>
 </div>
-	<div id="applybtn">
-			<table width="100%">
-				<tr>
-					<td width="50%">&nbsp</td>
-					<td width="25%">
-								<div class="btn">
-								<a href="#"  onclick="apply('adv_html');" >应用</a>
-								</div>
-					</td>
-					<td width="25%">
-								<div class="btn">
-								<a href="#"  onclick="reject();" >取消</a>
-								</div>
-					</td>
-				</tr>
-			</table>
-	</div>
+<div id="applybtn"></div>
 </body>
 <script>
-	OptionsDlg.loading('adv_html');
+	OptionsDlg.loading('adv');
 </script>
 </html>
