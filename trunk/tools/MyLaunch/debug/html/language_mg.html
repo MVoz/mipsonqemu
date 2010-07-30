@@ -4,19 +4,24 @@
 <title>language managment</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
-var lang=0;//0--en 1--ch
-var language = {
-    general:['general',"通用"]
-};
 
+function $(a) {
+        return document.getElementById(a);
+}
 function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
 }
+/*
+var lang=0;//0--en 1--ch
+var language = {
+    general:['general',"通用"]
+};
 function tr(a)
 {
 		document.write(language[a][lang]);
 }
+*/
 </script>
 </head>
 <body>
@@ -24,34 +29,6 @@ function tr(a)
 	<div id="header"></div>
 	<div class="main">
 	<div id="lm">
-	<ul id="menu">
-		<li>
-			<a href="#" onclick="getHtml('./html/general.html');">
-				<script>
-					tr('general');
-				</script>
-			</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/adv.html');" >高级</a>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
-				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/about.html');">关于</a>
-		</li>		
-	</ul>
-
 	</div>
 	<div id="rm">
 		<div id="taitou">输出</div>
@@ -94,5 +71,9 @@ function tr(a)
 	</div>
 	</div>
 </div>
+<div id="applybtn"></div>
 </body>
+<script>
+	OptionsDlg.loading('language_mg');
+</script>
 </html>
