@@ -13,15 +13,16 @@ function getHtml(path)
 	OptionsDlg.getHtml(path);
 }
 /*
-var lang=0;//0--en 1--ch
+var lang=1;//0--en 1--ch
 var language = {
-    general:['general',"通用"]
+    output:['general',"通用"]
 };
+*/
 function tr(a)
 {
-		document.write(language[a][lang]);
+		document.write(OptionsDlg.tr(a));
 }
-*/
+
 </script>
 </head>
 <body>
@@ -31,7 +32,7 @@ function tr(a)
 	<div id="lm">
 	</div>
 	<div id="rm">
-		<div id="taitou">输出</div>
+		<div id="taitou"><script>tr('output');</script></div>
 	<div id="area">
 		<table width="400">
 		<tr>
