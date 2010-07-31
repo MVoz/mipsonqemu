@@ -48,9 +48,6 @@ struct predefinedonsystem{
 CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
 buildWithStart(fromArchive),buildMode(mode),db(dbs)
 {
-	//if (gSettings->value("GenOps/fastindexer", false).toBool())
-	//	cat.reset((Catalog *) new FastCatalog(gSettings));
-	//else
 	cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));
 	terminateflag=0;
 }

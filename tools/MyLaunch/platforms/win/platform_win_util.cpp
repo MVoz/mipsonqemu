@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QObject>
 #include <QtGui>
 
-
+/*
 BOOL GetShellDir(int iType, QString& szPath)
 {
 	HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
@@ -53,7 +53,7 @@ BOOL GetShellDir(int iType, QString& szPath)
 	return TRUE;
 	return 0;
 }
-
+*/
 QIcon WinIconProvider::icon(const QFileInfo& info) const {
 	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
 	QPixmap qpix = convertHIconToPixmap(hico);

@@ -59,7 +59,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QDateTime*d,QSettings *s,QString path,QS
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
-	getHtml("./html/general.html");
+	getHtml("./html/common.html");
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
 	manager=NULL;
@@ -74,11 +74,7 @@ OptionsDlg::~OptionsDlg()
 	QResource::unregisterResource("options.rcc");
 	cmdLists.clear();
 	dirLists.clear();
-	if(manager){
-		manager->deleteLater();
-		manager=NULL;
-	}
-
+	DELETE_OBJECT(manager);
 	QDialog::accept();
 }
 
@@ -136,7 +132,7 @@ syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
 void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
 {
 	qDebug("%s error=%d\n",__FUNCTION__,err);
-	testProxyTimer.stop();
+	DELETE_OBJECT(testProxyTimer);
 	switch (err){
 		case  QNetworkReply::ProxyAuthenticationRequiredError:
 			QMessageBox::critical(0, windowTitle(), QObject::tr("The proxy server needs the right name and password"));			
@@ -151,8 +147,7 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 {	
 	int err=testreply->error();
 	qDebug("%s error=%d\n",__FUNCTION__,testreply->error());
-	if(testProxyTimer.isActive())
-		testProxyTimer.stop();
+	DELETE_OBJECT(testProxyTimer);
 	switch (err){
 		case QNetworkReply::NoError:
 			QMessageBox::information(this, windowTitle(), tz::tr("proxy_test_success"));
@@ -173,9 +168,7 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 }
 void OptionsDlg::proxtTestTimerSlot()
 {
-	QDEBUG_LINE;
-	if(testProxyTimer.isActive())
-		testProxyTimer.stop();
+	STOP_TIMER(testProxyTimer);
 	reply->abort();
 }
 void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/)
@@ -205,12 +198,12 @@ void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyP
 
 		reply = manager->get(request);
 
-		// testProxyTimer=new QTimer(this);
+		 testProxyTimer=new QTimer(this);
 
-		testProxyTimer.start(10);
-		testProxyTimer.setSingleShot(TRUE);
+		testProxyTimer->start(10);
+		testProxyTimer->setSingleShot(TRUE);
 
-		connect(&testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
+		connect(testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
 		// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
 		// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(proxyTestslotError(QNetworkReply::NetworkError)));
 		connect(manager, SIGNAL(finished ( QNetworkReply * )), this, SLOT(proxyTestslotFinished(QNetworkReply *)));
@@ -292,23 +285,23 @@ void OptionsDlg::loading(const QString & name)
 
 	if (name == "common")
 	{
-		JS_APPEND_CHECKED("ckStartWithSystem","generalOpt",false);
-		JS_APPEND_CHECKED("ckShowTray","generalOpt",false);
-		JS_APPEND_CHECKED("ckShowMainwindow","generalOpt",false);
-		JS_APPEND_CHECKED("ckAutoUpdate","generalOpt",false);
-		JS_APPEND_CHECKED("ckScanDir","generalOpt",false);
+		JS_APPEND_CHECKED("ckStartWithSystem","",false);
+		JS_APPEND_CHECKED("ckShowTray","",false);
+		JS_APPEND_CHECKED("ckShowMainwindow","",false);
+		JS_APPEND_CHECKED("ckAutoUpdate","",false);
+		JS_APPEND_CHECKED("ckScanDir","",false);
 		//  jsStr.append(QString("$('ckStartWithSystem').checked =%1;").arg(settings->value("generalOpt/ckStartWithSystem", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckShowTray').checked =%1;").arg(settings->value("generalOpt/ckShowTray", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckShowMainwindow').checked =%1;").arg(settings->value("generalOpt/ckShowMainwindow", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckAutoUpdate').checked =%1;").arg(settings->value("generalOpt/ckAutoUpdate", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckScanDir').checked =%1;").arg(settings->value("generalOpt/ckScanDir", false).toBool()? "true" : "false"));
 #ifdef Q_WS_WIN
-		int curMeta = settings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+		int curMeta = settings->value("hotkeyModifier", Qt::AltModifier).toInt();
 #endif
 #ifdef Q_WS_X11
-		int curMeta = settings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+		int curMeta = settings->value("hotkeyModifier", Qt::ControlModifier).toInt();
 #endif
-		int curAction = settings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+		int curAction = settings->value("hotkeyAction", Qt::Key_Space).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 
@@ -516,12 +509,12 @@ void OptionsDlg::accept()
 
 void OptionsDlg::reject()
 {
+	qDebug()<<__FUNCTION__;
 	QDialog::reject();
 }
 void OptionsDlg::apply(const QString & name, const QVariant & value)
 {
-	if(name=="generalOpt/ckStartWithSystem"){
-		qDebug("set generalOpt/ckStartWithSystem! ");
+	if(name=="ckStartWithSystem"){
 		QSettings s(QString("HKEY_LOCAL_MACHINE\\Software\\microsoft\\windows\\currentversion\\run"),QSettings::NativeFormat);	
 		QString filepath=qApp->applicationFilePath().replace(QString("/"), QString("\\"));
 		if(QVariant(value).toBool())

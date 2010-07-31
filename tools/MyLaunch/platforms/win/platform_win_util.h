@@ -31,7 +31,7 @@
 
 
 #pragma warning (disable : 4089)
-BOOL GetShellDir(int iType, QString& szPath);
+//BOOL GetShellDir(int iType, QString& szPath);
 
 
 class LimitSingleInstance

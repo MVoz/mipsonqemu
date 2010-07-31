@@ -16,8 +16,10 @@ CONFIG		-= embed_manifest_dll
 
 win32:debug {
 	DESTDIR = ../../debug/
+	LIBS +=   ../../debug/bmapi.lib
 }
 
 win32:release {
 	DESTDIR = ../../release/
+	LIBS +=   ../../release/bmapi.lib
 }

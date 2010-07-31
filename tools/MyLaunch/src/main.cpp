@@ -170,7 +170,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	ops = NULL;
 #endif
 	// Load settings
-
+	
 	if (QFile::exists(dirs["portConfig"][0]))
 		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
 	else
@@ -179,7 +179,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	//      dump_setting(NULL);
 #endif
 	//inital language
-	setLanguage(gSettings->value("GenOps/language", DEFAULT_LANGUAGE).toInt()) ;
+	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
@@ -217,7 +217,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
-	setCondensed(gSettings->value("GenOps/condensedView", false).toBool());
+	setCondensed(gSettings->value("condensedView", false).toBool());
 	alternatives->setObjectName("alternatives");
 	alternatives->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	alternatives->setTextElideMode(Qt::ElideLeft);
@@ -233,7 +233,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	plugins.loadPlugins();
 
 	// Load the skin
-	applySkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString());
+	applySkin(gSettings->value("skin", dirs["defSkin"][0]).toString());
 
 	// Move to saved position
 	QPoint x;
@@ -248,25 +248,25 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	setBrowserEnable(gSettings);
 
 	// Set the general options
-	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
-	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
-	setPortable(gSettings->value("GenOps/isportable", false).toBool());
+	setAlwaysShow(gSettings->value("alwaysshow", false).toBool());
+	setAlwaysTop(gSettings->value("alwaystop", false).toBool());
+	setPortable(gSettings->value("isportable", false).toBool());
 
 
 	// Check for udpates?
-	if (gSettings->value("GenOps/updatecheck", true).toBool())
+	if (gSettings->value("updatecheck", true).toBool())
 	{
 		checkForUpdate();
 	}
 
 	// Set the hotkey
 #ifdef Q_WS_WIN
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+	int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
 #endif
 #ifdef Q_WS_X11
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+	int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
 #endif
-	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+	int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction))
 	{
 		QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
@@ -288,7 +288,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
 		silentupdateTimer->start(1*SECONDS);//1m
-	if (gSettings->value("GenOps/synctimer", 10).toInt() != 0)
+	if (gSettings->value("synctimer", 10).toInt() != 0)
 		syncTimer->start(5*MINUTES);//5m
 
 	monitorTimer=new QTimer(this);
@@ -311,7 +311,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 
 #endif
-	showLaunchyFirstTime=gSettings->value("generalOpt/ckShowMainwindow", false).toBool();
+	showLaunchyFirstTime=gSettings->value("ckShowMainwindow", false).toBool();
 
 	if (showLaunchyFirstTime || rescue)
 		showLaunchy();
@@ -319,7 +319,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		hideLaunchy();
 #ifdef CONFIG_SYSTEM_TRAY
 	setIcon();
-	if(gSettings->value("generalOpt/ckShowTray", true).toBool())
+	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
 	}
@@ -390,7 +390,7 @@ void MyWidget::showAlternatives(bool show)
 		}
 		if (alternatives->count() > 0)
 		{
-			int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
+			int numViewable = gSettings->value("numviewable", "4").toInt();
 			//QRect r = alternatives->geometry();
 			int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
 			n.setHeight(min * alternatives->sizeHintForRow(0));
@@ -404,7 +404,7 @@ void MyWidget::showAlternatives(bool show)
 			}
 			alternatives->setGeometry(n);
 		}
-		double opaqueness = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		double opaqueness = (double) gSettings->value("opaqueness", 100).toInt();
 		opaqueness /= 100.0;
 		alternatives->setWindowOpacity(opaqueness);
 		alternatives->show();
@@ -596,7 +596,7 @@ void MyWidget::focusOutEvent(QFocusEvent * evt)
 {
 	if (evt->reason() == Qt::ActiveWindowFocusReason)
 	{
-		if (gSettings->value("GenOps/hideiflostfocus", false).toBool())
+		if (gSettings->value("hideiflostfocus", false).toBool())
 			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen)
 			{
 				hideLaunchy();
@@ -1281,9 +1281,9 @@ void MyWidget::updateVersion(int oldVersion)
 
 	if (oldVersion < 210)
 	{
-		QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
+		QString oldSkin = gSettings->value("skin", dirs["defSkin"][0]).toString();
 		QString newSkin = dirs["skins"][0] + "/" + oldSkin;
-		gSettings->setValue("GenOps/skin", newSkin);
+		gSettings->setValue("skin", newSkin);
 	}
 
 	if (oldVersion < LAUNCHY_VERSION)
@@ -1315,7 +1315,7 @@ QPoint MyWidget::loadPosition()
 	QRect r = geometry();
 	int primary = qApp->desktop()->primaryScreen();
 	QRect scr = qApp->desktop()->availableGeometry(primary);
-	if (gSettings->value("GenOps/alwayscenter", false).toBool())
+	if (gSettings->value("alwayscenter", false).toBool())
 	{
 		QPoint p;
 		p.setX(scr.width() / 2.0 - r.width() / 2.0);
@@ -1344,7 +1344,7 @@ gSettings->setValue("Display/rposY", rpos.second);
 void MyWidget::syncTimeout()
 {
 	// one hour
-	int time = gSettings->value("GenOps/updatetimer", 60).toInt();
+	int time = gSettings->value("updatetimer", 60).toInt();
 	{
 		_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);
 	}
@@ -1637,7 +1637,7 @@ void MyWidget::applySkin(QString directory)
 	if (!QFile::exists(directory + "/misc.txt"))
 	{
 		directory = dirs["defSkin"][0];
-		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
+		gSettings->setValue("skin", dirs["defSkin"][0]);
 	}
 
 	// Set positions
@@ -2266,8 +2266,8 @@ void MyWidget::shouldDonate()
 void Fader::fadeIn()
 {
 
-	int time = gSettings->value("GenOps/fadein", 0).toInt();
-	double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+	int time = gSettings->value("fadein", 0).toInt();
+	double end = (double) gSettings->value("opaqueness", 100).toInt();
 	end /= 100.0;
 	if (time != 0)
 	{
@@ -2287,11 +2287,11 @@ void Fader::fadeIn()
 
 void Fader::fadeOut()
 {
-	int time = gSettings->value("GenOps/fadeout", 0).toInt();
+	int time = gSettings->value("fadeout", 0).toInt();
 
 	if (time != 0)
 	{
-		double start = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		double start = (double) gSettings->value("opaqueness", 100).toInt();
 		start /= 100.0;
 		double delay = ((double) time) / (start / 0.05);
 
@@ -2384,7 +2384,7 @@ void MyWidget::showLaunchy(bool now)
 		fadeIn();
 	} else
 	{
-		double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		double end = (double) gSettings->value("opaqueness", 100).toInt();
 		end /= 100.0;
 		setFadeLevel(end);
 	}
@@ -2521,10 +2521,10 @@ void MyWidget::createTrayIcon()
 
 void MyWidget::setIcon()
 {
-	icon =QIcon("images/heart.svg");
+	icon =QIcon("images/"+QString(APP_NAME)+".ico");
 	setWindowIcon(icon);
 	trayIcon->setIcon(icon);
-	trayIcon->setToolTip(tr("launchy"));
+	trayIcon->setToolTip(QString(APP_NAME));
 }
 
 void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)

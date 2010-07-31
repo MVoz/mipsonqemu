@@ -28,14 +28,19 @@ QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
     QHash<QString, QList<QString> > out;
     out["skins"] += qApp->applicationDirPath() + "/skins";
     out["plugins"] += qApp->applicationDirPath() + "/plugins";
-    out["portConfig"] += qApp->applicationDirPath() + "/Launchy.ini";
-    QSettings tmp(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+    out["portConfig"] += qApp->applicationDirPath() + "/"APP_NAME".ini";
+    QSettings tmp(QSettings::IniFormat, QSettings::UserScope, APP_NAME, APP_NAME);
     out["config"] += tmp.fileName();
-    out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
-//	qDebug() << out["config"][0];
-	QDir d(out["config"][0]);
-    d.cdUp();
-    out["db"] += d.absoluteFilePath("Launchy.db");
+    out["portDB"] += qApp->applicationDirPath() + "/"APP_NAME"db";
+    QFileInfo f(out["config"][0]);
+    if(!QFile::exists(f.absolutePath())){
+	int lastSlash = f.absolutePath().lastIndexOf(QLatin1Char('/'));
+	QString userapp = f.absolutePath().mid(0, lastSlash);
+	QDir d(userapp);
+	d.mkdir(APP_NAME);
+    }
+    out["db"] += f.absolutePath()+QString(APP_NAME".db"); 
+    out["userdir"] += f.absolutePath();
     out["defSkin"] += out["skins"][0] + "/Default";
     out["platforms"] += qApp->applicationDirPath();
     return out;

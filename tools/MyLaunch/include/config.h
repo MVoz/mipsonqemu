@@ -31,7 +31,7 @@
 
 #define CONFIG_SYNC_TIMECHECK
 
-#define APP_NAME "MyLaunchy"
+#define APP_NAME "touchAny"
 
 #define HTTP_SERVER_HOST "192.168.115.2"
 
@@ -347,9 +347,9 @@ enum httpState
 };
 
 #define PASSWORD_ENCRYPT_KEY 98122130
-#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value(y"/"x, defval).toString()+"';");
-#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$("#x").checked ="+(settings->value(y"/"x, defval).toBool()?QString("true"):QString("false"))+";");
-#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$("#x").value ='"+tz::decrypt(settings->value(y"/"x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
+#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()+"';");
+#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
+#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
 
 
 #define COMMAND(NAME) { NAME, NAME##_command }

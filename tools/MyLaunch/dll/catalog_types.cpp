@@ -242,13 +242,7 @@ void Catalog::searchCatalogs(QString txt, QList < CatItem* > &out)
 		}
 	}
 #endif
-	// Load up the results
-	//	int max = settings->value("GenOps/numresults", 10).toInt();
-	/*
-	for (int i = 0;  i < catMatches.count(); i++)	  {
-	out.push_back(*catMatches[i]);
-	}
-	*/
+	
 }
 
 
@@ -316,8 +310,8 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 	//      QString lowSearch = searchTxt.toLower();
 
 	// Find the smallest char list
-	QTime t;
-	t.start(); 
+//	QTime t;
+//	t.start(); 
 
 	QSqlQuery	q("", *db);
 	uint i=0;
@@ -429,7 +423,7 @@ RETRY:
 			goto RETRY;
 		}
 	}
-	qDebug("Time elapsed: %d ms", t.elapsed());
+	//qDebug("Time elapsed: %d ms", t.elapsed());
 	return ret;
 }
 #if 0

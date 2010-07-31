@@ -687,7 +687,7 @@ int mergeThread::isBmEntryEqual(const bookmark_catagory& b,const bookmark_catago
 #ifdef QT_NO_DEBUG
 #else
 
-	if((settings->value("GenOps/debugmerge",1).toUInt()&0x01)!=1)		
+	if((settings->value("debugmerge",1).toUInt()&0x01)!=1)		
 	{
 		qDebug()<<"b:name="<<b.name<<" name_hash="<<b.name_hash<<" link="<<b.link<<" link_hash="<<b.link_hash<<" flag="<<b.flag;
 		qDebug()<<"bm:name="<<bm.name<<" name_hash="<<bm.name_hash<<" link="<<bm.link<<" link_hash="<<bm.link_hash<<" flag="<<bm.flag;
@@ -706,7 +706,7 @@ int mergeThread::bmItemInList(bookmark_catagory * item, QList < bookmark_catagor
 	{
 #if 1
 		settings->sync();
-		if((settings->value("GenOps/debugmerge",1).toUInt()&0x01)!=1)		
+		if((settings->value("debugmerge",1).toUInt()&0x01)!=1)		
 		{
 			if(list->at(i).name_hash<item->name_hash)
 				continue;

@@ -4,8 +4,8 @@ del options.rcc
 cd ..
 
 cd /d dll
-qmake log.pro
-nmake release
+rem qmake log.pro
+rem nmake release
 qmake bmapi.pro 
 nmake release
 qmake testserver.pro 

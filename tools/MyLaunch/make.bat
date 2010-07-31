@@ -1,11 +1,11 @@
 cd /d debug
-del tanzhi.exe
+del touchAny.exe
 del options.rcc
 cd ..
 
 cd /d dll
-qmake log.pro
-nmake debug
+rem qmake log.pro
+rem nmake debug
 qmake bmapi.pro 
 nmake debug
 qmake testserver.pro 
@@ -75,7 +75,7 @@ copy options.rcc ..\release
 cd ..
 
 cd .\debug
-tanzhi.exe
+touchAny.exe
 cd ..
 
 
