@@ -11,6 +11,18 @@ function getHtml(path)
 function $(a) {
         return document.getElementById(a);
 }
+function apply(key)
+{
+	OptionsDlg.accept();
+}
+function reject()
+{
+	OptionsDlg.reject();
+}
+function tr(a)
+{
+		document.write(OptionsDlg.tr(a));
+}
 </script>
 </head>
 <body>

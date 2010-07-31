@@ -28,6 +28,10 @@ function apply(key)
 	OptionsDlg.accept();
 
 }
+function reject()
+{
+	OptionsDlg.reject();
+}
 function proxyEnableClick()
 {
 			if($('proxyEnable').checked)
@@ -81,6 +85,10 @@ function testProxyClick()
 			//OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
 			OptionsDlg.proxyTestClick();
 		}
+}
+function tr(a)
+{
+		document.write(OptionsDlg.tr(a));
 }
 </script>
 </head>

@@ -77,7 +77,7 @@ public:
 	QNetworkReply *reply;
 	QNetworkProxy proxy;
 	QNetworkRequest request;
-	QTimer testProxyTimer;
+	QTimer* testProxyTimer;
 	QSqlDatabase *db;
 public:
 	int checkListDirExist(const QString& dirname);

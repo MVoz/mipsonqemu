@@ -203,7 +203,7 @@ public :
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
 inline uint get_search_result_num(QSettings* s)
 {
-	uint num =s->value("GenOps/numresults",10).toUInt();
+	uint num =s->value("numresults",10).toUInt();
 	return num>10?(10):((num==0)?1:num);
 
 }

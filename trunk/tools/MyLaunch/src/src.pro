@@ -3,7 +3,7 @@ unix {
   TARGET = launchy
 }
 win32 {
-  TARGET = Tanzhi
+  TARGET = touchAny
 }
 CONFIG += debug_and_release
 
