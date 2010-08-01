@@ -17,13 +17,13 @@ function reject()
 }
 function apply(key)
 {
-	OptionsDlg.apply('generalOpt/ckStartWithSystem',$('ckStartWithSystem').checked);
-	OptionsDlg.apply('generalOpt/ckShowTray',$('ckShowTray').checked);
-	OptionsDlg.apply('generalOpt/ckShowMainwindow',$('ckShowMainwindow').checked);
-	OptionsDlg.apply('generalOpt/ckAutoUpdate',$('ckAutoUpdate').checked);
-	OptionsDlg.apply('generalOpt/ckScanDir',$('ckScanDir').checked);
-	OptionsDlg.apply('GenOps/hotkeyModifier',$('hotkey_0').value);
-	OptionsDlg.apply('GenOps/hotkeyAction',$('hotkey_1').value);
+	OptionsDlg.apply('ckStartWithSystem',$('ckStartWithSystem').checked);
+	OptionsDlg.apply('ckShowTray',$('ckShowTray').checked);
+	OptionsDlg.apply('ckShowMainwindow',$('ckShowMainwindow').checked);
+	OptionsDlg.apply('ckAutoUpdate',$('ckAutoUpdate').checked);
+	OptionsDlg.apply('ckScanDir',$('ckScanDir').checked);
+	OptionsDlg.apply('hotkeyModifier',$('hotkey_0').value);
+	OptionsDlg.apply('hotkeyAction',$('hotkey_1').value);
 	OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   

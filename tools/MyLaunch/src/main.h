@@ -120,7 +120,7 @@ public:
 #endif
 		setAttribute(Qt::WA_AlwaysShowToolTips);
 
-		setAlternatingRowColors(true);
+		setAlternatingRowColors(false);
 	}
 	void keyPressEvent(QKeyEvent* key) {
 		emit keyPressed(key);
