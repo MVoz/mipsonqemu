@@ -690,10 +690,10 @@ void OptionsDlg::getListDirectory(const QString & id,const int& type)
 		dir= QFileDialog::getExistingDirectory(this, tr("Select a directory"), "C:", QFileDialog::ShowDirsOnly);
 	else
 		dir= QFileDialog::getOpenFileName(this, tr("Open File"),"C:", tr("*.*"));
-	QMessageBox msgBox;
-	QString str = QString("%1 ").arg(dir.replace("/", "\\\\"));
-	msgBox.setText(str);
-	msgBox.exec();
+	//QMessageBox msgBox;
+	//QString str = QString("%1 ").arg(dir.replace("/", "\\\\"));
+	//msgBox.setText(str);
+	//msgBox.exec();
 
 	QString status = QString("$('%1').value= '%2';").arg(id).arg(dir.replace("/", "\\\\"));
 	webView->page()->mainFrame()->evaluateJavaScript(status);

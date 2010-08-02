@@ -166,7 +166,7 @@ void MyWidget::storeConfig(int mode)
 			if(!QFile::exists(name))
 				return;
 			dst = gSettings;
-			src = backup_s = new QSettings(sname, QSettings::IniFormat, this);		
+			src = backup_s = new QSettings(name, QSettings::IniFormat, this);		
 		break;
 	}
 	
@@ -177,6 +177,7 @@ void MyWidget::storeConfig(int mode)
 	dst->setValue("ckShowTray",src->value("ckShowTray", true).toBool());
 	dst->setValue("hotkeyModifier",src->value("hotkeyModifier", Qt::ControlModifier).toInt());
 	dst->setValue("hotkeyAction",src->value("hotkeyAction", Qt::Key_Enter).toInt());
+
 	//back directory
 	QList<Directory> dirLists;
 	int count = src->beginReadArray("directories");
@@ -227,10 +228,13 @@ void MyWidget::storeConfig(int mode)
 	}
 
 	dst->sync();
-	if(QFile::exists(name))
-		QFile::remove(name);
-	QFile::copy(sname,name);
-	QFile::remove(sname);
+	if(mode==0)//store
+	{
+		if(QFile::exists(name))
+			QFile::remove(name);
+		QFile::copy(sname,name);
+		QFile::remove(sname);
+	}
 	if(backup_s)
 		delete backup_s;
 }
@@ -336,6 +340,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		if(QFile::exists(dirs["config"][0]))
 			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
 		else{
+			qDebug()<<"restore config!";
 			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
 			storeConfig(1);
 		}
@@ -370,7 +375,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 		//   qDebug("connect database %s successfully!\n",qPrintable(dest));  
 		tz::initDbTables(db,gSettings,rebuildAll&(1<<REBUILD_DATABASE));
-		restoreUserCommand();
+		if(rebuildAll&(1<<REBUILD_DATABASE))
+			restoreUserCommand();
 		rebuildAll&=~(1<<REBUILD_DATABASE);
 		//createDbFile();
 	}
@@ -437,7 +443,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 #ifdef Q_WS_X11
 	int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
 #endif
-	int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
+	int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
 	if (!setHotkey(curMeta, curAction))
 	{
 		QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
@@ -1424,6 +1430,7 @@ void MyWidget::setSkin(QString dir, QString name)
 
 void MyWidget::updateVersion(int oldVersion)
 {
+/*
 	if (oldVersion < 199)
 	{
 		// We've completely changed the database and ini between 1.25 and 2.0
@@ -1462,6 +1469,7 @@ void MyWidget::updateVersion(int oldVersion)
 		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
 		gSettings->setValue("version", LAUNCHY_VERSION);
 	}
+*/
 }
 
 /*
@@ -2421,6 +2429,7 @@ void MyWidget::menuOptions()
 
 void MyWidget::shouldDonate()
 {
+/*
 	QDateTime time = QDateTime::currentDateTime();
 	QDateTime donateTime = gSettings->value("donateTime", time.addDays(21)).toDateTime();
 	if (donateTime.isNull())
@@ -2435,6 +2444,7 @@ void MyWidget::shouldDonate()
 		QDateTime def;
 		gSettings->setValue("donateTime", def);
 	}
+*/
 }
 
 void Fader::fadeIn()
