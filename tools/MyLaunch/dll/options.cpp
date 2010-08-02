@@ -509,7 +509,6 @@ void OptionsDlg::accept()
 
 void OptionsDlg::reject()
 {
-	qDebug()<<__FUNCTION__;
 	QDialog::reject();
 }
 void OptionsDlg::apply(const QString & name, const QVariant & value)
@@ -533,6 +532,13 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		return;
 	}
 	settings->setValue(name, value);
+	settings->sync();
+	if(name=="hotkeyAction"){
+		emit configModifyNotify(HOTKEY);			
+	}
+	if(name == "ckShowTray")
+		emit configModifyNotify(SHOWTRAY);		
+		
 }
 void OptionsDlg::addCatitemToDb(CatItem& item)
 {

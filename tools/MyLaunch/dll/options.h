@@ -112,5 +112,6 @@ signals:
 		void rebuildcatalogSignal();
 		void optionStartSyncNotify();
 		void testAccountNotify(const QString&,const QString&);
+		void configModifyNotify(int type);
 };
 #endif

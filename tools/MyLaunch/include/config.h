@@ -356,5 +356,11 @@ enum httpState
 #define LINK_MULTIPLE(a,b,c,d) a##_##b##_##c##_##d
 //#define myprintf(templt,args...) fprintf(stderr,templt,args)
 //#define myprintf(templt,...) fprintf(stderr,templt,__VA_ARGS__)
+
+
+enum CONFIG_NOTIFY{
+	HOTKEY=0,
+	SHOWTRAY
+};
 #endif
 

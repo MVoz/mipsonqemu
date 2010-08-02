@@ -37,10 +37,7 @@ function   set_selected(s_value,id){
 		  }   
 	  }   
   }   
- function tr(a)
-{
-		document.write(OptionsDlg.tr(a));
-}
+
 </script>
 </head>
 <body>
@@ -48,7 +45,7 @@ function   set_selected(s_value,id){
 	<div id="header"></div>
 	<div class="main">
 	<div id="lm">
-	
+
 	</div>
 	<div id="rm">
 		<div id="taitou">启动</div>
@@ -108,9 +105,32 @@ function   set_selected(s_value,id){
 	</div>
 </div>
 	<div id="applybtn">
+			<table width="100%">
+				<tr>
+					<td width="50%">&nbsp</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="apply('common');" >应用</a>
+								</div>
+					</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="reject();" >取消</a>
+								</div>
+					</td>
+				</tr>
+			</table>
 	</div>
 </body>
 <script>
 	OptionsDlg.loading('common');
+	//var objOption=document.createElement('option');
+	//objOption.value='6';
+	//objOption.text='content';
+	//var oOption=new Option('456','123');
+	//document.getElementById('hotkey_0').options[0]=oOption;
+	
+	//document.getElementById('hotkey_0').add(objOption);
+	//set_selected('16777217','hotkey_1');
 </script>
 </html>

@@ -21,5 +21,5 @@ win32:debug {
 
 win32:release {
 	DESTDIR = ../../release/
-	LIBS +=   ../../release/bmapi.lib
+	LIBS +=   ../../debug/bmapi.lib
 }

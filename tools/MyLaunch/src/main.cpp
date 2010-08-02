@@ -77,6 +77,36 @@ return true;
 
 }
 */
+void MyWidget::configModify(int type){
+	switch(type){
+		case HOTKEY:
+		{
+		qDebug()<<"set new hotkey";
+#ifdef Q_WS_WIN
+			int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
+#endif
+#ifdef Q_WS_X11
+			int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
+#endif
+			int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
+			if (!setHotkey(curMeta, curAction))
+			{
+				QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
+			}
+		}
+		break;
+		case SHOWTRAY:
+		qDebug()<<"systray...";
+		if(gSettings->value("ckShowTray", true).toBool())
+		{
+			trayIcon->show();
+		}else
+			trayIcon->hide();
+		break;
+		default:
+		break;
+	}
+}
 MyWidget::MyWidget(QWidget * parent, PlatformBase * plat, bool rescue):
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
@@ -237,10 +267,15 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 	// Move to saved position
 	QPoint x;
+	/*
 	if (rescue)
-		x = QPoint(0, 0);
+	{
+		QDesktopWidget* desktop = QApplication::desktop(); 
+		x = QPoint((desktop->width() - width())/2, (desktop->height() - height())/2);
+	}
 	else
-		x = loadPosition();
+	*/
+		x = loadPosition(rescue);
 	move(x);
 	platform->MoveAlphaBorder(x);
 	//get broswerenable
@@ -1310,19 +1345,21 @@ return absPos;
 }
 */
 
-QPoint MyWidget::loadPosition()
+QPoint MyWidget::loadPosition(int rescue)
 {
 	QRect r = geometry();
 	int primary = qApp->desktop()->primaryScreen();
 	QRect scr = qApp->desktop()->availableGeometry(primary);
-	if (gSettings->value("alwayscenter", false).toBool())
+
+	QPoint p;
+	p.setX(scr.width() / 2.0 - r.width() / 2.0);
+	p.setY(scr.height() / 2.0 - r.height() / 2.0);
+
+	if (gSettings->value("alwayscenter", false).toBool()||rescue)
 	{
-		QPoint p;
-		p.setX(scr.width() / 2.0 - r.width() / 2.0);
-		p.setY(scr.height() / 2.0 - r.height() / 2.0);
 		return p;
 	}
-	QPoint pt = gSettings->value("Display/pos", QPoint(0, 0)).toPoint();
+	QPoint pt = gSettings->value("Display/pos", p).toPoint();
 	// See if pt is in the current screen resolution, if not go to center
 
 	if (pt.x() > scr.width() || pt.y() > scr.height() || pt.x() < 0 || pt.y() < 0)
@@ -2211,6 +2248,7 @@ void MyWidget::menuOptions()
 	ops = new OptionsDlg(this,&gLastUpdateTime,gSettings,gIeFavPath,&db);
 	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
 	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
+	connect(ops, SIGNAL(configModifyNotify(int)), this, SLOT(configModify(int)));
 	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(testAccount(const QString&,const QString&)));	
 
 	ops->setModal(0);
@@ -2367,7 +2405,7 @@ void MyWidget::showLaunchy(bool now)
 	// where the alpha border would dissappear
 	// on sleep or user switch
 
-	move(loadPosition());
+	move(loadPosition(0));
 #ifdef Q_WS_WIN
 	platform->CreateAlphaBorder(this, "");
 	connectAlpha();

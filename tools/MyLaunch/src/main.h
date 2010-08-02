@@ -255,7 +255,7 @@ public:
 	void fadeOut();
 	//	QPair<double,double> relativePos();
 	//	QPoint absolutePos(QPair<double,double> relPos);
-	QPoint loadPosition();
+	QPoint loadPosition(int rescue);
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
@@ -345,6 +345,7 @@ private:
 		void startSilentUpdate();
 		void silentUpdateFinished();
 		void getFavicoFinished();
+		void configModify(int type);
 
 		//	void restoreMainwin();
 #endif
