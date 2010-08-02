@@ -1607,13 +1607,9 @@ void MyWidget::onHotKey()
 void MyWidget::closeEvent(QCloseEvent * event)
 {
 	closeflag = 1;
-	if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
-		catalogBuilderTimer->stop();
-	if(silentupdateTimer&&silentupdateTimer->isActive())
-		silentupdateTimer->stop();
-	if(syncTimer&&syncTimer->isActive())
-		syncTimer->stop();
-
+	STOP_TIMER(catalogBuilderTimer);
+	STOP_TIMER(silentupdateTimer);
+	STOP_TIMER(syncTimer);
 
 	qDebug()<<"emit erminateNotify"<<gBuilder;
 	if(gBuilder&&gBuilder->isRunning())
@@ -1626,7 +1622,8 @@ void MyWidget::closeEvent(QCloseEvent * event)
 	}
 	if(slientUpdate&&slientUpdate->isRunning())
 	{
-		emit silentUpdateTerminateNotify();
+		//emit silentUpdateTerminateNotify();
+		slientUpdate->setTerminateFlag(1);
 		event->ignore();
 		return;
 	}
@@ -2748,10 +2745,11 @@ void MyWidget::silentUpdateFinished()
 	qDebug("silent update finished!!!!!");
 	if(slientUpdate)
 	{
+		if(slientUpdate->error==0)///no error
+			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
+		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
 		delete slientUpdate;
 		slientUpdate =NULL;			
-		gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
-		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
 	}
 	if(closeflag)
 		close();

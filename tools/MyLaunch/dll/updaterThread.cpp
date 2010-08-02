@@ -403,12 +403,14 @@ void updaterThread::testNetFinished()
 	case -1:
 		if(mode==UPDATE_DLG_MODE) 
 			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);	
+		error = 1;
 		quit();
 		break;
 	case 0:
 		if(mode==UPDATE_DLG_MODE) 
 			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);		
 		quit();
+		error = 1;
 		break;
 	case 1:
 		downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
@@ -623,7 +625,6 @@ void updaterThread::getIniDone(int err)
 				//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
 				if(error){
 					//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
-					tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
 				}else{
 					if(needed) 
 					{
@@ -652,7 +653,6 @@ void updaterThread::getIniDone(int err)
 			}else
 			{
 				//emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,tz::tr(UPDATE_FAILED_STRING));
-				tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
 				qDebug("%s error %d happened",__FUNCTION__,error);
 
 			}
