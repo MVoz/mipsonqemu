@@ -360,7 +360,7 @@ signals:
 			//void reSync();
 			//	void stopSyncNotify();
 			//	void catalogTerminateNotify();
-			void silentUpdateTerminateNotify();
+		//	void silentUpdateTerminateNotify();
 			//	void syncerTerminateNotify();
 };
 void kickoffSilentUpdate();
