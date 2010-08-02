@@ -106,7 +106,100 @@ void MyWidget::configModify(int type){
 		default:
 		break;
 	}
+	storeConfig();
 }
+//0--store 1---restore
+void MyWidget::storeConfig(int mode)
+{
+	
+	QString storesuffix =QString("%1").arg(qHash(QDir::homePath()));
+	if(!QFile::exists(qApp->applicationDirPath()+"/"+APP_DATA_PATH+"/"+CONFIG_USER_CONFIG_DIR))
+	{
+		QDir d(qApp->applicationDirPath()+"/"+APP_DATA_PATH);
+		d.mkdir(CONFIG_USER_CONFIG_DIR);
+	}
+	QString name = qApp->applicationDirPath()+"/"+APP_DATA_PATH+"/"+CONFIG_USER_CONFIG_DIR+"/"+"config."+storesuffix;
+	QString sname = name+".temp";
+
+	QSettings *backup_s=NULL;
+
+	QSettings* src=NULL,*dst=NULL;
+	
+	switch(mode){
+		case 0://store
+			if(QFile::exists(sname))
+				QFile::remove(sname);			
+			src = gSettings;
+			dst = backup_s = new QSettings(sname, QSettings::IniFormat, this);			 
+		break;
+		case 1://restore
+			if(!QFile::exists(name))
+				return;
+			dst = gSettings;
+			src = backup_s = new QSettings(sname, QSettings::IniFormat, this);		
+		break;
+	}
+	
+	//now backup.......
+	dst->setValue("language",src->value("language", DEFAULT_LANGUAGE).toInt());
+	dst->setValue("skin", src->value("skin", dirs["defSkin"][0]).toString());
+	dst->setValue("ckStartWithSystem",src->value("ckStartWithSystem", true).toBool());
+	dst->setValue("ckShowTray",src->value("ckShowTray", true).toBool());
+	dst->setValue("hotkeyModifier",src->value("hotkeyModifier", Qt::ControlModifier).toInt());
+	dst->setValue("hotkeyAction",src->value("hotkeyAction", Qt::Key_Enter).toInt());
+	//back directory
+	QList<Directory> dirLists;
+	int count = src->beginReadArray("directories");
+	for (int i = 0; i < count; ++i)
+	{
+			src->setArrayIndex(i);
+			Directory tmp;
+			tmp.name = src->value("name").toString();
+			tmp.types = src->value("types").toStringList();
+			tmp.indexDirs = src->value("indexDirs", false).toBool();
+			//tmp.indexExe = settings->value("indexExes", false).toBool();
+			tmp.depth = src->value("depth", 100).toInt();
+			dirLists.append(tmp);
+	}
+	src->endArray();
+	dst->beginWriteArray("directories");
+	for (int i = 0; i < dirLists.size(); ++i)
+	{
+		dst->setArrayIndex(i);
+		dst->setValue("name", dirLists.at(i).name);
+		dst->setValue("types", dirLists.at(i).types);
+		dst->setValue("indexDirs", dirLists.at(i).indexDirs);
+		dst->setValue("depth", dirLists.at(i).depth);
+	}
+	dst->endArray();
+	//back user defined command
+	QSqlQuery	q("", db);;
+	QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
+	dst->beginWriteArray("commands");
+	if(q.exec(s))
+	{
+			int i = 0;
+			while(q.next()) {
+				dst->setArrayIndex(i);
+				dst->setValue("shortName", q.value(Q_RECORD_INDEX(q,"shortName")).toString());
+				dst->setValue("fullPath", q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+				dst->setValue("args", q.value(Q_RECORD_INDEX(q,"args")).toString());
+				i++;
+			}
+			q.clear();
+	}
+
+	dst->endArray();
+
+	dst->sync();
+	if(QFile::exists(name))
+		QFile::remove(name);
+	QFile::copy(sname,name);
+	QFile::remove(sname);
+	if(backup_s)
+		delete backup_s;
+}
+
 MyWidget::MyWidget(QWidget * parent, PlatformBase * plat, bool rescue):
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),

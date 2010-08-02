@@ -338,104 +338,34 @@ void OptionsDlg::loading(const QString & name)
 							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
 		cmdLists.clear();
-		/*
-		int count = settings->beginReadArray("weby/sites");
-		int i=0;
-		for (i = 0; i < count; i++)
+		QSqlQuery q("",*db);
+		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
+		if(q.exec(s))
 		{
-		settings->setArrayIndex(i);
-		CMD_LIST cl;
-		cl.index = i;
-		cl.name = settings->value("name").toString();
-		cl.base = settings->value("base").toString();
-		cl.parameters = settings->value("query").toString();
-		cmdLists << cl;
-		jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-		<td width=\"8%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
-		<td width=\"8%\">%5</td>\
-		<td width=\"64%\" style=\"font-size:10;\">%6</td>\
-		<td width=\"20%\" style=\"font-size:10;\">%7</td>\
-		</tr>")
-		.arg(settings->value("name").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("base").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("query").toString())
-		.arg(i)
-		.arg(settings->value("name").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("base").toString().replace("\\", "\\\\"))
-		.arg(settings->value("query").toString()));
-
-		}
-		settings->endArray();
-		*/
-		/*
-		int count = settings->beginReadArray("runner/cmds");
-		for (int j = 0; j < count;j++)
-		{
-		settings->setArrayIndex(j);
-		CMD_LIST cl;
-		cl.index =j;
-		cl.name = settings->value("name").toString();
-		cl.base = settings->value("file").toString();
-		cl.parameters = settings->value("args").toString();
-		cmdLists << cl;
-		qDebug("name=%s file=%s",qPrintable(settings->value("name").toString()),qPrintable(settings->value("file").toString()));
-		jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-		<td width=\"8%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
-		<td width=\"8%\">%5</td>\
-		<td width=\"64%\" style=\"font-size:10;\">%6</td>\
-		<td width=\"20%\" style=\"font-size:10;\">%7</td>\
-		</tr>")
-		.arg(settings->value("name").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("file").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("args").toString())
-		.arg(j)
-		.arg(settings->value("name").toString().replace("\\", "\\\\\\\\"))
-		.arg(settings->value("file").toString().replace("\\", "\\\\"))
-		.arg(settings->value("args").toString()));
-
-		}
-		settings->endArray();
-		*/
-		QSqlQuery query("",*db);
-		QString  queryStr=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
-		if(query.exec(queryStr))
-		{
-			QSqlRecord rec = query.record();
+			QSqlRecord rec = q.record();
 			int id_Idx=rec.indexOf("id");
 			int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
 			int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
-			//  int lowName_Idx = rec.indexOf("lowName"); // index of the field "name"
-			// int icon_Idx = rec.indexOf("icon"); // index of the field "name"
-			// int usage_Idx = rec.indexOf("usage"); // index of the field "name"
-			// int hashId_Idx = rec.indexOf("hashId"); // index of the field "name"
-			// int groupId_Idx = rec.indexOf("groupId"); // index of the field "name"
-			// int parentId_Idx = rec.indexOf("parentId"); // index of the field "name"
-			// int isHasPinyin_Idx = rec.indexOf("isHasPinyin"); // index of the field "name"
-			//int comeFrom_Idx = rec.indexOf("comeFrom"); // index of the field "name"
-			// int hanziNums_Idx = rec.indexOf("hanziNums"); // index of the field "name"
-			// int pinyinDepth_Idx = rec.indexOf("pinyinDepth"); // index of the field "name"
-			//  int pinyinReg_Idx = rec.indexOf("pinyinReg"); // index of the field "name"
-			//  int alias1_Idx = rec.indexOf("alias1"); // index of the field "name"
-			//  int alias2_Idx = rec.indexOf("alias2"); // index of the field "name"
 			int args_Idx = rec.indexOf("args"); // index of the field "name" 
-			while(query.next()) {
+			while(q.next()) {
+				qDebug()<<q.value(shortName_Idx).toString()<<":"<<q.value(fullPath_Idx).toString();
 				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
 									 <td width=\"8%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
 									 <td width=\"8%\">%5</td>\
 									 <td width=\"64%\" style=\"font-size:10;\">%6</td>\
 									 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
 									 </tr>")
-									 .arg(query.value(shortName_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(query.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(query.value(args_Idx).toString())
-									 .arg(query.value(id_Idx).toUInt())
-									 .arg(query.value(shortName_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(query.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(query.value(args_Idx).toString()));
+									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\"))
+									 .arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\"))
+									 .arg(q.value(args_Idx).toString())
+									 .arg(q.value(id_Idx).toUInt())
+									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\"))
+									 .arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\"))
+									 .arg(q.value(args_Idx).toString()));
 			}
 
 		}
-		query.clear();
+		q.clear();
 		jsStr.append(QString("</table>';"));
 
 	} else if (name == "list_mg")
@@ -607,20 +537,9 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 	switch (type)
 	{
 	case 0:		//add
-		// cl.index = cmdLists.size();
-		// cl.name = cmdName;
-		// cl.base = cmdCommand;
-		// cl.parameters = cmdParameter;
-		//  cmdLists << cl;
 		addCatitemToDb(item);
 		break;
 	case 1:		//modify
-
-		//  cl.index = cmdIndex.toInt();
-		//  cl.name = cmdName;
-		//  cl.base = cmdCommand;
-		//  cl.parameters = cmdParameter;
-		//  cmdLists.replace(cmdIndex.toInt(), cl);
 		modifyCatitemFromDb(item,cmdIndex.toInt());
 		break;
 	case 2:		//delete
@@ -631,39 +550,10 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 	default:
 		break;
 	}
+	emit configModifyNotify(CMDLIST);
 	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
 #if 1
-	/*
-	QString pattern("^[ ]{0,}[a-zA-Z]:\\[^/*\"<>\|\?]*$");
-	QRegExp pathReg(pattern);
-	pathReg.setCaseSensitivity(Qt::CaseSensitive);
-	QRegExp::PatternSyntax syntax = QRegExp::PatternSyntax(QRegExp::RegExp);
-	pathReg.setPatternSyntax(syntax);
-	int cmdindex=0;
-	int webIndex=0;
-	for (int i = 0; i < cmdLists.size(); i++)
-	{
-	//int cmdLength=cmdLists.at(i).base.length();
-	//int matchPos=pathReg.indexIn(cmdLists.at(i).base);
-	//int matchLength=pathReg.matchedLength();
-	//if(matchPos==0&&cmdLength==matchLength){
-	settings->beginWriteArray("runner/cmds");
-	settings->setArrayIndex(i);
-	settings->setValue("name", cmdLists.at(i).name);
-	settings->setValue("file", cmdLists.at(i).base);
-	settings->setValue("args", cmdLists.at(i).parameters);
-	settings->endArray();
-	}else{
-	settings->beginWriteArray("weby/sites");	
-	settings->setArrayIndex(webIndex++);
-	settings->setValue("name", cmdLists.at(i).name);
-	settings->setValue("base", cmdLists.at(i).base);
-	settings->setValue("query", cmdLists.at(i).parameters);
-	settings->setValue("default", true);
-	settings->endArray();
-	}
-	}
-	*/	
+
 #else
 	QString pattern("^[ ]{0,}[a-zA-Z]:\[^/*\"<>\|?]*$");
 	QRegExp pathReg(pattern);
@@ -758,7 +648,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 		dirLists.removeAt(index);
 		break;
 	}
-	settings->beginWriteArray("dirs");
+	settings->beginWriteArray("directories");
 	for (int i = 0; i < dirLists.size(); ++i)
 	{
 		settings->setArrayIndex(i);
@@ -769,6 +659,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 		settings->setValue("depth", dirLists.at(i).depth);
 	}
 	settings->endArray();
+	emit configModifyNotify(DIRLIST);
 	return;
 ERR:
 	QString errstr;
