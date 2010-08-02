@@ -341,7 +341,7 @@ void CatBuilder::buildCatelog_define(uint delId)
 	// qDebug("connect database %s successfully!!!!!!!!!!!!!",qPrintable(dbfile));  
 	if(!gSettings->value("builddefine",0).toUInt()&&QFile::exists(dbfile))
 	{
-
+		STOP_FLAG_CHECK;
 		{
 			QSqlDatabase  d = QSqlDatabase::addDatabase("QSQLITE", APP_DEFINE_DB_NAME);
 			d.setDatabaseName(dbfile);		
@@ -438,6 +438,8 @@ void CatBuilder::buildCatelog_define(uint delId)
 		}
 		QSqlDatabase::removeDatabase(APP_DEFINE_DB_NAME);
 	}
+	bad:
+		return;
 }
 
 void CatBuilder::buildCatalog(uint delId)
