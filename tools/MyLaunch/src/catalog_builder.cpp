@@ -300,6 +300,19 @@ void CatBuilder::buildCatalog_directory(uint delId)
 		if (memDirs.count() == 0)
 		{
 			memDirs = main->platform->GetInitialDirs();
+			gSettings->beginWriteArray("directories");
+			//write the default directory to ini
+			for (int i = 0; i < memDirs.count(); ++i)
+			{
+				gSettings->setArrayIndex(i);				
+				gSettings->setValue("name",memDirs.at(i).name);
+				gSettings->setValue("types", memDirs.at(i).types);
+				gSettings->setValue("indexDirs", memDirs.at(i).indexDirs);
+				gSettings->setValue("indexExes", memDirs.at(i).indexExe);
+				gSettings->setValue("depth", memDirs.at(i).depth);
+			}
+			gSettings->endArray();
+			gSettings->sync();
 		}
 		for (int i = 0; i < memDirs.count(); ++i)
 		{

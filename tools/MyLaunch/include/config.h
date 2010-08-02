@@ -238,6 +238,8 @@
 #define UPDATE_FILE_NAME "update.ini"
 #define UPDATE_SERVER_URL UPDATE_FILE_NAME
 
+#define CONFIG_USER_INI_BACKUP_FILE "config.user"
+#define CONFIG_USER_CONFIG_DIR "config"
 
 #define UPDATE_PORTABLE_KEYWORD    "portable"
 #define UPDATE_SETUP_KEYWORD    "setup"
@@ -360,7 +362,9 @@ enum httpState
 
 enum CONFIG_NOTIFY{
 	HOTKEY=0,
-	SHOWTRAY
+	SHOWTRAY,
+	DIRLIST,
+	CMDLIST
 };
 #endif
 
