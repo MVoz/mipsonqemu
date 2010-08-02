@@ -347,6 +347,7 @@ private:
 		void getFavicoFinished();
 		void configModify(int type);
 		void storeConfig(int mode=0);
+		void restoreUserCommand();
 
 		//	void restoreMainwin();
 #endif

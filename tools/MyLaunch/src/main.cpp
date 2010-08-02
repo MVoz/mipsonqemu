@@ -108,6 +108,36 @@ void MyWidget::configModify(int type){
 	}
 	storeConfig();
 }
+
+void MyWidget::restoreUserCommand()
+{
+	QString storesuffix =QString("%1").arg(qHash(QDir::homePath()));
+	QString name = qApp->applicationDirPath()+"/"+APP_DATA_PATH+"/"+CONFIG_USER_CONFIG_DIR+"/"+"config."+storesuffix;
+
+	if(!QFile::exists(name))
+				return;
+	QSettings*	src = new QSettings(name, QSettings::IniFormat, this);		
+	db.transaction();
+	QSqlQuery	q("", db);;
+	int count = src->beginReadArray("commands");
+	for(int i=0; i< count ; i++){
+					src->setArrayIndex(i);
+					QString shortname = src->value("shortName","").toString();
+					QString fullpath = src->value("fullPath","").toString();
+					QString args = src->value("args", "").toString();
+					if(!shortname.isEmpty()&&!fullpath.isEmpty())
+					{
+						CatItem item(fullpath,shortname,args,COME_FROM_COMMAND);
+						CatItem::prepareInsertQuery(&q,item);
+						q.exec();
+					}
+	}
+	db.commit();
+	q.clear();
+
+	src->endArray();
+	delete src;
+}
 //0--store 1---restore
 void MyWidget::storeConfig(int mode)
 {
@@ -174,22 +204,27 @@ void MyWidget::storeConfig(int mode)
 	dst->endArray();
 	//back user defined command
 	QSqlQuery	q("", db);;
-	QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
-	dst->beginWriteArray("commands");
-	if(q.exec(s))
+	if(mode == 0)//store
 	{
-			int i = 0;
-			while(q.next()) {
-				dst->setArrayIndex(i);
-				dst->setValue("shortName", q.value(Q_RECORD_INDEX(q,"shortName")).toString());
-				dst->setValue("fullPath", q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
-				dst->setValue("args", q.value(Q_RECORD_INDEX(q,"args")).toString());
-				i++;
-			}
-			q.clear();
-	}
+		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
+		dst->beginWriteArray("commands");
+		if(q.exec(s))
+		{
+				int i = 0;
+				while(q.next()) {
+					dst->setArrayIndex(i);
+					dst->setValue("shortName", q.value(Q_RECORD_INDEX(q,"shortName")).toString());
+					dst->setValue("fullPath", q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+					dst->setValue("args", q.value(Q_RECORD_INDEX(q,"args")).toString());
+					i++;
+				}
+				q.clear();
+		}
 
-	dst->endArray();
+		dst->endArray();
+	}else{
+		//restoreUserCommand();
+	}
 
 	dst->sync();
 	if(QFile::exists(name))
@@ -297,7 +332,14 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if (QFile::exists(dirs["portConfig"][0]))
 		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
 	else
-		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+	{
+		if(QFile::exists(dirs["config"][0]))
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+		else{
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+			storeConfig(1);
+		}
+	}
 #ifdef CONFIG_LOG_ENABLE
 	//      dump_setting(NULL);
 #endif
@@ -328,6 +370,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 		//   qDebug("connect database %s successfully!\n",qPrintable(dest));  
 		tz::initDbTables(db,gSettings,rebuildAll&(1<<REBUILD_DATABASE));
+		restoreUserCommand();
 		rebuildAll&=~(1<<REBUILD_DATABASE);
 		//createDbFile();
 	}
