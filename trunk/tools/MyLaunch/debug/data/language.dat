@@ -10,6 +10,10 @@ chinese=无法登陆，请检查用户名或密码!
 english=http_test_account_success
 chinese=测试成功！欢迎使用！
 
+[login_falil]
+english=login_falil
+chinese=无法登陆，请检查用户名或密码!
+
 [apply]
 english=apply
 chinese=确定
