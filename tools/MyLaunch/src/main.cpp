@@ -2137,10 +2137,10 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 	case SYNC_MODE_BOOKMARK:
 	case SYNC_MODE_REBOOKMARK:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_SYNC_MODE));
+		gSyncer.reset(new BookmarkSync(this,&db,gSettings,BOOKMARK_SYNC_MODE));
 		break;
 	case SYNC_MODE_TESTACCOUNT:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_TESTACCOUNT_MODE));
+		gSyncer.reset(new BookmarkSync(this,&db,gSettings,BOOKMARK_TESTACCOUNT_MODE));
 		break;
 	}
 

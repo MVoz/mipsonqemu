@@ -87,7 +87,7 @@ void BookmarkSync::on_http_requestStarted(int id)
 void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 }
-BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QString path,int m): MyThread(parent),settings(s),iePath(path),mode(m)
+BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m): MyThread(parent),settings(s),mode(m)
 {
 
 	//httpTimerId=startTimer(10*1000);
@@ -376,7 +376,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	if(!error)	
 	{
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
-		mgthread = new mergeThread(this,db,settings,iePath);
+		mgthread = new mergeThread(this,db,settings);
 		//emit updateStatusNotify(UPDATE_PROCESSING);
 		mgthread->setRandomFileFromserver(filename_fromserver);
 
