@@ -356,6 +356,7 @@ enum httpState
 
 #define COMMAND(NAME) { NAME, NAME##_command }
 #define LINK_MULTIPLE(a,b,c,d) a##_##b##_##c##_##d
+//#define KERNEL_DEBUG_A(LEVEL,format, args...)  do{  printk("\033[0;31m%s %s %d....................\033[0m\n",__FILE__,__FUNCTION__,__LINE__);printk(format , ## args);}while(0);
 //#define myprintf(templt,args...) fprintf(stderr,templt,args)
 //#define myprintf(templt,...) fprintf(stderr,templt,__VA_ARGS__)
 

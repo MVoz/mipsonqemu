@@ -195,8 +195,6 @@ public :
 	static struct dbtableinfo* dbTableInfo(uint id);
 	static QList<struct dbtableinfo*> dbTableInfoList();
 	static QString GetShortcutTarget(const QString& LinkFileName);
-	//	static void prepareInsertQuery(QSqlQuery* q,CatItem& item);
-	//	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 
 };
 

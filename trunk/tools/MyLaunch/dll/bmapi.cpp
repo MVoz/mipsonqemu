@@ -921,7 +921,8 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 {
 	//if (level == 0)
 	//	this->flag = flag;
-	QString createTime, lastAccessTime, lastWriteTime;
+	qDebug()<<directory;
+	//QString createTime, lastAccessTime, lastWriteTime;
 	QDir qd(directory);
 	QString dir = qd.absolutePath();
 	QStringList dirs = qd.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
@@ -948,6 +949,7 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 	{
 		struct bookmark_catagory bc;
 		const QString FilePath(dir + "/" + files[i]);
+		qDebug()<<FilePath;
 		QSettings favSettings (FilePath, QSettings::IniFormat);
 		{
 			struct bookmark_catagory dir_bc;
@@ -958,8 +960,8 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 			{
 				QUrl url(dir_bc.link);
 				if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
-					//	qDebug()<<"unvalid http format!";
-					break;
+					qDebug()<<"unvalid http format!";
+					continue;
 				}
 				handleUrlString(dir_bc.link );
 				dir_bc.name = files[i];

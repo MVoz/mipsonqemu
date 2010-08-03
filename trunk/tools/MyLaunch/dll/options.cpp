@@ -72,7 +72,7 @@ OptionsDlg::~OptionsDlg()
 {
 	qDebug(" ~OptionsDlg unregister resource options.rcc");
 	QResource::unregisterResource("options.rcc");
-	cmdLists.clear();
+	//cmdLists.clear();
 	dirLists.clear();
 	DELETE_OBJECT(manager);
 	QDialog::accept();
@@ -337,7 +337,7 @@ void OptionsDlg::loading(const QString & name)
 							 <td width=\"64%\">"+tz::tr("html_command")+"</td>\
 							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
-		cmdLists.clear();
+		//cmdLists.clear();
 		QSqlQuery q("",*db);
 		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
 		if(q.exec(s))
@@ -531,7 +531,7 @@ void OptionsDlg::deleteCatitemFromDb(CatItem& item,uint index)
 void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QString & cmdCommand, const QString & cmdParameter, const QString & cmdIndex)
 {
 	//CMD_LIST cl;
-	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
+	//qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
 	CatItem item(cmdCommand,cmdName,cmdParameter,COME_FROM_COMMAND);
 	if(cmdCommand.isEmpty()) return;
 	switch (type)
@@ -543,7 +543,7 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 		modifyCatitemFromDb(item,cmdIndex.toInt());
 		break;
 	case 2:		//delete
-		qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
+		//qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
 		//  cmdLists.removeAt(cmdIndex.toInt());
 		deleteCatitemFromDb(item,cmdIndex.toInt());
 		break;
@@ -551,7 +551,7 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 		break;
 	}
 	emit configModifyNotify(CMDLIST);
-	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
+//	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
 #if 1
 
 #else
