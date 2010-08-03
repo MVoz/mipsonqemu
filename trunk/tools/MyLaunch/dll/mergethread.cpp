@@ -246,6 +246,7 @@ ffout:
 		tz::clearbmgarbarge(&q, delId);
 		db->commit();
 		q.clear();
+		tz::_clearShortcut(db,COME_FROM_BROWSER);
 	}
 #endif
 	//write to lastupdate

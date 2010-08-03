@@ -817,9 +817,35 @@ void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 	while(!browserInfo[i].name.isEmpty())
 	{
 		s.clear();
-		s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id).arg(delId);
+		s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id+COME_FROM_BROWSER_START).arg(delId);
+		qDebug()<<__FUNCTION__<<s;
 		q->exec(s);		
 		i++;
+	}
+}
+void tz::_clearShortcut(QSqlDatabase *db,int type)
+{
+	QSqlQuery q("", *db);
+	int comefrom_s =0,comefrom_e = 0;
+	comefrom_s = comefrom_e = type;
+	if(type == COME_FROM_BROWSER){
+		comefrom_e = COME_FROM_MAX-1;
+	}
+	for(int i = comefrom_s; i<=comefrom_e;i++){
+		q.prepare(QString("SELECT * FROM %1 WHERE comeFrom=%2").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)).arg(i));
+		if(q.exec()){
+			QSqlQuery qq("", *db);
+			while(q.next()){
+				if(!tz::isExistInDb(&qq,q.value(Q_RECORD_INDEX(q,"shortName")).toString(),q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),i))
+				{
+					qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)));
+					qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+					if(qq.exec())
+						qq.clear();					
+				}
+			}
+			q.clear();
+		}
 	}
 }
 
