@@ -948,35 +948,25 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 	for (int i = 0; i < files.count(); ++i)
 	{
 		struct bookmark_catagory bc;
-		const QString FilePath(dir + "/" + files[i]);
-		qDebug()<<FilePath;
-		QSettings favSettings (FilePath, QSettings::IniFormat);
-		{
-			struct bookmark_catagory dir_bc;
-			int dotIndex = files[i].lastIndexOf('.');
-			files[i].truncate(dotIndex);
-			dir_bc.link = favSettings.value("InternetShortcut/URL").toString();
-			if( !dir_bc.link.isEmpty())
-			{
-				QUrl url(dir_bc.link);
-				if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
+		qDebug()<<(dir + "/" + files[i]);
+		QSettings favSettings (dir + "/" + files[i], QSettings::IniFormat);
+		int dotIndex = files[i].lastIndexOf('.');
+		files[i].truncate(dotIndex);
+		bc.link = favSettings.value("InternetShortcut/URL").toString();
+		if( bc.link.isEmpty()) continue;
+		QUrl url(bc.link);
+		if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
 					qDebug()<<"unvalid http format!";
 					continue;
-				}
-				handleUrlString(dir_bc.link );
-				dir_bc.name = files[i];
-				dir_bc.name.trimmed();
-				dir_bc.name_hash=qhashEx(dir_bc.name,dir_bc.name.length());
-
-
-				dir_bc.link_hash=qhashEx(dir_bc.link,dir_bc.link.length());
-				dir_bc.flag = BOOKMARK_ITEM_FLAG;
-				dir_bc.level = level;			
-				// list->push_back(dir_bc);
-				addItemToSortlist(dir_bc,list);
-			}
 		}
-		//items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
+		handleUrlString(bc.link );
+		bc.name = files[i];
+		bc.name.trimmed();
+		bc.name_hash=qhashEx(bc.name,bc.name.length());
+		bc.link_hash=qhashEx(bc.link,bc.link.length());
+		bc.flag = BOOKMARK_ITEM_FLAG;
+		bc.level = level;			
+		addItemToSortlist(bc,list);
 	}
 }
 int tz::getFirefoxVersion()

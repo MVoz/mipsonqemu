@@ -342,6 +342,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	posthp->browserid=browserType;
 	posthp->username=settings->value("Account/Username","").toString();
 	posthp->password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);
+	//qDebug()<<__FUNCTION__<<posthp->username<<":"<<posthp->password;
 	//	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
 
 	switch (bc->flag)
@@ -385,7 +386,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 
 		break;
 	case BOOKMARK_ITEM_FLAG:
-		posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+	//	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
 
 		if (action)
 		{
@@ -598,12 +599,18 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 		case ACTION_ITEM_DELETE:
 			switch(browserType){
 		case BROWSE_TYPE_IE:
-			filePath = path + "\\" + bc->name + ".url";
+			if(!QFile::remove(path + "/" + bc->name + ".url"))
+			{
+				qDebug()<<"Couldn't remove file "<<path + "/" + bc->name + ".url";
+				return;
+			}
+			/*
 			if (!DeleteFile(filePath.utf16()))
 			{
 				qDebug("Couldn't remove file %s.", qPrintable(filePath));
 				return;
 			}
+			*/
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
