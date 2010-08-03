@@ -961,6 +961,7 @@ void mergeThread::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,in
 			else
 			{
 				CatItem citem(item.link,item.name,frombrowsertype);
+				citem.delId = delId;
 #if 1
 				CatItem::prepareInsertQuery(q,citem);
 #else

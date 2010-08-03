@@ -65,7 +65,7 @@ public:
 	QStringList actionKeys;
 	QList < int >iMetaKeys;
 	QList < int >iActionKeys;
-	QList <CMD_LIST> cmdLists;
+	//QList <CMD_LIST> cmdLists;
 	QList <Directory> dirLists;
 	//shared_ptr <BookmarkSync> gSyncer;
 	//shared_ptr <CatBuilder> catalogBuilder;

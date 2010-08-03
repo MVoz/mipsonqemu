@@ -133,6 +133,7 @@ void CatBuilder::clearDb(uint delId)
 	{
 	case CAT_BUILDMODE_ALL:
 		s=QString("DELETE  FROM %1 WHERE delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
+		tz::clearbmgarbarge(&q,delId);
 		break;
 	case CAT_BUILDMODE_DIRECTORY:
 		s=QString("DELETE  FROM %1 WHERE delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_PROGRAM)).arg(delId);
@@ -193,6 +194,7 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 	while(!browserInfo[i].name.isEmpty())
 	{
 		browserenable[i] =browserInfo[i].enable;
+		qDebug()<<"browser:"<<browserInfo[i].name<<" enable:"<<browserInfo[i].enable;
 		i++;
 	}
 
