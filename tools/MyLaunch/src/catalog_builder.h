@@ -63,7 +63,7 @@ public:
 	void buildCatelog_command(uint);
 	void buildCatelog_define(uint);
 	void clearShortcut();
-	void _clearShortcut(int type);
+//	void _clearShortcut(int type);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int comeFrom,uint delId);
 	//void produceInsetQueryStr(CatItem& item,QString& s );
 	//bool createDbFile();

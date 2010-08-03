@@ -86,6 +86,7 @@ bad:
 	indexed.clear();
 	emit catalogFinished(0);
 }
+/*
 void CatBuilder::_clearShortcut(int type)
 {
 	QSqlQuery q("", *db);
@@ -104,24 +105,26 @@ void CatBuilder::_clearShortcut(int type)
 		q.clear();
 	}
 }
+*/
 void CatBuilder::clearShortcut()
 {
 
 	switch(buildMode)
 	{
 	case CAT_BUILDMODE_ALL:
-		_clearShortcut(CAT_BUILDMODE_DIRECTORY);
-		_clearShortcut(CAT_BUILDMODE_COMMAND);
-		_clearShortcut(CAT_BUILDMODE_BOOKMARK);
+		tz::_clearShortcut(db,COME_FROM_PREDEFINE);
+		tz::_clearShortcut(db,COME_FROM_COMMAND);
+		tz::_clearShortcut(db,COME_FROM_PROGRAM);
+		tz::_clearShortcut(db,COME_FROM_BROWSER);
 		break;
 	case CAT_BUILDMODE_DIRECTORY:
-		_clearShortcut(CAT_BUILDMODE_DIRECTORY);				
+		tz::_clearShortcut(db,COME_FROM_PROGRAM);				
 		break;
 	case CAT_BUILDMODE_BOOKMARK:
-		_clearShortcut(CAT_BUILDMODE_BOOKMARK);
+		tz::_clearShortcut(db,COME_FROM_BROWSER);
 		break;
 	case CAT_BUILDMODE_COMMAND:
-		_clearShortcut(CAT_BUILDMODE_COMMAND);
+		tz::_clearShortcut(db,COME_FROM_PREDEFINE);
 		break;
 	}		
 }

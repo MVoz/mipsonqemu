@@ -195,7 +195,7 @@ public :
 	static struct dbtableinfo* dbTableInfo(uint id);
 	static QList<struct dbtableinfo*> dbTableInfoList();
 	static QString GetShortcutTarget(const QString& LinkFileName);
-
+	static void _clearShortcut(QSqlDatabase *db,int type);
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
