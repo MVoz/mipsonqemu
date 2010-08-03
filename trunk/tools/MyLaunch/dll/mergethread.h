@@ -88,7 +88,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT;
 public:
-	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString path="");
+	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0);
 	~mergeThread(){DELETE_FILE(file);}
 public:
 	void run();
@@ -99,13 +99,13 @@ public:
 	int copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src);
 	void postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType);
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
-	void handleBmData(QString& iePath);
+	void handleBmData();
 	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
 	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
-	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
+	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& path,int browserType);
 
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
-	void handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &iePath,int browserType,int local_parentId,int localOrServer);
+	void handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &path,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
 

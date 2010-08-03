@@ -79,7 +79,6 @@ public:
 	//QEventLoop loop;
 	QFile *file;
 	//QDateTime* updateTime;
-	QString iePath;
 	QSettings * settings;
 	int mode;
 	QBuffer* resultBuffer;
@@ -119,7 +118,7 @@ public:
 	void monitorTimerSlot();
 	*/
 public:
-	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QString path="",int m=BOOKMARK_SYNC_MODE);
+	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync(){QDEBUG_LINE;}
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}
