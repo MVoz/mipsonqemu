@@ -376,7 +376,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	if(!error)	
 	{
 		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
-		mgthread = new mergeThread(this,db,settings);
+		mgthread = new mergeThread(this,db,settings,username,password);
 		//emit updateStatusNotify(UPDATE_PROCESSING);
 		mgthread->setRandomFileFromserver(filename_fromserver);
 

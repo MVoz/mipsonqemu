@@ -88,7 +88,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT;
 public:
-	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0);
+	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString u="",QString p="");
 	~mergeThread(){DELETE_FILE(file);}
 public:
 	void run();
@@ -145,6 +145,8 @@ public:
 	uint modifiedFlag;
 	volatile uint terminatedFlag;
 	QString filename_fromserver;
+	QString username;
+	QString password;
 	//bool terminateflag;
 	void setRandomFileFromserver(QString &s);
 

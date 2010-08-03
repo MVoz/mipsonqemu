@@ -3,7 +3,7 @@
 #include <QUrl>
 #include <QMessageBox>
 #include <globals.h>
-mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s):QThread(parent),db(b),settings(s)
+mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QString p):QThread(parent),db(b),settings(s),username(u),password(p)
 {
 	file = NULL;
 	//  localxmlFile = NULL;
@@ -342,8 +342,10 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
 	posthp->parentid=parentId;
 	posthp->browserid=browserType;
-	posthp->username=settings->value("Account/Username","").toString();
-	posthp->password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);
+	posthp->username = username;
+	posthp->password = password;
+	//posthp->username=settings->value("Account/Username","").toString();
+	//posthp->password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);
 	//qDebug()<<__FUNCTION__<<posthp->username<<":"<<posthp->password;
 	//	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
 

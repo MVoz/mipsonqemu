@@ -2180,6 +2180,8 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 	case SYNC_MODE_BOOKMARK:
 	case SYNC_MODE_REBOOKMARK:
+		gSyncer->setUsername(name);
+		gSyncer->setPassword(password);
 		if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
 		{
 			url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
