@@ -2386,7 +2386,7 @@ void MyWidget::menuOptions()
 		return;
 	}
 	optionsOpen = true;
-	ops = new OptionsDlg(this,&gLastUpdateTime,gSettings,gIeFavPath,&db);
+	ops = new OptionsDlg(this,gSettings,&db);
 	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
 	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
 	connect(ops, SIGNAL(configModifyNotify(int)), this, SLOT(configModify(int)));
