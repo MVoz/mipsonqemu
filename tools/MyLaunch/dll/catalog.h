@@ -64,6 +64,7 @@ enum CATITEM_ITEM{
 	pinyinReg=(x).pinyinReg;\
 	allchars=(x).allchars;\
 	alias2=(x).alias2;\
+	domain = (x).domain;\
 	shortCut=(x).shortCut;\
 	delId=(x).delId;\
 	args=(x).args;\
@@ -89,6 +90,7 @@ public:
 	/* for link file*/
 	QString realname;
 	QString alias2;
+	QString domain;
 	/** How many times this item has been called by the user */
 	uint usage;
 	/** This is unused, and meant for plugin writers and future extensions */
@@ -221,6 +223,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.pinyinReg;
 	out << item.allchars;
 	out << item.alias2;
+	out << item.domain;
 	out << item.shortCut;
 	out << item.delId;
 	out << item.args;
@@ -243,6 +246,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.pinyinReg;
 	in >> item.allchars;
 	in >> item.alias2;
+	in >> item.domain;
 	in >> item.shortCut;
 	in >> item.delId;
 	in >> item.args;

@@ -290,6 +290,7 @@
 	(x)->bindValue(":pinyinReg", (y).pinyinReg);\
 	(x)->bindValue(":allchars", (y).allchars);\
 	(x)->bindValue(":alias2", (y).alias2);\
+	(x)->bindValue(":domain", (y).domain);\
 	(x)->bindValue(":shortCut", (y).shortCut);\
 	(x)->bindValue(":delId", (y).delId);\
 	(x)->bindValue(":args", (y).args);\
