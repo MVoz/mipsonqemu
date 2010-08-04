@@ -47,36 +47,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 extern shared_ptr < BookmarkSync> gSyncer;
 
-/*
-bool MyWidget::createDbFile()
-{
-QString s;
-s=QString("DROP TABLE %1").arg(DB_TABLE_NAME);
-QSqlQuery q(s,db);
-q.exec();	
-s=QString("CREATE TABLE %1 ("
-"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-"fullPath VARCHAR(1024) NOT NULL, "
-"shortName VARCHAR(1024) NOT NULL, "
-"lowName VARCHAR(1024) NOT NULL, "
-"icon VARCHAR(1024), "
-"usage INTEGER NOT NULL,"
-"hashId INTEGER NOT NULL,"		   
-"isHasPinyin INTEGER NOT NULL, "
-"comeFrom INTEGER NOT NULL, "
-"pinyinReg VARCHAR(1024), "
-"allchars VARCHAR(1024), "
-"alias2 VARCHAR(1024),"
-"shortCut INTEGER NOT NULL,"
-"delId INTEGER NOT NULL,"
-"args VARCHAR(1024))").arg(DB_TABLE_NAME);
-q=QSqlQuery(s,db);
-q.exec(s);
-q.clear();
-return true;
-
-}
-*/
 void MyWidget::configModify(int type){
 	switch(type){
 		case HOTKEY:
@@ -318,16 +288,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	licon = new QLabel(label);
 
 	dirs = platform->GetDirectories();
-#if 0
-	QHash < QString, QList < QString > >::const_iterator i;
-	for (i = dirs.constBegin(); i != dirs.constEnd(); ++i)
-	{
-		logToFile("%s:", i.key().toLatin1().data());
-		QList < QString >::const_iterator j;
-		for (j = i.value().constBegin(); j != i.value().constEnd(); ++j)
-			logToFile("%s\n", (*j).toLatin1().data());
-	}
-#endif
+
 #ifdef CONFIG_ONE_OPTION
 	ops = NULL;
 #endif
@@ -465,8 +426,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
 		silentupdateTimer->start(1*SECONDS);//1m
-	if (gSettings->value("synctimer", 10).toInt() != 0)
-		syncTimer->start(5*MINUTES);//5m
+	if (gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt() != 0)
+		syncTimer->start(SILENT_SYNC_TIMER*MINUTES);//5m
 
 	monitorTimer=new QTimer(this);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
@@ -1525,13 +1486,11 @@ gSettings->setValue("Display/rposY", rpos.second);
 void MyWidget::syncTimeout()
 {
 	// one hour
-	int time = gSettings->value("updatetimer", 60).toInt();
-	{
-		_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);
-	}
-	syncTimer->stop();
+	STOP_TIMER(syncTimer);
+	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);		
 	if (time != 0)
-		syncTimer->start(time * 60000);//minutes
+		syncTimer->start(time * MINUTES);//minutes
 }
 
 void MyWidget::silentupdateTimeout()
@@ -2092,7 +2051,7 @@ void MyWidget::_startSync(int mode,int silence)
 		return;
 	syncMode = mode;
 	QString name,password;
-	//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+	qDebug()<<__FUNCTION__<<__LINE__<<"mode:"<<mode<<"silent:"<<silence;
 	//qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(mode)
 	{
