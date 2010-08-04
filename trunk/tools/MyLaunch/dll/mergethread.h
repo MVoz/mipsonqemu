@@ -89,7 +89,7 @@ class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 	Q_OBJECT;
 public:
 	mergeThread(QObject * parent = 0,QSqlDatabase* b=0,QSettings* s=0,QString u="",QString p="");
-	~mergeThread(){DELETE_FILE(file);}
+	~mergeThread();
 public:
 	void run();
 	int bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type);
@@ -121,7 +121,7 @@ signals:
 public:
 	postHttp * posthp;
 	QFile *file;
-	QList < bookmark_catagory > mergeBmList;
+	//QList < bookmark_catagory > mergeBmList;
 	//QFile *localxmlFile;
 	//	QFile *serverxmlFile;
 	//XmlReader *ie_xmlLastUpdate;

@@ -15,6 +15,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	//   firefox_xmlHttpServer = NULL;;
 	//   opera_xmlHttpServer = NULL;;
 	//	   firefoxReader = NULL;;
+	posthp=NULL;
 
 	firefox_version=0;
 	modifiedFlag=0;
@@ -22,6 +23,11 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	posthp = NULL;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
+mergeThread::~mergeThread(){
+	DELETE_FILE(file);
+	DELETE_OBJECT(posthp);
+}
+
 void mergeThread::setRandomFileFromserver(QString& s)
 {
 	filename_fromserver = s;
@@ -114,8 +120,8 @@ void mergeThread::handleBmData()
 	/*for current*/
 	QList < bookmark_catagory > current_bc[BROWSE_TYPE_MAX];
 
-	XmlReader *lastUpdate[BROWSE_TYPE_MAX];
-	XmlReader *fromServer[BROWSE_TYPE_MAX];
+	XmlReader *lastUpdate[BROWSE_TYPE_MAX]={NULL};
+	XmlReader *fromServer[BROWSE_TYPE_MAX]={NULL};
 
 	bool browserenable[BROWSE_TYPE_MAX];
 	//from lastupdater
@@ -290,9 +296,11 @@ ffout:
 			case BROWSE_TYPE_OPERA:
 				break;
 			}			
-			delete fromServer[browserid];
+			delete fromServer[browserid];			
 		}
 		delete lastUpdate[i];
+		result_bc[i].clear();
+		current_bc[i].clear();
 		clearBrowserInfoOpFlag(browserid);
 		i++;
 	}
@@ -426,20 +434,20 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 }
 void mergeThread::deleteIdFromDb(uint id)
 {
-	QSqlQuery query("",ff_db);
-	QString queryStr;
-	queryStr=QString("SELECT id FROM moz_bookmarks WHERE parent=%1").arg(id);
+	QSqlQuery q("",ff_db);
+	QString s;
+	s=QString("SELECT id FROM moz_bookmarks WHERE parent=%1").arg(id);
 	uint delId=0;
-	if(query.exec(queryStr)){					
-		while(query.next()) { 
-			delId=query.value(0).toUInt();
+	if(q.exec(s)){					
+		while(q.next()) { 
+			delId=q.value(0).toUInt();
 			deleteIdFromDb(delId);
 		}
 	}	
-	queryStr=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE id=%1)").arg(id);
-	query.exec(queryStr);
-	queryStr=QString("DELETE FROM  moz_bookmarks WHERE id=%1").arg(id);
-	query.exec(queryStr);
+	s=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE id=%1)").arg(id);
+	q.exec(s);
+	s=QString("DELETE FROM  moz_bookmarks WHERE id=%1").arg(id);
+	q.exec(s);
 }
 
 void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId)
@@ -476,16 +484,16 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
-				QString queryStr;
-				QSqlQuery query("",ff_db);			
+				QString s;
+				QSqlQuery q("",ff_db);			
 				//2---directory
-				queryStr=QString("INSERT INTO moz_bookmarks(type,parent,title) VALUES(2,%1,'%2');").arg(local_parentId).arg(bc->name);
-				query.exec(queryStr);
-				queryStr=QString("select id from moz_bookmarks where title='%1' and parent=%2 and type=2 order by id desc").arg(bc->name);
+				s=QString("INSERT INTO moz_bookmarks(type,parent,title) VALUES(2,%1,'%2');").arg(local_parentId).arg(bc->name);
+				q.exec(s);
+				s=QString("select id from moz_bookmarks where title='%1' and parent=%2 and type=2 order by id desc").arg(bc->name);
 				uint ownerId=0;
-				if(query.exec(queryStr)){					
-					while(query.next()) { 
-						ownerId=query.value(0).toUInt();
+				if(q.exec(s)){					
+					while(q.next()) { 
+						ownerId=q.value(0).toUInt();
 						break;
 					}
 				}
@@ -512,15 +520,15 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
-				QString queryStr;
-				QSqlQuery query("",ff_db);
+				QString s;
+				QSqlQuery q("",ff_db);
 				//delete from moz_places where id=(select fk from moz_bookmarks where title='sohu');
 				//delete from moz_bookmarks where parent
 				uint id=0;
-				queryStr=QString("select id from moz_bookmarks where parent=%1 and title='%2'").arg(local_parentId).arg(bc->name);
-				if(query.exec(queryStr)){					
-					while(query.next()) { 
-						id=query.value(0).toUInt();
+				s=QString("select id from moz_bookmarks where parent=%1 and title='%2'").arg(local_parentId).arg(bc->name);
+				if(q.exec(s)){					
+					while(q.next()) { 
+						id=q.value(0).toUInt();
 						break;
 					}
 				}

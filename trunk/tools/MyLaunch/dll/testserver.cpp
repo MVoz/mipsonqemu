@@ -8,8 +8,13 @@
 #include "config.h"
 MyThread::MyThread(QObject * parent):QThread(parent){
 	terminateFlag=0;
-	monitorTimer=0;
+	monitorTimer=NULL;
 }
+MyThread::~MyThread()
+{
+	DELETE_TIMER(monitorTimer);
+}
+
 void MyThread::setTerminateFlag(int f)
 {
 	terminateFlag=f;

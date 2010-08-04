@@ -33,7 +33,7 @@ class TEST_SERVER_DLL_CLASS_EXPORT MyThread:public QThread
 	Q_OBJECT;
 public:
 	MyThread(QObject * parent = 0);
-	~MyThread(){}
+	~MyThread();
 public:
 	int terminateFlag;
 	QTimer* monitorTimer;

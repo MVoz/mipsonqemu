@@ -95,6 +95,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 	this->db=db;
 	mgthread=NULL;
 	httpTimer = NULL;
+	accountTestHttp=NULL;
 	//	netProxy=NULL;
 	httpProxyEnable=0;
 	http_finish=0;
@@ -108,6 +109,14 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 	//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
 
 
+}
+BookmarkSync::~BookmarkSync(){
+		DELETE_OBJECT(http);
+		DELETE_OBJECT(httpTimer);
+		DELETE_OBJECT(accountTestHttp);
+		DELETE_OBJECT(mgthread);
+		DELETE_FILE(resultBuffer);
+		QDEBUG_LINE;
 }
 void BookmarkSync::httpTimerSlot()
 {
