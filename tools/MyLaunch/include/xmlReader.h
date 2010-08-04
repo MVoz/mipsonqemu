@@ -67,6 +67,11 @@ public:
 		setDevice(device);
 	}
 	XmlReader();
+	~XmlReader(){
+		QDEBUG_LINE;
+		bm_list.clear();
+	}
+	
 public:
 
 	// void readStream(uint flag);
