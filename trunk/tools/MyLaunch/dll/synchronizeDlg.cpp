@@ -83,9 +83,10 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 
 synchronizeDlg::~synchronizeDlg()
 {
-	qDebug("unregister resource options.rcc");
+	qDebug()<<__FUNCTION__<<"unregister resource options.rcc";
 	QResource::unregisterResource("options.rcc");
 	DELETE_OBJECT(webView);
+	statusMap.clear();
 }
 void synchronizeDlg::getHtml(const QString & path)
 {

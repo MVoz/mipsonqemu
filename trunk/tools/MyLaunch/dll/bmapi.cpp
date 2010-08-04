@@ -974,7 +974,7 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 	for (int i = 0; i < files.count(); ++i)
 	{
 		struct bookmark_catagory bc;
-		qDebug()<<(dir + "/" + files[i]);
+	//	qDebug()<<(dir + "/" + files[i]);
 		QSettings favSettings (dir + "/" + files[i], QSettings::IniFormat);
 		int dotIndex = files[i].lastIndexOf('.');
 		files[i].truncate(dotIndex);

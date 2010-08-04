@@ -93,9 +93,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 	//httpTimerId=startTimer(10*1000);
 	//	updateTime=d;
 	this->db=db;
-	mgthread=NULL;
-	httpTimer = NULL;
-	accountTestHttp=NULL;
+	
 	//	netProxy=NULL;
 	httpProxyEnable=0;
 	http_finish=0;
@@ -103,6 +101,12 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 	error=0;
 	testServerResult = 0;
 	resultBuffer = NULL;
+	testThread = NULL;
+	file =NULL;
+	http =NULL;
+	mgthread=NULL;
+	httpTimer = NULL;
+	accountTestHttp=NULL;
 	//monitorTimer = NULL;
 	//terminateFlag = 0;
 
@@ -112,10 +116,12 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 }
 BookmarkSync::~BookmarkSync(){
 		DELETE_OBJECT(http);
-		DELETE_OBJECT(httpTimer);
+		DELETE_TIMER(httpTimer);
 		DELETE_OBJECT(accountTestHttp);
 		DELETE_OBJECT(mgthread);
+		DELETE_OBJECT(testThread);
 		DELETE_FILE(resultBuffer);
+		DELETE_FILE(file);
 		QDEBUG_LINE;
 }
 void BookmarkSync::httpTimerSlot()
@@ -179,6 +185,7 @@ void BookmarkSync::testNetFinished()
 		break;
 	case 1:
 		{
+
 			http = new QHttp();
 			//if(httpProxyEnable)
 			//	http->setProxy(*netProxy);

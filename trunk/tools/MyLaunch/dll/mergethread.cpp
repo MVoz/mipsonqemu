@@ -20,10 +20,11 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	firefox_version=0;
 	modifiedFlag=0;
 	terminatedFlag=0;
-	posthp = NULL;
+	//posthp = NULL;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){
+	QDEBUG_LINE;
 	DELETE_FILE(file);
 	DELETE_OBJECT(posthp);
 }
@@ -298,9 +299,9 @@ ffout:
 			}			
 			delete fromServer[browserid];			
 		}
-		delete lastUpdate[i];
-		result_bc[i].clear();
-		current_bc[i].clear();
+		delete lastUpdate[browserid];
+		result_bc[browserid].clear();
+		current_bc[browserid].clear();
 		clearBrowserInfoOpFlag(browserid);
 		i++;
 	}
@@ -762,7 +763,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		int inLast = bmItemInList(&item, lastupdateList);
 		int inServer = bmItemInList(&item, serverList);
 		ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
+		//qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
 		if (ret != 7&&ret!=5)
 		{
 			/*
@@ -781,7 +782,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		{
 			bookmark_catagory tmp;
 			copyBmCatagory(&tmp, &((*serverList)[inServer]));
-			qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
+			//qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
 			resultList->push_back(tmp);
 			//when re=5,inLast=-1,use lastupdateList
 			bmMerge(&(item.list), (inLast>=0)?(&((*lastupdateList)[inLast].list)):(lastupdateList), &((*serverList)[inServer].list), &(resultList->last().list), (localDirName == "") ? path : path + "/" + localDirName,path,browserType);
