@@ -33,6 +33,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent),settings(s),db(b)
 {
 	//catalogBuilder=*(shared_ptr <CatBuilder>*)(catalogBuilder);
+	manager=NULL;
+	reply=NULL;
+	updaterDlg=NULL;
+	updaterthread=NULL;
+	testProxyTimer =NULL;
 	webView = new QWebView(this);
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setMinimumSize(QSize(805, 500));
@@ -62,10 +67,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	getHtml("./html/common.html");
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
-	manager=NULL;
-	reply=NULL;
-	updaterDlg=NULL;
-	updaterthread=NULL;
+
 
 }
 OptionsDlg::~OptionsDlg()
@@ -74,7 +76,15 @@ OptionsDlg::~OptionsDlg()
 	QResource::unregisterResource("options.rcc");
 	//cmdLists.clear();
 	dirLists.clear();
+	metaKeys.clear();
+	iActionKeys.clear();
+	actionKeys.clear();
 	DELETE_OBJECT(manager);
+	DELETE_OBJECT(reply);
+	DELETE_OBJECT(updaterthread);
+	DELETE_OBJECT(updaterDlg);
+	DELETE_OBJECT(webView);
+	DELETE_TIMER(testProxyTimer);
 	QDialog::accept();
 }
 

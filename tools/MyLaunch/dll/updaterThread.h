@@ -207,7 +207,8 @@ public:
 		DELETE_OBJECT(localSettings);
 		DELETE_OBJECT(serverSettings);
 		//DELETE_TIMER(updateTime);
-		DELETE_TIMER(monitorTimer);
+		DELETE_OBJECT(testThread);
+		//DELETE_TIMER(monitorTimer);
 		DELETE_OBJECT(fh);
 	}
 	void run();

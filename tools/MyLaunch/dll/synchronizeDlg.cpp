@@ -85,6 +85,7 @@ synchronizeDlg::~synchronizeDlg()
 {
 	qDebug("unregister resource options.rcc");
 	QResource::unregisterResource("options.rcc");
+	DELETE_OBJECT(webView);
 }
 void synchronizeDlg::getHtml(const QString & path)
 {

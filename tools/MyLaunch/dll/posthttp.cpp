@@ -10,6 +10,8 @@ postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
 	postType=type;
 	postTimer = NULL;
 	resultBuffer = NULL;
+	posthttp = NULL;
+	
 	//monitorTimer = 0;
 	//terminateFlag = 0;
 	//proxyEnable = 0;
@@ -24,7 +26,8 @@ postHttp::~postHttp(){
 	*/
 	DELETE_FILE(resultBuffer);
 	DELETE_TIMER(monitorTimer);
-	DELETE_TIMER(postTimer)
+	DELETE_TIMER(postTimer);
+	DELETE_OBJECT(posthttp);
 		/*
 		if(monitorTimer)
 		delete monitorTimer;
