@@ -1283,7 +1283,8 @@ void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 				"id INTEGER PRIMARY KEY AUTOINCREMENT, "					   
 				"shortName VARCHAR(1024) NOT NULL, "
 				"realname VARCHAR(1024) NOT NULL, "
-				"alias2 VARCHAR(1024),"					   
+				"alias2 VARCHAR(1024),"	
+				"domain VARCHAR(1024),"	
 				"time INTEGER NOT NULL,"
 				"usage INTEGER NOT NULL,"
 				"comeFrom INTEGER NOT NULL, "
@@ -1306,7 +1307,37 @@ void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 		s->sync();
 	}
 }
-
+QString tz::getDomain(const QString& fullpath)
+{
+	//IPV4
+	QString path = fullpath.trimmed();
+	QString ipv4="^((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))$";
+	
+	QRegExp  ipv4exp=QRegExp(ipv4,Qt::CaseInsensitive);
+	
+	if(ipv4exp.indexIn(path)==0)
+		return "";
+	QStringList slist = path.split(".");
+	switch(slist.count()){
+		case 0:
+		return "";
+		case 1:
+		return path;
+		case 2:
+		return slist.at(0);
+		default:
+		if(slist.at(0)=="www")
+			return slist.at(1);
+		else{
+			QString ret;
+			ret.append(slist.at(0));
+			ret.append(" ");
+			ret.append(slist.at(1));
+			return ret;
+		}
+		
+	}
+}
 struct dbtableinfo* tz::dbTableInfo(uint id)
 {
 	if(id>COME_FROM_BROWSER)

@@ -330,14 +330,17 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		QStringList ids;
 		if(info->id == COME_FROM_SHORTCUT){
 			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+		}else if(info->id >= COME_FROM_BROWSER){
+			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%')  limit %5").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
 		}else
 			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or realname LIKE '%%3%')  limit %4").arg(info->name).arg(searchTxt).arg(searchTxt).arg(leftnums);
 RETRY:
 		if(shortName_flag){
+		  //just for COME_FROM_SHORTCUT
 			if(ids.size())
-				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%%3%' or realname LIKE '%%4%') limit %5").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(searchTxt).arg(leftnums);
+				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%%3%' or domain LIKE '%%4%' or realname LIKE '%%5%') limit %6").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
 			else
-				s=QString("SELECT * FROM %1  WHERE shortName LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+				s=QString("SELECT * FROM %1  WHERE (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%') LIKE '%%5%'  limit %6").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
 		}
 		if(hanzi_flag){
 			if(info->id == COME_FROM_SHORTCUT)
@@ -404,6 +407,7 @@ RETRY:
 				item->pinyinReg=pinyinReg;
 				item->allchars=allchars;
 				item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
+				item->domain=q.value(Q_RECORD_INDEX(q,"domain")).toString();
 				item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
 				item->pos = pos;
 				//qDebug("%s",qPrintable(item->fullPath));

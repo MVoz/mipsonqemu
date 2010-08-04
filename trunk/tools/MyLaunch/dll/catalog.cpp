@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	usage = 0;\
 	hash_id = qHash(shortName);\
 	alias2="";\
+	domain="";\
 	shortCut=0;\
 	delId=0;\
 	args="";\
@@ -37,13 +38,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	pos = 0;\
 	realname="";\
 	if(IS_FROM_BROWSER(flag)){\
-	if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
-	QUrl url(fullPath);\
-	if(url.isValid()){\
-	QString site = url.host();\
-	icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
-	}\
-	}\
+			if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
+			QUrl url(fullPath);\
+			if(url.isValid()){\
+				QString site = url.host();\
+				icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
+				domain = tz::getDomain(url.host());\
+			}\
+		}\
 	}\
 		}while(0);
 
@@ -210,11 +212,11 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 		"("
 		"fullPath, shortName, lowName,realname,icon,usage,hashId,"
 		"isHasPinyin,comeFrom,time,"
-		"pinyinReg,allchars,alias2,shortCut,delId,args"
+		"pinyinReg,allchars,alias2,domain,shortCut,delId,args"
 		") VALUES ("
 		":fullPath, :shortName, :lowName,:realname,:icon,:usage,:hashId,"
 		":isHasPinyin,:comeFrom,:time,"
-		":pinyinReg,:allchars,:alias2,:shortCut,:delId,:args"		
+		":pinyinReg,:allchars,:alias2,:domain,:shortCut,:delId,:args"		
 		")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 		);
 	BIND_CATITEM_QUERY(q,item);
