@@ -61,9 +61,12 @@ public:
 	~testServerThread()
 	{
 		qDebug("~testServerThread");
-		DELETE_OBJECT(manager);
+		//DELETE_OBJECT(manager);
 		DELETE_OBJECT(reply);
+		delete manager;
+		manager = NULL;
 		DELETE_TIMER(testNetTimer);
+		qDebug("~testServerThread 122");
 		/*
 		if(manager)
 		manager->deleteLater();
@@ -78,6 +81,7 @@ public:
 		void testServerFinished(QNetworkReply*);
 		void testServerTimeout();
 		void terminateThread();
+		void gorun();
 };
 /*
 class  TEST_SERVER_DLL_CLASS_EXPORT testServerThread:public QThread
