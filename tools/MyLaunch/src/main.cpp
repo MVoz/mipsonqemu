@@ -427,7 +427,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
 		silentupdateTimer->start(1*SECONDS);//1m
 	if (gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt() != 0)
-		syncTimer->start(SILENT_SYNC_TIMER*MINUTES);//5m
+		syncTimer->start(SILENT_SYNC_TIMER*SECONDS);//5m
 
 	monitorTimer=new QTimer(this);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
@@ -1487,10 +1487,9 @@ void MyWidget::syncTimeout()
 {
 	// one hour
 	STOP_TIMER(syncTimer);
-	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
-	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);		
-	if (time != 0)
-		syncTimer->start(time * MINUTES);//minutes
+	
+	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);	
+
 }
 
 void MyWidget::silentupdateTimeout()
@@ -2309,6 +2308,11 @@ void MyWidget::syncer_finished()
 	syncAction->setDisabled(FALSE);
 	if(closeflag)
 		close();
+	else{
+				int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+	if (time != 0)
+		syncTimer->start(time * SECONDS);//minutes
+	}
 }
 
 
