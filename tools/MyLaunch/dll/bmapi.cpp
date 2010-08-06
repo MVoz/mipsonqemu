@@ -818,7 +818,7 @@ void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 	{
 		s.clear();
 		s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id+COME_FROM_BROWSER_START).arg(delId);
-		qDebug()<<__FUNCTION__<<s;
+		//qDebug()<<__FUNCTION__<<s;
 		q->exec(s);		
 		i++;
 	}
@@ -947,7 +947,7 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 {
 	//if (level == 0)
 	//	this->flag = flag;
-	qDebug()<<directory;
+//	qDebug()<<directory;
 	//QString createTime, lastAccessTime, lastWriteTime;
 	QDir qd(directory);
 	QString dir = qd.absolutePath();

@@ -127,7 +127,7 @@ void XmlReader::readBrowserType(int browserType)
 		{
 			if (name() == "browserType"&&attributes().value("name") == tz::getBrowserName(browserType).toLower())
 			{
-				qDebug("%s %d %s",__FUNCTION__,__LINE__,qPrintable(tz::getBrowserName(browserType)));
+			//	qDebug("%s %d %s",__FUNCTION__,__LINE__,qPrintable(tz::getBrowserName(browserType)));
 				readFlag=1;
 				readBookmarkElement();
 			} 

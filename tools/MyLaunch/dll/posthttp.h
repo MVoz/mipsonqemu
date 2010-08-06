@@ -117,6 +117,7 @@ public:
 			//void httpStateChanged(int state);
 			void postTimerSlot();
 			void terminateThread();
+			void gorun();
 };
 
 #endif
