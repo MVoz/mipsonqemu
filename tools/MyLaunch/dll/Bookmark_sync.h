@@ -153,6 +153,8 @@ public:
 		void mgUpdateStatus(int flag,int status);
 		void testNetFinished();
 		void terminateThread();
+		
+		void gorun();
 signals:
 		void bookmarkFinished(bool error);
 		void updateStatusNotify(int type,int status);

@@ -24,10 +24,14 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){
-	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
-		QFile::remove(filename_fromserver);
+
 	DELETE_FILE(file);
 	DELETE_OBJECT(posthp);
+	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
+	{
+		QFile::remove(filename_fromserver);	
+	
+	}
 }
 
 void mergeThread::setRandomFileFromserver(QString& s)
@@ -141,7 +145,8 @@ void mergeThread::handleBmData()
 	{
 		getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
 		if(QFile::exists(localBmFullPath)){
-			if(tz::fileMd5(localBmFullPath)!=settings->value("localbmkey","").toString())
+			QString filemd5 =  tz::fileMd5(localBmFullPath);			
+			if(qhashEx(filemd5,filemd5.length())!=settings->value("localbmkey",0).toUInt())
 			{
 				qDebug()<<"md5 error remove "<<localBmFullPath;
 				QFile::remove(localBmFullPath);
@@ -284,7 +289,8 @@ ffout:
 			i++;
 		}		
 		localfile.close();
-		settings->setValue("localbmkey",tz::fileMd5(localBmFullPath));
+		QString filemd5 = tz::fileMd5(localBmFullPath);
+		settings->setValue("localbmkey",qhashEx(filemd5,filemd5.length()));
 	}
 
 	getUpdatetime(updateTime);
