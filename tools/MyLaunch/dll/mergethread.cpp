@@ -137,6 +137,17 @@ void mergeThread::handleBmData()
 
 	if(!checkXmlfileFromServer())
 		return;
+	/*check localbm.dat if md5 faile ,remove it*/
+	{
+		getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
+		if(QFile::exists(localBmFullPath)){
+			if(tz::fileMd5(localBmFullPath)!=settings->value("localbmkey","").toString())
+			{
+				qDebug()<<"md5 error remove "<<localBmFullPath;
+				QFile::remove(localBmFullPath);
+			}
+		}
+	}
 
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	//get browser enable
@@ -155,7 +166,7 @@ void mergeThread::handleBmData()
 			int browserid = browserInfo[i].id;
 
 			//lastupdate xml file whether enable or not
-			if (getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
+			if(QFile::exists(localBmFullPath))
 			{
 				f.setFileName(localBmFullPath);
 				f.open(QIODevice::ReadOnly);						  
@@ -273,6 +284,7 @@ ffout:
 			i++;
 		}		
 		localfile.close();
+		settings->setValue("localbmkey",tz::fileMd5(localBmFullPath));
 	}
 
 	getUpdatetime(updateTime);
