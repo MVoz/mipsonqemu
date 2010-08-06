@@ -251,6 +251,7 @@
 #define MINUTES  (60*SECONDS)
 #define HOURS (60*MINUTES)
 #define DAYS (24*HOURS)
+#define POST_ITEM_TIMEOUT 10
 
 #define SET_NET_PROXY(x) \
 	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
@@ -318,6 +319,8 @@ void monitorTimerSlot();
 	DELETE_OBJECT(x)
 #define DELETE_FILE(x)	if(x){ if((x)->isOpen()) (x)->close();delete (x);(x)=NULL; }
 
+
+
 enum httpState
 {
 	HTTP_UNCONNECTED=0,
@@ -360,6 +363,13 @@ enum httpState
 //#define KERNEL_DEBUG_A(LEVEL,format, args...)  do{  printk("\033[0;31m%s %s %d....................\033[0m\n",__FILE__,__FUNCTION__,__LINE__);printk(format , ## args);}while(0);
 //#define myprintf(templt,args...) fprintf(stderr,templt,args)
 //#define myprintf(templt,...) fprintf(stderr,templt,__VA_ARGS__)
+
+#define START_TIMER_ASYN(x,single,time,func) \
+	(x)=new QTimer();\
+	(x)->setSingleShot(single);\
+	(x)->moveToThread(this);\
+	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
+	(x)->start(time);
 
 
 enum CONFIG_NOTIFY{

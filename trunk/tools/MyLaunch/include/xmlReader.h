@@ -68,7 +68,7 @@ public:
 	}
 	XmlReader();
 	~XmlReader(){
-		QDEBUG_LINE;
+		//QDEBUG_LINE;
 		bm_list.clear();
 	}
 	
