@@ -13,7 +13,6 @@ MyThread::MyThread(QObject * parent):QThread(parent){
 MyThread::~MyThread()
 {
 	DELETE_TIMER(monitorTimer);
-	QDEBUG_LINE;
 }
 
 void MyThread::setTerminateFlag(int f)

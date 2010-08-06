@@ -60,21 +60,11 @@ public:
 	}
 	~testServerThread()
 	{
-		qDebug("~testServerThread");
 		//DELETE_OBJECT(manager);
 		DELETE_OBJECT(reply);
 		delete manager;
 		manager = NULL;
 		DELETE_TIMER(testNetTimer);
-		qDebug("~testServerThread 122");
-		/*
-		if(manager)
-		manager->deleteLater();
-		if(reply)
-		reply->deleteLater();
-		if(testNetTimer)
-		testNetTimer->deleteLater();		
-		*/
 	}
 	void run();
 	public slots: 

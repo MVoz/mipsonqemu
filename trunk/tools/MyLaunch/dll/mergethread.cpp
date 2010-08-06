@@ -24,7 +24,8 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){
-	QDEBUG_LINE;
+	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
+		QFile::remove(filename_fromserver);
 	DELETE_FILE(file);
 	DELETE_OBJECT(posthp);
 }
@@ -763,7 +764,8 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		int inLast = bmItemInList(&item, lastupdateList);
 		int inServer = bmItemInList(&item, serverList);
 		ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		//qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
+		if(ret==6)
+			qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
 		if (ret != 7&&ret!=5)
 		{
 			/*
@@ -857,7 +859,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 }
 void mergeThread::run()
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	handleBmData();
 	exit();
 	emit done(0);

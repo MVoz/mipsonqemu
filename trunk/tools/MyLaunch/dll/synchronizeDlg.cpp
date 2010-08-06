@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 {
-	qDebug("register resource options.rcc");
+	//qDebug("register resource options.rcc");
 	QResource::registerResource("options.rcc");
 	setResult(2);
 	webView = new QWebView(this);
@@ -83,7 +83,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 
 synchronizeDlg::~synchronizeDlg()
 {
-	qDebug()<<__FUNCTION__<<"unregister resource options.rcc";
+	//qDebug()<<__FUNCTION__<<"unregister resource options.rcc";
 	QResource::unregisterResource("options.rcc");
 	DELETE_OBJECT(webView);
 	statusMap.clear();
