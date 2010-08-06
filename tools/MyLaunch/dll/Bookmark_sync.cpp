@@ -121,8 +121,7 @@ BookmarkSync::~BookmarkSync(){
 		DELETE_OBJECT(mgthread);
 		DELETE_OBJECT(testThread);
 		DELETE_FILE(resultBuffer);
-		DELETE_FILE(file);
-		QDEBUG_LINE;
+		DELETE_FILE(file);		
 }
 void BookmarkSync::httpTimerSlot()
 {
@@ -378,6 +377,8 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	if(httpTimer->isActive())
 	httpTimer->stop();
 	*/
+	file->flush();
+	DELETE_FILE(file);
 	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
@@ -424,13 +425,13 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	file = NULL;
 	}
 	*/
-	DELETE_FILE(file);
+
 	//  this->quit();
 }
 
 void BookmarkSync::mergeDone()
 {
-	qDebug("quit merge thread...........");
+	//qDebug("quit merge thread...........");
 	if(!error&&!terminateFlag){
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 	}

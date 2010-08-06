@@ -2303,13 +2303,16 @@ void MyWidget::syncer_finished()
 	{
 		DELETE_SHAREOBJ(syncDlg);
 	}
+	if(syncDlg&&syncDlg->isHidden()){
+		DELETE_SHAREOBJ(syncDlg);
+	}
 	gSyncer->wait();								
 	gSyncer.reset();
 	syncAction->setDisabled(FALSE);
 	if(closeflag)
 		close();
 	else{
-				int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
 	if (time != 0)
 		syncTimer->start(time * SECONDS);//minutes
 	}

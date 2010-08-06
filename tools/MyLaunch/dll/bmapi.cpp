@@ -982,7 +982,7 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 		if( bc.link.isEmpty()) continue;
 		QUrl url(bc.link);
 		if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
-					qDebug()<<"unvalid http format!";
+					//qDebug()<<"unvalid http format!";
 					continue;
 		}
 		handleUrlString(bc.link );
