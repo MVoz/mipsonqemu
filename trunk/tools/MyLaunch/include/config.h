@@ -252,6 +252,7 @@
 #define HOURS (60*MINUTES)
 #define DAYS (24*HOURS)
 #define POST_ITEM_TIMEOUT 10
+#define TEST_SERVER_TIMEOUT 10
 
 #define SET_NET_PROXY(x) \
 	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
@@ -370,7 +371,12 @@ enum httpState
 	(x)->moveToThread(this);\
 	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
 	(x)->start(time);
-
+	
+#define START_TIMER_SYN(x,single,time,func) \
+	(x)=new QTimer(this);\
+	(x)->setSingleShot(single);\
+	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
+	(x)->start(time);
 
 enum CONFIG_NOTIFY{
 	HOTKEY=0,

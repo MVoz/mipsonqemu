@@ -764,8 +764,7 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		int inLast = bmItemInList(&item, lastupdateList);
 		int inServer = bmItemInList(&item, serverList);
 		ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		if(ret==6)
-			qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
+		//qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
 		if (ret != 7&&ret!=5)
 		{
 			/*
