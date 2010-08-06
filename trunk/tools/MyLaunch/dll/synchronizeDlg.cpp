@@ -130,6 +130,8 @@ void synchronizeDlg::updateStatus(int type,int s)
 	//qDebug("%s type=%d status=%d str=%s\n",__FUNCTION__,type,status,qPrintable(statusMap[s]));
 	status=s;
 	statusTime = NOW_SECONDS;
+//	if(isHidden())
+//		return;
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:
@@ -144,7 +146,7 @@ void synchronizeDlg::updateStatus(int type,int s)
 		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(TOCHAR(statusMap[s]))));
 		//jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"this.innerText=%1;retry();\" >%2</a>';").arg(translate::tr(LANGUAGE_REJECT)).arg(translate::tr(LANGUAGE_RETRY)));
 		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
-		show();
+//		show();
 		break;
 		/*
 		case UPDATE_SUCCESSFUL:		

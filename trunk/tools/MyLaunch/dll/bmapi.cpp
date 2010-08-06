@@ -1349,7 +1349,18 @@ QList<struct dbtableinfo*> tz::dbTableInfoList()
 {
 	return dbtableInfolist;
 }
-
+static QString userIniDir;
+QString tz::getUserIniDir(int mode,const QString& s)
+{
+	switch(mode)
+	{
+	case GET_MODE://get
+		return userIniDir;
+	case SET_MODE://set
+		userIniDir = s;
+		return "";
+	}
+}
 
 
 

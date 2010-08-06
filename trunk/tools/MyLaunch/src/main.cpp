@@ -306,6 +306,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 			storeConfig(1);
 		}
 	}
+	tz::getUserIniDir(SET_MODE,dirs["userdir"][0]);
 #ifdef CONFIG_LOG_ENABLE
 	//      dump_setting(NULL);
 #endif
@@ -2265,6 +2266,10 @@ void MyWidget::monitorTimerTimeout()
 		}		
 
 	}
+	//clear user directory
+	
+
+	
 	monitorTimer->start(10);
 }
 /*

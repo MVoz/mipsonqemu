@@ -197,6 +197,7 @@ public :
 	static QString GetShortcutTarget(const QString& LinkFileName);
 	static void _clearShortcut(QSqlDatabase *db,int type);
 	static QString getDomain(const QString& fullpath);
+	static QString getUserIniDir(int ,const QString&);
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)

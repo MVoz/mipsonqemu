@@ -246,6 +246,7 @@
 
 #define FAVICO_DIRECTORY "ico"
 
+#define FROMSERVER_XML_PREFIX "from_server_xml_"
 
 #define SECONDS 1000
 #define MINUTES  (60*SECONDS)
