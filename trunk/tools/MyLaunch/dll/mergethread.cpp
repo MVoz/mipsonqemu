@@ -24,7 +24,6 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){	
-	QDEBUG_LINE;
 }
 
 void mergeThread::setRandomFileFromserver(QString& s)
@@ -328,7 +327,6 @@ ffout:
 		clearBrowserInfoOpFlag(browserid);
 		i++;
 	}
-	QDEBUG_LINE;
 	qDebug()<<"terminatedFlag:"<<terminatedFlag;
 }
 
@@ -697,7 +695,8 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 			productFFId(item->id,6);
 		}	  	 
 		qDebug()<<"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId;
-		downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? path : path + "/" + dir,browserType,local_parentId);
+		//downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? path : path + "/" + dir,browserType,local_parentId);
+		downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? path : dir,browserType,local_parentId);
 		list->push_back(*item);
 		break;
 	case 2:		//only exist in lastupdate,do nothing
@@ -717,8 +716,8 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 		//  		list->push_back(*item);
 		break;
 	case 6:		//exist in local&lastupdate,need delete from local
-		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<QString( (dir == "") ? path : path + "/" + dir);
-		downloadToLocal(item, ACTION_ITEM_DELETE, (dir == "") ? path : path + "/" + dir,browserType,local_parentId);
+		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<QString( (dir == "") ? path : dir);
+		downloadToLocal(item, ACTION_ITEM_DELETE, (dir == "") ? path : dir,browserType,local_parentId);
 		break;
 	case 7:		//exist in local,lastupdate&server,do nothing
 		break;
@@ -887,7 +886,6 @@ void mergeThread::run()
 	handleBmData();
 	exit();
 	emit done(0);
-	QDEBUG_LINE;
 }
 void mergeThread::productFFId(QString & randString,int length){   
 	int max = length;   

@@ -86,6 +86,8 @@ void BookmarkSync::on_http_requestStarted(int id)
 }
 void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
+	//qDebug()<<resp.value("md5key");
+	md5key = resp.value("md5key");
 }
 BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m): MyThread(parent),settings(s),mode(m)
 {
@@ -105,7 +107,6 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 	needwatchchild = false;
 }
 BookmarkSync::~BookmarkSync(){
-	QDEBUG_LINE;	
 }
 void BookmarkSync::httpTimerSlot()
 {
@@ -169,6 +170,7 @@ void BookmarkSync::testNetFinished()
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
 				connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)),Qt::DirectConnection);
+				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 				//qDebug("BookmarkSync run...........");
 				filename_fromserver.clear();
 				getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
@@ -331,31 +333,32 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
-
-		mgthread = new mergeThread(NULL,db,settings,username,password);		
-		//emit updateStatusNotify(UPDATE_PROCESSING);
-		mgthread->setRandomFileFromserver(filename_fromserver);
-		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
-		mgthread->start();
-		//qDebug("start merge thread...........");
-	}
-	else
-	{
-		if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
-		{
-			if(!terminateFlag)
-				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+		if(md5key==tz::fileMd5(filename_fromserver)){
+			mgthread = new mergeThread(NULL,db,settings,username,password);		
+			//emit updateStatusNotify(UPDATE_PROCESSING);
+			mgthread->setRandomFileFromserver(filename_fromserver);
+			connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
+			mgthread->start();
+			//qDebug("start merge thread...........");
+			return;
 		}
+
+	}
+	
+	if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
+	{
+		if(!terminateFlag)
+			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+	}
 		//else
 		//qDebug("http error %s",qPrintable(http->errorString()));
-		mergeDone();
-	}
+	mergeDone();
+	
 }
 
 void BookmarkSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
-	QDEBUG_LINE;
 	if(!error&&!terminateFlag){
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 	}

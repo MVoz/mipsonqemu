@@ -2305,7 +2305,6 @@ DELETE_TIMER(syncDlgTimer);
 */
 void MyWidget::syncer_finished()
 {	
-	QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
