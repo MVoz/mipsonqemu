@@ -52,26 +52,15 @@ public:
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
 public:
-	testServerThread(QObject * parent = 0):MyThread(parent)
-	{
-		manager = NULL;
-		reply = NULL;
-		testNetTimer = NULL;
-	}
-	~testServerThread()
-	{
-		//DELETE_OBJECT(manager);
-		DELETE_OBJECT(reply);
-		delete manager;
-		manager = NULL;
-		DELETE_TIMER(testNetTimer);
-	}
+	testServerThread(QObject * parent = 0);
+	~testServerThread();
 	void run();
+	void clearObject();
 	public slots: 
 		void testServerFinished(QNetworkReply*);
 		void testServerTimeout();
 		void terminateThread();
-		void gorun();
+		//void gorun();
 };
 /*
 class  TEST_SERVER_DLL_CLASS_EXPORT testServerThread:public QThread

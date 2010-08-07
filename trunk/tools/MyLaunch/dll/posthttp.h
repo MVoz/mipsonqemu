@@ -118,6 +118,7 @@ public:
 			void postTimerSlot();
 			void terminateThread();
 			void gorun();
+			void clearObject();
 };
 
 #endif

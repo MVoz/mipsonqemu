@@ -23,15 +23,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	//posthp = NULL;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
-mergeThread::~mergeThread(){
-
-	DELETE_FILE(file);
-	DELETE_OBJECT(posthp);
-	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
-	{
-		QFile::remove(filename_fromserver);	
-	
-	}
+mergeThread::~mergeThread(){	
 }
 
 void mergeThread::setRandomFileFromserver(QString& s)
@@ -116,8 +108,19 @@ void mergeThread::closeFirefox3Db(QSqlDatabase& db)
 }
 //uint  gMaxGroupId;
 #endif
+void mergeThread::clearObject()
+{
+	DELETE_FILE(file);
+	DELETE_OBJECT(posthp);
+	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
+	{
+		QFile::remove(filename_fromserver);	
+	
+	}
+}
 void mergeThread::handleBmData()
 {
+	THREAD_MONITOR_POINT;
 	int i = 0;
 	setPostError(false);
 
@@ -364,6 +367,7 @@ action:0--delete 1--add
 */
 void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType)
 {
+	THREAD_MONITOR_POINT;
 	QString postString;
 	uint nowparentid=0;
 	DELETE_OBJECT(posthp);
@@ -877,6 +881,7 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 void mergeThread::run()
 {
 	//QDEBUG_LINE;
+	THREAD_MONITOR_POINT;
 	handleBmData();
 	exit();
 	emit done(0);

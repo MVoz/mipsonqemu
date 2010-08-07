@@ -313,7 +313,9 @@ terminateFlag=f;\
 public slots:\
 void monitorTimerSlot();
 */
-#define DELETE_OBJECT(x) if(x){	(x)->deleteLater();(x)=NULL;}
+//#define DELETE_OBJECT(x) if(x){	(x)->deleteLater();(x)=NULL;}
+#define DELETE_OBJECT(x) if(x){	delete (x);(x)=NULL;}
+
 #define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
 #define DELETE_SHAREOBJ(x) if(x) (x).reset();
 #define DELETE_TIMER(x) \
@@ -372,6 +374,14 @@ enum httpState
 	(x)->moveToThread(this);\
 	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
 	(x)->start(time);
+
+#define START_TIMER_INSIDE(x,single,time,func) \
+	(x)=new QTimer();\
+	(x)->setSingleShot(single);\
+	(x)->moveToThread(this);\
+	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
+	(x)->start(time);
+
 	
 #define START_TIMER_SYN(x,single,time,func) \
 	(x)=new QTimer(this);\
@@ -379,11 +389,21 @@ enum httpState
 	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
 	(x)->start(time);
 
+
+#define THREAD_IS_RUNNING(x) ((x)&&(x)->isRunning())
+#define THREAD_IS_FINISHED(x) ((x)&&(x)->isFinished())
+#define TIMER_IS_ACTIVE(x) ((x)&&(x)->isActive())
+
+
 enum CONFIG_NOTIFY{
 	HOTKEY=0,
 	SHOWTRAY,
 	DIRLIST,
 	CMDLIST
 };
+
+#define THREAD_MONITOR_POINT \
+	if(QThread::currentThread()!=this)\
+		qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 #endif
 

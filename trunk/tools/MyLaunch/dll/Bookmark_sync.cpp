@@ -115,32 +115,11 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m):
 
 }
 BookmarkSync::~BookmarkSync(){
-		DELETE_OBJECT(http);
-		DELETE_TIMER(httpTimer);
-		DELETE_OBJECT(accountTestHttp);
-		DELETE_OBJECT(mgthread);
-		DELETE_OBJECT(testThread);
-		DELETE_FILE(resultBuffer);
-		DELETE_FILE(file);
-		//clear directory to avoid the xml file come from server
-		{
-			QDir dir = QDir(tz::getUserIniDir(GET_MODE,""));
-			QStringList filters;
-			filters << "*.xml" ;
-	   	        dir.setNameFilters(filters);
-			QStringList fromserverxmls = dir.entryList(QDir::Files|QDir::Hidden);
-			for (int i = 0; i < fromserverxmls.count(); ++i)
-			{
-				QRegExp rx("^"FROMSERVER_XML_PREFIX"\\d+.xml$");
-				if(rx.exactMatch(fromserverxmls.at(i)))
-					dir.remove(fromserverxmls.at(i));
-			}
-		}
 		
 }
 void BookmarkSync::httpTimerSlot()
 {
-	//qDebug("httpTimerSlot.......");
+	THREAD_MONITOR_POINT;
 	if(!terminateFlag)
 		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);	
 	http_timerover=1;
@@ -172,16 +151,9 @@ void BookmarkSync::stopSync()
 }
 void BookmarkSync::testNetFinished()
 {
-	//testServerResult = tz::testNetResult(GET_MODE,0);
-	//	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
+
+	THREAD_MONITOR_POINT;
 	testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
-	//qDebug("testNetFinishedx result=%d",testServerResult);
-	
-	/*
-	if(testThread)
-		delete testThread;
-		testThread=NULL;
-	*/
 	DELETE_OBJECT(testThread);
 	switch(testServerResult)
 	{
@@ -197,36 +169,21 @@ void BookmarkSync::testNetFinished()
 		break;
 	case 1:
 		{
-			http = new QHttp(this);
-			//if(httpProxyEnable)
-			//	http->setProxy(*netProxy);
-			SET_NET_PROXY(http);
-			/*
-			httpProxyEnable = tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, httpProxyEnable);
-			if(httpProxyEnable){
-			tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);
-			tz::netProxy(GET_MODE,settings,netProxy);
-			http->setProxy(*netProxy);	
-			}
-			*/
-			/*
-			httpTimer=new QTimer();
-			connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
-			httpTimer->start(10*1000);
-			httpTimer->setSingleShot(true);
-			*/
-			httpTimer=new QTimer(this);
-			httpTimer->start(10*SECONDS);
-			connect(httpTimer, SIGNAL(timeout()), this, SLOT(httpTimerSlot()));
+			http = new QHttp();
+			http->moveToThread(this);
 
+			SET_NET_PROXY(http);
+
+			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimerSlot);
+			
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
-				connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)));
+				connect(http, SIGNAL(done(bool)), this, SLOT(bookmarkGetFinished(bool)),Qt::DirectConnection);
 				//qDebug("BookmarkSync run...........");
 				filename_fromserver.clear();
 				getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
 				filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
-				qDebug("random file from server:%s",qPrintable(filename_fromserver));
+				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				file = new QFile(filename_fromserver);
 
 				int ret1=file->open(QIODevice::ReadWrite | QIODevice::Truncate);
@@ -257,73 +214,85 @@ void BookmarkSync::testNetFinished()
 }
 void BookmarkSync::terminateThread()
 {
-	//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	/*
-	if(monitorTimer&&monitorTimer->isActive())
-	monitorTimer->stop();
-	*/
+	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
-	if(testThread&&testThread->isRunning())
+	if(THREAD_IS_RUNNING(testThread))
 		testThread->setTerminateFlag(1);
-	if(httpTimer&&httpTimer->isActive())
+	if(TIMER_IS_ACTIVE(httpTimer))
 		httpTimerSlot();
-	if(mgthread&&mgthread->isRunning())
+	if(THREAD_IS_RUNNING(mgthread))
 	{
 		mgthread->setTerminated(1);
-		if(mgthread->posthp&&mgthread->posthp->isRunning())
+		if(THREAD_IS_RUNNING(mgthread->posthp))
 			mgthread->posthp->setTerminateFlag(1);
-		//emit mergeTerminateNotify();
 	}
 	MyThread::terminateThread();
 }
-/*
 void BookmarkSync::monitorTimerSlot()
 {
-STOP_TIMER(monitorTimer);
+	THREAD_MONITOR_POINT;
+	STOP_TIMER(monitorTimer);
+	 if(THREAD_IS_FINISHED(testThread))
+	 	{
+	 		DELETE_OBJECT(testThread);
+	 		testNetFinished();
+	 	}
+	 if(THREAD_IS_FINISHED(mgthread))
+	 	{
+	 		DELETE_OBJECT(mgthread);
+	 		mergeDone();
+	 	}
 
-if(terminateFlag)
-terminateThread();
-else
-monitorTimer->start(10);
-}
-*/
-void BookmarkSync::gorun()
-{
-	//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	START_TIMER_SYN(monitorTimer,false,10,monitorTimerSlot);
-	tz::netProxy(SET_MODE,settings,NULL);
-	//check server status
+	if(terminateFlag)
+		terminateThread();
+	else
 	{
-		testThread = new testServerThread(this);
-		connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-		if(!terminateFlag)
-			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);	
-		//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(testThreadterminateThread()),Qt::DirectConnection);
-		//qDebug("start testServerThread::");
-		//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
-		testThread->start(QThread::IdlePriority);
-	}	
+		monitorTimer->start(10);
+	}
+}
+void BookmarkSync::clearobject()
+{
+		THREAD_MONITOR_POINT;
+		DELETE_OBJECT(http);			
+		DELETE_TIMER(httpTimer);
+		DELETE_OBJECT(accountTestHttp);
+		DELETE_OBJECT(mgthread);
+		DELETE_OBJECT(testThread);
+		DELETE_FILE(resultBuffer);
+		DELETE_FILE(file);
+		//clear directory to avoid the xml file come from server
+		{
+			QDir dir = QDir(tz::getUserIniDir(GET_MODE,""));
+			QStringList filters;
+			filters << "*.xml" ;
+	   	        dir.setNameFilters(filters);
+			QStringList fromserverxmls = dir.entryList(QDir::Files|QDir::Hidden);
+			for (int i = 0; i < fromserverxmls.count(); ++i)
+			{
+				QRegExp rx("^"FROMSERVER_XML_PREFIX"\\d+.xml$");
+				if(rx.exactMatch(fromserverxmls.at(i)))
+					dir.remove(fromserverxmls.at(i));
+			}
+		}
 }
 void BookmarkSync::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	//qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	/*
-	monitorTimer = new QTimer();
-	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-	monitorTimer->start(10);
-	monitorTimer->moveToThread(this);
-	*/
+	THREAD_MONITOR_POINT;
+
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+
+	tz::netProxy(SET_MODE,settings,NULL);
 	
-	//connect(this->parent(), SIGNAL(stopSyncNotify()), this, SLOT(stopSync()));
-	// qDebug("%s currentThread id=0x%08x",__FUNCTION__,currentThread());
-
-
-	//setNetworkProxy();
-
-
-	QTimer::singleShot(10, this, SLOT(gorun()));
-
+	//check server status
+	{
+		testThread = new testServerThread();
+		testThread->moveToThread(this);
+		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
+		if(!terminateFlag)
+			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);	
+		testThread->start(QThread::IdlePriority);
+	}	
 
 	int ret=exec();
 	if(testServerResult==1){
@@ -332,63 +301,28 @@ void BookmarkSync::run()
 		case BOOKMARK_SYNC_MODE:
 			if(!http_timerover)
 				emit bookmarkFinished(ret);
-			//	qDebug("sync thread quit.............");
 			break;
 		case BOOKMARK_TESTACCOUNT_MODE:
 			if(!http_timerover)
 				emit testAccountFinishedNotify(ret,QString(resultBuffer->data()));						
-			//	qDebug("testAccount thread quit.............\n");
 			break;
 		}
-		/*
-		if(httpTimer->isActive())
-		{
-		qDebug("kill http timer!");
-		httpTimer->stop();		
-		}
-		*/
 		STOP_TIMER(httpTimer);
 		DELETE_FILE(resultBuffer);
-		/*
-		if(resultBuffer){
-		resultBuffer->close();
-		delete resultBuffer;
-		resultBuffer=NULL;
-		}
-		*/
-		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);
+		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);	
 	}
+	clearobject();
 }
 
-#ifdef CONFIG_HTTP_TIMEOUT
-//void BookmarkSync::timerEvent(QTimerEvent * event)
-//{
-//	QDEBUG("timerevent id=%d httpTimerId=%d", event->timerId(), httpTimerId);
-//	emit updateStatusNotify(HTTP_TIMEOUT);
-//}
-#endif
-/*
-void BookmarkSync::quit()
-{
-if (loop.isRunning())
-loop.exit(0);
-}
-*/
 void BookmarkSync::testAccountFinished(bool error)
 {
-	/*
-	if(httpTimer->isActive())
-	httpTimer->stop();
-	*/
 	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
-	//httpTimer->stop();
 	exit(error);
 }
 void BookmarkSync::mgUpdateStatus(int flag,int status)
 {
-	//qDebug()<<flag<<"  "<<str;
 	if(!terminateFlag)
 		emit updateStatusNotify(flag,status);
 
@@ -396,36 +330,20 @@ void BookmarkSync::mgUpdateStatus(int flag,int status)
 
 void BookmarkSync::bookmarkGetFinished(bool error)
 {
-	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	/*
-	if(httpTimer->isActive())
-	httpTimer->stop();
-	*/
+	THREAD_MONITOR_POINT;
 	file->flush();
 	DELETE_FILE(file);
 	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
-#ifdef CONFIG_HTTP_TIMEOUT
-
-#else
-	//if (httpTimerId)
-	//	http->killTimer(httpTimerId);
-	//httpTimerId = 0;
-#endif
 	qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
-		//QDEBUG("%s updateTime=0x%08x",__FUNCTION__,updateTime);
-		mgthread = new mergeThread(this,db,settings,username,password);
+
+		mgthread = new mergeThread(NULL,db,settings,username,password);		
 		//emit updateStatusNotify(UPDATE_PROCESSING);
 		mgthread->setRandomFileFromserver(filename_fromserver);
-
-
-		connect(mgthread, SIGNAL(finished()), this, SLOT(mergeDone()));
 		connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
-		//connect(this, SIGNAL(mergeTerminateNotify()), mgthread, SLOT(terminateThread()));
-
 		mgthread->start();
 		//qDebug("start merge thread...........");
 	}
@@ -433,7 +351,6 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	{
 		if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
 		{
-			//qDebug("http error %s",qPrintable(http->errorString()));
 			if(!terminateFlag)
 				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
 		}
@@ -441,36 +358,15 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 		//qDebug("http error %s",qPrintable(http->errorString()));
 		mergeDone();
 	}
-	/*
-	if (!IS_NULL(file))
-	{
-	file->close();
-	delete file;
-	file = NULL;
-	}
-	*/
-
-	//  this->quit();
 }
 
 void BookmarkSync::mergeDone()
 {
-	//qDebug("quit merge thread...........");
+	THREAD_MONITOR_POINT;
 	if(!error&&!terminateFlag){
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 	}
 	DELETE_OBJECT(mgthread);
-	/*
-	if(mgthread){
-	mgthread->deleteLater();
-	mgthread=NULL;
-	}
-
-	if(netProxy){
-	delete netProxy;
-	netProxy=NULL;
-	}
-	*/
 	exit(error);
 }
 

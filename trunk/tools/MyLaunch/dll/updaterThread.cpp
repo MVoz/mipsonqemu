@@ -428,9 +428,9 @@ void updaterThread::terminateThread()
 	monitorTimer->stop();
 	*/
 	STOP_TIMER(monitorTimer);
-	if(testThread&&testThread->isRunning())
+	if(THREAD_IS_RUNNING(testThread))
 		testThread->setTerminateFlag(1);
-	if(fh&&fh->isRunning())
+	if(THREAD_IS_RUNNING(fh))
 		fh->setTerminateFlag(1);
 }
 #if 0

@@ -18,26 +18,26 @@ postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
 	//QDEBUG("construction postHttp......");
 }
 postHttp::~postHttp(){
-	//QDEBUG("delete ~postHttp......");
+	THREAD_MONITOR_POINT;
+}
+void postHttp::clearObject()
+{
+	THREAD_MONITOR_POINT;
 	DELETE_FILE(resultBuffer);
 	DELETE_TIMER(monitorTimer);
 	DELETE_TIMER(postTimer);
-	//DELETE_OBJECT(posthttp);
-	if(posthttp)
-		delete posthttp;
-	posthttp = NULL;
+	DELETE_OBJECT(posthttp);
 }
-
 void postHttp::gorun()
 {
-	QDEBUG_LINE;
-	DELETE_TIMER(postTimer);
+	THREAD_MONITOR_POINT;
+	//DELETE_TIMER(postTimer);
 	/*
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 	monitorTimer->start(10);
 	*/
-	START_TIMER_ASYN(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
 	/*
 	postTimer=new QTimer();
 	connect(postTimer, SIGNAL(timeout()), this, SLOT(postTimerSlot()), Qt::DirectConnection);
@@ -45,7 +45,7 @@ void postHttp::gorun()
 	postTimer->moveToThread(this);	
 	*/
 	
-	START_TIMER_ASYN(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimerSlot);
+	START_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimerSlot);
 	
 	
 	posthttp = new QHttp();
@@ -106,22 +106,19 @@ void postHttp::gorun()
 
 void postHttp::run()
 {
-	QDEBUG_LINE;
-	//postTimer=new QTimer();
-	//postTimer->setSingleShot(true);
-	//postTimer->moveToThread(this);
-	//connect(postTimer, SIGNAL(timeout()), this, SLOT(gorun()), Qt::DirectConnection);
-	//postTimer->start(10);
-	START_TIMER_ASYN(postTimer,true,10,gorun);
+	THREAD_MONITOR_POINT;
+	gorun();
+//	START_TIMER_ASYN(postTimer,true,10,gorun);
 	exec();
 	if(posthttp)
 		disconnect(posthttp, 0, 0, 0);
+	clearObject();
 }
 
 void postHttp::httpDone(bool error)
 {
-	//if(postTimer->isActive())
-	//	postTimer->stop();
+	THREAD_MONITOR_POINT;
+
 	STOP_TIMER(postTimer);
 	if(!error)
 	{
@@ -166,6 +163,7 @@ void postHttp::httpDone(bool error)
 //}
 void postHttp::postTimerSlot()
 {
+	THREAD_MONITOR_POINT;
 	qDebug("postTimerSlot.......");
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(postTimer);
