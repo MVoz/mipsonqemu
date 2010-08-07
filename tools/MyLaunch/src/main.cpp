@@ -1579,7 +1579,7 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		return;
 
 	}
-	if(slientUpdate&&slientUpdate->isRunning())
+	if(THREAD_IS_RUNNING(slientUpdate))
 	{
 		//emit silentUpdateTerminateNotify();
 		slientUpdate->setTerminateFlag(1);
@@ -2045,6 +2045,7 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
+	qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
 	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)

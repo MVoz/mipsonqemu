@@ -149,6 +149,7 @@ public:
 	QString password;
 	//bool terminateflag;
 	void setRandomFileFromserver(QString &s);
+	void clearObject();
 
 public:
 	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
