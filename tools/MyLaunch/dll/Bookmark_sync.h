@@ -90,7 +90,8 @@ public:
 	uint httpProxyEnable;
 	QString filename_fromserver;
 	testServerThread *testThread;
-	int testServerResult;
+	volatile int testServerResult;
+	volatile bool needwatchchild;
 
 #ifdef CONFIG_HTTP_TIMEOUT
 	//	uint httpTimeout;
