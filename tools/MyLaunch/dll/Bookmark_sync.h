@@ -92,6 +92,7 @@ public:
 	testServerThread *testThread;
 	volatile int testServerResult;
 	volatile bool needwatchchild;
+	QString md5key;
 
 #ifdef CONFIG_HTTP_TIMEOUT
 	//	uint httpTimeout;
