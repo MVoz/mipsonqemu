@@ -35,7 +35,7 @@ public:
 	MyThread(QObject * parent = 0);
 	~MyThread();
 public:
-	int terminateFlag;
+	volatile int terminateFlag;
 	QTimer* monitorTimer;
 	virtual void setTerminateFlag(int f);
 	public slots:

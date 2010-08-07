@@ -24,6 +24,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){	
+	QDEBUG_LINE;
 }
 
 void mergeThread::setRandomFileFromserver(QString& s)
@@ -327,7 +328,8 @@ ffout:
 		clearBrowserInfoOpFlag(browserid);
 		i++;
 	}
-
+	QDEBUG_LINE;
+	qDebug()<<"terminatedFlag:"<<terminatedFlag;
 }
 
 int mergeThread::copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src)
@@ -885,6 +887,7 @@ void mergeThread::run()
 	handleBmData();
 	exit();
 	emit done(0);
+	QDEBUG_LINE;
 }
 void mergeThread::productFFId(QString & randString,int length){   
 	int max = length;   
