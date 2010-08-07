@@ -433,6 +433,97 @@ function linkclass_cache()
 
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
+function createCategoryCache($fp,$arr)
+{
+		global $_SGLOBAL,$_SC;
+		$groupid=(int)$arr['groupid'];	
+	   	fprintf($fp,"<category groupId=\"$groupid\" parentId=\"$arr[parentid]\">\n");
+	   	fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($arr['subject']));
+	   	fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
+		//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
+	   	fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
+	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+	   $wherearr=$wherearr." where main.uid=".$arr['uid'] ;
+	   $wherearr=$wherearr." AND main.browserid=".$arr['browserid'];
+	   $wherearr=$wherearr." AND main.parentid=".$groupid; 
+
+	   $orderarr=$orderarr." ORDER by main.lastvisit DESC ";
+
+	    $query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+	    while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+	   		    switch($value['type'])
+					   {
+					   	case $_SC['bookmark_type_dir']://category
+					   	  createCategoryCache($fp,$value);
+					   	break;
+					   	case $_SC['bookmark_type_site']://item
+						   fprintf($fp,"<item parentId=\"$value[parentid]\">\n");
+						   fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value[subject]));
+						   fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
+						   fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
+						   fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						 //  	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+						   fprintf($fp,"</item>\n");
+					   	break;
+					   }
+	   	}
+	   	fprintf($fp,"</category >\n");
+}
+function bmxml_cache()
+{
+	global $_SGLOBAL,$_SC;
+	if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']))
+	{
+		mkdir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'], 0777);	
+	}
+	$xmlfile = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bmxml.xml';
+	/*
+	if(file_exists($xmlfile))
+	{
+		unlink($xmlfile);	
+	}
+	*/
+	if (!($fp = fopen($xmlfile, 'w')))
+		return;
+	flock($fp, 2);
+	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
+	fprintf($fp,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+	fprintf($fp,"<bookmark version=\"1.0\" updateTime=\"%s\">\n",$lastmodified);
+	foreach($_SGLOBAL['browsertype'] as $key=>$browservalue){
+		fprintf($fp,"<browserType name=\"$key\">\n");
+		$wherearr='';
+		$orderarr='';
+		$wherearr=$wherearr." where main.uid=".$_SGLOBAL['supe_uid'];
+		$wherearr=$wherearr." AND main.browserid=".$browservalue;
+		$wherearr=$wherearr." AND main.parentid=0"; 
+
+		$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
+
+		$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			switch($value['type'])
+			{
+				case $_SC['bookmark_type_dir']:
+					//category
+					createCategoryCache($fp,$value);
+					break;
+				case $_SC['bookmark_type_site']:
+						fprintf($fp,"<item parentId=\"%d\">\n",$value['groupid']);
+						fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
+						fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
+						fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
+						fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
+						fprintf($fp,"</item>\n");
+				break;
+			}
+		}
+		fprintf($fp,"</browserType>\n");
+	}
+   fprintf($fp,"</bookmark>\n");
+
+   fclose($fp);
+}
 /*user bookmarkcache*/
 function bookmark_cache_group($groupid,$browserid)
 {

@@ -2508,6 +2508,7 @@ function createCategory($arr)
 function producebmxml($uid,$arr)
 {
 	global $_SGLOBAL,$_SC;
+
 	$lastupdatetime=isset($arr['tm'])?($arr['tm']):'';
 	$lastmodified=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT lastmodified FROM ".tname('space')." WHERE uid=".$_SGLOBAL['supe_uid']));
 	if($lastupdatetime==$lastmodified)
@@ -2515,7 +2516,17 @@ function producebmxml($uid,$arr)
 		//do nothing
 		//exitwithtip('do_nothing');
 	}
-
+	$xmlfile = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bmxml.xml';
+	header('md5key:'.md5_file($xmlfile)); 
+	if($fp=fopen($xmlfile,'rb'))
+	{
+		while (!feof($fp)) {
+			$buffer = fread($fp, 1024); 
+			echo $buffer; 
+		}
+		fclose($fp);
+	}
+/*
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 	printf("<bookmark version=\"1.0\" updateTime=\"%s\">\n",$lastmodified);
 	foreach($_SGLOBAL['browsertype'] as $key=>$browservalue){
@@ -2550,6 +2561,7 @@ function producebmxml($uid,$arr)
 		printf("</browserType>\n");
 	}
     printf("</bookmark>\n");
+*/
 }
 
 

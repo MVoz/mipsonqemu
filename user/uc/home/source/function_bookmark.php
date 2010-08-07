@@ -436,6 +436,7 @@ function setbookmarkmodified()
 	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));	
 	include_once(S_ROOT.'./source/function_cache.php');
 	bookmark_cache();
+	bmxml_cache();
 	bookmark_groupname_cache();
 	usermenu_cache();
 }
