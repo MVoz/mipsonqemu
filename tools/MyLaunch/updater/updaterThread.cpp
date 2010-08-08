@@ -242,12 +242,30 @@ updaterThread::updaterThread(QObject* parent): QThread(parent)
 {
 	timers=0;
 }
+updaterThread::~updaterThread()
+{
+	qDebug("~~updaterThread");
+
+}
+void updaterThread::clearObject()
+{
+	sem_downfile_success.release(sem_downfile_success.available());
+	sem_downfile_start.release(sem_downfile_start.available());
+	DELETE_OBJECT(localSettings);
+	DELETE_OBJECT(serverSettings);
+	//DELETE_TIMER(updateTime);
+	DELETE_OBJECT(testThread);
+	//DELETE_TIMER(monitorTimer);
+	DELETE_OBJECT(fh);
+}
+
 
 void updaterThread::run()
 {
 
 		downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI);
 		int ret=exec();
+		clearObject();
 		qDebug("sync thread quit.............");
 
 }

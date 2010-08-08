@@ -1,4 +1,4 @@
-#include <updaterThread.h>
+#include "updaterThread.h"
 #include <QUrl>
 #include <QWaitCondition>
 #include <QSemaphore>
@@ -11,6 +11,19 @@ void GetFileHttp::terminateThread()
 	httpTimerSlot();
 	retryTime = UPDATE_MAX_RETRY_TIME;
 
+}
+GetFileHttp::~GetFileHttp(){
+			qDebug("~GetFileHttp");
+}
+void GetFileHttp::clearObject(){
+
+		for(int i=0;i<retryTime;i++)
+		{
+			DELETE_OBJECT(http[i]);
+			DELETE_FILE(file[i]);
+			DELETE_TIMER(httpTimer[i]);
+		}
+		DELETE_TIMER(monitorTimer);
 }
 
 void GetFileHttp::on_http_stateChanged(int stat)
@@ -74,7 +87,7 @@ void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & res
 void GetFileHttp::newHttp()
 {
 	http[retryTime] = new QHttp();
-
+	http[retryTime]->moveToThread(this);
 	SET_NET_PROXY(http[retryTime]);
 
 	connect(http[retryTime], SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)),Qt::DirectConnection);
@@ -115,10 +128,13 @@ void GetFileHttp::newHttp()
 	url=QString(branch).append("/").append(updaterFilename);
 	//qDebug("url=%s filename=%s\n",qPrintable(url),qPrintable(dirPath));
 	http[retryTime]->get(url, file[retryTime]);
+	/*
 	httpTimer[retryTime]=new QTimer();
-
+	
 	httpTimer[retryTime]->start(10*1000);
 	connect(httpTimer[retryTime], SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
+	*/
+	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimerSlot);
 }
 void GetFileHttp::run()
 {
@@ -137,6 +153,7 @@ void GetFileHttp::run()
 	this->mode=mode;
 	newHttp();
 	exec();	
+	clearObject();
 	//httpTimer->stop();
 }
 void GetFileHttp::httpTimerSlot()
@@ -193,6 +210,7 @@ void GetFileHttp::getFileDone(bool error)
 	file[retryTime] = NULL;
 	}
 	*/
+	THREAD_MONITOR_POINT;
 	DELETE_FILE( file[retryTime] );
 
 	switch(mode){
@@ -393,11 +411,14 @@ testNetTimer->stop();
 reply->abort();
 }
 */
+updaterThread::~updaterThread()
+{
+}
+
 void updaterThread::testNetFinished()
 {
 	qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
-	if(testThread)
-		delete testThread;
+	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
 	{
 	case -1:
@@ -433,20 +454,25 @@ void updaterThread::terminateThread()
 	if(THREAD_IS_RUNNING(fh))
 		fh->setTerminateFlag(1);
 }
-#if 0
 void updaterThread::monitorTimerSlot()
 {
-	/*
-	if(monitorTimer&&monitorTimer->isActive())
-	monitorTimer->stop();
-	*/
+	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
-	if(terminateFlag)
+	 if(THREAD_IS_FINISHED(testThread))
+	 {
+	 		DELETE_OBJECT(testThread);
+	 		testNetFinished();
+	 }
+
+	if(!needwatchchild&&terminateFlag)
+	{
+		needwatchchild = true;
 		terminateThread();
-	else
-		monitorTimer->start(10);
+	}
+
+	monitorTimer->start(10);	
 }
-#endif
+
 void updaterThread::run()
 {
 	/*
@@ -473,11 +499,9 @@ void updaterThread::run()
 	//testServerThread *testThread = new testServerThread(NULL);
 	{
 		testThread = new testServerThread(NULL);
+		testThread->moveToThread(this);
+		//connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
 
-		connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-		//connect(this,SIGNAL(testNetTerminateNotify()), testThread, SLOT(terminateThread()));
-		//qDebug("start testServerThread::");
-		//qDebug("start testServerThread 0x%08x result=%d",testThread,testThread->result);
 		testThread->start(QThread::IdlePriority);
 	}	
 
@@ -729,6 +753,7 @@ end:
 }
 void updaterThread::getFileDone(int err)
 {
+	THREAD_MONITOR_POINT;
 	if(err==HTTP_GET_FILE_SUCCESSFUL){
 		//	SetColor(FOREGROUND_GREEN,0);
 		sem_downfile_start.acquire(1);
@@ -759,8 +784,8 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 
 	qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
 	//GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
-	if(fh)
-		delete fh;
+
+	DELETE_OBJECT(fh);
 	fh=new GetFileHttp(NULL,m,md5);
 
 	connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
