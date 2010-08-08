@@ -88,43 +88,8 @@ public slots:
 #endif
 public:
 	GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
-	~GetFileHttp()
-	{
-		qDebug("~GetFileHttp");
-		/*
-		if(file){
-		file->close();
-		delete file;
-		file=NULL;
-		}
-		*/
-		for(int i=0;i<retryTime;i++)
-		{
-			/*
-			if(http[i])
-			{
-			//http[i]->close();
-			http[i]->deleteLater();
-			}
-			if(httpTimer[i])
-			{
-			httpTimer[i]->stop();
-			httpTimer[i]->deleteLater();
-			}
-			if(file[i])
-			{
-			file[i]->close();
-			file[i]->deleteLater();
-			}
-			if(monitorTimer)
-			monitorTimer->deleteLater();
-			*/
-			DELETE_OBJECT(http[i]);
-			DELETE_FILE(file[i]);
-			DELETE_TIMER(httpTimer[i]);
-		}
-		DELETE_TIMER(monitorTimer);
-	}
+	~GetFileHttp();
+	void clearObject();
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString &s){url = s;updaterFilename=s;}
 	void setServerBranch(const QString &s){branch = s;}
@@ -173,6 +138,7 @@ public:
 	//QNetworkReply *reply;
 	//QTimer* testNetTimer;
 	int mode;
+	bool needwatchchild;
 #if 0	
 public:
 	int terminateFlag;
@@ -198,20 +164,11 @@ public:
 		//testNetTimer =NULL;
 		testThread =NULL;
 		fh = NULL;
+		needwatchchild = false;
 	}
-	~updaterThread()
-	{
-		qDebug("~~updaterThread");
-		sem_downfile_success.release(sem_downfile_success.available());
-		sem_downfile_start.release(sem_downfile_start.available());
-		DELETE_OBJECT(localSettings);
-		DELETE_OBJECT(serverSettings);
-		//DELETE_TIMER(updateTime);
-		DELETE_OBJECT(testThread);
-		//DELETE_TIMER(monitorTimer);
-		DELETE_OBJECT(fh);
-	}
+	~updaterThread();
 	void run();
+	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
 	int checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
@@ -223,6 +180,7 @@ public:
 		//void testNetFinished(QNetworkReply*);
 		void testNetFinished();
 		void terminateThread();
+		void monitorTimerSlot();
 		//void testNetTimeout();
 
 signals:
