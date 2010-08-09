@@ -1490,7 +1490,7 @@ void MyWidget::syncTimeout()
 	STOP_TIMER(syncTimer);
 	
 	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);	
-
+	
 }
 
 void MyWidget::silentupdateTimeout()
@@ -2046,10 +2046,20 @@ void MyWidget::startSync()
 void MyWidget::_startSync(int mode,int silence)      
 {
 	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
+	QDEBUG_LINE;
 	if(updateSuccessTimer)
 		return;
 	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
+	{
+		int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+		if (time != 0)
+			{
+				syncTimer->start(time * SECONDS);//minutes
+				qDebug()<<"start sync after "<<time<<" seconds";
+			}
 		return;
+	}
+	
 	syncMode = mode;
 	QString name,password;
 	//qDebug()<<__FUNCTION__<<__LINE__<<"mode:"<<mode<<"silent:"<<silence;
@@ -2305,6 +2315,7 @@ DELETE_TIMER(syncDlgTimer);
 */
 void MyWidget::syncer_finished()
 {	
+	QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
@@ -2320,7 +2331,11 @@ void MyWidget::syncer_finished()
 	else{
 		int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
 		if (time != 0)
-			syncTimer->start(time * SECONDS);//minutes
+			{
+				syncTimer->start(time * SECONDS);//minutes
+				qDebug()<<"start sync after "<<time<<" seconds";
+			}
+			
 	}
 }
 

@@ -327,7 +327,7 @@ ffout:
 		clearBrowserInfoOpFlag(browserid);
 		i++;
 	}
-	qDebug()<<"terminatedFlag:"<<terminatedFlag;
+	//qDebug()<<"terminatedFlag:"<<terminatedFlag;
 }
 
 int mergeThread::copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src)

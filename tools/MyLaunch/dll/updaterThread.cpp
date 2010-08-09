@@ -362,7 +362,7 @@ void GetFileHttp::getFileDone(bool error)
 	else
 	{
 		//emit updateStatusNotify(HTTP_GET_FILE_SUCCESSFUL);
-		qDebug("get file %s from server successfully!",qPrintable(updaterFilename));
+		//qDebug("get file %s from server successfully!",qPrintable(updaterFilename));
 		this->quit();
 	}
 
