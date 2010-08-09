@@ -98,7 +98,7 @@ void testServerThread::testServerTimeout()
 	if(testNetTimer->isActive())
 	testNetTimer->stop();
 	*/
-	qDebug()<<__FUNCTION__<<__LINE__;
+	//qDebug()<<__FUNCTION__<<__LINE__;
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(testNetTimer);

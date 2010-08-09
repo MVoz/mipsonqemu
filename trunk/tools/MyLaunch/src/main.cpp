@@ -2727,14 +2727,17 @@ void MyWidget::silentUpdateFinished()
 		
 		DELETE_OBJECT(slientUpdate);
 		
+	
+	}
+	if(closeflag)
+		close();
+	else{
 #ifdef QT_NO_DEBUG
 			
 #else		
 		silentupdateTimer->start(1*SECONDS);	
-#endif		
+#endif	
 	}
-	if(closeflag)
-		close();
 }
 void MyWidget::startSilentUpdate()
 {
