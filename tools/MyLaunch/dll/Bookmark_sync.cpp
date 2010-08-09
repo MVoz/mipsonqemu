@@ -89,7 +89,7 @@ void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & re
 	//qDebug()<<resp.value("md5key");
 	md5key = resp.value("md5key");
 }
-BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,int m): MyThread(parent),settings(s),mode(m)
+BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QSemaphore* p,int m): MyThread(parent),settings(s),semaphore(p),mode(m)
 {
 	this->db=db;
 	httpProxyEnable=0;
@@ -271,6 +271,9 @@ void BookmarkSync::clearobject()
 }
 void BookmarkSync::run()
 {
+	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
+	semaphore->acquire(1);
+	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	THREAD_MONITOR_POINT;
 

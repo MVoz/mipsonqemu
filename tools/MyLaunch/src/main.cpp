@@ -231,6 +231,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 #else
 	init_pinyin_utf8_list();
 #endif
+	gSemaphore.release(1);
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
 	connect(fader, SIGNAL(finishedFade(double)), this, SLOT(finishedFade(double)));
@@ -1299,6 +1300,8 @@ void MyWidget::catalogBuilt(int type)
 	qDebug()<<__FUNCTION__<<gBuilder<<type;
 	gBuilder->wait();
 	gBuilder.reset();
+	qDebug()<<__FUNCTION__<<"release gSemaphore";
+	gSemaphore.release(1);
 	//QDEBUG("%s gBuilder=0x%08x\n",__FUNCTION__,gBuilder);
 	/*
 	delete gBuilder;
@@ -1950,13 +1953,19 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 		return;
 
 	qDebug("Current cpu usage:%d",tz::GetCpuUsage());
-	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
-		return;
+	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
+	{
+		int time = gSettings->value("catalogBuilderTimer", 10).toInt();
+		if (time != 0)
+			catalogBuilderTimer->start(time * MINUTES);//minutes
+			return;
+	}
 
 	if (gBuilder == NULL)
 	{
 		//just for exception
 		gSettings->setValue("lastscan", 0);
+
 		gBuilder.reset(new CatBuilder(true,mode,&db));
 		//  gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
@@ -2049,7 +2058,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QDEBUG_LINE;
 	if(updateSuccessTimer)
 		return;
-	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
+	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 	{
 		int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
 		if (time != 0)
@@ -2107,10 +2116,10 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 	case SYNC_MODE_BOOKMARK:
 	case SYNC_MODE_REBOOKMARK:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,BOOKMARK_SYNC_MODE));
+		gSyncer.reset(new BookmarkSync(this,&db,gSettings,&gSemaphore,BOOKMARK_SYNC_MODE));
 		break;
 	case SYNC_MODE_TESTACCOUNT:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,BOOKMARK_TESTACCOUNT_MODE));
+		gSyncer.reset(new BookmarkSync(this,&db,gSettings,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
 		break;
 	}
 
@@ -2325,6 +2334,8 @@ void MyWidget::syncer_finished()
 	}
 	gSyncer->wait();								
 	gSyncer.reset();
+	qDebug()<<__FUNCTION__<<"release gSemaphore";
+	gSemaphore.release(1);
 	syncAction->setDisabled(FALSE);
 	if(closeflag)
 		close();
@@ -2333,7 +2344,7 @@ void MyWidget::syncer_finished()
 		if (time != 0)
 			{
 				syncTimer->start(time * SECONDS);//minutes
-				qDebug()<<"start sync after "<<time<<" seconds";
+				//qDebug()<<"start sync after "<<time<<" seconds";
 			}
 			
 	}
@@ -2730,7 +2741,7 @@ void MyWidget::freeOccupyMemeory()
 }
 void MyWidget::silentUpdateFinished()
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	//qDebug("silent update finished!!!!!");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
