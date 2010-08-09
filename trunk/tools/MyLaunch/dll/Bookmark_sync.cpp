@@ -330,7 +330,7 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 	STOP_TIMER(httpTimer);
 	http_finish=1;
 	this->error=error;
-	qDebug("emit bookmarkFinished error %d to networkpage", error);
+	//qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
 		if(md5key==tz::fileMd5(filename_fromserver)){

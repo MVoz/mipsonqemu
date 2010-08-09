@@ -442,6 +442,14 @@ void updaterThread::testNetFinished()
 	//qDebug("testNetFinishedx result=%d",testThread->result);
 
 }
+void updaterThread::clearObject()
+{
+	DELETE_TIMER(monitorTimer);
+	DELETE_OBJECT(testThread);
+	DELETE_OBJECT(fh);
+	DELETE_OBJECT(localSettings);
+	DELETE_OBJECT(serverSettings);
+}
 void updaterThread::terminateThread()
 {	
 	/*
@@ -498,7 +506,7 @@ void updaterThread::run()
 #else
 	//testServerThread *testThread = new testServerThread(NULL);
 	{
-		testThread = new testServerThread(NULL);
+		testThread = new testServerThread();
 		testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
 
@@ -509,6 +517,7 @@ void updaterThread::run()
 
 	exec();
 	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+	clearObject();
 	qDebug("sync thread quit.............");
 
 

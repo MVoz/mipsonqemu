@@ -2717,25 +2717,33 @@ void MyWidget::silentUpdateFinished()
 {
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	qDebug("silent update finished!!!!!");
+	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	if(slientUpdate)
 	{
 		if(slientUpdate->error==0)///no error
 			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
 		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
+		QDEBUG_LINE;
 		delete slientUpdate;
-		slientUpdate =NULL;			
+		slientUpdate =NULL;	
+		QDEBUG_LINE;		
 	}
 	if(closeflag)
 		close();
 }
 void MyWidget::startSilentUpdate()
 {
-	if(tz::GetCpuUsage()>=CPU_USAGE_THRESHOLD)
+	QDEBUG_LINE;
+	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
+	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 		return;
+	if(gSettings->value("lastSilentUpdate", 0).toUInt()==0)
+		rebuildAll|=(1<<REBUILD_SILENT_UPDATER);
 	uint interval=NOW_SECONDS-gSettings->value("lastSilentUpdate", 0).toUInt();
+	QDEBUG_LINE;
 	if((!(rebuildAll&(1<<REBUILD_SILENT_UPDATER)))&&interval < DAYS)
 		return;
-	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+	qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
 		gSettings->setValue("lastSilentUpdate", 0);
 		slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
@@ -2747,6 +2755,7 @@ void MyWidget::startSilentUpdate()
 void MyWidget::getFavicoFinished()
 {
 	qDebug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	int i =getfavicolist.size();
 	while((--i)>=0){
 		GetFileHttp* icogh = getfavicolist.at(i);
@@ -2760,8 +2769,10 @@ void MyWidget::getFavicoFinished()
 
 void MyWidget::getFavico(const QString& host,const QString& filename)
 {
+	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	GetFileHttp* icogh =  new GetFileHttp(NULL,UPDATE_MODE_GET_FILE,"");
 	getfavicolist.append(icogh);
+	qDebug()<<__FUNCTION__<<"get fav ico from"<<host;
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
 	icogh->setHost(host);
 	icogh->setUrl(filename);

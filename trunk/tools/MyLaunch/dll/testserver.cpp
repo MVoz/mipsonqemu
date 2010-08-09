@@ -140,7 +140,9 @@ void testServerThread::clearObject()
 	THREAD_MONITOR_POINT;
 	DELETE_OBJECT(reply);
 	DELETE_OBJECT(manager);
+	QDEBUG_LINE;
 	DELETE_TIMER(testNetTimer);
+	QDEBUG_LINE;
 }
 void testServerThread::run()
 {
