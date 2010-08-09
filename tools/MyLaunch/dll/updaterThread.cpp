@@ -13,10 +13,8 @@ void GetFileHttp::terminateThread()
 
 }
 GetFileHttp::~GetFileHttp(){
-			qDebug("~GetFileHttp");
 }
 void GetFileHttp::clearObject(){
-	QDEBUG_LINE;
 		for(int i=0;i<retryTime;i++)
 		{
 			DELETE_OBJECT(http[i]);
@@ -81,7 +79,7 @@ void GetFileHttp::on_http_requestStarted(int id)
 }
 void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
-	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
+//	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
 	statusCode=resp.statusCode();
 }
 void GetFileHttp::newHttp()
@@ -165,7 +163,7 @@ void GetFileHttp::httpTimerSlot()
 	monitorTimer->stop();
 	*/
 	STOP_TIMER(monitorTimer);
-	qDebug("httpTimerSlot.......");
+	//qDebug("httpTimerSlot.......");
 	if(mode==UPDATE_DLG_MODE) 
 		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
 	STOP_TIMER(httpTimer[retryTime]);
@@ -203,7 +201,6 @@ monitorTimer->start(10);
 */
 void GetFileHttp::getFileDone(bool error)
 {
-	QDEBUG_LINE;
 	/*
 	if (!IS_NULL(file[retryTime]))
 	{
@@ -421,7 +418,7 @@ updaterThread::~updaterThread()
 
 void updaterThread::testNetFinished()
 {
-	qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
+	//qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
 	{
@@ -448,7 +445,6 @@ void updaterThread::testNetFinished()
 }
 void updaterThread::clearObject()
 {
-	QDEBUG_LINE;
 	DELETE_TIMER(monitorTimer);
 	DELETE_OBJECT(testThread);
 	if(fh)
@@ -526,7 +522,7 @@ void updaterThread::run()
 	exec();
 	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
 	clearObject();
-	qDebug("updaterThread thread quit.............");
+	//qDebug("updaterThread thread quit.............");
 
 
 }
@@ -658,9 +654,9 @@ void updaterThread::getIniDone(int err)
 				//get newer.exe independently
 
 
-				qDebug(" Merger localsetting with serverSettings! ");
+				//qDebug(" Merger localsetting with serverSettings! ");
 				mergeSettings(localSettings,serverSettings,SETTING_MERGE_LOCALTOSERVER);
-				qDebug("Merger serverSettings with localsetting!");
+				//qDebug("Merger serverSettings with localsetting!");
 				mergeSettings(serverSettings,localSettings,SETTING_MERGE_SERVERTOLOCAL);
 				//update all downloaded files
 				//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
@@ -799,7 +795,7 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 	}
 	if(m==UPDATE_MODE_GET_FILE) timers++;
 
-	qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
+	//qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
 	//GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
     if(fh)
 		fh->wait();
