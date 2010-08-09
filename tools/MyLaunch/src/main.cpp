@@ -2723,27 +2723,33 @@ void MyWidget::silentUpdateFinished()
 		if(slientUpdate->error==0)///no error
 			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
 		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
-		QDEBUG_LINE;
-		delete slientUpdate;
-		slientUpdate =NULL;	
-		QDEBUG_LINE;		
+		
+		DELETE_OBJECT(slientUpdate);
+		
+#ifdef QT_NO_DEBUG
+#else		
+		silentupdateTimer->start(1*SECONDS);		
+#endif		
 	}
 	if(closeflag)
 		close();
 }
 void MyWidget::startSilentUpdate()
 {
-	QDEBUG_LINE;
-	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
+	//QDEBUG_LINE;
+	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 		return;
 	if(gSettings->value("lastSilentUpdate", 0).toUInt()==0)
 		rebuildAll|=(1<<REBUILD_SILENT_UPDATER);
+#ifdef QT_NO_DEBUG
+#else
 	uint interval=NOW_SECONDS-gSettings->value("lastSilentUpdate", 0).toUInt();
-	QDEBUG_LINE;
+
 	if((!(rebuildAll&(1<<REBUILD_SILENT_UPDATER)))&&interval < DAYS)
 		return;
-	qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
+#endif
+	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
 		gSettings->setValue("lastSilentUpdate", 0);
 		slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
