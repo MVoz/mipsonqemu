@@ -16,7 +16,7 @@ GetFileHttp::~GetFileHttp(){
 			qDebug("~GetFileHttp");
 }
 void GetFileHttp::clearObject(){
-
+	QDEBUG_LINE;
 		for(int i=0;i<retryTime;i++)
 		{
 			DELETE_OBJECT(http[i]);
@@ -139,7 +139,8 @@ void GetFileHttp::newHttp()
 void GetFileHttp::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	MyThread::run();
+	//MyThread::run();
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
 	/*
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
@@ -152,6 +153,7 @@ void GetFileHttp::run()
 
 	this->mode=mode;
 	newHttp();
+	retryTime++;
 	exec();	
 	clearObject();
 	//httpTimer->stop();
@@ -201,6 +203,7 @@ monitorTimer->start(10);
 */
 void GetFileHttp::getFileDone(bool error)
 {
+	QDEBUG_LINE;
 	/*
 	if (!IS_NULL(file[retryTime]))
 	{
@@ -222,8 +225,9 @@ void GetFileHttp::getFileDone(bool error)
 				case HTTP_OK:
 					if(mode==UPDATE_DLG_MODE) 
 						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL);
+					errCode = 0;
 					emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
-
+					
 					break;
 				case HTTP_FILE_NOT_FOUND:	
 					if(mode==UPDATE_DLG_MODE) 
@@ -361,7 +365,7 @@ void GetFileHttp::getFileDone(bool error)
 	else
 	{
 		//emit updateStatusNotify(HTTP_GET_FILE_SUCCESSFUL);
-		//qDebug("get file %s from server successfully!",qPrintable(updaterFilename));
+		qDebug("get file %s from server successfully!",qPrintable(updaterFilename));
 		this->quit();
 	}
 
@@ -444,11 +448,15 @@ void updaterThread::testNetFinished()
 }
 void updaterThread::clearObject()
 {
+	QDEBUG_LINE;
 	DELETE_TIMER(monitorTimer);
 	DELETE_OBJECT(testThread);
+	if(fh)
+		fh->wait();
 	DELETE_OBJECT(fh);
 	DELETE_OBJECT(localSettings);
 	DELETE_OBJECT(serverSettings);
+
 }
 void updaterThread::terminateThread()
 {	
@@ -489,7 +497,7 @@ void updaterThread::run()
 	monitorTimer->start(10);
 	monitorTimer->moveToThread(this);
 	*/
-	MyThread::run();
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
 	tz::netProxy(SET_MODE,settings,NULL);
 
 	if(mode == UPDATE_DLG_MODE )
@@ -518,7 +526,7 @@ void updaterThread::run()
 	exec();
 	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
 	clearObject();
-	qDebug("sync thread quit.............");
+	qDebug("updaterThread thread quit.............");
 
 
 }
@@ -793,7 +801,8 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 
 	qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
 	//GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
-
+    if(fh)
+		fh->wait();
 	DELETE_OBJECT(fh);
 	fh=new GetFileHttp(NULL,m,md5);
 

@@ -72,10 +72,11 @@ void testServerThread::testServerFinished(QNetworkReply* reply)
 	STOP_TIMER(testNetTimer);
 	//DELETE_TIMER(monitorTimer);
 	int error=reply->error();
+	//qDebug()<<__FUNCTION__<<__LINE__<<error;
 	if(!error)
 	{
 		QString replybuf(reply->readAll());
-		//	qDebug()<<__FUNCTION__<<__LINE__<<"reply:"<<replybuf;
+			//qDebug()<<__FUNCTION__<<__LINE__<<"reply:"<<replybuf;
 		if(replybuf.startsWith(QString("1")))
 		{
 			//qDebug("set testNetResult 1");
@@ -97,6 +98,7 @@ void testServerThread::testServerTimeout()
 	if(testNetTimer->isActive())
 	testNetTimer->stop();
 	*/
+	qDebug()<<__FUNCTION__<<__LINE__;
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(testNetTimer);
@@ -140,9 +142,7 @@ void testServerThread::clearObject()
 	THREAD_MONITOR_POINT;
 	DELETE_OBJECT(reply);
 	DELETE_OBJECT(manager);
-	QDEBUG_LINE;
 	DELETE_TIMER(testNetTimer);
-	QDEBUG_LINE;
 }
 void testServerThread::run()
 {
@@ -179,7 +179,7 @@ void testServerThread::run()
 	connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testServerTimeout()),Qt::DirectConnection);
 	*/
 	
-	START_TIMER_INSIDE(testNetTimer,false,10,testServerTimeout);
+	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
 	exec();
 	clearObject();
 	
