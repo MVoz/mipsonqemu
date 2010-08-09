@@ -54,6 +54,9 @@ buildWithStart(fromArchive),buildMode(mode),db(dbs)
 
 void CatBuilder::run()
 {
+	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
+	gSemaphore.acquire(1);
+	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	QString dest;
 	/*
 	QString dest = gSettings->fileName();

@@ -71,7 +71,7 @@ public:
 	postHttp *accountTestHttp;
 	//QNetworkProxy* netProxy;
 	QTimer* httpTimer;
-
+	QSemaphore *semaphore;
 	QString host;
 	QString url;
 	QString username;
@@ -120,7 +120,7 @@ public:
 	void monitorTimerSlot();
 	*/
 public:
-	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,int m=BOOKMARK_SYNC_MODE);
+	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync();
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}

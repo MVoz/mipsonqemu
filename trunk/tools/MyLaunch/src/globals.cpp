@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QMessageBox>
 #include <bookmark_sync>
 #include <catalog>
+#include <QSemaphore>
 //#include <QCString>
 
 
@@ -41,6 +42,8 @@ QSettings *gSettings;
 QString gSearchTxt;
 shared_ptr < CatBuilder > gBuilder;
 shared_ptr < BookmarkSync> gSyncer;
+QSemaphore gSemaphore;
+
 QString gNativeSep = QDir::toNativeSeparators("/");
 CatItem* gSearchResult;
 

@@ -56,6 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <posthttp>
 #include <mergethread>
 #include <QSqlDatabase>
+#include <QSemaphore>
 
 extern QWidget* gMainWidget;
 extern QSettings* gSettings;
@@ -69,6 +70,9 @@ extern uint gMaxGroupId;
 extern shared_ptr<CatBuilder> gBuilder;
 extern QString gNativeSep;
 extern QString gSearchTxt;
+extern QSemaphore gSemaphore;
+
+
 extern CatItem* gSearchResult;
 //extern QSqlDatabase db;
 //extern int language;
