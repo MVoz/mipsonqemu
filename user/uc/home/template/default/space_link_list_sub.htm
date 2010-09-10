@@ -17,7 +17,7 @@
 							</a>
 					</div>
 					<p class="message">
-						<!--{if !empty($value['link_subject'])}-->
+						<!--{if !empty($value['link_description'])}-->
 								$value['link_description'] ...
 						<!--{else}-->
 								暂时没有对&nbsp;<a href="$value[url]">$value[link_subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
