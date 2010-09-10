@@ -33,16 +33,19 @@ if($classid)
 	//$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.classid=".$classid);
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.classid=".$classid);
 	$classitem = $_SGLOBAL['db']->fetch_array($query);
+	
 	if(empty($classitem))
 		   $classid=0;
 	else
 	{
+		
 	//判断是否为第二层
 		$groupid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.parentid FROM ".tname('siteclass')." main where main.classid=".$classitem['parentid']));
 		if($groupid == 0) 
 			$isSecClass=1;
 		else
 			$isThirdClass=1;
+
 	//获取子分类
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.parentid=".$classitem['classid']);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
@@ -56,12 +59,14 @@ if($classid)
 			//修正page
 			//$page=$page?($page-1):$page;
 			//先检查cache
-			if(isSecClass)
+			if($isSecClass)
 			{
 				//获取排在最先的child
 				$browserclassid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.classid FROM ".tname('siteclass')." main where main.parentid=".$classid.' order by displayorder LIMIT 1'));				
 			}else
-				$browserclassid = $classid;
+			{
+				$browserclassid=$classid;
+			}
 			if(!file_exists( S_ROOT.'./data/sitecache/'.$browserclassid.'/site_cache_'.$browserclassid.'_page'.$page.'.txt'))
 			{
 				include_once(S_ROOT.'./source/function_cache.php');
