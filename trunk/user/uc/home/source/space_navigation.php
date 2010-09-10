@@ -26,14 +26,55 @@ $start=$page?(($page-1)*$perpage):0;
 $child_class=array();
 $bookmarklist=array();
 $isSecClass=0;
+$isThirdClass=0;
+$browserclassid = 0;
 if($classid)
 {
-	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.classid=".$classid);
+	//$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.classid=".$classid);
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.classid=".$classid);
 	$classitem = $_SGLOBAL['db']->fetch_array($query);
 	if(empty($classitem))
 		   $classid=0;
 	else
 	{
+	//判断是否为第二层
+		$groupid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.parentid FROM ".tname('siteclass')." main where main.classid=".$classitem['parentid']));
+		if($groupid == 0) 
+			$isSecClass=1;
+		else
+			$isThirdClass=1;
+	//获取子分类
+		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.parentid=".$classitem['classid']);
+		while($value =$_SGLOBAL['db']->fetch_array($query))
+		{
+			$child_class[]=$value;
+		}
+		//获取下面的link信息
+		if($childid)
+		{
+		}else{
+			//修正page
+			//$page=$page?($page-1):$page;
+			//先检查cache
+			if(isSecClass)
+			{
+				//获取排在最先的child
+				$browserclassid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.classid FROM ".tname('siteclass')." main where main.parentid=".$classid.' order by displayorder LIMIT 1'));				
+			}else
+				$browserclassid = $classid;
+			if(!file_exists( S_ROOT.'./data/sitecache/'.$browserclassid.'/site_cache_'.$browserclassid.'_page'.$page.'.txt'))
+			{
+				include_once(S_ROOT.'./source/function_cache.php');
+				if(isSecClass)
+					site_cache_2classid($classid);			
+				else
+					site_cache_3classid($browserclassid);		
+			}
+			$bookmarklist = unserialize(sreadfile(S_ROOT.'./data/sitecache/'.$browserclassid.'/site_cache_'.$browserclassid.'_page'.$page.'.txt'));
+			$count=sreadfile(S_ROOT.'./data/sitecache/'.$browserclassid.'/site_cache_'.$browserclassid.'_count.txt');
+		}
+
+/*	
 		if(($classitem['groupid']<3000)&&($classitem['groupid']>=2000))	//判断是否为第二层
 		  		$isSecClass=1;
 		//获取子分类
@@ -57,6 +98,7 @@ if($classid)
 			$bookmarklist = unserialize(sreadfile(S_ROOT.'./data/linkcache/'.$classid.'/link_cache_'.$classid.'_page'.$page.'.txt'));
 			$count=sreadfile(S_ROOT.'./data/linkcache/'.$classid.'/link_cache_'.$classid.'_count.txt');
 		}
+*/
 	}
 }else{
 	//显示导航
@@ -66,7 +108,7 @@ if($classid)
 	if(!file_exists( S_ROOT.'./data/navigation_cache.txt'))
 	{
 		include_once(S_ROOT.'./source/function_cache.php');
-		navigation_cache();		
+		navigation_cache();			
 	}
 	$navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
 }
