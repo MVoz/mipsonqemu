@@ -1015,7 +1015,7 @@ function handlesiteformat()
 			//name
 			$value['name'] = getstr(trim($value['name']), 0, 1, 1, 1);
 			//url
-			$value['url'] = shtmlspecialchars(trim($value['url']));
+			//$value['url'] = shtmlspecialchars(trim($value['url']));
 			$value['url'] = getstr($value['url'], 0, 1, 1, 1);	//”Ô¥ ∆¡±Œ
 			$value['url'] = handleUrlString($value['url']);
 			$value['hashurl']=qhash($value['url']);
@@ -1025,7 +1025,7 @@ function handlesiteformat()
 			$value['tag'] = shtmlspecialchars(trim($value['tag']));
 			$value['tag'] = getstr($value['tag'], 0, 1, 1, 1);
 			$value['dateline'] = empty($value['dateline'])?$_SGLOBAL['timestamp']:$value['dateline'];
-			setlinkimagepath($value);
+			$value=setlinkimagepath($value);
 			$value['award']=calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
 			/*
 			//tag
