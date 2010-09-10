@@ -2829,4 +2829,20 @@ function getnamefromuid($uid)
 		$_SN[$uid] =  $name;
 	return $name;
 }
+/*
+	process the url string:
+	remove the end char:'/'
+	example:http://www.sohu.com === http://www.sohu.com/
+*/
+function handleUrlString($url)
+{
+	$url=trim($url);
+	$len=strlen($url);
+	while($url[$len-1]=='/')
+	{
+		$url=substr($url, 0, $len-1); 
+		$len=strlen($url);
+	}
+	return $url;
+}
 ?>

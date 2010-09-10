@@ -1006,6 +1006,37 @@ function digg_cacheall()
 	//delete
 	delete_cachelock('digg');
 }
+//处理uchome_site
+function handlesiteformat()
+{
+	global $_SGLOBAL, $_SC;
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('site'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+			//name
+			$value['name'] = getstr(trim($value['name']), 0, 1, 1, 1);
+			//url
+			$value['url'] = shtmlspecialchars(trim($value['url']));
+			$value['url'] = getstr($value['url'], 0, 1, 1, 1);	//语词屏蔽
+			$value['url'] = handleUrlString($value['url']);
+			$value['hashurl']=qhash($value['url']);
+			$value['md5url']=md5($value['url']);
+			$value['description'] = getstr($value['description'], 0, 1,1, 1);
+			//tag
+			$value['tag'] = shtmlspecialchars(trim($value['tag']));
+			$value['tag'] = getstr($value['tag'], 0, 1, 1, 1);
+			$value['dateline'] = empty($value['dateline'])?$_SGLOBAL['timestamp']:$value['dateline'];
+			setlinkimagepath($value);
+			$value['award']=calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
+			/*
+			//tag
+			$tagarr=link_tag_batch($linkid,$POST['tag']);
+			//update tag
+			$tag = empty($tagarr)?'':addslashes(serialize($tagarr));
+			$linkarr['link_tag']=$tag;
+			*/
+			updatetable('site',$value, array('id'=>$value['id']));
+	}
+}
 
 //递归清空目录
 function deltreedir($dir) {

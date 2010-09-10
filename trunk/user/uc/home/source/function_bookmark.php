@@ -408,22 +408,7 @@ function clearbookmark($browserid)
 	 }
 	 return 1;
 }
-/*
-	process the url string:
-	remove the end char:'/'
-	example:http://www.sohu.com === http://www.sohu.com/
-*/
-function handleUrlString($url)
-{
-	$url=trim($url);
-	$len=strlen($url);
-	while($url[$len-1]=='/')
-	{
-		$url=substr($url, 0, $len-1); 
-		$len=strlen($url);
-	}
-	return $url;
-}
+
 /*
 	设置bookmark修改标志，如果用户bookmark有关键项的改动，重新设置一下space的lastmodified
 */
