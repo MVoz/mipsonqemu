@@ -400,6 +400,35 @@ function linktoolbar_cache()
 	}
 	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
 }
+//siteclass
+function siteclass_cache()
+{
+	global $_SGLOBAL;
+
+	$_SGLOBAL['siteclass'] = array();
+
+	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main WHERE main.parentid=0");
+	while($value =$_SGLOBAL['db']->fetch_array($class_query))
+	{
+		//获取二级目录
+		$classnd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main WHERE main.parentid=".$value['classid']);
+		while($classnd_value =$_SGLOBAL['db']->fetch_array($classnd_query))
+		{			
+		
+			//获取本层class的tag
+			
+			$classtag_query  = $_SGLOBAL['db']->query("SELECT field.tagid,field.tagname FROM ".tname('linkclass')." main	LEFT JOIN ".tname('linkclasstag')." field ON main.classid=field.classid  WHERE main.classid=".$classnd_value['classid']);
+			while($classtag_value =$_SGLOBAL['db']->fetch_array($classtag_query))
+			{
+						$classnd_value['tag'][]= $classtag_value;
+			}
+			
+			$value['son'][]=$classnd_value;
+		}
+		$_SGLOBAL['siteclass'][$value['classid']]=$value;
+	}
+	cache_write('siteclass', "_SGLOBAL['siteclass']", $_SGLOBAL['siteclass']);
+}
 //linkclass	
 function linkclass_cache()
 {
@@ -427,10 +456,6 @@ function linkclass_cache()
 		}
 		$_SGLOBAL['linkclass'][$value['classid']]=$value;
 	}
-
-
-
-
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
 function createCategoryCache($fp,$arr)
@@ -635,6 +660,67 @@ function usermenu_cache()
 		}
 		cache_write_extend('usermenu', "_SGLOBAL['usermenu']", $usermenulist);
 	}
+}
+//site cache just cache第二层
+function site_cache_2classid($classid)
+{
+	global $_SGLOBAL,$_SC;
+	//判断classid 是否有效
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.classid=".$classid);
+	$classitem = $_SGLOBAL['db']->fetch_array($query);
+	if(empty($classitem))
+		return;
+	//判断是否为第二层
+	$groupid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.parentid FROM ".tname('siteclass')." main where main.classid=".$classitem['parentid']));
+	if($groupid != 0)
+		return;
+	/*
+	if(!file_exists(S_ROOT.'./data/sitecache/'.$classid))
+	{
+		mkdir(S_ROOT.'./data/sitecache/'.$classid, 0777);	
+	}
+	*/
+	//遍历子目录
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.parentid=".$classid);	
+	while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+		site_cache_3classid($value['classid']);
+	}
+}
+function site_cache_3classid($classid)
+{
+	global $_SGLOBAL,$_SC;
+	
+	if(!file_exists(S_ROOT.'./data/sitecache/'.$classid))
+	{
+		mkdir(S_ROOT.'./data/sitecache/'.$classid, 0777);	
+	}
+	$linkfileprefix = S_ROOT.'./data/sitecache/'.$classid.'/site_cache';	
+	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('site')." main where main.class=".$classid),0);
+
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main where main.class=".$classid);	
+	$page=0;
+	$linklist=array();
+	while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
+		//更新linkid的award
+		updatetable('link', array('award'=>$value['award']),array('linkid'=>$value[linkid]));
+		$value['link_description']=$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['link_subject']=$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		
+		$linklist[]=$value;
+		if(count($linklist)==$_SC['bookmark_show_maxnum'])
+		{
+			$page++;
+			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist)); 			
+			$linklist=array();
+		}
+	}
+	$page++;
+	if(!empty($linklist))
+		swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
+	swritefile($linkfileprefix.'_'.$classid.'_count.txt', $count) ;
 }
 //link cache
 function link_cache_classid($classid)
