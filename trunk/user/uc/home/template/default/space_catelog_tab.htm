@@ -13,8 +13,8 @@ jQuery(document).ready(function(){
 				<li><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li> 				
 			<!--{else}-->
 				<!--{if $isSecClass }-->
-				<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$classid', 'bmcontent');">$classitem[classname]综合</li>
-				<li><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li>
+				<!--<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$classid', 'bmcontent');">$classitem[classname]综合</li>-->
+				<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li>
 				<!--{else}-->
 				<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li>
 				<!--{/if}-->
