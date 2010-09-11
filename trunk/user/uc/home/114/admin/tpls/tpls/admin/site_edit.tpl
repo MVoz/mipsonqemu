@@ -41,6 +41,10 @@
                                 <label class="hand" for="pass_no">否</label>
                             </td>
                         </tr>
+			<tr>
+                            <th>标签：</th>
+                            <td><input type="text" name="site_tag" value="<{$data.tag}>" class="textinput w270" /></td>
+                        </tr>
                         <tr>
                             <th style="vertical-align:top;">备注：</th>
                             <td>
