@@ -90,3 +90,169 @@
 <?die;?>|admin|c=mztop?c=mztop|192.168.115.1|1283743636||
 <?die;?>|admin|c=famous_loop?c=famous_loop|192.168.115.1|1283743639||
 <?die;?>|admin|c=famous_tab?c=famous_tab|192.168.115.1|1283743641||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283743644||
+<?die;?>|admin|c=mztop?c=mztop|192.168.115.1|1283744002||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283744005||
+<?die;?>|admin|c=famous_nav&a=famous_nav_save&id=2?c=famous_nav&a=famous_nav_save&id=2|192.168.115.1|1283744026||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283744036||
+<?die;?>|admin|c=famous_nav&a=famous_nav_save&id=22?c=famous_nav&a=famous_nav_save&id=22|192.168.115.1|1283745809||
+<?die;?>|admin|c=famous_nav&a=famous_nav_save?c=famous_nav&a=famous_nav_save|192.168.115.1|1283745822|name=东方财富, url=http://www.eastmoney.com/, starttime=, endtime=, displayorder=22, namecolor=#ff6600, remark=, step=2, id=22, |
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283745825||
+<?die;?>|admin|c=famous_nav&a=famous_nav_save&id=3?c=famous_nav&a=famous_nav_save&id=3|192.168.115.1|1283747775||
+<?die;?>|admin|c=famous_nav&a=famous_nav_save?c=famous_nav&a=famous_nav_save|192.168.115.1|1283747783|name=中国雅虎, url=http://cn.yahoo.com/?id=40020, starttime=, endtime=, displayorder=3, namecolor=#178517, remark=, step=2, id=3, |
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283747786||
+<?die;?>|admin|c=mztop?c=mztop|192.168.115.1|1283747828||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283747829||
+<?die;?>|admin|c=famous_loop?c=famous_loop|192.168.115.1|1283747831||
+<?die;?>|admin|c=famous_tab?c=famous_tab|192.168.115.1|1283747832||
+<?die;?>|admin|c=login&a=menu&id=7?c=login&a=menu&id=7|192.168.115.1|1283747918||
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283747918||
+<?die;?>|admin|c=make_html&action=make?c=make_html&action=make|192.168.115.1|1283747919|make=array(index=1, )|
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283747990|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283747990||
+<?die;?>|admin|c=login&a=menu&id=7?c=login&a=menu&id=7|192.168.115.1|1283747990||
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283747990||
+<?die;?>|admin|c=make_html&action=make?c=make_html&action=make|192.168.115.1|1283747991|make=array(index=1, )|
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283747996||
+<?die;?>|admin|c=make_html&action=make?c=make_html&action=make|192.168.115.1|1283748035|make=array(index=1, )|
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283748040||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283748107||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748108||
+<?die;?>|admin|c=famous_tab?c=famous_tab|192.168.115.1|1283748110||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748182||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748217||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748521||
+<?die;?>|admin|c=mztop?c=mztop|192.168.115.1|1283748523||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748525||
+<?die;?>|admin|c=mztop?c=mztop|192.168.115.1|1283748752||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748753||
+<?die;?>|admin|c=login&a=menu&id=3?c=login&a=menu&id=3|192.168.115.1|1283748757||
+<?die;?>|admin|c=zhuanti_class?c=zhuanti_class|192.168.115.1|1283748758||
+<?die;?>|admin|c=login&a=menu&id=1?c=login&a=menu&id=1|192.168.115.1|1283748760||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283748762||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748764||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283748935|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283748935||
+<?die;?>|admin|c=login&a=menu&id=7?c=login&a=menu&id=7|192.168.115.1|1283748935||
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283748935||
+<?die;?>|admin|c=make_html?c=make_html|192.168.115.1|1283748936||
+<?die;?>|admin|c=login&a=menu&id=1?c=login&a=menu&id=1|192.168.115.1|1283748937||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283748938||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748939||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283748973|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283748974||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283748974||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283748974||
+<?die;?>|admin|c=index_tool?c=index_tool|192.168.115.1|1283749016||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283749021||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283749035|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283749035||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283749035||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283749035||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283749169|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283749169||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283749169||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283749169||
+<?die;?>|admin|c=cool_class?c=cool_class|192.168.115.1|1283749188||
+<?die;?>|admin|c=cool_site?c=cool_site|192.168.115.1|1283749192||
+<?die;?>|admin|c=cool_site&classid=1?c=cool_site&classid=1|192.168.115.1|1283749210||
+<?die;?>|admin|c=cool_site&classid=0?c=cool_site&classid=0|192.168.115.1|1283749211||
+<?die;?>|admin|c=cool_class?c=cool_class|192.168.115.1|1283749420||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283749429||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283751169|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283751169||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283751169||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283751169||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283751546|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283751546||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283751546||
+<?die;?>|admin|c=famous_nav?c=famous_nav|192.168.115.1|1283751546||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283751550||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283751660|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283751660||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283751660||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283751660||
+<?die;?>|admin|c=cool_site&classid=1?c=cool_site&classid=1|192.168.115.1|1283751673||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283751678||
+<?die;?>|admin|c=cool_site&classid=2?c=cool_site&classid=2|192.168.115.1|1283751679||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283751681||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283751731|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283751731||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283751731||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283751731||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751789||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751864||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751865||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751942||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751943||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751944||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283751945||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283752089||
+<?die;?>|admin|c=cool_site&classid=1?c=cool_site&classid=1|192.168.115.1|1283752095||
+<?die;?>|admin|c=cool_site&classid=0?c=cool_site&classid=0|192.168.115.1|1283752100||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283752102||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752107||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752241||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283752336||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752339||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283752447|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283752447||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283752447||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752447||
+<?die;?>|admin|c=famous_site&classid=1?c=famous_site&classid=1|192.168.115.1|1283752449||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283752591|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283752591||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283752591||
+<?die;?>|admin|c=famous_site&classid=1?c=famous_site&classid=1|192.168.115.1|1283752591||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752593||
+<?die;?>|admin|c=famous_site&classid=1?c=famous_site&classid=1|192.168.115.1|1283752596||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752817||
+<?die;?>|admin|c=famous_site&classid=1?c=famous_site&classid=1|192.168.115.1|1283752819||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752822||
+<?die;?>|admin|c=famous_site&classid=2?c=famous_site&classid=2|192.168.115.1|1283752822||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283752824||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283752825||
+<?die;?>|admin|c=famous_site&classid=1?c=famous_site&classid=1|192.168.115.1|1283752830||
+<?die;?>|admin|c=famous_site&classid=2?c=famous_site&classid=2|192.168.115.1|1283752832||
+<?die;?>|admin|c=famous_site&classid=3?c=famous_site&classid=3|192.168.115.1|1283752833||
+<?die;?>|admin|c=famous_site&classid=0?c=famous_site&classid=0|192.168.115.1|1283752834||
+<?die;?>|admin|c=login&a=login?c=login&a=login|192.168.115.1|1283752881|login=array(name=admin, password=***, )|
+<?die;?>|admin|c=login&a=header?c=login&a=header|192.168.115.1|1283752881||
+<?die;?>|admin|c=login&a=menu&id=2?c=login&a=menu&id=2|192.168.115.1|1283752881||
+<?die;?>|admin|c=famous_site&classid=0?c=famous_site&classid=0|192.168.115.1|1283752881||
+<?die;?>|admin|c=famous_site&a=search&keyword=%E9%98%BF%E9%87%8C&search_type=name?c=famous_site&a=search&keyword=%E9%98%BF%E9%87%8C&search_type=name|192.168.115.1|1283752896||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753040||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753042||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753044||
+<?die;?>|admin|c=famous_site&classid=7?c=famous_site&classid=7|192.168.115.1|1283753047||
+<?die;?>|admin|c=famous_tab?c=famous_tab|192.168.115.1|1283753049||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753052||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753056||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753063||
+<?die;?>|admin|c=famous_site&classid=2?c=famous_site&classid=2|192.168.115.1|1283753067||
+<?die;?>|admin|c=famous_site&a=edit&action=add&classid=2?c=famous_site&a=edit&action=add&classid=2|192.168.115.1|1283753070||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753101||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753102||
+<?die;?>|admin|c=famous_site&a=edit&action=modify&id=2?c=famous_site&a=edit&action=modify&id=2|192.168.115.1|1283753104||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753105||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753224||
+<?die;?>|admin|c=famous_class&a=edit&id=1?c=famous_class&a=edit&id=1|192.168.115.1|1283753230||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753234||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753235||
+<?die;?>|admin|c=famous_site&a=edit&action=modify&id=2?c=famous_site&a=edit&action=modify&id=2|192.168.115.1|1283753242||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753244||
+<?die;?>|admin|c=famous_site&a=edit&action=modify&id=4?c=famous_site&a=edit&action=modify&id=4|192.168.115.1|1283753253||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753254||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753330||
+<?die;?>|admin|c=famous_class&a=add?c=famous_class&a=add|192.168.115.1|1283753331||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753334||
+<?die;?>|admin|c=famous_site&a=edit&action=add&classid=0?c=famous_site&a=edit&action=add&classid=0|192.168.115.1|1283753335||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753336||
+<?die;?>|admin|c=famous_site&a=edit&action=add&classid=0?c=famous_site&a=edit&action=add&classid=0|192.168.115.1|1283753418||
+<?die;?>|admin|c=cool_class?c=cool_class|192.168.115.1|1283753422||
+<?die;?>|admin|c=famous_site?c=famous_site|192.168.115.1|1283753423||
+<?die;?>|admin|c=famous_class?c=famous_class|192.168.115.1|1283753426||
+<?die;?>|admin|c=famous_site&classid=2?c=famous_site&classid=2|192.168.115.1|1283753427||
+<?die;?>|admin|c=famous_site&a=edit&action=add&classid=2?c=famous_site&a=edit&action=add&classid=2|192.168.115.1|1283753428||
+<?die;?>|admin|c=famous_site&a=save?c=famous_site&a=save|192.168.115.1|1283753452|action=add, id=, referer=, site_name=搜狐新闻, color=, site_url=http://news.sohu.com, start_time=, end_time=, order=1, remark=, class_id=2, |
+<?die;?>|admin|c=famous_site&classid=2?c=famous_site&classid=2|192.168.115.1|1283753455||

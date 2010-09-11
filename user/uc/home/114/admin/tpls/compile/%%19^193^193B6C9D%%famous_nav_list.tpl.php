@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.25, created on 2010-09-05 23:19:16
+<?php /* Smarty version 2.6.25, created on 2010-09-06 00:59:29
          compiled from famous_nav_list.tpl */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => 'header.tpl', 'smarty_include_vars' => array()));
@@ -73,8 +73,9 @@ unset($_smarty_tpl_vars);
                   <div class="table">
                   	<div class="th">
                     	<div class="form">
-                    	  <input type="button" value="添加名站" onClick="location.href='?c=famous_nav&a=famous_nav_add'" />&nbsp;</div>
-                    </div>
+                    	  <input type="button" value="添加名站" onClick="location.href='?c=famous_nav&a=famous_nav_add'" />&nbsp;
+			</div>
+			</div>
                     <table class="admin-tb" id="tb1">
                     <tr>
                     	<th width="41" class="text-center"><input type="checkbox" rel="control" onClick="this.checked?checkTb1(1):checkTb1(2);" /></th>
