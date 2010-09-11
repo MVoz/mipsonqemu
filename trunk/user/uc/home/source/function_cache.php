@@ -388,7 +388,18 @@ function linktoolbartype_cache()
 function linktoolbar_cache()
 {
 	global $_SGLOBAL;
-
+//ramen 20100911合并114 database
+	$_SGLOBAL['linktoolbar'] = array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
+	while($value = $_SGLOBAL['db']->fetch_array($query)){
+		// 从数据库获取
+		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('mingzhan')." where classid=".$value[id]." order by displayorder");	 
+		while($v = $_SGLOBAL['db']->fetch_array($q)){
+			$_SGLOBAL['linktoolbar'][$value[id]][] = $v;
+		}
+	}
+	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
+/*
 	$_SGLOBAL['linktoolbar'] = array();
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
@@ -399,6 +410,7 @@ function linktoolbar_cache()
 		}
 	}
 	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
+*/
 }
 //siteclass
 function siteclass_cache()
