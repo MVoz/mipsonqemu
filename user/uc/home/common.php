@@ -26,6 +26,8 @@ if(!@include_once(S_ROOT.'./config.php')) {
 
 include_once(S_ROOT.'./source/function_common.php');
 
+
+
 include_once(S_ROOT.'./source/log.php');
 $log=new logdebug;
 
@@ -117,6 +119,10 @@ if(empty($_SGLOBAL['client']))
 else
 	checkclientauth($_GET);
 $_SGLOBAL['uhash'] = md5($_SGLOBAL['supe_uid']."\t".substr($_SGLOBAL['timestamp'], 0, 6));
+
+//ramen 查看cache，如果没有，则创建
+check_cache();
+
 //debugOutput('timestamp',$_SGLOBAL['timestamp']);
 //debugOutput('uhash',$_SGLOBAL['uhash']);
 //用户菜单
