@@ -191,9 +191,7 @@ class ctl_site_manage
             $remark = (empty($_POST['remark'])) ? '' : trim($_POST['remark']);
             $data['remark'] = $remark;
 
-			$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);
-
-            $data['tag'] = $site_tag;  
+			$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);               
 
             $data['adduser'] = addslashes(mod_login::get_username());
             // 新增
@@ -203,6 +201,7 @@ class ctl_site_manage
 
                 if (app_db::insert('ylmf_site', array_keys($data), array_values($data)))
                 {
+					$siteid = @mysql_result(app_db::query("SELECT last_insert_id()"), 0);
                     if ((false === strpos($_POST['classid'], ',')))
                     {
                         $tmp_class_id = $_POST['classid'];
@@ -212,7 +211,12 @@ class ctl_site_manage
                         $tmp = explode(',', $_POST['classid']);
                         $tmp_class_id = (count($tmp) > 1) ? trim($tmp[1]) : trim($tmp[0]);
                     }
-
+					$tagarr = mod_site_manage::batch_tag($siteid,$site_tag);
+					$data['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+					if (false === app_db::update('ylmf_site', $data, "id = {$siteid}"))
+					{
+						 throw new Exception('数据库操作失败', 10);
+					}
                     mod_make_html::auto_update('catalog', $tmp_class_id);
                     mod_login::message('添加成功', '?c=site_manage&classid=' . $class_id);
                 }
