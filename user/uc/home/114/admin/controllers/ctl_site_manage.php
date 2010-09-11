@@ -101,7 +101,7 @@ class ctl_site_manage
         }
         app_tpl::display('site_list.tpl');
     }
-
+	
 
     /**
      * 保存
@@ -191,6 +191,10 @@ class ctl_site_manage
             $remark = (empty($_POST['remark'])) ? '' : trim($_POST['remark']);
             $data['remark'] = $remark;
 
+			$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);
+
+            $data['tag'] = $site_tag;  
+
             $data['adduser'] = addslashes(mod_login::get_username());
             // 新增
             if ($action == 'add')
@@ -220,8 +224,9 @@ class ctl_site_manage
             // 修改
             elseif ($action == 'modify')
             {
-
-                $old = mod_site_manage::get_one($id);
+				$tagarr = mod_site_manage::batch_tag($id,$site_tag);
+				$data['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+		        $old = mod_site_manage::get_one($id);
                 if ($id < 1 || false === app_db::update('ylmf_site', $data, "id = {$id}"))
                 {
                     throw new Exception('数据库操作失败', 10);
@@ -275,7 +280,12 @@ class ctl_site_manage
         // 分类列表
         app_tpl::assign( 'class_list', '');
         app_tpl::assign('class_id', $_POST['class_id']);
-
+		//修正tag显示
+		$data_tag = empty($data['tag'])?array():unserialize($data['tag']);
+		$data['tag'] = '';
+		foreach($data_tag as $k=>$v){
+			  $data['tag']=	$data['tag'].' '.$v;
+		}
         app_tpl::display('site_edit.tpl');
     }
 
@@ -311,7 +321,18 @@ class ctl_site_manage
                 {
                     throw new Exception('没有找到数据', 10);
                 }
+
+				//修正tag显示
+				$data_tag = empty($result['tag'])?array():unserialize($result['tag']);
+				$result['tag'] = '';
+				foreach($data_tag as $k=>$v){
+					  $result['tag']=	$result['tag'].' '.$v;
+				}
+
                 app_tpl::assign('data', $result);
+
+				
+
                 app_tpl::assign('action', 'modify');
                 app_tpl::assign('referer', $_SERVER['HTTP_REFERER']);
 
@@ -344,6 +365,9 @@ class ctl_site_manage
         {
             app_tpl::assign('error', $e->getMessage());
         }
+
+		
+
         app_tpl::display('site_edit.tpl');
     }
 
