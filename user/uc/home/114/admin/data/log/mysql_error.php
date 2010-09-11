@@ -1,0 +1,3 @@
+<?die;?>||/114/admin/index.php?c=login&amp;a=login|SELECT yl_value FROM `uchome_config` WHERE yl_name = 'yl_path_html'|1054Unknown column 'yl_value' in 'field list'|1283741755|192.168.115.1|Array|
+<?die;?>|1|/114/admin/index.php?c=config&amp;a=info|select yl_value from `uchome_config` where `yl_name` = 'yl_sysname'|1054Unknown column 'yl_value' in 'field list'|1283742402|192.168.115.1|NO_POSTDATA|
+<?die;?>|1|/114/admin/index.php?c=class&amp;a=index&amp;type=2|SELECT * FROM `uchome_class` WHERE 1 ORDER BY displayorder|1054Unknown column 'displayorder' in 'order clause'|1283742495|192.168.115.1|NO_POSTDATA|
