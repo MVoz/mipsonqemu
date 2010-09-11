@@ -378,9 +378,9 @@ function linktoolbartype_cache()
 
 	$_SGLOBAL['linktoolbartype'] = array();
 	// 从数据库获取
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype')." order by displayorder");
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-	    $_SGLOBAL['linktoolbartype'][$value[id]] = $value[toolbarname];
+	    $_SGLOBAL['linktoolbartype'][$value[classid]] = $value[classname];
 	}
 	cache_write('linktoolbartype', "_SGLOBAL['linktoolbartype']", $_SGLOBAL['linktoolbartype']);
 }
@@ -393,9 +393,9 @@ function linktoolbar_cache()
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
 		// 从数据库获取
-		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('mingzhan')." where classid=".$value[id]." order by displayorder");	 
+		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('mingzhan')." where class=".$value[classid]." order by displayorder");	 
 		while($v = $_SGLOBAL['db']->fetch_array($q)){
-			$_SGLOBAL['linktoolbar'][$value[id]][] = $v;
+			$_SGLOBAL['linktoolbar'][$value[classid]][] = $v;
 		}
 	}
 	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
