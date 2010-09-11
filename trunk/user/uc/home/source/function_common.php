@@ -2845,4 +2845,11 @@ function handleUrlString($url)
 	}
 	return $url;
 }
+function check_cache()
+{
+	global $_SGLOBAL;	
+	include_once(S_ROOT.'./source/function_cache.php');
+	//if(empty($_SGLOBAL['linktoolbar']))
+		linktoolbar_cache();
+}
 ?>
