@@ -462,8 +462,8 @@ class mod_make_html
         // 网站分类
         $class_query = app_db::query('SELECT p.`classname` AS p_classname,
                                              s.`classid` AS s_classid, s.`classname` AS s_classname, s.`path` AS s_path
-                                      FROM ylmfsite_class AS p
-                                      INNER JOIN ylmfsite_class AS s ON s.parentid = p.classid
+                                      FROM ylmf_siteclass AS p
+                                      INNER JOIN ylmf_siteclass AS s ON s.parentid = p.classid
                                       WHERE p.parentid = 0
                                       ORDER BY p.displayorder, p.classid, s.displayorder');
         if (!empty($class_query))
