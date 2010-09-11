@@ -15,17 +15,17 @@
 					<!--{/if}-->
 					<!--{loop $value $k $val}-->
 									<!--{if ($k%8)==0 }-->
-											<!--{if (($k%16)==0)&&$k }-->
-												<li class="row-list_1">
-											<!--{else}-->
+											<!--{if (($k%16)==0)}-->
 												<li class="row-list">
-											<!--{/if}-->
-										<!--{/if}-->
-										<!--{if $ac=='linktoolbar'}-->
-											<em><a title="$val[subject]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[subject]</a></em>  
 											<!--{else}-->
-											<em><a title="$val[subject]" target="_blank" href="$val[url]">$val[subject]</a></em>  
-										<!--{/if}-->
+												<li class="row-list_l">
+											<!--{/if}-->
+									<!--{/if}-->
+									<!--{if $ac=='linktoolbar'}-->
+											<em><a title="$val[name]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a></em>  
+									<!--{else}-->
+											<em><a title="$val[name]" target="_blank" href="$val[url]">$val[name]</a></em>  
+									<!--{/if}-->
 					<!--{/loop}-->
 							</ul>
 			<!--{/loop}-->    
