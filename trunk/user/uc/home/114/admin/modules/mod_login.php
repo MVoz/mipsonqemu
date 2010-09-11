@@ -353,6 +353,8 @@ class mod_login
             '名站首行'=>'?c=mztop',
             '名站轮播网站'=>'?c=famous_loop',
             '名站切换栏'=>'?c=famous_tab',
+			'名站分类'=>'?c=famous_class',
+            '名站网址'=>'?c=famous_site',
             '酷站分类'=>'?c=cool_class',
             '酷站网址'=>'?c=cool_site',
             '首页实用工具'=>'?c=index_tool',
