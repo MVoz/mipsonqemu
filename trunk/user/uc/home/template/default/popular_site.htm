@@ -24,7 +24,11 @@
 									<!--{if $ac=='linktoolbar'}-->
 											<em><a title="$val[name]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a></em>  
 									<!--{else}-->
-											<em><a title="$val[name]" target="_blank" href="$val[url]">$val[name]</a></em>  
+											<!--{if empty($val[namecolor]) }-->
+											<em><a title="$val[name]" target="_blank" href="$val[url]" >$val[name]</a></em>  
+											<!--{else}-->
+											<em><a title="$val[name]" target="_blank" href="$val[url]" style="color:$val[namecolor]">$val[name]</a></em>  
+											<!--{/if}-->
 									<!--{/if}-->
 					<!--{/loop}-->
 							</ul>
