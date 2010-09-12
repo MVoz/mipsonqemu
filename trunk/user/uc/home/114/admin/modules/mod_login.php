@@ -349,6 +349,7 @@ class mod_login
 
             '首页管理'=>array
             (
+			'待录管理'=>'?c=collect_site',
             '名站管理'=>'?c=famous_nav',
             '名站首行'=>'?c=mztop',
             '名站轮播网站'=>'?c=famous_loop',
