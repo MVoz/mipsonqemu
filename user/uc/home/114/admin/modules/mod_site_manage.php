@@ -305,7 +305,8 @@ class mod_site_manage
 	**/
 	public static function batch_tag($id,$tags)
 	{
-		
+		$mtime = explode(' ', microtime());
+		$timesec = $mtime[1];
 		$tagarr = array();
 		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
 		
@@ -361,7 +362,7 @@ class mod_site_manage
 				$setarr = array(
 					'tagname' => $tagname,
 					'taghash' => self::qhash($tagname),
-					'dateline' => $_SGLOBAL['timestamp'],
+					'dateline' => $timesec,
 					'totalnum' => 1
 				);
 				if (app_db::insert('ylmf_sitetag', array_keys($setarr), array_values($setarr)))
