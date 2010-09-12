@@ -19,6 +19,9 @@ $groupid=0;
 if($bmid) {
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$item = $_SGLOBAL['db']->fetch_array($query);
+	//处理link在site中的情况
+	include_once(S_ROOT.'./source/function_common.php');
+	$item = getlinkfromsite($item);
 	if(empty($item['tag']))
 		$item['tag'] =implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 	else
@@ -160,7 +163,7 @@ if($_GET['op'] == 'delete') {
 	
 }elseif($_GET['op']=='updatevisitstat'){
 		include_once(S_ROOT.'./source/function_bookmark.php');
-        updatevisitstat($_GET['bmid']);
+        updatebmvisitstat($_GET['bmid']);
 		return;
 
 } else {
