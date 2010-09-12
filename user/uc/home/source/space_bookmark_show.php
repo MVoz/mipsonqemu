@@ -13,6 +13,7 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op
 
 //include_once(S_ROOT.'./data/data_network.php');
 include_once(S_ROOT.'./source/function_link.php');
+include_once(S_ROOT.'./source/function_bookmark.php');
 $isFromCache=0;
 include_once(S_ROOT.'./source/function_cache.php');
 bookmark_cache();
@@ -98,13 +99,15 @@ if(file_exists($bmcachefile)){
 			$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
 
 			while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				//处理link在site中的情况
+				include_once(S_ROOT.'./source/function_common.php');
+				$value = getlinkfromsite($value);
 				$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 				$value['subject'] = getstr($value['subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 				if($value[picflag]&&empty($value['description']))
 					$value['description']= getstr($value['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 				if($value[picflag]&&empty($value['subject']))
 					$value['subject']= getstr($value['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-				
 				$bookmarklist[] = $value;
 			}
 		}else{
@@ -126,7 +129,14 @@ if(file_exists($bmcachefile)){
 		include_once(S_ROOT.'./source/function_link.php');
 		$value['link_tag']=convertlinktag($value['linkid'],$value['link_tag']);
 		if($value[picflag]&&empty($value['tag']))
-				$value['tag']= $value['link_tag'];
+		{
+			//将link的tag赋予bookmark
+			
+			$tagarray = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+			bookmark_tag_batch($value['bmid'],implode(" ", $tagarray));
+			$value['tag']= $value['link_tag'];
+			updatetable('bookmark', array('tag'=>$value['tag']), array('bmid'=>$value['bmid']));
+		}
 		$value['taglist'] = empty($value['tag'])?array():unserialize($value['tag']);
 		$bookmarklist[$key] = $value;	
 	}

@@ -2852,4 +2852,27 @@ function check_cache()
 	//if(empty($_SGLOBAL['linktoolbar']))
 		linktoolbar_cache();
 }
+
+function getlinkfromsite($arr)
+{
+	global $_SGLOBAL;
+	if($arr['siteid']==0)
+		return $arr;
+	//get site item
+	$site_query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." where id=".$arr['siteid']);
+	$site = $_SGLOBAL['db']->fetch_array($site_query);	
+	if(empty($site))
+		return $arr;
+	$arr['url'] = $site['url'];
+	$arr['link_tag'] = $site['tag'];
+	$arr['link_subject'] = $site['name'];
+	$arr['link_description'] = $site['remark'];	
+	$arr['up']=$site['up'];
+	$arr['down']=$site['down'];
+	$arr['initaward']=$site['initaward'];
+	$arr['award']=$site['award'];
+	$arr['storenum']=$site['storenum'];
+	$arr['picflag']=$site['picflag'];
+	return $arr;
+}
 ?>

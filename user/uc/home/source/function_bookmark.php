@@ -207,7 +207,94 @@ function getMaxGroupid($uid){
 	return (empty($values)?(8000-1):$values['groupid']);
 }
 //处理tag
+function bookmark_tag_batch($id,$tags)
+{
+		global $_SGLOBAL;
+		$uid = $_SGLOBAL['supe_uid'];
+		$tagarr = array();
+		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
+		
+		//if(empty($now_tag)) return $tagarr;
+		//获取原来的tags
+		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('bookmark')." main WHERE main.bmid=".$id." AND main.uid=".$_SGLOBAL['supe_uid']);
+		$result = $_SGLOBAL['db']->fetch_array($query);
+		if(empty($result))
+			return $tagarr;
+		
+		 //修正tag显示
+		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		
+		 $need_delete_tags=array();
+		 $need_add_tags=array();
+		 $tagarr = $intersect_tag = array_intersect($old_tags,$now_tag);
+		//获取old_tag有而现在没有的			
+		 $need_delete_tags = array_diff($old_tags,$intersect_tag);
+		//清除tag
+		if(!empty($need_delete_tags)) {
+			  foreach($need_delete_tags as $k=>$v){
+				 $_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE bmid=".$id.' AND tagid='.$k);			
+			  }	  
+			// $_SGLOBAL['db']->query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".self::simplode(array_keys($need_delete_tags)).")");
+		}
+		//获取现在有二old_tag没有的
+		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
+		 
+		 if(empty($need_add_tags))
+			 return  $tagarr;
+		//记录已存在的tag
+		$vtags = array();
+		
+		$sql = "SELECT tagid, tagname, close FROM ".tname('sitetag')." WHERE tagname IN (".simplode($need_add_tags).")";
+		$query = $_SGLOBAL['db']->query($sql);
+	
+		while ($rt = $_SGLOBAL['db']->fetch_array($query))
+		{
+			$rt['tagname'] = addslashes($rt['tagname']);
+		    $vkey = md5($rt['tagname']);
+			$vtags[$vkey] = $rt;
+		}
+
+		
+		$updatetagids = array();
+		foreach ($need_add_tags as $tagname) {
+			if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
+			
+			$vkey = md5($tagname);
+			if(empty($vtags[$vkey])) {
+				$setarr = array(
+					'tagname' => $tagname,
+					'taghash' => qhash($tagname),
+					'dateline' => $_SGLOBAL['timestamp'],
+					//bookmark的tag不进入统计
+					'totalnum' => 0
+				);
+				if ($tagid=inserttable('sitetag', $setarr, 1))
+				{
+					$tagarr[$tagid] = $tagname;
+				}
+			} else {
+				if(empty($vtags[$vkey]['close'])) {
+					$tagid = $vtags[$vkey]['tagid'];
+					$updatetagids[] = $tagid;
+					$tagarr[$tagid] = $tagname;
+				}
+			}
+		}
+		//if($updatetagids) 
+		//	$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".self::simplode($updatetagids).")");
+		$tagids = array_keys($tagarr);
+		$inserts = array();
+		foreach ($tagids as $tagid) {
+			$inserts[] = "('$tagid','$id','$uid')";
+		}
+		if($inserts) 
+			$_SGLOBAL['db']->query("REPLACE INTO ".tname('sitetagsite')." (tagid,bmid,uid) VALUES ".implode(',', $inserts));
+
+		return $tagarr;	
+}
+/*
 function bookmark_tag_batch($bmid, $tags) {
+
 	global $_SGLOBAL;
 
 	$tagarr = array();
@@ -253,7 +340,7 @@ function bookmark_tag_batch($bmid, $tags) {
 
 	return $tagarr;
 }
-
+*/
 
 //屏蔽html
 function checkhtml($html) {
@@ -296,30 +383,76 @@ function bookmark_link_process($linkid,$arr){
 		 $link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid= ".$linkid);
 		 $link = $_SGLOBAL['db']->fetch_array($link_query);
 		 if(!empty($link)){
+			if($link['siteid']==0){
+				//此link不在site中
 				if(($link['hashurl']==$arr['hashurl'])&&($link['url']==$arr['url']))//无需对link表做改动
 					return $link['linkid'];
 				else{
 					//将old link所在的表记数减一
 					 $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
 				}
+			}else{
+				//此link在site中
+				 $site_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE id= ".$link['siteid']);
+				 $site = $_SGLOBAL['db']->fetch_array($site_query);
+				 if(($site['hashurl']==$arr['hashurl'])&&($site['url']==$arr['url']))//无需对link表做改动
+					return $linkid;
+				else{
+					//将site所在的表记数减一
+					 $_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum-1 WHERE id=".$site['id']);
+				}
+			}
 		 }	 
     }
    
-	$link_query=$_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+	$link_query=$_SGLOBAL['db']->query("SELECT linkid,siteid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
 	$link = $_SGLOBAL['db']->fetch_array($link_query);
     if(empty($link)){
-        $arr['storenum']=1;
+        
+		//ramen 20100912 检查site站点是否含此link
+		$site_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+		$site=$_SGLOBAL['db']->fetch_array($site_query);
+		if($site['siteid'])//site站点有含此link
+		{
+			$arr['siteid'] = $site['siteid'];
+			$arr['storenum']=0;
+			$arr['link_tag'] = '';
+			$arr['link_subject'] = '';
+			$arr['link_description'] = '';	
+			$arr['url'] = '';	
+			$arr['up'] = 0;
+			$arr['down'] = 0;
+			$arr['initaward'] = 0;
+			$arr['award'] = 0;
+			/*
+			$arr['link_tag'] = $site['tag'];
+			$arr['link_subject'] = $site['name'];
+			$arr['link_description'] = $site['remark'];	
+			$arr['picflag'] = $site['picflag'];	
+			$arr['pic'] = $site['pic'];
+			$arr['tmppic'] = $site['tmppic'];	
+			$arr['md5url'] = $site['md5url'];	
+			$arr['hashurl'] = $site['hashurl'];	
+			*/
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$site['siteid']);		
+		}else{
+			$arr['storenum'] = '1';
+		}
 		$linkid = inserttable('link', $arr, 1);
         return $linkid;
     }else
     {
         //update 总数
-	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum+1 WHERE linkid=".$link['linkid']);
+		if($link['siteid'])//此link在site中
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$link['siteid']);
+		else
+			$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum+1 WHERE linkid=".$link['linkid']);
         return $link['linkid'];
     }
 
 }
-function   updatevisitstat($bmid){
+
+function   updatebmvisitstat($bmid){
 //更新bookmark访问统计信息
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
@@ -331,6 +464,7 @@ function   updatevisitstat($bmid){
 //更新最后访问时间
         $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
+
 function deletebookmark($bmid){
 	//处理link
 	 global $_SGLOBAL;
@@ -338,17 +472,24 @@ function deletebookmark($bmid){
 	$link=$_SGLOBAL['db']->fetch_array($query);
 	if(empty($link))
 		return 0;
-	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
+	//如果link在site中，只需要更新site即可
+	if($link['siteid'])
+		$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum-1 WHERE id=".$link['siteid']);
+	else
+		$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
 	//处理tag
-	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+	//bookmark的统计不进入sitetag中
+	/*
+	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('sitetagsite')." WHERE bmid=".$bmid);
 	$updatetagids=array();
 	while($values=$_SGLOBAL['db']->fetch_array($query))
 	{
 		$updatetagids[]=$values['tagid'];		
 	}
 	if($updatetagids)
-		$_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
-	$_SGLOBAL['db']->query("DELETE  from ".tname('linktagbookmark')." WHERE bmid=".$bmid);
+		$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
+	*/
+	$_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE bmid=".$bmid);
 	//处理bookmark
 	$_SGLOBAL['db']->query("DELETE  from ".tname('bookmark')." WHERE bmid=".$bmid);
 

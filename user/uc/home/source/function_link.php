@@ -114,6 +114,96 @@ function link_post($POST, $olds=array()) {
 	return $linkarr;
 }
 //处理tag
+function link_tag_batch($id,$tags)
+{
+		global $_SGLOBAL;
+		$tagarr = array();
+		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
+		
+		//if(empty($now_tag)) return $tagarr;
+		//获取原来的tags
+		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main WHERE main.linkid=".$id);
+		$result = $_SGLOBAL['db']->fetch_array($query);
+		if(empty($result))
+			return $tagarr;
+		//如果已在site表中，则不处理
+		if($result['siteid'])
+			{
+				//返回现有的
+				return empty($result['tag'])?array():unserialize($result['tag']);
+			}
+		 //修正tag显示
+		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		
+		 $need_delete_tags=array();
+		 $need_add_tags=array();
+		 $tagarr = $intersect_tag = array_intersect($old_tags,$now_tag);
+		//获取old_tag有而现在没有的			
+		 $need_delete_tags = array_diff($old_tags,$intersect_tag);
+		//清除tag
+		if(!empty($need_delete_tags)) {
+			  foreach($need_delete_tags as $k=>$v){
+				 $_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE linkid=".$id.' AND tagid='.$k);			
+			  }	  
+			 $_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
+		}
+		//获取现在有二old_tag没有的
+		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
+		 
+		 if(empty($need_add_tags))
+			 return  $tagarr;
+		//记录已存在的tag
+		$vtags = array();
+		
+		$sql = "SELECT tagid, tagname, close FROM ".tname('sitetag')." WHERE tagname IN (".simplode($need_add_tags).")";
+		$query = $_SGLOBAL['db']->query($sql);
+	
+		while ($rt = $_SGLOBAL['db']->fetch_array($query))
+		{
+			$rt['tagname'] = addslashes($rt['tagname']);
+		    $vkey = md5($rt['tagname']);
+			$vtags[$vkey] = $rt;
+		}
+
+		
+		$updatetagids = array();
+		foreach ($need_add_tags as $tagname) {
+			if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
+			
+			$vkey = md5($tagname);
+			if(empty($vtags[$vkey])) {
+				$setarr = array(
+					'tagname' => $tagname,
+					'taghash' => qhash($tagname),
+					'dateline' => $_SGLOBAL['timestamp'],
+					//link的tag进入统计
+					'totalnum' => 1
+				);
+				if ($tagid=inserttable('sitetag', $setarr, 1))
+				{
+					$tagarr[$tagid] = $tagname;
+				}
+			} else {
+				if(empty($vtags[$vkey]['close'])) {
+					$tagid = $vtags[$vkey]['tagid'];
+					$updatetagids[] = $tagid;
+					$tagarr[$tagid] = $tagname;
+				}
+			}
+		}
+		if($updatetagids) 
+			$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
+		$tagids = array_keys($tagarr);
+		$inserts = array();
+		foreach ($tagids as $tagid) {
+			$inserts[] = "('$tagid','$id')";
+		}
+		if($inserts) 
+			$_SGLOBAL['db']->query("REPLACE INTO ".tname('sitetagsite')." (tagid,linkid) VALUES ".implode(',', $inserts));
+
+		return $tagarr;	
+}
+/*
 function link_tag_batch($linkid, $tags) {
 	global $_SGLOBAL;
 
@@ -160,7 +250,7 @@ function link_tag_batch($linkid, $tags) {
 
 	return $tagarr;
 }
-
+*/
 //检查link是否已存在
 function  checklinkexisted($linkarr)
 {
@@ -215,15 +305,15 @@ function link_delete_tag($linkid)
 {
 	global $_SGLOBAL,$_SC;
 	//处理tag
-	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('linktaglink')." WHERE linkid=".$linkid);
+	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('sitetagsite')." WHERE linkid=".$linkid);
 	$updatetagids=array();
 	while($values=$_SGLOBAL['db']->fetch_array($query))
 	{
 		$updatetagids[]=$values['tagid'];		
 	}
 	if($updatetagids)
-		$_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
-	$_SGLOBAL['db']->query("DELETE  from ".tname('linktaglink')." WHERE linkid=".$linkid);
+		$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode($updatetagids).")");
+	$_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE linkid=".$linkid);
 }
 /*
 	1:管理员可以删除任何连接，但首先参考收藏数，如果收藏数>0,则不删除
@@ -235,6 +325,8 @@ function deletelink($linkid){
 	$link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." main WHERE  main.linkid= ".$linkid);
 	$linkitem=$_SGLOBAL['db']->fetch_array($link_query);
 	if(empty($linkitem))
+		return 0;
+	if($linkitem['siteid'])
 		return 0;
 	if($linkitem['storenum'])//收藏数>0
 	{
@@ -362,7 +454,12 @@ function linktoolbar_post($POST)
 function getLinkStorenum($linkid)
 {
 	global $_SGLOBAL;
-	$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0);
+	$count = 0;
+	if($siteid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0))
+	{
+		$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('site')." where id=".$siteid),0);
+	}else	
+		$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0);
 	echo  $count;
 }
 ?>
