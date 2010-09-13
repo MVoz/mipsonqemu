@@ -51,6 +51,23 @@
                                 <textarea class="w270" name="remark"><{$data.remark}></textarea>
                             </td>
                         </tr>
+			<div style="display:hidden;">
+			<tr>
+                            <th></th>
+                            <td>
+				<input type="hidden" name="tmppic" value="<{$data.tmppic}>" />
+				<input type="hidden" name="pic" value="<{$data.pic}>" />
+				<input type="hidden" name="picflag" value="<{$data.picflag}>" />
+				<input type="hidden" name="up" value="<{$data.up}>" />
+				<input type="hidden" name="down" value="<{$data.down}>" />
+				<input type="hidden" name="award" value="<{$data.award}>" />
+				<input type="hidden" name="initaward" value="<{$data.initaward}>" />
+				<input type="hidden" name="storenum" value="<{$data.storenum}>" />
+				<input type="hidden" name="viewnum" value="<{$data.viewnum}>" />
+				<input type="hidden" name="linkid" value="<{$data.linkid}>" />
+			    </td>
+                        </tr>
+			</div>
                         <tr>
                             <th  style="vertical-align:top;">分类：</th>
                             <td>
