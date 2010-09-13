@@ -14,14 +14,17 @@ class mod_collect_site
  */
 	public static function collect_site_list()
 	{
-		$timestamp=time();
-		$starttime=get_date($timestamp,'Y-m-d');
-		$endtime=get_date($timestamp+86400*30,'Y-m-d');
+	//	$timestamp=time();
+	//	$starttime=get_date($timestamp,'Y-m-d');
+	//	$endtime=get_date($timestamp+86400*30,'Y-m-d');
 		$sitedb=array();
 		$query = app_db::query("SELECT * FROM ylmf_link where siteid=0 order by link_dateline DESC  ");
 		$sitedb=array();
 		while ($site = app_db::fetch_one())
 		{
+			$site['dateline']=date( 'Y-m-d',$site['link_dateline']);
+			$site['name']=$site['link_subject'];
+			$site['id']=$site['linkid'];
 			/*
 			if ($site['starttime']==0)
 			{
@@ -42,6 +45,8 @@ class mod_collect_site
 				$site['endtime']=date( 'Y-m-d',$site['endtime']);
 			}
 			*/
+
+			if(!preg_match("/^https?:\/\/[a-zA-Z0-9~`!@#$%^&*()_+|\\{}[\]:;<?,-.=']+$/", $site['url'])) continue;
 			$sitedb[] = $site;
 		}
 		return $sitedb;
@@ -107,7 +112,7 @@ class mod_collect_site
 		}
 		if($delid=checkselid($delid))
 		{
-			app_db::query("DELETE FROM ylmf_mingzhan WHERE id IN ($delid) ");
+			app_db::query("DELETE FROM ylmf_link WHERE id IN ($delid) ");
 			self::updatecache_classnum();//更新缓存
 			return true;
 		}else
@@ -138,7 +143,7 @@ class mod_collect_site
 			throw new Exception("非法参数");
 		}
 		$data['id']=intval($data['id']);
-		$info=app_db::query("SELECT * FROM ylmf_mingzhan WHERE id='{$data['id']}' ");
+		$info=app_db::query("SELECT * FROM ylmf_link WHERE linkid='{$data['id']}' ");
                 $info=app_db::fetch_one();
 		if(!$info)
 		{
@@ -182,6 +187,9 @@ class mod_collect_site
 		}
 		elseif($type=='select')
 		{
+			$info['name']=trim($info['link_subject']);
+			$info['remark']=trim($info['link_description']);
+			/*
 			if ($info['starttime']==0)
 			{
 				$info['starttime']='';
@@ -196,6 +204,7 @@ class mod_collect_site
 			{
 				$info['endtime']=get_date( $info['endtime'],'Y-m-d');
 			}
+			*/
 			return $info;
 		}
 	}

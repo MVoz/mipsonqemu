@@ -44,7 +44,7 @@ class ctl_collect_site
     /**
      * 添加信息
      */
-    public function famous_nav_add()
+    public function collect_site_add()
     {
         try
         {
@@ -68,7 +68,7 @@ class ctl_collect_site
             }
             app_tpl::assign('error', $e->getMessage());
         }
-        $sys=array('goback'=>'?c=famous_nav',   'subform'=>'?c=collect_site&a=collect_site_add');
+        $sys=array('goback'=>'?c=collect_site',   'subform'=>'?c=collect_site&a=collect_site_add');
         app_tpl::assign('sys', $sys);
         app_tpl::display('collect_site_add.tpl');//更改模板
     }
@@ -98,7 +98,7 @@ class ctl_collect_site
             if($step==2)//save
             {
                 $data=$_POST;
-                collect_site_nav::collect_site_save($data,'save');
+                mod_collect_site::collect_site_save($data,'save');
                 mod_make_html::auto_update('index');
                 mod_login::message("修改数据成功!",'?c=collect_site');
                 exit;
