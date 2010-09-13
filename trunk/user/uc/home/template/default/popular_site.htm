@@ -1,9 +1,9 @@
 <p>
 		<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
 					<!--{if $key==1 }-->
-							<span id="toolbar_$key" class="currentx">$value</span>
+							<span id="toolbar_$key" class="currentx">$value['classname']</span>
 					<!--{else}-->
-							<span id="toolbar_$key">$value</span>
+							<span id="toolbar_$key">$value['classname']</span>
 					<!--{/if}-->
 		<!--{/loop}--> 
 </p>
@@ -14,22 +14,24 @@
 							<ul class="toolbar_$key" style="display: none;">
 					<!--{/if}-->
 					<!--{loop $value $k $val}-->
-									<!--{if ($k%8)==0 }-->
-											<!--{if (($k%16)==0)}-->
+									<!--{if ($k%$_SGLOBAL['linktoolbartype'][$key]['column'])==0 }-->
+											<!--{if (($k%($_SGLOBAL['linktoolbartype'][$key]['column']*2))==0)}-->
 												<li class="row-list">
 											<!--{else}-->
 												<li class="row-list_l">
 											<!--{/if}-->
 									<!--{/if}-->
+									<em style="width:$_SGLOBAL['linktoolbartype'][$key]['width']px">
 									<!--{if $ac=='linktoolbar'}-->
-											<em><a title="$val[name]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a></em>  
+											<a title="$val[name]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a>  
 									<!--{else}-->
 											<!--{if empty($val[namecolor]) }-->
-											<em><a title="$val[name]" target="_blank" href="$val[url]" >$val[name]</a></em>  
+											<a title="$val[name]" target="_blank" href="$val[url]" >$val[name]</a> 
 											<!--{else}-->
-											<em><a title="$val[name]" target="_blank" href="$val[url]" style="color:$val[namecolor]">$val[name]</a></em>  
+											<a title="$val[name]" target="_blank" href="$val[url]" style="color:$val[namecolor]">$val[name]</a>  
 											<!--{/if}-->
 									<!--{/if}-->
+									</em>
 					<!--{/loop}-->
 							</ul>
 			<!--{/loop}-->    

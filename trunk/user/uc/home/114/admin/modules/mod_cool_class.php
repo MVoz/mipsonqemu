@@ -61,6 +61,7 @@ class mod_cool_class
             $classnewname = htmlspecialchars(trim($data['classnewname']));
             $orderid = intval(trim($data['orderid']));
             !is_numeric($orderid) && $orderid = 100;
+			$navigation = intval(trim($data['navigation']));
             $path = htmlspecialchars(trim($data['path']));
             if($path != '' && !eregi("^http://",$path))
             {
@@ -77,7 +78,7 @@ class mod_cool_class
             }
             else
             {
-                app_db::query("INSERT INTO ylmf_coolclass (classname,displayorder,path)VALUES ('$classnewname','$orderid','$path')");
+                app_db::query("INSERT INTO ylmf_coolclass (classname,displayorder,path,navigation)VALUES ('$classnewname','$orderid','$path','$navigation')");
 
                 //mod_make_html::auto_update('catalog', app_db::insert_id());
                 mod_login::message("添加成功!",'?c=cool_class&a=index');
@@ -97,6 +98,7 @@ class mod_cool_class
         $classnewname = htmlspecialchars(trim($data['classnewname']));
         $path = htmlspecialchars(trim($data['path']));
         $orderid = intval(trim($data['orderid']));
+		$navigation = intval(trim($data['navigation']));
 
         if( $data['classnewname']=='' )
         {
@@ -111,7 +113,7 @@ class mod_cool_class
                     mod_login::message("自定义路径只允许是数字,字母和下划线组合!",'?c=class&a=index&type='.$type.'&classid='.$returnid);
                 }
             }
-            app_db::query("UPDATE ylmf_coolclass SET classname='$classnewname', path='$path', displayorder='$orderid' WHERE classid='$id'");
+            app_db::query("UPDATE ylmf_coolclass SET classname='$classnewname', path='$path', displayorder='$orderid' ,navigation='$navigation' WHERE classid='$id'");
 
             //mod_make_html::auto_update('catalog', $id);
         }

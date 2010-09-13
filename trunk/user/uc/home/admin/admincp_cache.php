@@ -44,10 +44,12 @@ if(submitcheck('cachesubmit')) {
 		linktoolbartype_cache();
 		linktoolbar_cache();
 		hotdigg_cache();
-		linkclass_cache();
-		link_cache();
+		//linkclass_cache();
+		//link_cache();
+		handlesiteformat();
 		siteclass_cache();
 		digg_cacheall();
+		
 	}
 	
 	//Ä£°å±àÒë»º´æ

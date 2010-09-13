@@ -781,22 +781,31 @@ function link_cache()
 	   link_cache_classid($value['classid']);
 	}
 }
-//navigation的页面的cache
+//navigation的页面的cache，读取coolclass和coolsite
 function navigation_cache()
 {
 	global $_SGLOBAL,$_SC;
-	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.nav=1");
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('coolclass')." main where main.navigation=1 order by displayorder");
 	$navlist=array();
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 			//获取此类的link
-			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.classid=".$value['classid']." limit 8");
+			$qry=$_SGLOBAL['db']->query("SELECT main.url FROM ".tname('coolsite')." main where main.class=".$value['classid']." limit 8");
 			while($val =$_SGLOBAL['db']->fetch_array($qry))
 			{
-				$val['link_description']= getstr($val['link_description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-				$val['link_subject']= getstr($val['link_subject'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-				$value['son'][]=$val;
+			//	$val['link_description']= getstr($val['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+			//	$val['link_subject']= getstr($val['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+				$val['url']=handleUrlString($val['url']);
+				$site_q=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main where main.hashurl=".qhash($val['url'])." limit 1");
+				$v =$_SGLOBAL['db']->fetch_array($site_q);
+				if(!empty($v))
+					{
+						$v['link_description']= getstr($v['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+						$v['link_subject']= getstr($v['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+						$value['son'][]=$v;
+					}
 			}
+			/*
 			//获取此类的子分类
 			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.parentid=".$value['groupid']);
 			while($val =$_SGLOBAL['db']->fetch_array($qry))
@@ -809,6 +818,7 @@ function navigation_cache()
 			{
 				$value['sontag'][]=$val;
 			}
+			*/
 			$navlist[]=$value;
 	}
 	swritefile($S_ROOT.'./data/navigation_cache.txt', serialize($navlist));

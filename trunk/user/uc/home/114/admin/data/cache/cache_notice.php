@@ -1,1 +1,1 @@
-a:3:{i:0;a:4:{s:4:"name";s:63:"115网络U盘新版上线，提供8G超大容量网盘空间！";s:3:"url";s:24:"http://u.115.com/?114v13";s:5:"order";s:1:"1";s:5:"color";s:0:"";}i:1;a:4:{s:4:"name";s:58:"115云查杀-免费在线查杀木马，上网更安全！";s:3:"url";s:18:"http://aq.115.com/";s:5:"order";s:1:"2";s:5:"color";s:0:"";}i:2;a:4:{s:4:"name";s:46:"数码欢乐，非常寻宝，每日送Q币！";s:3:"url";s:50:"http://digi.tech.qq.com/zt/2009/treasure/index.htm";s:5:"order";s:1:"3";s:5:"color";s:7:"#FF0000";}}
+a:0:{}
