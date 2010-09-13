@@ -2850,7 +2850,10 @@ function check_cache()
 	global $_SGLOBAL;	
 	include_once(S_ROOT.'./source/function_cache.php');
 	//if(empty($_SGLOBAL['linktoolbar']))
+	if(!file_exists( S_ROOT.'./data/data_linktoolbar.php')) 
 		linktoolbar_cache();
+	if(!file_exists( S_ROOT.'./data/data_linktoolbartype.php')) 
+		linktoolbartype_cache();
 }
 
 function getlinkfromsite($arr)

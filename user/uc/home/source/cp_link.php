@@ -265,7 +265,7 @@ elseif($_GET['op'] == 'edithot') {
 	//$item['link_tag'] = implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 	//获取常用的tag
 	$shownums=$_SC['favorite_tag_maxnum'];
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
+	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
 }elseif($_GET['op']=='toolbar'){
@@ -297,9 +297,10 @@ elseif($_GET['op'] == 'edithot') {
 
 	//获取常用的tag
 	$shownums=$_SC['favorite_tag_maxnum'];
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linktag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
+	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
+	/*
 	//获取class分类
 	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main WHERE main.parentid=0");
 	while($value =$_SGLOBAL['db']->fetch_array($class_query))
@@ -318,6 +319,7 @@ elseif($_GET['op'] == 'edithot') {
 		}
 		$classlist[]=$value;
 	}
+	*/
 }
 
 include_once template("cp_link");

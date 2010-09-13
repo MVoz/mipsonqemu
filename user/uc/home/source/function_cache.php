@@ -380,7 +380,7 @@ function linktoolbartype_cache()
 	// 从数据库获取
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype')." order by displayorder");
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-	    $_SGLOBAL['linktoolbartype'][$value[classid]] = $value[classname];
+	    $_SGLOBAL['linktoolbartype'][$value[classid]] = $value;
 	}
 	cache_write('linktoolbartype', "_SGLOBAL['linktoolbartype']", $_SGLOBAL['linktoolbartype']);
 }
@@ -415,6 +415,7 @@ function linktoolbar_cache()
 //siteclass
 function siteclass_cache()
 {
+/*
 	global $_SGLOBAL;
 
 	$_SGLOBAL['siteclass'] = array();
@@ -440,6 +441,7 @@ function siteclass_cache()
 		$_SGLOBAL['siteclass'][$value['classid']]=$value;
 	}
 	cache_write('siteclass', "_SGLOBAL['siteclass']", $_SGLOBAL['siteclass']);
+*/
 }
 //linkclass	
 function linkclass_cache()
