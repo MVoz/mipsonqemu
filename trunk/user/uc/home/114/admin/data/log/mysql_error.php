@@ -43,3 +43,5 @@
                        a.good, a.starttime, a.endtime, a.namecolor
                 FROM uchome_mingzhan AS a, uchome_linktoolbartype AS b
                 WHERE  a.classid = b.classid  AND `class` = 1 ORDER BY b.displayorder, a.displayorder LIMIT 0, 20|1054Unknown column 'class' in 'where clause'|1283752596|192.168.115.1|NO_POSTDATA|
+<?die;?>|1|/114/admin/index.php?c=collect_site&amp;a=collect_site_save&amp;id=5|SELECT * FROM uchome_link WHERE id='5'|1054Unknown column 'id' in 'where clause'|1284347457|192.168.115.1|NO_POSTDATA|
+<?die;?>|1|/114/admin/index.php?c=collect_site&amp;a=collect_site_save&amp;id=5|SELECT * FROM uchome_link WHERE id='5'|1054Unknown column 'id' in 'where clause'|1284347636|192.168.115.1|NO_POSTDATA|
