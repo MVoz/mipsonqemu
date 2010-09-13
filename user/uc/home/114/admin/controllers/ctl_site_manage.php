@@ -330,7 +330,7 @@ class ctl_site_manage
 				$data_tag = empty($result['tag'])?array():unserialize($result['tag']);
 				$result['tag'] = '';
 				foreach($data_tag as $k=>$v){
-					  $result['tag']=	$result['tag'].' '.$v;
+					 $result['tag']= (empty($result['tag']))?($v):($result['tag'].' '.$v);
 				}
 
                 app_tpl::assign('data', $result);
