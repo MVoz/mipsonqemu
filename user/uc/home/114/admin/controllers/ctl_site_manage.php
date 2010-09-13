@@ -194,6 +194,25 @@ class ctl_site_manage
 			$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);               
 
             $data['adduser'] = addslashes(mod_login::get_username());
+			//ramen 处理一些相关东西
+			global $_SC;
+			$data['initaward'] = empty($_POST['initaward'])?0:$_SC['link_award_initial_value'];
+			
+			$data['storenum'] = empty($_POST['storenum'])?0:$_POST['storenum'];
+			$data['viewnum']= empty($_POST['viewnum'])?0:$_POST['viewnum'];
+			$data['up']= empty($_POST['up'])?0:$_POST['up'];
+			$data['down']= empty($_POST['down'])?0:$_POST['down'];
+			$data['tmppic']= empty($_POST['tmppic'])?'':$_POST['tmppic'];
+			$data['pic']= empty($_POST['pic'])?'':$_POST['pic'];
+			$data['picflag']= empty($_POST['picflag'])?0:$_POST['picflag'];
+
+			$data['url'] = self::handleUrlString($data['url']);
+			$data['hashurl']=mod_site_manage::qhash($data['url']);
+			$data['md5url']=md5($data['url']);
+			if(empty($_POST['tmppic']))
+				$data=self::setlinkimagepath($data);
+			$data['award']=self::calc_link_award($data['initaward'],$data['storenum'],$data['viewnum'],$data['up'],$data['down']);
+			
             // 新增
             if ($action == 'add')
             {
@@ -217,6 +236,10 @@ class ctl_site_manage
 					{
 						 throw new Exception('数据库操作失败', 10);
 					}
+					//更新link表中的信息，设置siteid，将tag url descrition等清空
+					if(!empty($_POST['linkid']))
+						self::updatelinkinfo($siteid,$_POST['linkid']);
+
                     mod_make_html::auto_update('catalog', $tmp_class_id);
                     mod_login::message('添加成功', '?c=site_manage&classid=' . $class_id);
                 }
@@ -520,52 +543,70 @@ class ctl_site_manage
         }
     }
 
-    /**
-     * 批量新增站点
-     *
-     * @return array
-     */
-    public static function multi_add()
-    {
-        app_tpl::assign( 'npa', array('网址管理', '批量添加网址') );
-        if(!empty($_POST))
-        {
-            mod_site_manage::multi_add($_POST);
-            mod_login::message('批量添加成功', '?c=site_manage&classid=' . $_POST['classid']);
-            exit;
-        }
 
-        $class_list = mod_class::get_subclass_list(0);
-        if (empty($class_list))
-        {
-            throw new Exception('没有创建分类');
-        }
-        app_tpl::assign( 'class_list', $class_list);
-        app_tpl::display('site_multi_add.tpl');
-    }
+	public static function handleUrlString($url)
+	{
+		$url=trim($url);
+		$len=strlen($url);
+		while($url[$len-1]=='/')
+		{
+			$url=substr($url, 0, $len-1); 
+			$len=strlen($url);
+		}
+		return $url;
+	}
+	public static function setlinkimagepath($link)
+	{
+		global $_SC;
+		$dirrandom=$_SC['link_image_path'].'random/';
+		$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
 
-
-    /**
-     * 批量导入站点
-     *
-     * @return array
-     */
-    public static function import()
-    {
-        app_tpl::assign( 'npa', array('网址管理', '批量导入网址') );
-        if(!empty($_POST['sites']))
-        {
-            mod_site_manage::import($_POST);
-            mod_login::message('网址导入成功', '?c=site_manage&classid=' . $_POST['classid']);
-            exit;
-        }
-        $class_list = mod_class::get_subclass_list(0);
-        if (empty($class_list))
-        {
-            throw new Exception('没有创建分类');
-        }
-        app_tpl::assign( 'class_list', $class_list);
-        app_tpl::display('site_import.tpl');
-    }
+		$link['pic']=$_SC['link_image_path'].(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8);
+		return $link;
+	}
+	public static function calc_link_award($init=7000,$store=0,$view=0,$up=0,$down=0)
+	{
+		global $_SC;
+		$val=$init+($_SC['link_award_store_weight']*$store)+($_SC['link_award_view_weight']*$view)+($_SC['link_award_up_weight']*$up)
+			-($_SC['link_award_down_weight']*$down);
+		if($val<=($_SC['link_award_min']*$_SC['link_award_div']))
+			return ($_SC['link_award_min']*$_SC['link_award_div']);
+		if($val>=($_SC['link_award_max']*$_SC['link_award_div']))
+			return ($_SC['link_award_max']*$_SC['link_award_div']);
+		return $val;
+	}
+	public static function updatelinkinfo($siteid,$linkid)
+	{
+				$result = mod_collect_site::get_one($linkid);
+                if (empty($result)||$siteid<1)
+                {
+                    throw new Exception('没有找到数据', 10);
+                }
+				$result['siteid'] = $siteid;
+				$result['url'] = '';
+				//更新tag信息
+				if(!empty($result['link_tag'])){
+					$need_delete_tags = unserialize($result['link_tag']);
+					//更新计数
+					app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".mod_site_manage::simplode(array_keys($need_delete_tags)).")");
+					//清除在sitetagsite中的$linkid
+					app_db::query("DELETE FROM ylmf_sitetagsite WHERE linkid=".$linkid);
+					
+				}
+				$result['link_tag'] = '';
+				$result['link_subject'] = '';
+				$result['link_description'] = '';
+				$result['up'] = 0;
+				$result['down'] = 0;
+				$result['storenum'] = 0;
+				$result['viewnum'] = 0;
+				$result['tmppic'] = '';
+				$result['pic'] = '';
+				$result['md5url'] = '';
+				$result['hashurl'] = 0;
+				$result['award'] = 0;
+				$result['initaward'] = 0;
+				app_db::update('ylmf_link', $result, "linkid = {$linkid}");
+	}
 }
 ?>
