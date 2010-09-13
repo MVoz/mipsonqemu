@@ -1,11 +1,15 @@
-<div style="float:left;height:105px;padding:0px 3px;" id="thumbs">
+<div style="float:left;height:92px;padding:0px 3px;" id="thumbs" >
 <ul class="thumbs noscript">
 <!--{loop $bookmarklist['son'] $key $value}-->
 <li class="mgn2">
 	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
-	<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+	<!--{if empty($value[picflag])}-->
+		<img alt="$value['link_subject']" src="$value['tmppic']">
+	<!--{else}-->
+		<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+	<!--{/if}-->
 	</a>
-	<p><a href="$value[url]">$value[link_subject]</a></p>							
+	<span style="height:15px;text-align:center;width:82px;"><a href="$value[url]">$value[link_subject]</a></span>							
 </li>
 <!--{/loop}-->
 </ul>

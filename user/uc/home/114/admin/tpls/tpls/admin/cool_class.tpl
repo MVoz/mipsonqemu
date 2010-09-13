@@ -26,6 +26,15 @@
                             <th>分类排序：</th>
                             <td><input name="orderid" type="text" id="orderid" class="textinput" onkeyup="value=value.replace(/[^\d]/g,'') "/></td>
                         </tr>
+			<tr>
+                            <th>导航：</th>
+                            <td>
+                                <input type="radio" id="pass_yes" name="navigation" value="1"/>
+                                <label class="hand" for="pass_yes">是</label>
+                                <input type="radio" id="pass_no" name="navigation" value="0" checked="checked"/>
+                                <label class="hand" for="pass_no">否</label>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div class="box-footer">
@@ -68,6 +77,15 @@
                             <th>分类排序：</th>
                             <td><input name="orderid" value="<{$info.displayorder}>" type="text" id="orderid" class="textinput" onkeyup="value=value.replace(/[^\d]/g,'') "/></td>
                         </tr>
+			 <tr>
+                            <th>导航：</th>
+                            <td>
+                                <input type="radio" id="pass_yes" name="navigation" value="1"<{if $data.navigation eq 1}> checked="checked"<{/if}>/>
+                                <label class="hand" for="pass_yes">是</label>
+                                <input type="radio" id="pass_no" name="navigation" value="0"<{if $data.navigation eq 0}> checked="checked"<{/if}>/>
+                                <label class="hand" for="pass_no">否</label>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div class="box-footer">
@@ -107,7 +125,8 @@
                     	<th width="97">排序</th>
                         <th width="248">分类名称</th>
                         <th width="300">链接地址</th>
-                    	<th width="100">站点数量</th>
+                    	<th width="50">站点数量</th>
+			<th width="50">导航页面</th>
                         <th width="161">操作</th>
                     </tr>
 
@@ -119,6 +138,7 @@
                     <td><a href="?c=cool_site&classid=<{$class.classid}>"><{$class.classname}></a></td>
                     <td><input name="path[<{$class.classid}>]" type="text" class="textinput" style="width: 200px;" id="path[<{$class.classid}>]" value="<{$class.path}>" /></td>
                     <td><{$class.sitenum}></td>
+		    <td> <{if $class.navigation }> 是 <{else}> 否 <{/if}></td>
                     <td>[<a href="?c=cool_class&a=edit&id=<{$class.classid}>">修改</a>] </td>
                     </tr>
                     <{/foreach}>
