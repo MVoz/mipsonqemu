@@ -29,6 +29,8 @@ require PATH_ADMIN . '/config/cfg_constants.php';
 
 require PATH_CONFIG . '/cfg_database.php';
 
+require PATH_CONFIG . '/config_sc.php';
+
 require PATH_APPLICATION . '/app_router.php';
 require PATH_APPLICATION . '/app_db.php';
 require PATH_MODULE . '/smarty/Smarty.class.php';
