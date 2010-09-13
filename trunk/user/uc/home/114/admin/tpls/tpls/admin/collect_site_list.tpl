@@ -5,8 +5,8 @@
         <div id="main">
             
             <div class="con">
-            	<form action="?c=site_manage&a=search" method="get">
-                    <input type="hidden" name="c" value="site_manage"/>
+            	<form action="?c=collect_site&a=search" method="get">
+                    <input type="hidden" name="c" value="collect_site"/>
                     <input type="hidden" name="a" value="search"/>
                   <div class="table">
                     <div class="th">
@@ -20,42 +20,31 @@
                   </div>
                 </form>
 
-            	<form action="?c=site_manage&a=list_edit" method="post">
+            	<form action="?c=collect_site&a=list_edit" method="post">
                     <input type="hidden" name="referer" value="<{$referer}>"/>
                   <div class="table">
                   	<div class="th">
                     	<div class="form fl">
-                        <input type="button" value="添加网址" onclick="self.location='?c=site_manage&a=edit&action=add&classid=<{$class_id}>'"/>&nbsp;
+                        <input type="button" value="添加网址" onclick="self.location='?c=collect_site&a=edit&action=add&classid=<{$class_id}>'"/>&nbsp;
                         <label for="alltopic"><a href='?c=class'>选择分类</a></label>&nbsp;
-                        &nbsp;&nbsp;<a href='?c=site_manage'>查看所有分类</a></label>&nbsp;
-                        &nbsp;&nbsp;<a href="?c=site_manage&isend=1">查看过期站点</a>&nbsp;
+                        &nbsp;&nbsp;<a href='?c=collect_site'>查看所有分类</a></label>&nbsp;
+                        &nbsp;&nbsp;<a href="?c=collect_site&isend=1">查看过期站点</a>&nbsp;
                         </div>
                     </div>
                     <table class="admin-tb" id="js_data_source">
                     <tr>
-                    	<th width="41" class="text-center">删除</th>    
-                        <th width="40">推荐</th>    
-                        <th width="70">排序</th>            	
+                    	<th width="41" class="text-center">序号</th>            	
                         <th width="120">网站</th>
                         <th width="180">网址</th>
-                        <th width="80">分类</th>
-                        <th width="80">开始时间</th>      
-                        <th width="80">结束时间</th>   
+                        <th width="80">收录时间</th>      
                         <th>添加人</th>                            
                     </tr>
-                    <{foreach from=$data item=i}>
+		    <{foreach from=$list item=i key=k}>
                     <tr>
-                        <td class="text-center"><input rel="del" type="checkbox" name="delete[<{$i.id}>]"  /></td>
-                        <td class="text-center">
-                            <input rel="dis" type="checkbox" name="recommend[<{$i.id}>]" <{if $i.good eq 1}>checked="checked"<{/if}>/>
-                            <input type="hidden" name="norecommend[<{$i.id}>]" value="<{if $i.good eq 1}>0<{else}>1<{/if}>"/>
-                        </td>
-                        <td><input type="text" name="order[<{$i.id}>]" class="textinput" tabindex="11" value="<{$i.displayorder}>" /></td>                 
-                        <td><a href="?c=site_manage&a=edit&action=modify&id=<{$i.id}>"><span style="color:<{$i.namecolor}>"><{$i.name}></span></a></td>
-                        <td><div style=" width:180px;" class="hideText" title="<{$i.url}>"><{$i.url}></div></td>
-                        <td><a href="?c=site_manage&classid=<{$i.class_id}>"><{$i.class_name}></a></td>
-                        <td><{if $i.starttime gt 0}><{$i.starttime|date_format:$date_format_ymd}><{/if}></td>              
-                        <td><{if $i.endtime gt 0}><{$i.endtime|date_format:$date_format_ymd}><{/if}></td>
+                        <td class="text-center"><{$k+1+$start}></td>             
+                        <td><a href="?c=collect_site&a=edit&action=add&id=<{$i.id}>"><span class="hideText" style="display:block;color:<{$i.namecolor}>;width:250px;"><{$i.name}></span></a></td>
+                        <td><div style=" width:250px;" class="hideText" title="<{$i.url}>"><{$i.url}></div></td>
+                        <td><{if $i.time gt 0}><{$i.time|date_format:$date_format_ymd}><{/if}></td>  
                         <td><{$i.adduser}></td>
                     </tr>
                     <{/foreach}>
