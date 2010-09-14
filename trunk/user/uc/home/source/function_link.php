@@ -72,7 +72,8 @@ function link_post($POST, $olds=array()) {
 			
 			//link 表
 			$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
-			$linkarr['username'] =$_SGLOBAL['supe_username'];
+			//$linkarr['username'] =$_SGLOBAL['supe_username'];//ramen.sh@gmail.com
+			$linkarr['username'] = $_SGLOBAL['name'];//城市森林
 			$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 			$linkarr['link_description'] = $message;
 			$linkarr['origin'] = $_SC['link_origin_link'];
@@ -275,23 +276,29 @@ function   updatevisitstat($bmid){
 //更新最后访问时间
         $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
 }
-function   updatelinkupnum($linkid){
+function   updatelinkupnum($linkid,$type){
 //更新link“顶”的统计信息
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET up=up+1 WHERE linkid=".$linkid);
 		include_once(S_ROOT.'./source/function_feed.php');
-		feed_publish($linkid, 'uplinkid', 1);
+		/*
+			$type:uplinkid downbookmarkid
+		*/
+		feed_publish($linkid, $type, 1);
 }
-function   updatelinkdownnum($linkid){
+function   updatelinkdownnum($linkid,$type){
 //更新link“踩”的统计信息
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
             return;
 	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET down=down+1 WHERE linkid=".$linkid);
 		include_once(S_ROOT.'./source/function_feed.php');
-		feed_publish($linkid, 'downlinkid', 1);
+		/*
+			$type:downlinkid downbookmarkid
+		*/
+		feed_publish($linkid, $type, 1);
 }
 function   updatelinkviewnum($linkid){
 //更新link访问的统计信息
@@ -361,7 +368,9 @@ function link_pass($link)
 	global $_SGLOBAL,$_SC;
 	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET verify=".$_SC['link_verify_passed']." WHERE linkid=".$link['linkid']);
 }
-
+/*
+	如果link的tag没有格式化，则格式化
+*/
 function convertlinktag($linkid,$tag)
 {
 		$ntag='';

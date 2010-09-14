@@ -13,14 +13,13 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
 $browserid = empty($_GET['browserid'])?1:intval($_GET['browserid']);
-
+include_once(S_ROOT.'./source/function_bookmark.php');
 $item = array();
 $groupid=0;
 if($bmid) {
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$item = $_SGLOBAL['db']->fetch_array($query);
 	//处理link在site中的情况
-	include_once(S_ROOT.'./source/function_common.php');
 	$item = getlinkfromsite($item);
 	if(empty($item['tag']))
 		$item['tag'] =implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
@@ -44,7 +43,9 @@ $bookmark_priority=array(
  'edit'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'updatevisitstat'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
- 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0)
+ 'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
+ 'updatebookmarkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatebookmarkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
 );
 
 $ret=check_valid($op,$bmid,$item,$item['uid'],'allowbookmark',$bookmark_priority);
@@ -97,7 +98,6 @@ else if(submitcheck('editsubmit')) {
 		showmessage('incorrect_code');
 	}
 
-	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $item)) {
 		$url = 'space.php?do=bookmark&op=browser&groupid='.$item['groupid']."&browserid=".$browserid;		
 		showmessage('do_success', $url, 0);
@@ -111,7 +111,6 @@ else if(submitcheck('editsubmit')) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-	include_once(S_ROOT.'./source/function_bookmark.php');
 	if($newbmdir = bookmark_post($_POST, $bmdir)) {
 		$url = 'space.php?do=bookmark&op=browser&groupid='.$newbmdir['groupid'];		
 		showmessage('do_success', $url, 0);
@@ -123,7 +122,6 @@ else if(submitcheck('editsubmit')) {
 if($_GET['op'] == 'delete') {
 	//删除
 	if(submitcheck('deletesubmit')) {
-		include_once(S_ROOT.'./source/function_bookmark.php');
 		if(deletebookmark($bmid)) {
 			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			if(empty($_SGLOBAL['client']))
@@ -162,9 +160,18 @@ if($_GET['op'] == 'delete') {
 	}
 	
 }elseif($_GET['op']=='updatevisitstat'){
-		include_once(S_ROOT.'./source/function_bookmark.php');
         updatebmvisitstat($_GET['bmid']);
 		return;
+
+}elseif($_GET['op']=='updatebookmarkupnum'){
+		//更新顶数
+        updatebookmarkupnum($item['linkid'],$item['bmid']);
+		showmessage($item[up]+1);
+
+}elseif($_GET['op']=='updatebookmarkdownnum'){
+		//更新顶数
+        updatebookmarkdownnum($item['linkid'],$item['bmid']);
+		showmessage($item[down]+1);
 
 } else {
 	//添加编辑

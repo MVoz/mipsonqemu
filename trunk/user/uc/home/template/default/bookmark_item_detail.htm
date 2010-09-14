@@ -25,10 +25,12 @@
 							<strong>地址: </strong>
 							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a>
 						</p>
+						<!--
 						<p>
 							<strong>所属分类: </strong>
 							<a href="type,area/movie,1" target="_blank">韩国</a>
-						</p>						
+						</p>
+						-->
 						<p>
 							<strong>标签: </strong>
 							<!--{loop $item['link_tag'] $subkey $subvalue}-->
@@ -56,11 +58,11 @@
 							<p><strong>评价</strong> <span>(点击顶踩评价)</span></p>
 							<span>
 								<span class="rateup">
-									<a target="_self" onclick="updatelinkup($item[linkid])"  href="javascript:void(0)"></a>
+									<a target="_self" onclick="updatebookmarkup($item[bmid])"  href="javascript:void(0)"></a>
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
 								<span class="ratedown">
-									<a  target="_self"  onclick="updatelinkdown($item[linkid])"  href="javascript:void(0)"></a>
+									<a  target="_self"  onclick="updatebookmarkdown($item[bmid])"  href="javascript:void(0)"></a>
 								</span>
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  

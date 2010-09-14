@@ -47,6 +47,22 @@ function setbookmarkgroupid(id)
 function updatevisitstat(id) {
 	ajaxupdate('bookmark','visitstat', 'op=updatevisitstat&bmid=' + id);
 }
+var updatebookmarkupclick=0;
+function updatebookmarkup(id) {
+	if(!updatebookmarkupclick)
+	{
+		ajaxupdate('bookmark','up_num', 'op=updatebookmarkupnum&bmid=' + id);
+		updatebookmarkupclick=1;
+	}
+}
+var updatebookmarkdownclick=0;
+function updatebookmarkdown(id) {
+	if(!updatebookmarkdownclick)
+	{
+		ajaxupdate('bookmark','up_num', 'op=updatebookmarkdownnum&bmid=' + id);
+		updatebookmarkdownclick=1;
+	}
+}
 var updatelinkupclick=0;
 function updatelinkup(id) {
 	if(!updatelinkupclick)
