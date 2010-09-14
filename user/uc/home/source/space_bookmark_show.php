@@ -156,12 +156,13 @@ $wherearr=$wherearr." AND picflag=1";
 //$wherearr=$wherearr."";
 $orderarr='';
 
-$query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit 0 ,".$_SC['related_site_num']);
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['link_description'] = getstr($value['link_description'], $_SC['description_related_length'], 0, 0, 0, 0, -1);
-		$value['link_subject'] = getstr($value['link_subject'], $_SC['subject_related_length'], 0, 0, 0, 0, -1);
-		$relatedlist[] = $value;
-	}
+	$query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit 0 ,".$_SC['related_site_num']);
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			$value['link_description'] = getstr($value['link_description'], $_SC['description_related_length'], 0, 0, 0, 0, -1);
+			$value['link_subject'] = getstr($value['link_subject'], $_SC['subject_related_length'], 0, 0, 0, 0, -1);
+			$relatedlist[] = $value;
+		}
+
 foreach($relatedlist as $key => $value) {
 	realname_set($value['uid'], $value['username']);
 //	$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));

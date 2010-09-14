@@ -9,7 +9,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 1,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		),
 	2 => Array
@@ -19,7 +19,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 2,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		),
 	3 => Array
@@ -29,7 +29,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 3,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		),
 	4 => Array
@@ -39,7 +39,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 4,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		),
 	5 => Array
@@ -49,7 +49,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 5,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		),
 	6 => Array
@@ -59,7 +59,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 6,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 7,
+		'rownum' => 7,
 		'width' => 95
 		),
 	7 => Array
@@ -69,7 +69,7 @@ $_SGLOBAL['linktoolbartype']=Array
 		'displayorder' => 7,
 		'path' => '',
 		'sitenum' => '0',
-		'column' => 8,
+		'rownum' => 8,
 		'width' => 83
 		)
 	)

@@ -58,6 +58,7 @@ if(!in_array($ac, array('common', 'pm'))) {
 
 //²Ëµ¥
 $actives = array($ac => ' class="active"');
+runlog('action', 'cp_'.$ac);
 include_once(S_ROOT.'./source/cp_'.$ac.'.php');
 
 ?>

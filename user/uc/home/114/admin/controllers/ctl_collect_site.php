@@ -349,6 +349,7 @@ class ctl_collect_site
                     app_tpl::assign( 'class_id_list', $class_id_list );
                 }
                 app_tpl::assign('action', 'add');
+				app_tpl::assign('referer', $_SERVER['HTTP_REFERER']);
             }
             else
             {
