@@ -341,6 +341,7 @@ class mod_login
                 '日志管理'=>array
                 (
                     '管理员日志'=>'?c=log&a=log_admin',
+					'站点日志'=>'?c=log&a=log_mysql',
                 )
 
             ),
