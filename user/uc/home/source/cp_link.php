@@ -150,13 +150,13 @@ elseif($_GET['op'] == 'edithot') {
 }elseif($_GET['op']=='updatelinkupnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkupnum($_GET['linkid']);
+        updatelinkupnum($_GET['linkid'],'uplinkid');
 		showmessage($item[up]+1);
 
 }elseif($_GET['op']=='updatelinkdownnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkdownnum($_GET['linkid']);
+        updatelinkdownnum($_GET['linkid'],'downlinkid');
 		showmessage($item[down]+1);
 
 }elseif($_GET['op']=='updatelinkviewnum'){

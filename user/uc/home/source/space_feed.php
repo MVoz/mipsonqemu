@@ -20,7 +20,7 @@ $start=$page?(($page-1)*$perpage):0;
 $theurl="space.php?do=$do";
 
 $sitefeed_list = array();
-
+include_once(S_ROOT.'./source/function_common.php');
 
 $wherearr='';
 if(!empty($uid))
@@ -46,15 +46,23 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 						continue;
 					break;
 				case 'link':
-						$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." where linkid=".$value['id']);
-						if($s = $_SGLOBAL['db']->fetch_array($q))
+						if($s=getlink($value['id']))
 						{
-						   include_once(S_ROOT.'./source/function_link.php');
-						   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
-						   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);
-						   $value['relate']= $s;
-						} else
-						continue;
+							$value['relate']= $s;
+						}else
+						   continue	;
+					break;
+				case 'bookmark':
+
+						if($s=getbookmark($value['id']))
+						{
+							$value['relate']= $s;
+						}else
+						   continue	;
+					
+				break;
+				default:
+					continue;
 					break;
 			}
 			//realname_set($value['uid'], $value['username']);

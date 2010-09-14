@@ -2855,7 +2855,9 @@ function check_cache()
 	if(!file_exists( S_ROOT.'./data/data_linktoolbartype.php')) 
 		linktoolbartype_cache();
 }
-
+/*
+	由site得到link
+*/
 function getlinkfromsite($arr)
 {
 	global $_SGLOBAL;
@@ -2877,5 +2879,62 @@ function getlinkfromsite($arr)
 	$arr['storenum']=$site['storenum'];
 	$arr['picflag']=$site['picflag'];
 	return $arr;
+}
+function getbookmark($bmid)
+{
+	global $_SGLOBAL;
+	$s =array();
+	if($bmid<=0)
+		return $s;
+	$q = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid where bmid=".$bmid);
+	if($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+	   include_once(S_ROOT.'./source/function_link.php');
+	   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
+	   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);
+	   if(empty($s['tag'])) $s['tag']=$s['link_tag'];
+	   if(empty($s['description'])) $s['description']=$s['link_description'];	   
+	} 
+	return $s;
+}
+function getlink($linkid)
+{
+	global $_SGLOBAL;
+	$s =array();
+	if($linkid<=0)
+		return $s;
+	$q = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main	where linkid=".$linkid);
+	if($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+	   if($s['siteid']){
+		//从site中获得link信息
+			$s = getlinkfromsite($s);			
+	   }else{
+		   include_once(S_ROOT.'./source/function_link.php');
+		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
+		   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);		   
+	   }
+	   if($s){
+		   $s['tag']=$s['link_tag'];
+		   $s['description']=$s['link_description'];	
+		   $s['subject']=$s['link_subject'];
+	   }
+	} 
+	return $s;
+}
+function getsite($siteid)
+{
+	global $_SGLOBAL;
+	$s =array();
+	if($siteid<=0)
+		return $s;
+	$q = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main	where id=".$siteid);
+	if($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
+		   $s['subject']=$s['name'];
+		   $s['description']=$s['remark'];
+	} 
+	return $s;
 }
 ?>
