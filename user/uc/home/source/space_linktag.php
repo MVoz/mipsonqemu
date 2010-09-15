@@ -19,7 +19,7 @@ include_once(S_ROOT.'./data/data_network.php');
      $viewstr=array(
             'lastvisit'=>'lastvisit',
             'lastadd'=>'dateline',
-            'oftenvisit'=>'visitnums',
+            'oftenvisit'=>'viewnum',
             'lastrecommend'=>'lastvisit'
             );
 

@@ -328,34 +328,6 @@ function feed_publish($id, $idtype, $add=0) {
 				//$setarr['image_1_link'] = $value['image_link'];
 			}
 			break;
-		/*
-		case 'downdiggid':
-			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." WHERE diggid='$id'");
-			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
-				//基本
-				$setarr['icon'] = 'digg';
-				$setarr['id'] = $value['diggid'];
-				$setarr['idtype'] = $idtype;
-				$setarr['uid'] = $_SGLOBAL['supe_uid'];
-				//$setarr['username'] = $value['username'];
-				$setarr['username'] = $_SGLOBAL['name'];
-				$setarr['dateline'] = $_SGLOBAL['timestamp'];
-				$setarr['hot'] = $value['hot'];
-				
-				//详细
-				$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
-				
-				$setarr['title_template'] = cplang('downdigg_link'); 
-				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
-				$setarr['body_template'] = '{link}';
-				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
-				$setarr['body_general'] = $value['description'];
-				//$setarr['image_1'] = $value['image'];
-				//$setarr['image_1_link'] = $value['image_link'];
-			}
-			break;
-		*/
 		case 'linkid':
 			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid='$id'");
 			if($value = $_SGLOBAL['db']->fetch_array($query)) {	

@@ -20,7 +20,7 @@
 							<a href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['subject']</a>
 							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatesiteview($item[linkid])">$item['url']</a></p>		
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['url']</a></p>		
 						<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
 						<p>
 						<strong>标签: </strong>
@@ -37,12 +37,12 @@
 						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">访问</a> 
 						<!--{if $ac=='site' }-->
 						<a  href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
-						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[siteid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
+						<a  onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="bookmark_reporterr_$item[siteid]" href="cp.php?ac=site&op=reporterr&siteid=$item[siteid]">举报</a>
 						<!--{/if}-->
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
 							<!--{if $ac=='site' }-->
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_edit2_$item[siteid]" href="cp.php?ac=link&linkid=$item[linkid]&op=edit">编辑</a>
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_delete_$item[siteid]" href="cp.php?ac=link&linkid=$item[linkid]&op=delete">删除</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_edit2_$item[siteid]" href="cp.php?ac=site&siteid=$item[siteid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_delete_$item[siteid]" href="cp.php?ac=site&siteid=$item[siteid]&op=delete">删除</a>
 							<!--{else}-->
 							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=edit">编辑</a>
 							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=delete">删除</a>

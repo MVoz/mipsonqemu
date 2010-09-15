@@ -74,7 +74,7 @@ if(file_exists($bmcachefile)){
 				$viewstr=array(
 					'lastvisit'=>array('order'=>'lastvisit','groupname'=>'最近访问'),
 					'lastadd'=>array('order'=>'dateline','groupname'=>'最近添加'),
-					'oftenvisit'=>array('order'=>'visitnums','groupname'=>'经常访问')
+					'oftenvisit'=>array('order'=>'viewnum','groupname'=>'经常访问')
 				);
 
 			$wherearr=$wherearr." where main.uid=".$_SGLOBAL['supe_uid'];

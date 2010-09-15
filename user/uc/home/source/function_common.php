@@ -2877,6 +2877,7 @@ function getlinkfromsite($arr)
 	$arr['initaward']=$site['initaward'];
 	$arr['award']=$site['award'];
 	$arr['storenum']=$site['storenum'];
+	$arr['link_viewnum']=$site['viewnum'];
 	$arr['picflag']=$site['picflag'];
 	return $arr;
 }
@@ -2890,10 +2891,18 @@ function getbookmark($bmid)
 	if($s = $_SGLOBAL['db']->fetch_array($q))
 	{
 	   include_once(S_ROOT.'./source/function_link.php');
-	   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
-	   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);
-	   if(empty($s['tag'])) $s['tag']=$s['link_tag'];
-	   if(empty($s['description'])) $s['description']=$s['link_description'];	   
+	   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);
+	   if($s['siteid']){
+			$s = getlinkfromsite($s);
+	   }else{
+		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
+		   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);		    
+	   }
+	   if(empty($s['tag'])) {
+			$s['tag']=$s['link_tag'];			
+		}
+	   $s['tags'] = implode(' ',$s['tag']);
+	   if(empty($s['description'])) $s['description']=$s['link_description'];	 
 	} 
 	return $s;
 }
@@ -2920,6 +2929,7 @@ function getlink($linkid)
 		   $s['subject']=$s['link_subject'];
 	   }
 	} 
+	$s['tags'] = implode(' ',$s['tag']);
 	return $s;
 }
 function getsite($siteid)
@@ -2933,9 +2943,55 @@ function getsite($siteid)
 	{
 		   $s['siteid'] = $siteid;
 		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
+		   $s['tags'] = implode(' ',$s['tag']);
 		   $s['subject']=$s['name'];
 		   $s['description']=$s['remark'];
-	} 
+	} 	
 	return $s;
+}
+/*
+更新顶数，踩数，浏览数
+$type:bookmark,link,site
+$mode:up down viewnum
+*/
+function updatestatistic($type,$mode,$ids)
+{
+		global $_SGLOBAL,$_SC;
+        if(!$_SGLOBAL['supe_uid'])
+            return;
+		$update_table='';
+		$update_where = '';
+		switch($type){
+			case 'link':
+			$update_table = 'link';
+			$update_where = 'where linkid='.$ids['updateid'];
+			break;
+			case 'bookmark':
+			if($mode=='up'||$mode=='down'){
+				$update_table = 'link';
+				$update_where = 'where linkid='.$ids['updateid'];
+			}else{
+				$update_table = 'bookmark';
+				$update_where = 'where bmid='.$ids['updateid'];
+				//更新viewnum，同时更新link或site
+				if($ids['siteid'])
+					$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET ".$mode."=".$mode."+1 where id=".$ids['siteid']);
+				else
+					$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET ".$mode."=".$mode."+1 where linkid=".$ids['feedid']);
+			}
+			break;
+			case 'site':
+			$update_table = 'site';
+			$update_where = 'where id='.$ids['updateid'];
+			break;
+		
+		}
+	    $_SGLOBAL['db']->query("UPDATE ".tname($update_table)." SET ".$mode."=".$mode."+1 ".$update_where);
+		include_once(S_ROOT.'./source/function_feed.php');
+		/*
+			$type:uplinkid downbookmarkid
+		*/
+		if($mode=='up'||$mode=='down')
+			feed_publish($ids['feedid'], $update_table.'_'.$mode, 1);
 }
 ?>

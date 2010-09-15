@@ -212,38 +212,6 @@ function  checksiteexisted($sitearr)
 		return 0;
 }
 
-function   updatesiteupnum($siteid,$type){
-//更新link“顶”的统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('site')." SET up=up+1 WHERE id=".$siteid);
-		include_once(S_ROOT.'./source/function_feed.php');
-		/*
-			$type:uplinkid downbookmarkid
-		*/
-		feed_publish($siteid, $type, 1);
-}
-function   updatesitedownnum($siteid,$type){
-//更新link“踩”的统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('site')." SET down=down+1 WHERE id=".$siteid);
-		include_once(S_ROOT.'./source/function_feed.php');
-		/*
-			$type:downlinkid downbookmarkid
-		*/
-		feed_publish($siteid, $type, 1);
-}
-function   updatesiteviewnum($siteid){
-//更新link访问的统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('site')." SET viewnum=viewnum+1 WHERE id=".$siteid);
-}
-
 function site_delete_tag($siteid)
 {
 	global $_SGLOBAL,$_SC;
@@ -277,7 +245,7 @@ function deletesite($siteid){
 	}
 
 	$_SGLOBAL['db']->query("DELETE  from ".tname('site')." WHERE id=".$siteid);
-	site_delete_tag
+	site_delete_tag($siteid);
 	//去掉feed
 	include_once(S_ROOT.'./source/function_feed.php');
 	feed_delete($siteid, 'siteid');

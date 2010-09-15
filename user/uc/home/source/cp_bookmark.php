@@ -6,7 +6,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-$ops=array('get','edit','delete','updatevisitstat','checkseccode');
+$ops=array('get','edit','delete','updatebookmarkview','checkseccode');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 
@@ -17,6 +17,7 @@ include_once(S_ROOT.'./source/function_bookmark.php');
 $item = array();
 $groupid=0;
 if($bmid) {
+	/*
 	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
 	$item = $_SGLOBAL['db']->fetch_array($query);
 	//处理link在site中的情况
@@ -28,7 +29,8 @@ if($bmid) {
 	$item['link_tag'] = explode(' ',$item['tag']);
 	if(empty($item['description']))
 		$item['description'] =$item['link_description'];
-	
+	*/
+	$item = getbookmark($bmid);
 	$groupid=$item['parentid'];
 }
 
@@ -42,7 +44,7 @@ $bookmark_priority=array(
  'get'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'edit'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
- 'updatevisitstat'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
+ 'updatebookmarkview'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'updatebookmarkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatebookmarkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
@@ -61,37 +63,7 @@ switch($ret)
 	break;
 }
 
-
-//添加编辑操作
-if(submitcheck('blogsubmit')) {
-
-	if(empty($blog['blogid'])) {
-		$blog = array();
-	} else {
-		if(!checkperm('allowblog')) {
-			ckspacelog();
-			showmessage('no_authority_to_add_log');
-		}
-	}
-	
-	//验证码
-	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
-		showmessage('incorrect_code');
-	}
-	
-	include_once(S_ROOT.'./source/function_blog.php');
-	if($newblog = blog_post($_POST, $blog)) {
-		if(empty($blog) && $newblog['topicid']) {
-			$url = 'space.php?do=topic&topicid='.$newblog['topicid'].'&view=blog';
-		} else {
-			$url = 'space.php?uid='.$newblog['uid'].'&do=blog&id='.$newblog['blogid'];
-		}
-		showmessage('do_success', $url, 0);
-	} else {
-		showmessage('that_should_at_least_write_things');
-	}
-}
-else if(submitcheck('editsubmit')) {
+if(submitcheck('editsubmit')) {
 
 	//验证码
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
@@ -133,45 +105,20 @@ if($_GET['op'] == 'delete') {
 		}
 	}
 	
-} elseif($_GET['op'] == 'goto') {
-	
-	$id = intval($_GET['id']);
-	$uid = $id?getcount('blog', array('blogid'=>$id), 'uid'):0;
-
-	showmessage('do_success', "space.php?uid=$uid&do=blog&id=$id", 0);
-	
-} elseif($_GET['op'] == 'edithot') {
-	//权限
-	if(!checkperm('manageblog')) {
-		showmessage('no_privilege');
-	}
-	
-	if(submitcheck('hotsubmit')) {
-		$_POST['hot'] = intval($_POST['hot']);
-		updatetable('blog', array('hot'=>$_POST['hot']), array('blogid'=>$blog['blogid']));
-		if($_POST['hot']>0) {
-			include_once(S_ROOT.'./source/function_feed.php');
-			feed_publish($blog['blogid'], 'blogid');
-		} else {
-			updatetable('feed', array('hot'=>$_POST['hot']), array('id'=>$blog['blogid'], 'idtype'=>'blogid'));
-		}
-		
-		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
-	}
-	
-}elseif($_GET['op']=='updatevisitstat'){
-        updatebmvisitstat($_GET['bmid']);
+} elseif($_GET['op']=='updatebookmarkview'){
+		updatestatistic('bookmark','viewnum',array('updateid'=>$item['bmid'],'feedid'=>$item['linkid'],'siteid'=>$item['siteid']));
+		//showmessage($item['viewnum']+1);
 		return;
 
 }elseif($_GET['op']=='updatebookmarkupnum'){
 		//更新顶数
-        updatebookmarkupnum($item['linkid'],$item['bmid']);
-		showmessage($item[up]+1);
+		updatestatistic('bookmark','up',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid']));
+		showmessage($item['up']+1);
 
 }elseif($_GET['op']=='updatebookmarkdownnum'){
 		//更新顶数
-        updatebookmarkdownnum($item['linkid'],$item['bmid']);
-		showmessage($item[down]+1);
+        updatestatistic('bookmark','down',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid']));
+		showmessage($item['down']+1);
 
 } else {
 	//添加编辑

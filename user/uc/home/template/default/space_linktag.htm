@@ -13,7 +13,7 @@
 			<ul class="bloglist">
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
-					<h3><a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a></h3>
+					<h3><a href="$value[url]" target="_blank" onclick="updatebookmarkview($value[bmid])">$value[subject]</a></h3>
 					<div class="d_avatar avatar125"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="./template/default/image/1_1264944905dc86.jpg"></a></div>
 					<p class="message">$value[description] ...</p>
 					<p class="c_date"></p>
@@ -26,7 +26,7 @@
 					<p class="nhot"><a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]">$value[hot] 人推荐</a></p>
 					<p class="c_date"></p>
 					<p class=ndate><span><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></p>	
-				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatevisitstat($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
+				  <span class=bvisit><a href="$value[url]"  target="_blank" onclick="updatebookmarkview($value[bmid])" >点击访问<span id="visitstat"></span></a></span>
 				  <span class=editbtn><a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&browserid=$browserid&op=edit" id="bookmark_edut_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">编辑</a></span>
 					<span class=deletebtn><a href="cp.php?ac=bookmark&uid=$space[uid]&bmid=$value[bmid]&browserid=$browserid&op=delete">删除</a></span>
 				</li>
