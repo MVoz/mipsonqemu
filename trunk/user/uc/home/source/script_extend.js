@@ -44,8 +44,8 @@ function setbookmarkgroupid(id)
 	$('browsergroupid').value=id;
 }
 
-function updatevisitstat(id) {
-	ajaxupdate('bookmark','visitstat', 'op=updatevisitstat&bmid=' + id);
+function updatebookmarkview(id) {
+	ajaxupdate('bookmark','visitstat', 'op=updatebookmarkview&bmid=' + id);
 }
 var updatebookmarkupclick=0;
 function updatebookmarkup(id) {
@@ -63,6 +63,7 @@ function updatebookmarkdown(id) {
 		updatebookmarkdownclick=1;
 	}
 }
+/*
 var updatelinkupclick=0;
 function updatelinkup(id) {
 	if(!updatelinkupclick)
@@ -71,16 +72,36 @@ function updatelinkup(id) {
 		updatelinkupclick=1;
 	}
 }
-var updatelinkupdown=0;
+var updatelinkdownclick=0;
 function updatelinkdown(id) {
-	if(!updatelinkupdown)
+	if(!updatelinkdownclick)
 	{
 		ajaxupdate('link','down_num', 'op=updatelinkdownnum&linkid=' + id);
-		updatelinkupdown=1;
+		updatelinkdownclick=1;
 	}
 }
 function updatelinkview(id) {
 	ajaxupdate('link','view_num', 'op=updatelinkviewnum&linkid=' + id);
+}
+*/
+var updatesiteupclick=0;
+function updatesiteup(id) {
+	if(!updatesiteupclick)
+	{
+		ajaxupdate('site','up_num', 'op=updatesiteupnum&siteid=' + id);
+		updatesiteupclick=1;
+	}
+}
+var updatesitedownclick=0;
+function updatesitedown(id) {
+	if(!updatesitedownclick)
+	{
+		ajaxupdate('site','down_num', 'op=updatesitedownnum&siteid=' + id);
+		updatesitedownclick=1;
+	}
+}
+function updatesiteview(id) {
+	ajaxupdate('site','view_num', 'op=updatesiteviewnum&siteid=' + id);
 }
 function updatediggup(id) {
 	ajaxupdate('digg','digg_up_num_id_'+id, 'op=updatediggupnum&diggid=' + id);

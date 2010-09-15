@@ -5,7 +5,7 @@
 		</h2>
 		<div class="siteinfo">
 					<div class="sitepic">
-					<a target="_target" class="playpic" href="$item['url']" onclick="updatelinkview($item[linkid])">
+					<a target="_target" class="playpic" href="$item['url']" onclick="updatebookmarkview($item[bmid])">
 					<img alt="$item['$subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
 					<em></em>
 					</a>
@@ -13,7 +13,7 @@
 					<div class="sitedetail">
 						<p>
 							<strong>名称: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['subject']</a>
+							<a href="$item['url']" target="_blank" onclick="updatebookmarkview($item[bmid])">$item['subject']</a>
 							<span class="num_con">
 								<span>
 									<cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}-->
@@ -23,7 +23,7 @@
 						</p>
 						<p>
 							<strong>地址: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatelinkview($item[linkid])">$item['url']</a>
+							<a href="$item['url']" target="_blank" onclick="updatebookmarkview($item[bmid])">$item['url']</a>
 						</p>
 						<!--
 						<p>
@@ -33,7 +33,7 @@
 						-->
 						<p>
 							<strong>标签: </strong>
-							<!--{loop $item['link_tag'] $subkey $subvalue}-->
+							<!--{loop $item['tag'] $subkey $subvalue}-->
 									<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
 							<!--{/loop}-->
 						</p>
@@ -43,7 +43,7 @@
 							<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
 							<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
 						<p>
-							<a target="_target" href="$item['url']" onclick="updatelinkview($item[linkid])">访问</a> 
+							<a target="_target" href="$item['url']" onclick="updatebookmarkview($item[bmid])">访问</a> 
 							<!--{if $ac=='link' }-->
 							<a  href="cp.php?ac=link&linkid=$item[linkid]&op=bookmark">收藏</a>
 							<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>

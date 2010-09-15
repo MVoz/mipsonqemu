@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr','toolbar');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','toolbar');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $siteid= empty($_GET['siteid'])?0:intval(trim($_GET['siteid']));
@@ -34,12 +34,13 @@ $link_priority=array(
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatesiteupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatesitedownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatesiteviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
+//权限检查
 $ret=check_valid($op,$siteid,$item,$item['postuid'],'managelink',$link_priority);
 switch($ret)
 {
@@ -52,38 +53,13 @@ switch($ret)
 	default:
 	break;
 }
-//权限检查
-if(empty($item)) {
-	//实名认证
-	ckrealname('blog');
-	
-	//视频认证
-	ckvideophoto('blog');
-	
-	//新用户见习
-	cknewuser();
-	
-	//判断是否发布太快
-	$waittime = interval_check('post');
-	if($waittime > 0) {
-		showmessage('operating_too_fast','',1,array($waittime));
-	}
-	
-	//接收外部标题
-//blog['subject'] = empty($_GET['subject'])?'':getstr($_GET['subject'], 80, 1, 0);
-//blog['message'] = empty($_GET['message'])?'':getstr($_GET['message'], 5000, 1, 0);
-	
-} 
-
-
+include_once(S_ROOT.'./source/function_site.php');
 if($op == 'get'){
 
 }
 elseif($op == 'edit'){
 		//处理edit提交
 		if(submitcheck('editsubmit')) {
-
-			include_once(S_ROOT.'./source/function_site.php');
 			$item = site_post($_POST, $item);
 			if(is_array($item)) {
 				showmessage('do_success',$_SGLOBAL['refer']);
@@ -102,15 +78,13 @@ elseif($op == 'relate'){
 elseif($_GET['op'] == 'delete') {
 	//删除
 	if(submitcheck('deletesubmit')) {
-		include_once(S_ROOT.'./source/function_link.php');
 		if(deletelink($siteid)) {
 			$url =$_SGLOBAL['refer'];
 			showmessage('do_success', $url, 0);
 		} else {
 			showmessage('failed_to_delete_operation');
 		}
-	}
-	
+	}	
 }elseif($_GET['op'] == 'checkseccode'){
 	//验证码
 		if(ckseccode(trim($_GET['seccode']))) {
@@ -118,57 +92,28 @@ elseif($_GET['op'] == 'delete') {
 		} else {
 			showmessage('incorrect_code');
 		}
-}
-elseif($_GET['op'] == 'edithot') {
-	//权限
-	if(!checkperm('manageblog')) {
-		showmessage('no_privilege');
-	}
-	
-	if(submitcheck('hotsubmit')) {
-		$_POST['hot'] = intval($_POST['hot']);
-		updatetable('blog', array('hot'=>$_POST['hot']), array('blogid'=>$blog['blogid']));
-		if($_POST['hot']>0) {
-			include_once(S_ROOT.'./source/function_feed.php');
-			feed_publish($blog['blogid'], 'blogid');
-		} else {
-			updatetable('feed', array('hot'=>$_POST['hot']), array('id'=>$blog['blogid'], 'idtype'=>'blogid'));
-		}
-		
-		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
-	}
-	
-}elseif($_GET['op']=='updatevisitstat'){
-		include_once(S_ROOT.'./source/function_bookmark.php');
-        updatevisitstat($_GET['bmid']);
-
-}elseif($_GET['op']=='updatelinkupnum'){
+}elseif($_GET['op']=='updatesiteupnum'){
 		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkupnum($_GET['siteid'],'upsiteid');
-		showmessage($item[up]+1);
+		updatestatistic('site','up',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
+		showmessage($item['up']+1);
 
-}elseif($_GET['op']=='updatelinkdownnum'){
+}elseif($_GET['op']=='updatesitedownnum'){
 		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkdownnum($_GET['siteid'],'downsiteid');
-		showmessage($item[down]+1);
+        updatestatistic('site','down',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
+		showmessage($item['down']+1);
 
-}elseif($_GET['op']=='updatelinkviewnum'){
+}elseif($_GET['op']=='updatesiteviewnum'){
 		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkviewnum($_GET['siteid']);
+        updatestatistic('site','viewnum',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
 		showmessage($item['viewnum']+1);
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
 		  include_once(S_ROOT.'./data/data_linkerrtype.php');
-		  include_once(S_ROOT.'./source/function_link.php');
 		  if(submitcheck('errsubmit')) {
 			//验证码
 			if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 				showmessage('incorrect_code');
 			}
-			include_once(S_ROOT.'./source/function_link.php');
 			$ret = linkerr_post($_POST, $item);
 			if($ret) {	
 				showmessage('do_success',$_SGLOBAL[refer]);
@@ -265,7 +210,6 @@ elseif($_GET['op'] == 'edithot') {
 		$taglist[$value['tagid']]=$value['tagname'];
 }elseif($_GET['op']=='toolbar'){
 	  if(submitcheck('addsubmit')) {
-		include_once(S_ROOT.'./source/function_link.php');
 		linktoolbar_post($_POST);
 		showmessage('do_success', $_SGLOBAL['refer'], 0);
 	}
@@ -275,7 +219,6 @@ elseif($_GET['op'] == 'edithot') {
 		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 			showmessage('incorrect_code');
 		}
-		include_once(S_ROOT.'./source/function_link.php');
 		$item = link_post($_POST, $item);
 		if(is_array($item)) {
 			//$url = $_SGLOBAL['refer'];		

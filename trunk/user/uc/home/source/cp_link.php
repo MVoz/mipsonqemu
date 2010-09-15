@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatelinkupnum','updatelinkdownnum','updatelinkviewnum','reporterr','toolbar');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','reporterr','toolbar');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -17,8 +17,7 @@ $relatedlist = array();
 if($linkid)
 {
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main where main.linkid=".$linkid);
-	$item = $_SGLOBAL['db']->fetch_array($query);
-	
+	$item = $_SGLOBAL['db']->fetch_array($query);	
 }
 /*
 	permit owner id item 
@@ -38,9 +37,6 @@ $link_priority=array(
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatelinkviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
@@ -79,6 +75,7 @@ if(empty($item)) {
 	
 } 
 
+include_once(S_ROOT.'./source/function_link.php');
 
 if($op == 'get'){
 	//正确显示tag
@@ -88,7 +85,6 @@ elseif($op == 'edit'){
 		//处理edit提交
 		if(submitcheck('editsubmit')) {
 
-			include_once(S_ROOT.'./source/function_link.php');
 			$item = link_post($_POST, $item);
 			if(is_array($item)) {
 				showmessage('do_success',$_SGLOBAL['refer']);
@@ -143,27 +139,6 @@ elseif($_GET['op'] == 'edithot') {
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
-}elseif($_GET['op']=='updatevisitstat'){
-		include_once(S_ROOT.'./source/function_bookmark.php');
-        updatevisitstat($_GET['bmid']);
-
-}elseif($_GET['op']=='updatelinkupnum'){
-		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkupnum($_GET['linkid'],'uplinkid');
-		showmessage($item[up]+1);
-
-}elseif($_GET['op']=='updatelinkdownnum'){
-		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkdownnum($_GET['linkid'],'downlinkid');
-		showmessage($item[down]+1);
-
-}elseif($_GET['op']=='updatelinkviewnum'){
-		//更新顶数
-		include_once(S_ROOT.'./source/function_link.php');
-        updatelinkviewnum($_GET['linkid']);
-		showmessage($item['viewnum']+1);
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
 		  include_once(S_ROOT.'./data/data_linkerrtype.php');

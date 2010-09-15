@@ -451,43 +451,6 @@ function bookmark_link_process($linkid,$arr){
     }
 
 }
-
-function   updatebmvisitstat($bmid){
-//更新bookmark访问统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET visitnums=visitnums+1 WHERE bmid=".$bmid);
-	    $query=$_SGLOBAL['db']->query("SELECT * from ".tname('bookmark')." WHERE  bmid=".$bmid);
-        $link=$_SGLOBAL['db']->fetch_array($query);
-	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET viewnum=viewnum+1 WHERE linkid=".$link['linkid']);
-//更新最后访问时间
-        $_SGLOBAL['db']->query("UPDATE ".tname('bookmark')." SET lastvisit=".$_SGLOBAL['timestamp']." WHERE bmid=".$bmid);
-}
-function   updatebookmarkupnum($linkid,$bmid){
-//更新link“顶”的统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET up=up+1 WHERE linkid=".$linkid);
-		include_once(S_ROOT.'./source/function_feed.php');
-		/*
-			$type:uplinkid downbookmarkid
-		*/
-		feed_publish($bmid, 'upbookmarkid', 1);
-}
-function   updatebookmarkdownnum($linkid,$bmid){
-//更新link“踩”的统计信息
-	    global $_SGLOBAL,$_SC;
-        if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('link')." SET down=down+1 WHERE linkid=".$linkid);
-		include_once(S_ROOT.'./source/function_feed.php');
-		/*
-			$type:downlinkid downbookmarkid
-		*/
-		feed_publish($bmid,'downbookmarkid', 1);
-}
 function deletebookmark($bmid){
 	//处理link
 	 global $_SGLOBAL;
