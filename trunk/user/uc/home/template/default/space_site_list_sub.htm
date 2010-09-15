@@ -1,0 +1,59 @@
+
+			<ul class="bloglist">
+			<!--{loop $bookmarklist $key $value}-->
+			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+					<h3>
+						<a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a>
+						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
+					</h3>
+					<div class="d_avatar avatar125">
+							<a href="$value[url]" title="{$value[subject]}" target="_blank">
+								 <!--{if empty($value['picflag'])}-->
+									<img src="$value['tmppic']">
+								 <!--{else}-->
+									<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+								 <!--{/if}-->
+									
+							</a>
+					</div>
+					<p class="message">
+						<!--{if !empty($value['description'])}-->
+								$value['description'] ...
+						<!--{else}-->
+								暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+						<!--{/if}-->
+						<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+					</p>
+					<p class="tags"> 
+						<!--{if !empty($value['tag'])}-->
+							<!--{loop $value[tag] $subkey $subvalue}-->
+								<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=sitetag&tagid=$subkey">$subvalue</a>
+							<!--{/loop}-->
+						<!--{else}-->
+							$_SC['unknown_tag']
+						<!--{/if}-->
+					</p>					
+					
+					<p class="oper">
+					<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
+				    <a href="cp.php?ac=site&op=get&siteid=$value[siteid]"  target="_blank" >详情</a>
+					|
+				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managesite') }-->
+					<a href="cp.php?ac=site&siteid=$value[siteid]&op=delete" id="bookmark_delete_$value[siteid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+					|
+					<a href="cp.php?ac=site&siteid=$value[siteid]&op=edit" id="bookmark_edit2_$value[siteid]" onclick="ajaxmenuEx(event,'img_seccode_$value[siteid]', this.id,1);">编辑</a>
+					<!--{else}-->
+					 <a href="cp.php?ac=site&siteid=$value[siteid]&op=bookmark" id="bookmark_edit2_$value[siteid]" >收藏</a>
+					 <!--{/if}-->
+					 </p>
+					 
+				</li>
+				<!--{/loop}-->
+
+			</ul>
+<div class="bloglist_ad">
+		<img src="./template/default/image/468x60.jpg">
+</div>
+<div class="page">$bookmark_multi</div>
+
+

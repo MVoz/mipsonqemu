@@ -133,19 +133,20 @@ while($value =$_SGLOBAL['db']->fetch_array($class_query))
 	$linkclasslist[]=$value;	
 }
 */
-realname_get();
+//realname_get();
 
 //修正tag以便显示
+/*
 foreach($bookmarklist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	include_once(S_ROOT.'./source/function_link.php');
-	$value['link_tag']=convertlinktag($value['linkid'],$value['link_tag']);
-	if($value[picflag]&&empty($value['tag']))
-			$value['tag']= $value['link_tag'];
-	$value['taglist'] = empty($value['tag'])?array():unserialize($value['tag']);
+	//realname_set($value['uid'], $value['username']);
+	//include_once(S_ROOT.'./source/function_link.php');
+	//$value['link_tag']=convertlinktag($value['linkid'],$value['link_tag']);
+	//if($value[picflag]&&empty($value['tag']))
+	//		$value['tag']= $value['link_tag'];
+	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$bookmarklist[$key] = $value;	
 }
-
+*/
 $theurl="space.php?do=$do&classid=$classid&childid=$childid";
 //分页
 $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);

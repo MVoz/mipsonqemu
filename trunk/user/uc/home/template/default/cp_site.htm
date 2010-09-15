@@ -1,0 +1,585 @@
+<!--{template header}-->
+<!--{if $op == 'delete'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>删除</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=link&op=delete&siteid=$item['siteid']">
+	<p>确定删除标题为<span style="color:#368332">$item['subject']</span>的站点吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+<!--{elseif $op == 'get'}-->
+	<!--{template site_item_detail}-->
+<!--{elseif $op == 'bookmark'}-->
+<form id="registerform" name="registerform" method="post" action="" class="c_form">
+<table cellpadding="0" cellspacing="0" class="formtable">
+	<caption>
+		<h2>我要收藏</h2>
+		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	</caption>
+	<tr>
+		<th width="40">标题</th>
+		<td>
+		<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<p id="subject_tip"></p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">地址</th>
+		<td>
+		<!--{if empty($item[url])}-->
+		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" />
+		<!--{else}-->
+		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" readonly/>
+		<!--{/if}-->
+		<p id="address_tip"></p>
+		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">标签</th>
+		<td>
+		<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<p style="color:gray">多个标签请用空格隔开</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+				<div class="cont">
+					<ul class="type-1">
+						<li class="ll">
+							<ul class="type-2">
+							<!--{loop $taglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
+							</ul>
+					 </ul>
+					</li>
+				 </div>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
+		<td>
+			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
+			$item[link_description]
+			</textarea>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="directory">目录</label></th>
+		<td>
+				<input type="hidden" name="browserid" id="browserid" value='$browserid'/>
+				<input type="hidden" name="bmdirid" id="browsergroupid"  value="0"/>
+				<div class="menu_item">
+						<div id="browserdirtree">
+								<!--{template space_browser}-->
+						</div>
+
+                </div>
+		</td>
+	</tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+			<script>seccode();</script>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->	
+
+	<tr><th>&nbsp;</th>
+		<td>
+		<input type="hidden" name="category" value="0" />
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" id="address" name="address" value="$item[url]" />
+		<input type="hidden" name="addsubmit" value="true" />
+		<input type="button" id="btnsubmit" name="btnsubmit" value="提交" class="submit" tabindex="6" onclick=" setformaction(this);bookmark_validate(this,'seccode',linkcond[$('browserid').value][0], linkcond[$('browserid').value][1], linkcond[$('browserid').value][2],linkcond[$('browserid').value][3]);"/>
+		</td>
+	</tr>
+	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+<script type="text/javascript">	
+	var linkcond=[
+		[0,0,0,0,0],
+		<!--{loop $_SGLOBAL['browser'] $key $value}-->
+		[ $value['titlelen'], $value['dirlen'], $value['urllen'], $value['deslen'], $value['speicalchar'] ],
+		<!--{/loop}-->
+	];
+	function setformaction(obj){
+		obj.form.action="cp.php?ac=bmdir&op=add&bmdirid="+$('browsergroupid').value+"&browserid="+$('browserid').value;
+	}
+</script>
+<!--{elseif $op == 'reporterr'}-->
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<h1>举报错误</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=$ac&op=$op&siteid=$siteid">
+<div style="padding:5px;">
+	<div style="color:#333;font-size:110%;font-weight:bold;line-height:20px;">
+		<div>您对标题为<span>$item[link_subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
+			<span style="color:#0066FF;">&nbsp;[多选题]</span>
+		</div>
+		<div style="clear: both;">
+		</div>
+	</div>
+	<div class="div_table_radio_question">
+		<ul>
+		<!--{loop $_SGLOBAL['linkerrtype'] $key $value}-->
+			<!--{if ($key==255)}-->
+				<li style="width: 99%;"><input type="checkbox" id="chk1_$key" name="chk1_$key">
+					<label for="chk1_$key">$value</label> 
+					<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
+				</li>
+			<!--{else}-->
+				<li style="width: 99%;">
+					<input type="checkbox"  id="chk1_$key" name="chk1_$key">
+					<label for="chk1_1">$value</label>
+				</li>
+			<!--{/if}-->
+		<!--{/loop}-->
+		
+		<div style="clear: both;"></div>
+		</ul> 
+	</div>
+	<div>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<span>
+		<label style="vertical-align: top;">请先回答问题</label>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+	</span>
+	<!--{else}-->
+	<span>
+		<label style="vertical-align: top;">验证码</label>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$item[siteid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[siteid]')">更换一张</a></p>
+		<!--{/if}-->
+	</span>
+	<!--{/if}-->
+	<!--{/if}-->
+	</div>
+</div>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="errsubmit" value="true" />
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="report_validate(this);"/>
+<!--{else}-->
+<input type="button" name="btnsubmit" value="确定" class="submit" onclick="report_validate(this);"/>
+<!--{/if}-->
+</form>
+</div>
+</div>
+
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
+<!--{elseif $op == 'relate'}-->
+		<!--{template relatedsite_show}-->
+<!--{elseif $op == 'pass'}-->
+<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<h1>通过</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=link&op=pass&siteid=$item['siteid']">
+	<p>确定通过标题为<span style="color:#368332">$item['subject']</span>站点的验证吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="passsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+<!--{elseif $op == 'edithot'}-->
+
+<h1>调整热度</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=blog&op=edithot&blogid=$blogid">
+	<p class="btn_line">
+		新的热度：<input type="text" name="hot" value="$blog[hot]" size="5"> 
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="hotsubmit" value="true" />
+		<input type="submit" name="btnsubmit" value="确定" class="submit" />
+	</p>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+
+</div>
+<!--{elseif $op == 'manage'}-->
+<div class="nbox"">
+
+	<div class="nbox_c">
+	<div id="bmcontent">
+		<!--{template space_link_list}-->
+	</div>
+</div>
+<!--{elseif $op == 'checkerror'}-->
+<div class="nbox"">
+
+	<div class="nbox_c">
+	<div id="bmcontent">
+		<!--{template space_link_list}-->
+	</div>
+</div>
+<!--{elseif $op == 'edit'}-->
+<!--{if !empty($_SGLOBAL['inajax'])}-->
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<h1>编辑站点</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+
+<form method="post" action="cp.php?ac=$ac&op=$op&siteid=$item[siteid]" >
+<table cellspacing="0" cellpadding="3" >
+
+<!--{else}-->
+ <form method="post" action="cp.php?ac=$ac&op=$op&siteid=$item[siteid]" class="c_form">
+<table cellspacing="0" cellpadding="3" class="formtable">
+<caption>
+		<h2>编辑站点</h2>
+		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+</caption>
+<!--{/if}-->
+<tr>
+	<th width="40"><label for="subject">名称：</label></th>
+<td>	
+<input type="text" id="subject" name="subject" value="$item[subject]" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<p id="subject_tip"></p>
+</td>
+</tr>
+<tr>
+<th><label for="address">地址：</label></th>
+<td>
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning($('address_tip'));" style="width: 396px;" class="t_input" tabindex="2" readonly/>
+<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+<p id="address_tip"></p>
+</td>
+</tr>
+<tr>
+<th><label for="tag">标签：</label></th>
+<td>
+<input type="text" id="tag" name="tag" value="$item[tag]" style="width: 396px;" class="t_input" tabindex="3"  />
+<p style="color:gray">多个标签请用空格隔开</p>
+</td>
+</tr>
+<tr>
+<th><label for="tag">评分：</label></th>
+<td>
+<input type="text" id="initaward" name="initaward" value="$item[initaward]" onfocus="clearwarning($('initaward_tip'));" style="width: 50px;" class="t_input" tabindex="4"  />
+<p id="initaward_tip"></p>
+</td>
+</tr>
+<tr>
+<th style="vertical-align: top;"><label for="description">描述：</label></th>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5" >$item['link_description']</textarea></td>
+</tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="6" autocomplete="off" />
+			<p id="checkseccode"></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_$item[siteid]" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="6" autocomplete="off" />
+			<p id="checkseccode"></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[siteid]')">更换一张</a></p>
+		<!--{/if}-->
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->
+<tr>
+<th>&nbsp;</th>
+<td>
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="editsubmit" value="true" />
+
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['speicalchar']);"/>
+
+</td>
+</tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+<!--{if !empty($_SGLOBAL['inajax'])}-->
+</div> 
+</div>
+<!--{/if}-->
+
+	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>
+<!--{elseif $op == 'toolbar'}--> 
+<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<h1>编辑快捷地址</h1>
+<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div class="popupmenu_inner">
+<form method="post" action="cp.php?ac=$ac&op=$op">
+<table cellspacing="0" cellpadding="3">
+<tr>
+<th><label for="subject">名称：</label></th>
+<td>	
+<input type="text" id="subject" name="subject" value="" style="width: 396px;" class="t_input" tabindex="1"  />
+</td>
+</tr>
+<tr>
+<th><label for="address">地址：</label></th>
+<td>
+<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="2" />
+<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+</td>
+</tr> 
+<tr>
+<th><label for="category">分类</label></th>
+<td>
+			<select id="category" name="category" tabindex="4"/>
+				<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
+					<option value="$key">&nbsp;$value</option>
+				<!--{/loop}-->
+			</select>
+		</td>
+</tr>
+<th style="vertical-align: top;"><label for="description">描述：</label></th>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea></td>
+</tr>
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+		<!--{if empty($_SGLOBAL['inajax'])}-->
+			<script>seccode()</script>
+			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
+		<!--{else}-->
+			<img id="img_seccode_0" src='' align="absmiddle">
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_0')">更换一张</a></p>
+		<!--{/if}-->
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->
+<tr>
+<th>&nbsp;</th>
+<td>
+<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+<input type="hidden" name="addsubmit" value="true" />
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="linktoolbar_validate(this);"/>
+<!--{else}-->
+<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="linktoolbar_validate(this);"/>
+<!--{/if}-->
+</td>
+</tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+</div>
+<!--{else}-->
+<script>
+	function register(id, result) {
+		if(result) {
+			$('registersubmit').disabled = true;
+			window.location.href = "$jumpurl";
+		} else {
+			updateseccode();
+		}
+	}
+</script>
+
+<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form">
+<table cellpadding="0" cellspacing="0" class="formtable">
+	<caption>
+		<h2>注册本站帐号</h2>
+		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	</caption>
+	<tr>
+		<th width="40">标题</th>
+		<td>
+		<input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<span id="checkusername">&nbsp;</span>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">地址</th>
+		<td>
+		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" disabled=true/>&nbsp;
+		<span id="checkusername">&nbsp;</span>
+		<p style="color:gray">请正确填写网页地址</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">标签</th>
+		<td>
+		<input type="text" id="tag" name="tag" value="$_GET[tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<p style="color:gray">多个标签请用空格隔开</p>
+		</td>
+	</tr>
+	<tr>
+		<th width="40">&nbsp;</th>
+		<td>
+				<div class="cont">
+					<ul class="type-1">
+						<li class="ll">
+							<ul class="type-2">
+							<!--{loop $taglist $key $value}-->
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+							<!--{/loop}-->
+							</ul>
+					 </ul>
+					</li>
+				 </div>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
+		<td>
+			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
+			$_GET[content]
+			</textarea>
+		</td>
+	</tr>
+<!--
+<tr>
+		<th width="40">分类</th>
+		<td>
+			<div class="cont">
+				<ul class="type-1">
+					<!--{loop $classlist $key $value}-->
+								<ul class="type-2">
+									<li><a style="color:#00ADEF;">$value['classname']</a></li>
+									<!--{loop $value[son] $key $valueson}-->
+											<!--{if empty($valueson[grandson])}-->
+												<li><a id="category_li_$valueson['classid']" href="javascript:fSetCategorySelect($valueson['classid']);">$valueson['classname']</a></li>
+											<!--{else}-->
+												<li>
+													<div class="dropmenu" id="usettingli_$valueson['classid']" onmouseover="showMenu(this.id)"><a id="category_li_$valueson['classid']" href="javascript:;">$valueson['classname']<img src="image/more.gif" align="absmiddle"></a></div>
+														<ul id="usettingli_$valueson['classid']_menu" class="categorymenu_drop" style="display:none;">
+														<!--{loop $valueson[grandson] $key $valuegrandson}-->
+															<li><a href="javascript:setcategoryid('usettingli_$valueson['classid']','$valuegrandson['classname']',$valuegrandson['classid'])">$valuegrandson['classname']</a></li>
+														<!--{/loop}-->
+														</ul>
+												</li>
+											<!--{/if}-->
+									<!--{/loop}-->
+								</ul>
+					<!--{/loop}-->
+				
+				</ul>
+			</div>
+	</td>
+</tr>
+-->
+	<!--{if $_SCONFIG['seccode_register']}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+	<tr>
+		<th style="vertical-align: top;">请先回答问题</th>
+		<td>
+			<p><!--{eval question();}--></p>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+		</td>
+	</tr>
+	<!--{else}-->
+	<tr>
+		<th style="vertical-align: top;">验证码</th>
+		<td>
+			<script>seccode();</script>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{/if}-->	
+
+	<tr><th>&nbsp;</th>
+		<td>
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="addsubmit" value="true" />
+		<input type="submit" id="btnsubmit" name="btnsubmit" value="提交" class="submit_disabled" tabindex="6" disabled="true"/>
+		</td>
+	</tr>
+	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
+</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+
+<script type="text/javascript">
+<!--
+	$('subject').focus();
+	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
+	function checkUrl() {
+	}
+	function setcategoryid(key,str,n)
+	{
+		$(key).innerHTML='<a id=category_li_'+n+' href="cp.php">'+str+'<img src="image/more.gif" align="absmiddle"></a>';	
+		
+
+		 var oLi = $("category_li_"+n);
+		 if(window.selectLi!=oLi){
+		    oLi.className += " on";
+			if(window.selectLi){
+					window.selectLi.className = window.selectLi.className.replace(" on","");
+			 }
+			 window.selectLi = oLi;
+		 } 
+
+	}
+	function fSetTag(tag)
+	{
+		$('tag').value=$('tag').value+tag+' ';
+	}
+//-->
+</script>	
+<!--{/if}-->
+<!--{template footer}-->
