@@ -212,7 +212,6 @@ class ctl_site_manage
 			if(empty($_POST['tmppic']))
 				$data=self::setlinkimagepath($data);
 			$data['award']=self::calc_link_award($data['initaward'],$data['storenum'],$data['viewnum'],$data['up'],$data['down']);
-			
             // 新增
             if ($action == 'add')
             {

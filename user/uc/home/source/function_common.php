@@ -2931,6 +2931,7 @@ function getsite($siteid)
 	$q = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main	where id=".$siteid);
 	if($s = $_SGLOBAL['db']->fetch_array($q))
 	{
+		   $s['siteid'] = $siteid;
 		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
 		   $s['subject']=$s['name'];
 		   $s['description']=$s['remark'];

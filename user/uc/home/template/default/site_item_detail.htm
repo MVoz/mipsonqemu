@@ -1,0 +1,99 @@
+<div id="network">
+	<div class="box_l">
+		<h2 class="ntitle">
+			<p>$item[subject]</p>			
+		</h2>
+		<div class="siteinfo">
+					<div class="sitepic">
+						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">
+								 <!--{if empty($item['picflag'])}-->
+									<img src="$item['tmppic']">
+								 <!--{else}-->
+									<img src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
+								 <!--{/if}-->							
+						<em></em>
+						</a>
+					</div>
+					<div class="sitedetail">
+						<p>
+							<strong>名称: </strong>
+							<a href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['subject']</a>
+							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
+						</p>
+						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatesiteview($item[linkid])">$item['url']</a></p>		
+						<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p>
+						<strong>标签: </strong>
+						<!--{loop $item['tag'] $subkey $subvalue}-->
+								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+						<!--{/loop}-->
+						</p>
+						<p>
+						<div style="float:left;width:220px;">
+						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$item[link_dateline],1)}--></span></p>
+						<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
+						<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
+						<p>
+						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">访问</a> 
+						<!--{if $ac=='site' }-->
+						<a  href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
+						<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[siteid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
+						<!--{/if}-->
+						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
+							<!--{if $ac=='site' }-->
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_edit2_$item[siteid]" href="cp.php?ac=link&linkid=$item[linkid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_delete_$item[siteid]" href="cp.php?ac=link&linkid=$item[linkid]&op=delete">删除</a>
+							<!--{else}-->
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=edit">编辑</a>
+							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=delete">删除</a>
+							<!--{/if}-->
+						<!--{/if}-->
+						</p>
+					</div>
+					<div class="sitescore">
+							<p><strong>评价</strong> <span>(点击顶踩评价)</span></p>
+							<span>
+								<span class="rateup">
+									<a target="_self" onclick="updatesiteup($item[siteid])"  href="javascript:void(0)"></a>
+								</span>
+								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
+								<span class="ratedown">
+									<a  target="_self"  onclick="updatesitedown($item[siteid])"  href="javascript:void(0)"></a>
+								</span>
+								(<span id="down_num">$item['down']</span>人踩)
+							</span>	  
+					</div>
+				</div>
+					
+
+
+				</div>
+				<h3>站点简介</h3>
+				<div class="movieIntro">
+					<p>$item[link_description]</p>
+					<p>&nbsp;</p>
+				</div>
+		
+	</div>
+	<div class="box_r">
+		<h2 class="ntitle">
+			<em>类似站点&raquo;</em>
+		</h2>
+		<div style="padding:10px 22px;">
+			<img src="template/default/image/adv_240x200.jpg">
+		</div>
+		<!--
+		-->
+		   <dl class="drank">
+				<!--{template hotdigg}-->
+		   </dl>
+		<!--
+		-->
+	</div>
+	<div class="box_l" style="height:250px;">			
+		<h2 class="ntitle">				
+			<p>相似站点&raquo;</p>
+		</h2>
+			<!--{template space_navigation_list}-->	
+	</div>
+</div>

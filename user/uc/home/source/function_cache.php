@@ -720,9 +720,10 @@ function site_cache_3classid($classid)
 		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
 		//¸üÐÂlinkidµÄaward
 		updatetable('link', array('award'=>$value['award']),array('linkid'=>$value[linkid]));
-		$value['link_description']=$value['description'] = getstr($value['description'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-		$value['link_subject']=$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-		
+		$value['description'] = getstr($value['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+		$value['siteid'] = $value['id'];
+		$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 		$linklist[]=$value;
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
