@@ -298,6 +298,33 @@ function ajaxgetextend(url,func,showid, waitid) {
 		if(!evaled)evalscript(s);
 	});
 }
+
+function getremovescript(html,codes)
+{
+    var reg = /<script[^>]*>([^\x00]+)$/i;
+    var htmlBlock = html.split("<\/script>");
+	var fixhtml='';
+    for (var i in htmlBlock) 
+    {
+        var blocks;
+		
+	   if (blocks = htmlBlock[i].match(reg)) 
+        {
+            var code = blocks[1].replace(/<!--/, '');
+            try 
+            {
+				codes[codes.length]=code;
+            } 
+            catch (e) 
+            {
+            }
+        }
+		
+		fixhtml+=htmlBlock[i].replace(reg,"");
+    }
+	return fixhtml;
+}
+
 function ajaxgetex(url, showid,subid,subexid,waitid) {
 	waitid = typeof waitid == 'undefined' || waitid === null ? showid : waitid;
 	var x = new Ajax();
@@ -311,14 +338,18 @@ function ajaxgetex(url, showid,subid,subexid,waitid) {
 		url = url.substr(0, strlen(url) - 1);
 		x.autogoto = 1;
 	}
-
+	evaled = false;
 	var url = url + '&inajax=1&ajaxtarget=' + showid;
 	x.get(url, function(s, x) {
+
 		evaled = false;
 		if(s.indexOf('ajaxerror') != -1) {
 			evalscript(s);
 			evaled = true;
 		}
+		
+		var codes=new Array();
+		s=getremovescript(s,codes);
 		if(!evaled) {
 			if(x.showId) {
 				changedisplay(x.showId, x.showId.orgdisplay);
@@ -331,7 +362,11 @@ function ajaxgetex(url, showid,subid,subexid,waitid) {
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
 			}
 		}
-		if(!evaled)evalscript(s);
+		for (var i in codes){
+			eval(codes[i]);
+		}
+		//if(!evaled&&match!=null)
+				//eval(match[1]);	
 	});
 }
 function ajaxpost(formid, func, timeout) {

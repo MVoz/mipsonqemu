@@ -3,12 +3,12 @@
 		<div id="user_recomm">
 			<h2>站长推荐</h2>
 			<div class="s_avatar">
-					<a href="$todayhot['url']" title="$todayhot['link_description']">
-						<img src="$todayhot['pic']/$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['link_description']" />
+					<a class="id_td_$todayhot[linkid]">
+						<img src="$todayhot['pic']/$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['link_subject']" />
 					</a>
 			</div>
 			<div class="s_cnts">
-					<h3><a href="$todayhot['url']" title="{$value['link_subject']}">$todayhot['link_short_subject']</a></h3>
+					<h3><a class="id_td_$todayhot[linkid]">$todayhot['link_short_subject']</a></h3>
 					<p>
 						推荐指数: 
 						<span class="num_con">
@@ -24,13 +24,13 @@
 			</div>	
 		</div>
 	<p class="rlt_des">
-		<a href="$relatedlist[0]['url']" class="aqua">$todayhot['link_short_subject']</a>:
+		<a class="id_td_$todayhot[linkid]" class="aqua">$todayhot['link_short_subject']</a>:
 					$todayhot['link_short_description']...
 	</p>
 	<p class="rlt_line">
 			<span class="tag" style="width:220px;">
 					<!--{loop $todayhot['link_tag'] $subkey $subvalue}-->
-					<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+					<a class="id_td_tag_$todayhot[linkid]" id="$subkey">$subvalue</a>
 					<!--{/loop}-->
 			</span>
 			<span style="float:right;padding-right:5px;">
@@ -38,3 +38,10 @@
 			</span>
 	</p> 						
 </div>	
+<script language="javascript" type="text/javascript">	
+		jQuery(".id_td_$todayhot[linkid]").attr("href","$todayhot['url']").attr("target","_blank").attr("title","$todayhot['link_subject']").attr("onclick","updatesiteview($todayhot['linkid']);this.href=this.href+'&title=$todayhot['link_subject']';");
+		jQuery(".id_td_tag_$todayhot[linkid]").each(function(){
+			this.href = "javascript:;";
+			jQuery(this).attr("onclick","ajaxget('space.php?do=linktag&tagid="+this.id+"&ajaxdiv=bmcontent', 'bmcontent')");
+		});
+</script>

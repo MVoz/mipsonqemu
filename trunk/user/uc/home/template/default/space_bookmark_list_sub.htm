@@ -62,15 +62,7 @@
 					<a class="id_bm_edit_$value['bmid']">编辑</a>
 					</p> 
 				</li>
-<script language="javascript" type="text/javascript">		
-		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("target","_blank").attr("title","$value['subject']").attr("onclick","updatebookmarkview($value[bmid]);this.href=this.href+'&title=$value[subject]';");
-		jQuery(".id_bm_$value['bmid']:first").attr("style","float:left;width:250px;overflow:hidden;");
-		jQuery(".id_bm_$value['bmid']:empty").html('$value[subject]');
-		jQuery(".id_bm_tag_$value['bmid']").each(function(){
-			this.href = "space.php?do=linktag&tagid=" + this.id;
-		});	
-		jQuery(".id_bm_edit_$value['bmid']").attr("href","cp.php?ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit").attr("id","bookmark_edit_$value[bmid]").attr("onclick","ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);");
-</script> 
+
 				<!--{/loop}-->
 			</ul>
 <div class="page">$bookmark_multi</div>
@@ -79,5 +71,16 @@
 		<img src="./template/default/image/468x60.jpg">
 </div>
 
-
+<script language="javascript" type="text/javascript">	
+<!--{loop $bookmarklist $key $value}-->	
+		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("target","_blank").attr("title","$value['subject']").attr("onclick","updatebookmarkview($value[bmid]);this.href=this.href+'&title=$value[subject]';");
+		jQuery(".id_bm_$value['bmid']:first").attr("style","float:left;width:250px;overflow:hidden;");
+		jQuery(".id_bm_$value['bmid']:empty").html('$value[subject]');
+		jQuery(".id_bm_tag_$value['bmid']").each(function(){
+			this.href = "space.php?do=linktag&tagid=" + this.id;
+		});	
+		jQuery(".id_bm_edit_$value['bmid']").attr("href","cp.php?ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit").attr("id","bookmark_edit_$value[bmid]").attr("onclick","ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);");
+<!--{/loop}-->
+</script>
+	
 

@@ -356,8 +356,7 @@ function feed_publish($id, $idtype, $add=0) {
 			break;
 		case 'site_up':
 		case 'site_down':
-			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE id='$id'");
-			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+			if($value = getsite($id)) {	
 				//基本
 				$setarr['icon'] = 'site';
 				$setarr['id'] = $value['id'];
@@ -383,8 +382,8 @@ function feed_publish($id, $idtype, $add=0) {
 			break;
 		case 'bookmark_up':
 		case 'bookmark_down':
-			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE bmid='$id'");
-			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
+		//	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE bmid='$id'");
+			if($value = getbookmark($id)) {	
 				//基本
 				$setarr['icon'] = 'bookmark';
 				$setarr['id'] = $value['bmid'];
