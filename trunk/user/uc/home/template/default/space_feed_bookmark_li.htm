@@ -1,29 +1,33 @@
 <div class="rt">							
 	<div class="lfx_p">
 		 <div class="tle">
-				<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+				$value[title_template]
+				<a class="id_bm_$value['relate']['bmid']">$value[body_template]</a>
+				<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 		 </div>
 		 <div class="ds">
-				<a href="$value[relate][url]" onclick="updatebookmarkview($value['relate']['bmid'])" target="_blank">$value[relate][description]...</a> 
+				<a class="id_bm_$value['relate']['bmid']">
+				$value[relate][description]...
+				</a> 
 		</div>
 	</div>
 	<div class="rb gray">
 	    <span class="tags">
 			标签:
 				<!--{loop $value[relate][tag] $tagid $tagname}-->
-					<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=sitetag&tsgid=$tagid" >$tagname</a>
+					<a class="id_bm_tag_$value['relate']['bmid']" id="$tagid">$tagname</a>
 				<!--{/loop}-->					
-		</span>					
+		</span>	
 		   发布者:
-		   <a href="space.php?do=feed&uid=$value[postuid]" class="publisher">$value[username]</a>
+		   <a href="space.php?do=feed&uid=$value[uid]" class="publisher">$value[username]</a>
 			 有
-		   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+		   <span class="emnum" id="bookmark_view_num_id_$value[id]">$value[relate][viewnum]</span>
 			弹指人参与围观	
 	</div>
 </div>
 <div class="rightx">						
 	<div class="d_avatar avatar125">
-		 <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatebookmarkview($value['relate']['bmid'])">
+		 <a class="id_bm_$value['relate']['bmid']">
 				<!--{if empty($value['picflag'])}-->
 					<img src="$value[relate]['tmppic']">
 				<!--{else}-->
@@ -31,5 +35,12 @@
 				<!--{/if}-->
 		 </a>
 	</div>				  
-</div> 
+</div>
+<script language="javascript" type="text/javascript">
+		jQuery(".id_bm_$value['relate']['bmid']").attr("href","$value[relate][url]").attr("target","_blank").attr("title","$value['relate']['subject']").attr("onclick","updatebookmarkview($value['relate']['bmid'])");
+		jQuery(".id_bm_tag_$value['relate']['bmid']").each(function(){
+			this.href = "space.php?do=sitetag&tagid=" + this.id;
+		});
+		
+</script> 
 							 	
