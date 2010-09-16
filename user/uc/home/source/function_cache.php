@@ -569,10 +569,12 @@ function bookmark_cache_group($groupid,$browserid)
 		global $_SGLOBAL;
 		$bookmarklist=array();
 		$bmcachefileprefix = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark';
-		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
+		//$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
+		$query  = $_SGLOBAL['db']->query("SELECT bmid FROM ".tname('bookmark')." main WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
 		$dirnum=0;
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
+			$value = getbookmark($value['bmid']);
 			//检查目录
 			if(!empty($value['type']))
 			{
@@ -598,10 +600,11 @@ function bookmark_cache()
 	foreach($_SGLOBAL['browsertype'] as $k=>$v)
 	{
 		$bookmarklist=array();
-		$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$v." and main.parentid=".$groupid);
+		$query  = $_SGLOBAL['db']->query("SELECT bmid FROM ".tname('bookmark')." main WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$v." and main.parentid=".$groupid);
 		$dirnum=0;
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
+			$value = getbookmark($value['bmid']);
 			//检查目录
 			if(!empty($value['type']))
 			{
@@ -614,7 +617,6 @@ function bookmark_cache()
 		$bookmarklist['count']=count($bookmarklist);  //去掉目录后的总数
 		$bookmarklist['totalcount']=$bookmarklist['count']+$dirnum; //包括目录的总数
 		swritefile($bmcachefileprefix.'_'.$v.'_'.$groupid.'.txt', serialize($bookmarklist));
-
 	}
 }
 //书签组名字的缓存
