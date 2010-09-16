@@ -3,27 +3,26 @@
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3>
-						<a href="$value[url]" target="_blank" style="float:left;width:250px;overflow:hidden;" onclick="updatebookmarkview($value[bmid]);this.href=this.href+'&title=$value[subject]';">
-						$value[subject]
-						</a>
+						<a class="id_bm_$value['bmid']" style="float:left;width:250px;overflow:hidden;" ></a>
 						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
 					</h3>
 					<!--{if empty($space['style'])}-->
 						<div class="d_avatar avatar125">
-								<a href="$value[url]" title="{$value[subject]}" target="_blank">
+								<a class="id_bm_$value['bmid']">
 									 <!--{if empty($value['picflag'])}-->
 										<img src="$value['tmppic']">
 									 <!--{else}-->
 										<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
-									 <!--{/if}-->
-										
+									 <!--{/if}-->										
 								</a>
 						</div>
 						<p class="message">
 							<!--{if !empty($value['description'])}-->
 									$value['description'] ...
 							<!--{else}-->
-									暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+									暂时没有对&nbsp;<a class="id_bm_$value['bmid']"></a>&nbsp;的描述，你可以点击
+									<a class="id_bm_edit_$value['bmid']">编辑</a>
+									按钮或者等待服务器更新 ...
 							<!--{/if}-->
 							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 						</p>
@@ -32,7 +31,9 @@
 							<!--{if !empty($value['description'])}-->
 									$value['description'] ...
 							<!--{else}-->
-									暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+									暂时没有对&nbsp;<a class="id_bm_$value['bmid']"></a>&nbsp;的描述，你可以点击
+									<a class="id_bm_edit_$value['bmid']">编辑</a>
+									按钮或者等待服务器更新 ...
 							<!--{/if}-->
 							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 						</p>
@@ -40,7 +41,7 @@
 					<p class="tags"> 
 						<!--{if !empty($value['taglist'])}-->
 							<!--{loop $value[taglist] $subkey $subvalue}-->
-								<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey">$subvalue</a>
+								<a id="$subkey" class="id_bm_tag_$value['bmid']">$subvalue</a>
 							<!--{/loop}-->
 						<!--{else}-->
 							$_SC['unknown_tag']
@@ -56,13 +57,20 @@
 					 
 				     <a href="cp.php?ac=bookmark&op=get&bmid=$value[bmid]"  target="_blank" >详情</a>
 					 | 				  
-					<a href="cp.php?ac=bookmark&uid=$_SGLOBAL['supe_uid']&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+					<a href="cp.php?ac=bookmark&bmid=$value[bmid]&browserid=$value[browserid]&op=delete" id="bookmark_delete_$value[bmid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
 					 |
-					<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit2_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>
+					<a class="id_bm_edit_$value['bmid']">编辑</a>
 					</p> 
 				</li>
+<script language="javascript" type="text/javascript">		
+		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("target","_blank").attr("title","$value['subject']").attr("onclick","updatebookmarkview($value[bmid]);this.href=this.href+'&title=$value[subject]';");
+		jQuery(".id_bm_$value['bmid']:empty").html('$value[subject]');
+		jQuery(".id_bm_tag_$value['bmid']").each(function(){
+			this.href = "space.php?do=linktag&tagid=" + this.id;
+		});	
+		jQuery(".id_bm_edit_$value['bmid']").attr("href","cp.php?ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit").attr("id","bookmark_edit_$value[bmid]").attr("onclick","ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);");
+</script> 
 				<!--{/loop}-->
-
 			</ul>
 <div class="page">$bookmark_multi</div>
 </div>
