@@ -1,21 +1,23 @@
 <div class="rt">							
 	<div class="lfx_p">
 		 <div class="tle">
-				<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+				$value[title_template]
+				<a class="id_st_$value['relate']['siteid']">$value[body_template]</a>
+				<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 		 </div>
 		 <div class="ds">
-				<a href="$value[relate][url]" onclick="updatesiteview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
+				<a class="id_st_$value['relate']['siteid']">$value[relate][description]...</a> 
 		</div>
 	</div>
 	<div class="rb gray">
 	    <span class="tags">
 			标签:
 				<!--{loop $value[relate][tag] $tagid $tagname}-->
-					<a href="space.php?do=sitetag&tagidid=$tagid" >$tagname</a>
+					<a class="id_st_tag_$value['relate']['siteid']" id="$tagid">$tagname</a>
 				<!--{/loop}-->					
-		</span>					
-		   发布者:
-		   <a href="space.php?do=feed&uid=$value[postuid]" class="publisher">$value[username]</a>
+		</span>	
+ 	    发布者:
+		   <a href="space.php?do=feed&uid=$value[uid]" class="publisher">$value[username]</a>
 			 有
 		   <span class="emnum" id="site_view_num_id_$value[siteid]">$value[relate][viewnum]</span>
 			弹指人参与围观	
@@ -23,7 +25,7 @@
 </div>
 <div class="rightx">						
 	<div class="d_avatar avatar125">
-		 <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatesiteview($value[relate][siteid])">
+		 <a class="id_st_$value['relate']['siteid']">
 				<!--{if empty($value['picflag'])}-->
 					<img src="$value[relate]['tmppic']">
 				<!--{else}-->
@@ -31,5 +33,10 @@
 				<!--{/if}-->
 		 </a>
 	</div>				  
-</div> 
-							 	
+</div>
+<script language="javascript" type="text/javascript">
+		jQuery(".id_st_$value['relate']['siteid']").attr("href","$value[relate][url]").attr("target","_blank").attr("title","$value['relate']['subject']").attr("onclick","updatebookmarkview($value['relate']['siteid'])");
+		jQuery(".id_st_tag_$value['relate']['siteid']").each(function(){
+			this.href = "space.php?do=sitetag&tagid=" + this.id;
+		});
+</script> 
