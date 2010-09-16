@@ -7,7 +7,7 @@
 					<!--{/if}-->
 		<!--{/loop}--> 
 </p>
-		<!--{loop $_SGLOBAL['linktoolbar'] $key $value}-->
+<!--{loop $_SGLOBAL['linktoolbar'] $key $value}-->
 					<!--{if $key==1 }-->
 							<ul class="toolbar_$key" style="display: block;">
 					<!--{else}-->
@@ -21,17 +21,25 @@
 												<li class="row-list_l">
 											<!--{/if}-->
 									<!--{/if}-->
-									<em style="width:$_SGLOBAL['linktoolbartype'][$key]['width']px">
+									<em>
 									<!--{if $ac=='linktoolbar'}-->
-											<a title="$val[name]" target="_blank" href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a>  
+											<a href="admincp.php?ac=linktoolbar&op=edit&linktoolbarid=$val[toolbarid]">$val[name]</a>  
 									<!--{else}-->
 											<!--{if empty($val[namecolor]) }-->
-											<a title="$val[name]" target="_blank" href="$val[url]" >$val[name]</a> 
+											<a href="$val[url]" >$val[name]</a> 
 											<!--{else}-->
-											<a title="$val[name]" target="_blank" href="$val[url]" style="color:$val[namecolor]">$val[name]</a>  
+											<a href="$val[url]" style="color:$val[namecolor]">$val[name]</a>  
 											<!--{/if}-->
 									<!--{/if}-->
 									</em>
 					<!--{/loop}-->
-							</ul>
-			<!--{/loop}-->    
+					</ul>
+<script language="javascript" type="text/javascript">		
+		jQuery(".toolbar_$key em").attr("style","width:$_SGLOBAL['linktoolbartype'][$key]['width']px");
+		jQuery(".toolbar_$key a").attr("target","_blank");
+		jQuery(".toolbar_$key a").each(function(){
+			this.title=jQuery(this).text();
+		});	
+</script> 
+<!--{/loop}-->  
+ 

@@ -3,7 +3,7 @@
 			<!--{loop $bookmarklist $key $value}-->
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3>
-						<a class="id_bm_$value['bmid']" style="float:left;width:250px;overflow:hidden;" ></a>
+						<a class="id_bm_$value['bmid']"></a>
 						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
 					</h3>
 					<!--{if empty($space['style'])}-->
@@ -64,6 +64,7 @@
 				</li>
 <script language="javascript" type="text/javascript">		
 		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("target","_blank").attr("title","$value['subject']").attr("onclick","updatebookmarkview($value[bmid]);this.href=this.href+'&title=$value[subject]';");
+		jQuery(".id_bm_$value['bmid']:first").attr("style","float:left;width:250px;overflow:hidden;");
 		jQuery(".id_bm_$value['bmid']:empty").html('$value[subject]');
 		jQuery(".id_bm_tag_$value['bmid']").each(function(){
 			this.href = "space.php?do=linktag&tagid=" + this.id;
