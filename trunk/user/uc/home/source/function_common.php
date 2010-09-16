@@ -2992,6 +2992,6 @@ function updatestatistic($type,$mode,$ids)
 			$type:uplinkid downbookmarkid
 		*/
 		if($mode=='up'||$mode=='down')
-			feed_publish($ids['feedid'], $update_table.'_'.$mode, 1);
+			feed_publish($ids['feedid'], $type.'_'.$mode, 1);
 }
 ?>

@@ -4,26 +4,26 @@
 				<a href="$value[relate][url]">$value[title_template]</a><a href="$value[relate][url]">$value[body_template]</a> <span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 		 </div>
 		 <div class="ds">
-				<a href="$value[relate][url]" onclick="updatediggview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
+				<a href="$value[relate][url]" onclick="updatesiteview($value[relate][diggid])" target="_blank">$value[relate][description]...</a> 
 		</div>
 	</div>
 	<div class="rb gray">
 	    <span class="tags">
 			标签:
 				<!--{loop $value[relate][tag] $tagid $tagname}-->
-					<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=sitetag&diggid=$tagid" >$tagname</a>
+					<a href="space.php?do=sitetag&tagidid=$tagid" >$tagname</a>
 				<!--{/loop}-->					
 		</span>					
 		   发布者:
-		   <a href="space.php?do=feed&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
+		   <a href="space.php?do=feed&uid=$value[postuid]" class="publisher">$value[username]</a>
 			 有
-		   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+		   <span class="emnum" id="site_view_num_id_$value[siteid]">$value[relate][viewnum]</span>
 			弹指人参与围观	
 	</div>
 </div>
 <div class="rightx">						
 	<div class="d_avatar avatar125">
-		 <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatelinkview($value[relate][linkid])">
+		 <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatesiteview($value[relate][siteid])">
 				<!--{if empty($value['picflag'])}-->
 					<img src="$value[relate]['tmppic']">
 				<!--{else}-->
