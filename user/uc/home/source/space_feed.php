@@ -45,8 +45,8 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 						} else
 						continue;
 					break;
-				case 'link':
-						if($s=getlink($value['id']))
+				case 'site':
+						if($s=getsite($value['id']))
 						{
 							$value['relate']= $s;
 						}else

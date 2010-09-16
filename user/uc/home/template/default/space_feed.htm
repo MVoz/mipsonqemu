@@ -12,14 +12,13 @@
 						</a>
 					</div>
 				</div>
-				<!--{if $value[icon]=='digg' }-->
-					   <!--{template space_feed_digg_li}-->
-			    <!--{else}-->
-					<!--{if $value[icon]=='link' }-->
-							<!--{template space_feed_link_li}-->
-				 	<!--{else}-->
-					<!--{/if}-->
-				<!--{/if}-->
+							<!--{if $value[icon]=='digg' }-->
+								   <!--{template space_feed_digg_li}-->
+						    <!--{elseif $value[icon]=='site'}-->
+								   <!--{template space_feed_site_li}-->
+							<!--{elseif $value[icon]=='bookmark' }-->
+									<!--{template space_feed_bookmark_li}-->
+							<!--{/if}-->
 			</li>
 			<!--{/loop}-->
 		</ul>
@@ -56,12 +55,11 @@
 							</div>
 							<!--{if $value[icon]=='digg' }-->
 								   <!--{template space_feed_digg_li}-->
-						    <!--{else}-->
-								<!--{if $value[icon]=='link' }-->
-									<!--{template space_feed_link_li}-->
-							 	<!--{elseif $value[icon]=='bookmark' }-->
-									<!--{template space_feed_link_li}-->
-								<!--{/if}-->
+						    <!--{elseif $value[icon]=='site'}-->
+								   <!--{template space_feed_site_li}-->
+							<!--{elseif $value[icon]=='bookmark' }-->
+									<!--{template space_feed_bookmark_li}-->
+							<!--{/if}-->
 						 <!--{/if}-->
 						</li>
 						<!--{/loop}-->

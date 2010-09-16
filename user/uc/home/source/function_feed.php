@@ -354,35 +354,35 @@ function feed_publish($id, $idtype, $add=0) {
 				//$setarr['image_1_link'] = $value['image_link'];
 			}
 			break;
-		case 'uplinkid':
-		case 'downlinkid':
-			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid='$id'");
+		case 'site_up':
+		case 'site_down':
+			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE id='$id'");
 			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
 				//基本
-				$setarr['icon'] = 'link';
-				$setarr['id'] = $value['linkid'];
+				$setarr['icon'] = 'site';
+				$setarr['id'] = $value['id'];
 				$setarr['idtype'] = $idtype;
 				$setarr['uid'] = $_SGLOBAL['supe_uid'];
 				//$setarr['username'] = $value['username'];
 				$setarr['username'] = $_SGLOBAL['name'];
 				$setarr['dateline'] = $_SGLOBAL['timestamp'];
-				$setarr['hot'] = $value['hot'];
+				//$setarr['hot'] = $value['hot'];
 				
 				//详细
 				//$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
 				
-				$setarr['title_template'] = ($idtype=='uplinkid')?cplang('upshare_link'):cplang('downshare_link'); 
+				$setarr['title_template'] = cplang($idtype);
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
-				$setarr['body_template'] = '{link}';
-				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[link_subject]</a>", 'data'=>$value[url]);
+				$setarr['body_template'] = '{site}';
+				$setarr['body_data'] = array('site'=>"<a href=\"$value[url]\" target=\"_blank\">$value[name]</a>", 'data'=>$value[url]);
 				$arr['body_data'] = serialize($arr['body_data']);//数组转化
 			//	$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
 			}
 			break;
-		case 'upbookmarkid':
-		case 'downbookmarkid':
+		case 'bookmark_up':
+		case 'bookmark_down':
 			$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE bmid='$id'");
 			if($value = $_SGLOBAL['db']->fetch_array($query)) {	
 				//基本
@@ -398,7 +398,7 @@ function feed_publish($id, $idtype, $add=0) {
 				//详细
 				//$url = "space.php?uid=$value[uid]&do=share&id=$value[sid]";
 				
-				$setarr['title_template'] = ($idtype=='upbookmarkid')?cplang('upshare_bookmark'):cplang('downshare_bookmark'); 
+				$setarr['title_template'] = cplang($idtype); 
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{bookmark}';
 				$setarr['body_data'] = array('bookmark'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
