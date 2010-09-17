@@ -4,13 +4,19 @@
 <li class="mgn2">
 	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
 	<!--{if empty($value[picflag])}-->
-		<img alt="$value['link_subject']" src="$value['tmppic']">
+		<img  src="$value['tmppic']">
 	<!--{else}-->
-		<img alt="$value['link_subject']" src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+		<img  src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
 	<!--{/if}-->
 	</a>
-	<span style="height:15px;text-align:center;width:82px;"><a href="$value[url]">$value[link_subject]</a></span>							
+	<span><a >$value[link_subject]</a></span>							
 </li>
 <!--{/loop}-->
 </ul>
 </div>
+<script language="javascript" type="text/javascript">	
+		jQuery(".mgn2").each(function(){
+		});
+		jQuery(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"82px" });
+		
+</script>
