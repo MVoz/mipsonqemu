@@ -80,9 +80,9 @@
 			 <tr>
                             <th>导航：</th>
                             <td>
-                                <input type="radio" id="pass_yes" name="navigation" value="1"<{if $data.navigation eq 1}> checked="checked"<{/if}>/>
+                                <input type="radio" id="pass_yes" name="navigation" value="1"<{if $info.navigation eq 1}> checked="checked"<{/if}>/>
                                 <label class="hand" for="pass_yes">是</label>
-                                <input type="radio" id="pass_no" name="navigation" value="0"<{if $data.navigation eq 0}> checked="checked"<{/if}>/>
+                                <input type="radio" id="pass_no" name="navigation" value="0"<{if $info.navigation eq 0}> checked="checked"<{/if}>/>
                                 <label class="hand" for="pass_no">否</label>
                             </td>
                         </tr>

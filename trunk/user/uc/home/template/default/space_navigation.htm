@@ -15,7 +15,9 @@
 	<div class="box_l">
 	<!--{loop $navlist $key $bookmarklist}-->
 		<div  style="height:105px;" class="ntitle">
-				<span style="float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;"id="groupname">$bookmarklist['classname']</span>
+				<a style="float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;"id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
+				$bookmarklist['classname']
+				</a>
 	
 				<!--{template space_navigation_class}-->				  
 		</div>	
