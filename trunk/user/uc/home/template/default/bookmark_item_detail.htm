@@ -5,15 +5,18 @@
 		</h2>
 		<div class="siteinfo">
 					<div class="sitepic">
-					<a target="_target" class="playpic" href="$item['url']" onclick="updatebookmarkview($item[bmid])">
-					<img alt="$item['$subject']" src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
-					<em></em>
-					</a>
+						<a class="playpic" href="$item['url']" onclick="updatebookmarkview($item[bmid])">
+							<!--{if empty($item[picflag])}-->
+								<img  src="$item['tmppic']">
+							<!--{else}-->
+								<img  src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
+							<!--{/if}-->
+						</a>
 					</div>
 					<div class="sitedetail">
 						<p>
 							<strong>名称: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatebookmarkview($item[bmid])">$item['subject']</a>
+							<a class="url">$item['subject']</a>
 							<span class="num_con">
 								<span>
 									<cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}-->
@@ -23,14 +26,8 @@
 						</p>
 						<p>
 							<strong>地址: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatebookmarkview($item[bmid])">$item['url']</a>
+							<a class="url">$item['url']</a>
 						</p>
-						<!--
-						<p>
-							<strong>所属分类: </strong>
-							<a href="type,area/movie,1" target="_blank">韩国</a>
-						</p>
-						-->
 						<p>
 							<strong>标签: </strong>
 							<!--{loop $item['tag'] $subkey $subvalue}-->
@@ -43,7 +40,7 @@
 							<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
 							<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
 						<p>
-							<a target="_target" href="$item['url']" onclick="updatebookmarkview($item[bmid])">访问</a> 
+							<a class="url">访问</a> 
 							<!--{if $ac=='link' }-->
 							<a  href="cp.php?ac=link&linkid=$item[linkid]&op=bookmark">收藏</a>
 							<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
@@ -67,10 +64,7 @@
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  
 						</div>
-					</div>
-					
-
-
+					</div>	
 				</div>
 				<h3>站点简介</h3>
 				<div class="siteintro">
@@ -101,3 +95,8 @@
 			<!--{template space_navigation_list}-->
 	</div>
 </div>
+<script language="javascript" type="text/javascript">	
+	var url = jQuery(".playpic").attr("href");
+	var click = jQuery(".playpic").attr("onclick");
+	jQuery(".url").attr("href",url).attr("onclick",click);
+</script>

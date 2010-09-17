@@ -1,13 +1,13 @@
 <div id="thumbs">
 		<ul style="width:360px;">
-					<!--{loop $relatedlist $value}-->
-						<li>
-							<a  title="$value['link_description']" onclick="getrelatedlinkfromid($value['linkid']);">
-								<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']" alt="$value['link_subject']" />
-							</a>
-							<p><a href="$value['url']">$value['link_subject']</a></p>							
-						</li>
-					<!--{/loop}-->
+			<!--{loop $relatedlist $value}-->
+				<li>
+					<a  title="$value['link_description']" onclick="getrelatedlinkfromid($value['linkid']);">
+						<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']"/>
+					</a>
+					<p><a href="$value['url']">$value['link_subject']</a></p>							
+				</li>
+			<!--{/loop}-->
 		</ul>
 </div>
 <script language="javascript" type="text/javascript">	
