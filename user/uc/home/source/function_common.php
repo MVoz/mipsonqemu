@@ -2953,6 +2953,18 @@ function getsite($siteid)
 	} 	
 	return $s;
 }
+function getsiteclassname($classid)
+{
+	global $_SGLOBAL;
+	if($classid<=0)
+		return '';
+	$q = $_SGLOBAL['db']->query("SELECT main.classname FROM ".tname('siteclass')." main	where classid=".$classid);
+	if($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		  return $s['classname'];
+	} 	
+	return '';
+}
 /*
 更新顶数，踩数，浏览数
 $type:bookmark,link,site

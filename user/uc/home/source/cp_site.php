@@ -55,7 +55,8 @@ switch($ret)
 }
 include_once(S_ROOT.'./source/function_site.php');
 if($op == 'get'){
-
+	//得到siteclassname
+	$item['classname']=getsiteclassname($item['class']);
 }
 elseif($op == 'edit'){
 		//处理edit提交

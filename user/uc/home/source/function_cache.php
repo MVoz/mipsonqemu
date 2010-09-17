@@ -803,8 +803,9 @@ function navigation_cache()
 				$v =$_SGLOBAL['db']->fetch_array($site_q);
 				if(!empty($v))
 					{
-						$v['link_description']= getstr($v['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-						$v['link_subject']= getstr($v['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+						//$v['description']= getstr($v['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
+						$v['subject']= getstr($v['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
+						$v['siteid']=$v['id'];
 						$value['son'][]=$v;
 					}
 			}
