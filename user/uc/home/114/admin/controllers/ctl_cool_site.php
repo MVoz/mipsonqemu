@@ -220,6 +220,8 @@ class ctl_cool_site
             $data['remark'] = $remark;
 
 
+
+
             // 新增
             if ($action == 'add')
             {

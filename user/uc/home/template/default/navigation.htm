@@ -7,10 +7,15 @@
 						<dt>$value['classname']</dt>
 							<dd >
 								<!--{loop $value[son] $key $valueson}-->  								
-								<a href="space.php?do=$do&classid=$valueson['classid']">$valueson['classname']</a>
+								<a  id="$valueson['classid']">$valueson['classname']</a>
 								<!--{/loop}-->
 							</dd>
 					</dl>
 		<!--{/loop}-->						
 </div> 
+<script language="javascript" type="text/javascript">	
+		jQuery(".navi_catalog a").each(function(){
+			this.href = "space.php?do=navigation&classid="+this.id;
+		});
+</script>
 

@@ -70,19 +70,29 @@ class mod_cool_class
                     mod_login::message("自定义路径只允许是数字,字母和下划线组合!",'');
                 }
             }
-            app_db::query("SELECT count(*) as cnt FROM ylmf_coolclass where classname = '$classnewname'");
+			//ramen 20100917 根据path生成siteclassid			
+			$siteclasspath = preg_replace("/html/","",$path);
+			$siteclasspath = preg_replace("/\//","",$siteclasspath);
+			app_db::query("SELECT * FROM ylmf_siteclass where path = '$siteclasspath' limit 1");
             $rs = app_db::fetch_one();
-            if($rs['cnt']>0)
-            {
-                mod_login::message("该分类名称已存在!",'');
-            }
-            else
-            {
-                app_db::query("INSERT INTO ylmf_coolclass (classname,displayorder,path,navigation)VALUES ('$classnewname','$orderid','$path','$navigation')");
+			if($rs['classid']==0){
+                mod_login::message("路径设置有误，请参考分类管理!",'');
+            }else{
+				$siteclassid = $rs['classid'];
+				app_db::query("SELECT count(*) as cnt FROM ylmf_coolclass where classname = '$classnewname'");
+				$rs = app_db::fetch_one();
+				if($rs['cnt']>0)
+				{
+					mod_login::message("该分类名称已存在!",'');
+				}
+				else
+				{
+					app_db::query("INSERT INTO ylmf_coolclass (classname,displayorder,path,navigation,siteclassid)VALUES ('$classnewname','$orderid','$path','$navigation',$siteclassid)");
 
-                //mod_make_html::auto_update('catalog', app_db::insert_id());
-                mod_login::message("添加成功!",'?c=cool_class&a=index');
-            }
+					//mod_make_html::auto_update('catalog', app_db::insert_id());
+					mod_login::message("添加成功!",'?c=cool_class&a=index');
+				}
+			}
         }
     }
 
@@ -113,8 +123,18 @@ class mod_cool_class
                     mod_login::message("自定义路径只允许是数字,字母和下划线组合!",'?c=class&a=index&type='.$type.'&classid='.$returnid);
                 }
             }
-            app_db::query("UPDATE ylmf_coolclass SET classname='$classnewname', path='$path', displayorder='$orderid' ,navigation='$navigation' WHERE classid='$id'");
+			//ramen 20100917 根据path生成siteclassid			
+			$siteclasspath = preg_replace("/html/","",$path);
+			$siteclasspath = preg_replace("/\//","",$siteclasspath);
 
+			app_db::query("SELECT * FROM ylmf_siteclass where path = '$siteclasspath' limit 1");
+            $rs = app_db::fetch_one();
+			if($rs['classid']==0){
+                mod_login::message("路径设置有误，请参考分类管理!",'');
+            }else{
+				$siteclassid = $rs['classid'];
+				app_db::query("UPDATE ylmf_coolclass SET classname='$classnewname', path='$path', displayorder='$orderid' ,navigation='$navigation',siteclassid='$siteclassid' WHERE classid='$id'");
+			}
             //mod_make_html::auto_update('catalog', $id);
         }
         mod_login::message("修改成功!",'?c=cool_class&a=index');

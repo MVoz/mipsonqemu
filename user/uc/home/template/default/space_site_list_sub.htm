@@ -1,59 +1,96 @@
-
-			<ul class="bloglist">
-			<!--{loop $bookmarklist $key $value}-->
-			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
-					<h3>
-						<a href="$value[url]" target="_blank" onclick="updatevisitstat($value[bmid])">$value[subject]</a>
-						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
-					</h3>
-					<div class="d_avatar avatar125">
-							<a href="$value[url]" title="{$value[subject]}" target="_blank">
-								 <!--{if empty($value['picflag'])}-->
-									<img src="$value['tmppic']">
-								 <!--{else}-->
-									<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
-								 <!--{/if}-->
-									
-							</a>
-					</div>
-					<p class="message">
+<ul class="bloglist">
+	<!--{loop $bookmarklist $key $value}-->
+		<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+		<h3>
+			<a class="url id_st_$value['siteid']" id="$value['siteid']"></a>
+			<p class="num_con">
+				<span>
+					<strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}-->
+				</span>
+				<em>(<em>$value['storenum']</em>人收)</em>
+			</p>
+		</h3>
+		<div class="d_avatar avatar125">
+				<a class="url id_st_$value['siteid']" id="$value['siteid']">
+						 <!--{if empty($value['picflag'])}-->
+								<img src="$value['tmppic']">
+						 <!--{else}-->
+								<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+						 <!--{/if}-->							
+				</a>
+		</div>		
 						<!--{if !empty($value['description'])}-->
+		<p class="message">
 								$value['description'] ...
 						<!--{else}-->
-								暂时没有对&nbsp;<a href="$value[url]">$value[subject]</a>&nbsp;的描述，你可以点击<a href="cp.php?uid=$_SGLOBAL['supe_uid']&ac=bookmark&bmid=$value[bmid]&groupid=$value[groupid]&browserid=$value[browserid]&op=edit" id="bookmark_edit_$value[bmid]" onclick="ajaxmenuEx(event,'img_seccode_$value[bmid]', this.id,1);">编辑</a>按钮或者等待服务器更新 ...
+		<p class="message ">
+								<span class="id_nodes" id="$value['siteid']"></span>
 						<!--{/if}-->
 						<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-					</p>
-					<p class="tags"> 
+		</p>
+		<p class="tags"> 
 						<!--{if !empty($value['tag'])}-->
 							<!--{loop $value[tag] $subkey $subvalue}-->
-								<a href="space.php?uid=$_SGLOBAL['supe_uid']&do=sitetag&tagid=$subkey">$subvalue</a>
+								<a id="$subkey" class="id_st_tag">$subvalue</a>
 							<!--{/loop}-->
 						<!--{else}-->
-							$_SC['unknown_tag']
+								<span></span>
 						<!--{/if}-->
-					</p>					
-					
-					<p class="oper">
+		</p>									
+		<p class="oper">
 					<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
-				    <a href="cp.php?ac=site&op=get&siteid=$value[siteid]"  target="_blank" >详情</a>
+				     <a class="get" id="$value['siteid']">详情</a>
 					|
 				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managesite') }-->
-					<a href="cp.php?ac=site&siteid=$value[siteid]&op=delete" id="bookmark_delete_$value[siteid]" onclick="ajaxmenu(event, this.id,1)">删除</a>
+					<a class="delete" id="$value['siteid']">删除</a>
 					|
-					<a href="cp.php?ac=site&siteid=$value[siteid]&op=edit" id="bookmark_edit2_$value[siteid]" onclick="ajaxmenuEx(event,'img_seccode_$value[siteid]', this.id,1);">编辑</a>
+					<a class="edit" id="$value['siteid']">编辑</a>
 					<!--{else}-->
-					 <a href="cp.php?ac=site&siteid=$value[siteid]&op=bookmark" id="bookmark_edit2_$value[siteid]" >收藏</a>
-					 <!--{/if}-->
-					 </p>
-					 
+					<a class="bm" id="$value['siteid']">编辑</a>
+					<!--{/if}-->
+					</p>					 
 				</li>
 				<!--{/loop}-->
-
 			</ul>
 <div class="bloglist_ad">
 		<img src="./template/default/image/468x60.jpg">
 </div>
 <div class="page">$bookmark_multi</div>
-
+<script language="javascript" type="text/javascript">	
+		jQuery(".id_nodes").each(function(){
+			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
+		});
+<!--{loop $bookmarklist $key $value}-->	
+		var id_st_$value['siteid']_title="$value['subject']";
+		jQuery(".id_st_$value['siteid']").attr("href","$value[url]").attr("title",id_st_$value['siteid']_title);		
+		jQuery(".id_st_$value['siteid']:empty").html(id_st_$value['siteid']_title);
+<!--{/loop}-->
+		jQuery(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		jQuery(".id_st_tag").each(function(){
+			this.href = "space.php?do=sitetag&tagid=" + this.id;
+		});	
+		jQuery(".bloglist .edit").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
+			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			this.id="bookmark_edit2_"+this.id;
+		});	
+		jQuery(".bloglist .delete").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete";
+			this.id="bookmark_delete_"+this.id;
+			jQuery(this).attr("onclick","ajaxmenu(event, this.id,1)");
+		});	
+		jQuery(".bloglist .bm").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
+			this.id="bookmark_edit2_"+this.id;
+		});	
+		jQuery(".bloglist .get").each(function(){
+			this.href="cp.php?ac=site&op=get&siteid="+this.id;
+		});	
+		jQuery(".bloglist .url").each(function(){
+			//jQuery(this).attr("onclick","updatebookmarkview("+this.id+");this.href=this.href+'&title="+jQuery(".id_bm_"+this.id).attr("title")+"';");
+			jQuery(this).attr("onclick","updatesiteview("+this.id+")");
+		});			
+		jQuery(".bloglist a").attr("target","_blank");
+		jQuery(".bloglist .tags > span").html("什么也没留下...");
+</script>
 

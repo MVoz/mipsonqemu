@@ -637,7 +637,7 @@ function getstr($string, $length, $in_slashes=0, $out_slashes=0, $censor=0, $bbc
 	if(empty($_SGLOBAL['client']))
 		$string = trim($string);
 
-	if($in_slashes) {
+		if($in_slashes) {
 		//传入的字符有slashes
 		$string = sstripslashes($string);
 	}
@@ -2870,7 +2870,7 @@ function getlinkfromsite($arr)
 		return $arr;
 	$arr['url'] = $site['url'];
 	$arr['link_tag'] = $site['tag'];
-	$arr['link_subject'] = $site['name'];
+	$arr['link_subject'] = preg_replace("/[\s|\n|\r|\f]+/","",$site['name']);
 	$arr['link_description'] = $site['remark'];	
 	$arr['up']=$site['up'];
 	$arr['down']=$site['down'];
@@ -2903,6 +2903,8 @@ function getbookmark($bmid)
 		}
 	   $s['tags'] = implode(' ',$s['tag']);
 	   if(empty($s['description'])) $s['description']=$s['link_description'];	 
+	   //去除回车转行制表等特殊字符
+	   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['subject']);
 	} 
 	return $s;
 }
@@ -2926,9 +2928,10 @@ function getlink($linkid)
 	   if($s){
 		   $s['tag']=$s['link_tag'];
 		   $s['description']=$s['link_description'];	
-		   $s['subject']=$s['link_subject'];
+		   //去除回车转行制表等特殊字符
+		   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['link_subject']);
 	   }
-	} 
+	} 	
 	$s['tags'] = implode(' ',$s['tag']);
 	return $s;
 }
@@ -2944,7 +2947,8 @@ function getsite($siteid)
 		   $s['siteid'] = $siteid;
 		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
 		   $s['tags'] = implode(' ',$s['tag']);
-		   $s['subject']=$s['name'];
+			//去除回车转行制表等特殊字符
+		   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['name']);
 		   $s['description']=$s['remark'];
 	} 	
 	return $s;

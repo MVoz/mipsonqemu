@@ -250,6 +250,8 @@ function ajaxget(url, showid, waitid) {
 			evalscript(s);
 			evaled = true;
 		}
+		var codes=new Array();
+		s=getremovescript(s,codes);
 		if(!evaled) {
 			if(x.showId) {
 				changedisplay(x.showId, x.showId.orgdisplay);
@@ -259,6 +261,9 @@ function ajaxget(url, showid, waitid) {
 				ajaxupdateevents(x.showId);
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
 			}
+		}
+		for (var i in codes){
+			eval(codes[i]);
 		}
 		if(!evaled)evalscript(s);
 	});
@@ -284,6 +289,8 @@ function ajaxgetextend(url,func,showid, waitid) {
 			evalscript(s);
 			evaled = true;
 		}
+		var codes=new Array();
+		s=getremovescript(s,codes);
 		if(!evaled) {
 			if(x.showId) {
 				changedisplay(x.showId, x.showId.orgdisplay);
@@ -294,6 +301,9 @@ function ajaxgetextend(url,func,showid, waitid) {
 				func();
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
 			}
+		}
+		for (var i in codes){
+			eval(codes[i]);
 		}
 		if(!evaled)evalscript(s);
 	});
