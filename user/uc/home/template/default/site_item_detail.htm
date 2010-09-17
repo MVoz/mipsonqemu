@@ -21,7 +21,7 @@
 							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
 						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['url']</a></p>		
-						<p><strong>所属分类: </strong><a href="type,area/movie,1" target="_blank">韩国</a></p>						
+						<p><strong>所属分类: </strong><a href="space.php?do=navigation&classid=$item['class']" target="_blank">$item['classname']</a></p>						
 						<p>
 						<strong>标签: </strong>
 						<!--{loop $item['tag'] $subkey $subvalue}-->
