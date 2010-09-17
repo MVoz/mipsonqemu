@@ -2,21 +2,25 @@
 <ul class="thumbs noscript">
 <!--{loop $bookmarklist['son'] $key $value}-->
 <li class="mgn2">
-	<a href="$value[url]" title="{$value[link_subject]}" target="_blank" name="leaf" class="thumb">
+	<a href="$value[url]" title="{$value[link_subject]}" class="thumb">
 	<!--{if empty($value[picflag])}-->
 		<img  src="$value['tmppic']">
 	<!--{else}-->
 		<img  src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
 	<!--{/if}-->
 	</a>
-	<span><a >$value[link_subject]</a></span>							
+	<span><a></a></span>						
 </li>
 <!--{/loop}-->
 </ul>
 </div>
 <script language="javascript" type="text/javascript">	
 		jQuery(".mgn2").each(function(){
+			var o = jQuery(this);
+			var url = o.children(".thumb").attr("href");
+			var title = o.children(".thumb").attr("title");
+			o.children("span").children("a").attr("href",url);
+			o.children("span").children("a").html(title);
 		});
-		jQuery(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"82px" });
-		
+		jQuery(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"82px" });		
 </script>
