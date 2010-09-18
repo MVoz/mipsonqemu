@@ -17,15 +17,15 @@
 					<div class="sitedetail">
 						<p>
 							<strong>名称: </strong>
-							<a href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['subject']</a>
+							<a class="url">$item['subject']</a>
 							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
-						<p><strong>地址: </strong><a class="link-lb-ff0000" href="$item['url']" target="_blank" onclick="updatesiteview($item[siteid])">$item['url']</a></p>		
+						<p><strong>地址: </strong><a class="url">$item['url']</a></p>		
 						<p><strong>所属分类: </strong><a href="space.php?do=navigation&classid=$item['class']" target="_blank">$item['classname']</a></p>						
 						<p>
 						<strong>标签: </strong>
 						<!--{loop $item['tag'] $subkey $subvalue}-->
-								<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+								<a class="tags" id="$subkey">$subvalue</a>						
 						<!--{/loop}-->
 						</p>
 						<p>
@@ -34,7 +34,7 @@
 						<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
 						<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
 						<p>
-						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">访问</a> 
+						<a class="url">访问</a> 
 						<!--{if $ac=='site' }-->
 						<a  href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
 						<a  onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="bookmark_reporterr_$item[siteid]" href="cp.php?ac=site&op=reporterr&siteid=$item[siteid]">举报</a>
@@ -75,6 +75,14 @@
 				</div>
 		
 	</div>
+<script language="javascript" type="text/javascript">	
+		var url = jQuery(".sitepic > a").attr("href");
+		var click = jQuery(".sitepic > a").attr("onclick");
+		jQuery(".url").attr("href",url).attr("onclick",click);
+		jQuery(".tags").each(function(){
+			jQuery(this).attr("href","space.php?do=sitetag&tagid="+this.id);
+		});
+</script>
 	<div class="box_r">
 		<h2 class="ntitle">
 			<em>类似站点&raquo;</em>
@@ -97,3 +105,4 @@
 			<!--{template space_navigation_list}-->	
 	</div>
 </div>
+
