@@ -8,8 +8,7 @@
 								<!--<img src="template/default/image/diggtype.jpg">-->
 								<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif">
 							</a>
-						</div>
-						
+						</div>						
 				</div>
 				<div class="rt">
 						<!--{if $value[picflag] }-->
@@ -18,40 +17,33 @@
 						<div class="lfx">
 						<!--{/if}-->	
 							 <div class="tle">
-								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[subject]</a>
+								<a class="id_dg_$value['diggid']"></a>
 								<span class="gray">时间:<!--{date('Y-m-d',$value[dateline],1)}--></span>
 							 </div>
 							 <div class="ds">
-								<a href="$value[url]" onclick="updatediggview($value[diggid])" target="_blank">$value[description]...</a> 
+								<a class="id_dg_$value['diggid']">$value[description]...</a> 
 							</div>
 						</div>
 						<div class="rb gray">
 							   <span class="tags">					
 							   标签:
 								<!--{loop $value[tag] $tagid $tagname}-->
-									<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=diggtag&tagid=$tagid" >$tagname</a>
+									<a id="$tagid" class="id_dg_tag">$tagname</a>
 								<!--{/loop}-->					
 							   </span>						
 							   发布者:
 							   <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
 								     有
 							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
-								弹指人参与围观	
-
-								
+								弹指人参与围观								
 								<span class="rateup">
 										<a href="javascript:void(0)" onclick="updatediggup($value[diggid])" target="_self"></a>
 								</span>
-								(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)
-								
-
-								
+								(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)	
 								<span class="ratedown">
 										<a href="javascript:void(0)" onclick="updatediggdown($value[diggid])" target="_self"></a>
 								</span>
 								(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
-								
-
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<a onclick="ajaxmenuEx(event,'img_seccode_$value[diggid]', this.id,1);" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit">编辑
 								</a>
@@ -59,7 +51,7 @@
 						</div>
 				
 				</div>
-							<!--{if $value[picflag] }-->	
+					<!--{if $value[picflag] }-->	
 						<div class="rightx">						
 							<div class="d_avatar avatar125">
 							   <a title=$value[subject] href="$value[url]" target=_blank onclick="updatediggview($value[diggid])">
@@ -68,13 +60,20 @@
 							   </a>
 						  </div>				  
 						</div>
-					 <!--{/if}-->
-				
-				
+					<!--{/if}-->
 			</li>
 <!--{/loop}-->    
 </ul>
 <div class="page">$diggmulti</div>
 </div>
-		
+<script language="javascript" type="text/javascript">	
+<!--{loop $digglist $key $value}-->	
+		var id_dg_$value['diggid']_title="$value['subject']";
+		jQuery(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title);		
+		jQuery(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
+<!--{/loop}-->
+		jQuery(".id_dg_tag").each(function(){
+			this.href = "space.php?do=diggtag&tagid=" + this.id;
+		});	
+</script>		
 
