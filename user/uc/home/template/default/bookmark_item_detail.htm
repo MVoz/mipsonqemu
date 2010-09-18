@@ -41,13 +41,9 @@
 							<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
 						<p>
 							<a class="url">访问</a> 
-							<!--{if $ac=='link' }-->
-							<a  href="cp.php?ac=link&linkid=$item[linkid]&op=bookmark">收藏</a>
-							<a  onclick="ajaxmenuEx(event,'img_seccode_$linkitem[linkid]', this.id,1);" id="bookmark_reporterr_$item[linkid]" href="cp.php?ac=link&op=reporterr&linkid=$item[linkid]">举报</a>
-							<!--{/if}-->
 							<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-								<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=edit">编辑</a>
-								<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=delete">删除</a>
+								<a class="action"  id="$item[bmid]" name="edit">编辑</a>
+								<a class="action"  id="$item[bmid]" name="delete">删除</a>
 							<!--{/if}-->
 						</p>
 						</div>
@@ -100,6 +96,9 @@
 	var click = jQuery(".playpic").attr("onclick");
 	jQuery(".url").attr("href",url).attr("onclick",click);
 	jQuery(".tags").each(function(){
-			jQuery(this).attr("href","space.php?do=linktag&tagid="+this.id);
+		jQuery(this).attr("href","space.php?do=linktag&tagid="+this.id);
 	});
+	jQuery(".action").each(function(){
+		jQuery(this).attr("href","cp.php?ac=bookmark&op="+this.name+"&bmid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
+	});	
 </script>

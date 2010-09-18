@@ -11,7 +11,6 @@
 								 <!--{else}-->
 									<img src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
 								 <!--{/if}-->							
-						<em></em>
 						</a>
 					</div>
 					<div class="sitedetail">
@@ -36,17 +35,12 @@
 						<p>
 						<a class="url">访问</a> 
 						<!--{if $ac=='site' }-->
-						<a  href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
-						<a  onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="bookmark_reporterr_$item[siteid]" href="cp.php?ac=site&op=reporterr&siteid=$item[siteid]">举报</a>
+						<a href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
+						<a class="action"  id="$item[siteid]" name="reporterr">举报</a>
 						<!--{/if}-->
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-							<!--{if $ac=='site' }-->
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_edit2_$item[siteid]" href="cp.php?ac=site&siteid=$item[siteid]&op=edit">编辑</a>
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[siteid]', this.id,1);" id="link_delete_$item[siteid]" href="cp.php?ac=site&siteid=$item[siteid]&op=delete">删除</a>
-							<!--{else}-->
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_edit2_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=edit">编辑</a>
-							<a onclick="ajaxmenuEx(event,'img_seccode_$item[bmid]', this.id,1);" id="link_delete_$item[bmid]" href="cp.php?ac=bookmark&bmid=$item[bmid]&op=delete">删除</a>
-							<!--{/if}-->
+							<a class="action"  id="$item[siteid]" name="edit">编辑</a>
+							<a class="action"  id="$item[siteid]" name="delete">删除</a>
 						<!--{/if}-->
 						</p>
 					</div>
@@ -63,17 +57,13 @@
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  
 					</div>
-				</div>
-					
-
-
+				</div>	
 				</div>
 				<h3>站点简介</h3>
 				<div class="movieIntro">
 					<p>$item[link_description]</p>
 					<p>&nbsp;</p>
-				</div>
-		
+				</div>	
 	</div>
 <script language="javascript" type="text/javascript">	
 		var url = jQuery(".sitepic > a").attr("href");
@@ -82,6 +72,9 @@
 		jQuery(".tags").each(function(){
 			jQuery(this).attr("href","space.php?do=sitetag&tagid="+this.id);
 		});
+		jQuery(".action").each(function(){
+			jQuery(this).attr("href","cp.php?ac=site&op="+this.name+"&siteid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
+		});		
 </script>
 	<div class="box_r">
 		<h2 class="ntitle">
