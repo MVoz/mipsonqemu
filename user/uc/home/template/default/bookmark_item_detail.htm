@@ -31,7 +31,7 @@
 						<p>
 							<strong>标签: </strong>
 							<!--{loop $item['tag'] $subkey $subvalue}-->
-									<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+									<a class="tags" id="$subkey">$subvalue</a>
 							<!--{/loop}-->
 						</p>
 						<p>
@@ -99,4 +99,7 @@
 	var url = jQuery(".playpic").attr("href");
 	var click = jQuery(".playpic").attr("onclick");
 	jQuery(".url").attr("href",url).attr("onclick",click);
+	jQuery(".tags").each(function(){
+			jQuery(this).attr("href","space.php?do=linktag&tagid="+this.id);
+	});
 </script>
