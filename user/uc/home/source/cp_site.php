@@ -196,8 +196,6 @@ elseif($_GET['op'] == 'delete') {
 	}
 
 }elseif($_GET['op']=='bookmark'){
-	//ÕıÈ·ÏÔÊ¾tag
-	$item['link_tag'] = implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
 
 	if(submitcheck('bookmarksubmit')) {
 	}
