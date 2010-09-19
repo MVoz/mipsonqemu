@@ -27,7 +27,7 @@
 	<tr>
 		<th width="40">标题</th>
 		<td>
-		<input type="text" id="subject" name="subject" value="$item[link_subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<input type="text" id="subject" name="subject" value="$item[subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
 		<p id="subject_tip"></p>
 		</td>
 	</tr>
@@ -46,7 +46,7 @@
 	<tr>
 		<th width="40">标签</th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$item[link_tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<input type="text" id="tag" name="tag" value="$item[tags]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
@@ -58,7 +58,7 @@
 						<li class="ll">
 							<ul class="type-2">
 							<!--{loop $taglist $key $value}-->
-								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>							
 							<!--{/loop}-->
 							</ul>
 					 </ul>

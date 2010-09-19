@@ -8,29 +8,23 @@
 <!--{if $_TPL['titles']}-->
 	<!--{loop $_TPL['titles'] $value}-->
 		<!--{if $value}-->
-			$value - 
+			$value -
 		<!--{/if}-->
 	<!--{/loop}-->
 	<!--{/if}-->
 	<!--{if $_SN[$space[uid]]}-->
-		{$space[name]}- 
+		{$space[name]}-
 	<!--{/if}-->
 	$_SCONFIG[sitename] - Powered by tanzhi.com
 </title>
-
-
 <script language="javascript" type="text/javascript" src="source/jquery-1.2.1.pack.js"></script>
-
 <script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
-
 <script language="javascript" type="text/javascript" src="source/script_ajax.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_manage.js"></script>
-
 <script language="javascript" type="text/javascript" src="source/script_validate.js"></script>
 <script language="javascript" type="text/javascript" src="source/suggest.js"></script>
-
 <!--
 <script language="javascript" type="text/javascript" src="source/script_digg.js"></script>
 -->
@@ -40,7 +34,7 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
        		initMenuEx();
-});			
+});
 </script>
 <!--{/if}-->
 <style type="text/css">
@@ -51,23 +45,23 @@ jQuery(document).ready(function(){
 <link rel="edituri" type="application/rsd+xml" title="rsd" href="xmlrpc.php?rsd=$space[uid]" />
 </head>
 <body onmousedown="setDisplay('suggests', 0);">
-<div id="append_parent"></div>	
+<div id="append_parent"></div>
 <div id="ajaxwaitid"></div>
 <div id="header">
 			<div class="h_logo">
 				<a title="弹指网 tanzhi.com 我的弹指我的爱" href="index.php">弹指网</a>
-			</div>        
-			<div class="h_adv">            
-					
-			</div>        
-			<div class="h_r">            
-					<div class="h_act">                
+			</div>
+			<div class="h_adv">
+
+			</div>
+			<div class="h_r">
+					<div class="h_act">
 						<a href="javascript:void(0);" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://www.tanzhi.com/');" class="first">设为首页</a>
 						<a onclick="window.external.addFavorite('http://www.tanzhi.com/','弹指网');" target="_self" href="javascript:void(0);">加为收藏</a>
 						<a href="http://www.tudou.com/my/soft/">弹指软件</a>
 						<a class="gs_upload" href="cp.php?ac=link">我要上榜</a>
 					</div>
-					<div class="h_user">                
+					<div class="h_user">
 						   <!--{if $_SGLOBAL[supe_uid]}-->
 							<strong class="first">你好，<a target="_blank" href="space.php?do=all">$_SGLOBAL['name']</a></strong>
 							<span><a href="cp.php?ac=common&op=logout&uhash=$_SGLOBAL[uhash]">退出</a></span>
@@ -84,12 +78,12 @@ jQuery(document).ready(function(){
 							<span><a href="do.php?ac=$_SCONFIG[register_action]">注册</a></span>
 						   <!--{/if}-->
 						   <span class="msg_num"><a class="gs_tanzhi" href="space.php?do=all">我的弹指</a></span>
-					</div> 
+					</div>
 			</div>
 </div>
 <div id="toolbar">
 		<div class="tb_m">
-			<ul class="tb_menu" >            
+			<ul class="tb_menu" >
 				<li id="nav_index" class="current"><a  href="index.php" >首页</a></li>
 		<!--{if $_SGLOBAL[supe_uid]	}-->
 				<li id="nav_mytanzhi"><a  href="space.php?do=all">我的弹指</a> </li>
@@ -97,7 +91,7 @@ jQuery(document).ready(function(){
 				<li id="nav_navigation"><a  href="space.php?do=navigation">导航</a>        </li>
 				<li id="nav_digg"><a  href="space.php?do=digg">$_SC['digg_name']</a>   </li>
 		<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelinkclass') }-->
-				<!--<li><a href="cp.php?ac=linkclass&op=manage">分类</a></li> -->				
+				<!--<li><a href="cp.php?ac=linkclass&op=manage">分类</a></li> -->
 		<!--{/if}-->
 				<li><a href="space?do=feedback">建议</a>    </li>
 				<li><a href="#">帮助</a>    </li>
