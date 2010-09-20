@@ -112,8 +112,14 @@ if($_GET['op'] == 'delete') {
 
 }elseif($_GET['op']=='updatebookmarkupnum'){
 		//更新顶数
-		updatestatistic('bookmark','up',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid']));
-		showmessage($item['up']+1);
+		if(updatestatistic('bookmark','up',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid'])))
+			showmessage($item['up']+1);
+		else{
+			$errstr=$item['up'];
+			include_once template("message");
+			return;
+
+		}
 
 }elseif($_GET['op']=='updatebookmarkdownnum'){
 		//更新顶数

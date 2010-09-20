@@ -53,7 +53,8 @@ function updatebookmarkup(id) {
 	{
 		ajaxupdate('bookmark','up_num', 'op=updatebookmarkupnum&bmid=' + id);
 		updatebookmarkupclick=1;
-	}
+	}else
+		alert(errors['failed_to_up_operation']);
 }
 var updatebookmarkdownclick=0;
 function updatebookmarkdown(id) {
@@ -61,7 +62,8 @@ function updatebookmarkdown(id) {
 	{
 		ajaxupdate('bookmark','up_num', 'op=updatebookmarkdownnum&bmid=' + id);
 		updatebookmarkdownclick=1;
-	}
+	}else
+		alert(errors['failed_to_up_operation']);
 }
 /*
 var updatelinkupclick=0;
@@ -90,7 +92,8 @@ function updatesiteup(id) {
 	{
 		ajaxupdate('site','up_num', 'op=updatesiteupnum&siteid=' + id);
 		updatesiteupclick=1;
-	}
+	}else
+		alert(errors['failed_to_up_operation']);
 }
 var updatesitedownclick=0;
 function updatesitedown(id) {
@@ -98,7 +101,8 @@ function updatesitedown(id) {
 	{
 		ajaxupdate('site','down_num', 'op=updatesitedownnum&siteid=' + id);
 		updatesitedownclick=1;
-	}
+	}else
+		alert(errors['failed_to_up_operation']);
 }
 function updatesiteview(id) {
 	ajaxupdate('site','view_num', 'op=updatesiteviewnum&siteid=' + id);
@@ -117,16 +121,7 @@ function getrelatedlinkfromid(id) {
 }
 
 
-function ajaxupdate(ac,objname, data) {
-		var x = new Ajax('XML', objname);
-		x.get('cp.php?ac='+ac+'&' + data, function(s){
-			var obj = $(objname);
-			if(obj){
-				obj.style.display = '';
-				obj.innerHTML =s;
-			}
-		});
-}
+
 
 var lastSecCode='';
 function checkSeccode() {
