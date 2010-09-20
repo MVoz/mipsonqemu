@@ -95,13 +95,23 @@ elseif($_GET['op'] == 'delete') {
 		}
 }elseif($_GET['op']=='updatesiteupnum'){
 		//更新顶数
-		updatestatistic('site','up',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
-		showmessage($item['up']+1);
+		if(updatestatistic('site','up',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid'])))
+			showmessage($item['up']+1);
+		else{
+			$errstr=$item['up'];
+			include_once template("message");
+			return;
+		}
 
 }elseif($_GET['op']=='updatesitedownnum'){
 		//更新顶数
-        updatestatistic('site','down',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
-		showmessage($item['down']+1);
+        if(updatestatistic('site','down',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid'])))
+			showmessage($item['down']+1);
+		else{
+			$errstr=$item['down'];
+			include_once template("message");
+			return;
+		}
 
 }elseif($_GET['op']=='updatesiteviewnum'){
 		//更新顶数
