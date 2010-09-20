@@ -553,7 +553,8 @@
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
-
+	
+<!--{/if}-->
 <script type="text/javascript">
 <!--
 	$('subject').focus();
@@ -577,9 +578,11 @@
 	}
 	function fSetTag(tag)
 	{
-		$('tag').value=$('tag').value+tag+' ';
+		if(!strlen($('tag').value))
+			$('tag').value=tag+' ';
+		else
+			$('tag').value=$('tag').value+tag+' ';
 	}
 //-->
-</script>	
-<!--{/if}-->
+</script>
 <!--{template footer}-->
