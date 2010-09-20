@@ -123,8 +123,14 @@ if($_GET['op'] == 'delete') {
 
 }elseif($_GET['op']=='updatebookmarkdownnum'){
 		//更新顶数
-        updatestatistic('bookmark','down',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid']));
-		showmessage($item['down']+1);
+        if(updatestatistic('bookmark','down',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid'])))
+			showmessage($item['down']+1);
+		else{
+			$errstr=$item['down'];
+			include_once template("message");
+			return;
+
+		}
 
 } else {
 	//添加编辑
