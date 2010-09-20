@@ -634,3 +634,22 @@ function ajaxinnerhtml(showid, s) {
 		div1.parentNode.removeChild(div1);
 	}
 }
+errors = new Array();
+errors['failed_to_up_operation'] = '您无此权限或今天已经执行此动作';
+function ajaxupdate(ac,objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('cp.php?ac='+ac+'&' + data, function(s){
+			var codes=new Array();
+			s=getremovescript(s,codes);
+							
+			var obj = $(objname);
+			if(obj){
+					obj.style.display = '';
+					obj.innerHTML =s;
+			}
+
+			for (var i in codes){
+				eval(codes[i]);
+			}
+		});
+}

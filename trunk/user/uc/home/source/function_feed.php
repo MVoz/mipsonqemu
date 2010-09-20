@@ -9,12 +9,16 @@ if(!defined('IN_UCHOME')) {
 }
 
 //产生动态
+/*
+	return 0---has existed
+	return 1--success
+*/
 function feed_publish($id, $idtype, $add=0) {
 	global $_SGLOBAL;
 	
 	//24小时之内只记录一次
 	if($add&&check_feed_exist($id,$idtype,3600*24))
-		return;
+		return 0;
 	$setarr = array();
 	switch ($idtype) {
 		case 'blogid':
@@ -434,7 +438,7 @@ function feed_publish($id, $idtype, $add=0) {
 			inserttable('feed', $setarr);
 		}
 	}
-	
+	return 1;
 }
 function feed_delete($id, $idtype)
 {

@@ -2459,7 +2459,7 @@ function check_valid($op,$id,$item,$owner,$pristr,$priorityarray)
 		return -1;
 	return 1;
 }
-$jquerydojs=array('all','bookmark','digg','link');
+$jquerydojs=array('all','bookmark','digg','link','site');
 
 function exitwithtip($tip)
 {
@@ -2977,6 +2977,17 @@ function updatestatistic($type,$mode,$ids)
             return;
 		$update_table='';
 		$update_where = '';
+		/*
+			$type:uplinkid downbookmarkid
+		*/
+		if($mode=='up'||$mode=='down')
+		{	
+				include_once(S_ROOT.'./source/function_feed.php');
+				//24小时之内只能顶或踩一次
+				if(!feed_publish($ids['feedid'], $type.'_'.$mode, 1))
+					return 0;
+
+		}
 		switch($type){
 			case 'link':
 			$update_table = 'link';
@@ -3003,11 +3014,7 @@ function updatestatistic($type,$mode,$ids)
 		
 		}
 	    $_SGLOBAL['db']->query("UPDATE ".tname($update_table)." SET ".$mode."=".$mode."+1 ".$update_where);
-		include_once(S_ROOT.'./source/function_feed.php');
-		/*
-			$type:uplinkid downbookmarkid
-		*/
-		if($mode=='up'||$mode=='down')
-			feed_publish($ids['feedid'], $type.'_'.$mode, 1);
+		
+		return 1;
 }
 ?>
