@@ -10,10 +10,10 @@ if(!defined('IN_UCHOME')) {
 //¼ì²éÐÅÏ¢
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
 $browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
-if(empty($bmdirid))
-	$bmdirid = empty($_POST['bmdirid'])?0:intval($_POST['bmdirid']);
-if(empty($browserid))
-	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
+//if(empty($bmdirid))
+//	$bmdirid = empty($_POST['bmdirid'])?0:intval($_POST['bmdirid']);
+//if(empty($browserid))
+//	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
 if(empty($browserid))
 	$browserid=$_SGLOBAL['browsertype']['ie'];
 
@@ -149,10 +149,10 @@ if($_GET['op'] == 'delete') {
 //			showmessage('failed_to_delete_operation');
 //	}
     if($bmdirid){
-	$query = $_SGLOBAL['db']->query("SELECT main.subject 
-	FROM ".tname('bookmark')." main where main.uid=".$_SGLOBAL['supe_uid']." and main.type=".$_SC['bookmark_type_dir'].cond_groupid($bmdirid)."  limit 1");
-	if($value =$_SGLOBAL['db']->fetch_array($query))
-		$bmdirname=getstr($value['subject'], 0, 0, 0, 0, 0, -1);
+		$query = $_SGLOBAL['db']->query("SELECT main.subject 
+		FROM ".tname('bookmark')." main where main.uid=".$_SGLOBAL['supe_uid']." and main.type=".$_SC['bookmark_type_dir'].cond_groupid($bmdirid)."  limit 1");
+		if($value =$_SGLOBAL['db']->fetch_array($query))
+			$bmdirname=getstr($value['subject'], 0, 0, 0, 0, 0, -1);
 	}else{
         if($_GET['op']=='edit')
             showmessage('Do_not_modify_the_dir_name');
