@@ -8,6 +8,7 @@
 </h2>
 <script language="javascript" type="text/javascript" >		
 	jQuery(".navtab").html(jQuery(".navtab_x").html()); 
+	jQuery(".navtab").addClass("ntitle"); 
 </script>
 <!--{/if}-->
 <!--{else}-->
@@ -21,14 +22,18 @@
 <!--{if empty($classid)}-->
 <div class="boxb">
 	<div class="box_l">
-	<!--{loop $navlist $key $bookmarklist}-->
-		<div  style="height:105px;" class="ntitle">
-				<a style="float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;"id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
-				$bookmarklist['classname']
-				</a>	
-				<!--{template space_navigation_class}-->				  
-		</div>	
-	<!--{/loop}-->
+		<h2 class="navtab"></h2>
+		<div id="bmcontent">
+
+			<!--{loop $navlist $key $bookmarklist}-->
+				<div  style="height:105px;" class="ntitle">
+						<a style="float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;"id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
+						$bookmarklist['classname']
+						</a>						
+						<!--{template space_navigation_class}-->						
+				</div>	
+			<!--{/loop}-->
+		</div>
 	</div>
 	<div class="box_r" >	
 			 <!--{template navigation}-->	 
