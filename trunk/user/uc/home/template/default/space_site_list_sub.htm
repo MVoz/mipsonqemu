@@ -38,15 +38,13 @@
 						<!--{/if}-->
 		</p>									
 		<p class="oper">
-					<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
-				     <a class="get" id="$value['siteid']">详情</a>
-					|
+					<a class="nhot collect" id="$value['siteid']">收藏</a>
+					<span>|</span>
+				    <a class="get" id="$value['siteid']">详情</a>
+					<span>|</span>
 				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managesite') }-->
-					<a class="delete" id="$value['siteid']">删除</a>
-					|
-					<a class="edit" id="$value['siteid']">编辑</a>
+					<a class="edit" id="$value['siteid']">编辑</a><span>|</span><a class="delete" id="$value['siteid']">删除</a>
 					<!--{else}-->
-					<a class="bm" id="$value['siteid']">编辑</a>
 					<!--{/if}-->
 					</p>					 
 				</li>
@@ -88,10 +86,12 @@
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
 		jQuery(".bloglist .url").each(function(){
-			//jQuery(this).attr("onclick","updatebookmarkview("+this.id+");this.href=this.href+'&title="+jQuery(".id_bm_"+this.id).attr("title")+"';");
 			jQuery(this).attr("onclick","updatesiteview("+this.id+")");
 		});			
 		jQuery(".bloglist a").attr("target","_blank");
 		jQuery(".bloglist .tags > span").html("什么也没留下...");
+		jQuery(".bloglist .collect").each(function(){
+			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
+		});	
 </script>
 
