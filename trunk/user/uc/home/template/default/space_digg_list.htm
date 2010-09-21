@@ -18,7 +18,7 @@
 						<!--{/if}-->	
 							 <div class="tle">
 								<a class="id_dg_$value['diggid']"></a>
-								<span class="gray">时间:<!--{date('Y-m-d',$value[dateline],1)}--></span>
+								<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 							 </div>
 							 <div class="ds">
 								<a class="id_dg_$value['diggid']">$value[description]...</a> 
@@ -37,24 +37,23 @@
 							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
 								弹指人参与围观								
 								<span class="rateup">
-										<a href="javascript:void(0)" onclick="updatediggup($value[diggid])" target="_self"></a>
+										<a class="up" id="$value[diggid]"></a>
 								</span>
 								(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)	
 								<span class="ratedown">
-										<a href="javascript:void(0)" onclick="updatediggdown($value[diggid])" target="_self"></a>
+										<a class="down" id="$value[diggid]"></a>
 								</span>
 								(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
-								<a onclick="ajaxmenuEx(event,'img_seccode_$value[diggid]', this.id,1);" id="digg_edit_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=edit">编辑
-								</a>
-								<a onclick="ajaxmenu(event, this.id,1)" id="digg_delete_$value[diggid]" href="cp.php?ac=digg&diggid=$value[diggid]&op=delete" class="diggbtn">删除</a>					<!--{/if}-->
-						</div>
-				
+								<a class="edit" id="$value[diggid]">编辑</a>
+								<a class="delete diggbtn" id="$value[diggid]">删除</a>			
+								<!--{/if}-->
+						</div>				
 				</div>
 					<!--{if $value[picflag] }-->	
 						<div class="rightx">						
 							<div class="d_avatar avatar125">
-							   <a title=$value[subject] href="$value[url]" target=_blank onclick="updatediggview($value[diggid])">
+							   <a class="id_dg_$value['diggid']">
 									<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
 										src="$value[pic]">
 							   </a>
@@ -69,11 +68,23 @@
 <script language="javascript" type="text/javascript">	
 <!--{loop $digglist $key $value}-->	
 		var id_dg_$value['diggid']_title="$value['subject']";
-		jQuery(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title);		
+		jQuery(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatediggview($value[diggid])");		
 		jQuery(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
 <!--{/loop}-->
 		jQuery(".id_dg_tag").each(function(){
 			this.href = "space.php?do=diggtag&tagid=" + this.id;
+		});	
+		jQuery(".edit").each(function(){
+			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
+		});	
+		jQuery(".delete").each(function(){
+			jQuery(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
+		});	
+		jQuery(".up").each(function(){
+			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
+		});	
+		jQuery(".down").each(function(){
+			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
 		});	
 </script>		
 
