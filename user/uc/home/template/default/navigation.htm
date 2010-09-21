@@ -15,9 +15,7 @@
 </div> 
 <script language="javascript" type="text/javascript">	
 		jQuery(".navi_catalog a").each(function(){
-			//this.href = "space.php?do=navigation&classid="+this.id;
 			this.href ="javascript:;";
 			jQuery(this).attr("onclick","ajaxget('space.php?do=navigation&classid="+this.id+"', 'bmcontent');");
 		});
 </script>
-
