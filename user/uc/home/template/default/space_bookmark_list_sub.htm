@@ -4,7 +4,13 @@
 			<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
 					<h3>
 						<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
-						<p class="num_con"><span><strong><!--{eval linkaward($value[award],0);}--></strong>.<!--{eval linkaward($value[award],1);}--></span><em>(<em>$value['storenum']</em>人收)</em></p>
+						<p class="num_con">
+							<span>
+								<strong><!--{eval linkaward($value[award],0);}--></strong>
+								.<!--{eval linkaward($value[award],1);}-->
+							</span>
+						<em>($value[storenum]人收藏)</em>
+						</p>
 					</h3>
 					<!--{if empty($space['style'])}-->
 						<div class="d_avatar avatar125">
@@ -44,20 +50,10 @@
 						<!--{else}-->
 							$_SC['unknown_tag']
 						<!--{/if}-->
-					</p>				
-					
-					<p class="oper">
-					<!--{if empty($isFromCache)}-->
-						<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot">$value[storenum] 人收藏</a>
-					<!--{else}-->
-						<a href="space.php?uid=$value[uid]&do=blog&id=$value[linkid]" class="nhot"><!--{eval getLinkStorenum($value[linkid])}--> 人收藏</a>
-					<!--{/if}--> 
-					 
-				     <a class="get" id="$value['bmid']">详情</a>
-					 | 				  
-					 <a class="delete" id="$value['bmid']">删除</a>
-					 |
-					 <a class="edit" id="$value['bmid']">编辑</a>
+					</p>					
+					<p class="oper">		 
+						<a class="share nhot" id="$value['bmid']">分享</a>
+						<span>|</span><a class="get" id="$value['bmid']">详情</a><span>|</span><a class="edit" id="$value['bmid']">编辑</a><span>|</span><a class="delete" id="$value['bmid']">删除</a>
 					</p> 
 				</li>
 
@@ -79,7 +75,7 @@
 		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("title",id_bm_$value['bmid']_title);		
 		jQuery(".id_bm_$value['bmid']:empty").html(id_bm_$value['bmid']_title);
 <!--{/loop}-->
-		jQuery(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		jQuery(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 		jQuery(".id_bm_tag").each(function(){
 			this.href = "space.php?do=linktag&tagid=" + this.id;
 		});	
@@ -96,12 +92,16 @@
 		jQuery(".bloglist .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
+
 		jQuery(".bloglist .url").each(function(){
-			//jQuery(this).attr("onclick","updatebookmarkview("+this.id+");this.href=this.href+'&title="+jQuery(".id_bm_"+this.id).attr("title")+"';");
 			jQuery(this).attr("onclick","updatebookmarkview("+this.id+")");
 		});	
 		
 		jQuery(".bloglist a").attr("target","_blank");
+		jQuery(".bloglist .share").each(function(){
+			this.href="javascript:void(0)";
+			jQuery(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
+		});	
 </script>
 	
 
