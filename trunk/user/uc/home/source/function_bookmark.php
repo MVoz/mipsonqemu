@@ -380,8 +380,7 @@ function bookmark_link_process($linkid,$arr){
 	$link=array();
     if($linkid)//修改link项
     {
-		 $link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid= ".$linkid);
-		 $link = $_SGLOBAL['db']->fetch_array($link_query);
+		 $link=getlink($linkid);
 		 if(!empty($link)){
 			if($link['siteid']==0){
 				//此link不在site中
@@ -405,12 +404,11 @@ function bookmark_link_process($linkid,$arr){
 		 }	 
     }
    
-	$link_query=$_SGLOBAL['db']->query("SELECT linkid,siteid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+	$link_query=$_SGLOBAL['db']->query("SELECT linkid,siteid FROM ".tname('link')." WHERE hashurl= ".$arr['hashurl']." and md5url='".$arr['md5url']."'");
 	$link = $_SGLOBAL['db']->fetch_array($link_query);
-    if(empty($link)){
-        
+    if(empty($link)){        
 		//ramen 20100912 检查site站点是否含此link
-		$site_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
+		$site_query=$_SGLOBAL['db']->query("SELECT *,id as siteid FROM ".tname('site')." WHERE hashurl= ".$arr['hashurl']." and url='".$arr['url']."'");
 		$site=$_SGLOBAL['db']->fetch_array($site_query);
 		if($site['siteid'])//site站点有含此link
 		{
