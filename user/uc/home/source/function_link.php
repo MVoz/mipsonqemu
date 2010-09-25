@@ -524,7 +524,7 @@ function announce_post($_POST)
         $infos = addslashes(serialize($info));
 
        // app_db::insert('ylmf_urladd', array('domain', 'info', 'addtime'), array($domain, $infos, time()));
-		$_SGLOBAL['db']->query("INSERT INTO ".tname('urladd')." (domain, info, addtime) VALUES('".$domain."','".$infos."','".time()."')");
+		$_SGLOBAL['db']->query("INSERT INTO ".tname('urladd')." (domain,postuid,username, info, addtime) VALUES('".$domain."','".$_SGLOBAL['supe_uid']."','".$_SGLOBAL['name']."','".$infos."','".time()."')");
 
 		showmessage('站点信息已成功提交,请耐心等待工作人员的审核!', $refer, 10);  
 }
