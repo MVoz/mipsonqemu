@@ -228,15 +228,7 @@ elseif($_GET['op'] == 'delete') {
 		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 			showmessage('incorrect_code');
 		}
-		$item = link_post($_POST, $item);
-		if(is_array($item)) {
-			//$url = $_SGLOBAL['refer'];		
-			showmessage('do_success');
-		} elseif($item==false) {
-			showmessage('that_should_at_least_write_things');
-		}elseif($item==-1) {
-			showmessage('link_has_existed');
-		}
+
 	}
 	//添加编辑
 	//将从上榜获得的tag中的,去掉

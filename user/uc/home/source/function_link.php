@@ -76,7 +76,8 @@ function link_post($POST, $olds=array()) {
 			$linkarr['username'] = $_SGLOBAL['name'];//城市森林
 			$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 			$linkarr['link_description'] = $message;
-			$linkarr['origin'] = $_SC['link_origin_link'];
+			//如果olds不为空，则是编辑状态，otherwise，为增加
+			$linkarr['origin'] =(empty($olds))?$_SC['link_origin_link']:$olds['origin'];
 
 
             //$linkarr['hashurl']=qhash($linkarr['url']);
@@ -258,7 +259,11 @@ function  checklinkexisted($linkarr)
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
             return;
-		$query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE hashurl=".$linkarr['hashurl']." AND  md5url='".$linkarr['md5url']."' AND  url='".$linkarr['url']."'");
+		$query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE hashurl=".$linkarr['hashurl']." AND  md5url='".$linkarr['md5url']."' AND  url='".$linkarr['url']."' limit 1");
+		if($value=$_SGLOBAL['db']->fetch_array($query))
+			return 1;
+//同时需要检查site表中是否已经含有此站点
+		$query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE hashurl=".$linkarr['hashurl']." AND  md5url='".$linkarr['md5url']."' AND  url='".$linkarr['url']."' limit 1");
 		if($value=$_SGLOBAL['db']->fetch_array($query))
 			return 1;
 		return 0;
