@@ -432,4 +432,95 @@ function getLinkStorenum($linkid)
 		$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0);
 	echo  $count;
 }
+function announce_post($POST)
+{
+		global $_SGLOBAL;
+		$subject = (empty($_POST['subject'])) ? '' : strip($_POST['subject']);
+        if (empty($subject))
+        {
+			showmessage('网站名称不能为空', $_SGLOBAL['refer'], 10);
+        }
+
+        $address = (empty($_POST['address'])) ? '' : strip($_POST['address']);
+        if (empty($address))
+        {
+			showmessage('网站地址不能为空', $_SGLOBAL['refer'], 10);
+        }
+        $tmp = parse_url($address);
+        $domain = $tmp['host'];
+        if (!eregi("^http[s]?://", $address) || empty($domain))
+        {
+			showmessage('网站网址不正确', $_SGLOBAL['refer'], 10);
+        }
+        $domain = addslashes($domain);
+
+        $description = (empty($_POST['description'])) ? '' : strip($_POST['description']);
+        if (empty($description))
+        {
+			showmessage('网站简介不能为空', $_SGLOBAL['refer'], 10);
+        }
+
+        $pv = (empty($_POST['pv'])) ? '' : strip($_POST['pv']);
+        $class = (empty($_POST['class'])) ? '' : strip($_POST['class']);
+        if (empty($class))
+        {
+            throw new Exception('网站分类不能为空', 10);
+        }
+
+        $icp = (empty($_POST['icp'])) ? '' : strip($_POST['icp']);
+        $sitetime = (empty($_POST['sitetime'])) ? '' : strip($_POST['sitetime']);
+        $lianxiren = (empty($_POST['lianxiren'])) ? '' : strip($_POST['lianxiren']);
+        $address = (empty($_POST['address'])) ? '' : strip($_POST['address']);
+        $qq = (empty($_POST['qq'])) ? '' : strip($_POST['qq']);
+        if (empty($qq))
+        {
+			showmessage('QQ 不能为空', $_SGLOBAL['refer'], 10);
+        }
+        if (!is_numeric($qq))
+        {
+			showmessage('QQ 号码不正确', $_SGLOBAL['refer'], 10);
+        }
+
+        $mobile = (empty($_POST['mobile'])) ? '' : strip($_POST['mobile']);
+        $tel = (empty($_POST['tel'])) ? '' : strip($_POST['tel']);
+        $email = (empty($_POST['email'])) ? '' : strip($_POST['email']);
+        if (empty($email))
+        {
+			showmessage('电子邮箱不能为空', $_SGLOBAL['refer'], 10);
+        }
+
+        $sharelink = (empty($_POST['sharelink'])) ? '' : strip($_POST['sharelink']);
+
+		$q = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('urladd')." main	where domain=".$domain.' LIMIT 1');
+		$rs = $_SGLOBAL['db']->fetch_array($q);
+
+        if (!empty($rs))
+        {
+            if ($rs['type'] == 0)
+            {
+			   	showmessage('该站点已提交,请耐心等待工作人员的审核,不要重复提交!', $_SGLOBAL['refer'], 10);
+            }
+            elseif ($rs['type'] == 1)
+            {
+			   	showmessage('该站点已提交并且通过审核,已收录该站点!', $_SGLOBAL['refer'], 10);
+            }
+            else
+            {
+				showmessage('该站点上次提交未通过审核,请不要重复提交! 如有疑问请联系');
+            }
+        }
+
+        $info = $_POST;
+        foreach($info as &$v)
+        {
+            $v = htmlentities($v, ENT_NOQUOTES, 'utf-8');
+        }
+        $infos = addslashes(serialize($info));
+
+        app_db::insert('ylmf_urladd', array('domain', 'info', 'addtime'), array($domain, $infos, time()));
+		$_SGLOBAL['db']->query("INSERT INTO ".tname('urladd')." ('domain', 'info', 'addtime') VALUES(".$domain.",".$infos.",".time().")");
+
+		showmessage('站点信息已成功提交,请耐心等待工作人员的审核!', $_SGLOBAL['refer'], 10);
+
+}
 ?>

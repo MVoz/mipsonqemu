@@ -158,7 +158,11 @@ function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialcha
 	    return false;
 	return true;
 }
-
+function announce_validate(obj,seccode_id) {
+   if(!check_seccode(obj,seccode_id))
+	    return false;
+	return true;
+}
 function link_validate(obj,seccode_id, subjectlen,  urlen, specialchar) {
 
 	if(!check_subject('subject',1,subjectlen, specialchar)||!check_url('address',1,urlen)||!check_number('initaward',5000,9900))

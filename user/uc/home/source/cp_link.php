@@ -256,7 +256,7 @@ elseif($_GET['op'] == 'edithot') {
 			showmessage('incorrect_code');
 		}
 		include_once(S_ROOT.'./source/function_link.php');
-		$item = link_post($_POST, $item);
+		$item = announce_post($_POST, $item);
 		if(is_array($item)) {
 			//$url = $_SGLOBAL['refer'];		
 			showmessage('do_success');

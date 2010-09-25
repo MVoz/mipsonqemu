@@ -438,37 +438,226 @@
 		}
 	}
 </script>
+<script type="text/javascript" language="javascript">
+ Validator = {
+	Require : /.+/,
+	Email : /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+	Phone : /^((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}$/,
+	Mobile : /^((\(\d{3}\))|(\d{3}\-))?(13\d{1}|15[0-9]{1})\d{8}$/,   /*新加入了移动的159开头手机号码*/
+	YDMobile : /^((\(\d{3}\))|(\d{3}\-))?(13[4-9]{1}|15[15689]{1})\d{8}$/, 
+	LTMobile : /^((\(\d{3}\))|(\d{3}\-))?(13[0-3]{1}|15[23]{1})\d{8}$/, 
+	Url : /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
+	IdCard : /^\d{15}(\d{2}[A-Za-z0-9])?$/,
+	Currency : /^\d+(\.\d+)?$/,
+	Number : /^\d+$/,
+	Zip : /^[1-9]\d{5}$/,
+	QQ : /^[1-9]\d{4,8}$/,
+	Integer : /^[-\+]?\d+$/,
+	Double : /^[-\+]?\d+(\.\d+)?$/,
+	English : /^[A-Za-z]+$/,
+	Chinese :  /^[\u0391-\uFFE5]+$/,
+	UnSafe : /^(([A-Z]*|[a-z]*|\d*|[-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*)|.{0,5})$|\s/,
+	IsSafe : function(str){return !this.UnSafe.test(str);},
+	SafeString : "this.IsSafe(value)",
+	Limit : "this.limit(value.length,getAttribute('min'),  getAttribute('max'))",
+	LimitB : "this.limit(this.LenB(value), getAttribute('min'), getAttribute('max'))",
+	Date : "this.IsDate(value, getAttribute('min'), getAttribute('format'))",
+	Repeat : "value == document.getElementsByName(getAttribute('to'))[0].value",
+	Range : "getAttribute('min') < value && value < getAttribute('max')",
+	Compare : "this.compare(value,getAttribute('operator'),getAttribute('to'))",
+	Custom : "this.Exec(value, getAttribute('regexp'))",
+	Group : "this.MustChecked(getAttribute('name'), getAttribute('min'), getAttribute('max'))",
+	ErrorItem : [document.forms[0]],
+	ErrorMessage : ["以下原因导致提交失败：\t\t\t\t"],
+	Validate : function(theForm, mode){
+		var obj = theForm || event.srcElement;
+		var count = obj.elements.length;
+		this.ErrorMessage.length = 1;
+		this.ErrorItem.length = 1;
+		this.ErrorItem[0] = obj;
+		for(var i=0;i<count;i++){
+			with(obj.elements[i]){
+				var _dataType = getAttribute("dataType");
+				if(typeof(_dataType) == "object" || typeof(this[_dataType]) == "undefined")  continue;
+				this.ClearState(obj.elements[i]);
+				if(getAttribute("require") == "false" && value == "") continue;
+				switch(_dataType){
+					case "Date" :
+					case "Repeat" :
+					case "Range" :
+					case "Compare" :
+					case "Custom" :
+					case "Group" : 
+					case "Limit" :
+					case "LimitB" :
+					case "SafeString" :
+						if(!eval(this[_dataType]))	{
+							this.AddError(i, getAttribute("msg"));
+						}
+						break;
+					default :
+						if(!this[_dataType].test(value)){
+							this.AddError(i, getAttribute("msg"));
+						}
+						break;
+				}
+			}
+		}
+		if(this.ErrorMessage.length > 1){
+			mode = mode || 1;
+			var errCount = this.ErrorItem.length;
+			switch(mode){
+			case 2 :
+				for(var i=1;i<errCount;i++)
+					this.ErrorItem[i].style.color = "red";
+			case 1 :
+				alert(this.ErrorMessage.join("\n"));
+			//document.getElementById("message").innerHTML = this.ErrorMessage.join("<br />");
+				this.ErrorItem[1].focus();
+				break;
+			case 3 :
+				for(var i=1;i<errCount;i++){
+				try{
+					var span = document.createElement("SPAN");
+					span.id = "__ErrorMessagePanel";
+					span.style.color = "red";
+					this.ErrorItem[i].parentNode.appendChild(span);
+					span.innerHTML = this.ErrorMessage[i].replace(/\d+:/,"*");
+					}
+					catch(e){alert(e.description);}
+				}
+				this.ErrorItem[1].focus();
+				break;
+			default :
+				alert(this.ErrorMessage.join("\n"));
+			//document.getElementById("message").innerHTML = this.ErrorMessage.join("<br />");
+				break;
+			}
+			return false;
+		}
+		return true;
+	},
+	limit : function(len,min, max){
+		min = min || 0;
+		max = max || Number.MAX_VALUE;
+		return min <= len && len <= max;
+	},
+	LenB : function(str){
+		return str.replace(/[^\x00-\xff]/g,"**").length;
+	},
+	ClearState : function(elem){
+		with(elem){
+			if(style.color == "red")
+				style.color = "";
+			var lastNode = parentNode.childNodes[parentNode.childNodes.length-1];
+			if(lastNode.id == "__ErrorMessagePanel")
+				parentNode.removeChild(lastNode);
+		}
+	},
+	AddError : function(index, str){
+		this.ErrorItem[this.ErrorItem.length] = this.ErrorItem[0].elements[index];
+		this.ErrorMessage[this.ErrorMessage.length] = this.ErrorMessage.length + ":" + str;
+	},
+	Exec : function(op, reg){
+		return new RegExp(reg,"g").test(op);
+	},
+	compare : function(op1,operator,op2){
+		switch (operator) {
+			case "NotEqual":
+				return (op1 != op2);
+			case "GreaterThan":
+				return (op1 > op2);
+			case "GreaterThanEqual":
+				return (op1 >= op2);
+			case "LessThan":
+				return (op1 < op2);
+			case "LessThanEqual":
+				return (op1 <= op2);
+			default:
+				return (op1 == op2);            
+		}
+	},
+	MustChecked : function(name, min, max){
+		var groups = document.getElementsByName(name);
+		var hasChecked = 0;
+		min = min || 1;
+		max = max || groups.length;
+		for(var i=groups.length-1;i>=0;i--)
+			if(groups[i].checked) hasChecked++;
+		return min <= hasChecked && hasChecked <= max;
+	},
+	IsDate : function(op, formatString){
+		formatString = formatString || "ymd";
+		var m, year, month, day;
+		switch(formatString){
+			case "ymd" :
+				m = op.match(new RegExp("^((\\d{4})|(\\d{2}))([-./])(\\d{1,2})\\4(\\d{1,2})$"));
+				if(m == null ) return false;
+				day = m[6];
+				month = m[5]--;
+				year =  (m[2].length == 4) ? m[2] : GetFullYear(parseInt(m[3], 10));
+				break;
+			case "dmy" :
+				m = op.match(new RegExp("^(\\d{1,2})([-./])(\\d{1,2})\\2((\\d{4})|(\\d{2}))$"));
+				if(m == null ) return false;
+				day = m[1];
+				month = m[3]--;
+				year = (m[5].length == 4) ? m[5] : GetFullYear(parseInt(m[6], 10));
+				break;
+			default :
+				break;
+		}
+		if(!parseInt(month)) return false;
+		month = month==12 ?0:month;
+		var date = new Date(year, month, day);
+        return (typeof(date) == "object" && year == date.getFullYear() && month == date.getMonth() && day == date.getDate());
+		function GetFullYear(y){return ((y<30 ? "20" : "19") + y)|0;}
+	}
+ }
 
-<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form">
+   function copyToClipBoard(clipBoardContent){
+    window.clipboardData.setData("Text",clipBoardContent); 
+    alert("地址已经复制成功，您可以粘贴到其他需要的地方！"); 
+  } 
+</script>
+<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form" onSubmit="return (Validator.Validate(this,3)&&announce_validate(this,'seccode'))">
 <table cellpadding="0" cellspacing="0" class="formtable">
 	<caption>
-		<h2>注册本站帐号</h2>
-		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+		<h2>如果您希望收录您的网站，贵站需要满足以下条件(即收录原则):</h2>
+		1. 不收录有反动、色情、赌博等不良内容或提供不良内容链接的网站，以及网站名称或内容违反国家有关政策法规的网站；<br>
+		2. 不收录含有病毒、木马，弹出插件或恶意更改他人电脑设置的网站、及有多个弹窗广告的网站；<br>
+		3. 不收录网站名称和实际内容不符的网站，请不必现在申请收录，欢迎您在贵站建设完毕后再申请；<br>
+		4. 不收录以同类型网站通用名称文字作为申请的名称，例如“在线音乐”，请以适当的网站名做为申请名称，如xiazaiba.com的网站中文名是“绿色下载吧”；<br>
+		5. 不收入非顶级域名、挂靠其他站点、无实际内容，只提供域名指向的网站或仅有单页内容的网站；<br>
+		6. 不收录在正常情况下无法访问的网站<br>
+		7. 公益性网站，或内容确实有独特之处的网站将优先收录<br>
+
+	特别强调:<br>
+      本站仅收录PR值大于等于 2，Alexa 排名 100W 以内，BAIDU、GOOGLE 均有收录，健康有内容并每日更新，且具有真实的信息产业部 ICP/IP 备案信息的各类网站。<br>
+      如果不能满足上述要求的站点，若具有公益性质，或内容确实有独特之处的网站，可以填写较充分理由申请，我们将酌情收录。
+     一些购物类网站等盈利性站点，请直接联系本站客服进行广告服务咨询。我们将为您提供最佳广告位！
+
+本站保留收录决定权以及贵站在本站网址数据库中相关内容的编辑决定权
+<p>请完整填写以下信息进行注册。<br></p>
 	</caption>
 	<tr>
-		<th width="40">标题</th>
-		<td>
-		<input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
-		<p id="subject_tip"></p>
-		</td>
+		<th width="120">标题</th>
+		<td><input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input" tabindex="1" dataType="Require"  msg="网站名称不能为空" tabindex="1"/><em>*</em></td>
 	</tr>
 	<tr>
-		<th width="40">地址</th>
+		<th width="120">地址</th>
+		<td><input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2"  dataType="Url"  msg="网站地址要以http://开头" /><em>*</em></td>
 		<td>
-		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" onfocus="clearwarning($('address_tip'));" />
-		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
-		<p id="address_tip"></p>
-		</td> 
 	</tr>
 	<tr>
-		<th width="40">标签</th>
+		<th width="120">标签</th>
 		<td>
 		<input type="text" id="tag" name="tag" value="$_GET[tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
 	<tr>
-		<th width="40">&nbsp;</th>
+		<th width="120">&nbsp;</th>
 		<td>
 				<div class="cont">
 					<ul class="type-1">
@@ -486,42 +675,69 @@
 	<tr>
 		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
 		<td>
-			<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4">
-			$_GET[content]
-			</textarea>
-		</td>
+		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4" dataType="Require"  msg="网站简介不能为空">
+		$_GET[content]
+		</textarea>
+        <em>* </em>
+		请将您的描述控制在200字以内</td>
 	</tr>
-<!--
-<tr>
-		<th width="40">分类</th>
-		<td>
-			<div class="cont">
-				<ul class="type-1">
-					<!--{loop $classlist $key $value}-->
-								<ul class="type-2">
-									<li><a style="color:#00ADEF;">$value['classname']</a></li>
-									<!--{loop $value[son] $key $valueson}-->
-											<!--{if empty($valueson[grandson])}-->
-												<li><a id="category_li_$valueson['classid']" href="javascript:fSetCategorySelect($valueson['classid']);">$valueson['classname']</a></li>
-											<!--{else}-->
-												<li>
-													<div class="dropmenu" id="usettingli_$valueson['classid']" onmouseover="showMenu(this.id)"><a id="category_li_$valueson['classid']" href="javascript:;">$valueson['classname']<img src="image/more.gif" align="absmiddle"></a></div>
-														<ul id="usettingli_$valueson['classid']_menu" class="categorymenu_drop" style="display:none;">
-														<!--{loop $valueson[grandson] $key $valuegrandson}-->
-															<li><a href="javascript:setcategoryid('usettingli_$valueson['classid']','$valuegrandson['classname']',$valuegrandson['classid'])">$valuegrandson['classname']</a></li>
-														<!--{/loop}-->
-														</ul>
-												</li>
-											<!--{/if}-->
-									<!--{/loop}-->
-								</ul>
-					<!--{/loop}-->
-				
-				</ul>
-			</div>
-	</td>
-</tr>
--->
+	<tr>
+        <th width="120">网站分类：</th>
+        <td><input name="class" type="text" class="t_input" id="class" value="" dataType="Require"  msg="网站分类不能为空" />
+          	<em>*</em> 依据贵站定位写明详细分类  如“音乐MP3-在线音乐”</td>
+      </tr>
+	  
+  
+	  <tr>
+        <th width="120">电子邮件：</th>
+        <td><input name="email" type="text" class="t_input" id="email" value=""  dataType="Email"  msg="电子邮件地址不正确!" />
+
+         <em>*</em>请填写最常用的邮箱,用于发送收录审核情况!</td>
+      </tr>
+	  <tr>
+        <th width="120">网站访问量：</th>
+        <td><input name="pv" type="text" class="t_input" id="pv" value="" />
+          日独立IP</td>
+
+      </tr>
+      <tr>
+        <th width="120">网站备案信息：</th>
+
+        <td><input name="icp" type="text" class="t_input" id="icp" value=""/></td>
+      </tr>
+      <tr>
+        <th width="120">建站时间：</th>
+        <td><input name="sitetime" type="text" class="t_input" id="sitetime" value="" /></td>
+      </tr>
+      <tr>
+
+        <th width="120">联 系 人：</th>
+        <td><input name="lianxiren" type="text" class="t_input" id="lianxiren" value=""/></td>
+      </tr>
+      <tr>
+        <th width="120">通讯地址：</th>
+        <td><input name="address" type="text" class="t_input" id="address" value="" /></td>
+      </tr>
+
+      <tr>
+        <th width="120">手机号码：</th>
+        <td><input name="mobile" type="text" class="t_input" id="mobile" value="" /></td>
+      </tr>
+      <tr>
+
+        <th width="120">固定电话：</th>
+        <td><input name="tel" type="text" class="t_input" id="tel" value=""/>
+        区号-电话号码</td>
+      </tr>
+      
+      <tr>
+        <th width="120">友情链接：</th>
+        <td><input name="sharelink" type="radio" value="1" />
+          是
+          <input name="sharelink" type="radio" value="0" checked="checked" />
+          否<em>(是否已做好本站友情链接)此项为可选,如有做链接将优先收录</em></td>
+
+      </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
 	<tr>
@@ -536,7 +752,7 @@
 		<th style="vertical-align: top;">验证码</th>
 		<td>
 			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="6" autocomplete="off" onfocus="clearwarning($('checkseccode'));" />&nbsp;<span id="checkseccode">&nbsp;</span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
 		</td>
 	</tr>
@@ -547,11 +763,12 @@
 		<td>
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="addsubmit" value="true" />
-		<input type="button" name="btnsubmit" value="确定" class="submit"  tabindex="7" onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['speicalchar']);"/>
+		<input type="submit" name="btnsubmit" value="确定" class="submit"  tabindex="7"/>
 		</td>
 	</tr>
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
 </table>
+  <div class="con">以上内容请仔细填写，工作人员将认真审核每一个站点，并做备案记录，连续申请多次不通过的网站将自动列入黑名单并不再收录，此举是为了广大网民的利益，如果您没有做好自己站点内容的准备，请勿浪费时间提交申请。</div>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
 
 <script type="text/javascript">
