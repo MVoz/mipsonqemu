@@ -449,16 +449,16 @@
 		<th width="40">标题</th>
 		<td>
 		<input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
-		<span id="checkusername">&nbsp;</span>
+		<p id="subject_tip"></p>
 		</td>
 	</tr>
 	<tr>
 		<th width="40">地址</th>
 		<td>
-		<input type="text" id="address" name="address" value="$_GET[url]" style="width: 396px;" class="t_input" onBlur="checkUrl()" tabindex="2" disabled=true/>&nbsp;
-		<span id="checkusername">&nbsp;</span>
-		<p style="color:gray">请正确填写网页地址</p>
-		</td>
+		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" onfocus="clearwarning($('address_tip'));" />
+		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
+		<p id="address_tip"></p>
+		</td> 
 	</tr>
 	<tr>
 		<th width="40">标签</th>
@@ -528,7 +528,7 @@
 		<th style="vertical-align: top;">请先回答问题</th>
 		<td>
 			<p><!--{eval question();}--></p>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 		</td>
 	</tr>
 	<!--{else}-->
@@ -536,7 +536,7 @@
 		<th style="vertical-align: top;">验证码</th>
 		<td>
 			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
 		</td>
 	</tr>
@@ -547,7 +547,7 @@
 		<td>
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" name="addsubmit" value="true" />
-		<input type="submit" id="btnsubmit" name="btnsubmit" value="提交" class="submit_disabled" tabindex="6" disabled="true"/>
+		<input type="button" name="btnsubmit" value="确定" class="submit"  tabindex="7" onclick="link_validate(this,'seccode',$_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['titlelen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['urllen'], $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']]['speicalchar']);"/>
 		</td>
 	</tr>
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
