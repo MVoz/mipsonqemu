@@ -70,7 +70,8 @@
                     <tr>
                         <th width="70">删除</th>
                         <th width="100">网站名称</th>    
-                        <th>域名</th>            	
+                        <th>域名</th>
+			<th>提交者</th> 
                         <th width="70">状态</th>
                         <th width="70">操作</th>
                     </tr>
@@ -79,6 +80,7 @@
                         <td><input type="checkbox" name="delete[<{$i.id}>]/>"/></td>
                         <td><{$i.name}></td>
                         <td><{$i.domain}></td>
+			<td><{$i.username}></td>
                         <td><{if $i.type eq 1}>通过<{elseif $i.type eq 2}>拒绝<{else}>未审核<{/if}></td>                        
                         <td><a href="?c=url_add&a=show&id=<{$i.id}>">修改</a></td>
                     </tr>
