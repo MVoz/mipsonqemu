@@ -190,13 +190,13 @@ class ctl_site_manage
 
             $remark = (empty($_POST['remark'])) ? '' : trim($_POST['remark']);
             $data['remark'] = $remark;
-
+			
 			$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);               
 
             $data['adduser'] = addslashes(mod_login::get_username());
 			//ramen 处理一些相关东西
 			global $_SC;
-			$data['initaward'] = empty($_POST['initaward'])?0:$_SC['link_award_initial_value'];
+			$data['initaward'] = empty($_POST['initaward'])?$_SC['link_award_initial_value']:$_POST['initaward'];
 			
 			$data['storenum'] = empty($_POST['storenum'])?0:$_POST['storenum'];
 			$data['viewnum']= empty($_POST['viewnum'])?0:$_POST['viewnum'];
@@ -206,12 +206,12 @@ class ctl_site_manage
 			$data['pic']= empty($_POST['pic'])?'':$_POST['pic'];
 			$data['picflag']= empty($_POST['picflag'])?0:$_POST['picflag'];
 
-			$data['url'] = self::handleUrlString($data['url']);
-			$data['hashurl']=mod_site_manage::qhash($data['url']);
+			$data['url'] = handleUrlString($data['url']);
+			$data['hashurl']=qhash($data['url']);
 			$data['md5url']=md5($data['url']);
 			if(empty($_POST['tmppic']))
-				$data=self::setlinkimagepath($data);
-			$data['award']=self::calc_link_award($data['initaward'],$data['storenum'],$data['viewnum'],$data['up'],$data['down']);
+				$data=setlinkimagepath($data);
+			$data['award']=calc_link_award($data['initaward'],$data['storenum'],$data['viewnum'],$data['up'],$data['down']);
             // 新增
             if ($action == 'add')
             {
@@ -542,38 +542,8 @@ class ctl_site_manage
         }
     }
 
+	
 
-	public static function handleUrlString($url)
-	{
-		$url=trim($url);
-		$len=strlen($url);
-		while($url[$len-1]=='/')
-		{
-			$url=substr($url, 0, $len-1); 
-			$len=strlen($url);
-		}
-		return $url;
-	}
-	public static function setlinkimagepath($link)
-	{
-		global $_SC;
-		$dirrandom=$_SC['link_image_path'].'random/';
-		$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
-
-		$link['pic']=$_SC['link_image_path'].(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8);
-		return $link;
-	}
-	public static function calc_link_award($init=7000,$store=0,$view=0,$up=0,$down=0)
-	{
-		global $_SC;
-		$val=$init+($_SC['link_award_store_weight']*$store)+($_SC['link_award_view_weight']*$view)+($_SC['link_award_up_weight']*$up)
-			-($_SC['link_award_down_weight']*$down);
-		if($val<=($_SC['link_award_min']*$_SC['link_award_div']))
-			return ($_SC['link_award_min']*$_SC['link_award_div']);
-		if($val>=($_SC['link_award_max']*$_SC['link_award_div']))
-			return ($_SC['link_award_max']*$_SC['link_award_div']);
-		return $val;
-	}
 	public static function updatelinkinfo($siteid,$linkid)
 	{
 				$result = mod_collect_site::get_one($linkid);
@@ -587,7 +557,7 @@ class ctl_site_manage
 				if(!empty($result['link_tag'])){
 					$need_delete_tags = unserialize($result['link_tag']);
 					//更新计数
-					app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".mod_site_manage::simplode(array_keys($need_delete_tags)).")");
+					app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
 					//清除在sitetagsite中的$linkid
 					app_db::query("DELETE FROM ylmf_sitetagsite WHERE linkid=".$linkid);
 					

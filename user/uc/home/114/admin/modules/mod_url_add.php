@@ -91,5 +91,121 @@ class mod_url_add
 
         return app_db::get_rows_num('ylmf_urladd',  "`type` = {$type}");
 	}
+	/**
+	 * 获取一个站点的信息
+	 */
+	public static function get_one_link($id)
+	{
+		if ($id < 1)
+		{
+			return false;
+		}
+		$id = (int)$id;
+
+		$data = app_db::select('ylmf_link', '*', "linkid = {$id}");
+
+		return (empty($data)) ? false : $data[0];
+	}
+	public static function get_one_site($id)
+	{
+		if ($id < 1)
+		{
+			return false;
+		}
+		$id = (int)$id;
+
+		$data = app_db::select('ylmf_site', '*', "id = {$id}");
+		return (empty($data)) ? false : $data[0];
+	}
+		/**
+		process tag
+	**/
+	public static function batch_tag($id,$tags)
+	{
+		$mtime = explode(' ', microtime());
+		$timesec = $mtime[1];
+		$tagarr = array();
+		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
+		
+		//if(empty($now_tag)) return $tagarr;
+		//获取原来的tags
+		 $result = self::get_one_site($id);
+	
+         if (empty($result))
+         {
+              throw new Exception('没有找到数据', 10);
+         }
+		
+		 //修正tag显示
+		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		
+		 $need_delete_tags=array();
+		 $need_add_tags=array();
+		 $tagarr = $intersect_tag = array_intersect($old_tags,$now_tag);
+		//获取old_tag有而现在没有的			
+		 $need_delete_tags = array_diff($old_tags,$intersect_tag);
+		//清除tag
+		if(!empty($need_delete_tags)) {
+			  foreach($need_delete_tags as $k=>$v){
+				 app_db::query("DELETE  from ylmf_sitetagsite WHERE siteid=".$id.' AND tagid='.$k);			
+			  }	  
+			 app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
+		}
+		//获取现在有二old_tag没有的
+		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
+		 
+		 if(empty($need_add_tags))
+			 return  $tagarr;
+		//记录已存在的tag
+		$vtags = array();
+		
+		$sql = "SELECT tagid, tagname, close FROM ylmf_sitetag WHERE tagname IN (".simplode($need_add_tags).")";
+		$query = app_db::query($sql);
+	
+		while ($rt = app_db::fetch_one())
+		{
+			$rt['tagname'] = addslashes($rt['tagname']);
+		    $vkey = md5($rt['tagname']);
+			$vtags[$vkey] = $rt;
+		}
+
+		
+		$updatetagids = array();
+		foreach ($need_add_tags as $tagname) {
+			if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
+			
+			$vkey = md5($tagname);
+			if(empty($vtags[$vkey])) {
+				$setarr = array(
+					'tagname' => $tagname,
+					'taghash' => qhash($tagname),
+					'dateline' => $timesec,
+					'totalnum' => 1
+				);
+				if (app_db::insert('ylmf_sitetag', array_keys($setarr), array_values($setarr)))
+				{
+					
+					$tagid = @mysql_result(app_db::query("SELECT last_insert_id()"), 0);
+					$tagarr[$tagid] = $tagname;
+				}
+			} else {
+				if(empty($vtags[$vkey]['close'])) {
+					$tagid = $vtags[$vkey]['tagid'];
+					$updatetagids[] = $tagid;
+					$tagarr[$tagid] = $tagname;
+				}
+			}
+		}
+		if($updatetagids) app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
+		$tagids = array_keys($tagarr);
+		$inserts = array();
+		foreach ($tagids as $tagid) {
+			$inserts[] = "('$tagid','$id')";
+		}
+		if($inserts) app_db::query("REPLACE INTO ylmf_sitetagsite (tagid,siteid) VALUES ".implode(',', $inserts));
+
+		return $tagarr;
+		
+	}
 }
 ?>
