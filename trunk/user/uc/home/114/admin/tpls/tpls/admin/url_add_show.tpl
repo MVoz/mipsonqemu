@@ -31,6 +31,10 @@
                             <th>网站分类：</th>
                             <td><{$data.class}></td>
                         </tr>
+			<tr>
+                            <th>网站标签：</th>
+                            <td><{$data.tag}></td>
+                        </tr>
                         <tr>
                             <th>网站备案信息：</th>
                             <td><{$data.icp}></td>

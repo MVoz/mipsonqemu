@@ -120,6 +120,26 @@ function check_seccode(obj,id)
 		return true;
 	}
 }
+function check_seccode_x(formobj,id)
+{
+	if($(id)) {
+		var code = $(id).value;
+		var x = new Ajax();
+		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
+			s = trim(s);
+			if(s.indexOf('succeed') == -1) {
+				 warning($('checkseccode'),s);
+           		 return false;
+			}else {
+				formobj.submit();
+				return true;
+			}
+		});
+    }else{
+		formobj.submit();
+		return true;
+	}
+}
 function check_number(id,min,max)
 {
 	if ($(id)) {
@@ -158,8 +178,8 @@ function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialcha
 	    return false;
 	return true;
 }
-function announce_validate(obj,seccode_id) {
-   if(!check_seccode(obj,seccode_id))
+function announce_validate(formobj,seccode_id) {
+   if(!check_seccode_x(formobj,seccode_id))
 	    return false;
 	return true;
 }

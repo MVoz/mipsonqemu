@@ -256,15 +256,9 @@ elseif($_GET['op'] == 'edithot') {
 			showmessage('incorrect_code');
 		}
 		include_once(S_ROOT.'./source/function_link.php');
-		$item = announce_post($_POST, $item);
-		if(is_array($item)) {
-			//$url = $_SGLOBAL['refer'];		
-			showmessage('do_success');
-		} elseif($item==false) {
-			showmessage('that_should_at_least_write_things');
-		}elseif($item==-1) {
-			showmessage('link_has_existed');
-		}
+
+		$item = announce_post($_POST);
+		exit();
 	}
 	//添加编辑
 	//将从上榜获得的tag中的,去掉

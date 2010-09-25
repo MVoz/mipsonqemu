@@ -203,7 +203,7 @@ a.button { padding: 5px; }
     .formtable caption { padding: 10px 0; color: #666; font-size: 12px; }
         .formtable caption h2 { padding-bottom: 8px; border-bottom: 1px solid #CCC; color: #FF6A00; font-size: 14px; }
         .formtable caption p { margin-top: 8px; }
-            .formtable td, .formtable th { padding: 5px; }
+            .formtable td, .formtable th { padding: 2px; }
             .formtable th { padding-right: 1em; text-align: right; }
 			.formtable em { color:#EE0000;font-style:normal;margin-left:8px; }
 
