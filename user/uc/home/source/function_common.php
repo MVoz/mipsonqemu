@@ -3017,4 +3017,38 @@ function updatestatistic($type,$mode,$ids)
 		
 		return 1;
 }
+function strip($data, $editor = false)
+{
+	$data = strtr($data, '`', '');
+
+	if ($editor == true)
+	{
+		// 过滤 JavaScript
+		$search = array ('#<script[^>]*?>.*?[</script>]*#si', '#<iframe[^>]*?>.*?[</iframe>]*#si', '#<input[^>]*?>#si', '#<button[^>]*?>.*?</button>#si', '#<form[^>]*?>#si', '#</form>#si',
+		'#(<[\/\!]*?)?(\ class\=[\'|"].*?[\'|"])|(\ id\=[\'|"].*?[\'|"])([^<>]*?>)?#si');
+		$replace = array('', '', '', '', '', '');
+		$data = preg_replace($search, $replace, $data);
+		if (get_magic_quotes_gpc())
+		{
+			$data = trim($data);
+		}
+		else
+		{
+			$data = addslashes(trim($data));
+		}
+
+	}
+	else
+	{
+		if (get_magic_quotes_gpc())
+		{
+			$data = htmlspecialchars(trim(stripslashes($data)), ENT_QUOTES);
+		}
+		else
+		{
+			$data = htmlspecialchars(trim($data), ENT_QUOTES);
+		}
+	}
+	return $data;
+}
 ?>

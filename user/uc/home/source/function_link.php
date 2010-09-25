@@ -8,11 +8,11 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
-//Ìí¼Ólink
+//æ·»åŠ link
 function link_post($POST, $olds=array()) {
 	global $_SGLOBAL, $_SC, $space,$_GET;
     global $browserid;	
-	//²Ù×÷Õß½ÇÉ«ÇĞ»»
+	//æ“ä½œè€…è§’è‰²åˆ‡æ¢
 	$isself = 1;
 	if(!empty($olds['uid']) && $olds['uid'] != $_SGLOBAL['supe_uid']) {
 		$isself = 0;
@@ -20,18 +20,18 @@ function link_post($POST, $olds=array()) {
 		$_SGLOBAL['supe_uid'] = $olds['uid'];
 	}
 
-	//¶ÔÊäÈëµÄaddress description tag½øĞĞÏŞÖÆ
+	//å¯¹è¾“å…¥çš„address description tagè¿›è¡Œé™åˆ¶
 	$POST['address']= mb_substr(trim($POST['address']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][urllen], 'UTF-8');
 	$POST['description']= mb_substr(trim($POST['description']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][deslen], 'UTF-8');
 	$POST['tag'] =  mb_substr(trim($POST['tag']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][taglen], 'UTF-8');
 
-	//±êÌâ
+	//æ ‡é¢˜
 	$POST['subject'] = getstr(trim($POST['subject']), 0, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
 		
 	
 
-	//ÄÚÈİ
+	//å†…å®¹
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
 	} else {
@@ -39,44 +39,44 @@ function link_post($POST, $olds=array()) {
 	}
 	$message = $POST['description'];
 	
-	//Ö÷±í
+	//ä¸»è¡¨
 	$linkarr = array(
 		'link_subject' => $POST['subject'],		
 	);
 	/*
-	//Ã»ÓĞÌîĞ´ÈÎºÎ¶«Î÷
+	//æ²¡æœ‰å¡«å†™ä»»ä½•ä¸œè¥¿
 	$ckmessage = preg_replace("/(\<div\>|\<\/div\>|\s|\&nbsp\;|\<br\>|\<p\>|\<\/p\>)+/is", '', $message);
 	if(empty($ckmessage)) {
 		return false;
 	}
 	*/	
-			//Ôö¼Ó»òĞŞ¸Älink
+			//å¢åŠ æˆ–ä¿®æ”¹link
 			/*
 			olds:
-			1:Ôö¼ÓlinkÊ±£¬Îª¿Õ
-			2:ĞŞ¸ÄlinkkÊ±£¬±íÊ¾¸Ãitem
+			1:å¢åŠ linkæ—¶ï¼Œä¸ºç©º
+			2:ä¿®æ”¹linkkæ—¶ï¼Œè¡¨ç¤ºè¯¥item
 			*/
 			$POST['address'] = shtmlspecialchars(trim($POST['address']));
-			$POST['address'] = getstr($POST['address'], 0, 1, 1, 1);	//Óï´ÊÆÁ±Î
+			$POST['address'] = getstr($POST['address'], 0, 1, 1, 1);	//è¯­è¯å±è”½
 			$linkarr['url']=$POST['address'];
 			$linkarr['hashurl']=qhash($linkarr['url']);
 			$linkarr['md5url']=md5($linkarr['url']);
-			//¼ì²éÊÇ·ñÒÑ´æÔÚ,Ö»ÔÚÔö¼ÓµÄÊ±ºò¼ì²é
+			//æ£€æŸ¥æ˜¯å¦å·²å­˜åœ¨,åªåœ¨å¢åŠ çš„æ—¶å€™æ£€æŸ¥
 			if(empty($olds)&&checklinkexisted($linkarr))
 			{
 				return -1;//link existed
 			}
 
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
-			$POST['tag'] = getstr($POST['tag'], 0, 1, 1, 1);	//Óï´ÊÆÁ±Î
+			$POST['tag'] = getstr($POST['tag'], 0, 1, 1, 1);	//è¯­è¯å±è”½
 			
-			//link ±í
+			//link è¡¨
 			$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
 			//$linkarr['username'] =$_SGLOBAL['supe_username'];//ramen.sh@gmail.com
-			$linkarr['username'] = $_SGLOBAL['name'];//³ÇÊĞÉ­ÁÖ
+			$linkarr['username'] = $_SGLOBAL['name'];//åŸå¸‚æ£®æ—
 			$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 			$linkarr['link_description'] = $message;
-			//Èç¹ûolds²»Îª¿Õ£¬ÔòÊÇ±à¼­×´Ì¬£¬otherwise£¬ÎªÔö¼Ó
+			//å¦‚æœoldsä¸ä¸ºç©ºï¼Œåˆ™æ˜¯ç¼–è¾‘çŠ¶æ€ï¼Œotherwiseï¼Œä¸ºå¢åŠ 
 			$linkarr['origin'] =(empty($olds))?$_SC['link_origin_link']:$olds['origin'];
 
 
@@ -86,11 +86,11 @@ function link_post($POST, $olds=array()) {
 			$linkarr['verify']=$_SC['link_verify_undo'];
 			
 			if(empty($olds)){
-				//Ôö¼ÓÒ»¸öLINK	
+				//å¢åŠ ä¸€ä¸ªLINK	
 				$linkarr['initaward'] =$linkarr['award']=$_SC['link_award_initial_value'];
 				$linkid = inserttable('link', $linkarr, 1);
 			}else{
-				//ĞŞ¸ÄÒ»¸öLINK
+				//ä¿®æ”¹ä¸€ä¸ªLINK
 				$linkarr['url']=  $olds['url'];
 				$linkarr['initaward'] =$POST['initaward'];
 				$linkarr['award']=calc_link_award($linkarr['initaward'],$olds['storenum'],$olds['viewnum'],$olds['up'],$olds['down']);
@@ -104,18 +104,18 @@ function link_post($POST, $olds=array()) {
 			$linkarr['link_tag']=$tag;
 			updatetable('link',array('link_tag'=>$tag), array('linkid'=>$linkid));
 
-			//cache¸üĞÂ£¬ÏÈ»ñµÃclassid,Èç¹ûclassidÎª0ÔòÎŞ¶¯×÷
+			//cacheæ›´æ–°ï¼Œå…ˆè·å¾—classid,å¦‚æœclassidä¸º0åˆ™æ— åŠ¨ä½œ
 			if(!empty($olds[classid]))
 			{
 				include_once(S_ROOT.'./source/function_cache.php');
 				link_cache_classid($olds[classid]);
 			}
-	//½ÇÉ«ÇĞ»»
+	//è§’è‰²åˆ‡æ¢
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
 	return $linkarr;
 }
-//´¦Àítag
+//å¤„ç†tag
 function link_tag_batch($id,$tags)
 {
 		global $_SGLOBAL;
@@ -123,38 +123,38 @@ function link_tag_batch($id,$tags)
 		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
 		
 		//if(empty($now_tag)) return $tagarr;
-		//»ñÈ¡Ô­À´µÄtags
+		//è·å–åŸæ¥çš„tags
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main WHERE main.linkid=".$id);
 		$result = $_SGLOBAL['db']->fetch_array($query);
 		if(empty($result))
 			return $tagarr;
-		//Èç¹ûÒÑÔÚsite±íÖĞ£¬Ôò²»´¦Àí
+		//å¦‚æœå·²åœ¨siteè¡¨ä¸­ï¼Œåˆ™ä¸å¤„ç†
 		if($result['siteid'])
 			{
-				//·µ»ØÏÖÓĞµÄ
+				//è¿”å›ç°æœ‰çš„
 				return empty($result['tag'])?array():unserialize($result['tag']);
 			}
-		 //ĞŞÕıtagÏÔÊ¾
+		 //ä¿®æ­£tagæ˜¾ç¤º
 		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
 		
 		 $need_delete_tags=array();
 		 $need_add_tags=array();
 		 $tagarr = $intersect_tag = array_intersect($old_tags,$now_tag);
-		//»ñÈ¡old_tagÓĞ¶øÏÖÔÚÃ»ÓĞµÄ			
+		//è·å–old_tagæœ‰è€Œç°åœ¨æ²¡æœ‰çš„			
 		 $need_delete_tags = array_diff($old_tags,$intersect_tag);
-		//Çå³ıtag
+		//æ¸…é™¤tag
 		if(!empty($need_delete_tags)) {
 			  foreach($need_delete_tags as $k=>$v){
 				 $_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE linkid=".$id.' AND tagid='.$k);			
 			  }	  
 			 $_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
 		}
-		//»ñÈ¡ÏÖÔÚÓĞ¶şold_tagÃ»ÓĞµÄ
+		//è·å–ç°åœ¨æœ‰äºŒold_tagæ²¡æœ‰çš„
 		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
 		 
 		 if(empty($need_add_tags))
 			 return  $tagarr;
-		//¼ÇÂ¼ÒÑ´æÔÚµÄtag
+		//è®°å½•å·²å­˜åœ¨çš„tag
 		$vtags = array();
 		
 		$sql = "SELECT tagid, tagname, close FROM ".tname('sitetag')." WHERE tagname IN (".simplode($need_add_tags).")";
@@ -178,7 +178,7 @@ function link_tag_batch($id,$tags)
 					'tagname' => $tagname,
 					'taghash' => qhash($tagname),
 					'dateline' => $_SGLOBAL['timestamp'],
-					//linkµÄtag½øÈëÍ³¼Æ
+					//linkçš„tagè¿›å…¥ç»Ÿè®¡
 					'totalnum' => 1
 				);
 				if ($tagid=inserttable('sitetag', $setarr, 1))
@@ -253,7 +253,7 @@ function link_tag_batch($linkid, $tags) {
 	return $tagarr;
 }
 */
-//¼ì²élinkÊÇ·ñÒÑ´æÔÚ
+//æ£€æŸ¥linkæ˜¯å¦å·²å­˜åœ¨
 function  checklinkexisted($linkarr)
 {
 	    global $_SGLOBAL,$_SC;
@@ -262,7 +262,7 @@ function  checklinkexisted($linkarr)
 		$query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE hashurl=".$linkarr['hashurl']." AND  md5url='".$linkarr['md5url']."' AND  url='".$linkarr['url']."' limit 1");
 		if($value=$_SGLOBAL['db']->fetch_array($query))
 			return 1;
-//Í¬Ê±ĞèÒª¼ì²ésite±íÖĞÊÇ·ñÒÑ¾­º¬ÓĞ´ËÕ¾µã
+//åŒæ—¶éœ€è¦æ£€æŸ¥siteè¡¨ä¸­æ˜¯å¦å·²ç»å«æœ‰æ­¤ç«™ç‚¹
 		$query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('site')." WHERE hashurl=".$linkarr['hashurl']." AND  md5url='".$linkarr['md5url']."' AND  url='".$linkarr['url']."' limit 1");
 		if($value=$_SGLOBAL['db']->fetch_array($query))
 			return 1;
@@ -272,7 +272,7 @@ function  checklinkexisted($linkarr)
 function link_delete_tag($linkid)
 {
 	global $_SGLOBAL,$_SC;
-	//´¦Àítag
+	//å¤„ç†tag
 	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('sitetagsite')." WHERE linkid=".$linkid);
 	$updatetagids=array();
 	while($values=$_SGLOBAL['db']->fetch_array($query))
@@ -284,11 +284,11 @@ function link_delete_tag($linkid)
 	$_SGLOBAL['db']->query("DELETE  from ".tname('sitetagsite')." WHERE linkid=".$linkid);
 }
 /*
-	1:¹ÜÀíÔ±¿ÉÒÔÉ¾³ıÈÎºÎÁ¬½Ó£¬µ«Ê×ÏÈ²Î¿¼ÊÕ²ØÊı£¬Èç¹ûÊÕ²ØÊı>0,Ôò²»É¾³ı
-	2:µ±Ã»ÓĞÍ¨¹ıÑéÖ¤µÄÕ¾µã£¬Ôò¿ÉÒÔÉ¾³ı
+	1:ç®¡ç†å‘˜å¯ä»¥åˆ é™¤ä»»ä½•è¿æ¥ï¼Œä½†é¦–å…ˆå‚è€ƒæ”¶è—æ•°ï¼Œå¦‚æœæ”¶è—æ•°>0,åˆ™ä¸åˆ é™¤
+	2:å½“æ²¡æœ‰é€šè¿‡éªŒè¯çš„ç«™ç‚¹ï¼Œåˆ™å¯ä»¥åˆ é™¤
 */
 function deletelink($linkid){
-	//´¦Àílink
+	//å¤„ç†link
 	global $_SGLOBAL,$_SC;
 	$link_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." main WHERE  main.linkid= ".$linkid);
 	$linkitem=$_SGLOBAL['db']->fetch_array($link_query);
@@ -296,7 +296,7 @@ function deletelink($linkid){
 		return 0;
 	if($linkitem['siteid'])
 		return 0;
-	if($linkitem['storenum'])//ÊÕ²ØÊı>0
+	if($linkitem['storenum'])//æ”¶è—æ•°>0
 	{
 		updatetable('link',array('delflag'=>1), array('linkid'=>$linkitem['linkid']));
 		return 1;
@@ -319,7 +319,7 @@ function deletelink($linkid){
 				link_delete_tag($linkid);
 		break;
 	}
-	//È¥µôfeed
+	//å»æ‰feed
 	include_once(S_ROOT.'./source/function_feed.php');
 	feed_delete($linkid, 'linkid');
 	return 1;
@@ -330,7 +330,7 @@ function link_pass($link)
 	$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET verify=".$_SC['link_verify_passed']." WHERE linkid=".$link['linkid']);
 }
 /*
-	Èç¹ûlinkµÄtagÃ»ÓĞ¸ñÊ½»¯£¬Ôò¸ñÊ½»¯
+	å¦‚æœlinkçš„tagæ²¡æœ‰æ ¼å¼åŒ–ï¼Œåˆ™æ ¼å¼åŒ–
 */
 function convertlinktag($linkid,$tag)
 {
@@ -371,7 +371,7 @@ function linkerr_post($POST, $olds=array())
 	}
 	if(empty($linkerr_arr['errid'])&&empty($linkerr_arr['other']))
 		return 0;
-	//¼ì²éÊÇ·ñÒÑ¾­´æÔÚ
+	//æ£€æŸ¥æ˜¯å¦å·²ç»å­˜åœ¨
 	$linkerr_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('linkerr')." main WHERE  main.linkid= ".$olds['linkid']);
 	$linkerritem=$_SGLOBAL['db']->fetch_array($linkerr_query);
 	if(empty($linkerritem))	
@@ -390,19 +390,19 @@ function linktoolbar_post($POST)
 	global $_SGLOBAL, $_SC, $space,$_GET;
     global $browserid;	
 
-	//±êÌâ
+	//æ ‡é¢˜
 	$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');	
 	 
-	//ÄÚÈİ 
+	//å†…å®¹ 
 	$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
 		
-	//Ö÷±í
+	//ä¸»è¡¨
 	$linktoolbar_arr = array(
 		'subject' => $POST['subject'],		
 	);
 	$POST['address'] = shtmlspecialchars(trim($POST['address']));
-	$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//Óï´ÊÆÁ±Î
+	$POST['address'] = getstr($POST['address'], 1024, 1, 1, 1);	//è¯­è¯å±è”½
 	$linktoolbar_arr['url']=$POST['address'];
 	$linktoolbar_arr['hashurl']=qhash($linktoolbar_arr['url']);
 	$linktoolbar_arr['postuid']=$_SGLOBAL['supe_uid'];
@@ -413,7 +413,7 @@ function linktoolbar_post($POST)
 	
 
 	if(empty($count)){
-				//Ôö¼ÓÒ»¸öLINK				
+				//å¢åŠ ä¸€ä¸ªLINK				
 				$linkid = inserttable('linktoolbar', $linktoolbar_arr, 1);
 	}else{
 				
@@ -432,81 +432,87 @@ function getLinkStorenum($linkid)
 		$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('link')." where linkid=".$linkid),0);
 	echo  $count;
 }
-function announce_post($POST)
+function announce_post($_POST)
 {
 		global $_SGLOBAL;
-		$subject = (empty($_POST['subject'])) ? '' : strip($_POST['subject']);
-        if (empty($subject))
+		$refer =  $_SGLOBAL['refer'];
+		unset($_POST['refer']);
+		unset($_POST['addsubmit']);
+		unset($_POST['formhash']);
+		unset($_POST['seccode']);
+		
+		//å¯¹è¾“å…¥çš„address description tagè¿›è¡Œé™åˆ¶
+		$_POST['siteurl']= mb_substr(trim($_POST['siteurl']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][urllen], 'UTF-8');
+		$_POST['jianjie']= mb_substr(trim($_POST['jianjie']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][deslen], 'UTF-8');
+		$_POST['tag'] =  mb_substr(trim($_POST['tag']), 0, $_SGLOBAL['browser'][$_SGLOBAL['browsertype']['ie']][taglen], 'UTF-8');
+
+		//æ ‡é¢˜
+		$_POST['name']  = getstr(trim($_POST['name']), 0, 1, 1, 1);
+
+        if (empty($_POST['name']))
         {
-			showmessage('ÍøÕ¾Ãû³Æ²»ÄÜÎª¿Õ', $_SGLOBAL['refer'], 10);
+			showmessage('site_name_cannot_empty', $refer, 10);
         }
 
-        $address = (empty($_POST['address'])) ? '' : strip($_POST['address']);
-        if (empty($address))
+        if (empty($_POST['siteurl']))
         {
-			showmessage('ÍøÕ¾µØÖ·²»ÄÜÎª¿Õ', $_SGLOBAL['refer'], 10);
+			showmessage('site_url_cannot_empty', $refer, 10);
         }
-        $tmp = parse_url($address);
+        $tmp = parse_url($_POST['siteurl']);
         $domain = $tmp['host'];
-        if (!eregi("^http[s]?://", $address) || empty($domain))
+        if (!eregi("^http[s]?://", $_POST['siteurl']) || empty($domain))
         {
-			showmessage('ÍøÕ¾ÍøÖ·²»ÕıÈ·', $_SGLOBAL['refer'], 10);
+			showmessage('ç½‘ç«™ç½‘å€ä¸æ­£ç¡®', $refer, 10);
         }
         $domain = addslashes($domain);
 
-        $description = (empty($_POST['description'])) ? '' : strip($_POST['description']);
-        if (empty($description))
+        $_POST['jianjie'] = (empty($_POST['jianjie'])) ? '' : getstr(trim($_POST['jianjie']), 200, 1, 1, 1);
+        if (empty($_POST['jianjie']))
         {
-			showmessage('ÍøÕ¾¼ò½é²»ÄÜÎª¿Õ', $_SGLOBAL['refer'], 10);
+			showmessage('ç½‘ç«™ç®€ä»‹ä¸èƒ½ä¸ºç©º', $refer, 10);
         }
 
-        $pv = (empty($_POST['pv'])) ? '' : strip($_POST['pv']);
-        $class = (empty($_POST['class'])) ? '' : strip($_POST['class']);
-        if (empty($class))
+		//$tags = empty($_POST['tag'])?array():array_unique(explode(' ', $_POST['tag'])
+
+        $_POST['pv'] = (empty($_POST['pv'])) ? '' : getstr(trim($_POST['pv']), 12, 1, 1, 1);
+        $_POST['class'] = (empty($_POST['class'])) ? '' :getstr(trim($_POST['class']), 128, 1, 1, 1);
+        if (empty($_POST['class']))
         {
-            throw new Exception('ÍøÕ¾·ÖÀà²»ÄÜÎª¿Õ', 10);
+			showmessage('ç½‘ç«™åˆ†ç±»ä¸èƒ½ä¸ºç©º', $refer, 10);
         }
 
-        $icp = (empty($_POST['icp'])) ? '' : strip($_POST['icp']);
-        $sitetime = (empty($_POST['sitetime'])) ? '' : strip($_POST['sitetime']);
-        $lianxiren = (empty($_POST['lianxiren'])) ? '' : strip($_POST['lianxiren']);
-        $address = (empty($_POST['address'])) ? '' : strip($_POST['address']);
-        $qq = (empty($_POST['qq'])) ? '' : strip($_POST['qq']);
-        if (empty($qq))
-        {
-			showmessage('QQ ²»ÄÜÎª¿Õ', $_SGLOBAL['refer'], 10);
-        }
-        if (!is_numeric($qq))
-        {
-			showmessage('QQ ºÅÂë²»ÕıÈ·', $_SGLOBAL['refer'], 10);
-        }
+        $_POST['icp'] = (empty($_POST['icp'])) ? '' : getstr(trim($_POST['icp']), 32, 1, 1, 1);
+        $_POST['sitetime'] = (empty($_POST['sitetime'])) ? '' : getstr(trim($_POST['sitetime']), 32, 1, 1, 1);
+        $_POST['lianxiren'] = (empty($_POST['lianxiren'])) ? '' : getstr(trim($_POST['lianxiren']), 32, 1, 1, 1);
+        $_POST['address'] = (empty($_POST['address'])) ? '' : getstr(trim($_POST['address']), 128, 1, 1, 1);
 
-        $mobile = (empty($_POST['mobile'])) ? '' : strip($_POST['mobile']);
-        $tel = (empty($_POST['tel'])) ? '' : strip($_POST['tel']);
-        $email = (empty($_POST['email'])) ? '' : strip($_POST['email']);
-        if (empty($email))
+
+        $_POST['mobile'] = (empty($_POST['mobile'])) ? '' :getstr(trim($_POST['mobile']), 32, 1, 1, 1);
+        $_POST['tel'] = (empty($_POST['tel'])) ? '' : getstr(trim($_POST['tel']), 32, 1, 1, 1);
+        $_POST['email'] = (empty($_POST['email'])) ? '' : getstr(trim($_POST['email']), 64, 1, 1, 1);
+        if (empty($_POST['email']))
         {
-			showmessage('µç×ÓÓÊÏä²»ÄÜÎª¿Õ', $_SGLOBAL['refer'], 10);
+			showmessage('ç”µå­é‚®ç®±ä¸èƒ½ä¸ºç©º', $refer, 10);
         }
 
-        $sharelink = (empty($_POST['sharelink'])) ? '' : strip($_POST['sharelink']);
+        $_POST['sharelink'] = (empty($_POST['sharelink'])) ? '' : strip($_POST['sharelink']);
 
-		$q = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('urladd')." main	where domain=".$domain.' LIMIT 1');
+		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('urladd')." where domain='".$domain."' LIMIT 1");
 		$rs = $_SGLOBAL['db']->fetch_array($q);
 
         if (!empty($rs))
         {
             if ($rs['type'] == 0)
             {
-			   	showmessage('¸ÃÕ¾µãÒÑÌá½»,ÇëÄÍĞÄµÈ´ı¹¤×÷ÈËÔ±µÄÉóºË,²»ÒªÖØ¸´Ìá½»!', $_SGLOBAL['refer'], 10);
+			   	showmessage('è¯¥ç«™ç‚¹å·²æäº¤,è¯·è€å¿ƒç­‰å¾…å·¥ä½œäººå‘˜çš„å®¡æ ¸,ä¸è¦é‡å¤æäº¤!', $refer, 10);
             }
             elseif ($rs['type'] == 1)
             {
-			   	showmessage('¸ÃÕ¾µãÒÑÌá½»²¢ÇÒÍ¨¹ıÉóºË,ÒÑÊÕÂ¼¸ÃÕ¾µã!', $_SGLOBAL['refer'], 10);
+			   	showmessage('è¯¥ç«™ç‚¹å·²æäº¤å¹¶ä¸”é€šè¿‡å®¡æ ¸,å·²æ”¶å½•è¯¥ç«™ç‚¹!', $refer, 10);
             }
             else
             {
-				showmessage('¸ÃÕ¾µãÉÏ´ÎÌá½»Î´Í¨¹ıÉóºË,Çë²»ÒªÖØ¸´Ìá½»! ÈçÓĞÒÉÎÊÇëÁªÏµ');
+				showmessage('è¯¥ç«™ç‚¹ä¸Šæ¬¡æäº¤æœªé€šè¿‡å®¡æ ¸,è¯·ä¸è¦é‡å¤æäº¤! å¦‚æœ‰ç–‘é—®è¯·è”ç³»');
             }
         }
 
@@ -517,10 +523,9 @@ function announce_post($POST)
         }
         $infos = addslashes(serialize($info));
 
-        app_db::insert('ylmf_urladd', array('domain', 'info', 'addtime'), array($domain, $infos, time()));
-		$_SGLOBAL['db']->query("INSERT INTO ".tname('urladd')." ('domain', 'info', 'addtime') VALUES(".$domain.",".$infos.",".time().")");
+       // app_db::insert('ylmf_urladd', array('domain', 'info', 'addtime'), array($domain, $infos, time()));
+		$_SGLOBAL['db']->query("INSERT INTO ".tname('urladd')." (domain, info, addtime) VALUES('".$domain."','".$infos."','".time()."')");
 
-		showmessage('Õ¾µãĞÅÏ¢ÒÑ³É¹¦Ìá½»,ÇëÄÍĞÄµÈ´ı¹¤×÷ÈËÔ±µÄÉóºË!', $_SGLOBAL['refer'], 10);
-
+		showmessage('ç«™ç‚¹ä¿¡æ¯å·²æˆåŠŸæäº¤,è¯·è€å¿ƒç­‰å¾…å·¥ä½œäººå‘˜çš„å®¡æ ¸!', $refer, 10);  
 }
 ?>

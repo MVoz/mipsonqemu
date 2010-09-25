@@ -522,7 +522,7 @@
 					span.id = "__ErrorMessagePanel";
 					span.style.color = "red";
 					this.ErrorItem[i].parentNode.appendChild(span);
-					span.innerHTML = this.ErrorMessage[i].replace(/\d+:/,"*");
+					span.innerHTML = this.ErrorMessage[i].replace(/\d+:/,"");
 					}
 					catch(e){alert(e.description);}
 				}
@@ -620,7 +620,7 @@
     alert("地址已经复制成功，您可以粘贴到其他需要的地方！"); 
   } 
 </script>
-<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form" onSubmit="return (Validator.Validate(this,3)&&announce_validate(this,'seccode'))">
+<form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form" onSubmit="return (Validator.Validate(this,3)&&announce_validate($('registerform'),'seccode'))">
 <table cellpadding="0" cellspacing="0" class="formtable">
 	<caption>
 		<h2>如果您希望收录您的网站，贵站需要满足以下条件(即收录原则):</h2>
@@ -642,17 +642,17 @@
 	</caption>
 	<tr>
 		<th width="120">标题</th>
-		<td><input type="text" id="subject" name="subject" value="$_GET[title]" style="width: 396px;" class="t_input" tabindex="1" dataType="Require"  msg="网站名称不能为空" tabindex="1"/><em>*</em></td>
+		<td><input type="text" id="name" name="name" value="$_GET[title]" style="width: 396px;" class="t_input" tabindex="1" dataType="Require"  msg="网站名称不能为空" tabindex="1"/><em>*</em></td>
 	</tr>
 	<tr>
 		<th width="120">地址</th>
-		<td><input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2"  dataType="Url"  msg="网站地址要以http://开头" /><em>*</em></td>
+		<td><input type="text" id="siteurl" name="siteurl" style="width: 396px;" class="t_input" tabindex="2"  dataType="Url"  msg="网站地址要以http://开头" /><em>*</em></td>
 		<td>
 	</tr>
 	<tr>
 		<th width="120">标签</th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$_GET[tag]" style="width: 396px;" class="t_input"  tabindex="3" />&nbsp;
+		<input type="text" id="tag" name="tag" value="$_GET[tag]" style="width: 396px;" class="t_input"  tabindex="3" /><em>*</em>
 		<p style="color:gray">多个标签请用空格隔开</p>
 		</td>
 	</tr>
@@ -675,7 +675,7 @@
 	<tr>
 		<th style="vertical-align: top;" width="40"><label for="description">描述</label></th>
 		<td>
-		<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4" dataType="Require"  msg="网站简介不能为空">
+		<textarea id="jianjie" name="jianjie" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="4" dataType="Require"  msg="网站简介不能为空" >
 		$_GET[content]
 		</textarea>
         <em>* </em>
@@ -683,7 +683,7 @@
 	</tr>
 	<tr>
         <th width="120">网站分类：</th>
-        <td><input name="class" type="text" class="t_input" id="class" value="" dataType="Require"  msg="网站分类不能为空" />
+        <td><input name="class" type="text" class="t_input" id="class" value="" dataType="Require"  msg="网站分类不能为空" maxlength="64"/>
           	<em>*</em> 依据贵站定位写明详细分类  如“音乐MP3-在线音乐”</td>
       </tr>
 	  
@@ -696,37 +696,37 @@
       </tr>
 	  <tr>
         <th width="120">网站访问量：</th>
-        <td><input name="pv" type="text" class="t_input" id="pv" value="" />
+        <td><input name="pv" type="text" class="t_input" id="pv" value="" maxlength="12"/>
           日独立IP</td>
 
       </tr>
       <tr>
         <th width="120">网站备案信息：</th>
 
-        <td><input name="icp" type="text" class="t_input" id="icp" value=""/></td>
+        <td><input name="icp" type="text" class="t_input" id="icp" value="" maxlength="32"/></td>
       </tr>
       <tr>
         <th width="120">建站时间：</th>
-        <td><input name="sitetime" type="text" class="t_input" id="sitetime" value="" /></td>
+        <td><input name="sitetime" type="text" class="t_input" id="sitetime" value="" maxlength="32" /></td>
       </tr>
       <tr>
 
         <th width="120">联 系 人：</th>
-        <td><input name="lianxiren" type="text" class="t_input" id="lianxiren" value=""/></td>
+        <td><input name="lianxiren" type="text" class="t_input" id="lianxiren" value="" maxlength="32"/></td>
       </tr>
       <tr>
         <th width="120">通讯地址：</th>
-        <td><input name="address" type="text" class="t_input" id="address" value="" /></td>
+        <td><input name="address" type="text" class="t_input" id="address" value="" maxlength="128"/></td>
       </tr>
 
       <tr>
         <th width="120">手机号码：</th>
-        <td><input name="mobile" type="text" class="t_input" id="mobile" value="" /></td>
+        <td><input name="mobile" type="text" class="t_input" id="mobile" value="" maxlength="32"/></td>
       </tr>
       <tr>
 
         <th width="120">固定电话：</th>
-        <td><input name="tel" type="text" class="t_input" id="tel" value=""/>
+        <td><input name="tel" type="text" class="t_input" id="tel" value="" maxlength="32"/>
         区号-电话号码</td>
       </tr>
       
