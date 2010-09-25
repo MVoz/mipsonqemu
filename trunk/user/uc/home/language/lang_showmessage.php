@@ -60,6 +60,7 @@ $_SGLOBAL['msglang'] = array(
 	'that_should_at_least_write_things' => '至少应该写一点东西',
 	'failed_to_delete_operation' => '删除失败，请检查操作',
 
+
 	'click_error' => '没有进行正常的表态操作',
 	'click_item_error' => '要表态的对象不存在',
 	'click_no_self' => '自己不能给自己表态',
@@ -444,8 +445,10 @@ $_SGLOBAL['msglang'] = array(
 	'space_has_been_locked' => '空间已被锁定无法访问，如有疑问请联系管理员',
 	//source/cpbmdir.php
 	'err_bmdir_add_overflow' => '超出目录分类的最大深度' ,
-	'err_bookmark_add_overflow' => '超出目录书签的最大允许数' 
+	'err_bookmark_add_overflow' => '超出目录书签的最大允许数', 
 	
+
+	'link_has_existed' => '提交的站点已经存在' 
 );
 
 ?>

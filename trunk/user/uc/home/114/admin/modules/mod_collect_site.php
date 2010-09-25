@@ -260,48 +260,7 @@ class mod_collect_site
         }
         self::multi_add($sites);
 	}
-	public static function simplode($ids) {
-		return "'".implode("','", $ids)."'";
-	}
-	public static function getUnicodeFromOneUTF8($word) {   
-	  if (is_array( $word))   
-		$arr = $word;   
-	  else     
-		$arr = str_split($word);    
-	  $bin_str = '';   
-	  foreach ($arr as $value)   
-		$bin_str .= decbin(ord($value));   
-	  $bin_str = preg_replace('/^.{4}(.{4}).{2}(.{6}).{2}(.{6})$/','$1$2$3', $bin_str);   
-	  return bindec($bin_str); 
-	}
-	public static function mbStringToArray ($string) {
-		$strlen = mb_strlen($string);
-		while ($strlen) {
-			$array[] = mb_substr($string,0,1,"UTF-8");
-			$string = mb_substr($string,1,$strlen,"UTF-8");
-			$strlen = mb_strlen($string);
-		}
-		return $array;
-	}
-	public static function _qhash($p, $n)
-	{
-		$h = 0;
-		$g;
-		  $i=0;
-		while ($n--) {
-			$h = (($h) << 4) + self::getUnicodeFromOneUTF8($p[$i]);
-			if (($g = ($h & 0xf0000000)) != 0)
-				$h ^= $g >> 23;
-			$h &= ~$g;
-					$i++;
-		}
-		return $h;
-	}
 
-	public static function qhash($str){
-	  $t=self::mbStringToArray($str);
-	  return self::_qhash($t,count($t));
-	}
 	/**
 		process tag
 	**/
@@ -334,7 +293,7 @@ class mod_collect_site
 			  foreach($need_delete_tags as $k=>$v){
 				 app_db::query("DELETE  from ylmf_sitetagsite WHERE siteid=".$id.' AND tagid='.$k);			
 			  }	  
-			 app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".self::simplode(array_keys($need_delete_tags)).")");
+			 app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
 		}
 		//获取现在有二old_tag没有的
 		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
@@ -344,7 +303,7 @@ class mod_collect_site
 		//记录已存在的tag
 		$vtags = array();
 		
-		$sql = "SELECT tagid, tagname, close FROM ylmf_sitetag WHERE tagname IN (".self::simplode($need_add_tags).")";
+		$sql = "SELECT tagid, tagname, close FROM ylmf_sitetag WHERE tagname IN (".simplode($need_add_tags).")";
 		$query = app_db::query($sql);
 	
 		while ($rt = app_db::fetch_one())
@@ -363,7 +322,7 @@ class mod_collect_site
 			if(empty($vtags[$vkey])) {
 				$setarr = array(
 					'tagname' => $tagname,
-					'taghash' => self::qhash($tagname),
+					'taghash' => qhash($tagname),
 					'dateline' => $timesec,
 					'totalnum' => 1
 				);
@@ -381,7 +340,7 @@ class mod_collect_site
 				}
 			}
 		}
-		if($updatetagids) app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum+1 WHERE tagid IN (".self::simplode($updatetagids).")");
+		if($updatetagids) app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
 		$tagids = array_keys($tagarr);
 		$inserts = array();
 		foreach ($tagids as $tagid) {

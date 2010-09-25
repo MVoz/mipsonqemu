@@ -148,8 +148,7 @@ class ctl_url_add
                     throw new Exception('颜色代码不正确，（正确方式：#FF0000）', 10);
                 }
                 $data['namecolor'] = $color;
-
-                $start_time = (empty($_POST['start_time'])) ? 0 : strtotime($_POST['start_time']);
+				$start_time = (empty($_POST['start_time'])) ? 0 : strtotime($_POST['start_time']);
                 $data['starttime'] = $start_time;
 
                 $end_time = (empty($_POST['end_time'])) ? 0 : strtotime($_POST['end_time']);
@@ -158,6 +157,8 @@ class ctl_url_add
                     throw new Exception('结束时间不能早于开始时间', 10);
                 }
                 $data['endtime'] = $end_time;
+				$remark = (empty($_POST['remark'])) ? '' : trim($_POST['remark']);
+				$data['remark'] = $remark;
 
                 $class_id = (empty($_POST['classid'])) ? 0 : (
                             (false === strpos($_POST['classid'], ',')) ? $_POST['classid'] :
@@ -188,12 +189,53 @@ class ctl_url_add
 
                 $shenhe = (empty($_POST['shenhe'])) ? '' : htmlspecialchars($_POST['shenhe'], ENT_QUOTES);
 
+				$site_tag = (empty($_POST['site_tag'])) ? '' : trim($_POST['site_tag']);   
+
+				//处理一些link的东西
+				//检查在link中是否存在
+				$data['url'] = handleUrlString($data['url']);
+				$data['hashurl']=qhash($data['url']);
+				$data['md5url']=md5($data['url']);
+
+				$sql = "SELECT * FROM ylmf_link WHERE hashurl='".$data['hashurl']."' and md5url='".$data['md5url']."' and url='".$data['url']."'";
+				$query = app_db::query($sql);
+				$linkid=0;
+				$rt = app_db::fetch_one();				
+				$linkid = $rt['linkid'] ;					
+				
+	
+				global $_SC;
+
+				$data['initaward'] = empty($linkid)?$_SC['link_award_initial_value']:$rt['initaward'];			
+				$data['storenum'] = empty($linkid)?0:$rt['storenum'];
+				$data['viewnum']= empty($linkid)?0:$rt['viewnum'];
+				$data['up']= empty($linkid)?0:$rt['up'];
+				$data['down']= empty($linkid)?0:$rt['down'];
+				$data['tmppic']= empty($linkid)?'':$rt['tmppic'];
+				$data['pic']= empty($linkid)?'':$rt['pic'];
+				$data['picflag']= empty($linkid)?0:$rt['picflag'];
+
+				if(empty($linkid))
+					$data=setlinkimagepath($data);
+				$data['award']=calc_link_award($data['initaward'],$data['storenum'],$data['viewnum'],$data['up'],$data['down']);
                 // 新增
                 if (app_db::insert('ylmf_site', array_keys($data), array_values($data)))
                 {
-                    $type = 1;
-            	    app_db::update('ylmf_urladd', array('type' => $type, 'shenhe' => $shenhe), "id = {$id}");
+					$siteid = @mysql_result(app_db::query("SELECT last_insert_id()"), 0);
+					
+					$tagarr = mod_url_add::batch_tag($siteid,$site_tag);
+					$data['tag'] = empty($tagarr)?'':addslashes(serialize($tagarr));
+					if (false === app_db::update('ylmf_site', $data, "id = {$siteid}"))
+					{
+						 throw new Exception('数据库操作失败', 10);
+					}
+					//ramen  20100925 更新link表中的信息，设置siteid，将tag url descrition等清空
+					
+					if($linkid)
+						self::updatelinkinfo($siteid,$linkid);
 
+					$type = 1;
+            	    app_db::update('ylmf_urladd', array('type' => $type, 'shenhe' => $shenhe), "id = {$id}");
                     //生成静态页面开始
                     mod_make_html::make_html_one_catalog($cache_main_class[$class_id]['parentid'],
                                                         $cache_main_class[$cache_main_class[$class_id]['parentid']]['classname']);
@@ -261,5 +303,40 @@ class ctl_url_add
         !empty($_POST['classid']) && app_tpl::assign('class_id', $_POST['classid']);
         app_tpl::display('url_add_show.tpl');
     }
+
+	public static function updatelinkinfo($siteid,$linkid)
+	{
+				echo $siteid.'  '.$linkid;
+				$result = mod_url_add::get_one_link($linkid);
+                if (empty($result)||$siteid<1)
+                {
+                    throw new Exception('没有找到数据', 10);
+                }
+				$result['siteid'] = $siteid;
+				$result['url'] = '';
+				//更新tag信息
+				if(!empty($result['link_tag'])){
+					$need_delete_tags = unserialize($result['link_tag']);
+					//更新计数
+					app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
+					//清除在sitetagsite中的$linkid
+					app_db::query("DELETE FROM ylmf_sitetagsite WHERE linkid=".$linkid);					
+				}
+				$result['link_tag'] = '';
+				$result['link_subject'] = '';
+				$result['link_description'] = '';
+				$result['up'] = 0;
+				$result['down'] = 0;
+				$result['storenum'] = 0;
+				$result['viewnum'] = 0;
+				$result['tmppic'] = '';
+				$result['pic'] = '';
+				$result['md5url'] = '';
+				$result['hashurl'] = 0;
+				$result['award'] = 0;
+				$result['initaward'] = 0;
+				app_db::update('ylmf_link', $result, "linkid = {$linkid}");
+	}
+
 }
 ?>
