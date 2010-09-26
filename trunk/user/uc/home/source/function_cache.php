@@ -726,7 +726,11 @@ function site_cache_3classid($classid)
 		$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['siteid'] = $value['id'];
 		$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
-		$linklist[]=$value;
+		
+		unset($value['name']);
+		unset($value['remark']);
+
+		$linklist[$value['siteid']]=$value;
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
 			$page++;
@@ -826,6 +830,32 @@ function navigation_cache()
 			$navlist[]=$value;
 	}
 	swritefile($S_ROOT.'./data/navigation_cache.txt', serialize($navlist));
+}
+//每日热门标签
+function everydayhottag_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$todayhottag = array();	
+	$tmp =array();
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main order by main.totalnum limit 20");
+	while($value =$_SGLOBAL['db']->fetch_array($query)){
+		$tmp[]=$value;
+	}
+	$todayhottag = sarray_rand($tmp,$_SC['hot_tag_num']);
+	swritefile( S_ROOT.'./data/todayhottag.txt', serialize($todayhottag));
+}
+//每日热门分类
+function everydayhotclass_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$todayhotclass = array();	
+	$tmp =array();
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('coolclass')." main order by main.sitenum limit 20");
+	while($value =$_SGLOBAL['db']->fetch_array($query)){
+		$tmp[]=$value;
+	}
+	$todayhotclass = sarray_rand($tmp,$_SC['hot_class_num']);
+	swritefile( S_ROOT.'./data/todayhotclass.txt', serialize($todayhotclass));
 }
 //每日推荐
 function everydayhot_cache()

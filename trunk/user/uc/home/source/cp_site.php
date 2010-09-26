@@ -8,7 +8,8 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','toolbar');
+//$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','toolbar');
+$ops=array('checkerror','add','edit','delete','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $siteid= empty($_GET['siteid'])?0:intval(trim($_GET['siteid']));
@@ -24,12 +25,12 @@ if($siteid)
 */
 $link_priority=array(
  'checkerror'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
- 'manage'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
+// 'manage'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0),
  'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),	
- 'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
- 'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+// 'pass'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
+// 'reject'=>array('permit'=>1,'owner'=>0,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
@@ -38,7 +39,7 @@ $link_priority=array(
  'updatesitedownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatesiteviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
+// 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
 //权限检查
 $ret=check_valid($op,$siteid,$item,$item['postuid'],'managelink',$link_priority);
@@ -57,6 +58,19 @@ include_once(S_ROOT.'./source/function_site.php');
 if($op == 'get'){
 	//得到siteclassname
 	$item['classname']=getsiteclassname($item['class']);
+	//得到此site的相关site
+	$item['relate'] = getrelatesite($item['class'],$siteid);
+	$big_nums = 0;
+	foreach($item['relate'] as $key=>$v){
+		$item['bigrelate'][$key] = $item['relate'][$key];
+		unset($item['relate'][$key]);
+		//取出前3个作为big relate
+		if((++$big_nums)>=$_SC['related_big_site_num'])
+			break;
+	}
+	//获取hotclass
+	$hotclass = unserialize(sreadfile(S_ROOT.'./data/todayhotclass.txt'));
+	$hottag = unserialize(sreadfile(S_ROOT.'./data/todayhottag.txt'));
 }
 elseif($op == 'edit'){
 		//处理edit提交
@@ -132,39 +146,6 @@ elseif($_GET['op'] == 'delete') {
 				showmessage('that_should_at_least_write_things');
 			}
 		}
-}elseif($_GET['op']=='manage'){
-
-		$wherearr='';
-		$orderarr='';
-		$theurl='';
-		$wherearr=$wherearr." where main.origin=".$_SC['link_origin_link'];
-		$wherearr=$wherearr." AND main.verify=".$_SC['link_verify_undo'];
-
-		$orderarr=$orderarr." ORDER by main.link_dateline DESC ";
-
-		$theurl="cp.php?ac=$ac&op=$op";
-		//分页获取总条数
-		$page=empty($_GET['page'])?0:intval($_GET['page']);
-		$perpage=$_SC['bookmark_show_maxnum'];
-		$start=$page?(($page-1)*$perpage):0;
-		
-		//获取总数
-		 $count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main ".$wherearr),0);
-
-		//获取所有没有通过验证的书签提交
-		$query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('link')." main ".$wherearr.$orderarr." limit ".$start." , ".$_SC['bookmark_show_maxnum']);
-
-		while($value =$_SGLOBAL['db']->fetch_array($query)){
-			$value['link_tag'] = implode(' ',empty($value['link_tag'])?array():unserialize($value['link_tag']));
-			
-			$linklist[]=$value;
-		}
-		//分页
-		$link_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
-
-		$_TPL['css'] = 'network'; 
-
-
 }elseif($_GET['op']=='checkerror'){
 
 		$orderarr=$orderarr." ORDER by main.dateline DESC ";
@@ -198,13 +179,6 @@ elseif($_GET['op'] == 'delete') {
 		$_TPL['css'] = 'network'; 
 
 
-}elseif($_GET['op']=='pass'){
-	if(submitcheck('passsubmit')) {
-		include_once(S_ROOT.'./source/function_link.php');
-		link_pass($item);
-		showmessage('do_success', $_SGLOBAL['refer'], 0);
-	}
-
 }elseif($_GET['op']=='bookmark'){
 
 	if(submitcheck('bookmarksubmit')) {
@@ -217,11 +191,6 @@ elseif($_GET['op'] == 'delete') {
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
-}elseif($_GET['op']=='toolbar'){
-	  if(submitcheck('addsubmit')) {
-		linktoolbar_post($_POST);
-		showmessage('do_success', $_SGLOBAL['refer'], 0);
-	}
 }else {
 	 if(submitcheck('addsubmit')) {
 		//验证码

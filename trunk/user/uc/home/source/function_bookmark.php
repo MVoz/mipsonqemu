@@ -119,7 +119,7 @@ function bookmark_post($POST, $olds=array()) {
 				case $_SC['bookmark_type_site']://增加或修改一个bookmark
 						//link 表
 						$linkarr['postuid'] = $_SGLOBAL['supe_uid'];
-						$linkarr['username'] =$_SGLOBAL['supe_username'];
+						$linkarr['username'] =$_SGLOBAL['name'];
 						$linkarr['link_dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 						
 						$linkarr=setlinkimagepath($linkarr);
