@@ -12,4 +12,8 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/function_cache.php');
 everydayhot_cache();
 
+everydayhottag_cache();
+
+everydayhotclass_cache();
+
 ?>

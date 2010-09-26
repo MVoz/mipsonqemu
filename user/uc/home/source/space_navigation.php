@@ -46,7 +46,7 @@ if($classid)
 		else
 			$isThirdClass=1;
 
-	//获取子分类
+	//获取同一层的分类
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.parentid=".$classitem['classid']);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
@@ -70,7 +70,7 @@ if($classid)
 			if(!file_exists( S_ROOT.'./data/sitecache/'.$browserclassid.'/site_cache_'.$browserclassid.'_page'.$page.'.txt'))
 			{
 				include_once(S_ROOT.'./source/function_cache.php');
-				if(isSecClass)
+				if($isSecClass)
 					site_cache_2classid($classid);			
 				else
 					site_cache_3classid($browserclassid);		

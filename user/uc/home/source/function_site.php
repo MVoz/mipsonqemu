@@ -314,9 +314,46 @@ function siteerr_post($POST, $olds=array())
 
 function getsitestorenum($siteid)
 {
-	global $_SGLOBAL;
+	global $_SGLOBAL,$_SC;
 	$count = 0;
 	$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('site')." where id=".$siteid),0);
 	echo  $count;
+}
+//siteidÎªÅÅ³ýÔÚÍâ
+function getrelatesite($classid,$siteid)
+{
+	global $_SGLOBAL,$_SC;
+	$ret = array();
+	$isSecClass = 0; 
+	$isThirdClass = 0;
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.classid=".$classid);
+	$classitem = $_SGLOBAL['db']->fetch_array($query);
+	if(empty($classitem ))
+		return $ret;
+	$groupid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.parentid FROM ".tname('siteclass')." main where main.classid=".$classitem['parentid']));
+	if($groupid == 0) 
+		$isSecClass=1;
+	else
+		$isThirdClass=1;
+	if($isSecClass)
+		return $ret;
+
+	if(!file_exists( S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_page1.txt'))
+	{
+		include_once(S_ROOT.'./source/function_cache.php');
+		site_cache_3classid($classid);		
+	}
+	$count=sreadfile(S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_count.txt');
+	$pages =$count/$_SC['bookmark_show_maxnum']+(($count%$_SC['bookmark_show_maxnum'])?1:0);
+     
+	$randsrc = array();
+
+	for($i=1;$i<=$pages;$i++){
+		$tmp = unserialize(sreadfile(S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_page'.$i.'.txt'));
+		$randsrc=array_merge($randsrc,$tmp);
+	}
+	unset($randsrc[$siteid]);
+	$ret = sarray_rand($randsrc,$_SC['related_site_num']);
+	return $ret;
 }
 ?>
