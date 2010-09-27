@@ -364,7 +364,7 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 					}
 			 //end to enter the right dirctory
 				  _tcscpy(filename,rightToken);
-				  _tcscat(filename,".txt");
+				  _tcscat(filename,_T(".txt"));
 				  file.Open(filename,CFile::modeCreate|CFile::modeWrite);    
 				  fileCreated=1;
 			  }
@@ -425,7 +425,7 @@ BOOL CMain::SaveSnapshot(void)
 						
 					}
 				  _tcscpy(filename,rightToken);
-				  _tcscat(filename,".txt");
+				  _tcscat(filename,_T( ".txt"));
 				  file.Open(filename,CFile::modeCreate|CFile::modeWrite);    
 				  fileCreated=1;
 	}
@@ -585,7 +585,7 @@ if(SUCCEEDED(hr)){
 
 
   //end to enter the right dirctory
-   _tcscpy(name_b,"b_");
+   _tcscpy(name_b,_T( "b_"));
    _tcscat(name_b,rightToken);
    //_tcscpy(name_l,"l_");
    _tcscpy(name_l,rightToken);
