@@ -725,6 +725,9 @@ function site_cache_3classid($classid)
 		$value['description'] = getstr($value['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 		$value['siteid'] = $value['id'];
+		//×ª»¯tag
+		include_once(S_ROOT.'./source/function_site.php');
+		$value['tag'] = convertsitetag($value['id'],$value['tag']);
 		$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 		
 		unset($value['name']);
@@ -1080,6 +1083,8 @@ function handlesiteformat()
 	global $_SGLOBAL, $_SC;
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('site'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
+			if(!empty($value['pic']))		continue;
+
 			//name
 			$value['name'] = getstr(trim($value['name']), 0, 1, 1, 1);
 			//url

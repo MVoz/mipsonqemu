@@ -122,21 +122,33 @@ function site_tag_batch($id,$tags)
 		$tagarr = array();
 		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
 		
+		$qw1 =array('123','234');
+		$qw2 =array();
+
+		
+
 		//if(empty($now_tag)) return $tagarr;
 		//获取原来的tags
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main WHERE main.id=".$id);
 		$result = $_SGLOBAL['db']->fetch_array($query);
 		if(empty($result))
 			return $tagarr;
-
 		 //修正tag显示
-		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		 if(!empty($result['tag'])&&!preg_match("/^a\:\d+\:{\S+/i",$result['tag']))
+		{
+			 //如果原先是正常的tag字符串，则认为空
+			 $old_tags =array();
+		}else
+		     $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
 		
 		 $need_delete_tags=array();
 		 $need_add_tags=array();
-		 $tagarr = $intersect_tag = array_intersect($old_tags,$now_tag);
+		 $intersect_tag=array();
+		 $tagarr=$intersect_tag = array_intersect($old_tags,$now_tag);
 		//获取old_tag有而现在没有的			
 		 $need_delete_tags = array_diff($old_tags,$intersect_tag);
+
+
 		//清除tag
 		if(!empty($need_delete_tags)) {
 			  foreach($need_delete_tags as $k=>$v){
@@ -145,8 +157,8 @@ function site_tag_batch($id,$tags)
 			 $_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
 		}
 		//获取现在有二old_tag没有的
-		 $need_add_tags =   array_diff($now_tag,$intersect_tag);
-		 
+		 $need_add_tags = array_diff($now_tag,$intersect_tag);
+
 		 if(empty($need_add_tags))
 			 return  $tagarr;
 		//记录已存在的tag
