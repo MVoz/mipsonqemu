@@ -1087,7 +1087,7 @@ void Window::getUrlDataFromServer(bool status)
 		model->setFilter("siteid=0 and privateflag=0 and picflag = 0 and trynum<3 order by linkid limit 0,50");
 	}else if(tableComboBox->currentText()=="site"){
 	//	model->setFilter("picflag = 0 and trynum<3 order by id limit 0,20");
-		model->setFilter("picflag = 0 and trynum<3 and class=645 order by id ");
+		model->setFilter("picflag = 0 and trynum<3 and class=649 order by id ");
 	}
 	if(model->select()){
 
@@ -1237,6 +1237,11 @@ void Window::startUrlSnap(bool status)
 {
 	totalNums=model->rowCount();
 	thread=new snapThread(model,ONCE_GET_URL,MAX_WAIT_SEC);
+	if(tableComboBox->currentText()=="link"){
+		thread->setMode(LINK_TABLE_MODE);
+	}else if(tableComboBox->currentText()=="site"){
+		thread->setMode(SITE_TABLE_MODE);
+	}
 	thread->start();	
 	snapLog(QString("Start  snap..."));
 	connect(thread,SIGNAL(snapSuccessfulNoitfy(int)),this,SLOT(snapSuccessful(int)));
@@ -1295,6 +1300,14 @@ void snapThread::run()
 			mu.url=model->data(model->index(i, LINK_TABLE_URL)).toString();
 			//fix the url
 			mu.url.replace(QString("&amp;"), QString("&"),Qt::CaseInsensitive);
+			//如果是site,且name空，则忽略
+			QString urlname =model->data(model->index(i, LINK_TABLE_NAME)).toString(); 
+			if((mode==SITE_TABLE_MODE)&&(urlname.isEmpty()||!urlname.compare("NULL",Qt::CaseInsensitive)))
+			{
+				emit snapLogNotify(QString("<span>empty name <strong>%1</strong> skip it!</span>").arg(mu.url));
+				model->setData(model->index(i, LINK_TABLE_PRIVATEFLAG),1);
+				goto NEXT;
+			}
 			//private url
 			if(isPrivateIp(mu.url))
 			{

@@ -158,6 +158,10 @@ struct MonitorUrl{
 	QString filename;
 	uint startTime;
 };
+enum SNAP_TABLE_MODE{
+	LINK_TABLE_MODE=0,
+	SITE_TABLE_MODE=1
+};
 #define ONCE_GET_URL 10
 #define MAX_WAIT_SEC 120
 class snapThread : public QThread
@@ -176,10 +180,14 @@ public:
 	QSqlTableModel *model;
 	uint onceGet;
 	uint maxWait;
+	SNAP_TABLE_MODE mode;
 	QList<struct MonitorUrl>getringurlList;
 public:
 	void run();
 	void monitorSnapFinished();
+	void setMode(SNAP_TABLE_MODE m){
+		mode = m;
+	}
 signals:
 		void snapSuccessfulNoitfy(int modelIndex);
 		void snapFailedNoitfy(int modelIndex);
