@@ -1088,7 +1088,7 @@ function handlesiteformat()
 			$value['url'] = handleUrlString($value['url']);
 			$value['hashurl']=qhash($value['url']);
 			$value['md5url']=md5($value['url']);
-			$value['description'] = getstr($value['description'], 0, 1,1, 1);
+			$value['remark'] = getstr($value['remark'], 0, 1,1, 1);
 			//tag
 			$value['tag'] = shtmlspecialchars(trim($value['tag']));
 			$value['tag'] = getstr($value['tag'], 0, 1, 1, 1);
