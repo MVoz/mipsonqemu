@@ -1,6 +1,6 @@
 <ul class="bloglist">
 	<!--{loop $bookmarklist $key $value}-->
-		<li <!--{if $key%2==1}-->class="list_r"<!--{/if}-->>
+		<li>
 		<h3>
 			<a class="url id_st_$value['siteid']" id="$value['siteid']"></a>
 			<p class="num_con">
@@ -38,12 +38,12 @@
 						<!--{/if}-->
 		</p>									
 		<p class="oper">
-					<a class="nhot collect" id="$value['siteid']">收藏</a>
+					<a class="nhot collect" id="$value['siteid']"></a>
 					<span>|</span>
-				    <a class="get" id="$value['siteid']">详情</a>
+				    <a class="get" id="$value['siteid']"></a>
 					<span>|</span>
 				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managesite') }-->
-					<a class="edit" id="$value['siteid']">编辑</a><span>|</span><a class="delete" id="$value['siteid']">删除</a>
+					<a class="edit" id="$value['siteid']"></a><span>|</span><a class="delete" id="$value['siteid']"></a>
 					<!--{else}-->
 					<!--{/if}-->
 					</p>					 
@@ -92,6 +92,12 @@
 		jQuery(".bloglist .tags > span").html("什么也没留下...");
 		jQuery(".bloglist .collect").each(function(){
 			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
-		});	
+		});
+		jQuery(".bloglist > li:even").addClass("list_r");
+		jQuery(".delete").html("删除");
+		jQuery(".edit").html("编辑");
+		jQuery(".get").html("详情");
+		jQuery(".collect").html("收藏");
+		
 </script>
 
