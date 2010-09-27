@@ -134,8 +134,13 @@ function link_tag_batch($id,$tags)
 				//返回现有的
 				return empty($result['tag'])?array():unserialize($result['tag']);
 			}
-		 //修正tag显示
-		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		//修正tag显示
+		 if(!empty($result['tag'])&&!preg_match("/^a\:\d+\:{\S+/i",$result['tag']))
+		{
+			 //如果原先是正常的tag字符串，则认为空
+			 $old_tags =array();
+		}else//修正tag显示		 
+			 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
 		
 		 $need_delete_tags=array();
 		 $need_add_tags=array();
@@ -340,8 +345,8 @@ function convertlinktag($linkid,$tag)
 			//tag
 			$tagarr=link_tag_batch($linkid,$tag);
 			//update tag
-			$ntag = empty($tagarr)?'':addslashes(serialize($tagarr));
-			updatetable('link',array('link_tag'=>$ntag), array('linkid'=>$linkid));
+			$ntag = empty($tagarr)?'':(serialize($tagarr));
+			updatetable('link',array('link_tag'=>addslashes($ntag)), array('linkid'=>$linkid));
 			return $ntag;
 		}
 		return $tag;

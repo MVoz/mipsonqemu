@@ -277,8 +277,8 @@ function convertsitetag($siteid,$tag)
 			//tag
 			$tagarr=site_tag_batch($siteid,$tag);
 			//update tag
-			$ntag = empty($tagarr)?'':addslashes(serialize($tagarr));
-			updatetable('site',array('tag'=>$ntag), array('id'=>$siteid));
+			$ntag = empty($tagarr)?'':(serialize($tagarr));
+			updatetable('site',array('tag'=>addslashes($ntag)), array('id'=>$siteid));
 			return $ntag;
 		}
 		return $tag;

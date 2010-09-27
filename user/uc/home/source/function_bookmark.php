@@ -222,6 +222,11 @@ function bookmark_tag_batch($id,$tags)
 			return $tagarr;
 		
 		 //修正tag显示
+		if(!empty($result['tag'])&&!preg_match("/^a\:\d+\:{\S+/i",$result['tag']))
+		{
+			 //如果原先是正常的tag字符串，则认为空
+			 $old_tags =array();
+		}else//修正tag显示	
 		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
 		
 		 $need_delete_tags=array();
