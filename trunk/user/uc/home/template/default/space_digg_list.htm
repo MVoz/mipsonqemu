@@ -74,16 +74,16 @@
 		jQuery(".id_dg_tag").each(function(){
 			this.href = "space.php?do=diggtag&tagid=" + this.id;
 		});	
-		jQuery(".edit").each(function(){
+		jQuery(".tlist .edit").each(function(){
 			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
 		});	
-		jQuery(".delete").each(function(){
+		jQuery(".tlist .delete").each(function(){
 			jQuery(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
 		});	
-		jQuery(".up").each(function(){
+		jQuery(".tlist .up").each(function(){
 			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
 		});	
-		jQuery(".down").each(function(){
+		jQuery(".tlist .down").each(function(){
 			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
 		});	
 </script>		
