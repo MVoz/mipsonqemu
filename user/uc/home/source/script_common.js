@@ -675,6 +675,46 @@ function bookmarkload(){
 		jQuery(".bloglist .edit").html("编辑");
 		jQuery(".bloglist .get").html("详情");
 }
+function siteload(){
+		jQuery(".id_nodes").each(function(){
+			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
+		});
+		jQuery(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		jQuery(".id_st_tag").each(function(){
+			this.href = "space.php?do=sitetag&tagid=" + this.id;
+		});	
+		jQuery(".bloglist .edit").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
+			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			this.id="bookmark_edit2_"+this.id;
+		});	
+		jQuery(".bloglist .delete").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete";
+			this.id="bookmark_delete_"+this.id;
+			jQuery(this).attr("onclick","ajaxmenu(event, this.id,1)");
+		});	
+		jQuery(".bloglist .bm").each(function(){
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
+			this.id="bookmark_edit2_"+this.id;
+		});	
+		jQuery(".bloglist .get").each(function(){
+			this.href="cp.php?ac=site&op=get&siteid="+this.id;
+		});	
+		jQuery(".bloglist .url").each(function(){
+			jQuery(this).attr("onclick","updatesiteview("+this.id+")");
+		});			
+		jQuery(".bloglist a").attr("target","_blank");
+		jQuery(".bloglist .tags > span").html("什么也没留下...");
+		jQuery(".bloglist .collect").each(function(){
+			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
+		});
+		jQuery(".bloglist > li:even").addClass("list_r");
+		jQuery(".bloglist .delete").html("删除");
+		jQuery(".bloglist .edit").html("编辑");
+		jQuery(".bloglist .get").html("详情");
+		jQuery(".bloglist .collect").html("收藏");
+}
+
 function diggload(){
 		jQuery(".id_dg_tag").each(function(){
 			this.href = "space.php?do=diggtag&tagid=" + this.id;
