@@ -2965,6 +2965,22 @@ function getsiteclassname($classid)
 	} 	
 	return '';
 }
+//获取sitetag的总数
+function getsitetagtotalnum($tagid)
+{
+	global $_SGLOBAL;
+	if($tagid<=0)
+		return 0;
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0 "),0);
+}
+//获取tag的名字
+function gettagname($tagid)
+{
+	global $_SGLOBAL;
+	if($tagid<=0)
+		return '';
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.tagname FROM ".tname('sitetag')." main where main.tagid=".$tagid),0);
+}
 /*
 更新顶数，踩数，浏览数
 $type:bookmark,link,site
