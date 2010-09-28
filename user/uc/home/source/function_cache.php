@@ -746,6 +746,34 @@ function site_cache_3classid($classid)
 		swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
 	swritefile($linkfileprefix.'_'.$classid.'_count.txt', $count) ;
 }
+//site tag cache
+function sitetag_cache($tagid)
+{
+	global $_SGLOBAL,$_SC;
+	$page=0;
+	$linklist=array();
+	if(!file_exists(S_ROOT.'./data/sitetagcache/'.$tagid))
+	{
+		mkdir(S_ROOT.'./data/sitetagcache/'.$tagid, 0777);	
+	}
+	$fileprefix = S_ROOT.'./data/sitetagcache/'.$tagid.'/sitetag_cache';	
+	$count = getsitetagtotalnum($tagid);
+
+	$query=$_SGLOBAL['db']->query("SELECT distinct(main.siteid) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0");		
+	while($value =$_SGLOBAL['db']->fetch_array($query))
+	{
+		$linklist[$value['siteid']]=getsite($value['siteid']);
+		if(count($linklist)==$_SC['bookmark_show_maxnum'])
+		{
+			swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist)); 	
+			$page++;
+			$linklist=array();
+		}
+	}
+	if(!empty($linklist))
+		swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist));
+	swritefile($fileprefix.'_'.$tagid.'_count.txt', $count) ;
+}
 //link cache
 function link_cache_classid($classid)
 {
