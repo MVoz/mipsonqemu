@@ -132,6 +132,36 @@
 		obj.form.action="cp.php?ac=bmdir&op=add&bmdirid="+$('browsergroupid').value+"&browserid="+$('browserid').value;
 	}
 </script>
+<script type="text/javascript">
+<!--
+	//$('subject').focus();
+	//var lastUserName = lastPassword = lastEmail = lastSecCode = '';
+	function checkUrl() {
+	}
+	function setcategoryid(key,str,n)
+	{
+		$(key).innerHTML='<a id=category_li_'+n+' href="cp.php">'+str+'<img src="image/more.gif" align="absmiddle"></a>';	
+		
+
+		 var oLi = $("category_li_"+n);
+		 if(window.selectLi!=oLi){
+		    oLi.className += " on";
+			if(window.selectLi){
+					window.selectLi.className = window.selectLi.className.replace(" on","");
+			 }
+			 window.selectLi = oLi;
+		 } 
+
+	}
+	function fSetTag(tag)
+	{
+		if(!strlen($('tag').value))
+			$('tag').value=tag+' ';
+		else
+			$('tag').value=$('tag').value+' '+tag;
+	}
+//-->
+</script>
 <!--{elseif $op == 'reporterr'}-->
 <div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
 <h1>举报错误</h1>
@@ -547,34 +577,4 @@
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
 	
 <!--{/if}-->
-<script type="text/javascript">
-<!--
-	$('subject').focus();
-	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
-	function checkUrl() {
-	}
-	function setcategoryid(key,str,n)
-	{
-		$(key).innerHTML='<a id=category_li_'+n+' href="cp.php">'+str+'<img src="image/more.gif" align="absmiddle"></a>';	
-		
-
-		 var oLi = $("category_li_"+n);
-		 if(window.selectLi!=oLi){
-		    oLi.className += " on";
-			if(window.selectLi){
-					window.selectLi.className = window.selectLi.className.replace(" on","");
-			 }
-			 window.selectLi = oLi;
-		 } 
-
-	}
-	function fSetTag(tag)
-	{
-		if(!strlen($('tag').value))
-			$('tag').value=tag+' ';
-		else
-			$('tag').value=$('tag').value+tag+' ';
-	}
-//-->
-</script>
 <!--{template footer}-->
