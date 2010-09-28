@@ -18,17 +18,18 @@ $tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $start=$page?(($page-1)*$perpage):0;
 $theurl="space.php?do=$do&tagid=$tagid";
-$count = getsitetagtotalnum($tagid);
+
 //获取tag名字
 $tagname="标签:".gettagname($tagid);
 //获取bookmarklist
-
-$query = $_SGLOBAL['db']->query("SELECT main.siteid FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0
-		limit ".$start." , ".$_SC['bookmark_show_maxnum']);
-$bookmarklist = array();
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	$bookmarklist[] = getsite($value['siteid']);
+$fileprefix = S_ROOT.'./data/sitetagcache/'.$tagid.'/sitetag_cache';
+if(!file_exists($fileprefix.'_'.$tagid.'_page'.$page.'.txt')){
+	include_once(S_ROOT.'./source/function_cache.php');
+	sitetag_cache($tagid);
 }
+
+$bookmarklist = unserialize(sreadfile($fileprefix.'_'.$tagid.'_page'.$page.'.txt'));
+$count=sreadfile($fileprefix.'_'.$tagid.'_count.txt');
 //分页
 $multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
 

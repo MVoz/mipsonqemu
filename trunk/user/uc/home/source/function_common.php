@@ -2945,11 +2945,18 @@ function getsite($siteid)
 	if($s = $_SGLOBAL['db']->fetch_array($q))
 	{
 		   $s['siteid'] = $siteid;
+		   //修正award
+		   $value['award'] = calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
+		   updatetable('site', array('award'=>$value['award']),array('id'=>$value['siteid']));
+		   include_once(S_ROOT.'./source/function_site.php');
+		   $value['tag'] = convertsitetag($value['id'],$value['tag']);
 		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
 		   $s['tags'] = implode(' ',$s['tag']);
 			//去除回车转行制表等特殊字符
 		   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['name']);
 		   $s['description']=$s['remark'];
+		   unset($s['name']);
+		   unset($s['remark']);
 	} 	
 	return $s;
 }
@@ -2971,7 +2978,7 @@ function getsitetagtotalnum($tagid)
 	global $_SGLOBAL;
 	if($tagid<=0)
 		return 0;
-	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0 "),0);
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(distinct(main.siteid)) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0 "),0);
 }
 //获取tag的名字
 function gettagname($tagid)
