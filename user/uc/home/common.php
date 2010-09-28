@@ -27,7 +27,6 @@ if(!@include_once(S_ROOT.'./config.php')) {
 include_once(S_ROOT.'./source/function_common.php');
 
 
-
 include_once(S_ROOT.'./source/log.php');
 $log=new logdebug;
 
@@ -112,6 +111,7 @@ if($_SERVER['REQUEST_URI']) {
 		$_GET = shtmlspecialchars($_GET);//XSS
 	}
 }
+
 //$log->debug('xxx',shtmlspecialchars('hello<>w?o"r%l&d'));
 //ÅÐ¶ÏÓÃ»§µÇÂ¼×´Ì¬
 if(empty($_SGLOBAL['client']))

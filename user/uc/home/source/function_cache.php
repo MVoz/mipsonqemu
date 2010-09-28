@@ -569,8 +569,7 @@ function bookmark_cache_group($groupid,$browserid)
 		global $_SGLOBAL;
 		$bookmarklist=array();
 		$bmcachefileprefix = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark';
-		//$query  = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." main left join ".tname('link')." field on main.linkid=field.linkid  WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
-		$query  = $_SGLOBAL['db']->query("SELECT bmid FROM ".tname('bookmark')." main WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid);
+		$query  = $_SGLOBAL['db']->query("SELECT bmid FROM ".tname('bookmark')." main WHERE main.uid=".$_SGLOBAL['supe_uid']." and main.browserid=".$browserid." and main.parentid=".$groupid.' ORDER by main.lastvisit DESC ');
 		$dirnum=0;
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{

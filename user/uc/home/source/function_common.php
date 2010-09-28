@@ -2899,10 +2899,20 @@ function getbookmark($bmid)
 		   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);		    
 	   }
 	   if(empty($s['tag'])) {
-			$s['tag']=$s['link_tag'];			
+			$s['tag']=$s['link_tag'];
+			//如果bookmark的标签为空，则使用link的tag
+			if(!empty($s['tag']))
+		    {
+				$tagarray = empty($s['tag'])?array():unserialize($s['tag']);
+				include_once(S_ROOT.'./source/function_bookmark.php');
+				bookmark_tag_batch($bmid,implode(" ", $tagarray));
+				updatetable('bookmark', array('tag'=>$s['tag']), array('bmid'=>$bmid));
+		    }
 		}
 	   $s['tags'] = implode(' ',$s['tag']);
 	   if(empty($s['description'])) $s['description']=$s['link_description'];	 
+	   unset($s['link_description']);
+	   unset($s['link_tag']);
 	   //去除回车转行制表等特殊字符
 	   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['subject']);
 	} 
@@ -2933,6 +2943,8 @@ function getlink($linkid)
 	   }
 	} 	
 	$s['tags'] = implode(' ',$s['tag']);
+	unset($s['link_description']);
+	unset($s['link_tag']);
 	return $s;
 }
 function getsite($siteid)
@@ -2979,6 +2991,14 @@ function getsitetagtotalnum($tagid)
 	if($tagid<=0)
 		return 0;
 	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(distinct(main.siteid)) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0 "),0);
+}
+//获取linktag的总数
+function getlinktagtotalnum($tagid)
+{
+	global $_SGLOBAL;
+	if($tagid<=0)
+		return 0;
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('sitetagsite')." main where main.uid=".$_SGLOBAL['supe_uid']." AND main.tagid=".$tagid),0);
 }
 //获取某class中site数目
 function getsitetotalnuminclass($classid){
@@ -3089,5 +3109,43 @@ function get_page_start($perpage)
 	$page=empty($_GET['page'])?1:intval($_GET['page']);
 	$start=($page-1)*$perpage;
 	return array($page,$start);
+}
+function gethttpbrowserid()
+{
+	//如果没指定或指定错误，则为ie
+	global $_GET,$_SGLOBAL;
+	return  (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
+}
+function gethttpgroupid($browserid)
+{
+	global $_GET,$_SGLOBAL;
+	$groupid=isset ($_GET['groupid'])?intval($_GET['groupid']):0;
+		//firefox做特殊处理，点击根目录直接转到书签菜单
+	if(($browserid==$_SGLOBAL['browsertype']['firefox']))
+	{
+			$_SGLOBAL['firefox_menu_groupid']=getFirefoxBookmarkMenuGroupid();
+			$_SGLOBAL['firefox_tool_groupid']=getFirefoxBookmarkToolGroupid();
+			if(empty($groupid))
+				$groupid=$_SGLOBAL['firefox_menu_groupid'];
+	}
+	return $groupid;
+}
+function getbookmarkgroupname($browserid,$groupid){
+	global $_SGLOBAL;
+	$groupname=(empty($groupid))?'根目录':'';
+	if(empty($groupname)){
+			//获取groupname	先检查cache
+			if(!file_exists(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_groupname.php'))
+			{	
+					bookmark_groupname_cache();
+
+			}
+			include_once(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_groupname.php');
+			$groupname=$_SGLOBAL['bookmark_groupname'][$browserid][$groupid];
+			unset($_SGLOBAL['bookmark_groupname']); 
+			if(empty($groupname))
+				showmessage('error_parameter');			
+	}
+	return $groupname;
 }
 ?>

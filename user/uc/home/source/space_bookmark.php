@@ -19,11 +19,9 @@ include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./source/todayhot.php');
 
 //最后登录名
-$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
-$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
+//$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
+//$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
 
 $_TPL['css'] = 'network';
 include_once template("space_bookmark");
-
-
 ?>
