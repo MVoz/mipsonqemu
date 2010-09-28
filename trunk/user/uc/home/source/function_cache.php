@@ -706,45 +706,31 @@ function site_cache_2classid($classid)
 function site_cache_3classid($classid)
 {
 	global $_SGLOBAL,$_SC;
-	
+	$page=0;
+	$linklist=array();
+
 	if(!file_exists(S_ROOT.'./data/sitecache/'.$classid))
 	{
 		mkdir(S_ROOT.'./data/sitecache/'.$classid, 0777);	
 	}
 	$linkfileprefix = S_ROOT.'./data/sitecache/'.$classid.'/site_cache';	
-	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('site')." main where main.class=".$classid),0);
 
-	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main where main.class=".$classid);	
-	$page=0;
-	$linklist=array();
+	$query=$_SGLOBAL['db']->query("SELECT main.id FROM ".tname('site')." main where main.class=".$classid);	
+
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
-		$value['award'] =	calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
-		//更新linkid的award
-		updatetable('link', array('award'=>$value['award']),array('linkid'=>$value[linkid]));
-		$value['description'] = getstr($value['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-		$value['subject'] = getstr($value['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
-		$value['siteid'] = $value['id'];
-		//转化tag
-		include_once(S_ROOT.'./source/function_site.php');
-		$value['tag'] = convertsitetag($value['id'],$value['tag']);
-		$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
-		
-		unset($value['name']);
-		unset($value['remark']);
-
-		$linklist[$value['siteid']]=$value;
+		$linklist[$value['id']]=getsite($value['id']);
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
 			$page++;
-			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist)); 			
+			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist)); 	
 			$linklist=array();
 		}
 	}
 	$page++;
 	if(!empty($linklist))
 		swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist));
-	swritefile($linkfileprefix.'_'.$classid.'_count.txt', $count) ;
+	swritefile($linkfileprefix.'_'.$classid.'_count.txt', getsitetotalnuminclass($classid)) ;
 }
 //site tag cache
 function sitetag_cache($tagid)
@@ -757,7 +743,6 @@ function sitetag_cache($tagid)
 		mkdir(S_ROOT.'./data/sitetagcache/'.$tagid, 0777);	
 	}
 	$fileprefix = S_ROOT.'./data/sitetagcache/'.$tagid.'/sitetag_cache';	
-	$count = getsitetagtotalnum($tagid);
 
 	$query=$_SGLOBAL['db']->query("SELECT distinct(main.siteid) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0");		
 	while($value =$_SGLOBAL['db']->fetch_array($query))
@@ -765,14 +750,15 @@ function sitetag_cache($tagid)
 		$linklist[$value['siteid']]=getsite($value['siteid']);
 		if(count($linklist)==$_SC['bookmark_show_maxnum'])
 		{
-			swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist)); 	
 			$page++;
+			swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist)); 				
 			$linklist=array();
 		}
 	}
+	$page++;
 	if(!empty($linklist))
 		swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist));
-	swritefile($fileprefix.'_'.$tagid.'_count.txt', $count) ;
+	swritefile($fileprefix.'_'.$tagid.'_count.txt', getsitetagtotalnum($tagid)) ;
 }
 //link cache
 function link_cache_classid($classid)

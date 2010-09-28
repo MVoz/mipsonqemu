@@ -17,11 +17,12 @@ $classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
 $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
 
  //分页获取总条数
-$page=empty($_GET['page'])?1:intval($_GET['page']);
+
 $perpage=$_SC['bookmark_show_maxnum'];
-$start=$page?(($page-1)*$perpage):0;
+$pagestart=get_page_start($perpage);
 
-
+$page = $pagestart[0];
+$start =$pagestart[1];
 
 $child_class=array();
 $bookmarklist=array();
