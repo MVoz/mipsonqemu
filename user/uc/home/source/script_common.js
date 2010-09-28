@@ -638,3 +638,59 @@ function add_favorite()
 	else if (window.sidebar)  
 	window.sidebar.addPanel('弹指网', 'http://www.tanzhi.com', "");
 }
+
+function bookmarkload(){
+		jQuery(".id_nodes").each(function(){
+			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
+		});
+		jQuery(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
+		jQuery(".id_bm_tag").each(function(){
+			this.href = "space.php?do=linktag&tagid=" + this.id;
+		});	
+		jQuery(".bloglist .edit").each(function(){
+			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit";			
+			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			this.id="bookmark_edit_"+this.id;
+		});	
+		jQuery(".bloglist .delete").each(function(){
+			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete";
+			this.id="bookmark_delete_"+this.id;
+			jQuery(this).attr("onclick","ajaxmenu(event, this.id,1)");
+		});	
+		jQuery(".bloglist .get").each(function(){
+			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
+		});	
+		jQuery(".bloglist .url").each(function(){
+			jQuery(this).attr("onclick","updatebookmarkview("+this.id+")");
+		});	
+		
+		jQuery(".bloglist a").attr("target","_blank");
+		jQuery(".bloglist .share").each(function(){
+			this.href="javascript:void(0)";
+			jQuery(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
+		});	
+		jQuery(".bloglist > li:even").addClass("list_r");;
+		jQuery(".bloglist .delete").html("删除");
+		jQuery(".bloglist .share").html("分享");
+		jQuery(".bloglist .edit").html("编辑");
+		jQuery(".bloglist .get").html("详情");
+}
+function diggload(){
+		jQuery(".id_dg_tag").each(function(){
+			this.href = "space.php?do=diggtag&tagid=" + this.id;
+		});	
+		jQuery(".tlist .edit").each(function(){
+			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
+		});	
+		jQuery(".tlist .delete").each(function(){
+			jQuery(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
+		});	
+		jQuery(".tlist .up").each(function(){
+			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
+		});	
+		jQuery(".tlist .down").each(function(){
+			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
+		});	
+		jQuery(".tlist .delete").html("删除");
+		jQuery(".tlist .edit").html("编辑");
+}
