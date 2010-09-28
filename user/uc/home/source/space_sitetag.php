@@ -15,8 +15,13 @@ if(empty($_SCONFIG['networkpublic'])) {
 
 $tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
     //获取总条数
-$page=empty($_GET['page'])?0:intval($_GET['page']);
-$start=$page?(($page-1)*$perpage):0;
+
+$perpage=$_SC['bookmark_show_maxnum'];
+$pagestart=get_page_start($perpage);
+
+$page = $pagestart[0];
+$start =$pagestart[1];
+
 $theurl="space.php?do=$do&tagid=$tagid";
 
 //获取tag名字

@@ -2980,6 +2980,14 @@ function getsitetagtotalnum($tagid)
 		return 0;
 	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(distinct(main.siteid)) FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.siteid>0 "),0);
 }
+//获取某class中site数目
+function getsitetotalnuminclass($classid){
+	global $_SGLOBAL;
+	if($classid<=0)
+		return 0;
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('site')." main where main.class=".$classid),0);
+
+}
 //获取tag的名字
 function gettagname($tagid)
 {
@@ -3073,5 +3081,13 @@ function strip($data, $editor = false)
 		}
 	}
 	return $data;
+}
+
+function get_page_start($perpage)
+{
+	global $_GET;
+	$page=empty($_GET['page'])?1:intval($_GET['page']);
+	$start=($page-1)*$perpage;
+	return array($page,$start);
 }
 ?>
