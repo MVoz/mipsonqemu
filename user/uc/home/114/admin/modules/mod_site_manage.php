@@ -280,7 +280,12 @@ class mod_site_manage
          }
 		
 		 //修正tag显示
-		 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
+		 if(!empty($result['tag'])&&!preg_match("/^a\:\d+\:{\S+/i",$result['tag']))
+		 {
+			 //如果原先是正常的tag字符串，则认为空
+			 $old_tags =array();
+		 }else
+			 $old_tags = empty($result['tag'])?array():unserialize($result['tag']);
 		
 		 $need_delete_tags=array();
 		 $need_add_tags=array();
@@ -323,7 +328,8 @@ class mod_site_manage
 					'tagname' => $tagname,
 					'taghash' => self::qhash($tagname),
 					'dateline' => $timesec,
-					'totalnum' => 1
+					'sitetotalnum' => 1,
+					'linktotalnum' => 1
 				);
 				if (app_db::insert('ylmf_sitetag', array_keys($setarr), array_values($setarr)))
 				{
@@ -339,7 +345,7 @@ class mod_site_manage
 				}
 			}
 		}
-		if($updatetagids) app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
+		if($updatetagids) app_db::query("UPDATE ylmf_sitetag SET sitetotalnum=sitetotalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
 		$tagids = array_keys($tagarr);
 		$inserts = array();
 		foreach ($tagids as $tagid) {

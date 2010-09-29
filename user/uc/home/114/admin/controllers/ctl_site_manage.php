@@ -551,17 +551,22 @@ class ctl_site_manage
                 {
                     throw new Exception('没有找到数据', 10);
                 }
-				$result['siteid'] = $siteid;
-				$result['url'] = '';
+
 				//更新tag信息
 				if(!empty($result['link_tag'])){
-					$need_delete_tags = unserialize($result['link_tag']);
-					//更新计数
-					app_db::query("UPDATE ylmf_sitetag SET totalnum=totalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
-					//清除在sitetagsite中的$linkid
-					app_db::query("DELETE FROM ylmf_sitetagsite WHERE linkid=".$linkid);
-					
+					$need_delete_tags = array();
+					if(!preg_match("/^a\:\d+\:{\S+/i",$tag)){
+						//还没有convertlinktag，则直接交给site处理
+					}else{
+						$need_delete_tags = unserialize($result['link_tag']);					
+						//更新计数
+						app_db::query("UPDATE ylmf_sitetag SET linktotalnum=linktotalnum-1 WHERE tagid IN (".simplode(array_keys($need_delete_tags)).")");
+						//清除在sitetagsite中的$linkid
+						app_db::query("DELETE FROM ylmf_sitetagsite WHERE linkid=".$linkid);
+					}					
 				}
+				$result['siteid'] = $siteid;
+				$result['url'] = '';
 				$result['link_tag'] = '';
 				$result['link_subject'] = '';
 				$result['link_description'] = '';
