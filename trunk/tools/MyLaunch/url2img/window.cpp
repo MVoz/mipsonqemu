@@ -736,6 +736,7 @@ void Window::snapSuccessful(int modelIndex)
 	}
 	//qDebug()<<"fail "<<txtUrlFilename;
 	model->setData(model->index(modelIndex, LINK_TABLE_PICFLAG), 1);
+	model->setData(model->index(modelIndex, LINK_TABLE_UPDATEFLAG), 1);
 	uint trynum=model->data(model->index(modelIndex, LINK_TABLE_TRYNUM)).toUInt();
 	model->setData(model->index(modelIndex, LINK_TABLE_TRYNUM), trynum+1);
 }
@@ -1087,12 +1088,18 @@ void Window::getUrlDataFromServer(bool status)
 		model->setFilter("siteid=0 and privateflag=0 and picflag = 0 and trynum<3 order by linkid limit 0,50");
 	}else if(tableComboBox->currentText()=="site"){
 	//	model->setFilter("picflag = 0 and trynum<3 order by id limit 0,20");
-		model->setFilter("picflag = 0 and trynum<3 and class=649 order by id ");
+	//	model->setFilter("picflag = 0 and trynum<3 and class=653 order by id ");
+		
+		gSettings->sync();
+		qDebug()<<gSettings->value("sitefilter", "").toString();
+		model->setFilter(gSettings->value("sitefilter", "").toString());
+		
 	}
 	if(model->select()){
 
 	if(tableComboBox->currentText()=="link")
 	{
+		//model->removeColumn(LINK_UPDATEFLAG);
 		model->removeColumn(LINK_CLICK5);//groupid
 		model->removeColumn(LINK_CLICK4);//groupid
 		model->removeColumn(LINK_CLICK3);//groupid	
@@ -1119,11 +1126,13 @@ void Window::getUrlDataFromServer(bool status)
 		model->removeColumn(LINK_POSTUID);//groupid
 		model->removeColumn(LINK_SITEID);//groupid
 	}else if(tableComboBox->currentText()=="site"){
+		//model->removeColumn(SITE_UPDATEFLAG);
 		model->removeColumn(SITE_END);
 		model->removeColumn(SITE_DELFLAG);
 		model->removeColumn(SITE_INITAWARD);
 		model->removeColumn(SITE_AWARD);
 		//model->removeColumn(SITE_TRYNUM);
+		//model->removeColumn(SITE_PRIVATEFLAG);
 		model->removeColumn(SITE_DOWN);
 		model->removeColumn(SITE_UP);
 		model->removeColumn(SITE_HASHURL);
@@ -1167,6 +1176,7 @@ void Window::getUrlDataFromServer(bool status)
 		model->setHeaderData(LINK_TABLE_MD5URL, Qt::Horizontal, "Md5url");
 	//	model->setHeaderData(LINK_TABLE_PRIVATEFLAG, Qt::Horizontal, "Private");
 		model->setHeaderData(LINK_TABLE_TRYNUM, Qt::Horizontal, "trynum");
+		model->setHeaderData(LINK_UPDATEFLAG, Qt::Horizontal, "updateflag");
 		sourceView->setModel(model);
 		sourceView->show(); 
 		connect(sourceView,SIGNAL(clicked(const QModelIndex&)),this,SLOT(activatedAction(const QModelIndex&)));
