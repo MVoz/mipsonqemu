@@ -48,8 +48,7 @@ if(submitcheck('cachesubmit')) {
 		//link_cache();
 		handlesiteformat();
 		siteclass_cache();
-		digg_cacheall();
-		
+		digg_cacheall();		
 	}
 	
 	//模板编译缓存
@@ -70,6 +69,12 @@ if(submitcheck('cachesubmit')) {
 			@unlink(S_ROOT.'./data/'.$value);
 		}
 	}
+	//link表在更新后的缓存更新(一般URL2IMG更新)
+	//site表在更新后的缓存更新(一般URL2IMG更新)
+	if(empty($_POST['cachetype']) || in_array('linksite', $_POST['cachetype'])) {
+		updatelinkall();
+		updatesiteall();
+	}	
 
 	cpmessage('do_success', $turl);
 
