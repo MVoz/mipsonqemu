@@ -64,7 +64,8 @@ function bookmark_post($POST, $olds=array()) {
 	
 	//主表
 	$bookmarkarr = array(
-		'subject' => $POST['subject'],		
+		'subject' => $POST['subject'],	
+		'lastvisit' => $_SGLOBAL['timestamp']
 	);
 	
 	//没有填写任何东西
@@ -548,12 +549,16 @@ function setbookmarkmodified()
 	$spacearr = array(
 		'lastmodified' => $_SGLOBAL['supe_timestamp'],		
 	);
-	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));	
+	updatetable('space', $spacearr, array('uid'=>$_SGLOBAL['supe_uid']));		
+	//删除本用户bookmark的cache
+	deldir(S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid']);
+	/*
 	include_once(S_ROOT.'./source/function_cache.php');
 	bookmark_cache();
 	bmxml_cache();
 	bookmark_groupname_cache();
 	usermenu_cache();
+	*/
 }
 function setbookmarknum($item,$action)
 {

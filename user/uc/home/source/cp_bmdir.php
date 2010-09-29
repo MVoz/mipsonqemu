@@ -10,10 +10,6 @@ if(!defined('IN_UCHOME')) {
 //检查信息
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
 $browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
-//if(empty($bmdirid))
-//	$bmdirid = empty($_POST['bmdirid'])?0:intval($_POST['bmdirid']);
-//if(empty($browserid))
-//	$browserid = empty($_POST['browserid'])?0:intval($_POST['browserid']);
 if(empty($browserid))
 	$browserid=$_SGLOBAL['browsertype']['ie'];
 
@@ -120,25 +116,6 @@ if($_GET['op'] == 'delete') {
 		}else {
 			showmessage('failed_to_delete_operation');
 		}
-	}
-	
-}  elseif($_GET['op'] == 'edithot') {
-	//权限
-	if(!checkperm('manageblog')) {
-		showmessage('no_privilege');
-	}
-	
-	if(submitcheck('hotsubmit')) {
-		$_POST['hot'] = intval($_POST['hot']);
-		updatetable('blog', array('hot'=>$_POST['hot']), array('blogid'=>$blog['blogid']));
-		if($_POST['hot']>0) {
-			include_once(S_ROOT.'./source/function_feed.php');
-			feed_publish($blog['blogid'], 'blogid');
-		} else {
-			updatetable('feed', array('hot'=>$_POST['hot']), array('id'=>$blog['blogid'], 'idtype'=>'blogid'));
-		}
-		
-		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
 } else {

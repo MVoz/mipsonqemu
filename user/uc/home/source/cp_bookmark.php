@@ -95,9 +95,9 @@ if($_GET['op'] == 'delete') {
 	//É¾³ý
 	if(submitcheck('deletesubmit')) {
 		if(deletebookmark($bmid)) {
-			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
+			//$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			if(empty($_SGLOBAL['client']))
-				showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $url, 0);
+				showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $_SGLOBAL['refer'], 0);
 			else
 				showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"');
 		} else {
