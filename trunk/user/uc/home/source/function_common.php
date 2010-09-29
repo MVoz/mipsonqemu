@@ -2972,6 +2972,13 @@ function getsite($siteid)
 	} 	
 	return $s;
 }
+function getsiteclass($id)
+{
+	global $_SGLOBAL;
+	if($id<=0)
+		return 0;
+	return $SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.class FROM ".tname('site')." main	where id=".$siteid),0);
+}
 function getsiteclassname($classid)
 {
 	global $_SGLOBAL;
@@ -3160,5 +3167,76 @@ function deldir($dir){
 			  }
 		 }
 	 closedir($dh);
+}
+//当link有改变的时候，需更新相对应的bookmark信息,去除存有此link的用户cache
+function updatelinkinfo($linkid,$tag)
+{
+	global $_SGLOBAL;
+	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
+	return;
+	if($linkid<=0)
+		return;
+	include_once(S_ROOT.'./source/function_link.php');
+	convertlinktag($linkid,$tag);
+
+	$fileprefix = S_ROOT.'./data/bmcache/';
+
+	$q = $_SGLOBAL['db']->query("SELECT uid,parentid,browserid FROM ".tname('bookmark')." where linkid=".$linkid);
+	while($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		unlink($fileprefix.$s['uid'].'/bookmark_'.$s['browserid'].'_'.$s['parentid'].'.txt');
+	}
+	updatetable('link',array('updateflag'=>0), array('linkid'=>$linkid));
+}
+function updatelinkall()
+{
+	global $_SGLOBAL;
+	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
+		return;
+	$q = $_SGLOBAL['db']->query("SELECT linkid,link_tag FROM ".tname('link')." where updateflag=1");
+	while($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		updatelinkinfo($s['linkid'],$s['link_tag']);
+	}
+}
+//site更新后，对应的link对应的bookmark则需要修改
+function updatesiteinfo($siteid,$tag)
+{
+	global $_SGLOBAL;
+	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
+	return;
+	if($siteid<=0)
+		return;
+	include_once(S_ROOT.'./source/function_site.php');
+	convertsitetag($siteid,$tag);
+	
+	$classid = getsiteclass($siteid);
+
+	if(!$classid)
+			return;
+
+	$fileprefix = S_ROOT.'./data/sitecache/';
+	
+	deldir($fileprefix.$classid);
+	
+	//所以引用这个site的bookmark也需要更新
+	$q = $_SGLOBAL['db']->query("SELECT linkid FROM ".tname('link')." where siteid=".$siteid);
+	while($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		updatelinkinfo($s['linkid']);
+	}
+	updatetable('site',array('updateflag'=>0), array('id'=>$siteid));
+}
+
+function updatesiteall()
+{
+	global $_SGLOBAL;
+	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
+		return;
+	$q = $_SGLOBAL['db']->query("SELECT id,tag FROM ".tname('site')." where updateflag=1");
+	while($s = $_SGLOBAL['db']->fetch_array($q))
+	{
+		updatesiteinfo($s['id'],$s['tag']);
+	}
 }
 ?>
