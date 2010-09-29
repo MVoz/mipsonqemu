@@ -853,7 +853,7 @@ function everydayhottag_cache()
 	global $_SGLOBAL,$_SC;
 	$todayhottag = array();	
 	$tmp =array();
-	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main order by main.totalnum limit 20");
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main order by main.sitetotalnum limit 20");
 	while($value =$_SGLOBAL['db']->fetch_array($query)){
 		$tmp[]=$value;
 	}

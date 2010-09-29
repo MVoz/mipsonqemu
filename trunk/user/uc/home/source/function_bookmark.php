@@ -272,19 +272,24 @@ function bookmark_tag_batch($id,$tags)
 					'taghash' => qhash($tagname),
 					'dateline' => $_SGLOBAL['timestamp'],
 					//bookmark的tag不进入统计
-					'totalnum' => 0
+					'sitetotalnum' => 0,
+					'linktotalnum' => 0,
 				);
 				if ($tagid=inserttable('sitetag', $setarr, 1))
 				{
 					$tagarr[$tagid] = $tagname;
 				}
-			} else {
+			}
+			/*
+			//bookmark的tag不进入统计
+			else {
 				if(empty($vtags[$vkey]['close'])) {
 					$tagid = $vtags[$vkey]['tagid'];
 					$updatetagids[] = $tagid;
 					$tagarr[$tagid] = $tagname;
 				}
 			}
+			*/
 		}
 		//if($updatetagids) 
 		//	$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".self::simplode($updatetagids).")");

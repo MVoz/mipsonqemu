@@ -121,12 +121,6 @@ function site_tag_batch($id,$tags)
 		global $_SGLOBAL;
 		$tagarr = array();
 		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
-		
-		$qw1 =array('123','234');
-		$qw2 =array();
-
-		
-
 		//if(empty($now_tag)) return $tagarr;
 		//获取原来的tags
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main WHERE main.id=".$id);
@@ -185,8 +179,9 @@ function site_tag_batch($id,$tags)
 					'tagname' => $tagname,
 					'taghash' => qhash($tagname),
 					'dateline' => $_SGLOBAL['timestamp'],
-					//link的tag进入统计
-					'totalnum' => 1
+					//site的tag进入统计
+					'sitetotalnum' => 1,
+					'linktotalnum' => 0
 				);
 				if ($tagid=inserttable('sitetag', $setarr, 1))
 				{
@@ -201,7 +196,7 @@ function site_tag_batch($id,$tags)
 			}
 		}
 		if($updatetagids) 
-			$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
+			$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET sitetotalnum=sitetotalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
 		$tagids = array_keys($tagarr);
 		$inserts = array();
 		foreach ($tagids as $tagid) {

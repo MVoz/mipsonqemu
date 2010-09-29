@@ -2906,7 +2906,7 @@ function getbookmark($bmid)
 				$tagarray = empty($s['tag'])?array():unserialize($s['tag']);
 				include_once(S_ROOT.'./source/function_bookmark.php');
 				bookmark_tag_batch($bmid,implode(" ", $tagarray));
-				updatetable('bookmark', array('tag'=>$s['tag']), array('bmid'=>$bmid));
+				updatetable('bookmark', array('tag'=>serialize($s['tag'])), array('bmid'=>$bmid));
 		    }
 		}
 	   $s['tags'] = implode(' ',$s['tag']);
