@@ -2977,7 +2977,7 @@ function getsiteclass($id)
 	global $_SGLOBAL;
 	if($id<=0)
 		return 0;
-	return $SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.class FROM ".tname('site')." main	where id=".$siteid),0);
+	return $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.class FROM ".tname('site')." main	where id=".$id),0);
 }
 function getsiteclassname($classid)
 {
@@ -3202,6 +3202,7 @@ function updatelinkall()
 //site更新后，对应的link对应的bookmark则需要修改
 function updatesiteinfo($siteid,$tag)
 {
+	
 	global $_SGLOBAL;
 	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
 	return;
@@ -3214,7 +3215,7 @@ function updatesiteinfo($siteid,$tag)
 
 	if(!$classid)
 			return;
-
+	
 	$fileprefix = S_ROOT.'./data/sitecache/';
 	
 	deldir($fileprefix.$classid);
@@ -3226,6 +3227,7 @@ function updatesiteinfo($siteid,$tag)
 		updatelinkinfo($s['linkid']);
 	}
 	updatetable('site',array('updateflag'=>0), array('id'=>$siteid));
+	
 }
 
 function updatesiteall()
