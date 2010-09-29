@@ -184,7 +184,8 @@ function link_tag_batch($id,$tags)
 					'taghash' => qhash($tagname),
 					'dateline' => $_SGLOBAL['timestamp'],
 					//link的tag进入统计
-					'totalnum' => 1
+					'sitetotalnum' => 0,
+					'linktotalnum' => 1
 				);
 				if ($tagid=inserttable('sitetag', $setarr, 1))
 				{
@@ -199,7 +200,7 @@ function link_tag_batch($id,$tags)
 			}
 		}
 		if($updatetagids) 
-			$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
+			$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET linktotalnum=linktotalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
 		$tagids = array_keys($tagarr);
 		$inserts = array();
 		foreach ($tagids as $tagid) {

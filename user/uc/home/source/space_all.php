@@ -130,8 +130,8 @@ $olcount = getcount('session', array());
 realname_get();
 
 //最后登录名
-$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
-$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
+//$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
+//$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
 
 $_TPL['css'] = 'network';
 include_once template("space_all");
