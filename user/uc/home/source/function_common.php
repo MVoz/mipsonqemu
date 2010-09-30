@@ -2869,7 +2869,8 @@ function getlinkfromsite($arr)
 	if(empty($site))
 		return $arr;
 	$arr['url'] = $site['url'];
-	$arr['link_tag'] = $site['tag'];
+	include_once(S_ROOT.'./source/function_site.php');	
+	$arr['link_tag'] = convertsitetag($arr['siteid'],$site['tag']);
 	$arr['link_subject'] = preg_replace("/[\s|\n|\r|\f]+/","",$site['name']);
 	$arr['link_description'] = $site['remark'];	
 	$arr['up']=$site['up'];
@@ -2895,17 +2896,15 @@ function getbookmark($bmid)
 	   if($s['siteid']){
 			$s = getlinkfromsite($s);
 	   }else{
-		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
-		   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);		    
+		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);	    
 	   }
 	   if(empty($s['tag'])) {
-			$s['tag']=$s['link_tag'];
+			$s['tag']=unserialize($s['link_tag']);
 			//如果bookmark的标签为空，则使用link的tag
 			if(!empty($s['tag']))
 		    {
-				$tagarray = empty($s['tag'])?array():unserialize($s['tag']);
 				include_once(S_ROOT.'./source/function_bookmark.php');
-				bookmark_tag_batch($bmid,implode(" ", $tagarray));
+				bookmark_tag_batch($bmid,implode(" ", $s['tag']));
 				updatetable('bookmark', array('tag'=>serialize($s['tag'])), array('bmid'=>$bmid));
 		    }
 		}
@@ -2932,19 +2931,20 @@ function getlink($linkid)
 			$s = getlinkfromsite($s);			
 	   }else{
 		   include_once(S_ROOT.'./source/function_link.php');
-		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);
-		   $s['link_tag'] = empty($s['link_tag'])?array():unserialize($s['link_tag']);		   
+		   $s['link_tag'] = convertlinktag($s['linkid'],$s['link_tag']);   
 	   }
+
 	   if($s){
-		   $s['tag']=$s['link_tag'];
+		   $s['tag']= empty($s['link_tag'])?array():unserialize($s['link_tag']);
 		   $s['description']=$s['link_description'];	
 		   //去除回车转行制表等特殊字符
 		   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['link_subject']);
+		   $s['tags'] = implode(' ',$s['tag']);
+		   unset($s['link_description']);
+		   unset($s['link_tag']);
 	   }
 	} 	
-	$s['tags'] = implode(' ',$s['tag']);
-	unset($s['link_description']);
-	unset($s['link_tag']);
+	
 	return $s;
 }
 function getsite($siteid)
