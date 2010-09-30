@@ -259,8 +259,8 @@ function bookmark_tag_batch($id,$tags)
 		    $vkey = md5($rt['tagname']);
 			$vtags[$vkey] = $rt;
 		}
-
 		
+	
 		$updatetagids = array();
 		foreach ($need_add_tags as $tagname) {
 			if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
@@ -280,17 +280,16 @@ function bookmark_tag_batch($id,$tags)
 					$tagarr[$tagid] = $tagname;
 				}
 			}
-			/*
-			//bookmark的tag不进入统计
+			
 			else {
 				if(empty($vtags[$vkey]['close'])) {
 					$tagid = $vtags[$vkey]['tagid'];
-					$updatetagids[] = $tagid;
 					$tagarr[$tagid] = $tagname;
 				}
 			}
-			*/
+
 		}
+		//bookmark的tag不进入统计
 		//if($updatetagids) 
 		//	$_SGLOBAL['db']->query("UPDATE ".tname('sitetag')." SET totalnum=totalnum+1 WHERE tagid IN (".self::simplode($updatetagids).")");
 		$tagids = array_keys($tagarr);
