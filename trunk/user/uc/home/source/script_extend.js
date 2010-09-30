@@ -1,6 +1,10 @@
 function getbmview(type) {
 		ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','relatedcontent','relatehtm');	    
 }
+function getbmtagview(tagid) {
+		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','relatedcontent','relatehtm');	    
+		ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
+}
 
 function getlinkview(type) {
 	ajaxget('space.php?do=link&op='+type, 'bmcontent');

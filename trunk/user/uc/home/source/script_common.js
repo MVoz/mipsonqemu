@@ -644,9 +644,7 @@ function bookmarkload(){
 			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
 		jQuery(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
-		jQuery(".id_bm_tag").each(function(){
-			this.href = "space.php?do=linktag&tagid=" + this.id;
-		});	
+
 		jQuery(".bloglist .edit").each(function(){
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit";			
 			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
@@ -665,6 +663,13 @@ function bookmarkload(){
 		});	
 		
 		jQuery(".bloglist a").attr("target","_blank");
+		
+		jQuery(".id_bm_tag").each(function(){
+			//this.href = "space.php?do=linktag&tagid=" + this.id;
+			this.href = "javascript:;";
+			jQuery(this).attr("onclick","getbmtagview("+this.id+");").attr("target","_self");
+		});	
+
 		jQuery(".bloglist .share").each(function(){
 			this.href="javascript:void(0)";
 			jQuery(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
