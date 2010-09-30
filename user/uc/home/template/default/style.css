@@ -10,6 +10,7 @@ select { margin-right: 2px; }
 
 a { color: #2C629E; text-decoration: none; }
 a:hover, a:link, a:visited{ text-decoration:none; }
+a:focus{outline:none}
 
 a img { border: none; }
 

@@ -13,7 +13,20 @@
 		</div>
 	</div>	 
 	<div class="box_r" style="height:700px;">
-		<!--{template usermenu}-->	 
+		<!--{template usermenu}-->	
+<script language="javascript"  type="text/javascript">
+	jQuery(document).ready(function(){
+			jQuery(".tabs_header .tabs #"+$browserid).addClass("active");  
+			jQuery(".menu_list").hide();
+			jQuery(".menu_list_"+$browserid).show(); 
+			jQuery(".tabs_header .tabs >li").click(function(){ 
+				jQuery(".tabs_header .tabs >li").removeClass("active"); 
+				jQuery(this).addClass("active"); 
+				jQuery(".menu_item .menu_list").hide();
+				jQuery(".menu_item .menu_list_"+jQuery(this).attr("id")).show();  
+		});
+	});
+</script>
 	</div>	  						
 </div>
 <div  class="box">
