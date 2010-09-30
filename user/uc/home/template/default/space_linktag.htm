@@ -1,9 +1,9 @@
 <!--{template header}-->
 <!--{if !empty($_SGLOBAL[inajax])}-->
-	<h2 class="ntitle">
-			<span class="r_option" style="padding-right:150px;"></span> $tagname &raquo;
-	</h2>
-		<!--{template space_bookmark_list_sub}-->
+	<script language="javascript" type="text/javascript">
+		jQuery('.box_l .ntitle').html('<p id="groupname"> $tagname &raquo;</p>');
+	</script>
+	<!--{template space_bookmark_list_sub}-->
 	<div class="page">$multi</div>
 <!--{else}-->
 	<div id="login">
