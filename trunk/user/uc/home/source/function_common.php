@@ -2333,7 +2333,11 @@ function mkbrowsertab($id)
 	//if(empty($_SGLOBAL['supe_uid'])) echo '';
 	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
+		/*
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
+		*/
+		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getbrowserview('.$browserid.')" href="javascript:;" ><span>'.$key.'</span></a></li>';
+		
     }
 }
 function mkbrowsershowtab($id)

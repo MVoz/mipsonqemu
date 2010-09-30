@@ -5,7 +5,9 @@ function getbmtagview(tagid) {
 		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','relatedcontent','relatehtm');	    
 		ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
 }
-
+function getbrowserview(browserid) {
+		ajaxget("space.php?do=bookmark&op=browser&browserid="+browserid, 'bmcontent');
+}
 function getlinkview(type) {
 	ajaxget('space.php?do=link&op='+type, 'bmcontent');
 }
