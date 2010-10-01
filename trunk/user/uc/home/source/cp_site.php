@@ -9,7 +9,7 @@ if(!defined('IN_UCHOME')) {
 //bookmark为"我要收藏"
 //get为浏览
 //$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','toolbar');
-$ops=array('checkerror','add','edit','delete','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr');
+$ops=array('checkerror','add','edit','delete','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','updatesitetodaystorenum');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $siteid= empty($_GET['siteid'])?0:intval(trim($_GET['siteid']));
@@ -38,6 +38,7 @@ $link_priority=array(
  'updatesiteupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatesitedownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatesiteviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'updatesitetodaystorenum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
 // 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
@@ -131,6 +132,10 @@ elseif($_GET['op'] == 'delete') {
 		//更新顶数
         updatestatistic('site','viewnum',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
 		showmessage($item['viewnum']+1);
+}elseif($_GET['op']=='updatesitetodaystorenum'){
+		//更新顶数
+      $_SGLOBAL['db']->query("UPDATE ".tname('site')." SET todaystorenum=todaystorenum+1 where id=".$item['siteid']);
+	  exit();
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
 		  include_once(S_ROOT.'./data/data_linkerrtype.php');
@@ -180,11 +185,9 @@ elseif($_GET['op'] == 'delete') {
 
 
 }elseif($_GET['op']=='bookmark'){
-
 	if(submitcheck('bookmarksubmit')) {
 	}
-	$browserid=gethttpbrowserid();
-
+	$browserid=gethttpbrowserid(); 
 }else {
 	 if(submitcheck('addsubmit')) {
 		//验证码

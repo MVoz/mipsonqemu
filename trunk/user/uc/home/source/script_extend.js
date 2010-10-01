@@ -66,7 +66,7 @@ var updatebookmarkdownclick=0;
 function updatebookmarkdown(id) {
 	if(!updatebookmarkdownclick)
 	{
-		ajaxupdate('bookmark','up_num', 'op=updatebookmarkdownnum&bmid=' + id);
+		ajaxupdate('bookmark','down_num', 'op=updatebookmarkdownnum&bmid=' + id);
 		updatebookmarkdownclick=1;
 	}else
 		alert(errors['failed_to_up_operation']);
