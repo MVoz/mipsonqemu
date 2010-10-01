@@ -3072,6 +3072,9 @@ function updatestatistic($type,$mode,$ids)
 			case 'site':
 			$update_table = 'site';
 			$update_where = 'where id='.$ids['updateid'];
+			//更新今天的浏览数统计
+			if($mode == 'viewnum')
+				$_SGLOBAL['db']->query("UPDATE ".tname($update_table)." SET todayviewnum=todayviewnum+1 ".$update_where);
 			break;
 		
 		}
