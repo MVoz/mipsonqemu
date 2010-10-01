@@ -183,14 +183,8 @@ elseif($_GET['op'] == 'delete') {
 
 	if(submitcheck('bookmarksubmit')) {
 	}
-	$browserid=(empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
-	//正确显示tag
-	//$item['link_tag'] = implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
-	//获取常用的tag
-	$shownums=$_SC['favorite_tag_maxnum'];
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
-	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
-		$taglist[$value['tagid']]=$value['tagname'];
+	$browserid=gethttpbrowserid();
+
 }else {
 	 if(submitcheck('addsubmit')) {
 		//验证码
