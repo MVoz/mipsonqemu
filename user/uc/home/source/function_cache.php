@@ -1090,6 +1090,37 @@ function digg_cacheall()
 	//delete
 	delete_cachelock('digg');
 }
+
+function site_today_cache($type)
+{
+	global $_SGLOBAL,$_SC;
+	$todayview = array();	
+	$tmp =array();
+
+	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main order by main.".$type." limit 10");
+	while($value =$_SGLOBAL['db']->fetch_array($query)){
+		$todayview[]=$value;
+	}
+	swritefile( S_ROOT.'./data/site_'.$type.'.txt', serialize($todayview));
+}
+function site_today_cacheall()
+{
+	global $_SGLOBAL,$_SC;
+	//今日十大浏览站点
+	site_today_cache('todayviewnum');
+	//历史十大浏览站点
+	site_today_cache('viewnum');
+	//今日十大收藏站点
+	site_today_cache('storenum');
+	//历史十大收藏站点
+	site_today_cache('todaystorenum'); 
+	//将今天的viewnum和storenum清零
+	$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET todaystorenum=0");
+	$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET todayviewnum=0");
+ 
+}
+
+
 //处理uchome_site
 function handlesiteformat()
 {
