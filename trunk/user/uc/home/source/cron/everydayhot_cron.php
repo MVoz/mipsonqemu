@@ -16,4 +16,6 @@ everydayhottag_cache();
 
 everydayhotclass_cache();
 
+site_today_cacheall();
+
 ?>

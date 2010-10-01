@@ -12,24 +12,11 @@ $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 
 //检查信息
 $bmid = empty($_GET['bmid'])?0:intval($_GET['bmid']);
-$browserid = empty($_GET['browserid'])?1:intval($_GET['browserid']);
+$browserid = gethttpbrowserid();
 include_once(S_ROOT.'./source/function_bookmark.php');
 $item = array();
 $groupid=0;
 if($bmid) {
-	/*
-	$query=$_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('bookmark')." main LEFT JOIN ".tname('link')." sub ON main.linkid=sub.linkid 	WHERE main.bmid='$bmid' AND main.uid=".$_SGLOBAL['supe_uid']);
-	$item = $_SGLOBAL['db']->fetch_array($query);
-	//处理link在site中的情况
-	$item = getlinkfromsite($item);
-	if(empty($item['tag']))
-		$item['tag'] =implode(' ',empty($item['link_tag'])?array():unserialize($item['link_tag']));
-	else
-		$item['tag'] =implode(' ',empty($item['tag'])?array():unserialize($item['tag']));
-	$item['link_tag'] = explode(' ',$item['tag']);
-	if(empty($item['description']))
-		$item['description'] =$item['link_description'];
-	*/
 	$item = getbookmark($bmid);
 	$groupid=$item['parentid'];
 }
