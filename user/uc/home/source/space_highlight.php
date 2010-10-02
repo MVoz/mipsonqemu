@@ -9,11 +9,11 @@ if(!defined('IN_UCHOME')) {
 }
 
 //今日十大浏览站点
-$_SGLOBAL['todayviewnum']=readsitecachefile('todayviewnum');
 //历史十大浏览站点
-$_SGLOBAL['viewnum']=readsitecachefile('viewnum');
 //今日十大收藏站点
-$_SGLOBAL['storenum']=readsitecachefile('storenum');
 //历史十大收藏站点
-$_SGLOBAL['todaystorenum']=readsitecachefile('todaystorenum');
+$hightlightlist = array('todayviewnum','viewnum','storenum','todaystorenum');
+foreach($hightlightlist as $k=>$v){ 
+	$_SGLOBAL[$v]=readsitecachefile($v);
+}
 ?>
