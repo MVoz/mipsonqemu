@@ -363,13 +363,15 @@ function hotdigg_cache()
 {
 	global $_SGLOBAL;
 
-	$_SGLOBAL['hotdigg'] = array();
+	$hotdigg = array();
 	// 从数据库获取
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." order by viewnum DESC limit 0,10");
+
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-	    $_SGLOBAL['hotdigg'][] = $value;
+		$value['description']=getstr($value['description'], 80, 0, 0, 0, 0, -1);
+	    $hotdigg[] = $value;
 	}
-	cache_write('hotdigg', "_SGLOBAL['hotdigg']", $_SGLOBAL['hotdigg']);
+	swritefile(S_ROOT.'./data/data_hotdigg.txt', serialize($hotdigg));
 }
 //linktoolbartype
 function linktoolbartype_cache()
