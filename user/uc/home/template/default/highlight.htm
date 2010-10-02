@@ -14,7 +14,7 @@
 			<ul>
 				<li>
 					<dl  class="drank">
-						<!--{loop $_SGLOBAL['hotdigg'] $key $value}-->
+					<!--{loop $_SGLOBAL['storenum'] $key $value}-->
 							<!--{if $key<6 }-->
 								<!--{if $key }-->
 										<!--{eval $key=$key+1;}-->
@@ -24,24 +24,23 @@
 								<!--{else}-->
 											<dt class="l1">
 												<div class="pack ">
-													<h6><a title="妖精的尾巴 第26话" target="new" href="#"> $value[subject] </a></h6>
+													<h6>
+														<a title="$value[subject]" target="new" href="#">$value[subject]</a>
+													</h6>
 													<div class="pic">
-														<a href="#" title="妖精的尾巴 第26话" target="new" >
+														<a href="#" title="$value[subject]" target="new">
 															<img  src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg">
 														</a>
 													</div>
 													<div class="info">
-														来越多的人在抱怨南非世界杯乏味无聊。文尼亚队与利亚队交手带来的劳..<span class="gray">2010-06-12</span> <a class="publisher" href="space.php?do=digg&amp;uid=10">城市森林</a>
+														$value[subject]..
 													</div>
 												</div>										
 											 </dt>
 									<!--{/if}-->
 							<!--{/if}-->
-						<!--{/loop}--> 
+						<!--{/loop}-->
 					</dl>
-				</li>
-				<li>
-					<p><img src="template/default/image/adv_240x200.jpg"></p>
 				</li>
 				<li>
 				<div style="display: block;padding-left:15px;" class="rank ">
