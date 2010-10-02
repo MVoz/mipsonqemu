@@ -3248,4 +3248,19 @@ function updatesiteall()
 		updatesiteinfo($s['id'],$s['tag']);
 	}
 }
+
+function readsitecachefile($type)
+{
+	$f =  S_ROOT.'./data/site_'.$type.'.txt';
+	if(!file_exists($f)){
+		include_once(S_ROOT.'./source/function_cache.php');
+		site_today_cache($type);
+	}
+	$ret = unserialize(sreadfile($f));
+	$r = array();
+	foreach($ret as $k=>$v){
+		$r[] = $v;
+	}
+	return $r;
+}
 ?>
