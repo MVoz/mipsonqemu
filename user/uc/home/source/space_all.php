@@ -17,6 +17,8 @@ include_once(S_ROOT.'./source/space_highlight.php');
 
 include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
+
+include_once(S_ROOT.'./source/space_hotdigg.php');
 //digg
 $digglist = array();
 $theurl="space.php?do=digg&show=".($_SC['digg_show_maxnum']/2);
