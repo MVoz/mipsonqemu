@@ -1,64 +1,40 @@
-	<script type="text/javascript" src="source/easySlider1.5.js"></script>
-	<script type="text/javascript">
-		jQuery(document).ready(function(){	
-			jQuery("#slider").easySlider({
-				controlsBefore:	'<div id="slider_no">',
-				controlsAfter:	'</div>',
-				auto: false, 
-				continuous: true
-			});
-
-		});	
-	</script>
-	<div id="slider">
-			<ul>
-				<li>
-					<dl  class="drank">
-					<!--{loop $_SGLOBAL['storenum'] $key $value}-->
-							<!--{if $key<6 }-->
-								<!--{if $key }-->
-										<!--{eval $key=$key+1;}-->
-											<dt class="l$key">
-												<a target="new" title="$value[subject]" href="$value[url]">$value[subject]</a>
-											</dt>
-								<!--{else}-->
-											<dt class="l1">
-												<div class="pack ">
-													<h6>
-														<a title="$value[subject]" target="new" href="#">$value[subject]</a>
-													</h6>
-													<div class="pic">
-														<a href="#" title="$value[subject]" target="new">
-															<img  src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg">
-														</a>
-													</div>
-													<div class="info">
-														$value[subject]..
-													</div>
-												</div>										
-											 </dt>
-									<!--{/if}-->
-							<!--{/if}-->
-						<!--{/loop}-->
-					</dl>
-				</li>
-				<li>
-				<div style="display: block;padding-left:15px;" class="rank ">
-				<!--
-					<script type="text/javascript">
-					alimama_pid = "mm_16666649_0_0";
-					alimama_bm_revision = "bb976bb604c5b4379f0a8a6c54bd7201e37d75dc";
-					alimama_bm_uid = "";
-					alimama_bm_bid = "6428941";
-					alimama_bm_width = 250;
-					alimama_bm_height = 220;
-					alimama_bm_xmlsrc = "http://bm.alimama.cn/x/2010-05-14/20-53/2010-05-14_99104403c77fcfc65cd111756d27d131_2.xml";
-					alimama_bm_ds = "";
-					alimama_bm_as = "taoke";
-					</script>
-					<script type="text/javascript" src="http://bm.alimama.cn/bmv1.js?v=a25a29e8bd84be55fbec128d322c23a516544fad"></script>
-				-->
-				</div>
-				</li>	
-			</ul>
-	</div>
+<div id="highlight"> 
+	<p>
+		<span id="todayviewnum">今日访问</span>
+		<span id="todaystorenum">今日收藏</span>
+		<span id="viewnum">历史访问</span>
+		<span id="storenum">历史收藏</span>
+	</p>
+	<!--{loop $hightlightlist $key $value}-->
+		<dl  class="drank $value" style="float:left;width:240px;overflow:hidden;">
+		<!--{loop $_SGLOBAL[$value] $k $v}-->
+			<!--{eval $k=$k+1;}-->
+				<dt class="l$k">
+					<a target="new" title="$v[subject]" href="$v[url]">$v[subject]</a>
+					<div class="num_con">
+								<strong><!--{eval linkaward($v[award],0);}--></strong>
+								.<!--{eval linkaward($v[award],1);}--> 
+					</div>
+				</dt> 
+		<!--{/loop}-->
+		</dl>
+	<!--{/loop}-->		
+</div>
+<script language="javascript" type="text/javascript" >
+	jQuery(document).ready(function(){
+			jQuery("#highlight a").css("width","180px");
+			jQuery("#highlight p span").css("cursor","pointer");
+			jQuery("#highlight span:odd").css("background-color","#7BAD00");
+			jQuery("#highlight span:even").css("background-color","#FF8901");
+			jQuery("#highlight span:first").css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); 
+			jQuery("#highlight dl:not(:first)").hide();
+			jQuery("#highlight span").click(function(){ 
+				jQuery("#highlight span").removeClass("currentx"); 
+				jQuery("#highlight span:odd").css("background-color","#7BAD00");
+				jQuery("#highlight span:even").css("background-color","#FF8901");
+				jQuery(this).css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); ; 
+				jQuery("#highlight dl").hide(); 
+				jQuery("."+jQuery(this).attr("id")).show();
+		});
+	});
+</script>
