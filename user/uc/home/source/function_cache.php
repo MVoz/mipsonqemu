@@ -1097,9 +1097,9 @@ function site_today_cache($type)
 	$todayview = array();	
 	$tmp =array();
 
-	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main order by main.".$type." limit 10");
+	$query=$_SGLOBAL['db']->query("SELECT main.id FROM ".tname('site')." main order by main.".$type." DESC limit 10");
 	while($value =$_SGLOBAL['db']->fetch_array($query)){
-		$todayview[]=$value;
+		$todayview[]=getsite($value['id']);
 	}
 	swritefile( S_ROOT.'./data/site_'.$type.'.txt', serialize($todayview));
 }
