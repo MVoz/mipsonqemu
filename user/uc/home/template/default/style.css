@@ -474,8 +474,8 @@ a.c_link {
 #relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 
-#highlight {padding-left:5px;float:right;width:270px;height:250px;overflow:hidden;background:#fff;background-color:#FFF;
-border:1px solid #DDD;margin-bottom:5px;}
+#highlight {padding-left:5px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
+border:1px solid #DDD;margin-top:1px;}
 #highlight p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
 #highlight p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
 #highlight a{font-size:12px;}
