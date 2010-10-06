@@ -68,6 +68,9 @@
 		bookmarkload();
 		jQuery(".bloglist .delete").each(function(){
 			this.href =this.href+"&at=$at";			
+		});
+		jQuery(".bloglist .edit").each(function(){
+			this.href =this.href+"&at=$at";			
 		});	
 <!--{loop $bookmarklist $key $value}-->	
 		var id_bm_$value['bmid']_title="$value['subject']";

@@ -56,10 +56,10 @@ if(submitcheck('editsubmit')) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-
+	
 	if($newbmdir = bookmark_post($_POST, $item)) {
-		$url = 'space.php?do=bookmark&op=browser&groupid='.$item['groupid']."&browserid=".$browserid;		
-		showmessage('do_success', $url, 0);
+		//$url = 'space.php?do=bookmark&op=browser&groupid='.$item['groupid']."&browserid=".$browserid;		
+		showmessage('do_success', $_SGLOBAL['refer'], 0);
 		//showmessage('do_success');
 	} else {
 		showmessage('that_should_at_least_write_things');
@@ -128,7 +128,9 @@ if($_GET['op'] == 'delete') {
 
 } else {
 	//Ìí¼Ó±à¼­
-
+	$ats=array('lastadd','lastvisit','oftenvisit');
+	$at = (empty($_GET['at']) || !in_array($_GET['at'], $ats))?'browser':$_GET['at'];
+	$url = get_right_refer($at,$item['groupid'],$browserid);
 }
 
 include_once template("cp_bookmark");
