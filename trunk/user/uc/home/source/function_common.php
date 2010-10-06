@@ -3262,4 +3262,21 @@ function readsitecachefile($type)
 	}
 	return $r;
 }
+function get_right_refer($at,$groupid,$browserid){
+	global $_GET,$_SGLOBAL;
+	switch($at){
+		case 'lastadd':
+			return 'space.php?do=bookmark&op=lastadd';
+			break;
+		case 'lastvisit':
+			return 'space.php?do=bookmark&op=lastvisit';
+			break;
+		case 'oftenvisit':
+			return 'space.php?do=bookmark&op=oftenvisit';
+			break;
+		default:
+			return 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
+			break;
+	}
+}
 ?>

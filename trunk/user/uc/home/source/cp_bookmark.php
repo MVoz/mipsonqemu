@@ -80,11 +80,18 @@ if(submitcheck('editsubmit')) {
 }
 if($_GET['op'] == 'delete') {
 	//删除
+	//需要得到删除动作从哪里发出 
+	$ats=array('lastadd','lastvisit','oftenvisit');
+	$at = (empty($_GET['at']) || !in_array($_GET['at'], $ats))?'browser':$_GET['at'];
+	$url = get_right_refer($at,$groupid,$browserid);
+
 	if(submitcheck('deletesubmit')) {
 		if(deletebookmark($bmid)) {
 			//$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			if(empty($_SGLOBAL['client']))
-				showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $_SGLOBAL['refer'], 0);
+			{
+			 	showmessage('do_success'.' lastmodified='.$_SGLOBAL['supe_starttime'], $_SGLOBAL['refer'], 0);
+			}
 			else
 				showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"');
 		} else {
