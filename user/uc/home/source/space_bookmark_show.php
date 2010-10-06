@@ -17,6 +17,7 @@ $theurl='';
 $groupid=0;
 $bookmarklist = array();
 $isFromCache=0;
+$at=$op;
 
 include_once(S_ROOT.'./source/function_link.php');
 include_once(S_ROOT.'./source/function_bookmark.php');
