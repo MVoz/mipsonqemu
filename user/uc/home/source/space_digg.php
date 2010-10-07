@@ -12,6 +12,8 @@ if(!defined('IN_UCHOME')) {
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
+
+include_once(S_ROOT.'./source/space_highlight.php');
 include_once(S_ROOT.'./data/data_network.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
 

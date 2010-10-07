@@ -12,6 +12,9 @@ if(!defined('IN_UCHOME')) {
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
+
+include_once(S_ROOT.'./source/space_highlight.php');
+
 //bookmarklist
 $classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
 $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
