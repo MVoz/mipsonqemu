@@ -92,8 +92,12 @@ function link_post($POST, $olds=array()) {
 			}else{
 				//修改一个LINK
 				$linkarr['url']=  $olds['url'];
-				$linkarr['initaward'] =$POST['initaward'];
-				$linkarr['award']=calc_link_award($linkarr['initaward'],$olds['storenum'],$olds['viewnum'],$olds['up'],$olds['down']);
+				$linkarr['initaward'] =getinitaward($POST['initaward']);
+				echo $POST['up'];
+				$linkarr['up'] = empty($POST['up'])?$olds['up']:intval($POST['up']);
+				$linkarr['down'] = empty($POST['down'])?$olds['down']:intval($POST['down']);
+
+				$linkarr['award']=calc_link_award($linkarr['initaward'],$olds['storenum'],$olds['viewnum'],$linkarr['up'],$linkarr['down']);
 				updatetable('link',$linkarr, array('linkid'=>$olds['linkid']));
 				$linkid = $olds['linkid'];
 			}

@@ -3175,7 +3175,7 @@ function deldir($dir){
 	 closedir($dh);
 }
 //当link有改变的时候，需更新相对应的bookmark信息,去除存有此link的用户cache
-function updatelinkinfo($linkid,$tag)
+function updatelinkinfo($linkid,$tag='')
 {
 	global $_SGLOBAL;
 	if(!$_SGLOBAL[supe_uid]||!checkperm('manageconfig'))
@@ -3278,5 +3278,13 @@ function get_right_refer($at,$groupid,$browserid){
 			return 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			break;
 	}
+}
+function getinitaward($award)
+{
+	if($award < 7000)
+		$award = 7000;
+	elseif($award > 9000)
+		$award = 9000;
+	return $award;
 }
 ?>
