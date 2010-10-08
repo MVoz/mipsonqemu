@@ -36,10 +36,12 @@ function myhint(a) {
 window.google = {};
 window.google.ac = {};
 window.google.ac.h = function (a) {
-    if (!(!a || a.length != 2 && a.length != 3)) if (a[0] == getObj("searchkey").value) {
+	if(!a||(a.length == 2 || a.length == 3))
+		return;
+	if (a[0] == getObj("searchkey").value) {
         var b = "";
         a = a[1];
-        for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"getObj('searchkey').value='" + a[c][0] + '\';javascript:searchSubmit(this);" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + '</td><td style="color:#090" align="right" style="font-size:11.5px;">\u7ea6' + a[c][1] + "</td></tr>";
+        for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"getObj('searchkey').value='" + a[c][0] + '\';javascript:searchSubmit(this);" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + "</td></tr>";
         getObj("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
         setDisplay("suggests", 1)
     }
