@@ -55,6 +55,10 @@ if(submitcheck('linksubmit')) {
 	//去除缓存更新
 	updatelinkinfo($linkid);
 
+	//增加editflag
+	$editflag = $item['editflag']+1;
+	updatetable('link',array('editflag'=>$editflag), array('linkid'=>$linkid));
+
 	cpmessage('do_success', 'admincp.php?ac=link');
 }
 if(empty($_GET['op'])) {
@@ -70,8 +74,9 @@ if(empty($_GET['op'])) {
 	$wherearr = $results['wherearr'];
 	*/
 	$wheresql = empty($wherearr)?'1':implode(' AND ', $wherearr);
-
-	$wheresql = " siteid=0 and picflag=1";
+	
+	$editflag = empty($_GET['edit'])?0:intval($_GET['edit']);
+	$wheresql = " siteid=0 and picflag=1 and editflag=".$editflag ;
 
 	$mpurl .= '&'.implode('&', $results['urls']);
 
