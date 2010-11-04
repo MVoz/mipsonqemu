@@ -1652,7 +1652,8 @@ void MyWidget::updateSuccess()
 		silentupdateTimer->stop();
 	if(syncTimer&&syncTimer->isActive())
 		syncTimer->stop();
-	updateSuccessTimer = new QTimer(this);
+	//updateSuccessTimer = new QTimer(this);
+	NEW_TIMER(updateSuccessTimer);
 	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));
 	updateSuccessTimer->start(1*SECONDS);
 
@@ -1676,6 +1677,7 @@ MyWidget::~MyWidget()
 	}
 	*/
 	DELETE_TIMER(monitorTimer);
+	DELETE_TIMER(updateSuccessTimer);
 	if(catalog)
 		catalog.reset();
 	platform.reset();

@@ -273,7 +273,7 @@ void BookmarkSync::run()
 {
 	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	semaphore->acquire(1);
-	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
+	qDebug()<<__FUNCTION__<<"get aacquirec semphore!";
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	THREAD_MONITOR_POINT;
 
