@@ -474,7 +474,7 @@ function linkclass_cache()
 	}
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
-function createCategoryCache($fp,$arr)
+function createCategoryXmlCache($fp,$arr)
 {
 		global $_SGLOBAL,$_SC;
 		$groupid=(int)$arr['groupid'];	
@@ -490,12 +490,13 @@ function createCategoryCache($fp,$arr)
 
 	   $orderarr=$orderarr." ORDER by main.lastvisit DESC ";
 
-	    $query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+	    $query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('bookmark')." main	".$wherearr.$orderarr);
 	    while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$value = getbookmark($value['bmid']);
 	   		    switch($value['type'])
 					   {
 					   	case $_SC['bookmark_type_dir']://category
-					   	  createCategoryCache($fp,$value);
+					   	  createCategoryXmlCache($fp,$value);
 					   	break;
 					   	case $_SC['bookmark_type_site']://item
 						   fprintf($fp,"<item parentId=\"$value[parentid]\">\n");
@@ -508,7 +509,7 @@ function createCategoryCache($fp,$arr)
 					   	break;
 					   }
 	   	}
-	   	fprintf($fp,"</category >\n");
+	   	fprintf($fp,"</category>\n");
 }
 function bmxml_cache()
 {
@@ -540,13 +541,14 @@ function bmxml_cache()
 
 		$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
 
-		$query = $_SGLOBAL['db']->query("SELECT main.*, field.* FROM ".tname('bookmark')." main	LEFT JOIN ".tname('link')." field ON main.linkid=field.linkid ".$wherearr.$orderarr);
+		$query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('bookmark')." main	".$wherearr.$orderarr);
 		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			$value = getbookmark($value['bmid']);
 			switch($value['type'])
 			{
 				case $_SC['bookmark_type_dir']:
 					//category
-					createCategoryCache($fp,$value);
+					createCategoryXmlCache($fp,$value);
 					break;
 				case $_SC['bookmark_type_site']:
 						fprintf($fp,"<item parentId=\"%d\">\n",$value['groupid']);
