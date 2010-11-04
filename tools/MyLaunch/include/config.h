@@ -323,7 +323,7 @@ void monitorTimerSlot();
 	DELETE_OBJECT(x)
 #define DELETE_FILE(x)	if(x){ if((x)->isOpen()) (x)->close();delete (x);(x)=NULL; }
 
-
+#define NEW_TIMER(x) x = new QTimer(this);
 
 enum httpState
 {

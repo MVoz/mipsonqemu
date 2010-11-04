@@ -42,6 +42,9 @@ QSettings *gSettings;
 QString gSearchTxt;
 shared_ptr < CatBuilder > gBuilder;
 shared_ptr < BookmarkSync> gSyncer;
+/*
+	use gSemaphore to separate syner from catabuilder
+*/
 QSemaphore gSemaphore;
 
 QString gNativeSep = QDir::toNativeSeparators("/");
