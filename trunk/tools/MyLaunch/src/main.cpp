@@ -414,11 +414,15 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	}
 	// Set the timers
 	updateSuccessTimer = NULL;
-	catalogBuilderTimer = new QTimer(this);
+	//catalogBuilderTimer = new QTimer(this);
+	NEW_TIMER(catalogBuilderTimer);
 	slientUpdate =NULL;
-	silentupdateTimer = new QTimer(this);
-	syncTimer = new QTimer(this);
-	dropTimer = new QTimer(this);
+	//silentupdateTimer = new QTimer(this);
+	NEW_TIMER(silentupdateTimer);
+	//syncTimer = new QTimer(this);
+	NEW_TIMER(syncTimer);
+	//dropTimer = new QTimer(this);
+	NEW_TIMER(dropTimer);
 	dropTimer->setSingleShot(true);
 	connect(catalogBuilderTimer, SIGNAL(timeout()), this, SLOT(catalogBuilderTimeout()));
 	connect(silentupdateTimer, SIGNAL(timeout()), this, SLOT(silentupdateTimeout()));
@@ -431,7 +435,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if (gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt() != 0)
 		syncTimer->start(SILENT_SYNC_TIMER*SECONDS);//5m
 
-	monitorTimer=new QTimer(this);
+	//monitorTimer=new QTimer(this);
+	NEW_TIMER(monitorTimer);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
 	monitorTimer->start(10);
 
@@ -1624,7 +1629,8 @@ void MyWidget::closeEvent(QCloseEvent * event)
 }
 void MyWidget::updateSuccessTimeout()
 {
-	updateSuccessTimer->stop();
+	//updateSuccessTimer->stop();
+	STOP_TIMER(updateSuccessTimer);
 	//check syn , catebulder...
 	if(gBuilder||gSyncer)
 		updateSuccessTimer->start(1*SECONDS);
@@ -1646,12 +1652,15 @@ void MyWidget::updateSuccess()
 	//	s.remove(APP_NAME);
 	s.sync();
 	*/
-	if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
-		catalogBuilderTimer->stop();
-	if(silentupdateTimer&&silentupdateTimer->isActive())
-		silentupdateTimer->stop();
-	if(syncTimer&&syncTimer->isActive())
-		syncTimer->stop();
+	//if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
+	//	catalogBuilderTimer->stop();
+	STOP_TIMER(catalogBuilderTimer);
+	//if(silentupdateTimer&&silentupdateTimer->isActive())
+	//	silentupdateTimer->stop();
+	STOP_TIMER(silentupdateTimer);
+	//if(syncTimer&&syncTimer->isActive())
+	//	syncTimer->stop();
+	STOP_TIMER(syncTimer);
 	//updateSuccessTimer = new QTimer(this);
 	NEW_TIMER(updateSuccessTimer);
 	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));

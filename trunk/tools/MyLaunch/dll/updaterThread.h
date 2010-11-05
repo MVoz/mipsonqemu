@@ -96,7 +96,7 @@ public:
 	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
 	//	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
-	void newHttp();
+	int newHttp();
 	void setProxy(QNetworkProxy& p);
 	void setDestdir(const QString& s){destdir = s;}
 	public slots: 

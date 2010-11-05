@@ -82,8 +82,15 @@ void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & res
 //	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
 	statusCode=resp.statusCode();
 }
-void GetFileHttp::newHttp()
+/*
+	1----success
+	0----failed
+*/
+int GetFileHttp::newHttp()
 {
+	if(retryTime>=(UPDATE_MAX_RETRY_TIME-1))
+		return 0;
+	retryTime++;
 	http[retryTime] = new QHttp();
 	http[retryTime]->moveToThread(this);
 	SET_NET_PROXY(http[retryTime]);
@@ -133,6 +140,7 @@ void GetFileHttp::newHttp()
 	connect(httpTimer[retryTime], SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
 	*/
 	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimerSlot);
+	return 1;
 }
 void GetFileHttp::run()
 {
@@ -151,7 +159,7 @@ void GetFileHttp::run()
 
 	this->mode=mode;
 	newHttp();
-	retryTime++;
+//	retryTime++;
 	exec();	
 	clearObject();
 	//httpTimer->stop();
@@ -171,13 +179,14 @@ void GetFileHttp::httpTimerSlot()
 	if(httpTimer[retryTime]&&httpTimer[retryTime]->isActive())
 	httpTimer[retryTime]->stop();
 	*/
-	http[retryTime]->abort();	
+	if(httpTimer[retryTime])
+		http[retryTime]->abort();	
 }
 GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): MyThread(parent),mode(mode),md5(c)
 {
 	errCode=0;
 	statusCode=0;
-	retryTime=0;
+	retryTime=-1;
 	mode=0;
 	//	monitorTimer =NULL;
 	//	terminateFlag = 0;
@@ -238,11 +247,8 @@ void GetFileHttp::getFileDone(bool error)
 					break;
 				}
 			}else{
-				if(retryTime<UPDATE_MAX_RETRY_TIME)
+				if(newHttp())
 				{
-
-					retryTime++;
-					newHttp();
 					//httpTimer->start(10*1000);
 					errCode=HTTP_NEED_RETRY;
 				}
@@ -278,11 +284,8 @@ void GetFileHttp::getFileDone(bool error)
 								emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
 							emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);		
 						}else{
-							if(retryTime<UPDATE_MAX_RETRY_TIME)
+							if(newHttp())
 							{
-
-								retryTime++;
-								newHttp();
 								errCode=HTTP_NEED_RETRY;
 							}else
 							{
@@ -306,10 +309,8 @@ void GetFileHttp::getFileDone(bool error)
 					break;
 				}
 			}else{
-				if(retryTime<UPDATE_MAX_RETRY_TIME)
+				if(newHttp())
 				{		
-					retryTime++;
-					newHttp();
 					//httpTimer->start(10*1000);
 					errCode=HTTP_NEED_RETRY;
 				}
