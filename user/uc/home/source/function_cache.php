@@ -503,7 +503,7 @@ function createCategoryXmlCache($fp,$arr)
 						   fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value[subject]));
 						   fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
 						   fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
-						   fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						//   fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						 //  	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 						   fprintf($fp,"</item>\n");
 					   	break;
@@ -555,7 +555,7 @@ function bmxml_cache()
 						fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
 						fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
 						fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
-						fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
+						//fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
 						//echo "<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 						fprintf($fp,"</item>\n");
 				break;
