@@ -2920,6 +2920,7 @@ function getbookmark($bmid)
 	   unset($s['link_tag']);
 	   //去除回车转行制表等特殊字符
 	   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['subject']);
+	   $s['award'] = calc_link_award($s['initaward'],$s['storenum'],$s['viewnum'],$s['up'],$s['down']);
 	} 
 	return $s;
 }
