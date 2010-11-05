@@ -1578,7 +1578,7 @@ void MyWidget::closeEvent(QCloseEvent * event)
 	STOP_TIMER(silentupdateTimer);
 	STOP_TIMER(syncTimer);
 
-	qDebug()<<"emit erminateNotify"<<gBuilder;
+	qDebug()<<"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer;
 	if(gBuilder&&gBuilder->isRunning())
 	{
 		//emit catalogTerminateNotify();

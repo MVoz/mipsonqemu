@@ -221,7 +221,18 @@ void GetFileHttp::getFileDone(bool error)
 	*/
 	THREAD_MONITOR_POINT;
 	DELETE_FILE( file[retryTime] );
-
+        if(terminateFlag)
+	{
+		switch(mode){
+			case UPDATE_MODE_GET_INI:
+				emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
+				break;
+			case UPDATE_MODE_GET_FILE:
+				emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);
+				break;
+		}
+		this->quit();
+        }
 	switch(mode){
 		case UPDATE_MODE_GET_INI:
 			if(!error)
@@ -419,6 +430,7 @@ updaterThread::~updaterThread()
 
 void updaterThread::testNetFinished()
 {
+	QDEBUG_LINE;
 	//qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
@@ -461,6 +473,7 @@ void updaterThread::terminateThread()
 	if(monitorTimer&&monitorTimer->isActive())
 	monitorTimer->stop();
 	*/
+	QDEBUG_LINE;
 	STOP_TIMER(monitorTimer);
 	if(THREAD_IS_RUNNING(testThread))
 		testThread->setTerminateFlag(1);
@@ -488,6 +501,7 @@ void updaterThread::monitorTimerSlot()
 
 void updaterThread::run()
 {
+	QDEBUG_LINE;
 	/*
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
@@ -642,7 +656,8 @@ void  updaterThread::checkSilentUpdateApp()
 }
 void updaterThread::getIniDone(int err)
 {
-
+	if(terminateFlag)
+		goto end;
 	switch(mode){
 		case UPDATE_SILENT_MODE:				
 			if(err==HTTP_GET_INI_SUCCESSFUL){
@@ -654,11 +669,12 @@ void updaterThread::getIniDone(int err)
 				serverSettings = new QSettings(QString(UPDATE_PORTABLE_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
 				//get newer.exe independently
 
-
 				//qDebug(" Merger localsetting with serverSettings! ");
 				mergeSettings(localSettings,serverSettings,SETTING_MERGE_LOCALTOSERVER);
 				//qDebug("Merger serverSettings with localsetting!");
 				mergeSettings(serverSettings,localSettings,SETTING_MERGE_SERVERTOLOCAL);
+				if(terminateFlag)
+					goto end;
 				//update all downloaded files
 				//qDebug("%s error %d happened",__FUNCTION__,__LINE__);
 				if(error){
@@ -728,6 +744,8 @@ void updaterThread::getIniDone(int err)
 					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);
 
 				}
+				if(terminateFlag)
+					goto end;
 				if(error){
 					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 				}else if(needed) 
@@ -761,6 +779,7 @@ void updaterThread::getIniDone(int err)
 	//HWND	 hWnd	= ::FindWindow(NULL, (LPCWSTR) QString("debug").utf16());
 	//qDebug("hWnd=0x%08x\n",hWnd);
 	//::SendMessage(hWnd, WM_CLOSE, 0, 0);
+	QDEBUG_LINE;
 end:
 	quit();
 
@@ -783,24 +802,27 @@ void updaterThread::getFileDone(int err)
 }
 void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 {
+	if(terminateFlag)
+		return;
 	if(m==UPDATE_MODE_GET_FILE)	{
 		sem_downfile_start.release(1);		
 
 	}
 	if((m==UPDATE_MODE_GET_FILE)&&(timers>0))
 	{	
-
-		sem_downfile_success.acquire(1);
 		if(error) return;
+		sem_downfile_success.acquire(1);		
 		msleep(500);
 	}
 	if(m==UPDATE_MODE_GET_FILE) timers++;
 
 	//qDebug("%s pathname=%s md5=%s  sem=%d sem2=%d ",__FUNCTION__,qPrintable(pathname),qPrintable(md5),sem_downfile_success.available(),sem_downfile_start.available());	
 	//GetFileHttp *fh=new GetFileHttp(NULL,m,md5);
-    if(fh)
+  	 if(fh)
 		fh->wait();
 	DELETE_OBJECT(fh);
+	if(terminateFlag)
+		return;
 	fh=new GetFileHttp(NULL,m,md5);
 
 	connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
