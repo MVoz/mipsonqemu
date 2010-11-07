@@ -2518,7 +2518,8 @@ function producebmxml($uid,$arr)
 	if($lastupdatetime==$lastmodified)
 	{
 		//do nothing
-		//exitwithtip('do_nothing');
+		header('md5key:'.md5('do_nothing')); 
+		exitwithtip('do_nothing');
 	}
 	$xmlfile = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bmxml.xml';
 	if(!file_exists($xmlfile)){
@@ -2919,7 +2920,7 @@ function getbookmark($bmid)
 	   unset($s['link_description']);
 	   unset($s['link_tag']);
 	   //去除回车转行制表等特殊字符
-	   $s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['subject']);
+	   //$s['subject']=preg_replace("/[\s|\n|\r|\f]+/","",$s['subject']);
 	   $s['award'] = calc_link_award($s['initaward'],$s['storenum'],$s['viewnum'],$s['up'],$s['down']);
 	} 
 	return $s;

@@ -482,7 +482,7 @@ function createCategoryXmlCache($fp,$arr)
 	   	fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($arr['subject']));
 	   	fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$arr['bmid']);
 		//printf("<bmid><![CDATA[%d]]></bmid>\n",$arr['groupid']);
-	   	fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
+	   //	fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$arr['dateline']);
 	   //	printf("<modifydate><![CDATA[%s]]></modifydate>\n",$row[8]);
 	   $wherearr=$wherearr." where main.uid=".$arr['uid'] ;
 	   $wherearr=$wherearr." AND main.browserid=".$arr['browserid'];
@@ -500,7 +500,8 @@ function createCategoryXmlCache($fp,$arr)
 					   	break;
 					   	case $_SC['bookmark_type_site']://item
 						   fprintf($fp,"<item parentId=\"$value[parentid]\">\n");
-						   fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value[subject]));
+						   //fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value[subject]));
+						   fprintf($fp,"<name><![CDATA[%s]]></name>\n",($value[subject]));
 						   fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
 						   fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['bmid']);
 						//   fprintf($fp,"<adddate><![CDATA[%s]]></adddate>\n",$value['dateline']);
