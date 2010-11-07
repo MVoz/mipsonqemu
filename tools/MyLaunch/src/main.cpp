@@ -2171,9 +2171,16 @@ void MyWidget::_startSync(int mode,int silence)
 	case SYNC_MODE_REBOOKMARK:
 		gSyncer->setUsername(name);
 		gSyncer->setPassword(password);
-		if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
+		if (
+			getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
+			&&QFile::exists(localBmFullPath)
+		)
 		{
-			url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
+			QString filemd5 = tz::fileMd5(localBmFullPath);
+			if(qhashEx(filemd5,filemd5.length())==gSettings->value("localbmkey",0).toUInt())
+				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());	
+			else
+				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
 		}else{
 			url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
 		}
@@ -2771,7 +2778,7 @@ void MyWidget::silentUpdateFinished()
 #ifdef QT_NO_DEBUG
 			
 #else		
-		silentupdateTimer->start(1*SECONDS);	
+		silentupdateTimer->start(100*SECONDS);	
 #endif	
 	}
 }
