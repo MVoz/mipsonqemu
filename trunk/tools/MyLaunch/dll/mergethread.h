@@ -82,7 +82,18 @@ using namespace boost;
 #define HANDLE_ITEM_LOCAL 0
 #define HANDLE_ITEM_SERVER 1
 
+#define BM_ITEM_MERGE_STATUS(local,last,server) ((((local) >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + ((((last) >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + ((((server) >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET)
 
+enum BM_MERGE_STATUS{
+	MERGE_STATUS_NONE=0,
+	MERGE_STATUS_LOCAL_0_LAST_0_SERVER_1, //only exist in server,need download to local
+	MERGE_STATUS_LOCAL_0_LAST_1_SERVER_0,//only exist in lastupdate
+	MERGE_STATUS_LOCAL_0_LAST_1_SERVER_1,//exist in server&lastupdate
+	MERGE_STATUS_LOCAL_1_LAST_0_SERVER_0,//only exist in local
+	MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1,//exist in server&local
+	MERGE_STATUS_LOCAL_1_LAST_1_SERVER_0,//exist in local&lastupdate
+	MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1////exist in local,lastupdate&server
+};
 
 class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
@@ -92,7 +103,6 @@ public:
 	~mergeThread();
 public:
 	void run();
-	int bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type);
 	int isBmEntryEqual(const bookmark_catagory& b,const bookmark_catagory& bm);
 	//int findItemFromBMList(QString path,bookmark_catagory bm,QList<bookmark_catagory> *bmList,bookmark_catagory*  bx,QDateTime LastUpdateTime,int flag);
 	// int findItemFromBMList(QString path, bookmark_catagory bm, QList < bookmark_catagory > *bmList, int *bx, QDateTime LastUpdateTime, int flag);
@@ -101,11 +111,11 @@ public:
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
 	void handleBmData();
 	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
-	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, QString localDirName,QString& iePath,int browserType);
-	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& path,int browserType);
+	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId/*,QString localDirName*/,QString iePath,int browserType);
+	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList,uint parentId,/* QString localDirName,*/QString path,int browserType);
 
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
-	void handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &path,int browserType,int local_parentId,int localOrServer);
+	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int ret, uint parentId,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
 
@@ -154,6 +164,7 @@ public:
 public:
 	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
+	static void dumpBcList(QList<bookmark_catagory>* s);
 	//static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);	
 	//	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };

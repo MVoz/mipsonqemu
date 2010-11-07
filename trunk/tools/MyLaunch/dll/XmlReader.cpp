@@ -705,7 +705,7 @@ void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextSt
 	}
 	if(start) 
 		(*os)<<"<browserType name=\""<<tz::getBrowserName(browserType).toLower()<<"\">\n";
-	qDebug("firefox_bc's size is %d",list->size());
+	//qDebug("firefox_bc's size is %d",list->size());
 	foreach(bookmark_catagory bm, *list)
 	{
 		switch(bm.flag)

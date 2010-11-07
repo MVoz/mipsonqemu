@@ -118,6 +118,16 @@ void mergeThread::clearObject()
 	
 	}
 }
+void mergeThread::dumpBcList(QList<bookmark_catagory>* s)
+{
+	foreach(bookmark_catagory item, *s)
+	{
+			qDebug()<<"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId;
+			if(item.list.count()){
+				dumpBcList(&item.list);
+			}
+	}
+}
 void mergeThread::handleBmData()
 {
 	THREAD_MONITOR_POINT;
@@ -198,6 +208,9 @@ void mergeThread::handleBmData()
 					f.open(QIODevice::ReadOnly);
 					fromServer[i] = new XmlReader(&f,settings);
 					fromServer[i]->readStream(BROWSE_TYPE_IE);
+					
+				  //      dumpBcList(&fromServer[i]->bm_list);	
+
 					setUpdatetime(fromServer[i]->updateTime);
 					f.close();
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_FROMSERVER);
@@ -246,9 +259,9 @@ ffout:
 				if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
 				{
 					if(modifiedInServer)
-						bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &(fromServer[browserid]->bm_list), &result_bc[browserid], "",iePath,browserid);
+						bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &(fromServer[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);
 					else
-						bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid], "",iePath,browserid);	
+						bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
 				}					
 			}
 			i++;
@@ -671,23 +684,29 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 
 	}
 }
-
-int mergeThread::bookmarkMerge(QString path, QList < bookmark_catagory > *retlist, QList < bookmark_catagory > *localBmList, QList < bookmark_catagory > *serverBmList, QString localDirName, QDateTime lastUpdateTime, int flag, int type)
-{
-	return 0;
-}
 /*
 server  lastupdate local
 
 */
-void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uint parentId, QList < bookmark_catagory > *list,QString &path,int browserType,int local_parentId,int localOrServer)
+
+
+void mergeThread::handleItem(
+	bookmark_catagory * item,
+	QList < bookmark_catagory > *list,
+	QString &path,
+	int status,
+	uint parentId,	
+	int browserType,
+	int local_parentId,
+	int localOrServer
+)
 {
 	modifiedFlag=1;
-	switch (ret)
+	switch (status)
 	{
-	case 0:		//never exist 
+	case MERGE_STATUS_NONE:		//never exist 
 		break;
-	case 1:		//only exist in server,need download to local
+	case MERGE_STATUS_LOCAL_0_LAST_0_SERVER_1:		//only exist in server,need download to local
 		if(browserType==BROWSE_TYPE_FIREFOX)
 		{
 			item->id.append("rdf:#$");
@@ -695,31 +714,30 @@ void mergeThread::handleItem(bookmark_catagory * item, int ret, QString dir, uin
 			productFFId(item->id,6);
 		}	  	 
 		qDebug()<<"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId;
-		//downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? path : path + "/" + dir,browserType,local_parentId);
-		downloadToLocal(item, ACTION_ITEM_ADD, (dir == "") ? path : dir,browserType,local_parentId);
+		downloadToLocal(item, ACTION_ITEM_ADD, path ,browserType,local_parentId);
 		list->push_back(*item);
 		break;
-	case 2:		//only exist in lastupdate,do nothing
+	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_0:		//only exist in lastupdate,do nothing
 		break;
-	case 3:		//exist in server&lastupdate,need to delete from server
+	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_1:		//exist in server&lastupdate,need to delete from server
 		qDebug()<<"Post to Server[delete]:name:"<<item->name;
 		postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
 		break;
-	case 4:		//only exist in local,need post to server
-		qDebug()<<"Post to Server[add]:name="<<item->name<<" hr:"<<item->hr;		  
+	case MERGE_STATUS_LOCAL_1_LAST_0_SERVER_0:		//only exist in local,need post to server
+		qDebug()<<"Post to Server[add]:name="<<item->name<<" parentid:"<<parentId<<" hr:"<<item->hr;		  
 		postItemToHttpServer(item, ACTION_ITEM_ADD, parentId,browserType);
 		list->push_back(*item);
 		break;
-	case 5:		//exist in server&local,shouldn't  appear
+	case MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1:		//exist in server&local,shouldn't  appear
 		//just keep the local
 		//	  if(localOrServer==HANDLE_ITEM_LOCAL)
 		//  		list->push_back(*item);
 		break;
-	case 6:		//exist in local&lastupdate,need delete from local
-		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<QString( (dir == "") ? path : dir);
-		downloadToLocal(item, ACTION_ITEM_DELETE, (dir == "") ? path : dir,browserType,local_parentId);
+	case MERGE_STATUS_LOCAL_1_LAST_1_SERVER_0:		//exist in local&lastupdate,need delete from local
+		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<path ;
+		downloadToLocal(item, ACTION_ITEM_DELETE,path,browserType,local_parentId);
 		break;
-	case 7:		//exist in local,lastupdate&server,do nothing
+	case MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1:		//exist in local,lastupdate&server,do nothing
 		break;
 	default:
 		break;
@@ -763,16 +781,20 @@ int mergeThread::bmItemInList(bookmark_catagory * item, QList < bookmark_catagor
 	}
 	return -1;
 }
-
-int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, QString localDirName,QString& path,int browserType)
+/*
+	server item's parentid
+*/
+int mergeThread::bmMerge(
+	QList < bookmark_catagory > *localList, 
+	QList < bookmark_catagory > *lastupdateList,
+	QList < bookmark_catagory > *serverList,
+	QList < bookmark_catagory > *resultList,
+	uint parentId,
+	QString path,
+	int browserType
+)
 {
-	int ret = 0;
-	uint parentId = 0;
-	foreach(bookmark_catagory item, *serverList)
-	{
-		parentId = item.parentId;
-		break;
-	}
+	int status = 0;
 	uint local_parentId=0;
 	foreach(bookmark_catagory item, *localList)
 	{
@@ -784,58 +806,59 @@ int mergeThread::bmMerge(QList < bookmark_catagory > *localList, QList < bookmar
 		if(terminatedFlag)
 			break;
 		bookmark_catagory item = (*localList)[i];
-		int inLast = bmItemInList(&item, lastupdateList);
-		int inServer = bmItemInList(&item, serverList);
-		ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
+		int inLastupdatePosition = bmItemInList(&item, lastupdateList);
+		int inServerPosition = bmItemInList(&item, serverList);
+		//status = (1 << LOCAL_EXIST_OFFSET) + (((inLastupdatePosition >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServerPosition >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
+		status = BM_ITEM_MERGE_STATUS(1,inLastupdatePosition,inServerPosition);
 		//qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
-		if (ret != 7&&ret!=5)
+		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1&&status!=MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1)
 		{
-			/*
-			if(ret==5)//just exist in local&server,not in lastupdate
-			{
-			//handle the localbm.dat lost
-			item.bmid=(*serverList)[inServer].bmid;
-			item.groupId=(*serverList)[inServer].groupId;
-			item.parentId=(*serverList)[inServer].parentId;
-			QDEBUG("ret=5 name=%s bmid=%u groupid=%u",qPrintable(item.name),item.bmid,item.groupId);
-			}
-			*/
-			handleItem(&item, ret, localDirName, parentId, resultList,path,browserType,local_parentId,HANDLE_ITEM_LOCAL);
+			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
 		}
 		else		//exist in local,lastupdate&server,merge child
 		{
 			bookmark_catagory tmp;
-			copyBmCatagory(&tmp, &((*serverList)[inServer]));
+			copyBmCatagory(&tmp, &((*serverList)[inServerPosition]));
 			//qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
 			resultList->push_back(tmp);
 			//when re=5,inLast=-1,use lastupdateList
-			bmMerge(&(item.list), (inLast>=0)?(&((*lastupdateList)[inLast].list)):(lastupdateList), &((*serverList)[inServer].list), &(resultList->last().list), (localDirName == "") ? path : path + "/" + localDirName,path,browserType);
+			bmMerge(
+				&(item.list), 
+				(inLastupdatePosition>=0)?(&((*lastupdateList)[inLastupdatePosition].list)):(lastupdateList), 
+				&((*serverList)[inServerPosition].list), 
+				&(resultList->last().list),
+				(*serverList)[inServerPosition].groupId,
+				path+ "/"+item.name ,
+				browserType
+			);
 		}
 	}
 	foreach(bookmark_catagory item, *serverList)
 	{
 		if(terminatedFlag)
 			break;
-		int inLocal = bmItemInList(&item, localList);		
-		if(inLocal>=0){
+		int inLocalPosition = bmItemInList(&item, localList);		
+		if(inLocalPosition>=0){
 			continue;
 		}
-		int inLast = bmItemInList(&item, lastupdateList);
-		ret = (((inLocal >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
-		if (ret != 7)
-			handleItem(&item, ret, localDirName, parentId, resultList,path,browserType,local_parentId,HANDLE_ITEM_SERVER);
+		int inLastupdatePosition = bmItemInList(&item, lastupdateList);
+		//status = (((inLocalPosition >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLastupdatePosition >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
+		status = BM_ITEM_MERGE_STATUS(inLocalPosition,inLastupdatePosition,1);
+		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1)
+			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
 	}
 	return 1;
 }
-int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList, QString localDirName,QString& path,int browserType)
+int mergeThread::bmMergeWithoutModifyInServer(
+	QList < bookmark_catagory > *localList,
+	QList < bookmark_catagory > *lastupdateList,
+	QList < bookmark_catagory > *resultList,
+	uint parentId,
+	QString path,
+	int browserType
+)
 {
-	int ret = 0;
-	uint parentId = 0;
-	foreach(bookmark_catagory item, *lastupdateList)
-	{
-		parentId = item.parentId;
-		break;
-	}
+	int status = 0;
 	uint local_parentId=0;
 	foreach(bookmark_catagory item, *localList)
 	{
@@ -849,10 +872,10 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		bookmark_catagory item = (*localList)[i];
 		int inLast = bmItemInList(&item, lastupdateList);
 		int inServer = inLast;
-		ret = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		qDebug()<<__FUNCTION__<<" ret="<<ret<<" name:"<<item.name;
-		if (ret != 7&&ret!=5){
-			handleItem(&item, ret, localDirName, parentId, resultList,path,browserType,local_parentId,HANDLE_ITEM_LOCAL);
+		status = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
+		qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
+		if (status != 7&&status!=5){
+			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
 		}
 		else		//exist in local,lastupdate&server,merge child
 		{
@@ -861,7 +884,15 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 			qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
 			resultList->push_back(tmp);
 			// resultList->push_back(lastupdateList->at(inLast));
-			bmMergeWithoutModifyInServer(&(item.list), &((*lastupdateList)[inLast].list), &(resultList->last().list), (localDirName == "") ? path : path + "/" + localDirName,path,browserType);
+			bmMergeWithoutModifyInServer(
+					&(item.list),
+					&((*lastupdateList)[inLast].list),
+					&(resultList->last().list),
+					(*lastupdateList)[inLast].groupId,
+				//	(localDirName == "") ? path : path + "/" + localDirName,
+					path+ "/"+item.name ,
+					browserType
+			);
 		}
 	}
 	foreach(bookmark_catagory item, *lastupdateList)
@@ -873,9 +904,9 @@ int mergeThread::bmMergeWithoutModifyInServer(QList < bookmark_catagory > *local
 		if(inLocal>=0){
 			continue;
 		}
-		ret = (((inLocal >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
-		if (ret != 7)
-			handleItem(&item, ret, localDirName, parentId, resultList,path,browserType,local_parentId,HANDLE_ITEM_SERVER);
+		status = (((inLocal >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
+		if (status != 7)
+			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
 	}
 	return 1;
 }

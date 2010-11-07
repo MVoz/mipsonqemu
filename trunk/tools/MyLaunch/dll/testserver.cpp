@@ -147,7 +147,6 @@ void testServerThread::clearObject()
 void testServerThread::run()
 {
 	THREAD_MONITOR_POINT;
-	//qDebug("%s %d testServerThread run currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
 	//monitorTimer = new QTimer();
 	//connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 	//monitorTimer->start(10);

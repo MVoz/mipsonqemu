@@ -430,7 +430,7 @@ updaterThread::~updaterThread()
 
 void updaterThread::testNetFinished()
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	//qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
@@ -501,7 +501,7 @@ void updaterThread::monitorTimerSlot()
 
 void updaterThread::run()
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	/*
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
@@ -779,7 +779,7 @@ void updaterThread::getIniDone(int err)
 	//HWND	 hWnd	= ::FindWindow(NULL, (LPCWSTR) QString("debug").utf16());
 	//qDebug("hWnd=0x%08x\n",hWnd);
 	//::SendMessage(hWnd, WM_CLOSE, 0, 0);
-	QDEBUG_LINE;
+//	QDEBUG_LINE;
 end:
 	quit();
 
