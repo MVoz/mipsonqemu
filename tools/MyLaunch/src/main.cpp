@@ -2065,8 +2065,7 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
-	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
-	QDEBUG_LINE;
+	qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
@@ -2335,7 +2334,7 @@ DELETE_TIMER(syncDlgTimer);
 */
 void MyWidget::syncer_finished()
 {	
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
@@ -2345,7 +2344,7 @@ void MyWidget::syncer_finished()
 	}
 	gSyncer->wait();								
 	gSyncer.reset();
-	qDebug()<<__FUNCTION__<<"release gSemaphore";
+	//qDebug()<<__FUNCTION__<<"release gSemaphore";
 	gSemaphore.release(1);
 	syncAction->setDisabled(FALSE);
 	if(closeflag)
