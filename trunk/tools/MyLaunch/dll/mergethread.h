@@ -111,11 +111,11 @@ public:
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
 	void handleBmData();
 	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
-	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId/*,QString localDirName*/,QString iePath,int browserType);
-	int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList,uint parentId,/* QString localDirName,*/QString path,int browserType);
+	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType);
+	//int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList,uint parentId,/* QString localDirName,*/QString path,int browserType);
 
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
-	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int ret, uint parentId,int browserType,int local_parentId,int localOrServer);
+	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
 
