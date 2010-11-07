@@ -175,7 +175,6 @@ void mergeThread::handleBmData()
 		browserenable[i] =browserInfo[i].enable;
 		i++;
 	}
-
 	{
 
 		i = 0;
@@ -214,7 +213,8 @@ void mergeThread::handleBmData()
 					setUpdatetime(fromServer[i]->updateTime);
 					f.close();
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_FROMSERVER);
-				}
+				}else if(modifiedInServer==0)
+					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_FROMSERVER);
 				//current from kinds of browser type
 				switch( browserid )
 				{
@@ -824,6 +824,7 @@ int mergeThread::bmMerge(
 		else
 			inServerPosition=inLastupdatePosition;
 		status = BM_ITEM_MERGE_STATUS(1,inLastupdatePosition,inServerPosition);
+		//qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1&&status!=MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1)
 		{
 			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
@@ -930,7 +931,6 @@ int mergeThread::bmMergeWithoutModifyInServer(
 */
 void mergeThread::run()
 {
-	//QDEBUG_LINE;
 	THREAD_MONITOR_POINT;
 	handleBmData();
 	exit();
