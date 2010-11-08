@@ -106,136 +106,74 @@ tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-a
 <div id="wrap">
 	<div id="header"></div>
 	<div class="main">
-	<div id="lm">
-	</div>
-	<div id="rm">
-		<div id="taitou">文件夹</div>
-	<div id="area">
-	<div class="tScroll">
-		<div id="list_table">
-		</div>
-<!--	
-		<table width="580" align="center" cellspacing="1" >
-		<tr bgcolor="#ffffff" align="center">
-			<td width="10%">选择</td>
-			<td width="50%">路径</td>
-			<td width="20%">后缀名</td>
-			<td width="10%">子目录</td>
-			<td width="10%">深度</td>
-		</tr>
-		<tr bgcolor="#ffffff" align="center">
-			<td width="10%"><input type="radio" name="select" value="0" onclick="postItem('C:\\Documents and Settings\\ramen_shen\\开始','×.lnk;*.exe;*.com;*.bat',1,50)"></td>
-			<td width="50%" style="font-size:10;">C:\Documents and Settings\ramen_shen\开始</td>
-			<td width="20%" style="font-size:10;">×.lnk;*.exe;*.com;*.bat</td>
-			<td width="10%">1</td>
-			<td width="10%">50</td>
-		</tr>
-		<tr bgcolor="#ffffff" align="center">
-			<td width="10%"><input type="radio" name="select" value="0"></td>
-			<td width="50%" style="font-size:10;">C:\Documents and Settings\ramen_shen\开始</td>
-			<td width="20%" style="font-size:10;">×.lnk;*.exe;*.com;*.bat</td>
-			<td width="10%">1</td>
-			<td width="10%">50</td>
-		</tr>	
-		<tr bgcolor="#ffffff" align="center">
-			<td width="10%"></td>
-			<td width="50%" style="font-size:10;"></td>
-			<td width="20%" style="font-size:10;"></td>
-			<td width="10%"></td>
-			<td width="10%">&nbsp</td>
-		</tr>
-		<tr bgcolor="#ffffff" align="center">
-			<td width="10%"></td>
-			<td width="50%" style="font-size:10;"></td>
-			<td width="20%" style="font-size:10;"></td>
-			<td width="10%"></td>
-			<td width="10%">&nbsp</td>
-		</tr>
-	</table>
-	-->
-	</div>
-	</div>
+		<div id="lm"></div>
+		<div id="rm">
+			<div class="cfgitem">
+				<p>文件夹</p>
+				<div id="list_table">
+				</div> 
+			</div>
 
-	<div id="taitou">子项</div>
-	<div id="area">
-	<table width="600" border=0>
-		<tr>
-			<td width="10%">路径:</td>
-			<td width="65%" align=left><input name="listPath" type="text" id="listPath" size=40/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/></td>
-			<td width="25%" colspan="2"><input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录</td>
-		</tr>
-		<tr>
-			<td width="10%">后缀名:</td>
-			<td width="65%" align=left><input name="suffix" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/></td>
-			<td width="10%" align="right" cellspacing="0">最大深度:</td>
-			<td width="15%" align=left>
-						<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
-						<tr >
-						<td width="15" ><img src="qrc:image/button01.gif" height="20"/ onclick="rangeButtonClick(0);"></td>
-						<td width="50" style="margin-left:-2px;" ><input name="childDeep" type="text" id="childDeep" size="5" value="100" style="border:0px;height:20px;" onBlur="childDeepCheck();"/></td>
-						<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20" onclick="rangeButtonClick(1);"/></td>
-						</tr>
-						</table>
-			</td>
-		</tr>
-		<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50></td></tr>
-		<!--
-		 <tr>
-			<table width=100% border=0>
-				<tr>
-				<td width="50%"><input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" />&nbsp包含子目录</td>
-				<td width="30%" align="right" cellspacing="0">最大深度:</td>
-				<td width="30%" align=left>
-						<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
-						<tr >
-						<td width="15" ><img src="qrc:image/button01.gif" height="20"/></td>
-						<td width="50" style="margin-left:-2px;" ><input name="childDeep" type="text" id="childDeep" size="5" style="border:0px;height:20px;" /></td>
-						<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20"/></td>
-						</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</tr>
-		-->
-		<tr >
-			<table width=100% border=0>
+		<div class="cfgitem">
+		<p>子项</p>
+		<table width="100%" border=0>
 			<tr>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="listApply(0);"><label style="width:113px;height:25px;">增加</label></a>
-			</div>
-			</td>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="listApply(1);"><label style="width:113px;height:25px;">修改</label></a>
-			</div>
-			</td>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="listApply(2);"><label style="width:113px;height:25px;">删除</label></a>
-			</div>
-			</td>
+				<td width="10%">路径:</td>
+				<td width="65%" align=left><input name="listPath" type="text" id="listPath" size=40/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/></td>
+				<td width="25%" colspan="2"><input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录</td>
 			</tr>
-			</table>
-		</tr>
-	</table>
-	</div><!--//area-->
-		<div id="area">
-			<table width="600" border=0>
+			<tr>
+				<td width="10%">后缀名:</td>
+				<td width="65%" align=left><input name="suffix" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/></td>
+				<td width="10%" align="right" cellspacing="0">最大深度:</td>
+				<td width="15%" align=left>
+							<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
+							<tr >
+							<td width="15" ><img src="qrc:image/button01.gif" height="20"/ onclick="rangeButtonClick(0);"></td>
+							<td width="50" style="margin-left:-2px;" ><input name="childDeep" type="text" id="childDeep" size="5" value="100" style="border:0px;height:20px;" onBlur="childDeepCheck();"/></td>
+							<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20" onclick="rangeButtonClick(1);"/></td>
+							</tr>
+							</table>
+				</td>
+			</tr>
+			<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50></td></tr>
+			<tr >
+				<table width=100% border=0>
 				<tr>
-					<td width="30%"></td>
-					<td width="30%"></td>
-					<td width="30%" align=right>
-						<div class="btn">
-						<a href="#" style="width:113px;" onclick="rebuildcatalog();"><label style="width:113px;height:25px;">重建列表</label></a>
-						</div>
-					</td>
+				<td width="30%" align=right>
+					<div class="btn">
+						<a href="#" onclick="listApply(0);"><label>增加</label></a>
+					</div>
+				</td>
+				<td width="30%" align=right>
+					<div class="btn">
+						<a href="#" onclick="listApply(1);"><label>修改</label></a>
+					</div>
+				</td>
+				<td width="30%" align=right>
+					<div class="btn">
+						<a href="#" onclick="listApply(2);"><label>删除</label></a>
+					</div>
+				</td>
 				</tr>
-			</table>
+				</table>
+			</tr>
+		</table>
+		</div><!--//area-->
+			<div id="area">
+				<table width="600" border=0>
+					<tr>
+						<td width="30%"></td>
+						<td width="30%"></td>
+						<td width="30%" align=right>
+							<div class="btn">
+							<a href="#" onclick="rebuildcatalog();"><label>重建列表</label></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-	</div>
-
 	</div>
 </div>
 <div id="applybtn"></div>

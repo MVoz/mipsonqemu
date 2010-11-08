@@ -39,6 +39,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	updaterthread=NULL;
 	testProxyTimer =NULL;
 	webView = new QWebView(this);
+
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setMinimumSize(QSize(805, 500));
 	webView->setMaximumSize(QSize(805, 16777215));
@@ -280,12 +281,12 @@ void OptionsDlg::loading(const QString & name)
 	QString buttonstring;
 
 	buttonstring.append("<table width=\"100%\"><tr>");
-	buttonstring.append("<td width=\"50%\">&nbsp;</td>");
-	buttonstring.append("<td width=\"25%\">");
+	buttonstring.append("<td width=\"30%\" align=right>&nbsp;</td>");
+	buttonstring.append("<td width=\"30%\" align=right>");
 	buttonstring.append("<div class=\"btn\">");
 	buttonstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
 	buttonstring.append("</div></td>");				
-	buttonstring.append("<td width=\"25%\">");	
+	buttonstring.append("<td width=\"30%\" align=right>");	
 	buttonstring.append("<div class=\"btn\">");	
 	buttonstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");	
 	buttonstring.append("</div></td></tr></table>");
@@ -300,6 +301,11 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckShowMainwindow","",false);
 		JS_APPEND_CHECKED("ckAutoUpdate","",false);
 		JS_APPEND_CHECKED("ckScanDir","",false);
+		JS_APPEND_VALUE("Username","Account","");
+		JS_APPEND_PASSWD("Userpasswd","Account","");
+		//lastsynctime
+		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt()); 
+		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString()));
 		//  jsStr.append(QString("$('ckStartWithSystem').checked =%1;").arg(settings->value("generalOpt/ckStartWithSystem", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckShowTray').checked =%1;").arg(settings->value("generalOpt/ckShowTray", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckShowMainwindow').checked =%1;").arg(settings->value("generalOpt/ckShowMainwindow", false).toBool()? "true" : "false"));
@@ -319,18 +325,12 @@ void OptionsDlg::loading(const QString & name)
 	} else if (name == "net_mg")
 	{
 
-		//jsStr.append("$('Username').value ='"+settings->value("Account/Username", "").toString()+"';"); 	
-		JS_APPEND_VALUE("Username","Account","");
-		//jsStr.append("$('Userpasswd').value ='"+tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
-		JS_APPEND_PASSWD("Userpasswd","Account","");
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
 		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
-		//lastsynctime
-		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt()); 
-		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString()));
+
 		
 		//  jsStr.append("$('proxyPassword').value ='"+tz::decrypt(settings->value("Account/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
 		// jsStr.append(QString("$('Userpasswd').value ='%1';").arg(tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)));
@@ -344,7 +344,7 @@ void OptionsDlg::loading(const QString & name)
 
 	} else if (name == "cmd_mg")
 	{
-		jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
+		jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"8%\">"+tz::tr("html_select")+"</td>\
 							 <td width=\"8%\">"+tz::tr("html_name")+"</td>\

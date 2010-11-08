@@ -54,101 +54,59 @@ tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-a
 </head>
 <body>
 <div id="wrap">
-	<div id="header"></div>
+ <div id="header"></div>
 	<div class="main">
-	<div id="lm">
-	</div>
-	<div id="rm">
-		<div id="taitou">文件夹</div>
-	<div id="area">
-	<div class="tScroll">
-	<!--
-		<table width="580" align="center" cellspacing="1" >
-		<tr bgcolor="#ffffff" align="center">
-			<td width="8%">选择</td>
-			<td width="8%">名字</td>
-			<td width="64%">命令</td>			
-			<td width="20%">参数</td>
-		</tr>
-	-->
-		<div id="cmd_table">
-		</div>
-	<!--
-		<tr bgcolor="#ffffff" align="center">
-			<td width="8%"><input type="radio" name="select" value="0" onclick='postItem("vi","C:\\Documents and Settings\\ramen_shen\\开始\\vim.link","-s");'></td>
-			<td width="8%">vi</td>
-			<td width="64%" style="font-size:10;">C:\Documents and Settings\ramen_shen\开始</td>
-			<td width="20%" style="font-size:10;">-s</td>				
-		</tr>
-	
-		<tr bgcolor="#ffffff" align="center">
-			<td width="8%"><input type="radio" name="select" value="0" onclick=""></td>
-			<td width="8%">50</td>
-			<td width="64%" style="font-size:10;">C:\Documents and Settings\ramen_shen\开始</td>
-			<td width="20%" style="font-size:10;">×.lnk</td>				
-		</tr>
-		<tr bgcolor="#ffffff" align="center">
-			<td width="8%">&nbsp</td>
-			<td width="8%">&nbsp</td>
-			<td width="64%" style="font-size:10;">&nbsp</td>
-			<td width="20%" style="font-size:10;">&nbsp</td>				
-		</tr>
-		<tr bgcolor="#ffffff" align="center">
-			<td width="8%">&nbsp</td>
-			<td width="8%">&nbsp</td>
-			<td width="64%" style="font-size:10;">&nbsp</td>
-			<td width="20%" style="font-size:10;">&nbsp</td>				
-		</tr>
-	</table>
-	-->
-	</div>
-	</div>
+		<div id="lm"></div>
+		<div id="rm">
+			<div class="cfgitem" style="height:140px;">
+				<p>文件夹</p>
+				<div id="cmd_table"></div>
+			</div>
 
-	<div id="taitou">子项</div>
-	<div id="area">
-	<table width="600" >
-		<tr>
-			<td width="15%">名字:</td>
-			<td width="85%" align=left><input name="cmdName" type="text" id="cmdName" size=20/></td>
-		</tr>
-		<tr>
-			<td width="15%">命令:</td>
-			<td width="85%" align=left><input name="cmdCommand" type="text" id="cmdCommand" size=50/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);"/></td>
-		</tr>
-		<tr>
-			<td width="15%">参数:</td>
-			<td width="85%" align=left><input name="cmdParameter" type="text" id="cmdParameter" size=50/></td>
-		</tr>
-		<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50></td></tr>
-		<tr >
-			<table width=100% border=0>
-			<tr>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="cmdApply(0);"><label style="width:113px;height:25px;">增加</label></a>
+			<div class="cfgitem">
+				<p>子项</p>
+				<table width="100%">
+						<tr>
+							<td width="15%">名字:</td>
+							<td width="85%" align=left><input name="cmdName" type="text" id="cmdName" size=20/></td>
+						</tr>
+						<tr>
+							<td width="15%">命令:</td>
+							<td width="85%" align=left><input name="cmdCommand" type="text" id="cmdCommand" size=50/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);"/></td>
+						</tr>
+						<tr>
+							<td width="15%">参数:</td>
+							<td width="85%" align=left><input name="cmdParameter" type="text" id="cmdParameter" size=50/></td>
+						</tr>
+						<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50></td></tr>
+						<tr >
+							<table width=100% border=0>
+								<tr>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(0);"><label>增加</label></a>
+										</div>
+									</td>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(1);"><label>修改</label></a>
+										</div>
+									</td>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(2);"><label>删除</label></a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</tr>
+				</table>
 			</div>
-			</td>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="cmdApply(1);"><label style="width:113px;height:25px;">修改</label></a>
-			</div>
-			</td>
-			<td width="30%" align=right>
-			<div class="btn">
-			<a href="#" style="width:113px;" onclick="cmdApply(2);"><label style="width:113px;height:25px;">删除</label></a>
-			</div>
-			</td>
-			</tr>
-			</table>
-		</tr>
-	</table>
-	</div>
-	</div>
+		</div>
 	</div>
 </div>
-<div id="applybtn">
-			
-	</div>
+<div id="applybtn">			
+</div>
 </body>
 <script>
 	OptionsDlg.loading('cmd_mg');
