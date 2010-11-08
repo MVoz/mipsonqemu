@@ -328,6 +328,10 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
 		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
+		//lastsynctime
+		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt()); 
+		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString()));
+		
 		//  jsStr.append("$('proxyPassword').value ='"+tz::decrypt(settings->value("Account/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
 		// jsStr.append(QString("$('Userpasswd').value ='%1';").arg(tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)));
 

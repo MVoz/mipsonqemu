@@ -2172,7 +2172,8 @@ void MyWidget::_startSync(int mode,int silence)
 		gSyncer->setUsername(name);
 		gSyncer->setPassword(password);
 		if (
-			getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
+			silence == SYN_MODE_NOSILENCE
+			&&getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
 			&&QFile::exists(localBmFullPath)
 		)
 		{
@@ -2365,6 +2366,9 @@ void MyWidget::syncer_finished()
 			}
 			
 	}
+	QDEBUG_LINE;
+	gSettings->setValue("lastsynctime", NOW_SECONDS);	
+	gSettings->sync();
 }
 
 
