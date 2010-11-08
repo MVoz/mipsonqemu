@@ -13,8 +13,6 @@
      <file>image/top.jpg</file>
      <file>image/tt_bg.gif</file>
      <file>image/loading.gif</file>
-     <file>image/button_gray_80.gif</file>
-     <file>image/button_green_80.gif</file>
      <file>jm.css</file>
  </qresource>
  </RCC>
