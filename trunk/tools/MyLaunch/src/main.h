@@ -268,11 +268,9 @@ public:
 #ifdef CONFIG_LOG_ENABLE
 	void dumpBuffer(char* addr,int length);
 #endif
-#ifdef CONFIG_SYSTEM_TRAY
 	void createTrayIcon();
 	void createActions();
 	void freeOccupyMemeory();
-#endif
 	//void createSynDlgTimer();
 	//	void deleteSynDlgTimer();
 	void getFavico(const QString& host,const QString& filename);
@@ -281,7 +279,6 @@ private:
 	QHttp *http;
 	QBuffer *verBuffer;
 	QBuffer *counterBuffer;
-#ifdef CONFIG_SYSTEM_TRAY
 	//    QAction *minimizeAction;
 	QAction *rebuildCatalogAction;
 	QAction *optionsAction;
@@ -296,10 +293,7 @@ private:
 	updaterThread *slientUpdate;
 	volatile int closeflag;
 	QTimer* monitorTimer;
-#endif
-#ifdef CONFIG_ONE_OPTION
 	OptionsDlg *ops;
-#endif
 	public slots:
 		void monitorTimerTimeout();
 		//void syncDlgTimeout();
@@ -331,7 +325,6 @@ private:
 		void buildCatalog();
 		void _buildCatalog(catbuildmode);
 		void updateSuccess();
-#ifdef CONFIG_SYSTEM_TRAY
 		void startSync();
 		void _startSync(int mode,int silence);
 		void updateApp();
@@ -350,12 +343,9 @@ private:
 		void restoreUserCommand();
 
 		//	void restoreMainwin();
-#endif
 		private slots:
-#ifdef CONFIG_SYSTEM_TRAY
 			void setIcon();
 			void iconActivated(QSystemTrayIcon::ActivationReason reason);
-#endif
 signals:
 			//void reSync();
 			//	void stopSyncNotify();
