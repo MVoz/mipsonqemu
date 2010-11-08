@@ -2171,14 +2171,13 @@ void MyWidget::_startSync(int mode,int silence)
 	case SYNC_MODE_REBOOKMARK:
 		gSyncer->setUsername(name);
 		gSyncer->setPassword(password);
-		if (
-			silence == SYN_MODE_NOSILENCE
-			&&getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
+		if (			
+			getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
 			&&QFile::exists(localBmFullPath)
 		)
 		{
 			QString filemd5 = tz::fileMd5(localBmFullPath);
-			if(qhashEx(filemd5,filemd5.length())==gSettings->value("localbmkey",0).toUInt())
+			if((silence != SYN_MODE_NOSILENCE)&&(qhashEx(filemd5,filemd5.length())==gSettings->value("localbmkey",0).toUInt()))
 				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());	
 			else
 				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
