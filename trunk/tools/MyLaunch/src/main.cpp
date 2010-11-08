@@ -46,6 +46,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //#include "dsingleapplication.h"
 #include "plugin_interface.h"
 extern shared_ptr < BookmarkSync> gSyncer;
+struct {
+	QString name;
+	QString fullpath;
+	QString args;
+}netfinders[]={
+	{QString("google"),"http://www.google.com/","search?q="},
+	{QString("baidu"),"http://www.baidu.com/","s?ie=utf-8&wd="},	
+	{0,"",""}
+};
 
 void MyWidget::configModify(int type){
 	switch(type){
@@ -941,22 +950,16 @@ void MyWidget::doEnter()
 		//google or baidu
 		if(gSearchTxt!="")
 		{
-			struct {
-				QString md5name;
-				QString fullpath;
-				QString args;
-			}netfinders[]={
-				{qhashEx(QString("google"),QString("google").count()),"http://www.google.com/","search?q="},
-				{qhashEx(QString("baidu"),QString("baidu").count()),"http://www.baidu.com/","s?ie=utf-8&wd="},	
-				{0,"",""}
-			};
 			//uint   netfinder = gSettings->value("netfinder",qhashEx(QString("google"),QString("google").count())).toUInt();
 			int i = 0;
-			while(netfinders[i].md5name!=0){	
-				QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));
-				if (!platform->Execute(netfinders[i].fullpath,args))
+			while(netfinders[i].name!=0){				
+				if(gSettings->value(QString("netfinder/").append(netfinders[i].name),TRUE).toBool())
 				{
-					runProgram(QString(netfinders[i].fullpath).append(args), "");
+					QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));
+					if (!platform->Execute(netfinders[i].fullpath,args))
+					{
+						runProgram(QString(netfinders[i].fullpath).append(args), "");
+					}
 				}
 				i++;
 			}
@@ -2997,7 +3000,8 @@ int main(int argc, char *argv[])
 		MyWidget widget(NULL, platform, rescue);
 		//widget.setObjectName("main");
 		widget.freeOccupyMemeory();
-
+		//QFont font("SIMSUN", 12, QFont::Bold);
+		//app->setFont(font);
 		app->exec();
 		//app.reset();
 }

@@ -11,15 +11,9 @@ function getHtml(path)
 {
 	OptionsDlg.getHtml(path);
 }
-function syncClick()
-{
-	OptionsDlg.startSync();
-}
+
 function apply(key)
 {
-
-	OptionsDlg.apply('Account/Username',$('Username').value);
-	OptionsDlg.apply('Account/Userpasswd',$('Userpasswd').value);
 	OptionsDlg.apply('HttpProxy/proxyEnable',$('proxyEnable').checked);
 	OptionsDlg.apply('HttpProxy/proxyAddress',$('proxyAddress').value);
 	OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
@@ -48,32 +42,7 @@ function proxyEnableClick()
 						$('proxyPassword').disabled=true;
 			 }
 }
-function checkUsername()
-{
- 
-  var   supported   =   0;     
-  if   (window.RegExp)   {     
-  var   tempStr   =   "a";     
-  var   tempReg   =   new   RegExp(tempStr);     
-  if   (tempReg.test(tempStr))   supported   =   1;     
-  }     
-  if   (!supported)     
-  return   (str.indexOf(".")   >   2)   &&   (str.indexOf("@")   >   0);     
-//  var   r1   =   new   RegExp("(@.*@)|(\\.\\.)|(@\\.)|(^\\.)");     
-//  var   r2   =   new   RegExp("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$");     
- // return   (!r1.test(str)   &&   r2.test(str)); 
-	str=$('Username').value;
-	var r=new RegExp("^[a-zA-Z0-9]{1}[\.a-zA-Z0-9_-]*[a-zA-Z0-9]{1}@[a-zA-Z0-9]+[-]{0,1}[a-zA-Z0-9]+[\.]{1}[a-zA-Z]+[\.]{0,1}[a-zA-Z]+$");
-	if(!r.test(str))
-	{
-		alert('错误的用户名！请输入一个合法的用户名');
-		$('Username').value='';
-	}
-}
-function accountTestClick()
-{
-	OptionsDlg.accountTestClick($('Username').value,$('Userpasswd').value);
-}
+
 function testProxyClick()
 {
 		with(document){
@@ -96,81 +65,46 @@ function tr(a)
 <div id="wrap">
 	<div id="header"></div>
 	<div class="main">
-	<div id="lm">
-	</div>
-	<div id="rm">
-				<div id="taitou">当前状态</div>
-				<div id="area">
-					<table width="600">
+		<div id="lm"></div>
+		<div id="rm"> 				
+				<div class="cfgitem">
+					<p>HTTP代理</p>
+					<table width="100%" >
 						<tr>
-							<td width="15%">状态:</td>
-							<td width="20%" align=left id="lastsyncstatus"><img src="qrc:image/loading.gif"></td>
-							<td width="25%">上次同步时间:</td>
-							<td width="50%" id="lastsynctime"></td>
-						</tr>					
+							<td width="100%" colspan="4"><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();" />&nbsp启用HTTP代理</td>	
+						</tr>
+						<tr>
+							<td width="10%">地址:</td>
+							<td width="40%" align=left><input name="proxyAddress" type="text" id="proxyAddress" size=20/></td>
+							<td width="10%" >端口:</td>
+							<td width="40%" align=right>
+								<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
+								<tr >
+								<td width="15" ><img src="qrc:image/button01.gif" height="20"/></td>
+								<td width="50" style="margin-left:-2px;" ><input name="proxyPort" type="text" id="proxyPort" size="5" style="border:0px;height:20px;" /></td>
+								<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20"/></td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td width="10%">用户:</td>
+							<td width="60%" align=left><input name="proxyUsername" type="text" id="proxyUsername" size=20/></td>
+							<td width="30%" align=right colspan=2>
+							
+							</td>
+						</tr>
+						<tr >
+							<td width="10%">密码:</td>
+							<td width="60%" align=left><input name="proxyPassword" type="password" id="proxyPassword" size=20/></td>
+							<td width="30%" align=right colspan=2>
+							<div class="btn">
+							<a href="#" style="width:113px;" onclick="testProxyClick();"><label style="width:113px;height:25px;">测试</label></a>
+							</div>
+							</td>
+						</tr>
 					</table>
 				</div>
-		<div id="taitou">帐号</div>
-			<div id="area">
-			<table width="600" >
-				<tr>
-					<td width="10%">用户:</td>
-					<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();"/></td>
-					<td width="30%" align=right>
-					<div class="btn">
-					<a href="#" style="width:113px;" onclick="accountTestClick();"><label style="width:113px;height:25px;">测试</label></a>
-					</div>
-					</td>
-				</tr>
-				<tr >
-					<td width="10%">密码:</td>
-					<td width="50%" align=left><input name="Userpasswd" type="password" id="Userpasswd" size=20/></td>
-					<td width="30%" align=right>
-					<div class="btn">
-					<a href="#" style="width:113px;" onclick="syncClick();"><label style="width:113px;height:25px;">同步</label></a>
-					</div>
-					</td>
-				</tr>
-			</table>
-			</div>
-			<div id="taitou">HTTP代理</div>
-			<div id="area">
-			<table width="600" >
-				<tr>
-					<td width="100%" colspan="4"><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();" />&nbsp启用HTTP代理</td>	
-				</tr>
-				<tr>
-					<td width="10%">地址:</td>
-					<td width="40%" align=left><input name="proxyAddress" type="text" id="proxyAddress" size=20/></td>
-					<td width="10%" >端口:</td>
-					<td width="40%" align=right>
-						<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
-						<tr >
-						<td width="15" ><img src="qrc:image/button01.gif" height="20"/></td>
-						<td width="50" style="margin-left:-2px;" ><input name="proxyPort" type="text" id="proxyPort" size="5" style="border:0px;height:20px;" /></td>
-						<td width="15" style="margin-left:-2px;"><img src="qrc:image/button02.gif" height="20"/></td>
-						</tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td width="10%">用户:</td>
-					<td width="60%" align=left><input name="proxyUsername" type="text" id="proxyUsername" size=20/></td>
-					<td width="30%" align=right colspan=2>
-					
-					</td>
-				</tr>
-				<tr >
-					<td width="10%">密码:</td>
-					<td width="60%" align=left><input name="proxyPassword" type="password" id="proxyPassword" size=20/></td>
-					<td width="30%" align=right colspan=2>
-					<div class="btn">
-					<a href="#" style="width:113px;" onclick="testProxyClick();"><label style="width:113px;height:25px;">测试</label></a>
-					</div>
-					</td>
-				</tr>
-			</table>
-			</div>
 		</div>
 	</div>
 </div>
