@@ -231,8 +231,8 @@ void BookmarkSync::monitorTimerSlot()
 	 	}
 	 if(THREAD_IS_FINISHED(mgthread))
 	 	{
-	 		DELETE_OBJECT(mgthread);
 	 		mergeDone();
+			DELETE_OBJECT(mgthread);
 	 	}
 
 	if(!needwatchchild&&terminateFlag)
@@ -345,7 +345,6 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 			//qDebug("start merge thread...........");
 			return;
 		}
-
 	}
 	
 	if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
@@ -362,7 +361,14 @@ void BookmarkSync::bookmarkGetFinished(bool error)
 void BookmarkSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
+	/*
 	if(!error&&!terminateFlag){
+		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
+	}
+	*/
+	if(mgthread&&mgthread->terminatedFlag==0){
+		settings->setValue("lastsyncstatus",1);
+		settings->sync();
 		emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 	}
 	DELETE_OBJECT(mgthread);

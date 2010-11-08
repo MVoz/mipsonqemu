@@ -219,6 +219,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 {
+	qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
@@ -251,10 +252,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	setFocusPolicy(Qt::ClickFocus);
 
 	alwaysShowLaunchy = false;
-#ifdef CONFIG_SYSTEM_TRAY
 	createActions();
 	createTrayIcon();
-#endif
 
 	//      hideLaunchy();
 	label = new QLabel(this);
@@ -281,18 +280,13 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	connect(input, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(inputKeyPressEvent(QKeyEvent *)));
 	connect(input, SIGNAL(focusOut(QFocusEvent *)), this, SLOT(focusOutEvent(QFocusEvent *)));
 	connect(input, SIGNAL(inputMethod(QInputMethodEvent *)), this, SLOT(inputMethodEvent(QInputMethodEvent *)));
-#ifdef CONFIG_SYSTEM_TRAY
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-#endif
-
 
 	licon = new QLabel(label);
 
 	dirs = platform->GetDirectories();
 
-#ifdef CONFIG_ONE_OPTION
 	ops = NULL;
-#endif
 	// Load settings
 	
 	if (QFile::exists(dirs["portConfig"][0]))
@@ -462,15 +456,13 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		showLaunchy();
 	else
 		hideLaunchy();
-#ifdef CONFIG_SYSTEM_TRAY
 	setIcon();
 	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
 	}
 
-#endif
-
+     qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -931,9 +923,45 @@ void MyWidget::doEnter()
 
 	if (dropTimer->isActive())
 		dropTimer->stop();
-
+#if 0
+	if(searchResults.count() == 0&&gSearchTxt!=""){
+		//google or baidu
+		QString args("search?q=%s");
+		args.replace("%s",QUrl::toPercentEncoding(gSearchTxt));
+		qDebug()<<" with argument: "<<args;
+		if (!platform->Execute("http://www.google.com/", args))
+		{
+			runProgram(QString("http://www.google.com/").append(args), "");
+		}
+	}else
+#endif
 	if (searchResults.count() > 0 || inputData.count() > 1)
 		launchObject();
+	else{
+		//google or baidu
+		if(gSearchTxt!="")
+		{
+			struct {
+				QString md5name;
+				QString fullpath;
+				QString args;
+			}netfinders[]={
+				{qhashEx(QString("google"),QString("google").count()),"http://www.google.com/","search?q="},
+				{qhashEx(QString("baidu"),QString("baidu").count()),"http://www.baidu.com/","s?ie=utf-8&wd="},	
+				{0,"",""}
+			};
+			//uint   netfinder = gSettings->value("netfinder",qhashEx(QString("google"),QString("google").count())).toUInt();
+			int i = 0;
+			while(netfinders[i].md5name!=0){	
+				QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));
+				if (!platform->Execute(netfinders[i].fullpath,args))
+				{
+					runProgram(QString(netfinders[i].fullpath).append(args), "");
+				}
+				i++;
+			}
+		}
+	}
 	hideLaunchy();
 	inputMode=0;;
 
@@ -1139,6 +1167,10 @@ void MyWidget::searchOnInput()
 
 	if (searchResults.count() != 0)
 		inputData.last().setTopResult(*(searchResults[0]));
+	else{
+		//google or baidu
+		
+	}
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
@@ -1938,22 +1970,12 @@ void MyWidget::mouseMoveEvent(QMouseEvent * e)
 void MyWidget::contextMenuEvent(QContextMenuEvent * event)
 {
 	QMenu menu(this);
-#ifdef CONFIG_SYSTEM_TRAY
-	//	menu.addAction(minimizeAction);
 	menu.addAction(rebuildCatalogAction);
 	menu.addAction(optionsAction);
 	menu.addAction(restoreAction);
 	menu.addAction(syncAction);
 	menu.addSeparator();
 	menu.addAction(quitAction);
-#else
-	QAction *actMenu = menu.addAction(tr("Rebuild Catalog"));
-	connect(actMenu, SIGNAL(triggered()), this, SLOT(buildCatalog()));
-	QAction *actOptions = menu.addAction(tr("Options"));
-	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
-	QAction *actExit = menu.addAction(tr("Exit"));
-	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
-#endif
 	menuOpen = true;
 	menu.exec(event->globalPos());
 	menuOpen = false;
@@ -1990,13 +2012,10 @@ void MyWidget::buildCatalog()
 	_buildCatalog(CAT_BUILDMODE_ALL);
 }
 
-#ifdef  CONFIG_SYSTEM_TRAY
 void MyWidget::stopSyncSlot()
 {
 	if(gSyncer){
-		qDebug("stop sync.................");
-		qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThreadId());
-		//emit stopSyncNotify();
+		qDebug("stop sync %s currentThread id=0x%08x",__FUNCTION__,QThread::currentThreadId());
 		gSyncer->setTerminateFlag(1);	
 	}
 
@@ -2015,48 +2034,7 @@ void MyWidget::reSync()
 		mode=SYNC_MODE_TESTACCOUNT;			
 		break;
 	}
-	_startSync(mode,SYN_MODE_NOSILENCE);
-	/*
-	if(!(gSettings->value("Account/Username","").toString().isEmpty())&&!(gSettings->value("Account/Userpasswd","").toString().isEmpty()))
-	{
-	QDEBUG("resync.................");
-	gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_SYNC_MODE));
-	//connect(this,SIGNAL(reSync()),syncDlg,SLOT(reSyncSlot()));
-	emit reSync();
-	//connect(syncDlg,SIGNAL(reSync()),this,SLOT(reSyncSlot()));
-	//connect(syncDlg,SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
-	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_finished(bool)));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
-	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-
-	gSyncer->setHost(BM_SERVER_ADDRESS);
-	#ifdef CONFIG_AUTH_ENCRYPTION
-	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
-	uint key=qrand()%(getkeylength());
-	QString authstr=QString("username=%1 password=%2").arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
-	QString auth_encrypt_str="";
-	encryptstring(authstr,key,auth_encrypt_str);
-	#ifdef CONFIG_SYNC_TIMECHECK
-	QString localBmFullPath;
-	QString bmxml_url;
-	if (getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)&&QFile::exists(localBmFullPath))
-	{
-	bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
-	}else{
-	bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-	}
-	#else
-	QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key);
-	#endif
-	#else			
-	QString bmxml_url=QString(BM_SERVER_GET_BMXML_URL).arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
-	#endif			
-	gSyncer->setUrl(bmxml_url);
-	//QDEBUG("bookmark syncer start..........1");
-	gSyncer->start();
-	//QDEBUG("bookmark syncer start..........2");
-	}
-	*/		
+	_startSync(mode,SYN_MODE_NOSILENCE);		
 }
 void MyWidget::startSync()
 {
@@ -2065,7 +2043,7 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
-	qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
+	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
@@ -2133,36 +2111,18 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 
-
-
-	//connect(this,SIGNAL(reSync()),syncDlg.get(),SLOT(reSyncSlot()));
-
-
 	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_syncer_finished(bool)));
-	//connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bookmark_syncer_finished()));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
-
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int)), syncDlg.get(), SLOT(updateStatus(int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 
-	//	connect(this, SIGNAL(syncerTerminateNotify()), gSyncer.get(), SLOT(terminateThread()));
-
-
 	syncAction->setDisabled(TRUE);
-
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 
-#ifdef CONFIG_AUTH_ENCRYPTION
 	qsrand((unsigned) NOW_SECONDS);
 	uint key=qrand()%(getkeylength());
-	//QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
 	QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
-	//encryptstring(authstr,key,auth_encrypt_str);
-
-	//QDEBUG("authstr=%s auth_encrypt_str=%s ",qPrintable(authstr),qPrintable(auth_encrypt_str));
-#ifdef CONFIG_SYNC_TIMECHECK
 	QString localBmFullPath;
 	QString url;
 	switch(mode)
@@ -2191,20 +2151,11 @@ void MyWidget::_startSync(int mode,int silence)
 		gSyncer->setPassword(testAccountPassword);
 		break;
 	}
-
-#else
-	QString url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key);
-#endif
-#else
-
-	QString url=QString(BM_SERVER_GET_BMXML_URL).arg(gSettings->value("Account/Username","").toString()).arg(gSettings->value("Account/Userpasswd","").toString());
-#endif
-
-
 	gSyncer->setUrl(url);
 	gSyncer->start();
-
-
+	gSettings->setValue("lastsyncstatus",0);
+	gSettings->setValue("lastsynctime", NOW_SECONDS);
+	gSettings->sync();
 }
 void MyWidget::bookmark_syncer_finished(bool error)
 {
@@ -2361,13 +2312,9 @@ void MyWidget::syncer_finished()
 		if (time != 0)
 			{
 				syncTimer->start(time * SECONDS);//minutes
-				//qDebug()<<"start sync after "<<time<<" seconds";
 			}
 			
 	}
-	QDEBUG_LINE;
-	gSettings->setValue("lastsynctime", NOW_SECONDS);	
-	gSettings->sync();
 }
 
 
@@ -2392,13 +2339,11 @@ syncDlgTimer->setSingleShot(true);
 }	
 }
 */
-#endif
 void MyWidget::menuOptions()
 {
 	//      dropTimer->stop();
 	//      alternatives->hide();
 
-#ifdef CONFIG_ONE_OPTION
 	if (optionsOpen == true && ops)
 	{
 		//SetWindowPos( hWnd   ,   HWND_TOPMOST   ,     0       ,       0       ,       0       ,       0,       SWP_NOSIZE   );
@@ -2415,17 +2360,6 @@ void MyWidget::menuOptions()
 	ops->setModal(0);
 	ops->setObjectName("options");
 	ops->exec();
-#else
-	optionsOpen = true;
-	OptionsDlg ops(this);
-	ops.setModal(0);
-	ops.setObjectName("options");
-	ops.exec();
-
-	//synchronizeDlg ops(this);
-	//ops.exec();
-
-#endif
 #if 0
 	// Perform the database update
 	if (gBuilder == NULL)
@@ -2435,11 +2369,8 @@ void MyWidget::menuOptions()
 	input->setFocus();
 	optionsOpen = false;
 #endif
-#ifdef CONFIG_ONE_OPTION
-	delete ops;
-	ops = NULL;
+	DELETE_OBJECT(ops);
 	freeOccupyMemeory();
-#endif
 }
 
 
@@ -2655,7 +2586,6 @@ QChar MyWidget::sepChar()
 		return QChar('|');
 }
 
-#ifdef CONFIG_SYSTEM_TRAY
 void MyWidget::updateApp()
 {
 
@@ -2734,9 +2664,6 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 	{
 	case QSystemTrayIcon::Trigger:
 	case QSystemTrayIcon::DoubleClick:
-#ifdef CONFIG_LOG_ENABLE
-		qDebug("%s", "QSystemTrayIcon::DoubleClick");
-#endif
 		if (!isVisible())
 			showLaunchy();
 		break;
@@ -2746,7 +2673,6 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 		;
 	}
 }
-#endif
 void MyWidget::freeOccupyMemeory()
 {
 	//#ifdef CONFIG_LOG_ENABLE
@@ -2998,6 +2924,7 @@ int main(int argc, char *argv[])
 #ifdef Q_WS_WIN
 	shared_ptr < QApplication > app(new QApplication(argc, argv));
 #endif
+	qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 	PlatformBase *platform = loadPlatform();
 #ifdef Q_WS_X11
 	shared_ptr < QApplication > app(platform->init(argc, argv));
@@ -3055,14 +2982,12 @@ int main(int argc, char *argv[])
 		QTranslator translator;
 		translator.load(QString("tr/launchy_" + locale));
 		app->installTranslator(&translator);
-#ifdef CONFIG_SYSTEM_TRAY
 		if (!QSystemTrayIcon::isSystemTrayAvailable())
 		{
 			QMessageBox::critical(0, QObject::tr("Systray"), QObject::tr("I couldn't detect any system tray " "on this system."));
 			return 1;
 		}
 		//QApplication::setQuitOnLastWindowClosed(false);
-#endif
 #if 0
 		QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));	//
 		app->setFont(QFont("ËÎÌו", 9, QFont::Normal, false));	//

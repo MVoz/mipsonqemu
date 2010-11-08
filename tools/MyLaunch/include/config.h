@@ -10,12 +10,9 @@
 #define LABEL_FILE 0
 #define CONFIG_LOG_ENABLE	1
 
-#define CONFIG_SYSTEM_TRAY      1
-
 #define CONFIG_NEW_UI
 #define CONFIG_UI_WEBKIT 
 #define CONFIG_RAMEN_CODE
-#define CONFIG_ONE_OPTION
 #define CONFIG_HTTP_TIMEOUT
 #define CONFIG_SYNC_THREAD
 
@@ -29,8 +26,6 @@
 
 #define SILENT_SYNC_TIMER 2
 
-#define CONFIG_SYNC_TIMECHECK
-
 #define APP_NAME "touchAny"
 
 #define HTTP_SERVER_HOST "192.168.115.2"
@@ -40,31 +35,13 @@
 //#define BM_SERVER_ADDRESS "www.tanzhi.com"
 #define BM_SERVER_ADDRESS HTTP_SERVER_HOST
 
-#ifdef CONFIG_AUTH_ENCRYPTION
-#ifdef CONFIG_SYNC_TIMECHECK
 #define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
-#else
-#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2"
-#endif
 #define BM_SERVER_TESTACCOUNT_URL HTTP_SERVER_URL"do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
 #define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
 #define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 
-#else
-//#define BM_SERVER_GET_BMLIST_URL "http://192.168.1.115/bookmark.php"
-#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&username=%1&password=%2"
-
-
-#define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
-#define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
-
-#define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&username=%3&password=%4"
-
-#define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&username=%3&password=%4"
-
-#endif
 
 #define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
 

@@ -6,21 +6,10 @@
 mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QString p):QThread(parent),db(b),settings(s),username(u),password(p)
 {
 	file = NULL;
-	//  localxmlFile = NULL;
-	//  serverxmlFile = NULL;;
-	//   ie_xmlLastUpdate = NULL;;
-	//   firefox_xmlLastUpdate = NULL;;
-	//   opera_xmlLastUpdate = NULL;;
-	//   ie_xmlHttpServer = NULL;;
-	//   firefox_xmlHttpServer = NULL;;
-	//   opera_xmlHttpServer = NULL;;
-	//	   firefoxReader = NULL;;
 	posthp=NULL;
-
 	firefox_version=0;
 	modifiedFlag=0;
 	terminatedFlag=0;
-	//posthp = NULL;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 mergeThread::~mergeThread(){	
@@ -934,7 +923,7 @@ void mergeThread::run()
 	THREAD_MONITOR_POINT;
 	handleBmData();
 	exit();
-	emit done(0);
+	emit done(terminatedFlag);
 }
 void mergeThread::productFFId(QString & randString,int length){   
 	int max = length;   
