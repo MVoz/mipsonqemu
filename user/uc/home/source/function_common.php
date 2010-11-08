@@ -2522,7 +2522,7 @@ function producebmxml($uid,$arr)
 		exitwithtip('do_nothing');
 	}
 	$xmlfile = S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bmxml.xml';
-	if(!file_exists($xmlfile)){
+	if($lastupdatetime==''||$lastupdatetime=='0'||!file_exists($xmlfile)){
 		bmxml_cache();
 	}
 	header('md5key:'.md5_file($xmlfile)); 
