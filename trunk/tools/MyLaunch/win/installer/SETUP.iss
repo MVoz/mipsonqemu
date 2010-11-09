@@ -75,14 +75,14 @@ Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 
 ; Skins
-Source: ..\..\Default\alpha.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\background.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\down_arrow.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\mask.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\pos.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\alpha.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\background.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\down_arrow.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\mask.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\pos.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
 
 ;Source: ..\..\skins\Quicksilver2\alpha.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 ;Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
@@ -92,19 +92,19 @@ Source: ..\..\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignorever
 ;Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 
 ;data
-Source: ..\..\data\defines.db; DestDir: {app}\data\; Flags: ignoreversion
-Source: ..\..\data\language.dat; DestDir: {app}\data\; Flags: ignoreversion
-Source: ..\..\data\pinyin.db; DestDir: {app}\data\; Flags: ignoreversion
+Source: ..\..\release\data\defines.db; DestDir: {app}\data\; Flags: ignoreversion
+Source: ..\..\release\data\language.dat; DestDir: {app}\data\; Flags: ignoreversion
+Source: ..\..\release\data\pinyin.db; DestDir: {app}\data\; Flags: ignoreversion
 
 ;html
-Source: ..\..\html\about.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\adv.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\cmd_mg.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\common.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\interface.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\list_mg.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\net_mg.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\about.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\adv.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\cmd_mg.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\common.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\interface.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\list_mg.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\net_mg.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
 
 
 ; Libs
@@ -167,6 +167,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
 
 
