@@ -1026,6 +1026,7 @@ bool tz::checkFirefoxDir(QString& path)
 		return false;
 	if(!QFile::exists(path))
 		return false;
+	return true;
 }
 bool tz::openFirefox3Db(QSqlDatabase& db,QString path)
 {
@@ -1360,6 +1361,7 @@ QString tz::getUserIniDir(int mode,const QString& s)
 		userIniDir = s;
 		return "";
 	}
+	return "";
 }
 
 

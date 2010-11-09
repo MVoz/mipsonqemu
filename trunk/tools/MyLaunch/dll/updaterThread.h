@@ -102,11 +102,13 @@ public:
 	public slots: 
 		//void updaterDone(bool error);
 		void getFileDone(bool error);
+	/*
 		void on_http_stateChanged(int stat);
 		void on_http_dataReadProgress(int done, int total);
 		void on_http_dataSendProgress(int done, int total);
 		void on_http_requestFinished(int id, bool error);
 		void on_http_requestStarted(int id);
+	*/
 		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 		void httpTimerSlot();
 		void terminateThread();
