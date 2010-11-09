@@ -5,7 +5,7 @@
 #define MyAppVerName "touchAny 2.1.2"
 #define MyAppPublisher "Andy Chen"
 #define MyAppURL "http://www.tanzhi.com"
-#define MyAppExeName "setup.exe"
+#define MyAppExeName "touchAny.exe"
 #define MyAppUrlName "touchAny.url"
 
 [Setup]
@@ -56,6 +56,8 @@ Source: ..\..\release\updaterThread.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\weby.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\xmlreader.dll; DestDir: {app}; Flags: ignoreversion
 
+; rcc
+Source: ..\..\release\options.rcc; DestDir: {app}; Flags: ignoreversion
 ; Plugins
 ;Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 ;Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
