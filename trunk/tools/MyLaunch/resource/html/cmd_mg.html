@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>command managment</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function $(a) {
+        return document.getElementById(a);
+}
+function getHtml(path)
+{
+	OptionsDlg.getHtml(path);
+}
+function postItem(name,cmd,args,index)
+{
+		$('cmdName').value=name;
+		$('cmdCommand').value=cmd;
+		$('cmdParameter').value=args;
+		$('cmdIndex').value=index;
+}
+function cmdApply(type)
+{
+	switch(type)
+	{
+		case 0://add
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
+		break;
+		case 1://modify
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
+		break
+		case 2://delete
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);			
+		break;
+	}
+	OptionsDlg.loading('cmd_mg');
+}
+function apply(key)
+{
+	OptionsDlg.accept();
+}
+function reject()
+{
+	OptionsDlg.reject();
+}
+function tr(a)
+{
+		document.write(OptionsDlg.tr(a));
+}
+</script>
+</head>
+<body>
+<div id="wrap">
+ <div id="header"></div>
+	<div class="main">
+		<div id="lm"></div>
+		<div id="rm">
+			<div class="cfgitem" style="height:162px;">
+				<p>文件夹</p>
+				<div id="cmd_table" class="tScroll"></div>
+			</div>
+
+			<div class="cfgitem">
+				<p>子项</p>
+				<table width="100%">
+						<tr>
+							<td width="15%">名字:</td>
+							<td width="85%" align=left><input name="cmdName" type="text" id="cmdName" size=20 class="itext"/></td>
+						</tr>
+						<tr>
+							<td width="15%">命令:</td>
+							<td width="85%" align=left><input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext"/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);" /></td>
+						</tr>
+						<tr>
+							<td width="15%">参数:</td>
+							<td width="85%" align=left><input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/></td>
+						</tr>
+						<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50 ></td></tr>
+						<tr >
+							<table width=100% border=0>
+								<tr>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(0);"><label>增加</label></a>
+										</div>
+									</td>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(1);"><label>修改</label></a>
+										</div>
+									</td>
+									<td width="30%" align=right>
+										<div class="btn">
+											<a href="#" onclick="cmdApply(2);"><label>删除</label></a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="applybtn">			
+</div>
+</body>
+<script>
+	OptionsDlg.loading('cmd_mg');
+</script>
+</html>
