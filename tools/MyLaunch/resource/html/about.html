@@ -1,12 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>index</title>
-<link rel="stylesheet" rev="stylesheet" href="jm.css" type="text/css">
+<title>About</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
 function getHtml(path)
 {
-	formExtractor.getHtml(path);
+	OptionsDlg.getHtml(path);
+}
+function $(a) {
+        return document.getElementById(a);
+}
+function apply(key)
+{
+	OptionsDlg.accept();
+}
+function reject()
+{
+	OptionsDlg.reject();
+}
+function tr(a)
+{
+		document.write(OptionsDlg.tr(a));
 }
 </script>
 </head>
@@ -15,27 +30,6 @@ function getHtml(path)
 	<div id="header"></div>
 	<div class="main">
 	<div id="lm">
-	<ul id="menu">
-		<li>
-			<a href="#" onclick="getHtml('./html/general.html');">通用</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
-				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
-			<ul>
-				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
-				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#" onclick="getHtml('./html/about.html');">关于</a>
-		</li>		
-	</ul>
-
 	</div>
 	<div id="rm">
 		<div id="taitou">输出</div>
@@ -78,5 +72,9 @@ function getHtml(path)
 	</div>
 	</div>
 </div>
+<div id="applybtn"></div>
 </body>
+<script>
+	OptionsDlg.loading('about');
+</script>
 </html>
