@@ -50,53 +50,35 @@ function tr(a)
 <div id="wrap">
 	<div id="header"></div>
 	<div class="main">
-	<div id="lm">
+		<div id="lm"></div>
+		<div id="rm">
+					<div class="cfgitem">
+						<p>高级</p>
+						<table width="100%" border=0>
+						 <tr>
+							<td width="30%"><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</td>
+							<td width="30%"><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</td>
+						</tr>
+						 <tr>
+							<td width="30%"><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</td>
+							<td width="70%" align="right" cellspacing="0"></td>
+						</tr>
+						 <tr>
+							<td width="30%"><input type="checkbox" name="ckSupportIe" id="ckSupportIe" />&nbsp支持IE</td>
+							<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</tr>
+						 <tr>
+							<td width="30%"><input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持firefox</td>
+							<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</tr>
+						 <tr>
+							<td width="30%"><input type="checkbox" name="ckSupportOpera" id="ckSupportOpera" />&nbsp支持opera</td>
+							<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</tr>
+						</table>
+				</div>
+		</div>
 	</div>
-<div id="rm">
-		<div id="taitou">高级</div>
-	<div id="area">
-		<table width="600" border=0>
-		 <tr>
-			<td width="30%"><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</td>
-			<td width="70%" align="right" cellspacing="0"></td>
-		</tr>
-		<tr>
-			<td width="30%"><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</td>
-			<td width="70%" align="right" cellspacing="0"></td>
-		</tr>
-		 <tr>
-			<td width="30%"><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</td>
-			<td width="70%" align="right" cellspacing="0"></td>
-		</tr>
-		 <tr>
-			<td width="30%"><input type="checkbox" name="ckSupportIe" id="ckSupportIe" />&nbsp支持IE</td>
-			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-		</tr>
-		 <tr>
-			<td width="30%"><input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持firefox</td>
-			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-		</tr>
-		 <tr>
-			<td width="30%"><input type="checkbox" name="ckSupportOpera" id="ckSupportOpera" />&nbsp支持opera</td>
-			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-		</tr>
-	</table>
-	</div>
-	<div id="taitou">软件更新</div>
-<div id="area">
-	<table width="600" >
-		<tr>
-			<td width="15%">当前版本:</td>
-			<td width="20%" align=left>1.0.0</td>
-			<td width="25%" ></td>
-			<td width="50%" >
-					<div class="btn">
-					<a href="#" style="width:113px;" onclick="updateClick();"><label style="width:113px;height:25px;">立即更新</label></a>
-					</div>
-			</td>
-		</tr>					
-	</table>
-</div>
 </div>
 <div id="applybtn"></div>
 </body>

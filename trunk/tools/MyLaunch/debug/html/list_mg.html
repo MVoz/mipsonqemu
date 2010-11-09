@@ -98,7 +98,7 @@ function tr(a)
 }
 </script>
 <style>
-.tScroll {overflow: scroll; overflow-x:hidden; height:100px; cursor: default; } 
+
 tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-align: center; } 
 </style>
 </head>
@@ -110,8 +110,9 @@ tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-a
 		<div id="rm">
 			<div class="cfgitem">
 				<p>文件夹</p>
-				<div id="list_table">
-				</div> 
+				<div id="area">
+						<div id="list_table" class="tScroll"></div> 
+				</div>
 			</div>
 
 		<div class="cfgitem">
