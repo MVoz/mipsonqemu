@@ -932,18 +932,6 @@ void MyWidget::doEnter()
 
 	if (dropTimer->isActive())
 		dropTimer->stop();
-#if 0
-	if(searchResults.count() == 0&&gSearchTxt!=""){
-		//google or baidu
-		QString args("search?q=%s");
-		args.replace("%s",QUrl::toPercentEncoding(gSearchTxt));
-		qDebug()<<" with argument: "<<args;
-		if (!platform->Execute("http://www.google.com/", args))
-		{
-			runProgram(QString("http://www.google.com/").append(args), "");
-		}
-	}else
-#endif
 	if (searchResults.count() > 0 || inputData.count() > 1)
 		launchObject();
 	else{
