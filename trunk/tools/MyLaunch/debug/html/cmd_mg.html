@@ -54,7 +54,7 @@ function tr(a)
 	<div class="main">
 		<div id="lm"></div>
 		<div id="rm">
-			<div class="cfgitem" style="height:140px;">
+			<div class="cfgitem" style="height:162px;">
 				<p>文件夹</p>
 				<div id="cmd_table" class="tScroll"></div>
 			</div>
@@ -64,17 +64,17 @@ function tr(a)
 				<table width="100%">
 						<tr>
 							<td width="15%">名字:</td>
-							<td width="85%" align=left><input name="cmdName" type="text" id="cmdName" size=20/></td>
+							<td width="85%" align=left><input name="cmdName" type="text" id="cmdName" size=20 class="itext"/></td>
 						</tr>
 						<tr>
 							<td width="15%">命令:</td>
-							<td width="85%" align=left><input name="cmdCommand" type="text" id="cmdCommand" size=50/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);"/></td>
+							<td width="85%" align=left><input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext"/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);" /></td>
 						</tr>
 						<tr>
 							<td width="15%">参数:</td>
-							<td width="85%" align=left><input name="cmdParameter" type="text" id="cmdParameter" size=50/></td>
+							<td width="85%" align=left><input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/></td>
 						</tr>
-						<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50></td></tr>
+						<tr style="display:none;"><td>index</td><td><input name="cmdIndex" type="text" id="cmdIndex" size=50 ></td></tr>
 						<tr >
 							<table width=100% border=0>
 								<tr>

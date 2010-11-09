@@ -248,10 +248,11 @@ void OptionsDlg::loading(const QString & name)
 	}menuHtml[4];
 
 	menuHtml[0].name = "common";
-	menuHtml[0].child<<"list_mg"<<"cmd_mg"<<"net_mg";
+	menuHtml[0].child<<"list_mg"<<"cmd_mg";
 	menuHtml[1].name = "adv";
+	menuHtml[1].child<<"net_mg";
 	menuHtml[2].name = "interface";
-	menuHtml[2].child<<"skin_mg"<<"language_mg";
+	//menuHtml[2].child<<"skin_mg"<<"language_mg";
 	menuHtml[3].name = "about";
     
 	
@@ -346,9 +347,9 @@ void OptionsDlg::loading(const QString & name)
 	{
 		jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"8%\">"+tz::tr("html_select")+"</td>\
-							 <td width=\"8%\">"+tz::tr("html_name")+"</td>\
-							 <td width=\"64%\">"+tz::tr("html_command")+"</td>\
+							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
+							 <td width=\"15%\">"+tz::tr("html_name")+"</td>\
+							 <td width=\"60%\">"+tz::tr("html_command")+"</td>\
 							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
 		//cmdLists.clear();
@@ -364,9 +365,9 @@ void OptionsDlg::loading(const QString & name)
 			while(q.next()) {
 				qDebug()<<q.value(shortName_Idx).toString()<<":"<<q.value(fullPath_Idx).toString();
 				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-									 <td width=\"8%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
-									 <td width=\"8%\">%5</td>\
-									 <td width=\"64%\" style=\"font-size:10;\">%6</td>\
+									 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
+									 <td width=\"15%\">%5</td>\
+									 <td width=\"60%\"  style=\"font-size:10;\" align=\"left\"><span class=\"cmd\">%6</span></td>\
 									 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
 									 </tr>")
 									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\"))
@@ -386,11 +387,11 @@ void OptionsDlg::loading(const QString & name)
 	{
 		jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"10%\">"+tz::tr("html_select")+"</td>\
-							 <td width=\"50%\">"+tz::tr("html_path")+"</td>\
+							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
+							 <td width=\"61%\">"+tz::tr("html_path")+"</td>\
 							 <td width=\"20%\">"+tz::tr("html_suffix")+"</td>\
-							 <td width=\"10%\">"+tz::tr("html_childdir")+"</td>\
-							 <td width=\"10%\">"+tz::tr("html_depth")+"</td>\
+							 <td width=\"7%\">"+tz::tr("html_childdir")+"</td>\
+							 <td width=\"7%\">"+tz::tr("html_depth")+"</td>\
 							 </tr>"));
 		dirLists.clear();
 		int count = settings->beginReadArray("directories");
@@ -415,11 +416,11 @@ void OptionsDlg::loading(const QString & name)
 			}
 
 			jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-								 <td width=\"10%\"><input type=\"radio\" name=\"select\" value=\"0\" );\" onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\"></td>\
-								 <td width=\"50%\" style=\"font-size:10;\" align=\"left\">%6</td>\
+								 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" );\" onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\"></td>\
+								 <td width=\"61%\" style=\"font-size:10;\" align=\"left\">%6</td>\
 								 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
-								 <td width=\"10%\">%8</td>\
-								 <td width=\"10%\">%9</td>\
+								 <td width=\"7%\">%8</td>\
+								 <td width=\"7%\">%9</td>\
 								 </tr>").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i).arg(settings->value("name").toString().replace("\\", "\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()));
 
 		}

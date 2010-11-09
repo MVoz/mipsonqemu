@@ -94,24 +94,20 @@ function accountTestClick()
 							<tr>
 								<td width="10%">快捷键:</td>
 								<td width="40%" align=left>
-								<div class="select_b">
 									<select id="hotkey_0" width=40 class="select">	
 										<option value="134217728" > Alt</option>
 										<option value="33554432" > Shift</option>
 										<option value="268435456" > Win</option>
 										<option value="67108864"> Ctrl</option>				
 									</select>
-								</div>
 								</td>
 								<td width="40%">
-									<div class="select_b">
 									<select id="hotkey_1" width=30 class="select" >
 										<option value="16777216" > Space</option>
 										<option value="16777217"> Tab</option>
 										<option value="16777219" > Backspace</option>
 										<option value="16777221" > Enter</option>
 									</select>
-									</div>
 								</td>
 							</tr>		
 						</table>
@@ -123,7 +119,7 @@ function accountTestClick()
 					<table width="100%">
 						<tr>
 							<td width="10%">用户:</td>
-							<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();"/></td>
+							<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" /></td>
 							<td width="30%" align=right>
 							<div class="btn">
 							<a href="#" style="width:113px;" onclick="accountTestClick();"><label style="width:113px;height:25px;">测试</label></a>
@@ -132,10 +128,10 @@ function accountTestClick()
 						</tr>
 						<tr >
 							<td width="10%">密码:</td>
-							<td width="50%" align=left><input name="Userpasswd" type="password" id="Userpasswd" size=20/></td>
+							<td width="50%" align=left><input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" /></td>
 							<td width="30%" align=right>
 							<div class="btn">
-							<a href="#" style="width:113px;" onclick="syncClick();"><label style="width:113px;height:25px;">同步</label></a>
+							<a href="#" onclick="syncClick();"><label>同步</label></a>
 							</div>
 							</td>
 						</tr>

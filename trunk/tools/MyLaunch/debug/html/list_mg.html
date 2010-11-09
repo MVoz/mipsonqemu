@@ -110,9 +110,7 @@ tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-a
 		<div id="rm">
 			<div class="cfgitem">
 				<p>文件夹</p>
-				<div id="area">
-						<div id="list_table" class="tScroll"></div> 
-				</div>
+				<div id="list_table" class="tScroll"  style="height:162px;"></div> 
 			</div>
 
 		<div class="cfgitem">
@@ -120,12 +118,12 @@ tr.tableHead { position:relative; background-color:#BFCEE7; height: 16px; text-a
 		<table width="100%" border=0>
 			<tr>
 				<td width="10%">路径:</td>
-				<td width="65%" align=left><input name="listPath" type="text" id="listPath" size=40/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/></td>
+				<td width="65%" align=left><input name="listPath" type="text" id="listPath" size=40 class="itext"/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/></td>
 				<td width="25%" colspan="2"><input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录</td>
 			</tr>
 			<tr>
 				<td width="10%">后缀名:</td>
-				<td width="65%" align=left><input name="suffix" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/></td>
+				<td width="65%" align=left><input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/></td>
 				<td width="10%" align="right" cellspacing="0">最大深度:</td>
 				<td width="15%" align=left>
 							<table width="50" cellspacing="0" cellpadding="0" style="border:solid 1px #ccc;height:20px;">
