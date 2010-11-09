@@ -23,6 +23,8 @@ function apply(key)
 		OptionsDlg.apply('adv/ckSupportIe',$('ckSupportIe').checked);
 		OptionsDlg.apply('adv/ckSupportFirefox',$('ckSupportFirefox').checked);
 		OptionsDlg.apply('adv/ckSupportOpera',$('ckSupportOpera').checked);
+		OptionsDlg.apply('netfinder/baidu',$('baidu').checked);
+		OptionsDlg.apply('netfinder/google',$('google').checked);
 		OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
@@ -75,6 +77,16 @@ function tr(a)
 							<td width="30%"><input type="checkbox" name="ckSupportOpera" id="ckSupportOpera" />&nbsp支持opera</td>
 							<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</tr>
+						</table>
+				</div>
+				<div class="cfgitem">
+						<p>搜索引擎</p>
+						<table width="100%" border=0>
+						 <tr>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;当无法匹配您所输入的字符串时,将通过网页打开&nbsp;<input type="checkbox" name="baidu" id="baidu" />&nbsp;百度<input type="checkbox" name="google" id="google" />&nbsp;Google&nbsp;&nbsp;搜索
+							</td>
+						</tr>						
 						</table>
 				</div>
 		</div>

@@ -436,6 +436,9 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckSupportIe","adv",false);
 		JS_APPEND_CHECKED("ckSupportFirefox","adv",false);
 		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
+		JS_APPEND_CHECKED("baidu","netfinder",true);
+		JS_APPEND_CHECKED("google","netfinder",true);
+		
 		// jsStr.append(QString("$('ckFuzzyMatch').checked =%1;").arg(settings->value("adv/ckFuzzyMatch", false).toBool()? "true" : "false"));
 		// jsStr.append(QString("$('ckCaseSensitive').checked =%1;").arg(settings->value("adv/ckCaseSensitive", false).toBool()? "true" : "false"));
 		//  jsStr.append(QString("$('ckRebuilderCatalogTimer').checked =%1;").arg(settings->value("adv/ckRebuilderCatalogTimer", false).toBool()? "true" : "false"));

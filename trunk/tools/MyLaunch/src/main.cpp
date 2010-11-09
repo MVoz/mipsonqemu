@@ -941,7 +941,7 @@ void MyWidget::doEnter()
 			//uint   netfinder = gSettings->value("netfinder",qhashEx(QString("google"),QString("google").count())).toUInt();
 			int i = 0;
 			while(netfinders[i].name!=0){				
-				if(gSettings->value(QString("netfinder/").append(netfinders[i].name),TRUE).toBool())
+				if(gSettings->value(QString("netfinder/").append(netfinders[i].name),true).toBool())
 				{
 					QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));
 					if (!platform->Execute(netfinders[i].fullpath,args))
