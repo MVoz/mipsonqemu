@@ -23,6 +23,7 @@ void GetFileHttp::clearObject(){
 		}
 		DELETE_TIMER(monitorTimer);
 }
+/*
 
 void GetFileHttp::on_http_stateChanged(int stat)
 {
@@ -77,6 +78,7 @@ void GetFileHttp::on_http_requestFinished(int id, bool error)
 void GetFileHttp::on_http_requestStarted(int id)
 {
 }
+*/
 void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 //	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
