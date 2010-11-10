@@ -2669,10 +2669,11 @@ void MyWidget::freeOccupyMemeory()
 	//#ifdef CONFIG_LOG_ENABLE
 	//#else
 	QDialog dlg;
+	
 	dlg.setWindowFlags(Qt::SplashScreen|Qt::FramelessWindowHint);
 	dlg.resize(0,0);
-	dlg.show();	
 	dlg.showMinimized();
+	dlg.show();		
 	dlg.accept();
 	//#endif
 }

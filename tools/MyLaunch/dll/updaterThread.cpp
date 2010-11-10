@@ -97,14 +97,14 @@ int GetFileHttp::newHttp()
 	http[retryTime]->moveToThread(this);
 	SET_NET_PROXY(http[retryTime]);
 
-	connect(http[retryTime], SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)),Qt::DirectConnection);
 	//connect(http, SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)));
 	//connect(http, SIGNAL(readyRead (QHttpResponseHeader )),this,SLOT(on_http_responseHeaderReceived(QHttpResponseHeader)));
-	connect(http[retryTime], SIGNAL(dataReadProgress(int, int)), this, SLOT(on_http_dataReadProgress(int, int)),Qt::DirectConnection);
-	connect(http[retryTime], SIGNAL(dataSendProgress(int, int)), this, SLOT(on_http_dataSendProgress(int, int)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(dataReadProgress(int, int)), this, SLOT(on_http_dataReadProgress(int, int)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(dataSendProgress(int, int)), this, SLOT(on_http_dataSendProgress(int, int)),Qt::DirectConnection);
 	// connect(http, SIGNAL(done(bool)), this, SLOT(on_http_done(bool)));
-	connect(http[retryTime], SIGNAL(requestFinished(int, bool)), this, SLOT(on_http_requestFinished(int, bool)),Qt::DirectConnection);
-	connect(http[retryTime], SIGNAL(requestStarted(int)), this, SLOT(on_http_requestStarted(int)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(requestFinished(int, bool)), this, SLOT(on_http_requestFinished(int, bool)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(requestStarted(int)), this, SLOT(on_http_requestStarted(int)),Qt::DirectConnection);
 	connect(http[retryTime], SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 	connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(getFileDone(bool)),Qt::DirectConnection);
 	http[retryTime]->setHost(host);
