@@ -1,9 +1,9 @@
 #ifndef CONFIG_H_
-#define CONFIG_H_
+#include "version.h"
 #define CONFIG_H_
 #define LAUNCHY_VERSION 220
 #define LAUNCHY_VERSION_STRING "2.2.0"
-
+#define VERSION_FILE "version.h"
 
 #define HASH_LAUNCHY 0
 

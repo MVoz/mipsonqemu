@@ -3,6 +3,10 @@ del touchAny.exe
 del options.rcc
 cd ..
 
+cd /d include
+version.exe
+cd ..
+
 cd /d dll
 SET SRC=log
 rem call :makefunc %SRC% 

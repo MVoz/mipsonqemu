@@ -305,7 +305,7 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_PASSWD("Userpasswd","Account","");
 		//lastsynctime
 		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt()); 
-		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString()));
+		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 #ifdef Q_WS_WIN
 		int curMeta = settings->value("hotkeyModifier", Qt::AltModifier).toInt();
 #endif
@@ -325,16 +325,6 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
 		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
-
-		
-		//  jsStr.append("$('proxyPassword').value ='"+tz::decrypt(settings->value("Account/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)+"';"); 
-		// jsStr.append(QString("$('Userpasswd').value ='%1';").arg(tz::decrypt(settings->value("Account/Userpasswd", "").toString(),PASSWORD_ENCRYPT_KEY)));
-
-		// jsStr.append(QString("$('proxyEnable').checked =%1;").arg(settings->value("HttpProxy/proxyEnable", false).toBool()? "true" : "false"));
-		// jsStr.append(QString("$('proxyAddress').value ='%1';").arg(settings->value("HttpProxy/proxyAddress", "").toString()));
-		// jsStr.append(QString("$('proxyPort').value ='%1';").arg(settings->value("HttpProxy/proxyPort", "").toString()));
-		// jsStr.append(QString("$('proxyUsername').value ='%1';").arg(settings->value("HttpProxy/proxyUsername", "").toString()));
-		// jsStr.append(QString("$('proxyPassword').value ='%1';").arg(tz::decrypt(settings->value("HttpProxy/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY)));
 		jsStr.append(QString("proxyEnableClick();"));
 
 	} else if (name == "cmd_mg")
@@ -408,7 +398,6 @@ void OptionsDlg::loading(const QString & name)
 				if (j != (tmp.types.size() - 1))
 					typesResult += ";";
 			}
-
 			jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
 								 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" );\" onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\"></td>\
 								 <td width=\"61%\" style=\"font-size:10;\" align=\"left\">%6</td>\
@@ -432,13 +421,9 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
 		JS_APPEND_CHECKED("baidu","netfinder",true);
 		JS_APPEND_CHECKED("google","netfinder",true);
-		
-		// jsStr.append(QString("$('ckFuzzyMatch').checked =%1;").arg(settings->value("adv/ckFuzzyMatch", false).toBool()? "true" : "false"));
-		// jsStr.append(QString("$('ckCaseSensitive').checked =%1;").arg(settings->value("adv/ckCaseSensitive", false).toBool()? "true" : "false"));
-		//  jsStr.append(QString("$('ckRebuilderCatalogTimer').checked =%1;").arg(settings->value("adv/ckRebuilderCatalogTimer", false).toBool()? "true" : "false"));
-		//  jsStr.append(QString("$('ckSupportIe').checked =%1;").arg(settings->value("adv/ckSupportIe", false).toBool()? "true" : "false"));
-		//  jsStr.append(QString("$('ckSupportFirefox').checked =%1;").arg(settings->value("adv/ckSupportFirefox", false).toBool()? "true" : "false"));
-		//  jsStr.append(QString("$('ckSupportOpera').checked =%1;").arg(settings->value("adv/ckSupportOpera", false).toBool()? "true" : "false"));
+	}else if(name=="about"){
+		jsStr.append(QString("$('version').innerHTML='%1';").arg(APP_VERSION));
+		jsStr.append(QString("$('buildtime').innerHTML='%1';").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
