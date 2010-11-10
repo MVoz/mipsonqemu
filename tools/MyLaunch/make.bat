@@ -109,7 +109,7 @@ del *.exp *.lib *.manifest
 cd ..
 
 cd .\debug
-rem touchAny.exe
+touchAny.exe
 cd ..
 
 goto :EOF

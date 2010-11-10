@@ -4,7 +4,7 @@ html,body{background:#EDEFE8;margin:0px;font:12px/1.5em Verdana,"Lucida Grande",
 #lm{float:left;width:180px;height:320px;border:solid 1px #ccc;background-color:#fff;margin:5px 0px 0px 5px;}
 #rm{float:left;width:620px;height:320px;margin:5px 5px 0;}
 .main{float:left;width:820px;height:320px;background:#EDEFE8;margin:5px 0px 0px;}
-#applybtn{clear:left;float:left;width:600px;height:30px;margin:30px 0px 0px 198px;}
+#applybtn table{float:right;width:720px;height:30px;margin:30px 0px 0px 80px;}
 .tScroll {clear:left;float:left;overflow:scroll;overflow-x:hidden;width:100%; cursor: default; } 
 
 .cmd{display:block;width:400px;overflow:hidden;white-space:nowrap;}

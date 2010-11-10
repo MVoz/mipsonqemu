@@ -27,6 +27,8 @@
 #define SILENT_SYNC_TIMER 2
 
 #define APP_NAME "touchAny"
+#define APP_SLOGAN "everything_is_in_touch"
+
 
 #define HTTP_SERVER_HOST "192.168.115.2"
 
