@@ -13,6 +13,7 @@
      <file>image/top.jpg</file>
      <file>image/tt_bg.gif</file>
      <file>image/loading.gif</file>
+     <file>image/logo.gif</file>
      <file>jm.css</file>
  </qresource>
  </RCC>
