@@ -13,8 +13,8 @@ if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
 
-include_once(S_ROOT.'./source/space_bookmark_show.php');
-
+//include_once(S_ROOT.'./source/space_bookmark_show.php');
+include_once(S_ROOT.'./source/space_highlight.php');
 //今日热荐
 include_once(S_ROOT.'./source/todayhotcollect.php');
 include_once(S_ROOT.'./source/sitefeed.php');
