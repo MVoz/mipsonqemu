@@ -18,7 +18,7 @@ cd ..
 
 cd /d src
 cd /d build
-del /s /q *.obj
+del /s /q *.*
 cd ..
 cd ..
 
