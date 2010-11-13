@@ -101,6 +101,9 @@ set SRC=skins
 call :copyfunc %SRC% ..\debug\%SRC%
 call :copyfunc %SRC% ..\release\%SRC%
 
+set SRC=images
+call :copyfunc %SRC% ..\debug\%SRC%
+call :copyfunc %SRC% ..\release\%SRC%
 
 del defines.db
 del options.rcc
