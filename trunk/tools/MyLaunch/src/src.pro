@@ -32,7 +32,7 @@ HEADERS = platform_util.h \
  plugin_handler.h \
  icon_delegate.h 
 
-ICON = Launchy.ico
+ICON = touchAny.ico
 
 first.target = blah
 
