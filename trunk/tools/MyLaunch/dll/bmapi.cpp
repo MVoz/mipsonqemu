@@ -790,6 +790,7 @@ QString tz::tr(const char* index)
 		QSettings langsetting(qApp->applicationDirPath()+"/data/language.dat",QSettings::IniFormat);	
 		QByteArray langarray=langsetting.value(QString(index)+"/"+QString(gLanguageList[language]),"unknow error").toByteArray();
 		res=QTextCodec::codecForName("UTF-8")->toUnicode(QString(langarray).toLatin1()); 
+		res.replace("comma",",");
 	}		  	
 	return res;
 }

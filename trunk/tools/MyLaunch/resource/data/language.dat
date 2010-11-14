@@ -1,10 +1,10 @@
 [login_failure_please_re_login]
 english=login_fail
-chinese=无法登陆，请检查用户名或密码!
+chinese=无法登陆 comma 请检查用户名或密码!
 
 [http_test_account_fail]
 english=http_test_account_fail
-chinese=无法登陆，请检查用户名或密码!
+chinese=无法登陆 comma 请检查用户名或密码!
 
 [http_test_account_success]
 english=http_test_account_success
@@ -12,7 +12,7 @@ chinese=测试成功！欢迎使用！
 
 [login_falil]
 english=login_falil
-chinese=无法登陆，请检查用户名或密码!
+chinese=无法登陆 comma 请检查用户名或密码!
 
 [apply]
 english=apply
@@ -36,11 +36,11 @@ chinese=操作超时
 
 [bookmark_sync_start]
 english=bookmark_sync_start
-chinese=连接服务器成功,开始进行同步操作......
+chinese=连接服务器成功 comma 开始进行同步操作......
 
 [update_net_error]
 english=update_net_error
-chinese=连接服务器失败,请检查网络！
+chinese=连接服务器失败 comma 请检查网络！
 
 [sync_successful]
 english=sync_successful
@@ -89,7 +89,7 @@ chinese=update_no_need
 
 [server_refuse]
 english=server_refuse
-chinese=服务器正在维护中，暂停此项服务，请等待一段时间再重试，谢谢！
+chinese=服务器正在维护中 comma 暂停此项服务 comma 请等待一段时间再重试，谢谢！
 
 [err_has_exist_item]
 english=the specified item has existed!
@@ -203,6 +203,10 @@ chinese=输出
 [everything_is_in_touch]
 english=everything is in touch
 chinese=一切触手可及
+
+[app_is_runing]
+english=touchAny is running comma please click shortkey to show
+chinese=touchAny已经处于运行状态 comma 请按shortkey
 
 [touchAny]
 english=touchAny
