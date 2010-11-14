@@ -228,14 +228,75 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 {
-	qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+	// Load settings
+	dirs = platform->GetDirectories();
+	if (QFile::exists(dirs["portConfig"][0]))
+		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
+	else
+	{
+		if(QFile::exists(dirs["config"][0]))
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+		else{
+			qDebug()<<"restore config!";
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+			storeConfig(1);
+		}
+	}
+	//inital language
+	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
 
 	if (platform->isAlreadyRunning())
-		exit(1);
+		{
+			
+#ifdef Q_WS_WIN
+		int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
+#endif
+		int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
+		QString keys("");
+		switch(curMeta){
+			//case Qt::AltModifier:
+			//	text.arg("ALT");
+			//	break;
+			case Qt::ShiftModifier:
+				keys.append("Shift");
+				break;
+			case Qt::ControlModifier:
+				keys.append("Ctrl");
+				break;
+			case Qt::MetaModifier:
+				keys.append("Win");
+				break;
+			default:
+				keys.append("Alt");
+				break;
+		}
+		switch(curAction){
+			case Qt::Key_Space:
+				keys.append("+Space");
+				break;
+			case Qt::Key_Tab:
+				keys.append("+Tab");
+				break;
+			//case Qt::Enter:
+			//	text.arg("Enter");
+			//	break;
+			default:
+				keys.append("+Enter");
+				break;				
+		}
+		
+			QString text=tz::tr("app_is_runing");
+				qDebug()<<text<<keys;
+			text.replace("shortkey",keys);
+			qDebug()<<text;
+			
+			QMessageBox::warning(this, tr(APP_NAME),text, QMessageBox::Ok,QMessageBox::Ok);
+			exit(1);
+		}
 	//inital language
 #ifdef CONFIG_PINYIN_FROM_DB
 #else
@@ -293,29 +354,15 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 	licon = new QLabel(label);
 
-	dirs = platform->GetDirectories();
+	
 
 	ops = NULL;
-	// Load settings
-	
-	if (QFile::exists(dirs["portConfig"][0]))
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
-	else
-	{
-		if(QFile::exists(dirs["config"][0]))
-			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
-		else{
-			qDebug()<<"restore config!";
-			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
-			storeConfig(1);
-		}
-	}
+
 	tz::getUserIniDir(SET_MODE,dirs["userdir"][0]);
 #ifdef CONFIG_LOG_ENABLE
 	//      dump_setting(NULL);
 #endif
-	//inital language
-	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
+
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
