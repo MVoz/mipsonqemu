@@ -131,13 +131,13 @@ void mergeThread::handleBmData()
 	XmlReader *lastUpdate[BROWSE_TYPE_MAX]={NULL};
 	XmlReader *fromServer[BROWSE_TYPE_MAX]={NULL};
 
-	bool browserenable[BROWSE_TYPE_MAX];
+	uint browserenable[BROWSE_TYPE_MAX];
 	//from lastupdater
 	QString localBmFullPath;	
 	QString ff_path;
 	QString updateTime;
 	QFile f;
-
+	QString filemd5;
 
 	modifiedInServer=1;
 
@@ -147,7 +147,7 @@ void mergeThread::handleBmData()
 	{
 		getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
 		if(QFile::exists(localBmFullPath)){
-			QString filemd5 =  tz::fileMd5(localBmFullPath);			
+			filemd5 =  tz::fileMd5(localBmFullPath);	
 			if(qhashEx(filemd5,filemd5.length())!=settings->value("localbmkey",0).toUInt())
 			{
 				qDebug()<<"md5 error remove "<<localBmFullPath;
@@ -156,21 +156,51 @@ void mergeThread::handleBmData()
 		}
 	}
 
+	//set to value to avoid crash
+	settings->setValue("localbmkey",0);
+	settings->sync();
+	
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	//get browser enable
 	i = 0;
 	while(!browserInfo[i].name.isEmpty())
 	{
-		browserenable[i] =browserInfo[i].enable;
+		//20101114 get the enable value to avoid modified
+		browserenable[i] =browserInfo[i].enable?1:0;
+		
+		int browserid = browserInfo[i].id;
+
+		//lastupdate xml file whether enable or not
+		if(QFile::exists(localBmFullPath))
+		{
+			f.setFileName(localBmFullPath);
+			f.open(QIODevice::ReadOnly);						  
+			lastUpdate[i] = new XmlReader(&f,settings);
+			lastUpdate[i]->readStream(browserid);
+			f.close();
+			//check whether browser's enable is correspond  with localbm.dat
+			if(modifiedInServer==0){
+				if((browserenable[i] )!=(lastUpdate[i]->browserenable))
+				{
+					qDebug()<<__FUNCTION__<<browserenable[i]<<"   "<<lastUpdate[i]->browserenable;
+					goto CLEAR;
+				}
+			}
+		}else{
+			lastUpdate[i] = new XmlReader(NULL,settings);
+		}
+		setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
 		i++;
 	}
+
 	{
 
 		i = 0;
 		while(!browserInfo[i].name.isEmpty())
 		{
-			int browserid = browserInfo[i].id;
 
+			int browserid = browserInfo[i].id;
+/*
 			//lastupdate xml file whether enable or not
 			if(QFile::exists(localBmFullPath))
 			{
@@ -183,6 +213,7 @@ void mergeThread::handleBmData()
 				lastUpdate[i] = new XmlReader(NULL,settings);
 			}
 			setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
+*/
 
 			if( browserenable[i] )
 			{
@@ -292,21 +323,23 @@ ffout:
 		while(!browserInfo[i].name.isEmpty())
 		{
 			int browserid = browserInfo[i].id;
-			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result_bc[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,updateTime);	
-
+			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result_bc[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,updateTime,browserenable[i]);
 			i++;
 		}		
-		localfile.close();
-		QString filemd5 = tz::fileMd5(localBmFullPath);
-		settings->setValue("localbmkey",qhashEx(filemd5,filemd5.length()));
+		localfile.close();		
 	}
 
 	getUpdatetime(updateTime);
-	qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
+	//qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
 	if(!terminatedFlag&&!updateTime.isEmpty())
 		settings->setValue("updateTime", updateTime);
 	setUpdatetime("");	//set null
-
+	if(QFile::exists(localBmFullPath)){
+		filemd5 = tz::fileMd5(localBmFullPath);
+		settings->setValue("localbmkey",qhashEx(filemd5,filemd5.length()));
+	}
+	settings->sync();
+CLEAR:
 	i = 0;
 	//clear somethings
 	while(!browserInfo[i].name.isEmpty())
@@ -324,9 +357,9 @@ ffout:
 			case BROWSE_TYPE_OPERA:
 				break;
 			}			
-			delete fromServer[browserid];			
+			DELETE_OBJECT(fromServer[browserid])
 		}
-		delete lastUpdate[browserid];
+		DELETE_OBJECT(lastUpdate[browserid])
 		result_bc[browserid].clear();
 		current_bc[browserid].clear();
 		clearBrowserInfoOpFlag(browserid);

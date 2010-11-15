@@ -127,9 +127,11 @@ void XmlReader::readBrowserType(int browserType)
 		{
 			if (name() == "browserType"&&attributes().value("name") == tz::getBrowserName(browserType).toLower())
 			{
-			//	qDebug("%s %d %s",__FUNCTION__,__LINE__,qPrintable(tz::getBrowserName(browserType)));
+				browserenable=attributes().value("browserenable").toString().toUInt();
 				readFlag=1;
 				readBookmarkElement();
+
+				
 			} 
 		} else if (isCharacters() && !isWhitespace())
 		{
@@ -696,7 +698,7 @@ void XmlReader::bmItemToFile(QTextStream * os,bookmark_catagory& bm)
 	}
 }
 
-void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream * os,int browserType,int start,QString updateTime)
+void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream * os,int browserType,int start,QString updateTime,uint browserenable)
 {
 	if (flag&BM_WRITE_HEADER)
 	{
@@ -704,7 +706,7 @@ void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextSt
 		*os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\">\n";
 	}
 	if(start) 
-		(*os)<<"<browserType name=\""<<tz::getBrowserName(browserType).toLower()<<"\">\n";
+		(*os)<<"<browserType name=\""<<tz::getBrowserName(browserType).toLower()<<"\" browserenable=\""<<browserenable<<"\">\n";
 	//qDebug("firefox_bc's size is %d",list->size());
 	foreach(bookmark_catagory bm, *list)
 	{
@@ -713,7 +715,7 @@ void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextSt
 		case BOOKMARK_CATAGORY_FLAG:
 			(*os)<<"<category groupId=\""<<bm.groupId<<"\" parentId=\""<<bm.parentId<<"\">\n";
 			bmItemToFile(os,bm);
-			bmListToXml(0, &(bm.list), os,browserType,0,updateTime);
+			bmListToXml(0, &(bm.list), os,browserType,0,updateTime,browserenable);
 			(*os)<<"</category>\n";
 			break;
 		case BOOKMARK_ITEM_FLAG:
