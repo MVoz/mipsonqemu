@@ -2081,22 +2081,35 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
+	QString localBmFullPath;
+	QString url;
+	QString auth_encrypt_str;
+	uint key;
+	QString name,password;
 	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
-	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
+	//start to all browser is disable ,don't sync
+	struct browserinfo* browserInfo =tz::getbrowserInfo();
+	int i = 0,browsers_enable=0;
+	while(!browserInfo[i].name.isEmpty())
 	{
-		int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
-		if (time != 0)
-			{
-				syncTimer->start(time * SECONDS);//minutes
-				qDebug()<<"start sync after "<<time<<" seconds";
-			}
-		return;
+		browsers_enable|=(browserInfo[i].enable?1:0);
+		i++;
+	}
+	qDebug()<<__FUNCTION__<<browsers_enable;
+	if(!browsers_enable)
+	{
+		goto	SYNCTIMER;
+	}
+	//end to all browser is disable ,don't sync
+	if((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
+	{
+		goto	SYNCTIMER;
 	}
 	
 	syncMode = mode;
-	QString name,password;
+
 	//qDebug()<<__FUNCTION__<<__LINE__<<"mode:"<<mode<<"silent:"<<silence;
 	//qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
 	switch(mode)
@@ -2159,10 +2172,9 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 
 	qsrand((unsigned) NOW_SECONDS);
-	uint key=qrand()%(getkeylength());
-	QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
-	QString localBmFullPath;
-	QString url;
+	key=qrand()%(getkeylength());
+	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
+
 	switch(mode)
 	{
 	case SYNC_MODE_BOOKMARK:
@@ -2194,6 +2206,16 @@ void MyWidget::_startSync(int mode,int silence)
 	gSettings->setValue("lastsyncstatus",0);
 	gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
+	return;
+SYNCTIMER:
+	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+	if (time != 0)
+		{
+			syncTimer->start(time * SECONDS);//minutes
+			qDebug()<<"start sync after "<<time<<" seconds";
+		}
+	return;
+	
 }
 void MyWidget::bookmark_syncer_finished(bool error)
 {
