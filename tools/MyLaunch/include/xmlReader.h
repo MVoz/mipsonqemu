@@ -65,6 +65,8 @@ class XMLREADER_DLL_CLASSEXPORT  XmlReader:public QXmlStreamReader
 public:
 	XmlReader(QIODevice * device,QSettings* setting):QXmlStreamReader(device),settings(setting){
 		setDevice(device);
+		browserenable=0;
+		flag=0;
 	}
 	XmlReader();
 	~XmlReader(){
@@ -120,6 +122,7 @@ public:
 	QSettings* settings;
 	QDateTime serverLastUpdateTime;
 	//	uint maxGroupId;
+	uint browserenable;
 	uint flag;	
 	//QString ff_excludeId;
 	QSqlDatabase* ff_db;
@@ -134,7 +137,7 @@ public:
 	static int readFirefoxBookmark3(QSqlDatabase *db,QList<bookmark_catagory>* list);
 	static int outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString& excludeid);
 	static QString productExcludeIdStr(QSqlDatabase *db);
-	static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime);
+	static void bmListToXml(int flag,QList<bookmark_catagory> *list,QTextStream *os,int browserType,int start,QString updateTime,uint browserenable);
 	static  void bmItemToFile(QTextStream * os,bookmark_catagory& bm);
 
 };
