@@ -464,7 +464,10 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		emit configModifyNotify(HOTKEY);			
 	}
 	if(name == "ckShowTray")
-		emit configModifyNotify(SHOWTRAY);		
+		emit configModifyNotify(SHOWTRAY);	
+	if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"){
+		setBrowserEnable(settings);
+	}
 		
 }
 void OptionsDlg::addCatitemToDb(CatItem& item)
