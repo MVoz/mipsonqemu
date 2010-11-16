@@ -91,19 +91,19 @@ copy defines.db data\
 
 set SRC=data
 call :copyfunc %SRC% ..\debug\%SRC%
-call :copyfunc %SRC% ..\release\%SRC%
+rem call :copyfunc %SRC% ..\release\%SRC%
 
 set SRC=html
 call :copyfunc %SRC% ..\debug\%SRC%
-call :copyfunc %SRC% ..\release\%SRC%
+rem call :copyfunc %SRC% ..\release\%SRC%
 
 set SRC=skins
 call :copyfunc %SRC% ..\debug\%SRC%
-call :copyfunc %SRC% ..\release\%SRC%
+rem call :copyfunc %SRC% ..\release\%SRC%
 
 set SRC=images
 call :copyfunc %SRC% ..\debug\%SRC%
-call :copyfunc %SRC% ..\release\%SRC%
+rem call :copyfunc %SRC% ..\release\%SRC%
 
 del defines.db
 del options.rcc
@@ -112,7 +112,7 @@ del data\defines.db
 cd ..
 
 cd .\release
-del *.exp *.lib *.manifest
+rem del *.exp *.lib *.manifest
 cd ..
 
 cd .\debug
@@ -121,15 +121,17 @@ cd ..
 
 goto :EOF
 
-:copyfunc                   
-del /Q/S %2
+:copyfunc    
+echo off
+del /Q/S %2 
 rmdir /Q/S %2
 mkdir %2
 xcopy %1 %2 /s            
+echo on
 goto :EOF    
 
 :makefunc                   
 qmake %1%.pro
 nmake debug    
-nmake release
+rem nmake release
 goto :EOF  

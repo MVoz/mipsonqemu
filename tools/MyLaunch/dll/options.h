@@ -89,6 +89,7 @@ public:
 		void contextMenuEvent(QContextMenuEvent* event);
 		void startSync();
 		void getHtml(const QString &path);
+		void gohref(const QString &url);
 		void loading(const QString &name);
 		void accept();
 		void reject();
