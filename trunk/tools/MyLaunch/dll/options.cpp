@@ -239,6 +239,10 @@ void OptionsDlg::getHtml(const QString & path)
 
 	htmlFile.close();
 }
+void OptionsDlg::gohref(const QString & url)
+{
+	runProgram(url,"");
+}
 void OptionsDlg::loading(const QString & name)
 {
 	QString jsStr;

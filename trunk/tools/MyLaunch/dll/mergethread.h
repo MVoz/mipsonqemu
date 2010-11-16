@@ -124,6 +124,8 @@ public:
 		terminatedFlag=flag;
 	}
 	bool checkXmlfileFromServer();
+	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable);		
+	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time);
 	//bool checkFirefoxDir(QString& path);
 signals:
 	void done(bool error);

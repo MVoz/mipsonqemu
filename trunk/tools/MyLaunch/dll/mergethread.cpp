@@ -117,6 +117,92 @@ void mergeThread::dumpBcList(QList<bookmark_catagory>* s)
 			}
 	}
 }
+bool mergeThread::loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable)
+{
+	//get browser enable
+	QFile f;
+	int i = 0;
+	while(!b[i].name.isEmpty())
+	{
+		int browserid = b[i].id;
+
+		//lastupdate xml file whether enable or not
+		if(QFile::exists(filepath))
+		{
+			f.setFileName(filepath);
+			f.open(QIODevice::ReadOnly);	
+#ifdef LOCALBM_COMPRESS_ENABLE
+			QByteArray ba = f.readAll();
+			QByteArray unzipped = qUncompress(ba);
+			qDebug(unzipped.constData());
+			QDataStream in(&unzipped, QIODevice::ReadOnly);
+//			in.setVersion(QDataStream::Qt_4_2);
+			lastUpdate[i] = new XmlReader(in.device(),settings);
+			lastUpdate[i]->readStream(browserid);
+#else
+			lastUpdate[i] = new XmlReader(&f,settings);
+			lastUpdate[i]->readStream(browserid);
+#endif
+			f.close();
+
+			//check whether browser's enable is correspond  with localbm.dat
+			if(modifiedInServer==0){
+				if((browserenable[i] )!=(lastUpdate[i]->browserenable))
+				{
+					qDebug()<<__FUNCTION__<<browserenable[i]<<"   "<<lastUpdate[i]->browserenable;
+					return false;
+				}
+			}
+		}else{
+			lastUpdate[i] = new XmlReader(NULL,settings);
+		}
+		setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
+		i++;
+	}
+	return true;
+}
+void mergeThread::storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time)
+{
+#ifdef LOCALBM_COMPRESS_ENABLE
+		QByteArray ba;
+		QDataStream os(&ba, QIODevice::ReadWrite);
+		//os.setVersion(QDataStream::Qt_4_2);
+		//os.setCodec("UTF-8");
+
+		os<<"hello world\n";
+		os<<"hello world\n";
+		int i = 0;
+		while(!b[i].name.isEmpty())
+		{
+			int browserid = b[i].id;
+			QDEBUG_LINE;
+			//XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
+			i++;
+		}
+		QFile localfile(path);
+		qDebug(ba.constData());
+		if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
+			qDebug()<<"Write to localbm";
+			localfile.write(qCompress(ba));
+			localfile.close();			
+		}
+#else
+		QFile localfile(path);
+		if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
+			QTextStream os(&localfile);
+			os.setCodec("UTF-8");
+			int i = 0;
+			while(!b[i].name.isEmpty())
+			{
+				int browserid = b[i].id;
+				XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
+				i++;
+			}		
+			localfile.close();	
+		}
+#endif		
+}	
+
 void mergeThread::handleBmData()
 {
 	THREAD_MONITOR_POINT;
@@ -167,6 +253,7 @@ void mergeThread::handleBmData()
 	{
 		//20101114 get the enable value to avoid modified
 		browserenable[i] =browserInfo[i].enable?1:0;
+		/*
 		
 		int browserid = browserInfo[i].id;
 
@@ -190,9 +277,11 @@ void mergeThread::handleBmData()
 			lastUpdate[i] = new XmlReader(NULL,settings);
 		}
 		setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
+		*/
 		i++;
 	}
-
+	if(!loadLastupdateData(browserInfo,modifiedInServer,lastUpdate,localBmFullPath,browserenable))
+		goto CLEAR;
 	{
 
 		i = 0;
@@ -315,18 +404,7 @@ ffout:
 #endif
 	//write to lastupdate
 	if((!QFile::exists(localBmFullPath)||modifiedFlag)&&!terminatedFlag){
-		QFile localfile(localBmFullPath);
-		localfile.open(QIODevice::WriteOnly| QIODevice::Truncate);
-		QTextStream os(&localfile);
-		os.setCodec("UTF-8");
-		i = 0;
-		while(!browserInfo[i].name.isEmpty())
-		{
-			int browserid = browserInfo[i].id;
-			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result_bc[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,updateTime,browserenable[i]);
-			i++;
-		}		
-		localfile.close();		
+		storeLocalbmData(localBmFullPath,browserInfo,browserenable,result_bc,lastUpdate,updateTime);
 	}
 
 	getUpdatetime(updateTime);

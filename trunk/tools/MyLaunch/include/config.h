@@ -57,9 +57,8 @@
 #define DO_NOTHING   "do_nothing"
 
 
-#undef CATALOG_COMPRESS_ENABLE 
+#undef LOCALBM_COMPRESS_ENABLE 
 
-#define PARENT_ID_START 8000
 
 #define IS_NULL(x) (((x)==NULL)||((x)==(void*)0xcdcdcdcd)) 
 
