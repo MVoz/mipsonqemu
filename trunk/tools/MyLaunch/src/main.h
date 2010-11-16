@@ -290,6 +290,7 @@ private:
 	QSystemTrayIcon *trayIcon;
 	QMenu *trayIconMenu;
 	QIcon icon;
+	QIcon icon_problem;
 	updaterThread *slientUpdate;
 	volatile int closeflag;
 	QTimer* monitorTimer;
@@ -330,10 +331,10 @@ private:
 		void updateApp();
 		//	void bookmark_finished(bool error);
 		void testAccountFinished(bool err,QString result);
-		void bookmark_syncer_finished(bool error);
-		void syncer_finished();
+		void bmSyncFinishedStatus(bool error);
+		void bmSyncerFinished();
 		void reSync();
-		void stopSyncSlot();
+		void stopSync();
 		void testAccount(const QString&name,const QString& password);
 		void startSilentUpdate();
 		void silentUpdateFinished();
@@ -344,7 +345,7 @@ private:
 
 		//	void restoreMainwin();
 		private slots:
-			void setIcon();
+			void setIcon(int type,const QString& tip);
 			void iconActivated(QSystemTrayIcon::ActivationReason reason);
 signals:
 			//void reSync();

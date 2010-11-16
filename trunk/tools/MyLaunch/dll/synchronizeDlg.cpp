@@ -111,7 +111,7 @@ void synchronizeDlg::accept()
 void synchronizeDlg::reject()
 {
 	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	emit stopSync();
+	emit stopSyncNotify();
 	QDialog::reject();
 }
 void synchronizeDlg::retry()
