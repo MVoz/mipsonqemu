@@ -312,7 +312,8 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 	// Find the smallest char list
 //	QTime t;
 //	t.start(); 
-
+	searchTxt.replace("'","\'");
+	searchTxt.replace("\\","\\\\");
 	QSqlQuery	q("", *db);
 	uint i=0;
 	uint numresults=get_search_result_num(settings);
@@ -329,35 +330,71 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		leftnums = numresults - i;
 		QStringList ids;
 		if(info->id == COME_FROM_SHORTCUT){
-			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+			//s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
+			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%").arg(info->name);
+			s.append(searchTxt);
+			s.append(QString("%'  limit %1").arg(leftnums));
+			
 		}else if(info->id >= COME_FROM_BROWSER){
-			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%')  limit %5").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
+			//s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%')  limit %5").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
+			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%").arg(info->name);
+			s.append(searchTxt);
+			s.append("%' or domain LIKE '%");
+			s.append(searchTxt);
+			s.append("%' or realname LIKE '%");
+			s.append(searchTxt);
+			s.append(QString("%')  limit %1").arg(leftnums));
 		}else
-			s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or realname LIKE '%%3%')  limit %4").arg(info->name).arg(searchTxt).arg(searchTxt).arg(leftnums);
+			{
+				//s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%%2%' or realname LIKE '%%3%')  limit %4").arg(info->name).arg(searchTxt).arg(searchTxt).arg(leftnums);
+				s=QString("SELECT * FROM %1  WHERE shortCut=0 AND (shortName LIKE '%").arg(info->name);
+				s.append(searchTxt);
+				s.append("%' or realname LIKE '%");
+				s.append(searchTxt);
+				s.append(QString("%')  limit %1").arg(leftnums));
+			}
 RETRY:
 		if(shortName_flag){
 		  //just for COME_FROM_SHORTCUT
 			if(ids.size())
-				s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%%3%' or domain LIKE '%%4%' or realname LIKE '%%5%') limit %6").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
-			else
-				s=QString("SELECT * FROM %1  WHERE (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%') LIKE '%%5%'  limit %6").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
+				{
+					//s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%%3%' or domain LIKE '%%4%' or realname LIKE '%%5%') limit %6").arg(info->name).arg(ids.join(",")).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
+					s=QString("SELECT * FROM %1  WHERE id not in (%2) AND (shortName LIKE '%").arg(info->name).arg(ids.join(","));
+					s.append(searchTxt);
+					s.append("%' or domain LIKE '%");
+					s.append(searchTxt);
+					s.append("%' or realname LIKE '%");
+					s.append(searchTxt);
+					s.append(QString("%')  limit %1").arg(leftnums));
+				}
+			else	{
+					//s=QString("SELECT * FROM %1  WHERE (shortName LIKE '%%2%' or domain LIKE '%%3%' or realname LIKE '%%4%') LIKE '%%5%'  limit %6").arg(info->name).arg(searchTxt).arg(searchTxt).arg(searchTxt).arg(leftnums);
+					s=QString("SELECT * FROM %1  WHERE (shortName LIKE '%").arg(info->name);
+					s.append(searchTxt);
+					s.append("%' or domain LIKE '%");
+					s.append(searchTxt);
+					s.append("%' or realname LIKE '%");
+					s.append(searchTxt);
+					s.append(QString("%')  limit %1").arg(leftnums));
+				}
 		}
 		if(hanzi_flag){
 			if(info->id == COME_FROM_SHORTCUT)
 			{
 				if(ids.size())
-					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);
+					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);					
 				else
 					s=QString("SELECT * FROM %1 WHERE isHasPinyin=1").arg(info->name);
 			}
 			else
 			{
 				if(ids.size())
-					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND shortCut=0 AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);
+					s=QString("SELECT * FROM %1 WHERE id not in (%2) AND shortCut=0 AND isHasPinyin=1").arg(ids.join(",")).arg(info->name);					
 				else
 					s=QString("SELECT * FROM %1 WHERE shortCut=0 AND isHasPinyin=1").arg(info->name);
 			}
 		}
+		//qDebug()<<searchTxt<<"  "<<s;
 		if(q.exec(s)){
 			while(q.next()&&(numresults>i)) {	
 				QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
