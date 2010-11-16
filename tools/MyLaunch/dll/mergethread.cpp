@@ -104,17 +104,17 @@ void mergeThread::clearObject()
 	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
 	{
 		QFile::remove(filename_fromserver);	
-	
+
 	}
 }
 void mergeThread::dumpBcList(QList<bookmark_catagory>* s)
 {
 	foreach(bookmark_catagory item, *s)
 	{
-			qDebug()<<"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId;
-			if(item.list.count()){
-				dumpBcList(&item.list);
-			}
+		qDebug()<<"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId;
+		if(item.list.count()){
+			dumpBcList(&item.list);
+		}
 	}
 }
 bool mergeThread::loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable)
@@ -136,7 +136,7 @@ bool mergeThread::loadLastupdateData(struct browserinfo* b,int modifiedInServer,
 			QByteArray unzipped = qUncompress(ba);
 			qDebug(unzipped.constData());
 			QDataStream in(&unzipped, QIODevice::ReadOnly);
-//			in.setVersion(QDataStream::Qt_4_2);
+			//			in.setVersion(QDataStream::Qt_4_2);
 			lastUpdate[i] = new XmlReader(in.device(),settings);
 			lastUpdate[i]->readStream(browserid);
 #else
@@ -164,39 +164,39 @@ bool mergeThread::loadLastupdateData(struct browserinfo* b,int modifiedInServer,
 void mergeThread::storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time)
 {
 #ifdef LOCALBM_COMPRESS_ENABLE
-		QByteArray ba;
-		QDataStream os(&ba, QIODevice::ReadWrite);
-		//os.setVersion(QDataStream::Qt_4_2);
-		//os.setCodec("UTF-8");
+	QByteArray ba;
+	QDataStream os(&ba, QIODevice::ReadWrite);
+	//os.setVersion(QDataStream::Qt_4_2);
+	//os.setCodec("UTF-8");
+	int i = 0;
+	while(!b[i].name.isEmpty())
+	{
+		int browserid = b[i].id;
+		//XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
+		i++;
+	}
+	QFile localfile(path);
+	qDebug(ba.constData());
+	if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
+		qDebug()<<"Write to localbm";
+		localfile.write(qCompress(ba));
+		localfile.close();			
+	}
+#else
+	QFile localfile(path);
+	if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
+		QTextStream os(&localfile);
+		os.setCodec("UTF-8");
 		int i = 0;
+		uint userid = qhashEx(username,username.length());
 		while(!b[i].name.isEmpty())
 		{
 			int browserid = b[i].id;
-			//XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
+			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
 			i++;
-		}
-		QFile localfile(path);
-		qDebug(ba.constData());
-		if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
-			qDebug()<<"Write to localbm";
-			localfile.write(qCompress(ba));
-			localfile.close();			
-		}
-#else
-		QFile localfile(path);
-		if(localfile.open(QIODevice::WriteOnly| QIODevice::Truncate)){
-			QTextStream os(&localfile);
-			os.setCodec("UTF-8");
-			int i = 0;
-			uint userid = qhashEx(username,username.length());
-			while(!b[i].name.isEmpty())
-			{
-				int browserid = b[i].id;
-				XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
-				i++;
-			}		
-			localfile.close();	
-		}
+		}		
+		localfile.close();	
+	}
 #endif		
 }	
 
@@ -242,7 +242,7 @@ void mergeThread::handleBmData()
 	//set to value to avoid crash
 	settings->setValue("localbmkey",0);
 	settings->sync();
-	
+
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	//get browser enable
 	i = 0;
@@ -250,31 +250,6 @@ void mergeThread::handleBmData()
 	{
 		//20101114 get the enable value to avoid modified
 		browserenable[i] =browserInfo[i].enable?1:0;
-		/*
-		
-		int browserid = browserInfo[i].id;
-
-		//lastupdate xml file whether enable or not
-		if(QFile::exists(localBmFullPath))
-		{
-			f.setFileName(localBmFullPath);
-			f.open(QIODevice::ReadOnly);						  
-			lastUpdate[i] = new XmlReader(&f,settings);
-			lastUpdate[i]->readStream(browserid);
-			f.close();
-			//check whether browser's enable is correspond  with localbm.dat
-			if(modifiedInServer==0){
-				if((browserenable[i] )!=(lastUpdate[i]->browserenable))
-				{
-					qDebug()<<__FUNCTION__<<browserenable[i]<<"   "<<lastUpdate[i]->browserenable;
-					goto CLEAR;
-				}
-			}
-		}else{
-			lastUpdate[i] = new XmlReader(NULL,settings);
-		}
-		setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
-		*/
 		i++;
 	}
 	if(!loadLastupdateData(browserInfo,modifiedInServer,lastUpdate,localBmFullPath,browserenable))
@@ -284,37 +259,18 @@ void mergeThread::handleBmData()
 		i = 0;
 		while(!browserInfo[i].name.isEmpty())
 		{
-
 			int browserid = browserInfo[i].id;
-/*
-			//lastupdate xml file whether enable or not
-			if(QFile::exists(localBmFullPath))
-			{
-				f.setFileName(localBmFullPath);
-				f.open(QIODevice::ReadOnly);						  
-				lastUpdate[i] = new XmlReader(&f,settings);
-				lastUpdate[i]->readStream(browserid);
-				f.close();
-			}else	{
-				lastUpdate[i] = new XmlReader(NULL,settings);
-			}
-			setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
-*/
-
 			if( browserenable[i] )
 			{
 				//from server xml file
-
 				if(QFile::exists(filename_fromserver)&&modifiedInServer)
 				{
-
 					f.setFileName(filename_fromserver);
-
 					f.open(QIODevice::ReadOnly);
 					fromServer[i] = new XmlReader(&f,settings);
 					fromServer[i]->readStream(BROWSE_TYPE_IE);
-					
-				  //      dumpBcList(&fromServer[i]->bm_list);	
+
+					//      dumpBcList(&fromServer[i]->bm_list);	
 
 					setUpdatetime(fromServer[i]->updateTime);
 					f.close();
@@ -364,12 +320,12 @@ ffout:
 				//start merge
 				if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
 				{
-				/*
+					/*
 					if(modifiedInServer)
-						bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &(fromServer[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);
+					bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &(fromServer[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);
 					else
-						bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
-				*/
+					bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
+					*/
 					bmMerge(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid);
 				}					
 			}
@@ -435,7 +391,7 @@ CLEAR:
 			DELETE_OBJECT(fromServer[browserid])
 		}
 		DELETE_OBJECT(lastUpdate[browserid])
-		result_bc[browserid].clear();
+			result_bc[browserid].clear();
 		current_bc[browserid].clear();
 		clearBrowserInfoOpFlag(browserid);
 		i++;
@@ -535,7 +491,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 
 		break;
 	case BOOKMARK_ITEM_FLAG:
-	//	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+		//	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
 
 		if (action)
 		{
@@ -756,8 +712,8 @@ void mergeThread::downloadToLocal(bookmark_catagory * bc, int action, QString pa
 			/*
 			if (!DeleteFile(filePath.utf16()))
 			{
-				qDebug("Couldn't remove file %s.", qPrintable(filePath));
-				return;
+			qDebug("Couldn't remove file %s.", qPrintable(filePath));
+			return;
 			}
 			*/
 			break;
@@ -791,15 +747,15 @@ server  lastupdate local
 
 
 void mergeThread::handleItem(
-	bookmark_catagory * item,
-	QList < bookmark_catagory > *list,
-	QString &path,
-	int status,
-	uint parentId,	
-	int browserType,
-	int local_parentId,
-	int localOrServer
-)
+							 bookmark_catagory * item,
+							 QList < bookmark_catagory > *list,
+							 QString &path,
+							 int status,
+							 uint parentId,	
+							 int browserType,
+							 int local_parentId,
+							 int localOrServer
+							 )
 {
 	modifiedFlag=1;
 	switch (status)
@@ -884,17 +840,17 @@ int mergeThread::bmItemInList(bookmark_catagory * item, QList < bookmark_catagor
 	return -1;
 }
 /*
-	server item's parentid
+server item's parentid
 */
 int mergeThread::bmMerge(
-	QList < bookmark_catagory > *localList, 
-	QList < bookmark_catagory > *lastupdateList,
-	QList < bookmark_catagory > *serverList,
-	QList < bookmark_catagory > *resultList,
-	uint parentId,
-	QString path,
-	int browserType
-)
+						 QList < bookmark_catagory > *localList, 
+						 QList < bookmark_catagory > *lastupdateList,
+						 QList < bookmark_catagory > *serverList,
+						 QList < bookmark_catagory > *resultList,
+						 uint parentId,
+						 QString path,
+						 int browserType
+						 )
 {
 	int status = 0;
 	uint local_parentId=0;
@@ -908,7 +864,7 @@ int mergeThread::bmMerge(
 		list = serverList;
 	else
 		list = lastupdateList;
-	
+
 	for (int i = 0; i < localList->size(); i++)
 	{
 		if(terminatedFlag)
@@ -940,7 +896,7 @@ int mergeThread::bmMerge(
 				(*list)[inServerPosition].groupId,
 				path+ "/"+item.name ,
 				browserType
-			);
+				);
 		}
 	}
 	if(list == NULL)
@@ -958,7 +914,7 @@ int mergeThread::bmMerge(
 			inLastupdatePosition = bmItemInList(&item, lastupdateList);
 		else
 			inLastupdatePosition = 1;
-		
+
 		status = BM_ITEM_MERGE_STATUS(inLocalPosition,inLastupdatePosition,1);
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1)
 			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
@@ -967,63 +923,63 @@ int mergeThread::bmMerge(
 }
 /*
 int mergeThread::bmMergeWithoutModifyInServer(
-	QList < bookmark_catagory > *localList,
-	QList < bookmark_catagory > *lastupdateList,
-	QList < bookmark_catagory > *resultList,
-	uint parentId,
-	QString path,
-	int browserType
+QList < bookmark_catagory > *localList,
+QList < bookmark_catagory > *lastupdateList,
+QList < bookmark_catagory > *resultList,
+uint parentId,
+QString path,
+int browserType
 )
 {
-	int status = 0;
-	uint local_parentId=0;
-	foreach(bookmark_catagory item, *localList)
-	{
-		local_parentId = item.parentId;
-		break;
-	}
-	for (int i = 0; i < localList->size(); i++)
-	{
-		if(terminatedFlag)
-			break;
-		bookmark_catagory item = (*localList)[i];
-		int inLast = bmItemInList(&item, lastupdateList);
-		int inServer = inLast;
-		status = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
-		qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
-		if (status != 7&&status!=5){
-			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
-		}
-		else		//exist in local,lastupdate&server,merge child
-		{
-			bookmark_catagory tmp;
-			copyBmCatagory(&tmp, &((*lastupdateList)[inLast]));
-			qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
-			resultList->push_back(tmp);
-			bmMergeWithoutModifyInServer(
-					&(item.list),
-					&((*lastupdateList)[inLast].list),
-					&(resultList->last().list),
-					(*lastupdateList)[inLast].groupId,
-					path+ "/"+item.name ,
-					browserType
-			);
-		}
-	}
-	foreach(bookmark_catagory item, *lastupdateList)
-	{
-		if(terminatedFlag)
-			break;
-		int inLocal = bmItemInList(&item, localList);
-		int inLast = 1;
-		if(inLocal>=0){
-			continue;
-		}
-		status = (((inLocal >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
-		if (status != 7)
-			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
-	}
-	return 1;
+int status = 0;
+uint local_parentId=0;
+foreach(bookmark_catagory item, *localList)
+{
+local_parentId = item.parentId;
+break;
+}
+for (int i = 0; i < localList->size(); i++)
+{
+if(terminatedFlag)
+break;
+bookmark_catagory item = (*localList)[i];
+int inLast = bmItemInList(&item, lastupdateList);
+int inServer = inLast;
+status = (1 << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (((inServer >= 0) ? 1 : 0) << SERVER_EXIST_OFFSET);
+qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
+if (status != 7&&status!=5){
+handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
+}
+else		//exist in local,lastupdate&server,merge child
+{
+bookmark_catagory tmp;
+copyBmCatagory(&tmp, &((*lastupdateList)[inLast]));
+qDebug()<<__FUNCTION__<<" name="<<tmp.name<<" bmid:"<<tmp.bmid<<"groupid="<<tmp.groupId;
+resultList->push_back(tmp);
+bmMergeWithoutModifyInServer(
+&(item.list),
+&((*lastupdateList)[inLast].list),
+&(resultList->last().list),
+(*lastupdateList)[inLast].groupId,
+path+ "/"+item.name ,
+browserType
+);
+}
+}
+foreach(bookmark_catagory item, *lastupdateList)
+{
+if(terminatedFlag)
+break;
+int inLocal = bmItemInList(&item, localList);
+int inLast = 1;
+if(inLocal>=0){
+continue;
+}
+status = (((inLocal >= 0) ? 1 : 0) << LOCAL_EXIST_OFFSET) + (((inLast >= 0) ? 1 : 0) << LASTUPDATE_EXIST_OFFSET) + (1 << SERVER_EXIST_OFFSET);
+if (status != 7)
+handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
+}
+return 1;
 }
 */
 void mergeThread::run()

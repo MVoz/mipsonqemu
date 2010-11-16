@@ -54,7 +54,7 @@ public:
 		void reSyncSlot();
 signals:
 		void reSyncNotify();
-		void stopSync();
+		void stopSyncNotify();
 		void updateSuccessNotify();
 };
 #endif

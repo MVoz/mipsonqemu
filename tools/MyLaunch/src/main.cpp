@@ -512,7 +512,12 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		showLaunchy();
 	else
 		hideLaunchy();
-	setIcon();
+	
+	icon =QIcon("images/"+QString(APP_NAME)+".ico");
+	icon_problem=QIcon("images/"+QString(APP_NAME)+"_gray.ico");	
+	setWindowIcon(icon);
+	
+	setIcon(1,QString(APP_NAME));
 	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
@@ -2051,7 +2056,7 @@ void MyWidget::buildCatalog()
 	_buildCatalog(CAT_BUILDMODE_ALL);
 }
 
-void MyWidget::stopSyncSlot()
+void MyWidget::stopSync()
 {
 	if(gSyncer){
 		qDebug("stop sync %s currentThread id=0x%08x",__FUNCTION__,QThread::currentThreadId());
@@ -2141,7 +2146,7 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 		syncDlg.reset(new synchronizeDlg(this));
 		connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-		connect(syncDlg.get(),SIGNAL(stopSync()),this,SLOT(stopSyncSlot()));
+		connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
 	}else{
 		syncDlg->status=HTTP_UNCONNECTED;
 	}
@@ -2163,8 +2168,8 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 
-	connect(gSyncer.get(), SIGNAL(bookmarkFinished(bool)), this, SLOT(bookmark_syncer_finished(bool)));
-	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(syncer_finished()));
+	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(bool)), this, SLOT(bmSyncFinishedStatus(bool)));
+	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int)), syncDlg.get(), SLOT(updateStatus(int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
@@ -2231,18 +2236,19 @@ SYNCTIMER:
 	return;
 	
 }
-void MyWidget::bookmark_syncer_finished(bool error)
+void MyWidget::bmSyncFinishedStatus(bool error)
 {
-	if (syncDlg&&!error)
-	{
-		//if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
-		{
-			//	createSynDlgTimer();			//update catalog
-
+	if(!error){
+		if(trayIcon->isVisible()){	
+			setIcon(1,QString(APP_NAME));
+			trayIcon->showMessage(APP_NAME,"Sync successfully", QSystemTrayIcon::Information);
+		}
+	}else{
+		if(trayIcon->isVisible()){
+			setIcon(0,QString(APP_NAME));
+			trayIcon->showMessage(APP_NAME,"Sync failed", QSystemTrayIcon::Information);
 		}
 	}
-	//if(!error)
-	//_buildCatalog(CAT_BUILDMODE_BOOKMARK);
 }
 
 void MyWidget::testAccountFinished(bool err,QString result)
@@ -2364,7 +2370,7 @@ void MyWidget::deleteSynDlgTimer()
 DELETE_TIMER(syncDlgTimer);
 }
 */
-void MyWidget::syncer_finished()
+void MyWidget::bmSyncerFinished()
 {	
 	//QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
@@ -2595,9 +2601,6 @@ void MyWidget::showLaunchy(bool now)
 		setFadeLevel(end);
 	}
 
-
-
-
 	// Terrible hack to steal focus from other apps when using splashscreen
 
 #ifdef Q_WS_X11
@@ -2724,12 +2727,17 @@ void MyWidget::createTrayIcon()
 	trayIcon->setContextMenu(trayIconMenu);
 }
 
-void MyWidget::setIcon()
+void MyWidget::setIcon(int type,const QString& tip)
 {
-	icon =QIcon("images/"+QString(APP_NAME)+".ico");
-	setWindowIcon(icon);
-	trayIcon->setIcon(icon);
-	trayIcon->setToolTip(QString(APP_NAME));
+	switch(type){
+		case 0:
+			trayIcon->setIcon(icon_problem);
+		break;
+		default:
+			trayIcon->setIcon(icon);
+		break;
+	}	
+	trayIcon->setToolTip(tip);
 }
 
 void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
