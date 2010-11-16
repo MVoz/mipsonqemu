@@ -516,6 +516,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
+		//trayIcon->showMessage(APP_NAME,"<a href=\"http:\/\/www.tanzhi.com\">tanzhi</a>",QSystemTrayIcon::Information);
 	}
 
      qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
