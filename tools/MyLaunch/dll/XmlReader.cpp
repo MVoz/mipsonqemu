@@ -143,6 +143,30 @@ void XmlReader::readBrowserType(int browserType)
 		}
 	}
 }
+void XmlReader::getUserId()
+{
+	while (!atEnd())
+	{
+		readNext();
+		if (isStartElement())
+		{
+			if (name() == "bookmark" && attributes().value("version") == "1.0")
+			{
+				userId = attributes().value("userId").toString().toUInt();
+				return;
+			}
+		} else if (isStartDocument())
+		{
+			//  logToFile("%s %s %s", __FUNCTION__, qPrintable(documentVersion().toString()), qPrintable(documentEncoding().toString()));
+		} else if (isEndDocument())
+		{
+		}
+	}
+	if (hasError())
+	{
+		// logToFile("Error: Failed to parse file %s", qPrintable(errorString()));
+	}
+}
 void XmlReader::readStream(int browserType)
 {
 	//this->flag = flag;
@@ -156,6 +180,7 @@ void XmlReader::readStream(int browserType)
 			{
 				//setting->setValue("updateTime", attributes().value("updateTime").toString().toUInt());
 				updateTime=attributes().value("updateTime").toString();
+				userId = attributes().value("userId").toString().toUInt();
 				readBrowserType(browserType);
 			}
 		} else if (isStartDocument())
@@ -698,12 +723,13 @@ void XmlReader::bmItemToFile(QTextStream * os,bookmark_catagory& bm)
 	}
 }
 
-void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream * os,int browserType,int start,QString updateTime,uint browserenable)
+void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream * os,int browserType,
+	int start,QString updateTime,uint browserenable,uint userid)
 {
 	if (flag&BM_WRITE_HEADER)
 	{
 		*os<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-		*os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\">\n";
+		*os<<"<bookmark version=\"1.0\" updateTime=\""<<updateTime<<"\" "<<" userId=\""<<userid<<"\">\n";
 	}
 	if(start) 
 		(*os)<<"<browserType name=\""<<tz::getBrowserName(browserType).toLower()<<"\" browserenable=\""<<browserenable<<"\">\n";
@@ -715,7 +741,7 @@ void XmlReader::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextSt
 		case BOOKMARK_CATAGORY_FLAG:
 			(*os)<<"<category groupId=\""<<bm.groupId<<"\" parentId=\""<<bm.parentId<<"\">\n";
 			bmItemToFile(os,bm);
-			bmListToXml(0, &(bm.list), os,browserType,0,updateTime,browserenable);
+			bmListToXml(0, &(bm.list), os,browserType,0,updateTime,browserenable,userid);
 			(*os)<<"</category>\n";
 			break;
 		case BOOKMARK_ITEM_FLAG:
