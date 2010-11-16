@@ -2186,6 +2186,19 @@ void MyWidget::_startSync(int mode,int silence)
 			&&QFile::exists(localBmFullPath)
 		)
 		{
+			
+			QFile f(localBmFullPath);
+			if(f.open(QIODevice::ReadOnly)){
+				XmlReader r(&f,gSettings);
+				r.getUserId();
+				f.close();
+				if(r.userId!=qhashEx(name,name.length()))
+				{
+					//if the userid don't arrocrding with userid in localbm
+					gSettings->setValue("localbmkey",0);
+					gSettings->sync();
+				}
+			}
 			QString filemd5 = tz::fileMd5(localBmFullPath);
 			if((silence != SYN_MODE_NOSILENCE)&&(qhashEx(filemd5,filemd5.length())==gSettings->value("localbmkey",0).toUInt()))
 				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());	

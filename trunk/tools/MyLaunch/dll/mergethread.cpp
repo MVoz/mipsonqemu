@@ -168,14 +168,10 @@ void mergeThread::storeLocalbmData(const QString path,struct browserinfo* b,uint
 		QDataStream os(&ba, QIODevice::ReadWrite);
 		//os.setVersion(QDataStream::Qt_4_2);
 		//os.setCodec("UTF-8");
-
-		os<<"hello world\n";
-		os<<"hello world\n";
 		int i = 0;
 		while(!b[i].name.isEmpty())
 		{
 			int browserid = b[i].id;
-			QDEBUG_LINE;
 			//XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
 			i++;
 		}
@@ -192,10 +188,11 @@ void mergeThread::storeLocalbmData(const QString path,struct browserinfo* b,uint
 			QTextStream os(&localfile);
 			os.setCodec("UTF-8");
 			int i = 0;
+			uint userid = qhashEx(username,username.length());
 			while(!b[i].name.isEmpty())
 			{
 				int browserid = b[i].id;
-				XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i]);
+				XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
 				i++;
 			}		
 			localfile.close();	
