@@ -87,10 +87,6 @@ chinese=update_successful
 english=update_no_need
 chinese=update_no_need
 
-[server_refuse]
-english=server_refuse
-chinese=服务器正在维护中 comma 暂停此项服务 comma 请等待一段时间再重试，谢谢！
-
 [err_has_exist_item]
 english=the specified item has existed!
 chinese=指定项已存在!
@@ -206,7 +202,7 @@ chinese=一切触手可及
 
 [app_is_runing]
 english=touchAny is running comma please click shortkey to show
-chinese=touchAny已经处于运行状态 comma 请按shortkey
+chinese=touchAny已经处于运行状态comma请按shortkey
 
 [touchAny]
 english=touchAny
@@ -231,43 +227,42 @@ chinese=书签同步失败
 
 [bm_sync_fail_server_net_error]
 english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败 comma 请检查网络
+chinese=书签同步失败comma请检查网络
 
 [bm_sync_fail_server_refuse]
-english=Synchronize bookmarks fail comma The server is in Maintenance comma please try again after a while.
-chinese=书签同步失败 comma 服务器正在维护中 comma 暂停服务 comma 非常抱歉
-
+english=Synchronize bookmarks fail comma The server is in Maintenancecommaplease try again after a while.
+chinese=书签同步失败comma服务器正在维护中comma暂停此项服务comma请等待一段时间再重试comma谢谢！
 [bm_sync_fail_server_bmxml_fail]
 english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败 comma 请检查网络
+chinese=书签同步失败comma请检查网络
 
 [bm_sync_fail_bmxml_timeout]
 english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败 comma 请检查网络
+chinese=书签同步失败comma请检查网络
 
 [bm_sync_fail_merge_error]
 english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败 comma 请检查网络
+chinese=书签同步失败comma请检查网络
 
 [bm_sync_fail_proxy_error]
 english=Synchronize bookmarks fail comma Can't connect the proxy server.
-chinese=书签同步失败 comma 无法连接代理服务器
+chinese=书签同步失败comma无法连接代理服务器
 
 [bm_sync_fail_proxy_auth_error]
 english=Synchronize bookmarks fail comma Can't login into the proxy server.
-chinese=书签同步失败 comma 无法登录代理服务器
+chinese=书签同步失败comma无法登录代理服务器
 
 [bm_sync_fail_server_testaccount_fail]
 english=Test account fail comma please check account&password in proxy.
-chinese=测试帐号失败 comma 请检查用户名与密码
+chinese=测试帐号失败comma请检查用户名与密码
 
 [bm_sync_fail_server_login]
 english=Login server fail comma please check your account&password.
-chinese=登录服务器失败 comma 请检查用户名与密码
+chinese=登录服务器失败comma请检查用户名与密码
 
 [update_net_error_proxy]
 english=Synchronize bookmarks fail comma Can't connect the proxy server.
-chinese=书签同步失败 comma 无法连接代理服务器
+chinese=书签同步失败comma无法连接代理服务器
 
 [update_net_error_proxy_auth]
 english=Synchronize bookmarks fail comma Can't login into the proxy server.
