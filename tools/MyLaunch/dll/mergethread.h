@@ -95,6 +95,13 @@ enum BM_MERGE_STATUS{
 	MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1////exist in local,lastupdate&server
 };
 
+enum{
+	MERGE_STATUS_SUCCESS_NO_MODIFY=0,
+	MERGE_STATUS_SUCCESS_WITH_MODIFY,
+	MERGE_STATUS_FAIL,
+	MERGE_STATUS_FAIL_LOGIN
+};
+
 class MERGE_THREAD_CLASS_EXPORT mergeThread:public QThread
 {
 	Q_OBJECT;
@@ -104,71 +111,48 @@ public:
 public:
 	void run();
 	int isBmEntryEqual(const bookmark_catagory& b,const bookmark_catagory& bm);
-	//int findItemFromBMList(QString path,bookmark_catagory bm,QList<bookmark_catagory> *bmList,bookmark_catagory*  bx,QDateTime LastUpdateTime,int flag);
-	// int findItemFromBMList(QString path, bookmark_catagory bm, QList < bookmark_catagory > *bmList, int *bx, QDateTime LastUpdateTime, int flag);
 	int copyBmCatagory(bookmark_catagory * dst, bookmark_catagory * src);
 	void postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType);
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
 	void handleBmData();
-	//int isExistInLastUpdateList(QString path, bookmark_catagory * bm);
 	int bmMerge(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType);
-	//int bmMergeWithoutModifyInServer(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *resultList,uint parentId,/* QString localDirName,*/QString path,int browserType);
-
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
 	void productFFId(QString & randString,int length);
-
-	//int testFirefoxDbLock(QSqlDatabase& db);
-	void setTerminated(uint flag){
-		terminatedFlag=flag;
-	}
+	void setTerminated(uint flag){	terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
 	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable);		
 	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time);
-	//bool checkFirefoxDir(QString& path);
+
 signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status);
 public:
 	postHttp * posthp;
+	
 	QFile *file;
-	//QList < bookmark_catagory > mergeBmList;
-	//QFile *localxmlFile;
-	//	QFile *serverxmlFile;
-	//XmlReader *ie_xmlLastUpdate;
-	//XmlReader *firefox_xmlLastUpdate;
-	//XmlReader *opera_xmlLastUpdate;
-	//XmlReader *ie_xmlHttpServer;
-	//XmlReader *firefox_xmlHttpServer;
-	//	XmlReader *opera_xmlHttpServer;
-	//XmlReader *firefoxReader;
-	//QDateTime* updateTime;
-	QSettings* settings;
-	QString iePath;
-	//int GroupId;
-	int firefox_version;
+	QSettings* settings;	
+	
 	QSqlDatabase ff_db;
-	//bool ie_enabled;
-	//bool firefox_enabled;
-	//bool opera_enabled;	
 	QSqlDatabase* db;
+	
 	uint modifiedInServer;
-	uint modifiedFlag;
+	uint status;
+	int firefox_version;
 	volatile uint terminatedFlag;
+
+	QString iePath;
 	QString filename_fromserver;
 	QString username;
 	QString password;
-	//bool terminateflag;
+	
 	void setRandomFileFromserver(QString &s);
 	void clearObject();
 
 public:
-	//static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	static void dumpBcList(QList<bookmark_catagory>* s);
-	//static void prepareInsertQuery(QSqlQuery* q,const CatItem& item);	
-	//	static void deletebmgarbarge(QSqlQuery* q,uint delId);
 };
 
 #endif

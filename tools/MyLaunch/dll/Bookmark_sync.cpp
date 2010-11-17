@@ -20,10 +20,9 @@ void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & re
 BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QSemaphore* p,int m): MyThread(parent),settings(s),semaphore(p),mode(m)
 {
 	this->db=db;
-//	httpProxyEnable=0;
 	http_finish=0;
 	http_timerover=0;
-	error=0;
+	status=0;
 	testServerResult = 0;
 	resultBuffer = NULL;
 	testThread = NULL;
@@ -31,7 +30,6 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QSemaph
 	http =NULL;
 	mgthread=NULL;
 	httpTimer = NULL;
-//	accountTestHttp=NULL;
 	needwatchchild = false;
 }
 BookmarkSync::~BookmarkSync(){
@@ -54,11 +52,13 @@ void BookmarkSync::testNetFinished()
 	{
 	case -1:
 		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
-		exit(-1);
+		status = BM_SYNC_FAIL_SERVER_NET_ERROR;
+		exit(status);
 		break;
 	case 0:
 		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);
-		quit();
+		status = BM_SYNC_FAIL_SERVER_REFUSE;
+		exit(status);
 		break;
 	case 1:
 		{
@@ -188,10 +188,8 @@ void BookmarkSync::run()
 		DELETE_FILE(resultBuffer);
 		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);	
 	}
-	if(testServerResult==-1||http_timerover||error){
-		if(mode==BOOKMARK_SYNC_MODE)
-			emit bmSyncFinishedStatusNotify(1);
-	}
+	if(mode==BOOKMARK_SYNC_MODE)
+			emit bmSyncFinishedStatusNotify(status);
 	clearobject();
 }
 
@@ -199,13 +197,14 @@ void BookmarkSync::testAccountFinished(bool error)
 {
 	STOP_TIMER(httpTimer);
 	http_finish=1;
-	this->error=error;
-	exit(error);
+	if(error)
+		status = BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL;
+	exit(status);
 }
-void BookmarkSync::mgUpdateStatus(int flag,int status)
+void BookmarkSync::mgUpdateStatus(int flag,int statusid)
 {
 	if(!terminateFlag)
-		emit updateStatusNotify(flag,status);
+		emit updateStatusNotify(flag,statusid);
 }
 void BookmarkSync::bmxmlGetFinished(bool error)
 {
@@ -214,7 +213,7 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 	DELETE_FILE(file);
 	STOP_TIMER(httpTimer);
 	http_finish=1;
-	this->error=error;
+	//this->error=error;
 	//qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
@@ -226,8 +225,10 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 			return;
 		}
 	}
+	status = BM_SYNC_FAIL_SERVER_BMXML_FAIL;
 	if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
 	{
+		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
 	}
 	//else
@@ -239,15 +240,28 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 void BookmarkSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
-	if(mgthread&&mgthread->terminatedFlag==0){
-		settings->setValue("lastsyncstatus",1);
-		settings->sync();
-		emit bmSyncFinishedStatusNotify(0);
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
+	if(mgthread){
+		switch(mgthread->status){
+			case MERGE_STATUS_SUCCESS_NO_MODIFY:
+				status = BM_SYNC_SUCCESS_NO_ACTION;
+			break;
+			case MERGE_STATUS_SUCCESS_WITH_MODIFY:
+				status = BM_SYNC_SUCCESS_WITH_ACTION;
+			break;
+			case MERGE_STATUS_FAIL:
+				status = BM_SYNC_FAIL_MERGE_ERROR;
+			case MERGE_STATUS_FAIL_LOGIN:
+				status = BM_SYNC_FAIL_SERVER_LOGIN;
+			break;
+		}
+		if((status == BM_SYNC_SUCCESS_NO_ACTION)||(status == BM_SYNC_SUCCESS_WITH_ACTION)){
+			settings->setValue("lastsyncstatus",1);
+			settings->sync();
+			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
+		}
 	}
-	error = mgthread->terminatedFlag;
 	DELETE_OBJECT(mgthread);
-	exit(error);
+	exit(status);
 }
 
 

@@ -2168,7 +2168,7 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 
-	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(bool)), this, SLOT(bmSyncFinishedStatus(bool)));
+	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int)), syncDlg.get(), SLOT(updateStatus(int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
@@ -2236,19 +2236,46 @@ SYNCTIMER:
 	return;
 	
 }
-void MyWidget::bmSyncFinishedStatus(bool error)
+void MyWidget::bmSyncFinishedStatus(int status)
 {
-	if(!error){
-		if(trayIcon->isVisible()){	
-			setIcon(1,QString(APP_NAME));
-			trayIcon->showMessage(APP_NAME,"Sync successfully", QSystemTrayIcon::Information);
-		}
-	}else{
-		if(trayIcon->isVisible()){
-			setIcon(0,QString(APP_NAME));
-			trayIcon->showMessage(APP_NAME,"Sync failed", QSystemTrayIcon::Information);
-		}
-	}
+	if(!trayIcon->isVisible()) return;
+	char* bmSyncStatus[]={
+		"bm_sync_success_no_action",
+		"bm_sync_success_with_action",
+		"bm_sync_fail",
+		"bm_sync_fail_server_net_error",
+		"bm_sync_fail_server_refuse",
+		"bm_sync_fail_server_bmxml_fail",
+		"bm_sync_fail_bmxml_timeout",
+		"bm_sync_fail_merge_error",
+		"bm_sync_fail_proxy_error",
+		"bm_sync_fail_proxy_auth_error",
+		"bm_sync_fail_server_testaccount_fail",
+		"bm_sync_fail_server_login"
+	};
+	switch(status){
+		case BM_SYNC_SUCCESS_NO_ACTION:
+			qDebug()<<bmSyncStatus[status]<<tz::tr(bmSyncStatus[status]);
+			setIcon(1,tz::tr(bmSyncStatus[status]));
+			break;
+		case BM_SYNC_SUCCESS_WITH_ACTION:
+			setIcon(1,tz::tr(bmSyncStatus[status]));
+			trayIcon->showMessage(APP_NAME,tz::tr(bmSyncStatus[status]), QSystemTrayIcon::Information);
+			break;
+		case BM_SYNC_FAIL:
+			break;
+		case BM_SYNC_FAIL_SERVER_NET_ERROR:
+		case BM_SYNC_FAIL_SERVER_REFUSE:
+		case BM_SYNC_FAIL_SERVER_BMXML_FAIL:
+		case BM_SYNC_FAIL_BMXML_TIMEOUT:
+		case BM_SYNC_FAIL_MERGE_ERROR:
+		case BM_SYNC_FAIL_PROXY_ERROR:
+		case BM_SYNC_FAIL_PROXY_AUTH_ERROR:
+			setIcon(0,tz::tr(bmSyncStatus[status]));
+			break;
+		case BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL:
+			break;
+	}	
 }
 
 void MyWidget::testAccountFinished(bool err,QString result)
