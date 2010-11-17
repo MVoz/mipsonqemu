@@ -118,7 +118,6 @@ void postHttp::run()
 void postHttp::httpDone(bool error)
 {
 	THREAD_MONITOR_POINT;
-
 	STOP_TIMER(postTimer);
 	if(!error)
 	{
@@ -143,7 +142,7 @@ void postHttp::httpDone(bool error)
 		setMaxGroupId(newgroupid);
 		setUpdatetime(lastModified);
 		setBmId(bmid);
-		delete resultXml;
+		DELETE_OBJECT(resultXml);
 		qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),getMaxGroupId(),qPrintable(lastModified),getBmId());
 	}
 	setPostError(error);

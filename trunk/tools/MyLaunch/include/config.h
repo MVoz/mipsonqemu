@@ -383,5 +383,20 @@ enum CONFIG_NOTIFY{
 #define THREAD_MONITOR_POINT \
 	if(QThread::currentThread()!=this)\
 		qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
+
+enum BM_SYNC_STATUS{
+	BM_SYNC_SUCCESS_NO_ACTION=0,//merge success but no any action
+	BM_SYNC_SUCCESS_WITH_ACTION,//merge successful with action
+	BM_SYNC_FAIL,
+	BM_SYNC_FAIL_SERVER_NET_ERROR,//can't connect to server	
+	BM_SYNC_FAIL_SERVER_REFUSE,//server refuse sevice
+	BM_SYNC_FAIL_SERVER_BMXML_FAIL,//get bm.xml file failed
+	BM_SYNC_FAIL_BMXML_TIMEOUT,
+	BM_SYNC_FAIL_MERGE_ERROR,//failed to merge data to server
+	BM_SYNC_FAIL_PROXY_ERROR,//can't connect to proxy
+	BM_SYNC_FAIL_PROXY_AUTH_ERROR,//auth failed when connect to proxy		
+	BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL,
+	BM_SYNC_FAIL_SERVER_LOGIN
+};
 #endif
 

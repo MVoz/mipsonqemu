@@ -74,6 +74,7 @@ extern QSemaphore gSemaphore;
 
 
 extern CatItem* gSearchResult;
+
 //extern QSqlDatabase db;
 //extern int language;
 //extern struct browserinfo* browserInfo;

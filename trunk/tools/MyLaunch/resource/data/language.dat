@@ -211,3 +211,52 @@ chinese=touchAny已经处于运行状态 comma 请按shortkey
 [touchAny]
 english=touchAny
 chinese=弹指网
+
+[bm_sync_success_no_action]
+english=Synchronize bookmarks success
+chinese=书签同步成功
+
+[bm_sync_success_with_action]
+english=Synchronize bookmarks success
+chinese=书签同步成功
+
+[bm_sync_fail]
+english=Synchronize bookmarks fail
+chinese=书签同步失败
+
+[bm_sync_fail_server_net_error]
+english=Synchronize bookmarks fail comma please check net setting.
+chinese=书签同步失败 comma 请检查网络
+
+[bm_sync_fail_server_refuse]
+english=Synchronize bookmarks fail comma The server is in Maintenance comma please try again after a while.
+chinese=书签同步失败 comma 服务器正在维护中 comma 暂停服务 comma 非常抱歉
+
+[bm_sync_fail_server_bmxml_fail]
+english=Synchronize bookmarks fail comma please check net setting.
+chinese=书签同步失败 comma 请检查网络
+
+[bm_sync_fail_bmxml_timeout]
+english=Synchronize bookmarks fail comma please check net setting.
+chinese=书签同步失败 comma 请检查网络
+
+[bm_sync_fail_merge_error]
+english=Synchronize bookmarks fail comma please check net setting.
+chinese=书签同步失败 comma 请检查网络
+
+[bm_sync_fail_proxy_error]
+english=Synchronize bookmarks fail comma Can't connect the proxy server.
+chinese=书签同步失败 comma 无法连接代理服务器
+
+[bm_sync_fail_proxy_auth_error]
+english=Synchronize bookmarks fail comma Can't login into the proxy server.
+chinese=书签同步失败 comma 无法登录代理服务器
+
+[bm_sync_fail_server_testaccount_fail]
+english=Test account fail comma please check account&password in proxy.
+chinese=测试帐号失败 comma 请检查用户名与密码
+
+[bm_sync_fail_server_login]
+english=Login server fail comma please check your account&password.
+chinese=登录服务器失败 comma 请检查用户名与密码
+

@@ -8,7 +8,7 @@ mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString 
 	file = NULL;
 	posthp=NULL;
 	firefox_version=0;
-	modifiedFlag=0;
+	status=MERGE_STATUS_SUCCESS_NO_MODIFY;
 	terminatedFlag=0;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
@@ -37,7 +37,8 @@ bool mergeThread::checkXmlfileFromServer()
 			goto good;
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
-			((BookmarkSync*)(this->parent()))->error=LOGIN_FALIL;
+			//((BookmarkSync*)(this->parent()))->status=BM_SYNC_FAIL_SERVER_LOGIN;
+			status = MERGE_STATUS_FAIL_LOGIN;
 			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL);
 			goto bad;
 		}
@@ -356,7 +357,7 @@ ffout:
 	}
 #endif
 	//write to lastupdate
-	if((!QFile::exists(localBmFullPath)||modifiedFlag)&&!terminatedFlag){
+	if((!QFile::exists(localBmFullPath)||(status==MERGE_STATUS_SUCCESS_WITH_MODIFY))&&!terminatedFlag){
 		storeLocalbmData(localBmFullPath,browserInfo,browserenable,result_bc,lastUpdate,updateTime);
 	}
 
@@ -445,16 +446,10 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	posthp->browserid=browserType;
 	posthp->username = username;
 	posthp->password = password;
-	//posthp->username=settings->value("Account/Username","").toString();
-	//posthp->password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);
-	//qDebug()<<__FUNCTION__<<posthp->username<<":"<<posthp->password;
-	//	  connect(this->parent(),SIGNAL(posthttpTerminateNotify()),posthp,SLOT(terminateThread()));
 
 	switch (bc->flag)
 	{
 	case BOOKMARK_CATAGORY_FLAG:
-
-
 		if (action)	//add
 		{
 			bc->parentId = parentId;
@@ -466,13 +461,13 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 			posthp->action = POST_HTTP_ACTION_DELETE_DIR;
 			posthp->bmid =  bc->groupId;
 		}
-
 		posthp->postString = postString;
 		posthp->start();
 		posthp->wait();
 		if(getPostError())
 		{
 			qDebug("post error happen!");
+			status = MERGE_STATUS_FAIL;
 			terminatedFlag = 1;
 			return;
 		}
@@ -491,14 +486,17 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 
 		break;
 	case BOOKMARK_ITEM_FLAG:
-		//	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
-
 		if (action)
 		{
 			//add
 			bc->parentId = parentId;
 			bc->groupId = 0;
-			postString = QString("address=%1&subject=%2&addsubmit=true&category=0&source=client").arg(QString(QUrl::toPercentEncoding(bc->link, ":/?"))).arg(QString(QUrl::toPercentEncoding(bc->name)));	
+			//postString = QString("address=%1&subject=%2&addsubmit=true&category=0&source=client").arg(QString(QUrl::toPercentEncoding(bc->link, ":/?"))).arg(QString(QUrl::toPercentEncoding(bc->name)));
+			postString = QString("address=");
+			postString.append(QString(QUrl::toPercentEncoding(bc->link, ":/?")));
+			postString.append("&subject=");
+			postString.append(QString(QUrl::toPercentEncoding(bc->name)));
+			postString.append("&addsubmit=true&category=0&source=client");
 			posthp->action = POST_HTTP_ACTION_ADD_URL;
 		}else
 		{
@@ -508,7 +506,6 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		}
 
 		posthp->bmid =  bc->bmid;
-
 		posthp->postString = postString;
 		posthp->start();
 		posthp->wait();
@@ -517,6 +514,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 		if(getPostError())
 		{
 			qDebug("post error happen!");
+			status = MERGE_STATUS_FAIL;
 			terminatedFlag  = 1;
 			return;
 		}
@@ -757,7 +755,7 @@ void mergeThread::handleItem(
 							 int localOrServer
 							 )
 {
-	modifiedFlag=1;
+	status=MERGE_STATUS_SUCCESS_WITH_MODIFY;
 	switch (status)
 	{
 	case MERGE_STATUS_NONE:		//never exist 

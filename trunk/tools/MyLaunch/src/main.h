@@ -331,7 +331,7 @@ private:
 		void updateApp();
 		//	void bookmark_finished(bool error);
 		void testAccountFinished(bool err,QString result);
-		void bmSyncFinishedStatus(bool error);
+		void bmSyncFinishedStatus(int status);
 		void bmSyncerFinished();
 		void reSync();
 		void stopSync();

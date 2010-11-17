@@ -82,7 +82,7 @@ public:
 	int mode;	
 	int http_finish;
 	int http_timerover;	
-	int error;
+	int status;
 
 	volatile int testServerResult;
 	volatile bool needwatchchild;	
@@ -111,7 +111,7 @@ public slots:
 	void monitorTimeout();
 	void clearobject();
 signals:
-	void bmSyncFinishedStatusNotify(bool error);
+	void bmSyncFinishedStatusNotify(int status);
 	void updateStatusNotify(int type,int status);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(bool error,QString result);
