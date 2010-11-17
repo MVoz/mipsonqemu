@@ -217,6 +217,7 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 	//qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
+		QDEBUG_LINE;
 		if(md5key==tz::fileMd5(filename_fromserver)){
 			mgthread = new mergeThread(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
@@ -240,7 +241,10 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 void BookmarkSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
+	QDEBUG_LINE;
+	qDebug()<<mgthread;
 	if(mgthread){
+		qDebug()<<mgthread->status;
 		switch(mgthread->status){
 			case MERGE_STATUS_SUCCESS_NO_MODIFY:
 				status = BM_SYNC_SUCCESS_NO_ACTION;
@@ -260,6 +264,7 @@ void BookmarkSync::mergeDone()
 			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 		}
 	}
+	qDebug()<<status;
 	DELETE_OBJECT(mgthread);
 	exit(status);
 }

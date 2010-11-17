@@ -212,6 +212,11 @@ chinese=touchAny已经处于运行状态 comma 请按shortkey
 english=touchAny
 chinese=弹指网
 
+
+[shortkey]
+english=shortkey
+chinese=快捷键
+
 [bm_sync_success_no_action]
 english=Synchronize bookmarks success
 chinese=书签同步成功
