@@ -265,3 +265,13 @@ chinese=测试帐号失败 comma 请检查用户名与密码
 english=Login server fail comma please check your account&password.
 chinese=登录服务器失败 comma 请检查用户名与密码
 
+[update_net_error_proxy]
+english=Synchronize bookmarks fail comma Can't connect the proxy server.
+chinese=书签同步失败 comma 无法连接代理服务器
+
+[update_net_error_proxy_auth]
+english=Synchronize bookmarks fail comma Can't login into the proxy server.
+chinese=书签同步失败 comma 无法登录代理服务器
+
+
+

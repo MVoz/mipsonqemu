@@ -115,31 +115,7 @@ void OptionsDlg::startSync()
 {
 	emit optionStartSyncNotify();
 }
-/*
-void OptionsDlg::bookmark_finished(bool error)
-{
-QDEBUG("%s %d error=%d syncDlg=0x%08x",__FUNCTION__,__LINE__,error,syncDlg);
-gSyncer->wait();
-gSyncer.reset();
-if (!error&&syncDlg)
-syncDlg->accept();	
-}
 
-void OptionsDlg::testAccountFinished(bool err,QString result)
-{
-QDEBUG("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,syncDlg,qPrintable(result));
-gSyncer->wait();
-gSyncer.reset();
-if (!err&&syncDlg)
-{
-if(result==SUCCESSSTRING)
-syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
-else
-syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
-
-}
-}
-*/
 void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
 {
 	qDebug("%s error=%d\n",__FUNCTION__,err);
@@ -555,43 +531,6 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 		break;
 	}
 	emit configModifyNotify(CMDLIST);
-//	qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
-#if 1
-
-#else
-	QString pattern("^[ ]{0,}[a-zA-Z]:\[^/*\"<>\|?]*$");
-	QRegExp pathReg(pattern);
-	pathReg.setCaseSensitivity(Qt::CaseSensitive);
-	QRegExp::PatternSyntax syntax = QRegExp::PatternSyntax(QRegExp::RegExp);
-	pathReg.setPatternSyntax(syntax);
-	int cmdLength=cmdCommand.length();
-	int matchPos=pathReg.indexIn(cmdCommand);
-	int matchLength=pathReg.matchedLength();
-	QDEBUG("cmd=%s regvalid=%d cmdlength=%d matchPos=%d matchLength=%d\n",qPrintable(cmdCommand),pathReg.isValid(),cmdLength,matchPos,matchLength);
-	if(matchPos==0&&cmdLength==matchLength){
-		//is command
-		settings->beginWriteArray("runner/cmds");		
-		for (int i = 0; i < cmdLists.size(); ++i)
-		{
-			settings->setArrayIndex(i);
-			settings->setValue("name", cmdLists.at(i).name);
-			settings->setValue("file", cmdLists.at(i).base);
-			settings->setValue("args", cmdLists.at(i).parameters);
-		}
-		settings->endArray();
-	}else{//is http
-		settings->beginWriteArray("weby/sites");		
-		for (int i = 0; i < cmdLists.size(); ++i)
-		{
-			settings->setArrayIndex(i);
-			settings->setValue("name", cmdLists.at(i).name);
-			settings->setValue("base", cmdLists.at(i).base);
-			settings->setValue("query", cmdLists.at(i).parameters);
-			settings->setValue("default", true);
-		}
-		settings->endArray();
-	}
-#endif
 
 }
 int OptionsDlg::checkListDirExist(const QString& dirname)
@@ -729,5 +668,4 @@ void OptionsDlg::startUpdater()
 
 	updaterDlg->setModal(1);
 	updaterDlg->show();	
-
 }
