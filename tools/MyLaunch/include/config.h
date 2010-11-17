@@ -114,26 +114,6 @@
 #define UPDATESTATUS_FLAG_APPLY 0
 #define UPDATESTATUS_FLAG_RETRY 1
 
-/*
-#define HTTP_TEST_ACCOUNT_SUCCESS_STRING  "http_test_account_success"
-#define  HTTP_TEST_ACCOUNT_FAIL_STRING  "http_test_account_fail"
-#define HTTP_TIMEOUT_STRING  "http_timeout"
-#define BOOKMARK_SYNC_START_STRING  "bookmark_sync_start"
-#define UPDATE_NET_ERROR_STRING  "update_net_error"
-#define SYNC_SUCCESSFUL_STRING "sync_successful"
-#define HTTP_GET_INI_SUCCESSFUL_STRING "http_get_ini_successful"
-#define HTTP_GET_INI_NOT_EXISTED_STRING "http_get_ini_not_existed"
-#define HTTP_GET_INI_FAILED_STRING "http_get_ini_failed"
-#define  HTTP_GET_FILE_SUCCESSFUL_STRING "http_get_file_successful"
-#define  HTTP_GET_FILE_FAILED_STRING "http_get_file_failed"
-#define  HTTP_GET_FILE_NOT_EXISTED_STRING "http_get_file_not_existed"
-#define HTTP_NEED_RETRY_STRING "http_need_retry"
-#define UPDATE_FAILED_STRING "update_failed"
-#define UPDATE_SUCCESSFUL_STRING "update_successful"
-#define UPDATE_NO_NEED_STRING "update_no_need"
-
-#define UPDATE_SERVER_REFUSE_STRING "server_refuse"
-*/
 
 #define LOGIN_FALIL_STRING   "login_failure_please_re_login"
 
@@ -280,18 +260,7 @@
 
 #define NOW_SECONDS  (QDateTime::currentDateTime().toTime_t())
 
-/*
-#define CLASS_MONITER_TERMINATE_FLAG       \
-public:\
-int terminateFlag;\
-void setTerminateFlag(int f)\
-{\
-terminateFlag=f;\
-}\
-public slots:\
-void monitorTimerSlot();
-*/
-//#define DELETE_OBJECT(x) if(x){	(x)->deleteLater();(x)=NULL;}
+
 #define DELETE_OBJECT(x) if(x){	delete (x);(x)=NULL;}
 
 #define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
@@ -303,38 +272,6 @@ void monitorTimerSlot();
 
 #define NEW_TIMER(x) x = new QTimer(this);
 
-enum httpState
-{
-	HTTP_UNCONNECTED=0,
-	HTTP_HOSTLOOKUP,
-	HTTP_CONNECTING,
-	HTTP_SENDING,
-	HTTP_READING,
-	HTTP_CONNECTED,
-	HTTP_CLOSING,
-	HTTP_TIMEOUT,
-	HTTP_TEST_ACCOUNT_SUCCESS,
-	HTTP_TEST_ACCOUNT_FAIL,
-	HTTP_GET_INI_FAILED,
-	HTTP_GET_INI_SUCCESSFUL,
-	HTTP_GET_INI_NOT_EXISTED,
-	HTTP_GET_FILE_SUCCESSFUL,
-	HTTP_GET_FILE_NOT_EXISTED,
-	HTTP_GET_FILE_FAILED,
-	UPDATE_FAILED,
-	UPDATE_SUCCESSFUL,
-	HTTP_NEED_RETRY,
-	UPDATE_NO_NEED,
-	UPDATE_NET_ERROR,
-	BOOKMARK_SYNC_START,
-	UPDATE_PROCESSING,
-	SYNC_SUCCESSFUL,	
-	LOGIN_FALIL,
-	UPDATE_SERVER_REFUSE,
-	HTTP_CONNECT_SERVER,
-	UPDATE_NET_ERROR_PROXY,
-	UPDATE_NET_ERROR_PROXY_AUTH
-};
 
 #define PASSWORD_ENCRYPT_KEY 98122130
 #define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()+"';");
@@ -386,8 +323,37 @@ enum CONFIG_NOTIFY{
 	if(QThread::currentThread()!=this)\
 		qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 
-enum BM_SYNC_STATUS{
-	BM_SYNC_SUCCESS_NO_ACTION=0,//merge success but no any action
+enum {
+	HTTP_UNCONNECTED=0,
+	HTTP_HOSTLOOKUP,
+	HTTP_CONNECTING,
+	HTTP_SENDING,
+	HTTP_READING,
+	HTTP_CONNECTED,
+	HTTP_CLOSING,
+	HTTP_TIMEOUT,
+	HTTP_TEST_ACCOUNT_SUCCESS,
+	HTTP_TEST_ACCOUNT_FAIL,
+	HTTP_GET_INI_FAILED,
+	HTTP_GET_INI_SUCCESSFUL,
+	HTTP_GET_INI_NOT_EXISTED,
+	HTTP_GET_FILE_SUCCESSFUL,
+	HTTP_GET_FILE_NOT_EXISTED,
+	HTTP_GET_FILE_FAILED,
+	HTTP_NEED_RETRY,
+	TRY_CONNECT_SERVER,
+	
+	UPDATE_FAILED,
+	UPDATE_SUCCESSFUL,	
+	UPDATE_NO_NEED,
+	UPDATE_NET_ERROR,	
+	UPDATE_PROCESSING,
+	UPDATE_SERVER_REFUSE,	
+	UPDATE_NET_ERROR_PROXY,
+	UPDATE_NET_ERROR_PROXY_AUTH,
+
+	BM_SYNC_START,
+	BM_SYNC_SUCCESS_NO_ACTION,//merge success but no any action
 	BM_SYNC_SUCCESS_WITH_ACTION,//merge successful with action
 	BM_SYNC_FAIL,
 	BM_SYNC_FAIL_SERVER_NET_ERROR,//can't connect to server	
@@ -400,6 +366,7 @@ enum BM_SYNC_STATUS{
 	BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL,
 	BM_SYNC_FAIL_SERVER_LOGIN
 };
+
 
 enum TEST_NET_RESULT{
 	TEST_NET_REFUSE=0,

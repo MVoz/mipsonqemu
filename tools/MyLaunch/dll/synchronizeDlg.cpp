@@ -40,6 +40,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	setFixedSize(360, 100);
 	getHtml("./html/processDlg.html");
 	status=0;
+/*
 	statusMap[HTTP_UNCONNECTED]="http_unconnected";
 	statusMap[HTTP_HOSTLOOKUP]="http_hostlookup";
 	statusMap[HTTP_CONNECTING]="http_connecting";
@@ -69,6 +70,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	statusMap[HTTP_CONNECT_SERVER]="http_connect_server";
 	statusMap[UPDATE_NET_ERROR_PROXY]="update_net_error_proxy";
 	statusMap[UPDATE_NET_ERROR_PROXY_AUTH]="update_net_error_proxy_auth";
+*/
 }
 
 
@@ -76,7 +78,7 @@ synchronizeDlg::~synchronizeDlg()
 {
 	QResource::unregisterResource("options.rcc");
 	DELETE_OBJECT(webView);
-	statusMap.clear();
+//	statusMap.clear();
 }
 void synchronizeDlg::getHtml(const QString & path)
 {
@@ -114,18 +116,19 @@ void synchronizeDlg::updateStatus(int type,int s)
 	QString jsStr;
 	status=s;
 	statusTime = NOW_SECONDS;
+	char *statusStr = tz::getstatusstring(s);
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:
 		jsStr.append(QString("$$('loading').style.display='block';"));
 		jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(TOCHAR(statusMap[s]))));
+		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(statusStr)));
 		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 		break;
 	case UPDATESTATUS_FLAG_RETRY:
 		jsStr.append(QString("$$('loading').style.display='block';"));
 		jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(TOCHAR(statusMap[s]))));
+		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(statusStr)));
 		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 		break;
 	}

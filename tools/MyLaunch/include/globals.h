@@ -71,8 +71,6 @@ extern shared_ptr<CatBuilder> gBuilder;
 extern QString gNativeSep;
 extern QString gSearchTxt;
 extern QSemaphore gSemaphore;
-
-
 extern CatItem* gSearchResult;
 
 //extern QSqlDatabase db;

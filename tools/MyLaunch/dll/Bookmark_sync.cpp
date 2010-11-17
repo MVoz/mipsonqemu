@@ -51,22 +51,22 @@ void BookmarkSync::testNetFinished()
 	switch(testServerResult)
 	{
 	case TEST_NET_ERROR_SERVER:
-		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR);
 		status = BM_SYNC_FAIL_SERVER_NET_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_ERROR);
 		status = BM_SYNC_FAIL_PROXY_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY_AUTH:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_AUTH_ERROR);
 		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_REFUSE:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_SERVER_REFUSE);
 		status = BM_SYNC_FAIL_SERVER_REFUSE;
 		exit(status);
 		break;
@@ -89,7 +89,7 @@ void BookmarkSync::testNetFinished()
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
 					http->setHost(host);
-					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BOOKMARK_SYNC_START);
+					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START);
 					http->get(url, file);
 				}
 			}else if(mode==BOOKMARK_TESTACCOUNT_MODE){
@@ -177,7 +177,7 @@ void BookmarkSync::run()
 	testThread = new testServerThread();
 	testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
-	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);
+	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,TRY_CONNECT_SERVER);
 	testThread->start(QThread::IdlePriority);
 
 	int ret=exec();
@@ -239,9 +239,9 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 	switch(http->error()){
 		case QHttp::ProxyAuthenticationRequiredError:
 			status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
-		break;
+			break;
 		default:
-			mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+			mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR);
 			break;
 	}
 	mergeDone();
@@ -268,7 +268,7 @@ void BookmarkSync::mergeDone()
 		if((status == BM_SYNC_SUCCESS_NO_ACTION)||(status == BM_SYNC_SUCCESS_WITH_ACTION)){
 			settings->setValue("lastsyncstatus",1);
 			settings->sync();
-			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
+			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_ACTION);
 		}
 	}
 	DELETE_OBJECT(mgthread);

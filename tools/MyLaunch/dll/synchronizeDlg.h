@@ -40,7 +40,7 @@ public:
 public:
 	QWebView *webView;
 	//	QStringList httpStateString;
-	QMap <int,QString> statusMap;
+//	QMap <int,QString> statusMap;
 	int status;
 	uint statusTime;//second
 	public slots:
