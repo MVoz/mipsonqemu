@@ -75,17 +75,6 @@ public:
 	QString destdir;
 	QString branch;
 	QString savefilename;
-#if 0
-	//public:
-	//		int terminateFlag;
-	//		QTimer* monitorTimer;
-	//		void setTerminateFlag(int f)
-	//		{
-	terminateFlag=f;
-}
-public slots:
-	void monitorTimerSlot();
-#endif
 public:
 	GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp();
@@ -141,17 +130,6 @@ public:
 	//QTimer* testNetTimer;
 	int mode;
 	bool needwatchchild;
-#if 0	
-public:
-	int terminateFlag;
-	QTimer* monitorTimer;
-	void setTerminateFlag(int f)
-	{
-		terminateFlag=f;
-	}
-	public slots:
-		void monitorTimerSlot();
-#endif
 public:
 	updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):MyThread(parent),mode(m),settings(s)
 	{
@@ -182,7 +160,7 @@ public:
 		//void testNetFinished(QNetworkReply*);
 		void testNetFinished();
 		void terminateThread();
-		void monitorTimerSlot();
+		void monitorTimeout();
 		//void testNetTimeout();
 
 signals:

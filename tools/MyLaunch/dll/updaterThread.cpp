@@ -148,7 +148,7 @@ void GetFileHttp::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	//MyThread::run();
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	/*
 	monitorTimer = new QTimer();
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
@@ -482,7 +482,7 @@ void updaterThread::terminateThread()
 	if(THREAD_IS_RUNNING(fh))
 		fh->setTerminateFlag(1);
 }
-void updaterThread::monitorTimerSlot()
+void updaterThread::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
@@ -510,7 +510,7 @@ void updaterThread::run()
 	monitorTimer->start(10);
 	monitorTimer->moveToThread(this);
 	*/
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	tz::netProxy(SET_MODE,settings,NULL);
 
 	if(mode == UPDATE_DLG_MODE )

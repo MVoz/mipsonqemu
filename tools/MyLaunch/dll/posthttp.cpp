@@ -37,7 +37,7 @@ void postHttp::gorun()
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
 	monitorTimer->start(10);
 	*/
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	/*
 	postTimer=new QTimer();
 	connect(postTimer, SIGNAL(timeout()), this, SLOT(postTimerSlot()), Qt::DirectConnection);
