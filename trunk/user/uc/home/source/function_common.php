@@ -2723,6 +2723,7 @@ function checkclientauth($arr)
 	
 	//同步获取用户源
 	if(!$passport = getpassport($username, $password)) {
+		header('md5key:'.md5('login_failure_please_re_login')); 
 		exitwithtip('login_failure_please_re_login');
 	}
 	$_SGLOBAL['supe_uid']=$_SGLOBAL['uid'] = intval($passport['uid']);
