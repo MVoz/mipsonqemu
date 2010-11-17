@@ -437,19 +437,19 @@ void updaterThread::testNetFinished()
 	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
 	{
-	case -1:
+	case TEST_NET_ERROR_SERVER:
 		if(mode==UPDATE_DLG_MODE) 
 			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);	
 		error = 1;
 		quit();
 		break;
-	case 0:
+	case TEST_NET_REFUSE:
 		if(mode==UPDATE_DLG_MODE) 
 			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);		
 		quit();
 		error = 1;
 		break;
-	case 1:
+	case TEST_NET_SUCCESS:
 		downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
 		break;
 	}	

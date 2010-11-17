@@ -50,17 +50,27 @@ void BookmarkSync::testNetFinished()
 	DELETE_OBJECT(testThread);
 	switch(testServerResult)
 	{
-	case -1:
+	case TEST_NET_ERROR_SERVER:
 		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
 		status = BM_SYNC_FAIL_SERVER_NET_ERROR;
 		exit(status);
 		break;
-	case 0:
+	case TEST_NET_ERROR_PROXY:
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR);
+		status = BM_SYNC_FAIL_PROXY_ERROR;
+		exit(status);
+		break;
+	case TEST_NET_ERROR_PROXY_AUTH:
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR);
+		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
+		exit(status);
+		break;
+	case TEST_NET_REFUSE:
 		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);
 		status = BM_SYNC_FAIL_SERVER_REFUSE;
 		exit(status);
 		break;
-	case 1:
+	case TEST_NET_SUCCESS:
 		{
 			http = new QHttp();
 			http->moveToThread(this);
@@ -217,7 +227,6 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 	//qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
-		QDEBUG_LINE;
 		if(md5key==tz::fileMd5(filename_fromserver)){
 			mgthread = new mergeThread(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
@@ -227,13 +236,15 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 		}
 	}
 	status = BM_SYNC_FAIL_SERVER_BMXML_FAIL;
-	if(http->error()!=QHttp::ProxyAuthenticationRequiredError)			
-	{
-		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
-		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+
+	switch(http->error()){
+		case QHttp::ProxyAuthenticationRequiredError:
+			status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
+		break;
+		default:
+			mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+			break;
 	}
-	//else
-	//qDebug("http error %s",qPrintable(http->errorString()));
 	mergeDone();
 
 }
@@ -241,10 +252,7 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 void BookmarkSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
-	QDEBUG_LINE;
-	qDebug()<<mgthread;
 	if(mgthread){
-		qDebug()<<mgthread->status;
 		switch(mgthread->status){
 			case MERGE_STATUS_SUCCESS_NO_MODIFY:
 				status = BM_SYNC_SUCCESS_NO_ACTION;
@@ -264,7 +272,6 @@ void BookmarkSync::mergeDone()
 			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,SYNC_SUCCESSFUL);
 		}
 	}
-	qDebug()<<status;
 	DELETE_OBJECT(mgthread);
 	exit(status);
 }
