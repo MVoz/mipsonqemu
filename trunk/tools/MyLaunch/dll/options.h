@@ -70,7 +70,7 @@ public:
 	//shared_ptr <BookmarkSync> gSyncer;
 	//shared_ptr <CatBuilder> catalogBuilder;
 	QSettings *settings;
-	postHttp *accountTestHttp;
+//	postHttp *accountTestHttp;
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
 	QNetworkProxy proxy;

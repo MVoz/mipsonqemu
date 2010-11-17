@@ -64,10 +64,9 @@ using namespace boost;
 class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 {
 	Q_OBJECT;
-
 public:
 	QHttp * http;
-	postHttp *accountTestHttp;
+//	postHttp *accountTestHttp;
 	QTimer* httpTimer;
 	QSemaphore *semaphore;
 	QString host;
@@ -83,7 +82,7 @@ public:
 	QSqlDatabase *db;
 	mergeThread *mgthread;
 	int error;
-	uint httpProxyEnable;
+//	uint httpProxyEnable;
 	QString filename_fromserver;
 	testServerThread *testThread;
 	volatile int testServerResult;
@@ -94,25 +93,25 @@ public:
 	~BookmarkSync();
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}
-	void setUsername(const QString& s){	username = s;}
+	void setUsername(const QString& s){username = s;}
 	void setPassword(const QString& s){password = s;}
 	void run();
-	public slots: 
-		void bookmarkGetFinished(bool error);
-		void testAccountFinished(bool error);
-		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-		void mergeDone();
-		void httpTimerSlot();
-		void mgUpdateStatus(int flag,int status);
-		void testNetFinished();
-		void terminateThread();
-		void monitorTimerSlot();
-		void clearobject();
+public slots: 
+	void bmxmlGetFinished(bool error);
+	void testAccountFinished(bool error);
+	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
+	void mergeDone();
+	void httpTimerSlot();
+	void mgUpdateStatus(int flag,int status);
+	void testNetFinished();
+	void terminateThread();
+	void monitorTimerSlot();
+	void clearobject();
 signals:
-		void bmSyncFinishedStatusNotify(bool error);
-		void updateStatusNotify(int type,int status);
-		void readDateProgressNotify(int done, int total);
-		void testAccountFinishedNotify(bool error,QString result);
+	void bmSyncFinishedStatusNotify(bool error);
+	void updateStatusNotify(int type,int status);
+	void readDateProgressNotify(int done, int total);
+	void testAccountFinishedNotify(bool error,QString result);
 };
 
 #define LOCAL_EXIST_OFFSET  2
