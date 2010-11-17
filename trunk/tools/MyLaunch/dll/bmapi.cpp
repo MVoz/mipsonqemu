@@ -65,6 +65,51 @@ int language=DEFAULT_LANGUAGE;
 static QString iePath;
 char* gLanguageList[]={"chinese","english"};
 
+char *statusString[]={
+	"http_unconnected",
+	"http_hostlookup",
+	"http_connecting",
+	"http_sending",
+	"http_reading",
+	"http_connected",
+	"http_closing",
+	"http_timeout",
+	"http_test_account_success",
+	"http_test_account_fai",
+	"http_get_ini_failed",
+	"http_get_ini_successful",
+	"http_get_ini_not_existed",
+	"http_get_file_successful",
+	"http_get_file_not_existed",
+	"http_get_file_failed",
+	"http_need_retry",
+	"try_connect_server",
+	
+	"update_failed",
+	"update_successful",	
+	"update_no_need",
+	"update_net_error",	
+	"update_processing",
+	"update_server_refuse",
+	"update_net_error_proxy",
+	"update_net_error_proxy_auth",
+
+	"bm_sync_start",
+	"bm_sync_success_no_action",
+	"bm_sync_success_with_action",
+	"bm_sync_fail",
+	"bm_sync_fail_server_net_error",
+	"bm_sync_fail_server_refuse",
+	"bm_sync_fail_server_bmxml_fail",
+	"bm_sync_fail_bmxml_timeout",
+	"bm_sync_fail_merge_error",
+	"bm_sync_fail_proxy_error",
+	"bm_sync_fail_proxy_auth_error",		
+	"bm_sync_fail_server_testaccount_fail",
+	"bm_sync_fail_server_login"
+};
+
+
 //static int testnetresult = 0;
 //static int netProxyEnable = 0;
 static int runparameters[RUN_PARAMETER_END]={0};
@@ -1365,5 +1410,11 @@ QString tz::getUserIniDir(int mode,const QString& s)
 	return "";
 }
 
+char* tz::getstatusstring(int i){
+	if((i>=0)&&(i<sizeof(statusString)/sizeof(char*)))
+	return statusString[i];
+	else
+	return "unknown error";
+}
 
 

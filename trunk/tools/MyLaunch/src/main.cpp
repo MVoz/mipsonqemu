@@ -2238,27 +2238,14 @@ SYNCTIMER:
 void MyWidget::bmSyncFinishedStatus(int status)
 {
 	if(!trayIcon->isVisible()) return;
-	char* bmSyncStatus[]={
-		"bm_sync_success_no_action",
-		"bm_sync_success_with_action",
-		"bm_sync_fail",
-		"bm_sync_fail_server_net_error",
-		"bm_sync_fail_server_refuse",
-		"bm_sync_fail_server_bmxml_fail",
-		"bm_sync_fail_bmxml_timeout",
-		"bm_sync_fail_merge_error",
-		"bm_sync_fail_proxy_error",
-		"bm_sync_fail_proxy_auth_error",
-		"bm_sync_fail_server_testaccount_fail",
-		"bm_sync_fail_server_login"
-	};
+	char *statusStr = tz::getstatusstring(status);
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_ACTION:
-			setIcon(1,tz::tr(bmSyncStatus[status]));			
+			setIcon(1,tz::tr(statusStr));			
 			break;
 		case BM_SYNC_SUCCESS_WITH_ACTION:
-			setIcon(1,tz::tr(bmSyncStatus[status]));
-			trayIcon->showMessage(APP_NAME,tz::tr(bmSyncStatus[status]), QSystemTrayIcon::Information);
+			setIcon(1,tz::tr(statusStr));
+			trayIcon->showMessage(APP_NAME,tz::tr(statusStr), QSystemTrayIcon::Information);
 			break;
 		case BM_SYNC_FAIL:
 			break;
@@ -2270,7 +2257,7 @@ void MyWidget::bmSyncFinishedStatus(int status)
 		case BM_SYNC_FAIL_PROXY_ERROR:
 		case BM_SYNC_FAIL_PROXY_AUTH_ERROR:
 		case BM_SYNC_FAIL_SERVER_LOGIN:
-			setIcon(0,tz::tr(bmSyncStatus[status]));
+			setIcon(0,tz::tr(statusStr));
 			break;
 		case BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL:
 			break;		
@@ -2314,7 +2301,7 @@ void MyWidget::monitorTimerTimeout()
 			DELETE_SHAREOBJ(syncDlg);
 			break;
 		default:
-			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==SYNC_SUCCESSFUL)
+			if(syncDlg->status==UPDATE_SUCCESSFUL|syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_ACTION)
 			{
 				if((NOW_SECONDS-syncDlg->statusTime)>10)
 				{

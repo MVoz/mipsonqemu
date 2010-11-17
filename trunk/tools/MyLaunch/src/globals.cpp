@@ -50,8 +50,6 @@ QSemaphore gSemaphore;
 QString gNativeSep = QDir::toNativeSeparators("/");
 CatItem* gSearchResult;
 
-
-
 /*
 void log(QString str)
 {

@@ -37,7 +37,7 @@ bool mergeThread::checkXmlfileFromServer()
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
 			status = MERGE_STATUS_FAIL_LOGIN;
-			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL);
+			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_LOGIN);
 			goto bad;
 		}
 		else{
