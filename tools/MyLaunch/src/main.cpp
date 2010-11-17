@@ -217,41 +217,8 @@ void MyWidget::storeConfig(int mode)
 	if(backup_s)
 		delete backup_s;
 }
-
-MyWidget::MyWidget(QWidget * parent, PlatformBase * plat, bool rescue):
-#ifdef Q_WS_WIN
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
-#endif
-#ifdef Q_WS_X11
-//QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
-#endif
-platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
+QString MyWidget::getShortkeyString()
 {
-	setAttribute(Qt::WA_AlwaysShowToolTips);
-	setAttribute(Qt::WA_InputMethodEnabled);
-	//      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
-	// Load settings
-	dirs = platform->GetDirectories();
-	if (QFile::exists(dirs["portConfig"][0]))
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
-	else
-	{
-		if(QFile::exists(dirs["config"][0]))
-			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
-		else{
-			qDebug()<<"restore config!";
-			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
-			storeConfig(1);
-		}
-	}
-	//inital language
-	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
-
-	if (platform->isAlreadyRunning())
-		{
-			
 #ifdef Q_WS_WIN
 		int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
 #endif
@@ -288,12 +255,44 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 				keys.append("+Enter");
 				break;				
 		}
-		
+		return keys;
+}
+
+MyWidget::MyWidget(QWidget * parent, PlatformBase * plat, bool rescue):
+#ifdef Q_WS_WIN
+QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
+#endif
+#ifdef Q_WS_X11
+//QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
+QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
+#endif
+platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
+{
+	setAttribute(Qt::WA_AlwaysShowToolTips);
+	setAttribute(Qt::WA_InputMethodEnabled);
+	//      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+	// Load settings
+	dirs = platform->GetDirectories();
+	if (QFile::exists(dirs["portConfig"][0]))
+		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
+	else
+	{
+		if(QFile::exists(dirs["config"][0]))
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+		else{
+			qDebug()<<"restore config!";
+			gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+			storeConfig(1);
+		}
+	}
+	//inital language
+	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
+	shortkeyString=getShortkeyString();
+	if (platform->isAlreadyRunning())
+		{
 			QString text=tz::tr("app_is_runing");
-				qDebug()<<text<<keys;
-			text.replace("shortkey",keys);
-			qDebug()<<text;
-			
+			text.replace("shortkey",shortkeyString);		
 			QMessageBox::warning(this, tr(APP_NAME),text, QMessageBox::Ok,QMessageBox::Ok);
 			exit(1);
 		}
@@ -2255,8 +2254,7 @@ void MyWidget::bmSyncFinishedStatus(int status)
 	};
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_ACTION:
-			qDebug()<<bmSyncStatus[status]<<tz::tr(bmSyncStatus[status]);
-			setIcon(1,tz::tr(bmSyncStatus[status]));
+			setIcon(1,tz::tr(bmSyncStatus[status]));			
 			break;
 		case BM_SYNC_SUCCESS_WITH_ACTION:
 			setIcon(1,tz::tr(bmSyncStatus[status]));
@@ -2271,10 +2269,11 @@ void MyWidget::bmSyncFinishedStatus(int status)
 		case BM_SYNC_FAIL_MERGE_ERROR:
 		case BM_SYNC_FAIL_PROXY_ERROR:
 		case BM_SYNC_FAIL_PROXY_AUTH_ERROR:
+		case BM_SYNC_FAIL_SERVER_LOGIN:
 			setIcon(0,tz::tr(bmSyncStatus[status]));
 			break;
 		case BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL:
-			break;
+			break;		
 	}	
 }
 
@@ -2764,7 +2763,12 @@ void MyWidget::setIcon(int type,const QString& tip)
 			trayIcon->setIcon(icon);
 		break;
 	}	
-	trayIcon->setToolTip(tip);
+	QString tips = tip;
+	tips.append("\n");
+	tips.append(tz::tr("shortkey"));
+	tips.append(":");
+	tips.append(shortkeyString);
+	trayIcon->setToolTip(tips);
 }
 
 void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)

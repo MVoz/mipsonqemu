@@ -181,8 +181,6 @@ class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
 public:
-
-
 	MyWidget() {};
 	MyWidget(QWidget *parent, PlatformBase*, bool rescue );
 	~MyWidget();
@@ -275,6 +273,7 @@ public:
 	//	void deleteSynDlgTimer();
 	void getFavico(const QString& host,const QString& filename);
 	void scanDbFavicon();
+	QString getShortkeyString();
 private:
 	QHttp *http;
 	QBuffer *verBuffer;
@@ -295,10 +294,9 @@ private:
 	volatile int closeflag;
 	QTimer* monitorTimer;
 	OptionsDlg *ops;
-	public slots:
+	QString shortkeyString;
+public slots:
 		void monitorTimerTimeout();
-		//void syncDlgTimeout();
-		//	void deleteSynDlg();
 		void menuOptions();
 		void onHotKey();
 		void catalogBuilderTimeout();
@@ -342,17 +340,9 @@ private:
 		void configModify(int type);
 		void storeConfig(int mode=0);
 		void restoreUserCommand();
-
-		//	void restoreMainwin();
-		private slots:
-			void setIcon(int type,const QString& tip);
-			void iconActivated(QSystemTrayIcon::ActivationReason reason);
-signals:
-			//void reSync();
-			//	void stopSyncNotify();
-			//	void catalogTerminateNotify();
-		//	void silentUpdateTerminateNotify();
-			//	void syncerTerminateNotify();
+private slots:
+		void setIcon(int type,const QString& tip);
+		void iconActivated(QSystemTrayIcon::ActivationReason reason);
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);
