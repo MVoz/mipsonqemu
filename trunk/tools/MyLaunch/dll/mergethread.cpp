@@ -26,7 +26,6 @@ bool mergeThread::checkXmlfileFromServer()
 		return false;
 
 	QFile s_file(filename_fromserver);
-
 	if (!s_file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 	if (!s_file.atEnd()) {
@@ -37,7 +36,6 @@ bool mergeThread::checkXmlfileFromServer()
 			goto good;
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
-			//((BookmarkSync*)(this->parent()))->status=BM_SYNC_FAIL_SERVER_LOGIN;
 			status = MERGE_STATUS_FAIL_LOGIN;
 			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,LOGIN_FALIL);
 			goto bad;

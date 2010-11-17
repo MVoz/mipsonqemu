@@ -2301,41 +2301,6 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 	testAccountPassword=password;
 	_startSync(SYNC_MODE_TESTACCOUNT,SYN_MODE_NOSILENCE);
 	return;
-	/*
-	if(!gSyncer)
-	{
-	syncDlg.reset(new synchronizeDlg(this));
-	syncDlg->setModal(1);
-	syncDlg->show();	
-	if(syncDlgTimer)
-	{
-	if(syncDlgTimer->isActive())
-	syncDlgTimer->stop();
-	delete syncDlgTimer;
-	syncDlgTimer=NULL;
-	}
-	gSyncer.reset(new BookmarkSync(this,&db,gSettings,gIeFavPath,BOOKMARK_TESTACCOUNT_MODE));
-	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,QString)), syncDlg.get(), SLOT(updateStatus(int,int,QString)));
-	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-	gSyncer->setHost(BM_SERVER_ADDRESS);
-
-	qsrand((unsigned) QDateTime::currentDateTime().toTime_t());
-	uint key=qrand()%(getkeylength());
-	QString authstr=QString("username=%1 password=%2").arg(name).arg(password);
-	QString auth_encrypt_str="";
-	encryptstring(authstr,key,auth_encrypt_str);
-
-	QString testaccount_url;
-
-	testaccount_url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);		
-
-	gSyncer->setUrl(testaccount_url);
-	gSyncer->setUsername(password);
-	gSyncer->setPassword(name);
-	gSyncer->start();
-	}
-	*/
 }
 void MyWidget::monitorTimerTimeout()
 {

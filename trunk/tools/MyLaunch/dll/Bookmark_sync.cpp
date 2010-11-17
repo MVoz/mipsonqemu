@@ -56,12 +56,12 @@ void BookmarkSync::testNetFinished()
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY);
 		status = BM_SYNC_FAIL_PROXY_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY_AUTH:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH);
 		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 		exit(status);
 		break;
@@ -173,13 +173,12 @@ void BookmarkSync::run()
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
-	{
-		testThread = new testServerThread();
-		testThread->moveToThread(this);
+	
+	testThread = new testServerThread();
+	testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);
-		testThread->start(QThread::IdlePriority);
-	}	
+	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);
+	testThread->start(QThread::IdlePriority);
 
 	int ret=exec();
 	if(testServerResult==1){

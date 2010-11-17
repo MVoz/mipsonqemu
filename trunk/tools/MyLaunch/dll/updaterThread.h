@@ -57,24 +57,25 @@ public:
 	QHttp * http[UPDATE_MAX_RETRY_TIME];
 	QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
 	QFile *file[UPDATE_MAX_RETRY_TIME];
+	QDateTime* updateTime;
+	QMutex mutex;
+	QSettings *localSettings;
+	QSettings *serverSettings;
+	
 	QString host;
 	QString url;
-	//	QString filename;
 	QString updaterFilename;
 	QString downloadFilename;
 	QString md5;
-
-	QDateTime* updateTime;
-	QSettings *localSettings;
-	QSettings *serverSettings;
-	QMutex mutex;
+	QString destdir;
+	QString branch;
+	QString savefilename;
+	
 	int retryTime;
 	int mode;
 	int statusCode;
 	int errCode;
-	QString destdir;
-	QString branch;
-	QString savefilename;
+
 public:
 	GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
 	~GetFileHttp();
@@ -84,22 +85,14 @@ public:
 	void setServerBranch(const QString &s){branch = s;}
 	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
-	//	void	downloadFileFromServer(const QString &filename,int mode,uint checksum);
 	int newHttp();
 	void setProxy(QNetworkProxy& p);
 	void setDestdir(const QString& s){destdir = s;}
-	public slots: 
-		//void updaterDone(bool error);
+	void sendUpdateStatusNotify(int flag,int type);
+public slots: 
 		void getFileDone(bool error);
-	/*
-		void on_http_stateChanged(int stat);
-		void on_http_dataReadProgress(int done, int total);
-		void on_http_dataSendProgress(int done, int total);
-		void on_http_requestFinished(int id, bool error);
-		void on_http_requestStarted(int id);
-	*/
 		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-		void httpTimerSlot();
+		void httpTimeout();
 		void terminateThread();
 signals:
 		void  getIniDoneNotify(int error);
@@ -111,9 +104,7 @@ signals:
 class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public MyThread
 {
 	Q_OBJECT;
-
 public:
-	//QDateTime* updateTime;
 	QSettings *settings;
 	QSettings *localSettings;
 	QSettings *serverSettings;
@@ -124,10 +115,6 @@ public:
 	QSemaphore sem_downfile_start;
 	int needed;
 	int error;
-	//QSemaphore testNet;
-	//QNetworkAccessManager *manager;
-	//QNetworkReply *reply;
-	//QTimer* testNetTimer;
 	int mode;
 	bool needwatchchild;
 public:
@@ -138,10 +125,6 @@ public:
 		error=0;
 		localSettings =NULL;
 		serverSettings =NULL;
-		//updateTime =NULL;
-		//monitorTimer =NULL;
-		//terminateFlag = 0;
-		//testNetTimer =NULL;
 		testThread =NULL;
 		fh = NULL;
 		needwatchchild = false;
@@ -153,21 +136,16 @@ public:
 	int checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
 	void checkSilentUpdateApp();
+	void sendUpdateStatusNotify(int flag,int type);
 
-	public slots: 
-		void getIniDone(int err);
-		void getFileDone(int err);
-		//void testNetFinished(QNetworkReply*);
-		void testNetFinished();
-		void terminateThread();
-		void monitorTimeout();
-		//void testNetTimeout();
+public slots: 
+	void getIniDone(int err);
+	void getFileDone(int err);
+	void testNetFinished();
+	void terminateThread();
+	void monitorTimeout();
 
 signals:
-		//	void  updaterDoneNotify(bool error);
-		void updateStatusNotify(int type,int status);
-		//	void testNetTerminateNotify();
-		//	void getFileTerminateNotify();
-
+	void updateStatusNotify(int type,int status);
 };
 #endif

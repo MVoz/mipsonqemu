@@ -8,7 +8,7 @@
 #include "config.h"
 void GetFileHttp::terminateThread()
 {
-	httpTimerSlot();
+	httpTimeout();
 	retryTime = UPDATE_MAX_RETRY_TIME;
 
 }
@@ -23,62 +23,12 @@ void GetFileHttp::clearObject(){
 		}
 		DELETE_TIMER(monitorTimer);
 }
-/*
-
-void GetFileHttp::on_http_stateChanged(int stat)
+void GetFileHttp::sendUpdateStatusNotify(int flag,int type)
 {
-
-	switch (stat)
-	{
-	case QHttp::Unconnected:
-		// qDebug("Unconnected");
-		//  emit updateStatusNotify(HTTP_UNCONNECTED);
-		break;
-	case QHttp::HostLookup:
-		//  qDebug("HostLookup");
-		//  emit updateStatusNotify(HTTP_HOSTLOOKUP);
-		break;
-	case QHttp::Connecting:
-		// qDebug("Connecting");
-		//  emit updateStatusNotify(HTTP_CONNECTING);
-		break;
-	case QHttp::Sending:
-		// qDebug("Sending");
-		//  emit updateStatusNotify(HTTP_SENDING);
-		break;
-	case QHttp::Reading:
-		//  qDebug("Reading");
-		//  emit updateStatusNotify(HTTP_READING);
-		break;
-	case QHttp::Connected:
-		//  qDebug("Connected");
-		// emit updateStatusNotify(HTTP_CONNECTED);
-		break;
-	case QHttp::Closing:
-		//  qDebug("Closing");
-		//  emit updateStatusNotify(HTTP_CLOSING);
-		break;
-	}
-
+	if(mode!=UPDATE_DLG_MODE) 
+		return;
+	emit updateStatusNotify(flag,type);
 }
-
-void GetFileHttp::on_http_dataReadProgress(int done, int total)
-{
-	//qDebug("Downloaded:get file %s %d bytes out of %d", qPrintable(updaterFilename),done, total);
-	//	emit readDateProgressNotify(done, total);
-}
-
-void GetFileHttp::on_http_dataSendProgress(int done, int total)
-{
-}
-void GetFileHttp::on_http_requestFinished(int id, bool error)
-{
-}
-
-void GetFileHttp::on_http_requestStarted(int id)
-{
-}
-*/
 void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 //	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
@@ -96,15 +46,6 @@ int GetFileHttp::newHttp()
 	http[retryTime] = new QHttp();
 	http[retryTime]->moveToThread(this);
 	SET_NET_PROXY(http[retryTime]);
-
-	//connect(http[retryTime], SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)),Qt::DirectConnection);
-	//connect(http, SIGNAL(stateChanged(int)), this, SLOT(on_http_stateChanged(int)));
-	//connect(http, SIGNAL(readyRead (QHttpResponseHeader )),this,SLOT(on_http_responseHeaderReceived(QHttpResponseHeader)));
-	//connect(http[retryTime], SIGNAL(dataReadProgress(int, int)), this, SLOT(on_http_dataReadProgress(int, int)),Qt::DirectConnection);
-	//connect(http[retryTime], SIGNAL(dataSendProgress(int, int)), this, SLOT(on_http_dataSendProgress(int, int)),Qt::DirectConnection);
-	// connect(http, SIGNAL(done(bool)), this, SLOT(on_http_done(bool)));
-	//connect(http[retryTime], SIGNAL(requestFinished(int, bool)), this, SLOT(on_http_requestFinished(int, bool)),Qt::DirectConnection);
-	//connect(http[retryTime], SIGNAL(requestStarted(int)), this, SLOT(on_http_requestStarted(int)),Qt::DirectConnection);
 	connect(http[retryTime], SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 	connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(getFileDone(bool)),Qt::DirectConnection);
 	http[retryTime]->setHost(host);
@@ -135,52 +76,27 @@ int GetFileHttp::newHttp()
 	url=QString(branch).append("/").append(updaterFilename);
 	//qDebug("url=%s filename=%s\n",qPrintable(url),qPrintable(dirPath));
 	http[retryTime]->get(url, file[retryTime]);
-	/*
-	httpTimer[retryTime]=new QTimer();
-	
-	httpTimer[retryTime]->start(10*1000);
-	connect(httpTimer[retryTime], SIGNAL(timeout()), this, SLOT(httpTimerSlot()), Qt::DirectConnection);
-	*/
-	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimerSlot);
+	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimeout);
 	return 1;
 }
 void GetFileHttp::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	//MyThread::run();
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
-	/*
-	monitorTimer = new QTimer();
-	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-	monitorTimer->start(10);
-	monitorTimer->moveToThread(this);
-	*/
 	QDir dir(".");
 	if(!dir.exists(destdir))
 		dir.mkdir(destdir);
 
 	this->mode=mode;
 	newHttp();
-//	retryTime++;
 	exec();	
 	clearObject();
-	//httpTimer->stop();
 }
-void GetFileHttp::httpTimerSlot()
+void GetFileHttp::httpTimeout()
 {
-	/*
-	if(monitorTimer&&monitorTimer->isActive())
-	monitorTimer->stop();
-	*/
 	STOP_TIMER(monitorTimer);
-	//qDebug("httpTimerSlot.......");
-	if(mode==UPDATE_DLG_MODE) 
-		emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
-	STOP_TIMER(httpTimer[retryTime]);
-	/*
-	if(httpTimer[retryTime]&&httpTimer[retryTime]->isActive())
-	httpTimer[retryTime]->stop();
-	*/
+	sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
+	STOP_TIMER(httpTimer[retryTime]); 
 	if(httpTimer[retryTime])
 		http[retryTime]->abort();	
 }
@@ -190,8 +106,6 @@ GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): MyThread(parent),m
 	statusCode=0;
 	retryTime=-1;
 	mode=0;
-	//	monitorTimer =NULL;
-	//	terminateFlag = 0;
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 	{
 		http[i]=NULL;
@@ -199,28 +113,10 @@ GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): MyThread(parent),m
 		file[i]=NULL;
 	}
 }
-/*
-void GetFileHttp::monitorTimerSlot()
-{
-STOP_TIMER(monitorTimer);
 
-if(terminateFlag)
-terminateThread();
-else
-monitorTimer->start(10);
-}
-*/
 void GetFileHttp::getFileDone(bool error)
 {
-	/*
-	if (!IS_NULL(file[retryTime]))
-	{
 
-	file[retryTime]->close();
-	delete file[retryTime];
-	file[retryTime] = NULL;
-	}
-	*/
 	THREAD_MONITOR_POINT;
 	DELETE_FILE( file[retryTime] );
         if(terminateFlag)
@@ -242,20 +138,17 @@ void GetFileHttp::getFileDone(bool error)
 				switch(statusCode)
 				{
 				case HTTP_OK:
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL);
 					errCode = 0;
 					emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
 					
 					break;
 				case HTTP_FILE_NOT_FOUND:	
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED);
 					errCode=HTTP_GET_INI_NOT_EXISTED;
 					break;
 				default:
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
 					errCode=HTTP_GET_INI_FAILED;		
 					break;
 				}
@@ -267,8 +160,7 @@ void GetFileHttp::getFileDone(bool error)
 				}
 				else
 				{
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
 					errCode=HTTP_GET_INI_FAILED;						
 				}
 			}
@@ -293,8 +185,7 @@ void GetFileHttp::getFileDone(bool error)
 						}	
 						*/
 						if(isEqual){
-							if(mode==UPDATE_DLG_MODE) 
-								emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
+							sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
 							emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);		
 						}else{
 							if(newHttp())
@@ -302,8 +193,7 @@ void GetFileHttp::getFileDone(bool error)
 								errCode=HTTP_NEED_RETRY;
 							}else
 							{
-								if(mode==UPDATE_DLG_MODE) 
-									emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
+								sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 								errCode=HTTP_GET_FILE_FAILED;							
 							}
 
@@ -311,13 +201,11 @@ void GetFileHttp::getFileDone(bool error)
 					}
 					break;
 				case HTTP_FILE_NOT_FOUND:	
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED);
 					errCode=HTTP_GET_FILE_NOT_EXISTED;						
 					break;
 				default:
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 					errCode=HTTP_GET_FILE_FAILED;	
 					break;
 				}
@@ -329,8 +217,7 @@ void GetFileHttp::getFileDone(bool error)
 				}
 				else
 				{
-					if(mode==UPDATE_DLG_MODE) 
-						emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
 					errCode=HTTP_GET_FILE_FAILED;							
 				}
 			}
@@ -343,8 +230,7 @@ void GetFileHttp::getFileDone(bool error)
 
 		switch(errCode){
 	case HTTP_NEED_RETRY:
-		if(mode==UPDATE_DLG_MODE) 
-			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY);
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY);
 		qDebug("%d times to get %s from server!",retryTime,qPrintable(updaterFilename));
 		break;
 	case HTTP_GET_INI_NOT_EXISTED:
@@ -381,71 +267,37 @@ void GetFileHttp::getFileDone(bool error)
 	}
 
 }
-
-
-
-/*
-updaterThread::updaterThread(QObject* parent): QThread(parent)
-{
-timers=0;
-}
-*/
-/*
-void updaterThread::testNetFinished(QNetworkReply* reply)
-{
-qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
-if(testNetTimer->isActive())
-testNetTimer->stop();
-//qDebug("network reply error code %d isactive=%d",reply->error(),testNetTimer->isActive());
-error=reply->error();
-//	testNet.release(1);
-if(!error)
-{
-QString replybuf(reply->readAll());
-qDebug("%s replly=%s",__FUNCTION__,qPrintable(replybuf));
-if(replybuf == "1")
-downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
-else{
-
-if(mode==UPDATE_DLG_MODE) 
-emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,tz::tr(UPDATE_SERVER_REFUSE_STRING));
-quit();
-}
-
-}else{
-if(mode==UPDATE_DLG_MODE) 
-emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,tz::tr(UPDATE_NET_ERROR_STRING));
-quit();
-}
-}
-void updaterThread::testNetTimeout()
-{
-qDebug("%s %d",__FUNCTION__,__LINE__);
-if(testNetTimer->isActive())
-testNetTimer->stop();
-reply->abort();
-}
-*/
 updaterThread::~updaterThread()
 {
 }
-
+void updaterThread::sendUpdateStatusNotify(int flag,int type)
+{
+	if(mode!=UPDATE_DLG_MODE) 
+		return;
+	emit updateStatusNotify(flag,type);	
+}
 void updaterThread::testNetFinished()
 {
-	//QDEBUG_LINE;
-	//qDebug("testNetFinished result=%d",tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0));
 	DELETE_OBJECT(testThread);
 	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
 	{
 	case TEST_NET_ERROR_SERVER:
-		if(mode==UPDATE_DLG_MODE) 
-			emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);	
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_REFUSE:
-		if(mode==UPDATE_DLG_MODE) 
-			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);		
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);
+		quit();
+		error = 1;
+		break;
+	case TEST_NET_ERROR_PROXY:
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY);
+		quit();
+		error = 1;
+		break;
+	case TEST_NET_ERROR_PROXY_AUTH:
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH);
 		quit();
 		error = 1;
 		break;
@@ -503,45 +355,19 @@ void updaterThread::monitorTimeout()
 
 void updaterThread::run()
 {
-	//QDEBUG_LINE;
-	/*
-	monitorTimer = new QTimer();
-	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-	monitorTimer->start(10);
-	monitorTimer->moveToThread(this);
-	*/
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	tz::netProxy(SET_MODE,settings,NULL);
 
 	if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
-#if 0
-	manager=new QNetworkAccessManager();
-	manager->moveToThread(this);
-	testNetTimer=new QTimer();
-	testNetTimer->moveToThread(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testNetFinished(QNetworkReply*)),Qt::DirectConnection);
-	reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
-	testNetTimer->start(30*SECONDS);
-	connect(testNetTimer, SIGNAL(timeout()), this, SLOT(testNetTimeout()), Qt::DirectConnection);
-#else
-	//testServerThread *testThread = new testServerThread(NULL);
-	{
-		testThread = new testServerThread();
-		testThread->moveToThread(this);
-		//connect(testThread,SIGNAL(finished()), this, SLOT(testNetFinished()));
-
-		testThread->start(QThread::IdlePriority);
-	}	
-
-#endif
-
+	
+	testThread = new testServerThread();
+	testThread->moveToThread(this);
+	testThread->start(QThread::IdlePriority);
+	
 	exec();
 	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
 	clearObject();
-	//qDebug("updaterThread thread quit.............");
-
-
 }
 /*
 0---same
@@ -722,7 +548,7 @@ void updaterThread::getIniDone(int err)
 				if(sversion.isEmpty()||filename.isEmpty()||md5.isEmpty())
 				{
 					//get wrong content form server
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 					error = 1;
 					goto end;
 				}
@@ -735,7 +561,7 @@ void updaterThread::getIniDone(int err)
 
 					if( lversion == sversion)
 					{
-						emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);					
+						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);					
 						goto end;
 					}
 				}
@@ -749,11 +575,11 @@ void updaterThread::getIniDone(int err)
 				if(terminateFlag)
 					goto end;
 				if(error){
-					emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 				}else if(needed) 
 				{
 					sem_downfile_success.acquire(1);
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL);
 					//write update.ini
 					if(!localSettings)
 						localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -764,11 +590,11 @@ void updaterThread::getIniDone(int err)
 
 				}
 				else{
-					emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);
 				}			
 
 			}else{
-				emit updateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
 			}
 			break;
 		default:
@@ -790,16 +616,13 @@ void updaterThread::getFileDone(int err)
 {
 	THREAD_MONITOR_POINT;
 	if(err==HTTP_GET_FILE_SUCCESSFUL){
-		//	SetColor(FOREGROUND_GREEN,0);
 		sem_downfile_start.acquire(1);
 		sem_downfile_success.release(1);
-		//	SetColor(FOREGROUND_INTENSITY,0);
 	}else{
 		sem_downfile_start.acquire(1);
 		sem_downfile_success.release(1);
 		qDebug("%s error %d happened",__FUNCTION__,__LINE__);	
 		error=1;
-		//	this->quit();			
 	}
 }
 void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
@@ -860,20 +683,4 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 	fh->start(QThread::IdlePriority);
 
 }
-/*
-int updaterThread::getRandString(QString & randString){   
-int max = 8;   
-QString tmp = QString("0123456789ABCDEFGHIJKLMNOPQRSTUVWZYZ");   
-QString str = QString();   
-QTime t;   
-t= QTime::currentTime();   
-qsrand(t.msec()+t.second()*1000);   
-for(int i=0;i<max;i++) {   
-int ir = qrand()%tmp.length();   
-str[i] = tmp.at(ir);   
-}   
-randString.append(str);   
-return 0;
-}  
-*/
 
