@@ -36,7 +36,7 @@ BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QSemaph
 }
 BookmarkSync::~BookmarkSync(){
 }
-void BookmarkSync::httpTimerSlot()
+void BookmarkSync::httpTimeout()
 {
 	THREAD_MONITOR_POINT;
 	mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
@@ -65,7 +65,7 @@ void BookmarkSync::testNetFinished()
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http);
-			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimerSlot);
+			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimeout);
 
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
@@ -97,20 +97,18 @@ void BookmarkSync::testNetFinished()
 void BookmarkSync::terminateThread()
 {
 	THREAD_MONITOR_POINT;
-	//STOP_TIMER(monitorTimer);
 	if(THREAD_IS_RUNNING(testThread))
 		testThread->setTerminateFlag(1);
 	if(TIMER_IS_ACTIVE(httpTimer))
-		httpTimerSlot();
+		httpTimeout();
 	if(THREAD_IS_RUNNING(mgthread))
 	{
 		mgthread->setTerminated(1);
 		if(THREAD_IS_RUNNING(mgthread->posthp))
 			mgthread->posthp->setTerminateFlag(1);
 	}
-	//MyThread::terminateThread();
 }
-void BookmarkSync::monitorTimerSlot()
+void BookmarkSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
@@ -130,7 +128,6 @@ void BookmarkSync::monitorTimerSlot()
 		needwatchchild = true;
 		terminateThread();
 	}
-
 	monitorTimer->start(10);
 
 }
@@ -139,7 +136,6 @@ void BookmarkSync::clearobject()
 	THREAD_MONITOR_POINT;
 	DELETE_OBJECT(http);			
 	DELETE_TIMER(httpTimer);
-//	DELETE_OBJECT(accountTestHttp);
 	DELETE_OBJECT(mgthread);
 	DELETE_OBJECT(testThread);
 	DELETE_FILE(resultBuffer);
@@ -161,21 +157,17 @@ void BookmarkSync::clearobject()
 }
 void BookmarkSync::run()
 {
+	THREAD_MONITOR_POINT;
 	semaphore->acquire(1);
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	THREAD_MONITOR_POINT;
-
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
-
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	tz::netProxy(SET_MODE,settings,NULL);
-
 	//check server status
 	{
 		testThread = new testServerThread();
 		testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
-		if(!terminateFlag)
-			emit updateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);	
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_CONNECT_SERVER);
 		testThread->start(QThread::IdlePriority);
 	}	
 

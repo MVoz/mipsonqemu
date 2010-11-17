@@ -19,7 +19,7 @@ void MyThread::setTerminateFlag(int f)
 {
 	terminateFlag=f;
 }
-void MyThread::monitorTimerSlot(){
+void MyThread::monitorTimeout(){
 	//qDebug()<<__FUNCTION__<<QThread::currentThreadId();
 	/*if(monitorTimer&&monitorTimer->isActive())
 	monitorTimer->stop();
@@ -40,7 +40,7 @@ void MyThread::run(){
 	monitorTimer->start(10);
 	monitorTimer->moveToThread(this);
 */
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 }
 void MyThread::terminateThread(){
 	//qDebug()<<QThread::currentThreadId();
@@ -158,7 +158,7 @@ void testServerThread::run()
 	connect(testNetTimer, SIGNAL(timeout()), this, SLOT(gorun()), Qt::DirectConnection);
 	testNetTimer->start(10);
 */
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimerSlot);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	
 	tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 	manager=new QNetworkAccessManager();

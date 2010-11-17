@@ -65,29 +65,32 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 {
 	Q_OBJECT;
 public:
-	QHttp * http;
-//	postHttp *accountTestHttp;
+	QFile *file;
+	QSettings * settings;
+	QBuffer* resultBuffer;
 	QTimer* httpTimer;
 	QSemaphore *semaphore;
+	QSqlDatabase *db;
+	
 	QString host;
 	QString url;
 	QString username;
 	QString password;
-	QFile *file;
-	QSettings * settings;
-	int mode;
-	QBuffer* resultBuffer;
-	int http_finish;
-	int http_timerover;
-	QSqlDatabase *db;
-	mergeThread *mgthread;
-	int error;
-//	uint httpProxyEnable;
 	QString filename_fromserver;
-	testServerThread *testThread;
-	volatile int testServerResult;
-	volatile bool needwatchchild;
 	QString md5key;
+	
+	int mode;	
+	int http_finish;
+	int http_timerover;	
+	int error;
+
+	volatile int testServerResult;
+	volatile bool needwatchchild;	
+	
+	testServerThread *testThread;
+	mergeThread *mgthread;
+	QHttp * http;
+	
 public:
 	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync();
@@ -101,11 +104,11 @@ public slots:
 	void testAccountFinished(bool error);
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 	void mergeDone();
-	void httpTimerSlot();
+	void httpTimeout();
 	void mgUpdateStatus(int flag,int status);
 	void testNetFinished();
 	void terminateThread();
-	void monitorTimerSlot();
+	void monitorTimeout();
 	void clearobject();
 signals:
 	void bmSyncFinishedStatusNotify(bool error);

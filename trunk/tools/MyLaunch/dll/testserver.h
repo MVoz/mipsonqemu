@@ -38,8 +38,8 @@ public:
 	volatile int terminateFlag;
 	QTimer* monitorTimer;
 	virtual void setTerminateFlag(int f);
-	public slots:
-		virtual void monitorTimerSlot()	;
+public slots:
+	virtual void monitorTimeout();
 public:
 	void run();
 	virtual void terminateThread();
