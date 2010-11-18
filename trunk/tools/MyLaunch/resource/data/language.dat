@@ -1,272 +1,276 @@
 [login_failure_please_re_login]
-english=login_fail
-chinese=无法登陆 comma 请检查用户名或密码!
+en=login_fail
+ch=无法登陆 comma 请检查用户名或密码!
 
 [http_test_account_fail]
-english=http_test_account_fail
-chinese=无法登陆 comma 请检查用户名或密码!
+en=http_test_account_fail
+ch=无法登陆 comma 请检查用户名或密码!
 
 [http_test_account_success]
-english=http_test_account_success
-chinese=测试成功！欢迎使用！
+en=http_test_account_success
+ch=测试成功！欢迎使用！
 
 [login_falil]
-english=login_falil
-chinese=无法登陆 comma 请检查用户名或密码!
+en=login_falil
+ch=无法登陆 comma 请检查用户名或密码!
 
 [apply]
-english=apply
-chinese=确定
+en=apply
+ch=确定
 
 [cancel]
-english=cancel
-chinese=取消
+en=cancel
+ch=取消
 
 [retry]
-english=retry
-chinese=重试
+en=retry
+ch=重试
 
 [reject]
-english=reject
-chinese=中止
+en=reject
+ch=中止
 
 [http_timeout]
-english=http_timeout
-chinese=操作超时
+en=http_timeout
+ch=操作超时
 
 [bookmark_sync_start]
-english=bookmark_sync_start
-chinese=连接服务器成功 comma 开始进行同步操作......
+en=bookmark_sync_start
+ch=连接服务器成功 comma 开始进行同步操作......
 
 [update_net_error]
-english=update_net_error
-chinese=连接服务器失败 comma 请检查网络！
+en=update_net_error
+ch=连接服务器失败 comma 请检查网络！
 
 [sync_successful]
-english=sync_successful
-chinese=同步操作成功！
+en=sync_successful
+ch=同步操作成功！
 
 [http_get_ini_successful]
-english=http_get_ini_successful
-chinese=http_get_ini_successful
+en=http_get_ini_successful
+ch=http_get_ini_successful
 
 [http_get_ini_not_existed]
-english=http_get_ini_not_existed
-chinese=http_get_ini_not_existed
+en=http_get_ini_not_existed
+ch=http_get_ini_not_existed
 
 
 [http_get_ini_failed]
-english=http_get_ini_failed
-chinese=http_get_ini_failed
+en=http_get_ini_failed
+ch=http_get_ini_failed
 
 [http_get_file_successful]
-english=http_get_file_successful
-chinese=http_get_file_successful
+en=http_get_file_successful
+ch=http_get_file_successful
 
 [http_get_file_failed]
-english=http_get_file_failed
-chinese=http_get_file_failed
+en=http_get_file_failed
+ch=http_get_file_failed
 
 [http_get_file_not_existed]
-english=http_get_file_not_existed
-chinese=http_get_file_not_existed
+en=http_get_file_not_existed
+ch=http_get_file_not_existed
 
 [http_need_retry]
-english=http_need_retry
-chinese=http_need_retry
+en=http_need_retry
+ch=http_need_retry
 
 [update_failed]
-english=update_failed
-chinese=update_failed
+en=update_failed
+ch=update_failed
 
 [update_successful]
-english=update_successful
-chinese=update_successful
+en=update_successful
+ch=update_successful
 
 [update_no_need]
-english=update_no_need
-chinese=update_no_need
+en=update_no_need
+ch=update_no_need
 
 [err_has_exist_item]
-english=the specified item has existed!
-chinese=指定项已存在!
+en=the specified item has existed!
+ch=指定项已存在!
 
 [err_no_exist_item]
-english=the specified item doesn't existed!
-chinese=指定路径不存在!
+en=the specified item doesn't existed!
+ch=指定路径不存在!
 
 [http_connect_server]
-english=the specified item doesn't existed!
-chinese=正在连接服务器......!
+en=the specified item doesn't existed!
+ch=正在连接服务器......!
 
 [html_select]
-english=select
-chinese=选择
+en=select
+ch=选择
 
 [html_name]
-english=name
-chinese=名字
+en=name
+ch=名字
 
 [html_command]
-english=command
-chinese=命令
+en=command
+ch=命令
 
 [html_argument]
-english=arguments
-chinese=参数
+en=arguments
+ch=参数
 
 [html_name]
-english=name
-chinese=名字
+en=name
+ch=名字
 
 [html_path]
-english=Path
-chinese=路径
+en=Path
+ch=路径
 
 [html_suffix]
-english=Suffix
-chinese=后缀名
+en=Suffix
+ch=后缀名
 
 [html_childdir]
-english=Child Directory
-chinese=子目录
+en=Child Directory
+ch=子目录
 
 [html_depth]
-english=Depth
-chinese=深度
+en=Depth
+ch=深度
 
 
 
 
 [proxy_test_success]
-english=代理服务器工作正常！
-chinese=代理服务器工作正常！
+en=代理服务器工作正常！
+ch=代理服务器工作正常！
 
 
 [myDocuments]
-english=我的文档
-chinese=我的文档
+en=我的文档
+ch=我的文档
 [favorites]
-english=收藏夹
-chinese=收藏夹
+en=收藏夹
+ch=收藏夹
 [mypictures]
-english=我的图片
-chinese=我的图片
+en=我的图片
+ch=我的图片
 [myvideos]
-english=我的视频
-chinese=我的视频
+en=我的视频
+ch=我的视频
 [mymusic]
-english=我的音乐
-chinese=我的音乐
+en=我的音乐
+ch=我的音乐
 [controlpanel]
-english=控制面板
-chinese=控制面板
+en=控制面板
+ch=控制面板
 [taskmgr]
-english=任务管理器
-chinese=任务管理器
+en=任务管理器
+ch=任务管理器
 [common]
-english=common
-chinese=常规
+en=common
+ch=常规
 [list_mg]
-english=list_mg
-chinese=列表管理
+en=list_mg
+ch=列表管理
 [cmd_mg]
-english=cmd_mg
-chinese=命令管理
+en=cmd_mg
+ch=命令管理
 [net_mg]
-english=net_mg
-chinese=网络管理
+en=net_mg
+ch=网络管理
 [adv]
-english=adv
-chinese=高级
+en=adv
+ch=高级
 [interface]
-english=interface
-chinese=界面
+en=interface
+ch=界面
 [skin_mg]
-english=skin_mg
-chinese=皮肤管理
+en=skin_mg
+ch=皮肤管理
 [language_mg]
-english=language_mg
-chinese=语言管理
+en=language_mg
+ch=语言管理
 [about]
-english=about
-chinese=关于
+en=about
+ch=关于
 
 [output]
-english=output
-chinese=输出
+en=output
+ch=输出
 
 [everything_is_in_touch]
-english=everything is in touch
-chinese=一切触手可及
+en=everything is in touch
+ch=一切触手可及
 
 [app_is_runing]
-english=touchAny is running comma please click shortkey to show
-chinese=touchAny已经处于运行状态comma请按shortkey
+en=touchAny is running comma please click shortkey to show
+ch=touchAny已经处于运行状态comma请按shortkey
 
 [touchAny]
-english=touchAny
-chinese=弹指网
+en=touchAny
+ch=弹指网
 
 
 [shortkey]
-english=shortkey
-chinese=快捷键
+en=shortkey
+ch=快捷键
 
 [bm_sync_success_no_action]
-english=Synchronize bookmarks success
-chinese=书签同步成功
+en=Synchronize bookmarks success
+ch=书签同步成功
 
 [bm_sync_success_with_action]
-english=Synchronize bookmarks success
-chinese=书签同步成功
+en=Synchronize bookmarks success
+ch=书签同步成功
 
 [bm_sync_fail]
-english=Synchronize bookmarks fail
-chinese=书签同步失败
+en=Synchronize bookmarks fail
+ch=书签同步失败
 
 [bm_sync_fail_server_net_error]
-english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败comma请检查网络
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
 
 [bm_sync_fail_server_refuse]
-english=Synchronize bookmarks fail comma The server is in Maintenancecommaplease try again after a while.
-chinese=书签同步失败comma服务器正在维护中comma暂停此项服务comma请等待一段时间再重试comma谢谢！
+en=Synchronize bookmarks fail comma The server is in Maintenancecommaplease try again after a while.
+ch=书签同步失败comma服务器正在维护中comma暂停此项服务comma请等待一段时间再重试comma谢谢！
 [bm_sync_fail_server_bmxml_fail]
-english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败comma请检查网络
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
 
 [bm_sync_fail_bmxml_timeout]
-english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败comma请检查网络
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
 
 [bm_sync_fail_merge_error]
-english=Synchronize bookmarks fail comma please check net setting.
-chinese=书签同步失败comma请检查网络
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
 
 [bm_sync_fail_proxy_error]
-english=Synchronize bookmarks fail comma Can't connect the proxy server.
-chinese=书签同步失败comma无法连接代理服务器
+en=Synchronize bookmarks fail comma Can't connect the proxy server.
+ch=书签同步失败comma无法连接代理服务器
 
 [bm_sync_fail_proxy_auth_error]
-english=Synchronize bookmarks fail comma Can't login into the proxy server.
-chinese=书签同步失败comma无法登录代理服务器
+en=Synchronize bookmarks fail comma Can't login into the proxy server.
+ch=书签同步失败comma无法登录代理服务器
 
 [bm_sync_fail_server_testaccount_fail]
-english=Test account fail comma please check account&password in proxy.
-chinese=测试帐号失败comma请检查用户名与密码
+en=Test account fail comma please check account&password in proxy.
+ch=测试帐号失败comma请检查用户名与密码
 
 [bm_sync_fail_server_login]
-english=Login server fail comma please check your account&password.
-chinese=登录服务器失败comma请检查用户名与密码
+en=Login server fail comma please check your account&password.
+ch=登录服务器失败comma请检查用户名与密码
 
 [update_net_error_proxy]
-english=Synchronize bookmarks fail comma Can't connect the proxy server.
-chinese=书签同步失败comma无法连接代理服务器
+en=Synchronize bookmarks fail comma Can't connect the proxy server.
+ch=书签同步失败comma无法连接代理服务器
 
 [update_net_error_proxy_auth]
-english=Synchronize bookmarks fail comma Can't login into the proxy server.
-chinese=书签同步失败 comma 无法登录代理服务器
+en=Synchronize bookmarks fail comma Can't login into the proxy server.
+ch=书签同步失败 comma 无法登录代理服务器
+
+[try_connect_server]
+en=try to connect server......
+ch=正在连接服务器......
 
 
 
