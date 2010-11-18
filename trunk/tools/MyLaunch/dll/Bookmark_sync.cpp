@@ -46,7 +46,8 @@ void BookmarkSync::httpTimeout()
 void BookmarkSync::testNetFinished()
 {
 	THREAD_MONITOR_POINT;
-	testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
+	//testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
+	testServerResult=GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT);
 	DELETE_OBJECT(testThread);
 	switch(testServerResult)
 	{
@@ -74,7 +75,7 @@ void BookmarkSync::testNetFinished()
 		{
 			http = new QHttp();
 			http->moveToThread(this);
-			SET_NET_PROXY(http);
+			SET_NET_PROXY(http,settings);
 			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimeout);
 
 			if(mode==BOOKMARK_SYNC_MODE)	
@@ -171,7 +172,7 @@ void BookmarkSync::run()
 	semaphore->acquire(1);
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
-	tz::netProxy(SET_MODE,settings,NULL);
+//	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
 	
 	testThread = new testServerThread(NULL,settings);
@@ -195,7 +196,8 @@ void BookmarkSync::run()
 		}
 		STOP_TIMER(httpTimer);
 		DELETE_FILE(resultBuffer);
-		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);	
+		//tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);	
+		SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
 	}
 	if(mode==BOOKMARK_SYNC_MODE)
 			emit bmSyncFinishedStatusNotify(status);

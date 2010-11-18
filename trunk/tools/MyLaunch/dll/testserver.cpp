@@ -46,7 +46,8 @@ void testServerThread::testServerFinished(QNetworkReply* reply)
 		QString replybuf(reply->readAll());
 		if(replybuf.startsWith(QString("1")))
 		{
-			tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);		
+			//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);	
+			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
 		}
 
 	}else{
@@ -55,13 +56,16 @@ void testServerThread::testServerFinished(QNetworkReply* reply)
 			case QNetworkReply::ProxyConnectionClosedError:
 			case QNetworkReply::ProxyNotFoundError:
 			case QNetworkReply::ProxyTimeoutError:
-				tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);		
+				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);	
+				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
 				break;
 			case QNetworkReply::ProxyAuthenticationRequiredError:
-				tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);		
+				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
+				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);		
 				break;
 			default:
-				tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
+				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
+				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
 				break;
 		}		
 	}
@@ -92,14 +96,13 @@ void testServerThread::run()
 	THREAD_MONITOR_POINT;
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	
-	tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+	//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+	SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
 	manager=new QNetworkAccessManager();
-	qDebug()<<tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
-	QDEBUG_LINE;
-	tz::netProxy(SET_MODE,settings,NULL);
-	SET_NET_PROXY(manager);
-	QDEBUG_LINE;
 	manager->moveToThread(this);	
+	//tz::netProxy(SET_MODE,settings,NULL);
+	SET_NET_PROXY(manager,settings);
+	
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
 	reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));

@@ -213,12 +213,16 @@
 #define POST_ITEM_TIMEOUT 10
 #define TEST_SERVER_TIMEOUT 10
 
-#define SET_NET_PROXY(x) \
+#define SET_RUN_PARAMETER(x,y) tz::runParameter(SET_MODE,(x),(y))
+#define GET_RUN_PARAMETER(x) tz::runParameter(GET_MODE,(x), 0)
+
+
+#define SET_NET_PROXY(x,y) \
+	tz::netProxy(SET_MODE,(y),NULL);\
 	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
 		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
 		QNetworkProxy* netProxy = NULL;\
 		tz::netProxy(GET_MODE,NULL,&netProxy);\
-		qDebug()<<netProxy;\
 		(x)->setProxy(*netProxy);	\
 	}
 
