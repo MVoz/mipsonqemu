@@ -5,6 +5,7 @@
 TEMPLATE = lib
 INCLUDEPATH += .
 INCLUDEPATH += ../include/
+INCLUDEPATH    += c:/boost/
 
 CONFIG += dll qt_warn debug_and_release
 QT += network

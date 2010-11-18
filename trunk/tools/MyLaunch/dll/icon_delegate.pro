@@ -15,6 +15,7 @@ DEFINES += WIN32
 DEFINES += ICON_DELEGATE
 CONFIG -= embed_manifest_dll
 QT += sql
+QT += network
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/

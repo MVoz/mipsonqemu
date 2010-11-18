@@ -1,27 +1,8 @@
 #ifndef BMAPI_H
 #define BMAPI_H
 #include <config.h>
-#include <QString>
-#include <QStringList>
-#include <QDir>
-#include <windows.h>
-#include <log.h>
-#include <QSettings>
-#include <QDataStream>
-#include <QFile>
-#include <QSqlQuery>
-#include <QDateTime>
-#include <QSqlDatabase>
-#include <QtCore/QVariant>
-#include <QThread>
-#include <QtNetwork/QNetworkProxy>
+#include "globals.h"
 
-#include <QTimer>
-#ifdef Q_WS_WIN
-#include <windows.h>
-#include <shlobj.h>
-#include <tchar.h>
-#endif
 #if defined(BMAPI_DLL)
 #define BMAPI_DLL_CLASSEXPORT __declspec(dllexport)
 #define BMAPI_DLL_FUNCEXPORT extern "C" __declspec(dllexport)
@@ -33,19 +14,6 @@
 #define GET_MODE 0
 #define SET_MODE 1
 
-extern uint gMaxGroupId;
-/*
-extern "C" __declspec(dllexport) void fun3();
-class CLASSEXPORT  mylibclass {
-public:
-mylibclass(){};
-~mylibclass(){};
-public :
-void func(){printf("\n mylibclass api \n");}
-void func2();
-
-};
-*/
 enum BROWSERINFO_OP{
 	BROWSERINFO_OP_LASTUPDATE=0,
 	BROWSERINFO_OP_FROMSERVER,

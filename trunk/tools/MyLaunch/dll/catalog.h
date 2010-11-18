@@ -20,18 +20,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef CATALOG_H
 #define CATALOG_H
 
-#include <QString>
-#include <QStringList>
-#include <QBitArray>
-#include <QIcon>
-#include <QHash>
-#include <QDataStream>
-#include <QDir>
-#include <QSet>
+#include "config.h"
+#include "globals.h"
+
 #include <bmapi.h>
-#include <pinyin>
-#include <QUrl>
-#include <QSqlQuery>
+
 
 #if defined(CATALOG_DLL)
 #define CATALOG_DLL_CLASS_EXPORT __declspec(dllexport)

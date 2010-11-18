@@ -19,13 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef SYNC_DLG_H
 #define SYNC_DLG_H
-#include <QString>
-#include <QStringList>
-#include <QList>
+
 #include <config.h>
 #include <globals.h>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
+#include <bmapi.h>
+
 #if defined(SYNC_DLG_DLL)
 #define SYNC_DLG_CLASS_EXPORT __declspec(dllexport)
 #else
@@ -39,11 +37,9 @@ public:
 	~synchronizeDlg();
 public:
 	QWebView *webView;
-	//	QStringList httpStateString;
-//	QMap <int,QString> statusMap;
 	int status;
 	uint statusTime;//second
-	public slots:
+public slots:
 		void getHtml(const QString &path);
 		void accept();
 		void reject();

@@ -1,17 +1,4 @@
 #include <bmapi.h>
-#include <stdio.h>
-#include <QDateTime>
-#include <QString>
-#include <QStringList>
-#include <QSettings>
-#include <QTextCodec>
-#include <qDebug>
-#include <QUrl>
-#include <QCoreApplication>
-#include <QSettings>
-#include <QCryptographicHash>
-#include <QSqlRecord>
-
 
 
 #define SystemBasicInformation 0 

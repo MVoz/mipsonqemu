@@ -1,9 +1,4 @@
 #include "updaterThread.h"
-#include <QUrl>
-#include <QWaitCondition>
-#include <QSemaphore>
-#include <QDir>
-#include <QStringList>
 #include <bmapi.h>
 #include "config.h"
 void GetFileHttp::terminateThread()

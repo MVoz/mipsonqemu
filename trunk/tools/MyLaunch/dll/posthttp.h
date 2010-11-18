@@ -38,30 +38,12 @@
 #ifndef POST_HTTP_H
 #define POST_HTTP_H
 
-#include <QObject>
 #include <xmlreader.h>
-#include <QString>
-#include <QThread>
-#include <QtNetwork/QHttp>
-#include <QBuffer>
-#include <QString>
-#include <QEventLoop>
-#include <log.h>
-#include <boost/shared_ptr.hpp>
-
-#include <QtNetwork/QHttpResponseHeader>
-#include <QtNetwork/QNetworkProxy>
-
-#include <QTimer>
-#include <QFile>
 #include <config.h>
-#include <QSettings>
-#include <QTimerEvent>
-#include <windows.h>
 #include <bmapi.h>
-#include <QtCore/qobject.h>
 #include "testserver.h"
 using namespace boost;
+
 #if defined(POST_HTTP_DLL)
 #define POST_HTTP_CLASS_EXPORT __declspec(dllexport)
 #else

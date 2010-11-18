@@ -38,32 +38,12 @@
 #ifndef MERGE_THREAD_H
 #define MERGE_THREAD_H
 
-#include <QObject>
+
 #include <xmlreader.h>
-#include <QString>
-#include <QThread>
-#include <QtNetwork/QHttp>
-#include <QBuffer>
-#include <QString>
-#include <QEventLoop>
-#include <log.h>
-#include <boost/shared_ptr.hpp>
-
-#include <QtNetwork/QHttpResponseHeader>
-#include <QTimer>
-#include <QFile>
 #include "config.h"
-#include <QSettings>
-#include <QTimerEvent>
-#include <windows.h>
 #include <bmapi.h>
-#include <QtCore/qobject.h>
 #include "posthttp.h"
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlRecord>
 
-#include <QtSql>
 
 
 using namespace boost;

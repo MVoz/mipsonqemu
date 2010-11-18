@@ -1,11 +1,6 @@
 #include "testserver.h"
-#include <QUrl>
-#include <QWaitCondition>
-#include <QSemaphore>
-#include <QDir>
-#include <QStringList>
 #include <bmapi.h>
-#include "config.h"
+
 MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
 {
 	terminateFlag=0;

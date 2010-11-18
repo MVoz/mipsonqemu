@@ -43,9 +43,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "main.h"
 #include <globals.h>
 #include <options>
+
 //#include "dsingleapplication.h"
 #include "plugin_interface.h"
+
+extern shared_ptr<CatBuilder> gBuilder;
+extern CatItem* gSearchResult;
 extern shared_ptr < BookmarkSync> gSyncer;
+
 struct {
 	QString name;
 	QString fullpath;
