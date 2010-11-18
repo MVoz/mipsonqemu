@@ -117,6 +117,7 @@ void synchronizeDlg::updateStatus(int type,int s)
 	status=s;
 	statusTime = NOW_SECONDS;
 	char *statusStr = tz::getstatusstring(s);
+	qDebug()<<"statuscode:"<<s<<" "<<statusStr;
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:

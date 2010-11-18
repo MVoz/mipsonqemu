@@ -63,7 +63,7 @@ uint gPostResponse=0;
 uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 static QString iePath;
-char* gLanguageList[]={"chinese","english"};
+char* gLanguageList[]={"ch","en"};
 
 char *statusString[]={
 	"http_unconnected",
