@@ -1,13 +1,7 @@
 #include <XmlReader.h>
-#include <QSettings>
-#include <QDir>
 #include <bmapi.h>
-#include <QUrl>
-//extern QDateTime gLastUpdateTime;
-//extern QString gIeFavPath;
-//extern QDateTime gNowUpdateTime;
-//extern QSettings *gSettings;
-//static QString browserName[]={QString(""),QString("ie"),QString("firefox"),QString("opera")};
+
+
 const static struct CATITEM_ITEM_IMPORT{
 	enum CATITEM_ITEM im;
 	QString name;

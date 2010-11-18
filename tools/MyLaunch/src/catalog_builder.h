@@ -21,14 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CATALOG_BUILDER
 #include "..\dll\catalog_types.h"
 #include "plugin_handler.h"
-#include <QThread>
-#include <QSqlDatabase>
-#include <QtSql>
 
-
-#include <boost/shared_ptr.hpp>
-
-using namespace boost;
 enum catbuildmode{
 	CAT_BUILDMODE_ALL=0,
 	CAT_BUILDMODE_DIRECTORY,

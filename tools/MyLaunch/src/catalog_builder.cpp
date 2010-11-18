@@ -24,12 +24,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <globals.h>
 #include "main.h"
 #include <options>
-#include <QDebug>
+//#include <QDebug>
 
-#include <QFile>
-#include <QDataStream>
-#include <weby>
-#include <runner>
+//#include <QFile>
+//#include <QDataStream>
+//#include <weby>
+//#include <runner>
+
+extern CatItem* gSearchResult;
+
 
 struct predefineoncomputer{
 	int csid;

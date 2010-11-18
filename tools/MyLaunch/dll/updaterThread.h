@@ -1,30 +1,9 @@
 #ifndef UPDATER_THREAD_H
 #define UPDATER_THREAD_H
 
-#include <QThread>
-#include <QtNetwork/QHttp>
-#include <QBuffer>
-#include <QString>
-#include <QEventLoop>
-
-#include <boost/shared_ptr.hpp>
-
-#include <QMutex>
-#include <QDialog>
-#include <QtNetwork/QHttpResponseHeader>
-#include <QTimer>
-#include <QFile>
-#include <QtNetwork/QHttp>
-#include <QSettings>
-#include <QTimerEvent>
 #include <config.h>
 #include <globals.h>
 #include <xmlreader.h>
-#include <log.h>
-#include <QtCore/qobject.h>
-#include <QSemaphore>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkAccessManager>
 #include "testserver.h"
 
 #define UPDATE_SILENT_MODE 0

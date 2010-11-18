@@ -19,26 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef OPTIONS_H
 #define OPTIONS_H
-#include <QString>
-#include <QStringList>
-#include <QList>
+
 #include <config.h>
 #include <globals.h>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
-#include <QResource>
-#include <QMenu>
-#include <QSettings>
-#include <QContextMenuEvent>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
-#include <QNetworkProxy>
-#include <QNetworkRequest>
+
 #include <updaterThread>
-
-
 #include "bookmark_sync.h"
 #include "synchronizeDlg.h"
+
 #if defined(OPTIONS_DLL)
 #define OPTIONS_CLASS_EXPORT __declspec(dllexport)
 #else

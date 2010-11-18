@@ -1,9 +1,10 @@
-#pragma once
+#ifndef CATALOG_TYPE_H_
+#define CATALOG_TYPE_H_
 
+#include "config.h"
+#include "globals.h"
 #include "catalog.h"
 
-#include <QSettings>
-#include <QtSql>
 /** This class does not pertain to plugins */
 #if defined(CATALOG_TYPES_DLL)
 #define CATALOG_TYPES_DLL_CLASS_EXPORT __declspec(dllexport)
@@ -84,4 +85,4 @@ public:
 	//int debugon;
 	//	uint isExistInDb(CatItem &item);
 };
-
+#endif

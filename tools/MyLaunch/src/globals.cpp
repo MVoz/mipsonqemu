@@ -18,25 +18,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include <globals.h>
-#include <QDir>
-#include <QFile>
-#include <QDateTime>
-#include <QTextStream>
-#include <QTextCodec>
-#include <QMessageBox>
+
 #include <bookmark_sync>
 #include <catalog>
-#include <QSemaphore>
-//#include <QCString>
+
+#include "../src/catalog_builder.h"
 
 
 QWidget *gMainWidget;
 QDateTime gLastUpdateTime;
 QString gIeFavPath;
 QDateTime gNowUpdateTime;
-uint gPostLock = 0;
-//uint gMaxGroupId = 0;
-//shared_ptr<int> gMaxGroupId;
+
 
 QSettings *gSettings;
 QString gSearchTxt;

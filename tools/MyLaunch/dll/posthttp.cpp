@@ -2,7 +2,7 @@
 #include <bookmark_sync>
 #include <bmapi.h>
 #include <stdio.h>
-#include <QXmlStreamReader>
+
 //extern uint gMaxGroupId;
 
 postHttp::postHttp(QObject * parent,QSettings* s,int type ):MyThread(parent,s)

@@ -1,17 +1,8 @@
 #ifndef XML_READER_H
 #define XML_READER_H
 #include <config.h>
-#include <QXmlStreamReader>
-#include <QString>
-#include <QTime>
-#include <QList>
-#include <QDateTime>
-#include <QTextStream>
-#include <QSettings>
 #include <catalog>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlRecord>
+
 #if defined(XMLREADER_DLL)
 #define XMLREADER_DLL_CLASSEXPORT __declspec(dllexport)
 #define XMLREADER_DLL_FUNCEXPORT extern "C" __declspec(dllexport)

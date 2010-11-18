@@ -19,15 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "synchronizeDlg.h"
 #include <globals.h>
-#include <QSettings>
-#include <QDir>
-#include <QPixmap>
-#include <QBitmap>
-#include <QPainter>
-#include <QFileDialog>
-#include <QTextStream>
-#include <QMessageBox>
-#include <QResource>
+
 
 synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 {

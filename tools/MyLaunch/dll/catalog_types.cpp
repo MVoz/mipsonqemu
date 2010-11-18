@@ -1,7 +1,6 @@
 #include "catalog_types.h"
-#include <QSqlDatabase>
 #include <catalog>
-#include "globals.h"
+
 #if 0
 void FastCatalog::addItem(CatItem item)
 {
