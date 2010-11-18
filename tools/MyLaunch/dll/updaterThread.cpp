@@ -40,7 +40,7 @@ int GetFileHttp::newHttp()
 	retryTime++;
 	http[retryTime] = new QHttp();
 	http[retryTime]->moveToThread(this);
-	SET_NET_PROXY(http[retryTime]);
+	SET_NET_PROXY(http[retryTime],settings);
 	connect(http[retryTime], SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 	connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(getFileDone(bool)),Qt::DirectConnection);
 	http[retryTime]->setHost(host);
@@ -274,7 +274,7 @@ void updaterThread::sendUpdateStatusNotify(int flag,int type)
 void updaterThread::testNetFinished()
 {
 	DELETE_OBJECT(testThread);
-	switch(tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0))
+	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT))
 	{
 	case TEST_NET_ERROR_SERVER:
 		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
@@ -351,7 +351,7 @@ void updaterThread::monitorTimeout()
 void updaterThread::run()
 {
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
-	tz::netProxy(SET_MODE,settings,NULL);
+//	tz::netProxy(SET_MODE,settings,NULL);
 
 	if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
@@ -361,7 +361,8 @@ void updaterThread::run()
 	testThread->start(QThread::IdlePriority);
 	
 	exec();
-	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+	//tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+	SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
 	clearObject();
 }
 /*

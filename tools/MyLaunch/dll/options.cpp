@@ -151,7 +151,8 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 
 	//delete manager;
 	//manager=NULL;
-	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+//	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+	SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
 }
 void OptionsDlg::proxtTestTimerSlot()
 {
@@ -161,14 +162,14 @@ void OptionsDlg::proxtTestTimerSlot()
 void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/)
 {
 
-	tz::netProxy(SET_MODE,settings,NULL);
+//	tz::netProxy(SET_MODE,settings,NULL);
 
 	if(!manager)
 	{
 		request.setUrl(QUrl(QString("http://www.sohu.com")));
 		request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 		manager = new QNetworkAccessManager(this);
-		SET_NET_PROXY(manager);
+		SET_NET_PROXY(manager,settings);
 		manager->setObjectName(tr("manager"));
 
 		reply = manager->get(request);

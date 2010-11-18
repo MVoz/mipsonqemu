@@ -50,7 +50,7 @@ void postHttp::gorun()
 	
 	posthttp = new QHttp();
 	posthttp->moveToThread(this);	
-	SET_NET_PROXY(posthttp);
+	SET_NET_PROXY(posthttp,settings);
 	/*
 
 	I found the problem:
