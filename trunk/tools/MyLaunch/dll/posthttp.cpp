@@ -5,7 +5,7 @@
 #include <QXmlStreamReader>
 //extern uint gMaxGroupId;
 
-postHttp::postHttp(QObject * parent,int type ):MyThread(parent)
+postHttp::postHttp(QObject * parent,QSettings* s,int type ):MyThread(parent,s)
 {
 	postType=type;
 	postTimer = NULL;
@@ -149,17 +149,6 @@ void postHttp::httpDone(bool error)
 	exit(error);
 }
 
-//void postHttp::httpRequestFinished(int id, bool error)
-//{
-//QDEBUG("%s %d %s", __FUNCTION__, posthttp->error(), qPrintable(posthttp->errorString()));
-#ifdef CONFIG_LOG_ENABLE
-//quit();
-#endif
-//}
-//void postHttp::httpStateChanged(int state)
-//{
-//QDEBUG("now posthttp state is %d\n ",state);
-//}
 void postHttp::postTimerSlot()
 {
 	THREAD_MONITOR_POINT;

@@ -77,7 +77,7 @@ public:
 	int errCode;
 
 public:
-	GetFileHttp(QObject * parent = 0,int mode=0,QString md5="");	
+	GetFileHttp(QObject * parent = 0,QSettings* s=0,int mode=0,QString md5="");	
 	~GetFileHttp();
 	void clearObject();
 	void setHost(const QString& s){host = s;}
@@ -105,7 +105,6 @@ class  UPDATER_THREAD_DLL_CLASS_EXPORT updaterThread:public MyThread
 {
 	Q_OBJECT;
 public:
-	QSettings *settings;
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
@@ -118,7 +117,7 @@ public:
 	int mode;
 	bool needwatchchild;
 public:
-	updaterThread(QObject * parent = 0,int m=0,QSettings* s=0):MyThread(parent),mode(m),settings(s)
+	updaterThread(QObject * parent = 0,QSettings* s=0,int m=0):MyThread(parent,s),mode(m)
 	{
 		timers=0;
 		needed=0;

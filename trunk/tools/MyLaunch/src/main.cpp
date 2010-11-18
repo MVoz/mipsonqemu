@@ -2160,10 +2160,10 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 	case SYNC_MODE_BOOKMARK:
 	case SYNC_MODE_REBOOKMARK:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,&gSemaphore,BOOKMARK_SYNC_MODE));
+		gSyncer.reset(new BookmarkSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
 		break;
 	case SYNC_MODE_TESTACCOUNT:
-		gSyncer.reset(new BookmarkSync(this,&db,gSettings,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
+		gSyncer.reset(new BookmarkSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
 		break;
 	}
 
@@ -2796,7 +2796,7 @@ void MyWidget::startSilentUpdate()
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
 		gSettings->setValue("lastSilentUpdate", 0);
-		slientUpdate=new updaterThread(NULL,UPDATE_SILENT_MODE,gSettings); 
+		slientUpdate=new updaterThread(NULL,gSettings,UPDATE_SILENT_MODE); 
 		connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
 		//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
 		slientUpdate->start(QThread::IdlePriority);		
@@ -2820,7 +2820,7 @@ void MyWidget::getFavicoFinished()
 void MyWidget::getFavico(const QString& host,const QString& filename)
 {
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
-	GetFileHttp* icogh =  new GetFileHttp(NULL,UPDATE_MODE_GET_FILE,"");
+	GetFileHttp* icogh =  new GetFileHttp(NULL,gSettings,UPDATE_MODE_GET_FILE,"");
 	getfavicolist.append(icogh);
 	qDebug()<<__FUNCTION__<<"get fav ico from"<<host;
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
