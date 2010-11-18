@@ -361,7 +361,7 @@ void updaterThread::run()
 	if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
 	
-	testThread = new testServerThread();
+	testThread = new testServerThread(NULL,settings);
 	testThread->moveToThread(this);
 	testThread->start(QThread::IdlePriority);
 	

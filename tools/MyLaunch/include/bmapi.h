@@ -189,7 +189,7 @@ public :
 	static QString registerString(int mode,const QString& path,const QString& name,QString val);
 	//static int testNetResult(int,int);
 	static int runParameter(int,int,int);
-	static void netProxy(int ,QSettings*,QNetworkProxy*);
+	static void netProxy(int ,QSettings*,QNetworkProxy**);
 	static int GetCpuUsage();
 	static void  initDbTables(QSqlDatabase& db,QSettings *s,int flag);
 	static QString dbTableName(uint);

@@ -165,28 +165,15 @@ void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyP
 
 	if(!manager)
 	{
-		/*
-		proxy.setType(QNetworkProxy::HttpProxy);
-		proxy.setHostName(proxyAddr);
-
-		proxy.setPort(proxyPort.toInt());
-		proxy.setUser(proxyUsername);
-		proxy.setPassword(proxyPassword);
-		*/
-		// QNetworkProxy::setApplicationProxy(proxy);
-		// QNetworkRequest request; 
 		request.setUrl(QUrl(QString("http://www.sohu.com")));
 		request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 		manager = new QNetworkAccessManager(this);
-		// manager->setProxy(proxy);
 		SET_NET_PROXY(manager);
 		manager->setObjectName(tr("manager"));
-		// connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(replyFinished(QNetworkReply*)));
 
 		reply = manager->get(request);
 
-		 testProxyTimer=new QTimer(this);
-
+		testProxyTimer=new QTimer(this);
 		testProxyTimer->start(10);
 		testProxyTimer->setSingleShot(TRUE);
 
@@ -434,8 +421,9 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		qDebug() << s;
 		q.exec(s);
 		q.clear();
-	}else if(name=="Account/Userpasswd"){
+	}else if((name=="Account/Userpasswd")||(name=="HttpProxy/proxyPassword")){
 		settings->setValue(name, tz::encrypt(value.toString(),PASSWORD_ENCRYPT_KEY));
+		settings->sync();
 		return;
 	}
 	settings->setValue(name, value);

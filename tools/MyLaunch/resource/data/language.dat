@@ -36,11 +36,11 @@ ch=操作超时
 
 [bookmark_sync_start]
 en=bookmark_sync_start
-ch=连接服务器成功 comma 开始进行同步操作......
+ch=连接服务器成功comma开始进行同步操作......
 
 [update_net_error]
 en=update_net_error
-ch=连接服务器失败 comma 请检查网络！
+ch=连接服务器失败comma请检查网络！
 
 [sync_successful]
 en=sync_successful
@@ -135,13 +135,9 @@ ch=子目录
 en=Depth
 ch=深度
 
-
-
-
 [proxy_test_success]
 en=代理服务器工作正常！
 ch=代理服务器工作正常！
-
 
 [myDocuments]
 en=我的文档

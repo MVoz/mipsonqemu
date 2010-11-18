@@ -215,10 +215,11 @@
 
 #define SET_NET_PROXY(x) \
 	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
-	tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
-	QNetworkProxy* netProxy = NULL;\
-	tz::netProxy(GET_MODE,NULL,netProxy);\
-	(x)->setProxy(*netProxy);	\
+		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
+		QNetworkProxy* netProxy = NULL;\
+		tz::netProxy(GET_MODE,NULL,&netProxy);\
+		qDebug()<<netProxy;\
+		(x)->setProxy(*netProxy);	\
 	}
 
 #define IS_URL(x)\
