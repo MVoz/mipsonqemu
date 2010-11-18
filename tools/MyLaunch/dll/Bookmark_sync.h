@@ -66,7 +66,6 @@ class BOOKMARK_SYNC_CLASS_EXPORT BookmarkSync:public MyThread
 	Q_OBJECT;
 public:
 	QFile *file;
-	QSettings * settings;
 	QBuffer* resultBuffer;
 	QTimer* httpTimer;
 	QSemaphore *semaphore;
@@ -92,7 +91,7 @@ public:
 	QHttp * http;
 	
 public:
-	BookmarkSync(QObject * parent = 0,QSqlDatabase *db=0,QSettings* s=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
+	BookmarkSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
 	~BookmarkSync();
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}

@@ -439,7 +439,7 @@ void mergeThread::postItemToHttpServer(bookmark_catagory * bc, int action, int p
 	QString postString;
 	uint nowparentid=0;
 	DELETE_OBJECT(posthp);
-	posthp = new postHttp(NULL,POST_HTTP_TYPE_HANDLE_ITEM);
+	posthp = new postHttp(NULL,settings,POST_HTTP_TYPE_HANDLE_ITEM);
 	posthp->parentid=parentId;
 	posthp->browserid=browserType;
 	posthp->username = username;

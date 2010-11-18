@@ -6,7 +6,8 @@
 #include <QStringList>
 #include <bmapi.h>
 #include "config.h"
-MyThread::MyThread(QObject * parent):QThread(parent){
+MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
+{
 	terminateFlag=0;
 	monitorTimer=NULL;
 }
@@ -34,16 +35,11 @@ void MyThread::run(){
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-testServerThread::testServerThread(QObject * parent ,QSettings* s):MyThread(parent),settings(s)
+testServerThread::testServerThread(QObject * parent ,QSettings* s):MyThread(parent,s)
 {
 	manager = NULL;
 	reply = NULL;
 	testNetTimer = NULL;
-}
-
-testServerThread::~testServerThread()
-{
-	
 }
 void testServerThread::testServerFinished(QNetworkReply* reply)
 {

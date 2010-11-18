@@ -77,48 +77,33 @@ using namespace boost;
 
 class  POST_HTTP_CLASS_EXPORT postHttp:public MyThread
 {
-	Q_OBJECT
+	Q_OBJECT;
 public:
-	//explicit postHttp(QObject *parent = 0){}
-	postHttp(QObject * parent = 0,int type=0);
+	postHttp(QObject * parent = 0,QSettings* s=0,int type=0);
 	~postHttp();
-public:
 	void run();
-	// void setProxy(QNetworkProxy& p);
 public:
 	QHttp * posthttp;
-	QString postString;
-	uint quitFlag;
 	QBuffer *resultBuffer;
+	QTimer* postTimer;	
+	
+	uint quitFlag;
+	uint bmid;
+	uint action;
 	int postType;
 	uint parentid;
 	uint browserid;
+	
 	QString username;
 	QString password;
-	QTimer* postTimer;
-	uint bmid;
-	uint action;
-	//uint proxyEnable;
-	//QNetworkProxy proxy;
-#if 0
-public:
-	int terminateFlag;
-	QTimer* monitorTimer;
-	void setTerminateFlag(int f)
-	{
-		terminateFlag=f;
-	}
-	public slots:
-		void monitorTimerSlot();
-#endif
-		public slots: 
-			//void httpRequestFinished(int id, bool error);
-			void httpDone(bool error);
-			//void httpStateChanged(int state);
-			void postTimerSlot();
-			void terminateThread();
-			void gorun();
-			void clearObject();
+	QString postString;	
+	
+public slots: 
+	void httpDone(bool error);
+	void postTimerSlot();
+	void terminateThread();
+	void gorun();
+	void clearObject();
 };
 
 #endif

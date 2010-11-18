@@ -100,7 +100,7 @@ void GetFileHttp::httpTimeout()
 	if(httpTimer[retryTime])
 		http[retryTime]->abort();	
 }
-GetFileHttp::GetFileHttp(QObject* parent,int mode,QString c): MyThread(parent),mode(mode),md5(c)
+GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int mode,QString c): MyThread(parent,s),mode(mode),md5(c)
 {
 	errCode=0;
 	statusCode=0;
@@ -648,7 +648,7 @@ void updaterThread::downloadFileFromServer(QString pathname,int m,QString md5)
 	DELETE_OBJECT(fh);
 	if(terminateFlag)
 		return;
-	fh=new GetFileHttp(NULL,m,md5);
+	fh=new GetFileHttp(NULL,settings,m,md5);
 
 	connect(fh,SIGNAL(getIniDoneNotify(int)),this, SLOT(getIniDone(int)),Qt::DirectConnection);
 	connect(fh,SIGNAL(getFileDoneNotify(int)),this, SLOT(getFileDone(int)),Qt::DirectConnection);	

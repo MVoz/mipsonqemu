@@ -32,16 +32,19 @@ class TEST_SERVER_DLL_CLASS_EXPORT MyThread:public QThread
 {
 	Q_OBJECT;
 public:
-	MyThread(QObject * parent = 0);
+	MyThread(QObject * parent = 0,QSettings* s=0);
 	~MyThread();
 public:
 	volatile int terminateFlag;
+	
 	QTimer* monitorTimer;
-	virtual void setTerminateFlag(int f);
+	QSettings* settings;
+	
 public slots:
 	virtual void monitorTimeout();
 public:
 	void run();
+	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
 };
 class  TEST_SERVER_DLL_CLASS_EXPORT testServerThread:public MyThread
@@ -51,10 +54,9 @@ public:
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
-	QSettings* settings;
 public:
 	testServerThread(QObject * parent = 0,QSettings* s=0);
-	~testServerThread();
+	~testServerThread(){};
 	void run();
 	void clearObject();
 	public slots: 

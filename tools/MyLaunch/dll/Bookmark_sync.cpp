@@ -17,7 +17,7 @@ void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & re
 {
 	md5key = resp.value("md5key");
 }
-BookmarkSync::BookmarkSync(QObject* parent,QSqlDatabase* db,QSettings* s,QSemaphore* p,int m): MyThread(parent),settings(s),semaphore(p),mode(m)
+BookmarkSync::BookmarkSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m): MyThread(parent,s),semaphore(p),mode(m)
 {
 	this->db=db;
 	http_finish=0;
