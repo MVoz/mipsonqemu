@@ -34,7 +34,7 @@ void MyThread::run(){
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-testServerThread::testServerThread(QObject * parent ):MyThread(parent)
+testServerThread::testServerThread(QObject * parent ,QSettings* s):MyThread(parent),settings(s)
 {
 	manager = NULL;
 	reply = NULL;
@@ -103,8 +103,11 @@ void testServerThread::run()
 	
 	tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
 	manager=new QNetworkAccessManager();
+	qDebug()<<tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
+	QDEBUG_LINE;
+	tz::netProxy(SET_MODE,settings,NULL);
 	SET_NET_PROXY(manager);
-
+	QDEBUG_LINE;
 	manager->moveToThread(this);	
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);

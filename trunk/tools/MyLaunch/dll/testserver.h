@@ -51,8 +51,9 @@ public:
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
+	QSettings* settings;
 public:
-	testServerThread(QObject * parent = 0);
+	testServerThread(QObject * parent = 0,QSettings* s=0);
 	~testServerThread();
 	void run();
 	void clearObject();

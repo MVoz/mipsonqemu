@@ -174,7 +174,7 @@ void BookmarkSync::run()
 	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
 	
-	testThread = new testServerThread();
+	testThread = new testServerThread(NULL,settings);
 	testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
 	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,TRY_CONNECT_SERVER);

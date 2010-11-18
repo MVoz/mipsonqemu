@@ -112,7 +112,7 @@ char *statusString[]={
 
 //static int testnetresult = 0;
 //static int netProxyEnable = 0;
-static int runparameters[RUN_PARAMETER_END]={0};
+static int runparameters[RUN_PARAMETER_END]={0,0,0,0};
 static QNetworkProxy *netproxy = NULL;
 QList<struct dbtableinfo*> dbtableInfolist;
 
@@ -1200,19 +1200,6 @@ QString  tz::registerString(int mode,const QString& path,const QString& name,QSt
 	}
 	return ret;
 }
-/*
-int tz::testNetResult(int mode,int ret)
-{
-switch(mode)
-{
-case GET_MODE://get
-return testnetresult;
-case SET_MODE://set
-testnetresult = ret;
-break;
-}
-}
-*/
 int tz::runParameter(int mode,int type,int ret)
 {
 	if(type<=RUN_PARAMETER_START||type>=RUN_PARAMETER_END)
@@ -1227,12 +1214,12 @@ int tz::runParameter(int mode,int type,int ret)
 	}
 	return 0;
 }
-void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
+void tz::netProxy(int mode,QSettings* s,QNetworkProxy** r)
 {
 	switch(mode)
 	{
 	case GET_MODE://get
-		r = netproxy;
+		(*r) = netproxy;
 		break;
 	case SET_MODE://set
 		if(runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
@@ -1243,24 +1230,24 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy* r)
 			if(netproxy ==NULL)
 			{
 				netproxy=new QNetworkProxy();
-				netproxy->setType(QNetworkProxy::HttpProxy);
+				netproxy->setType(QNetworkProxy::HttpProxy);				
+			}
+			if(netproxy){
 				netproxy->setHostName(s->value("HttpProxy/proxyAddress", "").toString());		
 				netproxy->setPort(s->value("HttpProxy/proxyPort", 0).toUInt());
 				netproxy->setUser(s->value("HttpProxy/proxyUsername", "").toString());
 				netproxy->setPassword(tz::decrypt(s->value("HttpProxy/proxyPassword", "").toString(),PASSWORD_ENCRYPT_KEY));
 			}
-
-		}else	{
+		}else{
 			runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,0);
 			if(netproxy&&!runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_USING,0))
 			{
-				delete netproxy;
-				netproxy =NULL;
+				DELETE_OBJECT(netproxy);
 			}
 		}		
 		break;
 	}
-
+	return;
 }
 
 int tz::GetCpuUsage()

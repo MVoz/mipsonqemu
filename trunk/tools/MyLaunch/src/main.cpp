@@ -2301,7 +2301,7 @@ void MyWidget::monitorTimerTimeout()
 			DELETE_SHAREOBJ(syncDlg);
 			break;
 		default:
-			if(syncDlg->status==UPDATE_SUCCESSFUL|syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_ACTION)
+			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_ACTION)
 			{
 				if((NOW_SECONDS-syncDlg->statusTime)>10)
 				{
