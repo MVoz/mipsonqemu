@@ -51,8 +51,8 @@ function testProxyClick()
 			OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
 			OptionsDlg.apply('HttpProxy/proxyUsername',$('proxyUsername').value);
 			OptionsDlg.apply('HttpProxy/proxyPassword',$('proxyPassword').value);
-			//OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
-			OptionsDlg.proxyTestClick();
+			OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
+			//OptionsDlg.proxyTestClick();
 		}
 }
 function tr(a)

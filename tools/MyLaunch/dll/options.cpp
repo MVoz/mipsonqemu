@@ -38,6 +38,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	updaterDlg=NULL;
 	updaterthread=NULL;
 	testProxyTimer =NULL;
+	proxy = NULL;
 	webView = new QWebView(this);
 
 	webView->setObjectName(QString::fromUtf8("webView"));
@@ -45,7 +46,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	webView->setMaximumSize(QSize(805, 16777215));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	qDebug("register resource options.rcc");
+//	qDebug("register resource options.rcc");
 	QResource::registerResource("options.rcc");
 	setFixedSize(805, 450);
 	metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
@@ -73,19 +74,24 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 }
 OptionsDlg::~OptionsDlg()
 {
-	qDebug(" ~OptionsDlg unregister resource options.rcc");
+	//qDebug(" ~OptionsDlg unregister resource options.rcc");
 	QResource::unregisterResource("options.rcc");
 	//cmdLists.clear();
+	if(testProxyTimer&&testProxyTimer->isActive()){
+		disconnect(manager, 0, 0, 0);
+		proxyTestTimeout();
+	}
 	dirLists.clear();
 	metaKeys.clear();
 	iActionKeys.clear();
-	actionKeys.clear();
-	DELETE_OBJECT(manager);
+	actionKeys.clear();	
 	DELETE_OBJECT(reply);
+	DELETE_OBJECT(proxy);
+	DELETE_OBJECT(manager);
 	DELETE_OBJECT(updaterthread);
 	DELETE_OBJECT(updaterDlg);
 	DELETE_OBJECT(webView);
-	DELETE_TIMER(testProxyTimer);
+	DELETE_TIMER(testProxyTimer);	
 	QDialog::accept();
 }
 
@@ -108,33 +114,17 @@ void OptionsDlg::contextMenuEvent(QContextMenuEvent * event)
 		webView->page()->triggerAction(QWebPage::Copy);
 	} else if (chosen == pasteAction)
 		webView->page()->triggerAction(QWebPage::Paste);
-
 }
 
 void OptionsDlg::startSync()
 {
 	emit optionStartSyncNotify();
 }
-
-void OptionsDlg::proxyTestslotError(QNetworkReply::NetworkError err)
-{
-	qDebug("%s error=%d\n",__FUNCTION__,err);
-	DELETE_OBJECT(testProxyTimer);
-	switch (err){
-		case  QNetworkReply::ProxyAuthenticationRequiredError:
-			QMessageBox::critical(0, windowTitle(), QObject::tr("The proxy server needs the right name and password"));			
-			break;
-		default:
-			QMessageBox::critical(this, windowTitle(), QObject::tr("The proxy server works failed"));
-			break;
-
-	}
-}
-void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
+void OptionsDlg::proxyTestFinished(QNetworkReply * testreply)
 {	
 	int err=testreply->error();
 	qDebug("%s error=%d\n",__FUNCTION__,testreply->error());
-	DELETE_OBJECT(testProxyTimer);
+	STOP_TIMER(testProxyTimer);	
 	switch (err){
 		case QNetworkReply::NoError:
 			QMessageBox::information(this, windowTitle(), tz::tr("proxy_test_success"));
@@ -146,43 +136,49 @@ void OptionsDlg::proxyTestslotFinished(QNetworkReply * testreply)
 			QMessageBox::critical(this, windowTitle(), QObject::tr("The proxy server works failed"));
 			break;			
 	}
-	//reply->close();
-	//disconnect(manager, 0, 0, 0);	
-
-	//delete manager;
-	//manager=NULL;
-//	tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
-	SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
+	reply->close();
+	disconnect(manager, 0, 0, 0);	
 }
-void OptionsDlg::proxtTestTimerSlot()
+void OptionsDlg::proxyTestTimeout()
 {
 	STOP_TIMER(testProxyTimer);
-	reply->abort();
+	if(reply) 
+		reply->abort();
 }
-void OptionsDlg::proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/)
+void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
-
-//	tz::netProxy(SET_MODE,settings,NULL);
-
+	if(testProxyTimer&&testProxyTimer->isActive()){
+		return;		
+	}
+	DELETE_TIMER(testProxyTimer);
+	DELETE_OBJECT(proxy);
+	DELETE_OBJECT(reply);
+	DELETE_OBJECT(manager);
 	if(!manager)
 	{
 		request.setUrl(QUrl(QString("http://www.sohu.com")));
 		request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 		manager = new QNetworkAccessManager(this);
-		SET_NET_PROXY(manager,settings);
+
+		if(proxy ==NULL)
+		{
+				proxy=new QNetworkProxy();
+				proxy->setType(QNetworkProxy::HttpProxy);				
+		}
+		if(proxy){
+				proxy->setHostName(proxyAddr);		
+				proxy->setPort(proxyPort.toUInt());
+				proxy->setUser(proxyUsername);
+				proxy->setPassword(proxyPassword);
+		}
+		
+		manager->setProxy(*proxy);
 		manager->setObjectName(tr("manager"));
 
-		reply = manager->get(request);
+		reply=manager->get(request);
 
-		testProxyTimer=new QTimer(this);
-		testProxyTimer->start(10);
-		testProxyTimer->setSingleShot(TRUE);
-
-		connect(testProxyTimer, SIGNAL(timeout()), this, SLOT(proxtTestTimerSlot()), Qt::DirectConnection);
-		// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-		// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(proxyTestslotError(QNetworkReply::NetworkError)));
-		connect(manager, SIGNAL(finished ( QNetworkReply * )), this, SLOT(proxyTestslotFinished(QNetworkReply *)));
-
+		START_TIMER_SYN(testProxyTimer,TRUE,10*SECONDS,proxyTestTimeout);
+		connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(proxyTestFinished(QNetworkReply *)));
 	}
 
 }

@@ -40,7 +40,7 @@ typedef struct cmd_list{
 }CMD_LIST;
 class OPTIONS_CLASS_EXPORT OptionsDlg:public QDialog
 {
-	Q_OBJECT
+	Q_OBJECT;
 public:
 	OptionsDlg(QWidget * parent = 0,QSettings *s=0,QSqlDatabase *b=NULL);
 	~OptionsDlg();
@@ -53,52 +53,48 @@ public:
 	QStringList actionKeys;
 	QList < int >iMetaKeys;
 	QList < int >iActionKeys;
-	//QList <CMD_LIST> cmdLists;
 	QList <Directory> dirLists;
-	//shared_ptr <BookmarkSync> gSyncer;
-	//shared_ptr <CatBuilder> catalogBuilder;
 	QSettings *settings;
-//	postHttp *accountTestHttp;
+
+	QSqlDatabase *db;
+	
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
-	QNetworkProxy proxy;
+	QNetworkProxy *proxy;
 	QNetworkRequest request;
 	QTimer* testProxyTimer;
-	QSqlDatabase *db;
+	
 public:
 	int checkListDirExist(const QString& dirname);
 	int checkListDirSpecialchar(const QString& dirname);
 	void addCatitemToDb(CatItem& item);
 	void modifyCatitemFromDb(CatItem& item,uint index);
 	void deleteCatitemFromDb(CatItem& item,uint index);
-	public slots: 
-
-		void populateJavaScriptWindowObject();
-		void contextMenuEvent(QContextMenuEvent* event);
-		void startSync();
-		void getHtml(const QString &path);
-		void gohref(const QString &url);
-		void loading(const QString &name);
-		void accept();
-		void reject();
-		void apply(const QString& name,const QVariant &value);
-		void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
-		void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
-		void getListDirectory(const QString& id,const int& type);
-		//void bookmark_finished(bool error);
-		//void testAccountFinished(bool err,QString result);
-		void accountTestClick(const QString& name,const QString& password);
-		void proxyTestClick(/*const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword*/);
-		void proxyTestslotError(QNetworkReply::NetworkError err);
-		void  proxyTestslotFinished(QNetworkReply * testreply);
-		void proxtTestTimerSlot();
-		void rebuildcatalog();
-		void startUpdater();
-		QString tr(const QString & s);
+public slots: 
+	void populateJavaScriptWindowObject();
+	void contextMenuEvent(QContextMenuEvent* event);
+	void startSync();
+	void getHtml(const QString &path);
+	void gohref(const QString &url);
+	void loading(const QString &name);
+	void accept();
+	void reject();
+	void apply(const QString& name,const QVariant &value);
+	void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
+	void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
+	void getListDirectory(const QString& id,const int& type);
+	void accountTestClick(const QString& name,const QString& password);
+	void proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword);
+//	void proxyTestslotError(QNetworkReply::NetworkError err);
+	void  proxyTestFinished(QNetworkReply * testreply);
+	void proxyTestTimeout();
+	void rebuildcatalog();
+	void startUpdater();
+	QString tr(const QString & s);
 signals:
-		void rebuildcatalogSignal();
-		void optionStartSyncNotify();
-		void testAccountNotify(const QString&,const QString&);
-		void configModifyNotify(int type);
+	void rebuildcatalogSignal();
+	void optionStartSyncNotify();
+	void testAccountNotify(const QString&,const QString&);
+	void configModifyNotify(int type);
 };
 #endif
