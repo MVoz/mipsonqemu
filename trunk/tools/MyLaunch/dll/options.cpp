@@ -39,6 +39,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	updaterthread=NULL;
 	testProxyTimer =NULL;
 	proxy = NULL;
+	testproxying = 0;
 	webView = new QWebView(this);
 
 	webView->setObjectName(QString::fromUtf8("webView"));
@@ -77,7 +78,7 @@ OptionsDlg::~OptionsDlg()
 	//qDebug(" ~OptionsDlg unregister resource options.rcc");
 	QResource::unregisterResource("options.rcc");
 	//cmdLists.clear();
-	if(testProxyTimer&&testProxyTimer->isActive()){
+	if(testproxying){
 		disconnect(manager, 0, 0, 0);
 		proxyTestTimeout();
 	}
@@ -138,6 +139,7 @@ void OptionsDlg::proxyTestFinished(QNetworkReply * testreply)
 	}
 	reply->close();
 	disconnect(manager, 0, 0, 0);	
+	testproxying = 0;
 }
 void OptionsDlg::proxyTestTimeout()
 {
@@ -147,9 +149,10 @@ void OptionsDlg::proxyTestTimeout()
 }
 void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPort,const QString& proxyUsername,const QString& proxyPassword)
 {
-	if(testProxyTimer&&testProxyTimer->isActive()){
+	if(testproxying){
 		return;		
 	}
+	testproxying = 1;
 	DELETE_TIMER(testProxyTimer);
 	DELETE_OBJECT(proxy);
 	DELETE_OBJECT(reply);
@@ -425,12 +428,13 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 	}
 	settings->setValue(name, value);
 	settings->sync();
-	if(name=="hotkeyAction"){
+	if(name=="hotkeyAction")
 		emit configModifyNotify(HOTKEY);			
-	}
-	if(name == "ckShowTray")
+	else if(name == "ckShowTray")
 		emit configModifyNotify(SHOWTRAY);	
-	if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"){
+	else if(name.startsWith("HttpProxy"))
+		emit configModifyNotify(NETPROXY);	
+	else if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"){
 		setBrowserEnable(settings);
 	}
 		
@@ -644,7 +648,6 @@ void OptionsDlg::startUpdater()
 	}
 	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
-
 		updaterThread* updaterthread=new updaterThread(updaterDlg,settings,UPDATE_DLG_MODE);	
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
 		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));

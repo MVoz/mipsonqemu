@@ -63,6 +63,8 @@ public:
 	QNetworkProxy *proxy;
 	QNetworkRequest request;
 	QTimer* testProxyTimer;
+
+	volatile char testproxying;
 	
 public:
 	int checkListDirExist(const QString& dirname);

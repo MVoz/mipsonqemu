@@ -197,7 +197,7 @@ void BookmarkSync::run()
 		STOP_TIMER(httpTimer);
 		DELETE_FILE(resultBuffer);
 		//tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 0);	
-		SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
+		//SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
 	}
 	if(mode==BOOKMARK_SYNC_MODE)
 			emit bmSyncFinishedStatusNotify(status);

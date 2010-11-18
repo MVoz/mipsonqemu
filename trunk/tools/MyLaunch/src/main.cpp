@@ -87,6 +87,10 @@ void MyWidget::configModify(int type){
 		}else
 			trayIcon->hide();
 		break;
+		case NETPROXY:
+			qDebug()<<"NETPROXY...";
+			//tz::netProxy(int mode,QSettings * s,QNetworkProxy * * r)
+		break;
 		default:
 		break;
 	}
@@ -2096,7 +2100,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
-	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
+	qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
 	//start to all browser is disable ,don't sync
@@ -2107,7 +2111,6 @@ void MyWidget::_startSync(int mode,int silence)
 		browsers_enable|=(browserInfo[i].enable?1:0);
 		i++;
 	}
-	qDebug()<<__FUNCTION__<<browsers_enable;
 	if(!browsers_enable)
 	{
 		goto	SYNCTIMER;
