@@ -219,8 +219,7 @@
 
 #define SET_NET_PROXY(x,y) \
 	tz::netProxy(SET_MODE,(y),NULL);\
-	if( tz::runParameter(GET_MODE,RUN_PARAMETER_NETPROXY_ENABLE, 0)){\
-		tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING, 1);\
+	if( GET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_ENABLE)){\
 		QNetworkProxy* netProxy = NULL;\
 		tz::netProxy(GET_MODE,NULL,&netProxy);\
 		(x)->setProxy(*netProxy);	\
@@ -321,7 +320,8 @@ enum CONFIG_NOTIFY{
 	HOTKEY=0,
 	SHOWTRAY,
 	DIRLIST,
-	CMDLIST
+	CMDLIST,
+	NETPROXY
 };
 
 #define THREAD_MONITOR_POINT \

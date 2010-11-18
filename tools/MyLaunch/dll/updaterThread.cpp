@@ -362,7 +362,7 @@ void updaterThread::run()
 	
 	exec();
 	//tz::runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_USING,0);
-	SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
+//	SET_RUN_PARAMETER(RUN_PARAMETER_NETPROXY_USING,0);
 	clearObject();
 }
 /*
