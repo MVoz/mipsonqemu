@@ -18,16 +18,16 @@ INCLUDEPATH += ../include/
 SOURCES = main.cpp \
  globals.cpp \
  catalog_builder.cpp \
- plugin_handler.cpp \
- platform_util.cpp \
- plugin_interface.cpp 
+ plugin_interface.cpp \
+ platform_util.cpp 
+
  
 HEADERS = platform_util.h \
  platform_base.h \
  main.h \
  catalog_builder.h \
- plugin_interface.h \
- plugin_handler.h 
+ plugin_interface.h 
+
 
 
 ICON = touchAny.ico
