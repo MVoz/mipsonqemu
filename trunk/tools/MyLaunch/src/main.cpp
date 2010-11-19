@@ -2754,8 +2754,8 @@ void MyWidget::freeOccupyMemeory()
 	
 	dlg.setWindowFlags(Qt::SplashScreen|Qt::FramelessWindowHint);
 	dlg.resize(0,0);
-	dlg.showMinimized();
-	dlg.show();		
+	dlg.show();	
+	dlg.showMinimized();		
 	dlg.accept();
 	//#endif
 }
