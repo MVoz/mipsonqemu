@@ -1,22 +1,16 @@
 #ifndef ICON_DELEGATE_H_
 #define ICON_DELEGATE_H_
 #include <globals.h>
-#include <QObject>
-#include <QString>
-#include <QThread>
-#include <QBuffer>
-#include <QTimer>
-#include <QFile>
 #include <config.h>
+
 #include <windows.h>
 #include <bmapi.h>
 #include <QColor>
 #include <QPainter>
 #include <QStyleOptionViewItem>
 #include <QModelIndex>
-#include <QtCore/qobject.h>
-#include <QStringList>
 #include <QAbstractItemDelegate>
+
 #define ROLE_FULL Qt::UserRole
 #define ROLE_SHORT Qt::UserRole + 1
 #define ROLE_ICON Qt::UserRole + 2
