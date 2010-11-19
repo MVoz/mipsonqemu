@@ -1,3 +1,4 @@
+CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
 SET obj=%1
 
 

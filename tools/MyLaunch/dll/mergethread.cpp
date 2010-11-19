@@ -1,5 +1,4 @@
 #include <mergethread.h>
-#include <globals.h>
 mergeThread::mergeThread(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QString p):QThread(parent),db(b),settings(s),username(u),password(p)
 {
 	file = NULL;

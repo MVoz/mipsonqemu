@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -27,7 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <shlobj.h>
 #include <tchar.h>
 //#endif
-
 
 #include <QSet>
 #include <QDir>
@@ -67,51 +65,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QCoreApplication>
 #include <QContextMenuEvent>
 
-//#include <QNetworkAccessManager>
-//#include <QNetworkProxy>
-//#include <QNetworkRequest>
 #include <QXmlStreamReader>
 #include <QCryptographicHash>
-#if 0
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialog>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
-#include <QtGui/QProgressBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QSlider>
-#include <QtGui/QSpacerItem>
-#include <QtGui/QSpinBox>
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
-#endif
 #include <QtCore>
 #include <QtGui>
 #include <QtNetwork>
-//#include <QtNetwork/QNetworkProxy>
-//#include <QtNetwork/QNetworkReply>
-
-
-//#include <QtNetwork/QHttpResponseHeader>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
 
 #include <boost/shared_ptr.hpp>
 
 using namespace boost;
 
-//extern shared_ptr<CatBuilder> gBuilder;
-//extern CatItem* gSearchResult;
 
 extern QString gNativeSep;
 extern QString gSearchTxt;

@@ -12,7 +12,6 @@ INCLUDEPATH += ../../win/
 INCLUDEPATH += ../include/
 VPATH		+= src/
 SOURCES		=bmapi.cpp
-#VERSION = 2.2.3
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib 
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
@@ -23,11 +22,8 @@ RC_FILE =   bmapi.rc
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/
-#    LIBS +=../debug/log.lib
    }
    CONFIG(release, debug|release) {
-#    CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/
-
+   DESTDIR = ../release/
    }
  }

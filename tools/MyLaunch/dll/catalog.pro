@@ -7,10 +7,9 @@ CONFIG         += dll  debug_and_release
 INCLUDEPATH    += .
 INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = catalog.h
+HEADERS         = ../include/catalog.h
 SOURCES         = catalog.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
-#! [0]
 DEFINES += WIN32
 DEFINES += CATALOG_DLL
 CONFIG -= embed_manifest_dll
@@ -20,7 +19,6 @@ if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/
     LIBS +=../debug/bmapi.lib
-#    LIBS +=../debug/pinyin.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll

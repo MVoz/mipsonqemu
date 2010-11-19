@@ -68,7 +68,6 @@ unix {
 
 win32 {
   INCLUDEPATH += c:/boost/
-  #FORMS =   options.ui
   RC_FILE =   ../win/launchy.rc
   LIBS +=   shell32.lib
   CONFIG += embed_manifest_exe
@@ -87,8 +86,6 @@ win32 {
       LIBS +=   ../debug/catalog.lib
       LIBS +=   ../debug/catalog_types.lib
       LIBS +=   ../debug/icon_delegate.lib
-#      LIBS +=   ../debug/weby.lib
-#      LIBS +=   ../debug/runner.lib
       LIBS +=   ../debug/updaterThread.lib
       LIBS +=   ../debug/testserver.lib
    }
@@ -103,17 +100,15 @@ win32 {
       LIBS +=   ../release/catalog.lib
       LIBS +=   ../release/catalog_types.lib
       LIBS +=   ../release/icon_delegate.lib
-#      LIBS +=   ../release/weby.lib
-#      LIBS +=   ../release/runner.lib
       LIBS +=   ../release/updaterThread.lib
       LIBS +=   ../release/testserver.lib
       DESTDIR =    ../release/
   }
 }
 }
-TRANSLATIONS =  ../translations/launchy_fr.ts  ../translations/launchy_nl.ts  \
-		    ../translations/launchy_zh.ts ../translations/launchy_es.ts \
-		    ../translations/launchy_de.ts ../translations/launchy_ja.ts
+#TRANSLATIONS =  ../translations/launchy_fr.ts  ../translations/launchy_nl.ts  \
+#		    ../translations/launchy_zh.ts ../translations/launchy_es.ts \
+#		    ../translations/launchy_de.ts ../translations/launchy_ja.ts
 OBJECTS_DIR = build
 MOC_DIR = build
 #UI_DIR = build

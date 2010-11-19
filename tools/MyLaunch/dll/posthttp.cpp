@@ -1,7 +1,6 @@
 #include <posthttp.h>
-#include <bookmark_sync>
+#include <bookmark_sync.h>
 #include <bmapi.h>
-#include <stdio.h>
 
 //extern uint gMaxGroupId;
 

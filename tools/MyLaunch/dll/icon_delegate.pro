@@ -7,7 +7,7 @@ CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
 INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = icon_delegate.h
+HEADERS         = ../include/icon_delegate.h
 SOURCES         = icon_delegate.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
 #! [0]

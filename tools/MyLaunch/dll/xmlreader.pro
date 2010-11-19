@@ -6,7 +6,8 @@ TEMPLATE = lib
 INCLUDEPATH += .
 INCLUDEPATH += ../include/
 INCLUDEPATH    += c:/boost/
-
+SOURCES += XmlReader.cpp
+HEADERS  = ../include/XmlReader.h
 CONFIG += dll qt_warn debug_and_release
 QT += network
 QT += xml
@@ -16,7 +17,7 @@ DEFINES += WIN32
 DEFINES += XMLREADER_DLL
 CONFIG -= embed_manifest_dll
 # Input
-SOURCES += XmlReader.cpp
+
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/

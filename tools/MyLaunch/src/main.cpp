@@ -39,10 +39,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QTranslator>
 
 
-#include "icon_delegate.h"
+#include <icon_delegate.h>
 #include "main.h"
 #include <globals.h>
-#include <options>
+#include <options.h>
 
 //#include "dsingleapplication.h"
 #include "plugin_interface.h"

@@ -19,11 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include <catalog_types>
-#include "catalog_builder.h"
+#include <catalog_types.h>
+#include <catalog_builder.h>
 #include <globals.h>
 #include "main.h"
-#include <options>
+#include <options.h>
 //#include <QDebug>
 
 //#include <QFile>

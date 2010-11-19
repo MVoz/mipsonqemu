@@ -1,7 +1,12 @@
 #ifndef XML_READER_H
 #define XML_READER_H
+
+
+
 #include <config.h>
-#include <catalog>
+#include <globals.h>
+
+#include <catalog.h>
 
 #if defined(XMLREADER_DLL)
 #define XMLREADER_DLL_CLASSEXPORT __declspec(dllexport)

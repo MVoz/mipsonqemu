@@ -17,18 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "options.h"
+#include <options.h>
 #include <globals.h>
-#include <QSettings>
-#include <QDir>
-#include <QPixmap>
-#include <QBitmap>
-#include <QPainter>
-#include <QFileDialog>
-#include <QTextStream>
-#include <QMessageBox>
+
 #include <QDesktopWidget>
-#include <catalog>
+#include <catalog.h>
 
 OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent),settings(s),db(b)
 {
