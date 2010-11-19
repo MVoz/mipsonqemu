@@ -10,9 +10,7 @@ CONFIG += debug_and_release
 #CONFIG += qt release
 QT += network
 QT += xml
-QT += webkit
 QT += sql
-QT += svg
 INCLUDEPATH += .
 
 INCLUDEPATH += ../include/
