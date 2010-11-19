@@ -27,8 +27,8 @@ HEADERS = platform_util.h \
  main.h \
  catalog_builder.h \
  plugin_interface.h \
- plugin_handler.h \
- icon_delegate.h 
+ plugin_handler.h 
+
 
 ICON = touchAny.ico
 
