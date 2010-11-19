@@ -1,4 +1,3 @@
-#! [0]
 TEMPLATE        = lib
 CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
@@ -14,9 +13,10 @@ QT += sql
 DEFINES += WIN32
 DEFINES += MERGE_THREAD_DLL
 CONFIG -= embed_manifest_dll
+
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
+	DESTDIR =     ../debug/
 	LIBS +=   ../debug/bmapi.lib
 	LIBS +=   ../debug/xmlreader.lib
 	LIBS +=   ../debug/posthttp.lib
@@ -24,8 +24,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../debug/testserver.lib
    }
    CONFIG(release, debug|release) {
- #   CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/
+	DESTDIR = ../release/
 	LIBS +=   ../release/bmapi.lib
 	LIBS +=   ../release/xmlreader.lib
 	LIBS +=   ../release/posthttp.lib
