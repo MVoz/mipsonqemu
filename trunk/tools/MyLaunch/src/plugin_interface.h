@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QObject>
 #include <QSettings>
-#include <catalog>
+#include <catalog.h>
 
 #ifdef Q_WS_WIN
 #define VC_EXTRALEAN

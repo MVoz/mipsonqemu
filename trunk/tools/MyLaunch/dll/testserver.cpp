@@ -1,4 +1,4 @@
-#include "testserver.h"
+#include <testserver.h>
 #include <bmapi.h>
 
 MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
@@ -109,6 +109,6 @@ void testServerThread::run()
 	
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
 	exec();
-	clearObject();
+	clearObject();	
 	
 }

@@ -1,4 +1,4 @@
-#include "icon_delegate.h"
+#include <icon_delegate.h>
 #include <QPainter>
 #include <QAbstractListModel>
 

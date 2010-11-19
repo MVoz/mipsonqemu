@@ -12,7 +12,7 @@ INCLUDEPATH += ../../win/
 INCLUDEPATH += ../include/
 VPATH		+= src/
 SOURCES		=testserver.cpp
-HEADERS         = testserver.h
+HEADERS		=../include/testserver.h
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
@@ -27,7 +27,6 @@ if(!debug_and_release|build_pass) {
     LIBS +=../debug/bmapi.lib
    }
    CONFIG(release, debug|release) {
-#    CONFIG +=     embed_manifest_dll
     DESTDIR = ../release/
     LIBS +=../release/bmapi.lib
    }

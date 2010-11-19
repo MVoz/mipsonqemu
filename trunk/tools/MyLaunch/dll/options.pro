@@ -4,10 +4,9 @@ CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
 INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = options.h
+HEADERS         = ../include/options.h
 SOURCES         = options.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
-#! [0]
 
 QT += network
 QT += xml
@@ -16,9 +15,6 @@ QT += sql
 DEFINES += WIN32
 DEFINES += OPTIONS_DLL
 CONFIG -= embed_manifest_dll
-# install
-
-#INSTALLS += target sources
 
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {

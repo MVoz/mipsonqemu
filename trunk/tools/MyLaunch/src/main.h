@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAIN_H
 
 
-
+#if 0
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -31,19 +31,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QBuffer>
 #include <QKeyEvent>
 #include <QScrollBar>
+#endif
 #include "plugin_handler.h"
 #include "platform_util.h"
-#include <catalog>
-#include "catalog_builder.h"
-#include "icon_delegate.h"
+#include <catalog.h>
+#include <catalog_builder.h>
+#include <icon_delegate.h>
 #include <globals.h>
 #include <config.h>
-#include <boost/shared_ptr.hpp>
-#include <options>
-#include <Bookmark_sync>
+#include <options.h>
+#include <Bookmark_sync.h>
 #include <QProcess>
-#include <weby>
-using namespace boost;
+//#include <weby>
+
 
 
 

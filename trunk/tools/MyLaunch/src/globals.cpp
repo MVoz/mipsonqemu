@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <globals.h>
 
-#include <bookmark_sync>
-#include <catalog>
+#include <bookmark_sync.h>
+#include <catalog.h>
 
 #include "../src/catalog_builder.h"
 

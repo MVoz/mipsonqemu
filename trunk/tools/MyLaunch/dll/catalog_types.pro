@@ -7,7 +7,7 @@ CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
 INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = catalog_types.h
+HEADERS         = ../include/catalog_types.h
 SOURCES         = catalog_types.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
 #! [0]
@@ -20,12 +20,12 @@ if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/
      LIBS +=   ../debug/bmapi.lib
-    LIBS +=   ../debug/catalog.lib
+     LIBS +=   ../debug/catalog.lib
    }
    CONFIG(release, debug|release) {
   #  CONFIG +=     embed_manifest_dll
     DESTDIR = ../release/
      LIBS +=   ../release/bmapi.lib
-    LIBS +=   ../release/catalog.lib
+     LIBS +=   ../release/catalog.lib
    }
  }

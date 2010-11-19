@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "synchronizeDlg.h"
-#include <globals.h>
+#include <synchronizeDlg.h>
+
 
 
 synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
@@ -32,37 +32,6 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	setFixedSize(360, 100);
 	getHtml("./html/processDlg.html");
 	status=0;
-/*
-	statusMap[HTTP_UNCONNECTED]="http_unconnected";
-	statusMap[HTTP_HOSTLOOKUP]="http_hostlookup";
-	statusMap[HTTP_CONNECTING]="http_connecting";
-	statusMap[HTTP_SENDING]="http_sending";
-	statusMap[HTTP_READING]="http_reading";
-	statusMap[HTTP_CONNECTED]="http_connected";
-	statusMap[HTTP_CLOSING]="http_closing";
-	statusMap[HTTP_TIMEOUT]="http_timeout";
-	statusMap[HTTP_TEST_ACCOUNT_SUCCESS]="http_test_account_success";
-	statusMap[HTTP_TEST_ACCOUNT_FAIL]="http_test_account_fail";
-	statusMap[HTTP_GET_INI_FAILED]="http_get_ini_failed";
-	statusMap[HTTP_GET_INI_SUCCESSFUL]="http_get_ini_successful";
-	statusMap[HTTP_GET_INI_NOT_EXISTED]="http_get_ini_not_existed";
-	statusMap[HTTP_GET_FILE_SUCCESSFUL]="http_get_file_successful";
-	statusMap[HTTP_GET_FILE_NOT_EXISTED]="http_get_file_not_existed";
-	statusMap[HTTP_GET_FILE_FAILED]="http_get_file_failed";
-	statusMap[UPDATE_FAILED]="update_failed";
-	statusMap[UPDATE_SUCCESSFUL]="update_successful";
-	statusMap[HTTP_NEED_RETRY]="http_need_retry";
-	statusMap[UPDATE_NO_NEED]="update_no_need";
-	statusMap[UPDATE_NET_ERROR]="update_net_error";
-	statusMap[BOOKMARK_SYNC_START]="bookmark_sync_start";
-	statusMap[UPDATE_PROCESSING]="update_processing";
-	statusMap[SYNC_SUCCESSFUL]="sync_successful";	
-	statusMap[LOGIN_FALIL]="login_falil";
-	statusMap[UPDATE_SERVER_REFUSE]="update_server_refuse";
-	statusMap[HTTP_CONNECT_SERVER]="http_connect_server";
-	statusMap[UPDATE_NET_ERROR_PROXY]="update_net_error_proxy";
-	statusMap[UPDATE_NET_ERROR_PROXY_AUTH]="update_net_error_proxy_auth";
-*/
 }
 
 
