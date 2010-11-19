@@ -423,7 +423,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 
 	// Load the plugins
-	plugins.loadPlugins();
+//	plugins.loadPlugins();
 
 	// Load the skin
 	applySkin(gSettings->value("skin", dirs["defSkin"][0]).toString());
@@ -777,6 +777,7 @@ void MyWidget::launchObject()
 
 	}
 	else {
+#if 0
 		int ops = plugins.execute(&inputData, &res);
 		if (ops > 1)
 		{
@@ -795,6 +796,7 @@ void MyWidget::launchObject()
 				break;
 			}
 		}
+#endif
 	}
 	//catalog->incrementUsage(res);
 }
@@ -1228,7 +1230,6 @@ void MyWidget::searchOnInput()
 	//	plugins.getResults(&inputData, &searchResults);
 #ifdef CONFIG_LOG_ENABLE_1
 	qDebug("gSearchTxt=%s", TOCHAR(gSearchTxt));
-	qDebug("plugins searchResults:");
 	for (int i = 0; i < searchResults.count(); i++)
 	{
 		qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
@@ -2605,7 +2606,7 @@ void MyWidget::showLaunchy(bool now)
 	input->setFocus();
 	qApp->syncX();
 	// Let the plugins know
-	plugins.showLaunchy();
+//	plugins.showLaunchy();
 }
 
 
@@ -2634,7 +2635,7 @@ void MyWidget::hideLaunchy(bool now)
 		}
 	}
 	// let the plugins know
-	plugins.hideLaunchy();
+//	plugins.hideLaunchy();
 	freeOccupyMemeory();
 }
 
@@ -3050,12 +3051,13 @@ int main(int argc, char *argv[])
 		}
 		QCoreApplication::setApplicationName(APP_NAME);
 		QCoreApplication::setOrganizationDomain(APP_NAME);
-
+#if 0
 		QString locale = QLocale::system().name();
 
 		QTranslator translator;
 		translator.load(QString("tr/launchy_" + locale));
 		app->installTranslator(&translator);
+#endif
 		if (!QSystemTrayIcon::isSystemTrayAvailable())
 		{
 			QMessageBox::critical(0, QObject::tr("Systray"), QObject::tr("I couldn't detect any system tray " "on this system."));

@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QKeyEvent>
 #include <QScrollBar>
 #endif
-#include "plugin_handler.h"
+//#include "plugin_handler.h"
 #include "platform_util.h"
 #include <catalog.h>
 #include <catalog_builder.h>
@@ -210,7 +210,7 @@ public:
 	//shared_ptr<SlowCatalog*> main_catalog;;
 	QList<CatItem*> searchResults;
 	QList<InputData> inputData;
-	PluginHandler plugins;
+//	PluginHandler plugins;
 	bool visible;
 	bool alwaysShowLaunchy;
 	bool menuOpen;
