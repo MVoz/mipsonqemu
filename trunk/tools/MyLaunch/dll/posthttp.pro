@@ -1,4 +1,3 @@
-#! [0]
 TEMPLATE        = lib
 CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
@@ -6,7 +5,6 @@ INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
 HEADERS         = ../include/posthttp.h
 SOURCES         = posthttp.cpp 
-#TARGET          = $$qtLibraryTarget(mergethread)
 
 QT += network
 QT += xml
