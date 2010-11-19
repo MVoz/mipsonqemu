@@ -38,20 +38,15 @@
 #ifndef MERGE_THREAD_H
 #define MERGE_THREAD_H
 
-
-#include <xmlreader.h>
-#include "config.h"
+#include <config.h>
 #include <bmapi.h>
-#include "posthttp.h"
+#include <posthttp.h>
+#include <xmlreader.h>
 
-
-
-using namespace boost;
 #if defined(MERGE_THREAD_DLL)
 #define MERGE_THREAD_CLASS_EXPORT __declspec(dllexport)
 #else
 #define MERGE_THREAD_CLASS_EXPORT __declspec(dllimport)
-//#define MERGE_THREAD_CLASS_EXPORT 
 #endif
 #define LOCAL_EXIST_OFFSET  2
 #define LASTUPDATE_EXIST_OFFSET 1
