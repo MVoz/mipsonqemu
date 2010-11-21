@@ -5,7 +5,7 @@
 #include <globals.h>
 #include <bmnet.h>
 #include <bmMerge.h>
-#include <posthttp.h>
+#include <bmpost.h>
 
 
 #define BM_EQUAL 1
