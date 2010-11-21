@@ -3,7 +3,7 @@
 
 #include <config.h>
 #include <globals.h>
-#include <testserver.h>
+#include <bmnet.h>
 #include <mergeThread.h>
 #include <posthttp.h>
 
@@ -63,7 +63,7 @@ public:
 	volatile int testServerResult;
 	volatile bool needwatchchild;	
 	
-	testServerThread *testThread;
+	testNet *testThread;
 	mergeThread *mgthread;
 	QHttp * http;
 	

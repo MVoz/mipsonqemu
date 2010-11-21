@@ -28,7 +28,7 @@ public:
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
 };
-class  TEST_SERVER_DLL_CLASS_EXPORT testServerThread:public MyThread
+class  TEST_SERVER_DLL_CLASS_EXPORT testNet:public MyThread
 {
 	Q_OBJECT;
 public:
@@ -36,8 +36,8 @@ public:
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
 public:
-	testServerThread(QObject * parent = 0,QSettings* s=0);
-	~testServerThread(){};
+	testNet(QObject * parent = 0,QSettings* s=0);
+	~testNet(){};
 	void run();
 	void clearObject();
 public slots: 
