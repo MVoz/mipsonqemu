@@ -2183,7 +2183,11 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 
 	syncAction->setDisabled(TRUE);
+#ifdef CONFIG_SERVER_IP_SETTING
+	SET_HOST_IP(gSettings,gSyncer);
+#else
 	gSyncer->setHost(BM_SERVER_ADDRESS);
+#endif
 
 	qsrand((unsigned) NOW_SECONDS);
 	key=qrand()%(getkeylength());
@@ -2228,6 +2232,12 @@ void MyWidget::_startSync(int mode,int silence)
 		gSyncer->setPassword(testAccountPassword);
 		break;
 	}
+#ifdef CONFIG_SERVER_IP_SETTING
+//	QString serverIp = gSettings->value("serverip","" ).toString();
+//	if( !serverIp.isEmpty())
+//		url.replace(BM_SERVER_ADDRESS,serverIp);
+	SET_SERVER_IP(gSettings,url);
+#endif
 	gSyncer->setUrl(url);
 	gSyncer->start();
 	gSettings->setValue("lastsyncstatus",0);
