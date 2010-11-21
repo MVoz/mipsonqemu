@@ -41,7 +41,7 @@
 #include <config.h>
 #include <bmapi.h>
 #include <posthttp.h>
-#include <xmlreader.h>
+#include <bmxml.h>
 
 #if defined(MERGE_THREAD_DLL)
 #define MERGE_THREAD_CLASS_EXPORT __declspec(dllexport)
@@ -95,8 +95,8 @@ public:
 	void productFFId(QString & randString,int length);
 	void setTerminated(uint flag){	terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
-	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable);		
-	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time);
+	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,bmXml **lastUpdate,const QString filepath,uint *browserenable);		
+	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,bmXml **lastUpdate,const QString time);
 
 signals:
 	void done(bool error);

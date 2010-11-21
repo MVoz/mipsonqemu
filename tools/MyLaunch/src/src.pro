@@ -75,7 +75,7 @@ win32 {
     CONFIG += console
     DESTDIR =     ../debug/
       LIBS +=   ../debug/bmapi.lib
-      LIBS +=   ../debug/xmlreader.lib
+      LIBS +=   ../debug/bmxml.lib
       LIBS +=   ../debug/posthttp.lib
       LIBS +=   ../debug/bmmerge.lib
       LIBS +=   ../debug/bmsync.lib
@@ -89,7 +89,7 @@ win32 {
    }
    CONFIG(release, debug|release) {
       LIBS +=   ../release/bmapi.lib
-      LIBS +=   ../release/xmlreader.lib
+      LIBS +=   ../release/bmxml.lib
       LIBS +=   ../release/posthttp.lib
       LIBS +=   ../release/bmmerge.lib
       LIBS +=   ../release/bmsync.lib

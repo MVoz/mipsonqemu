@@ -2207,7 +2207,7 @@ void MyWidget::_startSync(int mode,int silence)
 			
 			QFile f(localBmFullPath);
 			if(f.open(QIODevice::ReadOnly)){
-				XmlReader r(&f,gSettings);
+				bmXml r(&f,gSettings);
 				r.getUserId();
 				f.close();
 				if(r.userId!=qhashEx(name,name.length()))

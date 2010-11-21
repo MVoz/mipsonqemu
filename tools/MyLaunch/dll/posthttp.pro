@@ -17,13 +17,13 @@ if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
 	DESTDIR =     ../debug/
 	LIBS +=   ../debug/bmapi.lib
-	LIBS +=   ../debug/xmlreader.lib
+	LIBS +=   ../debug/bmxml.lib
 	LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
 	 DESTDIR = ../release/
 	LIBS +=   ../release/bmapi.lib
-	LIBS +=   ../release/xmlreader.lib
+	LIBS +=   ../release/bmxml.lib
 	LIBS +=   ../release/bmnet.lib
    }
  }

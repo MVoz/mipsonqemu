@@ -3,7 +3,7 @@
 
 #include <config.h>
 #include <globals.h>
-#include <xmlreader.h>
+#include <bmxml.h>
 #include <bmnet.h>
 
 #define UPDATE_SILENT_MODE 0

@@ -236,7 +236,7 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 				if(ff_version==FIREFOX_VERSION_3){
 					if(!tz::openFirefox3Db(ff_db,ff_path))
 						goto ffout;									
-					if(!XmlReader::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+					if(!bmXml::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
 						goto ffout;								
 				}
 				setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);

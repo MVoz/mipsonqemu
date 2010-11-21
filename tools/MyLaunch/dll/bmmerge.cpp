@@ -112,7 +112,7 @@ void bmMerge::dumpBcList(QList<bookmark_catagory>* s)
 		}
 	}
 }
-bool bmMerge::loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlReader **lastUpdate,const QString filepath,uint *browserenable)
+bool bmMerge::loadLastupdateData(struct browserinfo* b,int modifiedInServer,bmXml **lastUpdate,const QString filepath,uint *browserenable)
 {
 	//get browser enable
 	QFile f;
@@ -132,10 +132,10 @@ bool bmMerge::loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlR
 			qDebug(unzipped.constData());
 			QDataStream in(&unzipped, QIODevice::ReadOnly);
 			//			in.setVersion(QDataStream::Qt_4_2);
-			lastUpdate[i] = new XmlReader(in.device(),settings);
+			lastUpdate[i] = new bmXml(in.device(),settings);
 			lastUpdate[i]->readStream(browserid);
 #else
-			lastUpdate[i] = new XmlReader(&f,settings);
+			lastUpdate[i] = new bmXml(&f,settings);
 			lastUpdate[i]->readStream(browserid);
 #endif
 			f.close();
@@ -149,14 +149,14 @@ bool bmMerge::loadLastupdateData(struct browserinfo* b,int modifiedInServer,XmlR
 				}
 			}
 		}else{
-			lastUpdate[i] = new XmlReader(NULL,settings);
+			lastUpdate[i] = new bmXml(NULL,settings);
 		}
 		setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LASTUPDATE);
 		i++;
 	}
 	return true;
 }
-void bmMerge::storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,XmlReader **lastUpdate,const QString time)
+void bmMerge::storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,bmXml **lastUpdate,const QString time)
 {
 #ifdef LOCALBM_COMPRESS_ENABLE
 	QByteArray ba;
@@ -187,7 +187,7 @@ void bmMerge::storeLocalbmData(const QString path,struct browserinfo* b,uint* br
 		while(!b[i].name.isEmpty())
 		{
 			int browserid = b[i].id;
-			XmlReader::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
+			bmXml::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
 			i++;
 		}		
 		localfile.close();	
@@ -206,8 +206,8 @@ void bmMerge::handleBmData()
 	/*for current*/
 	QList < bookmark_catagory > current_bc[BROWSE_TYPE_MAX];
 
-	XmlReader *lastUpdate[BROWSE_TYPE_MAX]={NULL};
-	XmlReader *fromServer[BROWSE_TYPE_MAX]={NULL};
+	bmXml *lastUpdate[BROWSE_TYPE_MAX]={NULL};
+	bmXml *fromServer[BROWSE_TYPE_MAX]={NULL};
 
 	uint browserenable[BROWSE_TYPE_MAX];
 	//from lastupdater
@@ -262,7 +262,7 @@ void bmMerge::handleBmData()
 				{
 					f.setFileName(filename_fromserver);
 					f.open(QIODevice::ReadOnly);
-					fromServer[i] = new XmlReader(&f,settings);
+					fromServer[i] = new bmXml(&f,settings);
 					fromServer[i]->readStream(BROWSE_TYPE_IE);
 
 					//      dumpBcList(&fromServer[i]->bm_list);	
@@ -296,7 +296,7 @@ void bmMerge::handleBmData()
 					if(firefox_version==FIREFOX_VERSION_3){
 						if(!tz::openFirefox3Db(ff_db,ff_path))
 							goto ffout;									
-						if(!XmlReader::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+						if(!bmXml::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
 							goto ffout;								
 					}
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
