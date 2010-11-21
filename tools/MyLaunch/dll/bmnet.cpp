@@ -1,4 +1,4 @@
-#include <testserver.h>
+#include <bmnet.h>
 #include <bmapi.h>
 
 MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
@@ -30,13 +30,13 @@ void MyThread::run(){
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-testServerThread::testServerThread(QObject * parent ,QSettings* s):MyThread(parent,s)
+testNet::testNet(QObject * parent ,QSettings* s):MyThread(parent,s)
 {
 	manager = NULL;
 	reply = NULL;
 	testNetTimer = NULL;
 }
-void testServerThread::testServerFinished(QNetworkReply* reply)
+void testNet::testServerFinished(QNetworkReply* reply)
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(testNetTimer);
@@ -71,27 +71,27 @@ void testServerThread::testServerFinished(QNetworkReply* reply)
 	}
 	quit();
 }
-void testServerThread::testServerTimeout()
+void testNet::testServerTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(testNetTimer);
 	reply->abort();
 }
-void testServerThread::terminateThread()
+void testNet::terminateThread()
 {
 	THREAD_MONITOR_POINT;
 	testServerTimeout();
 	MyThread::terminateThread();
 }
-void testServerThread::clearObject()
+void testNet::clearObject()
 {
 	THREAD_MONITOR_POINT;
 	DELETE_OBJECT(reply);
 	DELETE_OBJECT(manager);
 	DELETE_TIMER(testNetTimer);
 }
-void testServerThread::run()
+void testNet::run()
 {
 	THREAD_MONITOR_POINT;
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);

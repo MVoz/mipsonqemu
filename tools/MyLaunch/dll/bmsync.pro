@@ -22,7 +22,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../debug/xmlreader.lib
 	LIBS +=   ../debug/posthttp.lib
 	LIBS +=   ../debug/mergethread.lib
-	LIBS +=   ../debug/testserver.lib
+	LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
@@ -31,6 +31,6 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../release/xmlreader.lib
 	LIBS +=   ../release/posthttp.lib
 	LIBS +=   ../release/mergethread.lib
-	LIBS +=   ../release/testserver.lib
+	LIBS +=   ../release/bmnet.lib
    }
  }
