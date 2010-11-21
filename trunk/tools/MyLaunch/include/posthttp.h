@@ -38,7 +38,7 @@
 #ifndef POST_HTTP_H
 #define POST_HTTP_H
 
-#include <xmlreader.h>
+#include <bmxml.h>
 #include <config.h>
 #include <bmapi.h>
 #include <bmnet.h>
