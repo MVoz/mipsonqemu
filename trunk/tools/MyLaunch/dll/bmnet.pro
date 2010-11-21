@@ -3,7 +3,6 @@
 ######################################################################
 
 TEMPLATE	= lib
-TARGET		= testserver
 CONFIG		+=dll  qt_warn debug_and_release
 VPATH 		+= ../../src/
 INCLUDEPATH += ../../src/
@@ -11,8 +10,8 @@ INCLUDEPATH += c:/boost/
 INCLUDEPATH += ../../win/
 INCLUDEPATH += ../include/
 VPATH		+= src/
-SOURCES		=testserver.cpp
-HEADERS		=../include/testserver.h
+SOURCES		=bmnet.cpp
+HEADERS		=../include/bmnet.h
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
