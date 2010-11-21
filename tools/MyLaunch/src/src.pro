@@ -78,7 +78,7 @@ win32 {
       LIBS +=   ../debug/xmlreader.lib
       LIBS +=   ../debug/posthttp.lib
       LIBS +=   ../debug/mergethread.lib
-      LIBS +=   ../debug/bookmark_sync.lib
+      LIBS +=   ../debug/bmsync.lib
       LIBS +=   ../debug/synchronizeDlg.lib
       LIBS +=   ../debug/options.lib
       LIBS +=   ../debug/catalog.lib
@@ -92,7 +92,7 @@ win32 {
       LIBS +=   ../release/xmlreader.lib
       LIBS +=   ../release/posthttp.lib
       LIBS +=   ../release/mergethread.lib
-      LIBS +=   ../release/bookmark_sync.lib
+      LIBS +=   ../release/bmsync.lib
       LIBS +=   ../release/synchronizeDlg.lib
       LIBS +=   ../release/options.lib
       LIBS +=   ../release/catalog.lib

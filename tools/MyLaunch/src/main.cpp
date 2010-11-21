@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern shared_ptr<CatBuilder> gBuilder;
 extern CatItem* gSearchResult;
-extern shared_ptr < BookmarkSync> gSyncer;
+extern shared_ptr < bmSync> gSyncer;
 
 struct {
 	QString name;
@@ -2169,10 +2169,10 @@ void MyWidget::_startSync(int mode,int silence)
 	{
 	case SYNC_MODE_BOOKMARK:
 	case SYNC_MODE_REBOOKMARK:
-		gSyncer.reset(new BookmarkSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
+		gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
 		break;
 	case SYNC_MODE_TESTACCOUNT:
-		gSyncer.reset(new BookmarkSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
+		gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
 		break;
 	}
 
