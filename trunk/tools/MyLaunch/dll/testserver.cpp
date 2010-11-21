@@ -105,7 +105,17 @@ void testServerThread::run()
 	
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
+#ifdef CONFIG_SERVER_IP_SETTING
+	do{
+		QString url = TEST_NET_URL;
+		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
+		if( !serverIp.isEmpty())
+			url.replace(BM_SERVER_ADDRESS, serverIp);	
+		reply=manager->get(QNetworkRequest(QUrl(url)));
+	}while(0);
+#else
 	reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
+#endif
 	
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
 	exec();

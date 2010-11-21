@@ -59,7 +59,11 @@ void postHttp::gorun()
 	QThread object. So in this case I needed a Qt:: DirectConnection.
 	*/
 	connect(posthttp, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
+#ifdef CONFIG_SERVER_IP_SETTING
+	SET_HOST_IP(settings,posthttp);
+#else
 	posthttp->setHost(BM_SERVER_ADDRESS);
+#endif
 	QHttpRequestHeader header;
 	switch(postType)
 	{
@@ -85,14 +89,28 @@ void postHttp::gorun()
 			{
 				bm_handle_url=QString(BM_SERVER_DELETE_DIR).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
+#ifdef CONFIG_SERVER_IP_SETTING
+			SET_SERVER_IP(settings,bm_handle_url);
+#else
 			header=QHttpRequestHeader("POST", bm_handle_url);
+#endif
 		}
 		break;
 	case POST_HTTP_TYPE_TESTACCOUNT:
 		header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
 		break;				
 	}
+#ifdef CONFIG_SERVER_IP_SETTING
+	do{
+		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
+		if( !serverIp.isEmpty())
+			header.setValue("Host", serverIp);
+		else
+			header.setValue("Host", BM_SERVER_ADDRESS);
+	}while(0);
+#else
 	header.setValue("Host", BM_SERVER_ADDRESS);
+#endif
 	header.setContentType("application/x-www-form-urlencoded");
 	// header.setValue("cookie", "jblog_authkey=MQkzMmJlNmM1OGRmODFkNGExMThiMmNhZjcyMGVjOTUwMA");           
 

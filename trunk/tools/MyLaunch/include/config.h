@@ -167,6 +167,22 @@
 #define PINYIN_DB_TABLENAME "pytable"
 
 #define CONFIG_PINYIN_FROM_DB
+#define CONFIG_SERVER_IP_SETTING
+#ifdef CONFIG_SERVER_IP_SETTING
+#define SET_SERVER_IP(x,y) do{\
+		QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
+		if( !serverIp.isEmpty())\
+			(y).replace(BM_SERVER_ADDRESS,serverIp);\
+	}while(0);	
+#define SET_HOST_IP(x,y) do{\
+		QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
+		if( !serverIp.isEmpty())\
+			(y)->setHost(serverIp);\
+		else\
+			(y)->setHost(BM_SERVER_ADDRESS);\
+	}while(0);
+
+#endif
 
 #define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
 #define APP_HEKY_UPDATE_ITEM "updaterflag"
