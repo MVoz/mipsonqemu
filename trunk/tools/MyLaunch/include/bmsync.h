@@ -4,7 +4,7 @@
 #include <config.h>
 #include <globals.h>
 #include <bmnet.h>
-#include <mergeThread.h>
+#include <bmMerge.h>
 #include <posthttp.h>
 
 
@@ -64,7 +64,7 @@ public:
 	volatile bool needwatchchild;	
 	
 	testNet *testThread;
-	mergeThread *mgthread;
+	bmMerge *mgthread;
 	QHttp * http;
 	
 public:
