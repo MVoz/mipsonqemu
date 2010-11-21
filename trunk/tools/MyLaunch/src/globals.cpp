@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <globals.h>
 
-#include <bookmark_sync.h>
+#include <bmsync.h>
 #include <catalog.h>
 
 #include "../src/catalog_builder.h"
@@ -34,7 +34,7 @@ QDateTime gNowUpdateTime;
 QSettings *gSettings;
 QString gSearchTxt;
 shared_ptr < CatBuilder > gBuilder;
-shared_ptr < BookmarkSync> gSyncer;
+shared_ptr < bmSync> gSyncer;
 /*
 	use gSemaphore to separate syner from catabuilder
 */

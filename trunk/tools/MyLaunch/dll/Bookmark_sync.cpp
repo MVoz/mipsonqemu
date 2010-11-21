@@ -1,8 +1,5 @@
-#include <Bookmark_sync.h>
-#include <QUrl>
+#include <bmsync.h>
 #include <QWaitCondition>
-#include <QDir>
-#include <QStringList>
 #include <bmapi.h>
 #include <posthttp.h>
 //QHttpRequestHeader header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
@@ -13,11 +10,11 @@
 // postString.sprintf("name=%s&link=%s",qPrintable(bc.name),qPrintable(bc.link));
 //resuleBuffer=new QBuffer(NUll); //this will bring out "create"
 
-void BookmarkSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
+void bmSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 	md5key = resp.value("md5key");
 }
-BookmarkSync::BookmarkSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m): MyThread(parent,s),semaphore(p),mode(m)
+bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m): MyThread(parent,s),semaphore(p),mode(m)
 {
 	this->db=db;
 	http_finish=0;
@@ -32,9 +29,9 @@ BookmarkSync::BookmarkSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaph
 	httpTimer = NULL;
 	needwatchchild = false;
 }
-BookmarkSync::~BookmarkSync(){
+bmSync::~bmSync(){
 }
-void BookmarkSync::httpTimeout()
+void bmSync::httpTimeout()
 {
 	THREAD_MONITOR_POINT;
 	mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
@@ -43,7 +40,7 @@ void BookmarkSync::httpTimeout()
 	if(!http_finish)
 		http->abort();
 }
-void BookmarkSync::testNetFinished()
+void bmSync::testNetFinished()
 {
 	THREAD_MONITOR_POINT;
 	//testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
@@ -105,7 +102,7 @@ void BookmarkSync::testNetFinished()
 		break;
 	}	
 }
-void BookmarkSync::terminateThread()
+void bmSync::terminateThread()
 {
 	THREAD_MONITOR_POINT;
 	if(THREAD_IS_RUNNING(testThread))
@@ -119,7 +116,7 @@ void BookmarkSync::terminateThread()
 			mgthread->posthp->setTerminateFlag(1);
 	}
 }
-void BookmarkSync::monitorTimeout()
+void bmSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
@@ -142,7 +139,7 @@ void BookmarkSync::monitorTimeout()
 	monitorTimer->start(10);
 
 }
-void BookmarkSync::clearobject()
+void bmSync::clearobject()
 {
 	THREAD_MONITOR_POINT;
 	DELETE_OBJECT(http);			
@@ -166,7 +163,7 @@ void BookmarkSync::clearobject()
 		}
 	}
 }
-void BookmarkSync::run()
+void bmSync::run()
 {
 	THREAD_MONITOR_POINT;
 	semaphore->acquire(1);
@@ -204,7 +201,7 @@ void BookmarkSync::run()
 	clearobject();
 }
 
-void BookmarkSync::testAccountFinished(bool error)
+void bmSync::testAccountFinished(bool error)
 {
 	STOP_TIMER(httpTimer);
 	http_finish=1;
@@ -212,12 +209,12 @@ void BookmarkSync::testAccountFinished(bool error)
 		status = BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL;
 	exit(status);
 }
-void BookmarkSync::mgUpdateStatus(int flag,int statusid)
+void bmSync::mgUpdateStatus(int flag,int statusid)
 {
 	if(!terminateFlag)
 		emit updateStatusNotify(flag,statusid);
 }
-void BookmarkSync::bmxmlGetFinished(bool error)
+void bmSync::bmxmlGetFinished(bool error)
 {
 	THREAD_MONITOR_POINT;
 	file->flush();
@@ -250,7 +247,7 @@ void BookmarkSync::bmxmlGetFinished(bool error)
 
 }
 
-void BookmarkSync::mergeDone()
+void bmSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
 	if(mgthread){
