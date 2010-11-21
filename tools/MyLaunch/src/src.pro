@@ -76,7 +76,7 @@ win32 {
     DESTDIR =     ../debug/
       LIBS +=   ../debug/bmapi.lib
       LIBS +=   ../debug/bmxml.lib
-      LIBS +=   ../debug/posthttp.lib
+      LIBS +=   ../debug/bmpost.lib
       LIBS +=   ../debug/bmmerge.lib
       LIBS +=   ../debug/bmsync.lib
       LIBS +=   ../debug/synchronizeDlg.lib
@@ -90,7 +90,7 @@ win32 {
    CONFIG(release, debug|release) {
       LIBS +=   ../release/bmapi.lib
       LIBS +=   ../release/bmxml.lib
-      LIBS +=   ../release/posthttp.lib
+      LIBS +=   ../release/bmpost.lib
       LIBS +=   ../release/bmmerge.lib
       LIBS +=   ../release/bmsync.lib
       LIBS +=   ../release/synchronizeDlg.lib

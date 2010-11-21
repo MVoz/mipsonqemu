@@ -21,7 +21,7 @@ if(!debug_and_release|build_pass) {
     DESTDIR =     ../debug/
 	LIBS +=   ../debug/bmapi.lib
 	LIBS +=   ../debug/xmlreader.lib
-	LIBS +=   ../debug/posthttp.lib
+	LIBS +=   ../debug/bmpost.lib
 	LIBS +=   ../debug/bookmark_sync.lib
 	LIBS +=   ../debug/updaterThread.lib
 	LIBS +=   ../debug/synchronizeDlg.lib
@@ -34,7 +34,7 @@ if(!debug_and_release|build_pass) {
     DESTDIR = ../release/
 	LIBS +=   ../release/bmapi.lib
 	LIBS +=   ../release/xmlreader.lib
-	LIBS +=   ../release/posthttp.lib
+	LIBS +=   ../release/bmpost.lib
 	LIBS +=   ../release/bookmark_sync.lib
 	LIBS +=   ../release/synchronizeDlg.lib
 	LIBS +=   ../release/catalog.lib

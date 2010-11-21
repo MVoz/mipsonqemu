@@ -1,7 +1,7 @@
 #include <bmsync.h>
 #include <QWaitCondition>
 #include <bmapi.h>
-#include <posthttp.h>
+#include <bmpost.h>
 //QHttpRequestHeader header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
 
 //header.setValue("Host", BM_SERVER_ADDRESS);

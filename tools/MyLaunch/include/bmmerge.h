@@ -40,7 +40,7 @@
 
 #include <config.h>
 #include <bmapi.h>
-#include <posthttp.h>
+#include <bmpost.h>
 #include <bmxml.h>
 
 #if defined(MERGE_THREAD_DLL)
@@ -102,7 +102,7 @@ signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status);
 public:
-	postHttp * posthp;
+	bmPost * posthp;
 	
 	QFile *file;
 	QSettings* settings;	

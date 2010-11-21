@@ -435,7 +435,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 	QString postString;
 	uint nowparentid=0;
 	DELETE_OBJECT(posthp);
-	posthp = new postHttp(NULL,settings,POST_HTTP_TYPE_HANDLE_ITEM);
+	posthp = new bmPost(NULL,settings,POST_HTTP_TYPE_HANDLE_ITEM);
 	posthp->parentid=parentId;
 	posthp->browserid=browserType;
 	posthp->username = username;
