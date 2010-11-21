@@ -12,7 +12,7 @@ version.exe
 cd ..
 
 cd /d dll
-for %%i in (bmapi testserver catalog xmlreader updaterThread posthttp mergethread bmsync synchronizeDlg options icon_delegate catalog_types) do call :makefunc %%i 
+for %%i in (bmapi bmnet catalog xmlreader updaterThread posthttp mergethread bmsync synchronizeDlg options icon_delegate catalog_types) do call :makefunc %%i 
 cd ..
 
 cd /d src

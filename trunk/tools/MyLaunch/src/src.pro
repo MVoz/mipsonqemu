@@ -85,7 +85,7 @@ win32 {
       LIBS +=   ../debug/catalog_types.lib
       LIBS +=   ../debug/icon_delegate.lib
       LIBS +=   ../debug/updaterThread.lib
-      LIBS +=   ../debug/testserver.lib
+      LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
       LIBS +=   ../release/bmapi.lib
@@ -99,7 +99,7 @@ win32 {
       LIBS +=   ../release/catalog_types.lib
       LIBS +=   ../release/icon_delegate.lib
       LIBS +=   ../release/updaterThread.lib
-      LIBS +=   ../release/testserver.lib
+      LIBS +=   ../release/bmnet.lib
       DESTDIR =    ../release/
   }
 }
