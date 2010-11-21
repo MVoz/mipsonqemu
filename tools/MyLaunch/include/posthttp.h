@@ -41,7 +41,7 @@
 #include <xmlreader.h>
 #include <config.h>
 #include <bmapi.h>
-#include <testserver.h>
+#include <bmnet.h>
 using namespace boost;
 
 #if defined(POST_HTTP_DLL)

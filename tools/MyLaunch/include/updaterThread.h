@@ -4,7 +4,7 @@
 #include <config.h>
 #include <globals.h>
 #include <xmlreader.h>
-#include <testserver.h>
+#include <bmnet.h>
 
 #define UPDATE_SILENT_MODE 0
 #define UPDATE_DLG_MODE 1
@@ -87,7 +87,7 @@ public:
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
-	testServerThread *testThread;
+	testNet *testThread;
 	GetFileHttp *fh;
 	QSemaphore sem_downfile_success;
 	QSemaphore sem_downfile_start;
