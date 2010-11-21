@@ -57,12 +57,12 @@ using namespace boost;
 #define POST_HTTP_ACTION_ADD_DIR 3
 
 
-class  POST_HTTP_CLASS_EXPORT postHttp:public MyThread
+class  POST_HTTP_CLASS_EXPORT bmPost:public MyThread
 {
 	Q_OBJECT;
 public:
-	postHttp(QObject * parent = 0,QSettings* s=0,int type=0);
-	~postHttp();
+	bmPost(QObject * parent = 0,QSettings* s=0,int type=0);
+	~bmPost();
 	void run();
 public:
 	QHttp * posthttp;
