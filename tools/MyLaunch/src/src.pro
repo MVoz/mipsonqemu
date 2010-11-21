@@ -77,7 +77,7 @@ win32 {
       LIBS +=   ../debug/bmapi.lib
       LIBS +=   ../debug/xmlreader.lib
       LIBS +=   ../debug/posthttp.lib
-      LIBS +=   ../debug/mergethread.lib
+      LIBS +=   ../debug/bmmerge.lib
       LIBS +=   ../debug/bmsync.lib
       LIBS +=   ../debug/synchronizeDlg.lib
       LIBS +=   ../debug/options.lib
@@ -91,7 +91,7 @@ win32 {
       LIBS +=   ../release/bmapi.lib
       LIBS +=   ../release/xmlreader.lib
       LIBS +=   ../release/posthttp.lib
-      LIBS +=   ../release/mergethread.lib
+      LIBS +=   ../release/bmmerge.lib
       LIBS +=   ../release/bmsync.lib
       LIBS +=   ../release/synchronizeDlg.lib
       LIBS +=   ../release/options.lib

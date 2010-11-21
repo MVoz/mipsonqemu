@@ -226,7 +226,7 @@ void bmSync::bmxmlGetFinished(bool error)
 	if(!error)	
 	{
 		if(md5key==tz::fileMd5(filename_fromserver)){
-			mgthread = new mergeThread(NULL,db,settings,username,password);		
+			mgthread = new bmMerge(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
 			connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
 			mgthread->start();
