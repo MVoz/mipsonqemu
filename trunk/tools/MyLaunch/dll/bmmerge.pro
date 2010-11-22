@@ -20,7 +20,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../debug/bmapi.lib
 	LIBS +=   ../debug/bmxml.lib
 	LIBS +=   ../debug/bmpost.lib
-	LIBS +=   ../debug/catalog.lib
+	LIBS +=   ../debug/baseitem.lib
 	LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
@@ -28,7 +28,7 @@ if(!debug_and_release|build_pass) {
 	LIBS +=   ../release/bmapi.lib
 	LIBS +=   ../release/bmxml.lib
 	LIBS +=   ../release/bmpost.lib
-	LIBS +=   ../release/catalog.lib
+	LIBS +=   ../release/baseitem.lib
 	LIBS +=   ../release/bmnet.lib
    }
  }
