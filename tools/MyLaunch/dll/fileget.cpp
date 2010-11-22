@@ -7,8 +7,6 @@ void GetFileHttp::terminateThread()
 	retryTime = UPDATE_MAX_RETRY_TIME;
 
 }
-GetFileHttp::~GetFileHttp(){
-}
 void GetFileHttp::clearObject(){
 		for(int i=0;i<=retryTime;i++)
 		{
@@ -20,13 +18,16 @@ void GetFileHttp::clearObject(){
 }
 void GetFileHttp::sendUpdateStatusNotify(int flag,int type)
 {
+	if(type == HTTP_GET_FILE_SUCCESSFUL||type == HTTP_GET_INI_SUCCESSFUL)
+		errCode = 0;
+	else
+		errCode = type;
 	if(mode!=UPDATE_DLG_MODE) 
 		return;
 	emit updateStatusNotify(flag,type);
 }
 void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
-//	qDebug("%s %d statuscode=%d.......",__FUNCTION__,__LINE__,resp.statusCode());
 	statusCode=resp.statusCode();
 }
 /*
@@ -69,7 +70,6 @@ int GetFileHttp::newHttp()
 
 
 	url=QString(branch).append("/").append(updaterFilename);
-	//qDebug("url=%s filename=%s\n",qPrintable(url),qPrintable(dirPath));
 	http[retryTime]->get(url, file[retryTime]);
 	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimeout);
 	return 1;
@@ -81,8 +81,6 @@ void GetFileHttp::run()
 	QDir dir(".");
 	if(!dir.exists(destdir))
 		dir.mkdir(destdir);
-
-	this->mode=mode;
 	newHttp();
 	exec();	
 	clearObject();
@@ -95,12 +93,11 @@ void GetFileHttp::httpTimeout()
 	if(httpTimer[retryTime])
 		http[retryTime]->abort();	
 }
-GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int mode,QString c): MyThread(parent,s),mode(mode),md5(c)
+GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int m,QString c): MyThread(parent,s),mode(m),md5(c)
 {
 	errCode=0;
 	statusCode=0;
 	retryTime=-1;
-	mode=0;
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 	{
 		http[i]=NULL;
@@ -108,117 +105,43 @@ GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int mode,QString c): MyThr
 		file[i]=NULL;
 	}
 }
-
 void GetFileHttp::downloadFileDone(bool error)
 {
-
 	THREAD_MONITOR_POINT;
 	DELETE_FILE( file[retryTime] );
         if(terminateFlag)
 	{
-		switch(mode){
-			case UPDATE_MODE_GET_INI:
-				emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);
-				break;
-			case UPDATE_MODE_GET_FILE:
-				emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);
-				break;
-		}
+		errCode=HTTP_GET_FILE_FAILED;
 		this->quit();
         }
-	switch(mode){
-		case UPDATE_MODE_GET_INI:
-			if(!error)
+	if(!error){
+		switch(statusCode)
 			{
-				switch(statusCode)
+			case HTTP_OK:
 				{
-				case HTTP_OK:
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_INI_SUCCESSFUL);
-					errCode = 0;
-					//emit getIniDoneNotify(HTTP_GET_INI_SUCCESSFUL);					
-					break;
-				case HTTP_FILE_NOT_FOUND:	
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_NOT_EXISTED);
-					errCode=HTTP_GET_INI_NOT_EXISTED;
-					break;
-				default:
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
-					errCode=HTTP_GET_INI_FAILED;		
-					break;
+					if(md5.isEmpty()||tz::fileMd5(downloadFilename)==md5){
+						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
+					}else{
+						goto RETRY;
+					}	
 				}
-			}else{
-				if(newHttp())
-				{
-					//httpTimer->start(10*1000);
-					errCode=HTTP_NEED_RETRY;
-				}
-				else
-				{
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_INI_FAILED);
-					errCode=HTTP_GET_INI_FAILED;						
-				}
+				break;
+			case HTTP_FILE_NOT_FOUND:	
+				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_NOT_EXISTED:HTTP_GET_INI_NOT_EXISTED);				
+				break;
+			default:
+				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:HTTP_GET_INI_FAILED);
+				break;
 			}
-			break;
-		case UPDATE_MODE_GET_FILE:
-			if(!error){
-				switch(statusCode)
-				{
-				case HTTP_OK:
-					{
-						int isEqual=0;
-						if(md5.isEmpty()||tz::fileMd5(downloadFilename)==md5)
-							isEqual = 1;
-						//qDebug("downloadFilename=%s md5=%s caclmd5=%s isEqual=%d",qPrintable(downloadFilename),qPrintable(md5),qPrintable(tz::fileMd5(downloadFilename)),isEqual);
-						if(isEqual){
-							sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
-							//emit getFileDoneNotify(HTTP_GET_FILE_SUCCESSFUL);	
-							errCode=0;
-						}else{
-							if(newHttp())
-							{
-								errCode=HTTP_NEED_RETRY;
-							}else
-							{
-								sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
-								errCode=HTTP_GET_FILE_FAILED;							
-							}
-
-						}	
-					}
-					break;
-				case HTTP_FILE_NOT_FOUND:	
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_NOT_EXISTED);
-					errCode=HTTP_GET_FILE_NOT_EXISTED;						
-					break;
-				default:
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
-					errCode=HTTP_GET_FILE_FAILED;	
-					break;
-				}
-			}else{
-				if(newHttp())
-				{		
-					//httpTimer->start(10*1000);
-					errCode=HTTP_NEED_RETRY;
-				}
-				else
-				{
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_GET_FILE_FAILED);
-					errCode=HTTP_GET_FILE_FAILED;							
-				}
-			}
-			break;
-		default:
-			break;
+	}else{
+		goto RETRY;
 	}
-
-	switch(errCode){
-	case HTTP_NEED_RETRY:
+	quit();
+RETRY:
+	if(newHttp())	
 		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY);
-		qDebug("%d times to get %s from server!",retryTime,qPrintable(updaterFilename));
-		break;
-	default:
-		this->quit();
-		break;
-	}
+	else
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:HTTP_GET_INI_FAILED);	
+	if(errCode!=HTTP_NEED_RETRY)
+		quit();	
 }
