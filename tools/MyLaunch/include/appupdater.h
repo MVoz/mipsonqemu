@@ -18,61 +18,8 @@
 #define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
 
-
 #define SETTING_MERGE_LOCALTOSERVER  0
 #define SETTING_MERGE_SERVERTOLOCAL  1
-
-//#define VERSION_INFO(x) (((x.at(0).toInt())<<24) | ((x.at(1).toInt())<<16) | ((x.at(2).toInt())<<8) | ((x.at(3).toInt())))
-class  UPDATER_THREAD_DLL_CLASS_EXPORT GetFileHttp:public MyThread
-{
-	Q_OBJECT;
-public:
-	QHttp * http[UPDATE_MAX_RETRY_TIME];
-	QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
-	QFile *file[UPDATE_MAX_RETRY_TIME];
-	QDateTime* updateTime;
-	QMutex mutex;
-	QSettings *localSettings;
-	QSettings *serverSettings;
-	
-	QString host;
-	QString url;
-	QString updaterFilename;
-	QString downloadFilename;
-	QString md5;
-	QString destdir;
-	QString branch;
-	QString savefilename;
-	
-	int retryTime;
-	int mode;
-	int statusCode;
-	int errCode;
-
-public:
-	GetFileHttp(QObject * parent = 0,QSettings* s=0,int mode=0,QString md5="");	
-	~GetFileHttp();
-	void clearObject();
-	void setHost(const QString& s){host = s;}
-	void setUrl(const QString &s){url = s;updaterFilename=s;}
-	void setServerBranch(const QString &s){branch = s;}
-	void setSaveFilename(const QString &s){savefilename = s;}
-	void run();
-	int newHttp();
-	void setProxy(QNetworkProxy& p);
-	void setDestdir(const QString& s){destdir = s;}
-	void sendUpdateStatusNotify(int flag,int type);
-public slots: 
-		void downloadFileDone(bool error);
-		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-		void httpTimeout();
-		void terminateThread();
-signals:
-		void  getIniDoneNotify(int error);
-		void  getFileDoneNotify(int error);
-		void updateStatusNotify(int type,int status);
-
-};
 
 class  UPDATER_THREAD_DLL_CLASS_EXPORT appUpdater:public MyThread
 {
