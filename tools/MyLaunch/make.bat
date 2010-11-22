@@ -42,9 +42,7 @@ del options.rcc
 del data\defines.db
 cd ..
 
-cd .\release
- del *.exp *.lib *.manifest
-cd ..
+if "%obj%"=="release" (cd .\release;del *.exp *.lib *.manifest;..\fmd5\fmd5.exe -p;cd ..)
 
 cd .\%obj%
 touchAny.exe
