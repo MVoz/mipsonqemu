@@ -46,7 +46,6 @@ void testNet::testServerFinished(QNetworkReply* reply)
 		QString replybuf(reply->readAll());
 		if(replybuf.startsWith(QString("1")))
 		{
-			//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);	
 			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
 		}
 
@@ -56,16 +55,13 @@ void testNet::testServerFinished(QNetworkReply* reply)
 			case QNetworkReply::ProxyConnectionClosedError:
 			case QNetworkReply::ProxyNotFoundError:
 			case QNetworkReply::ProxyTimeoutError:
-				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);	
 				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
 				break;
 			case QNetworkReply::ProxyAuthenticationRequiredError:
 				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
-				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);		
 				break;
 			default:
 				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
-				//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
 				break;
 		}		
 	}
@@ -94,15 +90,12 @@ void testNet::clearObject()
 void testNet::run()
 {
 	THREAD_MONITOR_POINT;
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
-	
-	//tz::runParameter(SET_MODE,RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);	
+
 	SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
 	manager=new QNetworkAccessManager();
 	manager->moveToThread(this);	
-	//tz::netProxy(SET_MODE,settings,NULL);
-	SET_NET_PROXY(manager,settings);
-	
+	SET_NET_PROXY(manager,settings);	
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
 #ifdef CONFIG_SERVER_IP_SETTING
