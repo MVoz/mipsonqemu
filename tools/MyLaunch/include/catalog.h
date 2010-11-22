@@ -20,9 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef CATALOG_H
 #define CATALOG_H
 
-#include "config.h"
-#include "globals.h"
-
+#include <config.h>
+#include <globals.h>
 #include <bmapi.h>
 
 

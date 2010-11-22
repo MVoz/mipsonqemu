@@ -38,26 +38,22 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Source: ..\..\release\touchAny.exe; DestDir: {app}; Flags: ignoreversion
 
 ;dll
-Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\platform.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\bmapi.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\bookmark_sync.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\catalog.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\catalog_types.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\icon_delegate.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\log.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\mergethread.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\options.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\posthttp.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\runner.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\synchronizeDlg.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\testserver.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\updaterThread.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\weby.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\xmlreader.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\bmsync.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\baseitem.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\bmmerge.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\optionUI.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\bmpost.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\appupdater.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\bmnet.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\fileget.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\bmxml.dll; DestDir: {app}; Flags: ignoreversion
 
 ; rcc
 Source: ..\..\release\options.rcc; DestDir: {app}; Flags: ignoreversion
+;ini
+Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
 ; Plugins
 ;Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 ;Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
@@ -169,6 +165,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
 
 
