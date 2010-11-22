@@ -30,8 +30,6 @@ public:
 	int timers;
 	testNet *testThread;
 	GetFileHttp *fh;
-	//QSemaphore sem_downfile_success;
-	//QSemaphore sem_downfile_start;
 	int needed;
 	int error;
 	int mode;
