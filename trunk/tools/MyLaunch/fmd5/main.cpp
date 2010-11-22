@@ -93,12 +93,12 @@ int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 				QString md5 = fileMd5(path+ "/"+files[i]);
 				s->setValue("name",root?(files[i]):(path+ "/"+files[i]));
 				s->setValue("md5", md5);	
-				s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
+			//	s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
 			}else if(mode==FMD5_MODE_SETUP){
 				QString md5 = fileMd5(path+ "/"+files[i]);
 				s->setValue("setup/name",root?(files[i]):(path+ "/"+files[i]));
 				s->setValue("setup/md5", md5);	
-				s->setValue("setup/version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
+			//	s->setValue("setup/version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
 			}
 			
 		}
