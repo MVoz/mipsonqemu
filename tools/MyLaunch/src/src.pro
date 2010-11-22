@@ -79,12 +79,11 @@ win32 {
       LIBS +=   ../debug/bmpost.lib
       LIBS +=   ../debug/bmmerge.lib
       LIBS +=   ../debug/bmsync.lib
-      LIBS +=   ../debug/synchronizeDlg.lib
-      LIBS +=   ../debug/options.lib
+      LIBS +=   ../debug/optionUI.lib
       LIBS +=   ../debug/catalog.lib
       LIBS +=   ../debug/catalog_types.lib
       LIBS +=   ../debug/icon_delegate.lib
-      LIBS +=   ../debug/updaterThread.lib
+      LIBS +=   ../debug/appupdater.lib
       LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
@@ -93,12 +92,11 @@ win32 {
       LIBS +=   ../release/bmpost.lib
       LIBS +=   ../release/bmmerge.lib
       LIBS +=   ../release/bmsync.lib
-      LIBS +=   ../release/synchronizeDlg.lib
-      LIBS +=   ../release/options.lib
+      LIBS +=   ../release/optionUI.lib
       LIBS +=   ../release/catalog.lib
       LIBS +=   ../release/catalog_types.lib
       LIBS +=   ../release/icon_delegate.lib
-      LIBS +=   ../release/updaterThread.lib
+      LIBS +=   ../release/appupdater.lib
       LIBS +=   ../release/bmnet.lib
       DESTDIR =    ../release/
   }
