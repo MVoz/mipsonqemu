@@ -3,15 +3,18 @@
 ######################################################################
 
 TEMPLATE        = lib
+TARGET		=baseitem
 CONFIG         += dll  debug_and_release
 INCLUDEPATH    += .
 INCLUDEPATH    += ../include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = ../include/catalog.h
-SOURCES         = catalog.cpp 
+HEADERS         = ../include/catalog.h	../include/icon_delegate.h   ../include/catalog_types.h
+SOURCES         = catalog.cpp  icon_delegate.cpp catalog_types.cpp
 #TARGET          = $$qtLibraryTarget(mergethread)
 DEFINES += WIN32
 DEFINES += CATALOG_DLL
+DEFINES += ICON_DELEGATE
+DEFINES += CATALOG_TYPES_DLL
 CONFIG -= embed_manifest_dll
 QT += sql
 QT += network
