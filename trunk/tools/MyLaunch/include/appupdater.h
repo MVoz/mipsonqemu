@@ -5,9 +5,7 @@
 #include <globals.h>
 #include <bmxml.h>
 #include <bmnet.h>
-
-#define UPDATE_SILENT_MODE 0
-#define UPDATE_DLG_MODE 1
+#include <fileget.h>
 
 #if defined(UPDATER_THREAD_DLL)
 #define UPDATER_THREAD_DLL_CLASS_EXPORT __declspec(dllexport)
@@ -19,16 +17,12 @@
 #define UPDATE_MODE_GET_INI 1
 #define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
-#define HTTP_OK 200
-#define HTTP_FILE_NOT_FOUND 404
-
-
 
 
 #define SETTING_MERGE_LOCALTOSERVER  0
 #define SETTING_MERGE_SERVERTOLOCAL  1
 
-#define VERSION_INFO(x) (((x.at(0).toInt())<<24) | ((x.at(1).toInt())<<16) | ((x.at(2).toInt())<<8) | ((x.at(3).toInt())))
+//#define VERSION_INFO(x) (((x.at(0).toInt())<<24) | ((x.at(1).toInt())<<16) | ((x.at(2).toInt())<<8) | ((x.at(3).toInt())))
 class  UPDATER_THREAD_DLL_CLASS_EXPORT GetFileHttp:public MyThread
 {
 	Q_OBJECT;
@@ -69,7 +63,7 @@ public:
 	void setDestdir(const QString& s){destdir = s;}
 	void sendUpdateStatusNotify(int flag,int type);
 public slots: 
-		void getFileDone(bool error);
+		void downloadFileDone(bool error);
 		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 		void httpTimeout();
 		void terminateThread();
@@ -89,8 +83,8 @@ public:
 	int timers;
 	testNet *testThread;
 	GetFileHttp *fh;
-	QSemaphore sem_downfile_success;
-	QSemaphore sem_downfile_start;
+	//QSemaphore sem_downfile_success;
+	//QSemaphore sem_downfile_start;
 	int needed;
 	int error;
 	int mode;
@@ -111,7 +105,7 @@ public:
 	void run();
 	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
-	int checkToSetiing(QSettings *settings,const QString &filename1,const uint& version1);
+	int checkToSetting(QSettings *s,const QString &filename1,const QString& md51);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
 	void checkSilentUpdateApp();
 	void sendUpdateStatusNotify(int flag,int type);

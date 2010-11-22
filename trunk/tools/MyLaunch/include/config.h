@@ -218,6 +218,11 @@
 #define UPDATE_PORTABLE_KEYWORD    "portable"
 #define UPDATE_SETUP_KEYWORD    "setup"
 
+
+#define UPDATE_SILENT_MODE 0
+#define UPDATE_DLG_MODE 1
+
+
 #define FAVICO_DIRECTORY "ico"
 
 #define FROMSERVER_XML_PREFIX "from_server_xml_"
