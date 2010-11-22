@@ -211,6 +211,7 @@ void bmSync::testAccountFinished(bool error)
 }
 void bmSync::mgUpdateStatus(int flag,int statusid)
 {
+	THREAD_MONITOR_POINT;
 	if(!terminateFlag)
 		emit updateStatusNotify(flag,statusid);
 }
