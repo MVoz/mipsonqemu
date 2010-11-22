@@ -84,9 +84,11 @@ win32 {
       LIBS +=   ../debug/catalog_types.lib
       LIBS +=   ../debug/icon_delegate.lib
       LIBS +=   ../debug/appupdater.lib
+      LIBS +=   ../debug/fileget.lib
       LIBS +=   ../debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
+      DESTDIR =    ../release/	
       LIBS +=   ../release/bmapi.lib
       LIBS +=   ../release/bmxml.lib
       LIBS +=   ../release/bmpost.lib
@@ -97,8 +99,9 @@ win32 {
       LIBS +=   ../release/catalog_types.lib
       LIBS +=   ../release/icon_delegate.lib
       LIBS +=   ../release/appupdater.lib
+      LIBS +=   ../release/fileget.lib
       LIBS +=   ../release/bmnet.lib
-      DESTDIR =    ../release/
+      
   }
 }
 }
