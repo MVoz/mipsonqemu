@@ -1,5 +1,5 @@
-#ifndef UPDATER_THREAD_H
-#define UPDATER_THREAD_H
+#ifndef FILE_GET_H
+#define FILE_GET_H
 
 #include <config.h>
 #include <globals.h>
@@ -26,10 +26,6 @@ public:
 	QHttp * http[UPDATE_MAX_RETRY_TIME];
 	QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
 	QFile *file[UPDATE_MAX_RETRY_TIME];
-	QDateTime* updateTime;
-	QMutex mutex;
-	QSettings *localSettings;
-	QSettings *serverSettings;
 	
 	QString host;
 	QString url;
@@ -47,7 +43,7 @@ public:
 
 public:
 	GetFileHttp(QObject * parent = 0,QSettings* s=0,int mode=0,QString md5="");	
-	~GetFileHttp();
+	~GetFileHttp(){};
 	void clearObject();
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString &s){url = s;updaterFilename=s;}
@@ -55,7 +51,6 @@ public:
 	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
 	int newHttp();
-	void setProxy(QNetworkProxy& p);
 	void setDestdir(const QString& s){destdir = s;}
 	void sendUpdateStatusNotify(int flag,int type);
 public slots: 
@@ -64,8 +59,6 @@ public slots:
 		void httpTimeout();
 		void terminateThread();
 signals:
-		void  getIniDoneNotify(int error);
-		void  getFileDoneNotify(int error);
 		void updateStatusNotify(int type,int status);
 
 };
