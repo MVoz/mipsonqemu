@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <catalog_builder.h>
 #include <globals.h>
 #include "main.h"
-#include <options.h>
+#include <optionUI.h>
 //#include <QDebug>
 
 //#include <QFile>

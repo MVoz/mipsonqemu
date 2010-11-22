@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <icon_delegate.h>
 #include <globals.h>
 #include <config.h>
-#include <options.h>
+#include <optionUI.h>
 #include <bmsync.h>
 #include <QProcess>
 //#include <weby>
@@ -290,7 +290,7 @@ private:
 	QMenu *trayIconMenu;
 	QIcon icon;
 	QIcon icon_problem;
-	updaterThread *slientUpdate;
+	appUpdater *slientUpdate;
 	volatile int closeflag;
 	QTimer* monitorTimer;
 	OptionsDlg *ops;

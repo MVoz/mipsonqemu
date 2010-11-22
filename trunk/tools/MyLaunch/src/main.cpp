@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <icon_delegate.h>
 #include "main.h"
 #include <globals.h>
-#include <options.h>
+#include <optionUI.h>
 
 //#include "dsingleapplication.h"
 #include "plugin_interface.h"
@@ -2815,7 +2815,7 @@ void MyWidget::startSilentUpdate()
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
 		gSettings->setValue("lastSilentUpdate", 0);
-		slientUpdate=new updaterThread(NULL,gSettings,UPDATE_SILENT_MODE); 
+		slientUpdate=new appUpdater(NULL,gSettings,UPDATE_SILENT_MODE); 
 		connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));
 		//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
 		slientUpdate->start(QThread::IdlePriority);		
