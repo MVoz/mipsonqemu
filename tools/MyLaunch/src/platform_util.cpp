@@ -12,7 +12,8 @@ PlatformBase *loadPlatform()
 	QString file;
 
 #ifdef Q_WS_WIN
-	files += "platform_win.dll";
+	//files += "platform_win.dll";	
+	files += "platform.dll";
 #endif
 #ifdef Q_WS_X11
 	files += "libplatform_unix.so";

@@ -323,9 +323,6 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	inputMode = 0;
 	rebuildAll = 0;
 	closeflag = 0;
-	//      gBuilder = NULL;
-	//      catalog = NULL;
-	//	gMaxGroupId=0;
 
 	setFocusPolicy(Qt::ClickFocus);
 
@@ -500,20 +497,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 	// Load the catalog
 	updateTimes=0;
-	/*
-	gBuilder.reset(new CatBuilder(buildDbWithStart,CAT_BUILDMODE_ALL,&db));
-	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 
-	gBuilder->start();
-	*/
-	//buildCatalog();
-
-	//      setTabOrder(combo, combo);
-
-#if 1
-
-
-#endif
 	showLaunchyFirstTime=gSettings->value("ckShowMainwindow", false).toBool();
 
 	if (showLaunchyFirstTime || rescue)
@@ -529,10 +513,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
-		//trayIcon->showMessage(APP_NAME,"<a href=\"http:\/\/www.tanzhi.com\">tanzhi</a>",QSystemTrayIcon::Information);
 	}
-
-     qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -3009,14 +2990,10 @@ int main(int argc, char *argv[])
 #ifdef Q_WS_WIN
 	shared_ptr < QApplication > app(new QApplication(argc, argv));
 #endif
-	qDebug()<<__FUNCTION__<<__LINE__<<NOW_SECONDS;
 	PlatformBase *platform = loadPlatform();
 #ifdef Q_WS_X11
 	shared_ptr < QApplication > app(platform->init(argc, argv));
 #endif
-	//Q_INIT_RESOURCE(systray);
-	//qApp->addLibraryPath("e:\Qt\MyLaunch\release\dll");
-	//QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath() + '/' + "dll");
 
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
@@ -3035,22 +3012,12 @@ int main(int argc, char *argv[])
 		}
 		QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 		QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-		//QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-#ifdef CONFIG_LOG_ENABLE
-		//qInstallMsgHandler(myMessageOutput);
-		QDir logDir(".");
-		if (logDir.exists("log.txt"))
-		{
-			logDir.remove("log.txt");
-		}
-#endif
 		//check update in register
 		uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
 		//qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s CPU_USAGE_THRESHOLD=%d ",updateflag,(UPDATE_PORTABLE_DIRECTORY),CPU_USAGE_THRESHOLD);
 
 		if(updateflag)
 		{
-			//kickoffSilentUpdate();
 			if(QFile::exists(APP_SILENT_UPDATE_NAME))
 			{
 				qDebug("run %s",APP_SILENT_UPDATE_NAME);
@@ -3073,18 +3040,9 @@ int main(int argc, char *argv[])
 			QMessageBox::critical(0, QObject::tr("Systray"), QObject::tr("I couldn't detect any system tray " "on this system."));
 			return 1;
 		}
-		//QApplication::setQuitOnLastWindowClosed(false);
-#if 0
-		QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));	//
-		app->setFont(QFont("ËÎÌו", 9, QFont::Normal, false));	//
-#endif
 
 		tz::GetCpuUsage();
 		MyWidget widget(NULL, platform, rescue);
-		//widget.setObjectName("main");
 		widget.freeOccupyMemeory();
-		//QFont font("SIMSUN", 12, QFont::Bold);
-		//app->setFont(font);
 		app->exec();
-		//app.reset();
 }

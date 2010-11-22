@@ -80,9 +80,7 @@ win32 {
       LIBS +=   ../debug/bmmerge.lib
       LIBS +=   ../debug/bmsync.lib
       LIBS +=   ../debug/optionUI.lib
-      LIBS +=   ../debug/catalog.lib
-      LIBS +=   ../debug/catalog_types.lib
-      LIBS +=   ../debug/icon_delegate.lib
+      LIBS +=   ../debug/baseitem.lib
       LIBS +=   ../debug/appupdater.lib
       LIBS +=   ../debug/fileget.lib
       LIBS +=   ../debug/bmnet.lib
@@ -95,9 +93,7 @@ win32 {
       LIBS +=   ../release/bmmerge.lib
       LIBS +=   ../release/bmsync.lib
       LIBS +=   ../release/optionUI.lib
-      LIBS +=   ../release/catalog.lib
-      LIBS +=   ../release/catalog_types.lib
-      LIBS +=   ../release/icon_delegate.lib
+      LIBS +=   ../release/baseitem.lib
       LIBS +=   ../release/appupdater.lib
       LIBS +=   ../release/fileget.lib
       LIBS +=   ../release/bmnet.lib

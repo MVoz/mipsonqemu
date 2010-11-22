@@ -1,5 +1,5 @@
 TEMPLATE	= lib
-TARGET		= platform_win
+TARGET		= platform
 QT += sql
 QT += network
 CONFIG		+= plugin qt_warn debug_and_release
