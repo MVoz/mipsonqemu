@@ -46,7 +46,7 @@ public:
 		fh = NULL;
 		needwatchchild = false;
 	}
-	~appUpdater();
+	~appUpdater(){};
 	void run();
 	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
@@ -57,7 +57,6 @@ public:
 
 public slots: 
 	void getIniDone(int err);
-	void getFileDone(int err);
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();

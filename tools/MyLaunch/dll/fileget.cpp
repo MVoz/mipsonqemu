@@ -112,7 +112,8 @@ void GetFileHttp::downloadFileDone(bool error)
         if(terminateFlag)
 	{
 		errCode=HTTP_GET_FILE_FAILED;
-		this->quit();
+		quit();
+		return;
         }
 	if(!error){
 		switch(statusCode)
@@ -137,6 +138,7 @@ void GetFileHttp::downloadFileDone(bool error)
 		goto RETRY;
 	}
 	quit();
+	return;
 RETRY:
 	if(newHttp())	
 		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY);
@@ -144,4 +146,5 @@ RETRY:
 		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:HTTP_GET_INI_FAILED);	
 	if(errCode!=HTTP_NEED_RETRY)
 		quit();	
+	return;
 }
