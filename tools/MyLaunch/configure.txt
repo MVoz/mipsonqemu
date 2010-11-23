@@ -1,0 +1,1 @@
+configure -no-stl -no-qt3support -release -qt-sql-sqlite -no-style-motif -no-style-cde -no-style-plastique -no-style-cleanlooks -qt-zlib -qt-gif -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -no-opengl -webkit -no-phonon -no-phonon-backend
