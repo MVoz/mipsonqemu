@@ -62,7 +62,7 @@ if "%obj%"=="release" (
 cd .\release
 del *.exp *.lib *.manifest
 ..\fmd5\release\fmd5.exe -p
-"C:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
+"d:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
 cd ..
 
 rmdir /Q/S download
