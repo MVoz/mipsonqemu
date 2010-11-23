@@ -115,8 +115,10 @@ Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtSql4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtWebKit4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtXml4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
-Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 
 Source: ..\Utilities\Special Folders\C Drive.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\Control Panel.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
@@ -168,6 +170,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
 
 
