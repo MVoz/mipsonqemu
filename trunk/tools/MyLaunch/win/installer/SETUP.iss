@@ -105,8 +105,8 @@ Source: ..\..\release\html\net_mg.html; DestDir: {app}\html\; Flags: ignoreversi
 Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
 
 ;images
-Source: ..\..\release\images\touchAny.ico; DestDir: {app}\images\; Flags: ignoreversion
-Source: ..\..\release\images\touchAny_gray.ico; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_gray.png; DestDir: {app}\images\; Flags: ignoreversion
 
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
