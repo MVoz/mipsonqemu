@@ -68,7 +68,7 @@ Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
 ;Source: ..\..\plugins\runner\runner.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 
 ; Documentation
-Source: ..\touchAny.ico; DestDir: {app}; Flags: ignoreversion
+;Source: ..\touchAny.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 
@@ -104,6 +104,9 @@ Source: ..\..\release\html\list_mg.html; DestDir: {app}\html\; Flags: ignorevers
 Source: ..\..\release\html\net_mg.html; DestDir: {app}\html\; Flags: ignoreversion
 Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
 
+;images
+Source: ..\..\release\images\touchAny.ico; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_gray.ico; DestDir: {app}\images\; Flags: ignoreversion
 
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
@@ -165,6 +168,8 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
+
 
 
 

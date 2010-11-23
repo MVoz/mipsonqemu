@@ -31,6 +31,6 @@ if(!debug_and_release|build_pass) {
     DESTDIR = ../release/
     LIBS +=../release/bmapi.lib
     LIBS +=../release/bmnet.lib
-    LIBS +=../debug/fileget.lib
+    LIBS +=../release/fileget.lib
    }
  }

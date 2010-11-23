@@ -14,12 +14,14 @@ HEADERS		= platform_base.h platform_win.h platform_base_hotkey.h platform_base_h
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG		-= embed_manifest_dll
 
-win32:debug {
-	DESTDIR = ../../debug/
-	LIBS +=   ../../debug/bmapi.lib
-}
 
-win32:release {
-	DESTDIR = ../../release/
-	LIBS +=   ../../debug/bmapi.lib
-}
+if(!debug_and_release|build_pass) {
+   CONFIG(debug, debug|release) {
+    DESTDIR =     ../../debug/
+    LIBS +=../../debug/bmapi.lib
+   }
+   CONFIG(release, debug|release) {
+    DESTDIR = ../../release/
+    LIBS +=../../release/bmapi.lib
+   }
+ }
