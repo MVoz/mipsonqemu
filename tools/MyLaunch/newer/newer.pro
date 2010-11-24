@@ -15,8 +15,16 @@ INCLUDEPATH += ../include/
 
 
 # Input
-SOURCES += main.cpp
- 
+SOURCES += main.cpp \
+	..\lzma\7zFile.c\
+	..\lzma\7zStream.c\
+	..\lzma\Alloc.c\
+	..\lzma\LzFind.c\
+	..\lzma\LzFindMt.c\
+	..\lzma\LzmaDec.c\
+	..\lzma\LzmaEnc.c\
+	..\lzma\Threads.c 
+
 HEADERS = 
 win32 {
   INCLUDEPATH += c:/boost/
