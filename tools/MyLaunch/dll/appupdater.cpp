@@ -101,7 +101,7 @@ void appUpdater::run()
 /*
 0---same 1---newer -1---older
 */
-int appUpdater::checkToSetting(QSettings *s,const QString &filename1,const QString& md51)
+int appUpdater::checkToSetting(QSettings *s,const QString &filename1,QString& md51)
 {
 	int ret=-1;
 	int count = s->beginReadArray(UPDATE_PORTABLE_KEYWORD);
@@ -109,13 +109,15 @@ int appUpdater::checkToSetting(QSettings *s,const QString &filename1,const QStri
 	{
 		s->setArrayIndex(i);
 		QString filename2=s->value("name").toString();
-		QString md52=s->value("md5").toUInt();	
+		QString md52=s->value("md5").toString();	
 		if(filename1!=filename2) 
 			continue;
-		if(md52 ==md51 )
+		if(md52 ==md51)
 			ret= 0;
-		else 
+		else{ 
+			md51 = md52;
 			ret = 1;
+		}
 		break;
 	}
 	s->endArray();
@@ -131,6 +133,8 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 	int count = srcSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 	for (int i = 0; i < count; i++)
 	{
+		if(terminateFlag||error)
+			break;
 		srcSettings->setArrayIndex(i);
 		QString filename=srcSettings->value("name").toString();
 		QString md5=srcSettings->value("md5",0).toString(); 
@@ -139,7 +143,8 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 		{
 		case -1://no found
 		case 1://newer
-
+			if(m==SETTING_MERGE_SERVERTOLOCAL)
+				md5=srcSettings->value("md5",0).toString(); //reupdate md5,just md5 from server is valid
 			if(((m==SETTING_MERGE_SERVERTOLOCAL)&&(flag==-1))||((m==SETTING_MERGE_LOCALTOSERVER)&&(flag==1)))
 			{
 				if(
@@ -148,7 +153,6 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 					(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
 				  )
 				{
-					qDebug()<<"download......"<<filename;
 					needed=1;
 					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);		
 				}
@@ -268,9 +272,8 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	THREAD_MONITOR_POINT;
 	if(terminateFlag||error)
 		return;
+	qDebug()<<"download......"<<pathname<<"md5:"<<md5;
 	DELETE_OBJECT(fh);
-	if(terminateFlag||error)
-		return;
 	fh=new GetFileHttp(NULL,settings,m,md5);
 
 	if(mode==UPDATE_DLG_MODE) {
@@ -300,5 +303,6 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	 if(fh&&(fh->mode==UPDATE_MODE_GET_FILE))
 		fh->wait();
 	 error = fh->errCode;
+	 qDebug()<<pathname<<" error code:"<<error;
 }
 

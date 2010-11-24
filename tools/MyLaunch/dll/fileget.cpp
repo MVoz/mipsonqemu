@@ -26,10 +26,7 @@ void GetFileHttp::sendUpdateStatusNotify(int flag,int type)
 		return;
 	emit updateStatusNotify(flag,type);
 }
-void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
-{
-	statusCode=resp.statusCode();
-}
+
 /*
 	1----success
 	0----failed
@@ -105,6 +102,12 @@ GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int m,QString c): MyThread
 		file[i]=NULL;
 	}
 }
+void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
+{
+	statusCode=resp.statusCode();
+	if(statusCode == HTTP_OK)
+		STOP_TIMER(httpTimer[retryTime]); 
+}
 void GetFileHttp::downloadFileDone(bool error)
 {
 	THREAD_MONITOR_POINT;
@@ -115,11 +118,13 @@ void GetFileHttp::downloadFileDone(bool error)
 		quit();
 		return;
         }
+	qDebug()<<"statusCode"<<statusCode<<" error:"<<error<<" "<<http[retryTime]->errorString();
 	if(!error){
 		switch(statusCode)
 			{
 			case HTTP_OK:
 				{
+					qDebug()<<"md5"<<md5<<" filemd5:"<<tz::fileMd5(downloadFilename);
 					if(md5.isEmpty()||tz::fileMd5(downloadFilename)==md5){
 						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL);
 					}else{

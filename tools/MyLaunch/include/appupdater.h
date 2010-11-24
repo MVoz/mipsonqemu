@@ -50,7 +50,7 @@ public:
 	void run();
 	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
-	int checkToSetting(QSettings *s,const QString &filename1,const QString& md51);
+	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
 	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
 	void checkSilentUpdateApp();
 	void sendUpdateStatusNotify(int flag,int type);

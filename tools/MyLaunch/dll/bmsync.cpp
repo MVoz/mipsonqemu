@@ -252,7 +252,7 @@ void bmSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
 	if(mgthread){
-		switch(mgthread->status){
+		switch(mgthread->mergestatus){
 			case MERGE_STATUS_SUCCESS_NO_MODIFY:
 				status = BM_SYNC_SUCCESS_NO_ACTION;
 			break;
