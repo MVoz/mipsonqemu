@@ -504,8 +504,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	else
 		hideLaunchy();
 	
-	icon =QIcon("images/"+QString(APP_NAME)+".ico");
-	icon_problem=QIcon("images/"+QString(APP_NAME)+"_gray.ico");	
+	icon =QIcon("images/"+QString(APP_NAME)+".png");
+	icon_problem=QIcon("images/"+QString(APP_NAME)+"_gray.png");	
 	setWindowIcon(icon);
 	
 	setIcon(1,QString(APP_NAME));
