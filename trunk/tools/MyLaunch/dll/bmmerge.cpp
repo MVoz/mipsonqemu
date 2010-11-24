@@ -869,7 +869,7 @@ int bmMerge::bmMergeAction(
 		else
 			inServerPosition=inLastupdatePosition;
 		status = BM_ITEM_MERGE_STATUS(1,inLastupdatePosition,inServerPosition);
-		qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
+		//qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1&&status!=MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1)
 		{
 			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
