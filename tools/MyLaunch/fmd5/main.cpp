@@ -9,7 +9,7 @@
 #include <QDataStream>
 #include <QSettings>
 #include "../include/config.h"
-#include "./lzma/LzmaLib.h"
+#include "../lzma/LzmaLib.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -18,11 +18,11 @@
 #include <string.h>
 #include <qDebug>
 
-#include "./lzma/Alloc.h"
-#include "./lzma/7zFile.h"
-#include "./lzma/7zVersion.h"
-#include "./lzma/LzmaDec.h"
-#include "./lzma/LzmaEnc.h"
+#include "../lzma/Alloc.h"
+#include "../lzma/7zFile.h"
+#include "../lzma/7zVersion.h"
+#include "../lzma/LzmaDec.h"
+#include "../lzma/LzmaEnc.h"
 
 const char *kCantReadMessage = "Can not read input file";
 const char *kCantWriteMessage = "Can not write output file";
@@ -306,13 +306,13 @@ int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 			if(mode==FMD5_MODE_PORTABLE)
 			{
 				s->setArrayIndex(filenums++);
-				QString md5 = fileMd5(path+ "/"+files[i]);
-				s->setValue("name",root?(files[i]):(path+ "/"+files[i]));
-				s->setValue("md5", md5);
-				QString infile=path+ "/"+files[i];
-				QString outfile=path+ "/"+files[i]+".gz";
+			   	QString infile=root?(files[i]):(path+ "/"+files[i]);
+				QString outfile=infile+".gz";
 				char rs[800] = { 0 };
 				lzmaFile(TOCHAR(infile),TOCHAR(outfile),rs,1);
+				QString md5 = fileMd5(outfile);
+				s->setValue("name",outfile);
+				s->setValue("md5", md5);
 			//	s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
 			}else if(mode==FMD5_MODE_SETUP){
 				QString md5 = fileMd5(path+ "/"+files[i]);
