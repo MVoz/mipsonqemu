@@ -30,22 +30,8 @@ void bmPost::clearObject()
 void bmPost::gorun()
 {
 	THREAD_MONITOR_POINT;
-	//DELETE_TIMER(postTimer);
-	/*
-	monitorTimer = new QTimer();
-	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerSlot()), Qt::DirectConnection);
-	monitorTimer->start(10);
-	*/
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
-	/*
-	postTimer=new QTimer();
-	connect(postTimer, SIGNAL(timeout()), this, SLOT(postTimerSlot()), Qt::DirectConnection);
-	postTimer->start(POST_ITEM_TIMEOUT*SECONDS);
-	postTimer->moveToThread(this);	
-	*/
-	
-	START_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimerSlot);
-	
+	START_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
 	
 	posthttp = new QHttp();
 	posthttp->moveToThread(this);	
@@ -89,11 +75,7 @@ void bmPost::gorun()
 			{
 				bm_handle_url=QString(BM_SERVER_DELETE_DIR).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
-#ifdef CONFIG_SERVER_IP_SETTING
-			SET_SERVER_IP(settings,bm_handle_url);
-#else
 			header=QHttpRequestHeader("POST", bm_handle_url);
-#endif
 		}
 		break;
 	case POST_HTTP_TYPE_TESTACCOUNT:
@@ -112,8 +94,6 @@ void bmPost::gorun()
 	header.setValue("Host", BM_SERVER_ADDRESS);
 #endif
 	header.setContentType("application/x-www-form-urlencoded");
-	// header.setValue("cookie", "jblog_authkey=MQkzMmJlNmM1OGRmODFkNGExMThiMmNhZjcyMGVjOTUwMA");           
-
 	resultBuffer = new QBuffer();
 	resultBuffer->moveToThread(this);
 	resultBuffer->open(QIODevice::ReadWrite);
@@ -125,7 +105,6 @@ void bmPost::run()
 {
 	THREAD_MONITOR_POINT;
 	gorun();
-//	START_TIMER_ASYN(postTimer,true,10,gorun);
 	exec();
 	if(posthttp)
 		disconnect(posthttp, 0, 0, 0);
@@ -166,17 +145,16 @@ void bmPost::httpDone(bool error)
 	exit(error);
 }
 
-void bmPost::postTimerSlot()
+void bmPost::postTimeout()
 {
 	THREAD_MONITOR_POINT;
-	qDebug("postTimerSlot.......");
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(postTimer);
 	posthttp->abort();
 }
 void bmPost::terminateThread()
 {
-	postTimerSlot();
+	postTimeout();
 	MyThread::terminateThread();
 }
 

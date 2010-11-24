@@ -82,7 +82,7 @@ public:
 	
 public slots: 
 	void httpDone(bool error);
-	void postTimerSlot();
+	void postTimeout();
 	void terminateThread();
 	void gorun();
 	void clearObject();
