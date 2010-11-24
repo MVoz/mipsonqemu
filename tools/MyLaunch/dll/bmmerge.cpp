@@ -4,7 +4,7 @@ bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QStrin
 	file = NULL;
 	posthp=NULL;
 	firefox_version=0;
-	status=MERGE_STATUS_SUCCESS_NO_MODIFY;
+	mergestatus=MERGE_STATUS_SUCCESS_NO_MODIFY;
 	terminatedFlag=0;
 	GetShellDir(CSIDL_FAVORITES, iePath);
 }
@@ -32,7 +32,7 @@ bool bmMerge::checkXmlfileFromServer()
 			goto good;
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
-			status = MERGE_STATUS_FAIL_LOGIN;
+			mergestatus = MERGE_STATUS_FAIL_LOGIN;
 			emit mgUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_LOGIN);
 			goto bad;
 		}
@@ -99,7 +99,6 @@ void bmMerge::clearObject()
 	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
 	{
 		QFile::remove(filename_fromserver);	
-
 	}
 }
 void bmMerge::dumpBcList(QList<bookmark_catagory>* s)
@@ -351,7 +350,7 @@ ffout:
 	}
 #endif
 	//write to lastupdate
-	if((!QFile::exists(localBmFullPath)||(status==MERGE_STATUS_SUCCESS_WITH_MODIFY))&&!terminatedFlag){
+	if((!QFile::exists(localBmFullPath)||(mergestatus==MERGE_STATUS_SUCCESS_WITH_MODIFY))&&!terminatedFlag){
 		storeLocalbmData(localBmFullPath,browserInfo,browserenable,result_bc,lastUpdate,updateTime);
 	}
 
@@ -461,7 +460,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		if(getPostError())
 		{
 			qDebug("post error happen!");
-			status = MERGE_STATUS_FAIL;
+			mergestatus = MERGE_STATUS_FAIL;
 			terminatedFlag = 1;
 			return;
 		}
@@ -501,6 +500,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 
 		posthp->bmid =  bc->bmid;
 		posthp->postString = postString;
+		qDebug()<<"post string:"<<postString;
 		posthp->start();
 		posthp->wait();
 		bc->groupId= 0;
@@ -508,7 +508,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		if(getPostError())
 		{
 			qDebug("post error happen!");
-			status = MERGE_STATUS_FAIL;
+			mergestatus = MERGE_STATUS_FAIL;
 			terminatedFlag  = 1;
 			return;
 		}
@@ -749,7 +749,7 @@ void bmMerge::handleItem(
 							 int localOrServer
 							 )
 {
-	status=MERGE_STATUS_SUCCESS_WITH_MODIFY;
+	mergestatus=MERGE_STATUS_SUCCESS_WITH_MODIFY;
 	switch (status)
 	{
 	case MERGE_STATUS_NONE:		//never exist 
@@ -869,7 +869,7 @@ int bmMerge::bmMergeAction(
 		else
 			inServerPosition=inLastupdatePosition;
 		status = BM_ITEM_MERGE_STATUS(1,inLastupdatePosition,inServerPosition);
-		//qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
+		qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1&&status!=MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1)
 		{
 			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);

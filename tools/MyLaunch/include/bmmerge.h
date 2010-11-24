@@ -111,7 +111,7 @@ public:
 	QSqlDatabase* db;
 	
 	uint modifiedInServer;
-	uint status;
+	volatile uint mergestatus;
 	int firefox_version;
 	volatile uint terminatedFlag;
 
