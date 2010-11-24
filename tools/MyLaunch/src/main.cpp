@@ -44,7 +44,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <globals.h>
 #include <optionUI.h>
 
-//#include "dsingleapplication.h"
 #include "plugin_interface.h"
 
 extern shared_ptr<CatBuilder> gBuilder;
