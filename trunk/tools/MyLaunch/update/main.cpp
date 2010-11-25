@@ -2,11 +2,13 @@
 
 #include <windows.h>
 #include <commctrl.h>
+#include "resource.h"
 
 #define WM_UPDATE_START WM_USER+10
 void StartUpdate(HWND hwndPb,TCHAR* pFilePath);
 int totalFileSize(TCHAR* pFilePath,DWORD* size);
 HWND hwndPB;    // Handle of progress bar 
+HWND texthwnd;
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
@@ -155,7 +157,7 @@ BOOL DoEvent()
   {
       if( msg.message == WM_QUIT )
           {
-             MessageBox (NULL, TEXT("xxx"),TEXT(szClassName), MB_ICONERROR) ;
+
              return TRUE;
           }
       if( !IsDialogMessage( hwnd, &msg ) ) 
@@ -196,17 +198,39 @@ WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)                  /* handle the messages */
     {
        case WM_CREATE :
-           GetClientRect(hwnd, &rcClient);            
+           GetClientRect(hwnd, &rcClient);  
+                     
            hwndPB = CreateWindowEx(0, PROGRESS_CLASS,
             (LPTSTR) NULL, WS_CHILD | WS_VISIBLE,
-            rcClient.left, (rcClient.bottom - rcClient.top-iPBHeight)/2, rcClient.right, iPBHeight, 
-            hwnd, (HMENU) 0, ((LPCREATESTRUCT) lParam)->hInstance, NULL);  
+            rcClient.left+60, (rcClient.bottom - rcClient.top-iPBHeight)/2, rcClient.right-rcClient.left-100, iPBHeight, 
+            hwnd, (HMENU) 0, ((LPCREATESTRUCT) lParam)->hInstance, NULL); 
+            /*
+            texthwnd = CreateWindow (TEXT("STATIC"), 
+            TEXT("bitmap1"),
+            WS_CHILD | WS_VISIBLE | SS_BITMAP,//SS_BITMAP表示图片
+            rcClient.left, 0,
+            60, iPBHeight,
+            hwnd, (HMENU) 0,
+            ((LPCREATESTRUCT) lParam)->hInstance, NULL) ;
+            SendMessage(texthwnd,   
+            STM_SETIMAGE, //必须发送STM_SETIMAGE
+            (WPARAM) 0, 
+            (LPARAM) LoadImage(0,TEXT(".\\1.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE )//获取图片句柄,并转换为(LPARAM)
+            );
+            */
+              
+
+
+            HWND h = CreateWindowEx(0, WC_STATIC, NULL,
+        WS_CHILD | WS_VISIBLE | SS_ICON,
+         rcClient.left, 0,
+              60, iPBHeight,hwnd, (HMENU)0, ((LPCREATESTRUCT) lParam)->hInstance, NULL);
+            SendMessage(h, STM_SETICON,
+                (WPARAM)(HICON)LoadImage(NULL, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, LR_SHARED), 0);
+
+             
            PostMessage(hwnd,WM_UPDATE_START,(WPARAM)hwndPB,(LPARAM)NULL);
            break;
-       case WM_PAINT :
-            DefWindowProc (hwnd, message, wParam, lParam);
-            //PostMessage(hwnd,WM_UPDATE_START,(WPARAM)hwndPB,(LPARAM)NULL);
-            break;
        case WM_DESTROY:
             PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
             break;
