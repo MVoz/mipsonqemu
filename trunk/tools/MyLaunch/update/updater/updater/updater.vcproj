@@ -44,7 +44,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -176,6 +176,126 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\..\lzma\7zAlloc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zBuf.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zBuf2.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zCrc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zCrcOpt.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zDec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zFile.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zIn.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zStream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Alloc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Bcj2.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Bra.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Bra86.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\BraIA64.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\CpuArch.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Delta.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzFind.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzFindMt.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma2Dec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma2Enc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma86Dec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma86Enc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaDec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaEnc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaLib.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\MtCoder.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Ppmd7.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Ppmd7Dec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Ppmd7Enc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Sha256.c"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -196,7 +316,31 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\..\lzma\Threads.c"
+				>
+			</File>
+			<File
 				RelativePath=".\updater.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Xz.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzCrc64.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzDec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzEnc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzIn.c"
 				>
 			</File>
 		</Filter>
@@ -206,7 +350,107 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\..\lzma\7z.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zAlloc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zBuf.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zCrc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zFile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\7zVersion.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Alloc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Bcj2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Bra.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\CpuArch.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Delta.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzFind.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzFindMt.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzHash.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma2Dec.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma2Enc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Lzma86.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaDec.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaEnc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\LzmaLib.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\MtCoder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Ppmd.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Ppmd7.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\RotateDefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Sha256.h"
 				>
 			</File>
 			<File
@@ -214,7 +458,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\lzma\Threads.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Types.h"
+				>
+			</File>
+			<File
 				RelativePath=".\updater.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\Xz.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzCrc64.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lzma\XzEnc.h"
 				>
 			</File>
 		</Filter>
