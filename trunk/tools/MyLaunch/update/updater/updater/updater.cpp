@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "updater.h"
 #include <commctrl.h>
+#include <Shellapi.h>
+#include <stdio.h>
+
+
 #include "../../../lzma/Alloc.h"
 #include "../../../lzma/7zFile.h"
 #include "../../../lzma/7zVersion.h"
@@ -15,11 +19,16 @@ const char *kCantWriteMessage = "Can not write output file";
 const char *kCantAllocateMessage = "Can not allocate memory";
 const char *kDataErrorMessage = "Data error";
 
+#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
+#define APP_HEKY_UPDATE_ITEM "updaterflag"
+
 static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
 static void SzFree(void *p, void *address) { p = p; MyFree(address); }
 static ISzAlloc g_Alloc = { SzAlloc, SzFree };
+int char2TCHAR(char* src,TCHAR* dst);
 
-
+#define PROCESS_FILE_SIZE 0
+#define PROCESS_FILE_DECODE 1
 
 #define IN_BUF_SIZE (1 << 16)
 #define OUT_BUF_SIZE (1 << 16)
@@ -31,10 +40,11 @@ static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
 HWND hMainWnd;//main handle
 HWND hwndPB;    // Handle of progress bar 
+DWORD totalfilesize = 0;
 
-
-int totalFileSize(TCHAR* pFilePath,DWORD* size);
+int totalFileSize(TCHAR* pFilePath,int,DWORD* size);
 void StartUpdate(HWND hwndPb,TCHAR* pFilePath);
+BOOL DoEvent();
 
 // 全局变量:
 HINSTANCE hInst;								// 当前实例
@@ -50,6 +60,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     InitCommonControls();
 	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadString(hInstance, IDC_UPDATER, szWindowClass, MAX_LOADSTRING);
+	if(strcmp(lpCmdLine,"-c028e032175ca7c5e70a3bc31632377b"))
+		return FALSE;
 	//DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX),
 	//          NULL, reinterpret_cast<DLGPROC>(DlgProc));
 	hMainWnd=CreateDialog(hInst, 
@@ -75,8 +87,62 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return FALSE;
 }
 
+void runProgram(TCHAR* path, TCHAR* args) {
+	SHELLEXECUTEINFO ShExecInfo;
+	//qDebug("runProgram path=%s args=%s",qPrintable(path),qPrintable(args));
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
+	ShExecInfo.hwnd = NULL;
+	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpFile = (LPCTSTR) path;
+	if (args != TEXT("")) {
+		ShExecInfo.lpParameters = (LPCTSTR) args;
+	} else {
+		ShExecInfo.lpParameters = NULL;
+	}
+	//ShExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
+	ShExecInfo.nShow = SW_NORMAL;
+	ShExecInfo.hInstApp = NULL;
 
-
+	ShellExecuteEx(&ShExecInfo);	
+}
+DWORD queryUpdateFlag()
+{
+	HKEY hKey;
+	long iret = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\zhiqiu\\launchy"), 0,  KEY_ALL_ACCESS,&hKey);
+	
+	if(ERROR_SUCCESS== iret)
+	{
+		DWORD size;
+		char buf[128]={0};
+		DWORD a = REG_SZ;
+		//返回项值名为bin的项值内容
+		int ret = RegQueryValueEx(hKey, TEXT(APP_HEKY_UPDATE_ITEM), NULL, &a, (BYTE *)buf, &size);
+		if(ERROR_SUCCESS == ret)
+		{
+			buf[size] = 0;
+			if(a==REG_DWORD)
+			{
+				DWORD value=(*((DWORD*)buf));
+				RegCloseKey(hKey);
+				return value;
+			}
+		}
+		RegCloseKey(hKey);
+	}
+	return 0;
+}
+DWORD setUpdateFlag(DWORD v)
+{
+	HKEY hKey;
+	long iret = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\zhiqiu\\launchy"), 0,  KEY_ALL_ACCESS,&hKey);
+	if(ERROR_SUCCESS== iret)
+	{
+		 long setRet = RegSetValueEx(hKey,TEXT(APP_HEKY_UPDATE_ITEM),0,REG_DWORD,(BYTE*)&v,4);  
+		RegCloseKey(hKey);
+	}
+	return 0;
+}
 static SRes Decode2(CLzmaDec *state, ISeqOutStream *outStream, ISeqInStream *inStream,
     UInt64 unpackSize)
 {
@@ -270,16 +336,30 @@ int lzmaFile(const char *infile,const char* outfile, char *rs,int mode)
 
 int TCHAR2char(TCHAR* src,char* dst)
 {
-	int iLen = 2*wcslen(src);
+	 int iLen = 2*wcslen(src);
 	 return wcstombs(dst,src,iLen+1);
 }
-void ProcessFileData(WIN32_FIND_DATA* data,TCHAR* pFilePath,DWORD* size)
+int char2TCHAR(char* src,TCHAR* dst)
+{
+	int iLen = 2*strlen(src);
+	return mbstowcs(dst,src,iLen+1);
+}
+void ProcessFileData(WIN32_FIND_DATA* data,int mode,TCHAR* pFilePath,DWORD* size)
 {
       HANDLE hFile;   // Handle of file 
-      if (data->dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY )
+	  TCHAR msg[1024]={0};
+	  wsprintf(msg,TEXT("in=%d"),data->dwFileAttributes);
+	  		//	MessageBox(NULL,data->cFileName,msg,MB_OK);
+      if ((data->dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) != FILE_ATTRIBUTE_DIRECTORY )
         {
             //找到文件                                
            //  MessageBox (NULL, TEXT( data->cFileName),TEXT(szClassName), MB_ICONERROR) ;
+			DWORD suflen = lstrlen(TEXT(".gz"));
+			if(lstrlen(data->cFileName)<=suflen)
+				return;
+			DWORD tlen = lstrlen(data->cFileName)-suflen;
+			if(lstrcmp(&(data->cFileName[tlen]),TEXT(".gz")))
+				return;
             TCHAR fPath[MAX_PATH + 1]={0};
             lstrcpy(fPath, pFilePath);
             lstrcat(fPath, TEXT("\\"));
@@ -290,19 +370,42 @@ void ProcessFileData(WIN32_FIND_DATA* data,TCHAR* pFilePath,DWORD* size)
                     FILE_ATTRIBUTE_NORMAL, (HANDLE) NULL); 
             if (hFile == (HANDLE) INVALID_HANDLE_VALUE) 
                     return; 
+			switch(mode){
+				case PROCESS_FILE_SIZE:
+					  (*size)+= GetFileSize(hFile, (LPDWORD) NULL); 
+					break;
+				case PROCESS_FILE_DECODE:
+					{
+						char rs[800]={0};
+						char inpath[MAX_PATH + 1]={0};
+						char outpath[MAX_PATH + 1]={0};
+						TCHAR2char(fPath,inpath);
+						strcpy(outpath,".\\");
+						strncat(outpath,&inpath[strlen(".\\temp\\portable\\")],strlen(inpath)-strlen(".\\temp\\portable\\")-strlen(".gz"));
+						//.\temp\portable\xxx.dll.gz --->.\xxx.dll
 
-            (*size)+= GetFileSize(hFile, (LPDWORD) NULL); 
-			char rs[800]={0};
+						//strcat(outpath,".gz");
 
-			char inpath[MAX_PATH + 1]={0};
-			char outpath[MAX_PATH + 1]={0};
+#if 0
+						TCHAR msg[1024]={0};
+						wsprintf(msg,TEXT("in=%s out=%s"),inpath,outpath);
+						MessageBox(NULL,fPath,TEXT("xx"),MB_OK);
+#endif
+						lzmaFile(inpath,outpath, rs,0);
 
-			TCHAR2char(fPath,inpath);
-			strcpy(outpath,inpath);
-			strcat(outpath,".gz");
-			lzmaFile(inpath,outpath, rs,1);
+						
+						DoEvent();
+						(*size)+= GetFileSize(hFile, (LPDWORD) NULL); 
 
-        } else if(data->dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY
+						SendMessage(hwndPB, PBM_SETPOS, ((*size)*100)/totalfilesize, 0); 
+						DoEvent();
+ 
+					}
+					break;
+			}          
+			CloseHandle((HANDLE) hFile); 
+
+        } else if((data->dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY
             && lstrcmp(data->cFileName, TEXT(".")) != 0
             && lstrcmp(data->cFileName, TEXT("..")) != 0)
         {   
@@ -311,10 +414,19 @@ void ProcessFileData(WIN32_FIND_DATA* data,TCHAR* pFilePath,DWORD* size)
             lstrcpy(Dir, pFilePath);
             lstrcat(Dir, TEXT("\\"));
             lstrcat(Dir, data->cFileName);
-            totalFileSize(Dir,size);
+			//MessageBox(NULL,Dir,TEXT("xx"),MB_OK);
+			
+			TCHAR newDir[MAX_PATH + 1]={0};
+		    lstrcat(newDir, TEXT(".\\"));
+			lstrcat(newDir, &Dir[lstrlen(TEXT(".\\temp\\portable\\"))]);
+			if (!CreateDirectory(newDir, NULL)) 
+			{ 
+				
+			} 
+            totalFileSize(Dir,mode,size);
         }
 }
-int totalFileSize(TCHAR* pFilePath,DWORD* size)
+int totalFileSize(TCHAR* pFilePath,int mode,DWORD* size)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind = INVALID_HANDLE_VALUE;   
@@ -328,13 +440,13 @@ int totalFileSize(TCHAR* pFilePath,DWORD* size)
 
     if (hFind == INVALID_HANDLE_VALUE)
     {
-        MessageBox (NULL, TEXT ("Invalid file handle"), szTitle, MB_ICONERROR) ;
+        MessageBox (NULL, DirSpec, szTitle, MB_ICONERROR) ;
         return 0;
     }
     else {       
-          ProcessFileData(&FindFileData,pFilePath,size);
+          ProcessFileData(&FindFileData,mode,pFilePath,size);
         while (FindNextFile(hFind, &FindFileData) != 0){
-           ProcessFileData(&FindFileData,pFilePath,size);
+           ProcessFileData(&FindFileData,mode,pFilePath,size);
         }
         dwError = GetLastError();
         FindClose(hFind);
@@ -371,20 +483,17 @@ BOOL DoEvent()
 } 
 void StartUpdate(HWND hwndPb,TCHAR* pFilePath)
 {
-    DWORD totalsize;       // Size of file and count of
-    TCHAR totalsizestr[32];
-    totalFileSize(pFilePath,&totalsize);
-    SendMessage(hwndPb, PBM_SETRANGE, 0, MAKELPARAM(0, totalsize / 2048)); 
-    SendMessage(hwndPb, PBM_SETSTEP, (WPARAM) 1, 0);     
-    BOOL bQuit = FALSE; 
-    while(!bQuit)
-	{ 
-        SendMessage(hwndPb, PBM_STEPIT, 0, 0); 
-        bQuit = DoEvent();
-    }  
+    DWORD nowsize=0;       // Size of file and count of
+   
+    totalFileSize(pFilePath,PROCESS_FILE_SIZE,&totalfilesize);
+
+    SendMessage(hwndPb, PBM_SETRANGE, 0, MAKELPARAM(0, 100)); 
+ //   SendMessage(hwndPb, PBM_SETSTEP, (WPARAM) 1, 0);  
+   totalFileSize(pFilePath,PROCESS_FILE_DECODE,&nowsize);
+   setUpdateFlag(0);
+   runProgram(TEXT(".\\touchany.exe"),TEXT(""));
    PostQuitMessage (0); 
-   wsprintf(totalsizestr,TEXT("%ubytes"),totalsize);
-   MessageBox (NULL, totalsizestr,szTitle, MB_ICONERROR) ;
+
     return;
 }
 
@@ -409,8 +518,11 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	  case WM_UPDATE_START:
            {
 		//	   MessageBox (NULL, szWindowClass,szTitle, MB_ICONERROR) ;
-                TCHAR *pFilePath = TEXT(".\\");
-              StartUpdate((HWND)wParam,pFilePath);
+			   if(queryUpdateFlag()){
+					TCHAR *pFilePath = TEXT(".\\temp\\portable");
+					StartUpdate((HWND)wParam,pFilePath);
+			   }else
+				  PostQuitMessage (0); 
             }
        break; 
 	}
