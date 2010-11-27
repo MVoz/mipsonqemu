@@ -550,9 +550,9 @@ int getFirefoxPath(QString& path)
 }
 /*encrypt*/
 /*
-0    1    2	   3    4   5   6   7   8    9    
+0    1    2   3    4   5   6   7   8    9    
 
-0   a	 b    c    d    e   f   g   h   i    j    
+0    a    b    c    d    e   f   g   h   i    j    
 
 1	l    m    n    o    p   q   r   s   t    u   
 
@@ -1100,9 +1100,7 @@ QString tz::getPinyin(const char* s)
 {
 	if(!s) 
 		return "";
-
 	QString r;
-
 	{
 		QSqlDatabase db ;
 		db= QSqlDatabase::addDatabase("QSQLITE", "pinyindb");
@@ -1110,9 +1108,7 @@ QString tz::getPinyin(const char* s)
 
 		db.open();
 		QSqlQuery q("",db);
-
 		r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx(s,1)).arg(s);
-
 		if(q.exec(r)){					
 			while(q.next()) { 
 				r = q.value(0).toString();
@@ -1122,7 +1118,6 @@ QString tz::getPinyin(const char* s)
 		}	
 		db.close();
 	}
-
 	QSqlDatabase::removeDatabase("pinyindb");
 	if(r.isEmpty())
 		r=QString(s);

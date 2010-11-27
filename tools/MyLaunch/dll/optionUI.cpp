@@ -275,12 +275,12 @@ void OptionsDlg::loading(const QString & name)
 
 	} else if (name == "net_mg")
 	{
-
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
 		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
+		jsStr.append(QString("$('version').innerHTML ='%1';").arg(APP_VERSION));
 		jsStr.append(QString("proxyEnableClick();"));
 
 	} else if (name == "cmd_mg")
