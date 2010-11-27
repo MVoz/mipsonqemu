@@ -50,6 +50,7 @@ copy ..\win\QtSql4.dll ..\release
 copy ..\win\QtCore4.dll ..\release
 copy ..\win\QtWebKit4.dll ..\release
 copy ..\update\updater\release\updater.exe ..\release
+call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 )
 
 for %%i in (data html skins images) do call :copyfunc %%i ..\%obj%\%%i

@@ -80,8 +80,6 @@ extern QString gNativeSep;
 extern QString gSearchTxt;
 extern QString gIeFavPath;
 
-extern QDateTime gNowUpdateTime;
-
 extern QSemaphore gSemaphore;
 
 extern QWidget* gMainWidget;
