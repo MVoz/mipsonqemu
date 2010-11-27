@@ -30,7 +30,7 @@ void MyThread::run(){
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-testNet::testNet(QObject * parent ,QSettings* s):MyThread(parent,s)
+testNet::testNet(QObject * parent ,QSettings* s,int m):MyThread(parent,s),mode(m)
 {
 	manager = NULL;
 	reply = NULL;
@@ -38,32 +38,58 @@ testNet::testNet(QObject * parent ,QSettings* s):MyThread(parent,s)
 }
 void testNet::testServerFinished(QNetworkReply* reply)
 {
-	THREAD_MONITOR_POINT;
+
+
 	STOP_TIMER(testNetTimer);
 	QNetworkReply::NetworkError error=reply->error();
 	if(!error)
 	{
-		QString replybuf(reply->readAll());
-		if(replybuf.startsWith(QString("1")))
-		{
-			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
-		}
-
-	}else{
-		switch(error){
-			case QNetworkReply::ProxyConnectionRefusedError:
-			case QNetworkReply::ProxyConnectionClosedError:
-			case QNetworkReply::ProxyNotFoundError:
-			case QNetworkReply::ProxyTimeoutError:
-				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
-				break;
-			case QNetworkReply::ProxyAuthenticationRequiredError:
-				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
-				break;
-			default:
-				SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
-				break;
+		QString replybuf(reply->readAll().trimmed());
+		switch(mode){
+			case TEST_SERVER_NET:				
+				if(replybuf.startsWith(QString("1")))
+				{
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
+				}
+			break;
+			case TEST_SERVER_VERSION:
+				{
+					qDebug()<<replybuf;
+					QRegExp verre("^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}$");
+					if(verre.exactMatch(replybuf)){
+						QDEBUG_LINE;	
+						QStringList s_version = replybuf.split(".");
+						QStringList l_version = QString(APP_VERSION).split(".");
+						 for (int i = 0; i < s_version.size(); ++i)
+       							{ 
+       								if(s_version.at(i).toUInt()>l_version.at(i).toUInt())
+       								{
+       									SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,1);
+									break;
+       								}       								
+						 	}						
+					}
+				}
+			break;
 		}		
+	}else{
+		if(mode == TEST_SERVER_NET){
+			switch(error){
+				case QNetworkReply::ProxyConnectionRefusedError:
+				case QNetworkReply::ProxyConnectionClosedError:
+				case QNetworkReply::ProxyNotFoundError:
+				case QNetworkReply::ProxyTimeoutError:
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
+					break;
+				case QNetworkReply::ProxyAuthenticationRequiredError:
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
+					break;
+				default:
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
+					break;
+			}		
+		}else if(mode == TEST_SERVER_VERSION){
+		}
 	}
 	quit();
 }
@@ -91,8 +117,12 @@ void testNet::run()
 {
 	THREAD_MONITOR_POINT;
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);	
-
-	SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+	if(mode==TEST_SERVER_NET)
+	{
+		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+	}else if(mode==TEST_SERVER_VERSION){
+		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,0);
+	}
 	manager=new QNetworkAccessManager();
 	manager->moveToThread(this);	
 	SET_NET_PROXY(manager,settings);	
@@ -100,14 +130,14 @@ void testNet::run()
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
 #ifdef CONFIG_SERVER_IP_SETTING
 	do{
-		QString url = TEST_NET_URL;
+		QString url = ((mode==TEST_SERVER_NET)?(TEST_NET_URL):(TOUCHANY_VERSION_URL));
 		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
 		if( !serverIp.isEmpty())
 			url.replace(BM_SERVER_ADDRESS, serverIp);	
 		reply=manager->get(QNetworkRequest(QUrl(url)));
 	}while(0);
 #else
-	reply=manager->get(QNetworkRequest(QUrl(TEST_NET_URL)));
+	reply=manager->get(QNetworkRequest(QUrl(((mode==TEST_SERVER_NET)?(TEST_NET_URL):(TOUCHANY_VERSION_URL)))));
 #endif
 	
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);

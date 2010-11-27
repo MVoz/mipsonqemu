@@ -73,6 +73,8 @@ cd ..
 call :copyfunc .\release .\download\portable
 
 copy .\win\installer\release\setup.exe .\download\setup\setup.exe 
+copy .\include\index.php .\download\index.php 
+
 cd  .\download
 cd portable
 ..\..\resource\fmd5.exe -p

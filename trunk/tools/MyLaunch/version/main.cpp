@@ -62,5 +62,12 @@ int main(int argc, char* argv[])
 	 in<<APP_BUILD_TIME_KEY<<QDateTime::currentDateTime().toTime_t()<<"\n";
 	 in<<"#endif"<<"\n";
 	 file.close();
+//write to /download/index.php
+	 QFile filephp(SERVER_VERSION_FILE_PHP);
+	 if (!filephp.open(QIODevice::Truncate|QIODevice::WriteOnly| QIODevice::Text))
+         return 0;
+	 QTextStream inphp(&filephp);
+	 inphp<<main_version<<"."<<child_version<<"."<<section_version;
+	 filephp.close();
 	 return 0;
 }
