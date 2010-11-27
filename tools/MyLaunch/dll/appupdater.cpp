@@ -9,7 +9,6 @@ void appUpdater::sendUpdateStatusNotify(int flag,int type)
 }
 void appUpdater::testNetFinished()
 {
-	DELETE_OBJECT(testThread);
 	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT))
 	{
 	case TEST_NET_ERROR_SERVER:
@@ -33,9 +32,26 @@ void appUpdater::testNetFinished()
 		quit();
 		break;
 	case TEST_NET_SUCCESS:
-		downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
+		{
+			QDEBUG_LINE;
+			testThread = new testNet(NULL,settings,TEST_SERVER_VERSION);
+			testThread->moveToThread(this);
+			testThread->start(QThread::IdlePriority);				
+		}
 		break;
 	}	
+}
+void appUpdater::testVersionFinished()
+{
+	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION))
+	{
+		case 0:
+			quit();
+			break;
+		case 1:
+			downloadFileFromServer(UPDATE_SERVER_URL,UPDATE_MODE_GET_INI,"");
+			break;
+	}
 }
 void appUpdater::clearObject()
 {
@@ -63,8 +79,14 @@ void appUpdater::monitorTimeout()
 	STOP_TIMER(monitorTimer);
 	 if(THREAD_IS_FINISHED(testThread))
 	 {
-	 		DELETE_OBJECT(testThread);
+	 	if(testThread->mode==TEST_SERVER_NET){
+			DELETE_OBJECT(testThread);
 	 		testNetFinished();
+	 	}else if(testThread->mode==TEST_SERVER_VERSION){
+	 		QDEBUG_LINE;
+	 		DELETE_OBJECT(testThread);
+	 		testVersionFinished();
+	 	}
 	 }
 
 	 if(THREAD_IS_FINISHED(fh))
@@ -82,7 +104,6 @@ void appUpdater::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-
 	monitorTimer->start(10);	
 }
 

@@ -4,6 +4,7 @@
 #define LAUNCHY_VERSION 220
 #define LAUNCHY_VERSION_STRING "2.2.0"
 #define VERSION_FILE "version.h"
+#define SERVER_VERSION_FILE_PHP "index.php"
 
 #define HASH_LAUNCHY 0
 

@@ -28,6 +28,11 @@ public:
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
 };
+
+enum{
+	TEST_SERVER_NET = 0,
+	TEST_SERVER_VERSION
+};
 class  TEST_SERVER_DLL_CLASS_EXPORT testNet:public MyThread
 {
 	Q_OBJECT;
@@ -35,8 +40,9 @@ public:
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
+	int mode;
 public:
-	testNet(QObject * parent = 0,QSettings* s=0);
+	testNet(QObject * parent = 0,QSettings* s=0,int m=TEST_SERVER_NET);
 	~testNet(){};
 	void run();
 	void clearObject();

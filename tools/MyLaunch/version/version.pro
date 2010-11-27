@@ -10,3 +10,12 @@ INCLUDEPATH += .
 CONFIG += console 
 # Input
 SOURCES += main.cpp
+if(!debug_and_release|build_pass) {
+   CONFIG(debug, debug|release) {
+    DESTDIR =    ../include/
+   }
+   CONFIG(release, debug|release) {
+    DESTDIR = ../include/
+   }
+ }
+
