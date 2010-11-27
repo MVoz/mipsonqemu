@@ -18,8 +18,6 @@
 #define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
 
-#define SETTING_MERGE_LOCALTOSERVER  0
-#define SETTING_MERGE_SERVERTOLOCAL  1
 
 class  UPDATER_THREAD_DLL_CLASS_EXPORT appUpdater:public MyThread
 {
@@ -50,11 +48,10 @@ public:
 	void run();
 	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
-	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
-	void mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int mode);
+//	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
+	int mergeSettings(QSettings* ,QSettings* ,int );
 	void checkSilentUpdateApp();
-	void sendUpdateStatusNotify(int flag,int type);
-
+	void sendUpdateStatusNotify(int ,int );
 public slots: 
 	void getIniDone(int err);
 	void testNetFinished();

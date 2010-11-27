@@ -17,7 +17,13 @@ SOURCES += main.cpp \
 	..\lzma\LzmaEnc.c\
 	..\lzma\Threads.c
 	
-#LIBS +=   LZMA.lib
 CONFIG += console 
-QT += sql
-# Input
+if(!debug_and_release|build_pass) {
+   CONFIG(debug, debug|release) {
+    DESTDIR = ../resource/
+   }
+   CONFIG(release, debug|release) {
+    DESTDIR = ../resource/
+   }
+ }
+
