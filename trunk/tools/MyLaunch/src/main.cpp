@@ -3007,7 +3007,6 @@ int main(int argc, char *argv[])
 		//check update in register
 		if(tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0)&&QFile::exists(APP_SILENT_UPDATE_NAME)&&tz::checkSilentUpdateFiles())
 		{
-				qDebug("run %s",APP_SILENT_UPDATE_NAME);
 				runProgram(QString(APP_SILENT_UPDATE_NAME),QString("c0190ce05af9ce7cd818f50d794b8d11"));
 				app.reset();
 				exit(0);

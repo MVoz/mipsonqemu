@@ -309,10 +309,7 @@ int lzmaFile(const char *infile,const char* outfile, char *rs,int mode)
 
 	FileOutStream_CreateVTable(&outStream);
 	File_Construct(&outStream.file);
-
-
 	encodeMode = mode;
-
 	{
 		size_t t4 = sizeof(UInt32);
 		size_t t8 = sizeof(UInt64);
@@ -328,7 +325,6 @@ int lzmaFile(const char *infile,const char* outfile, char *rs,int mode)
 		//	qDebug()<<"Can not open input file";
 		return 0;
 	}
-
 
 	useOutFile = True;
 	if (OutFile_Open(&outStream.file, outfile) != 0)
@@ -383,13 +379,8 @@ int char2TCHAR(char* src,TCHAR* dst)
 void ProcessFileData(WIN32_FIND_DATA* data,int mode,TCHAR* pFilePath,DWORD* size)
 {
 	HANDLE hFile;   // Handle of file 
-	// TCHAR msg[1024]={0};
-	// wsprintf(msg,TEXT("in=%d"),data->dwFileAttributes);
-	//	MessageBox(NULL,data->cFileName,msg,MB_OK);
 	if ((data->dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) != FILE_ATTRIBUTE_DIRECTORY )
 	{
-		//ур╣╫нд╪Ч                                
-		//  MessageBox (NULL, TEXT( data->cFileName),TEXT(szClassName), MB_ICONERROR) ;
 		DWORD suflen = lstrlen(TEXT(".gz"));
 		if(lstrlen(data->cFileName)<=suflen)
 			return;
@@ -424,14 +415,10 @@ void ProcessFileData(WIN32_FIND_DATA* data,int mode,TCHAR* pFilePath,DWORD* size
 						MessageBox(NULL,fPath,TEXT("xx"),MB_OK);
 #endif
 						lzmaFile(inpath,outpath, rs,0);
-
-
 						DoEvent();
 						(*size)+= GetFileSize(hFile, (LPDWORD) NULL); 
-
 						SendMessage(hwndPB, PBM_SETPOS, ((*size)*100)/totalfilesize, 0); 
 						DoEvent();
-
 					}
 					break;
 		}          
@@ -484,8 +471,7 @@ int totalFileSize(TCHAR* pFilePath,int mode,DWORD* size)
 		FindClose(hFind);
 		if (dwError != ERROR_NO_MORE_FILES)
 		{
-			MessageBox (NULL, TEXT("FindNextFile error."),
-				szTitle, MB_ICONERROR) ;
+			MessageBox (NULL, TEXT("FindNextFile error."),	szTitle, MB_ICONERROR) ;
 			return 0;
 		}
 	}     
@@ -494,8 +480,6 @@ BOOL DoEvent()
 {
 	BOOL bQuit = FALSE;
 	MSG msg;
-
-
 	while( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
 	{
 		if( msg.message ==WM_COMMAND)
@@ -508,9 +492,7 @@ BOOL DoEvent()
 			TranslateMessage( &msg );
 			DispatchMessage( &msg );
 		}
-
 	}
-
 	return bQuit;
 } 
 void StartUpdate(HWND hwndPb,TCHAR* pFilePath)
@@ -526,7 +508,7 @@ void StartUpdate(HWND hwndPb,TCHAR* pFilePath)
 	lstrcpy(oldupdateini, TEXT(TEMP_PORTABLE_PATH)); 
 	lstrcat(oldupdateini, TEXT("update.ini")); 
 	lstrcpy(newupdateini, TEXT(".\\update.ini")); 
-    MessageBox(NULL,newupdateini,oldupdateini,MB_OK);
+  //MessageBox(NULL,newupdateini,oldupdateini,MB_OK);
 	CopyFile(oldupdateini, newupdateini, FALSE);
 	setUpdateFlag(0);
 	DeleteDir(TEXT(TEMP_PORTABLE_PATH));
