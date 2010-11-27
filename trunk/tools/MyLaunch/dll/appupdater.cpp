@@ -98,36 +98,12 @@ void appUpdater::run()
 	exec();
 	clearObject();
 }
-/*
-0---same 1---newer -1---older
-*/
-int appUpdater::checkToSetting(QSettings *s,const QString &filename1,QString& md51)
-{
-	int ret=-1;
-	int count = s->beginReadArray(UPDATE_PORTABLE_KEYWORD);
-	for (int i = 0; i < count; i++)
-	{
-		s->setArrayIndex(i);
-		QString filename2=s->value("name").toString();
-		QString md52=s->value("md5").toString();	
-		if(filename1!=filename2) 
-			continue;
-		if(md52 ==md51)
-			ret= 0;
-		else{ 
-			md51 = md52;
-			ret = 1;
-		}
-		break;
-	}
-	s->endArray();
-	return ret;
-}
 
 /*
-mode:0--local to server ,1--server to local
+m:0--local to server ,1--server to local
+flag:0--download file 1---checkfile
 */
-void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m)
+int appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m)
 {
 	//merge local with server
 	int count = srcSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
@@ -137,14 +113,14 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 			break;
 		srcSettings->setArrayIndex(i);
 		QString filename=srcSettings->value("name").toString();
-		QString md5=srcSettings->value("md5",0).toString(); 
-		int  flag = checkToSetting(dstSetting,filename,md5);
+		QString md5=srcSettings->value("md5","").toString(); 
+		int  flag =tz::checkToSetting(dstSetting,filename,md5);
 		switch(flag)
 		{
 		case -1://no found
 		case 1://newer
 			if(m==SETTING_MERGE_SERVERTOLOCAL)
-				md5=srcSettings->value("md5",0).toString(); //reupdate md5,just md5 from server is valid
+				md5=srcSettings->value("md5","").toString(); //reupdate md5,just md5 from server is valid
 			if(((m==SETTING_MERGE_SERVERTOLOCAL)&&(flag==-1))||((m==SETTING_MERGE_LOCALTOSERVER)&&(flag==1)))
 			{
 				if(
@@ -154,7 +130,8 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 				  )
 				{
 					needed=1;
-					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);		
+					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);	
+
 				}
 			}
 			break;
@@ -162,7 +139,9 @@ void appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int 
 			break;
 		}
 	}
+end:
 	srcSettings->endArray();
+	return needed;
 }
 void  appUpdater::checkSilentUpdateApp()
 {
@@ -190,6 +169,7 @@ void appUpdater::getIniDone(int err)
 					checkSilentUpdateApp();
 					tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,1);
 					//write update.ini
+					/*
 					int count = serverSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 					localSettings->beginWriteArray(UPDATE_PORTABLE_KEYWORD);
 					for (int i = 0; i < count; i++)
@@ -202,6 +182,7 @@ void appUpdater::getIniDone(int err)
 					serverSettings->endArray();
 					localSettings->endArray();
 					localSettings->sync();
+					*/
 				}
 			}
 			break;
@@ -305,4 +286,5 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	 error = fh->errCode;
 	 qDebug()<<pathname<<" error code:"<<error;
 }
+
 

@@ -398,11 +398,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		//createDbFile();
 	}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
-	gLastUpdateTime = QDateTime::fromString(gSettings->value("updateTime", TIME_INIT_STR).toString(), TIME_FORMAT);
 	GetShellDir(CSIDL_FAVORITES, gIeFavPath);
-#ifdef CONFIG_LOG_ENABLE
-	qDebug("gLastUpdateTime=%s", qPrintable(gLastUpdateTime.toString(TIME_FORMAT)));
-#endif
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -2760,11 +2756,8 @@ void MyWidget::silentUpdateFinished()
 	{
 		if(slientUpdate->error==0)///no error
 			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
-		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);
-		
-		DELETE_OBJECT(slientUpdate);
-		
-	
+		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);		
+		DELETE_OBJECT(slientUpdate);	
 	}
 	if(closeflag)
 		close();
@@ -3012,18 +3005,12 @@ int main(int argc, char *argv[])
 		QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 		QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 		//check update in register
-		uint updateflag =tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0);
-		//qDebug("updateflag = %d UPDATE_PORTABLE_DIRECTORY=%s CPU_USAGE_THRESHOLD=%d ",updateflag,(UPDATE_PORTABLE_DIRECTORY),CPU_USAGE_THRESHOLD);
-
-		if(updateflag)
+		if(tz::registerInt(REGISTER_GET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,0)&&QFile::exists(APP_SILENT_UPDATE_NAME)&&tz::checkSilentUpdateFiles())
 		{
-			if(QFile::exists(APP_SILENT_UPDATE_NAME))
-			{
 				qDebug("run %s",APP_SILENT_UPDATE_NAME);
-				runProgram(QString(APP_SILENT_UPDATE_NAME),QString("-r"));
+				runProgram(QString(APP_SILENT_UPDATE_NAME),QString("c0190ce05af9ce7cd818f50d794b8d11"));
 				app.reset();
 				exit(0);
-			}
 		}
 		QCoreApplication::setApplicationName(APP_NAME);
 		QCoreApplication::setOrganizationDomain(APP_NAME);

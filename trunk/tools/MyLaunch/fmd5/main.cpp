@@ -299,7 +299,7 @@ int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 	QStringList files = dir.entryList(QDir::Files);
 	for(int i=0;i<files.size();i++)
 		{
-			if(root&&(files[i]==APP_FILEMD5_NAME||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
+			if(root&&(files[i]==APP_SILENT_UPDATE_NAME||files[i]==APP_FILEMD5_NAME||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
 					continue;
 			if((mode==FMD5_MODE_SETUP)&&(files[i]!=APP_SETUP_NAME))
 					continue;
@@ -313,6 +313,7 @@ int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 				QString md5 = fileMd5(outfile);
 				s->setValue("name",outfile);
 				s->setValue("md5", md5);
+				QFile::remove(infile);
 			//	s->setValue("version", getVersion(root?(files[i]):(path+ "/"+files[i]),tmps,md5));	
 			}else if(mode==FMD5_MODE_SETUP){
 				QString md5 = fileMd5(path+ "/"+files[i]);

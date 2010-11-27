@@ -49,6 +49,7 @@ copy ..\win\QtGui4.dll ..\release
 copy ..\win\QtSql4.dll ..\release
 copy ..\win\QtCore4.dll ..\release
 copy ..\win\QtWebKit4.dll ..\release
+copy ..\update\updater\release\updater.exe ..\release
 )
 
 for %%i in (data html skins images) do call :copyfunc %%i ..\%obj%\%%i
@@ -59,24 +60,34 @@ del data\defines.db
 cd ..
 
 if "%obj%"=="release" (
-cd .\release
-del *.exp *.lib *.manifest
-..\fmd5\release\fmd5.exe -p
-"d:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
-cd ..
-
 rmdir /Q/S download
 mkdir download
 mkdir download\portable
 mkdir download\setup
+
+cd .\release
+del *.exp *.lib *.manifest
+cd ..
+
 call :copyfunc .\release .\download\portable
 
 copy .\win\installer\release\setup.exe .\download\setup\setup.exe 
 cd  .\download
+cd portable
+..\..\resource\fmd5.exe -p
+del *.exp *.lib *.manifest *.dll
+xcopy update.ini ..\..\release /s 
+cd ..
 cd setup
-..\..\\fmd5\release\fmd5.exe -s
+..\..\resource\fmd5.exe -s
 cd ..
 cd ..
+
+cd .\release
+del *.exp *.lib *.manifest
+"c:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
+cd ..
+
 )
 
 if "%obj%"=="debug" (

@@ -1161,7 +1161,7 @@ end:
 		infile.close();
 	return QString(md5res.toHex());
 }
-uint tz::registerInt(int mode,const QString& path,const QString&  name,uint val)
+uint tz::registerInt(int mode,const QString& path,const QString&  name,int val)
 {
 	uint ret = 0;
 	QSettings s(path,QSettings::NativeFormat);	
@@ -1389,6 +1389,84 @@ char* tz::getstatusstring(int i){
 	return statusString[i];
 	else
 	return "unknown error";
+}
+/*
+0---same 1---newer -1---older
+*/
+
+int tz::checkToSetting(QSettings *s,const QString &filename1,QString& md51)
+{
+	int ret=-1;
+	int count = s->beginReadArray(UPDATE_PORTABLE_KEYWORD);
+	for (int i = 0; i < count; i++)
+	{
+		s->setArrayIndex(i);
+		QString filename2=s->value("name").toString();
+		QString md52=s->value("md5").toString();	
+		if(filename1!=filename2) 
+			continue;
+		if(md52 ==md51)
+			ret= 0;
+		else{ 
+			md51 = md52;
+			ret = 1;
+		}
+		break;
+	}
+	s->endArray();
+	return ret;
+}
+
+int tz::checkSilentUpdateSettings(QSettings* src, QSettings* dst,int m)
+{
+	//merge local with server
+	int need = 0;
+	int count = src->beginReadArray(UPDATE_PORTABLE_KEYWORD);
+	for (int i = 0; i < count; i++)
+	{
+		src->setArrayIndex(i);
+		QString filename=src->value("name").toString();
+		QString md5=src->value("md5","").toString(); 
+		int  flag = checkToSetting(dst,filename,md5);
+		switch(flag)
+		{
+		case -1://no found
+		case 1://newer
+			if(m==SETTING_MERGE_SERVERTOLOCAL)
+				md5=src->value("md5","").toString(); //reupdate md5,just md5 from server is valid
+			if(((m==SETTING_MERGE_SERVERTOLOCAL)&&(flag==-1))||((m==SETTING_MERGE_LOCALTOSERVER)&&(flag==1)))
+			{
+				if(
+					(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))||
+					(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))))&&
+					(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
+				  )
+				{
+					need=1;
+					goto end;
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+end:
+	src->endArray();
+	return need;
+}
+//check whether  all update files is downloaded successfully or not
+int tz::checkSilentUpdateFiles()
+{
+	
+	if(QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(UPDATE_FILE_NAME))){
+		QSettings local(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
+		QSettings server(QString(UPDATE_PORTABLE_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
+		if(checkSilentUpdateSettings(&local,&server,SETTING_MERGE_LOCALTOSERVER)||checkSilentUpdateSettings(&server,&local,SETTING_MERGE_SERVERTOLOCAL))
+			return 0;	
+		return 1;
+	}
+	return 0;
 }
 
 

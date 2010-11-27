@@ -38,8 +38,6 @@ struct BMAPI_DLL_CLASSEXPORT browserinfo{
 //BMAPI_DLL_FUNCEXPORT struct browserinfo* getbrowserInfo();
 
 #define DESKTOP_WINDOWS 0
-//BMAPI_DLL_FUNCEXPORT int  getFileTime(QString filename,QString* createTime,QString* lastAccessTime,QString* lastWriteTime,int flag);
-//BMAPI_DLL_FUNCEXPORT int  setFileTime(QString filename,QString createTime,QString* lastAccessTime,QString* lastWriteTime,int flag);
 BMAPI_DLL_FUNCEXPORT int deleteDirectory(QString path);
 BMAPI_DLL_FUNCEXPORT void runProgram(QString path, QString args) ;
 BMAPI_DLL_FUNCEXPORT BOOL GetShellDir(int iType, QString & szPath);
@@ -54,8 +52,6 @@ BMAPI_DLL_FUNCEXPORT void setPostError(bool err);
 BMAPI_DLL_FUNCEXPORT bool getPostError();
 BMAPI_DLL_FUNCEXPORT void setPostResponse(uint type);
 BMAPI_DLL_FUNCEXPORT uint getPostResponse();
-//BMAPI_DLL_FUNCEXPORT int decryptstring(QString para,uint secindex,QString &out);
-//BMAPI_DLL_FUNCEXPORT int  encryptstring(QString para,uint secindex,QString& out);
 BMAPI_DLL_FUNCEXPORT int getkeylength();
 BMAPI_DLL_FUNCEXPORT int handleUrlString(QString& url);
 BMAPI_DLL_FUNCEXPORT void setUpdatetime(QString time);
@@ -153,9 +149,8 @@ public :
 	static QString getIePath();
 	static QString getPinyin(const char* s);
 	static QString fileMd5(QString filename);
-	static uint registerInt(int mode,const QString& path,const QString& name,uint val);
+	static uint registerInt(int mode,const QString& path,const QString& name,int val);
 	static QString registerString(int mode,const QString& path,const QString& name,QString val);
-	//static int testNetResult(int,int);
 	static int runParameter(int,int,int);
 	static void netProxy(int ,QSettings*,QNetworkProxy**);
 	static int GetCpuUsage();
@@ -167,6 +162,9 @@ public :
 	static void _clearShortcut(QSqlDatabase *db,int type);
 	static QString getDomain(const QString& fullpath);
 	static QString getUserIniDir(int ,const QString&);
+	static int checkToSetting(QSettings *,const QString &,QString& );
+	static int checkSilentUpdateSettings( QSettings* , QSettings* ,int);
+	static int checkSilentUpdateFiles();
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
