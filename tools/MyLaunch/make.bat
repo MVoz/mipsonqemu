@@ -89,6 +89,7 @@ cd ..
 cd .\release
 del *.exp *.lib *.manifest
 "c:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
+"D:\Program Files\WinRAR\WinRAR.exe" a -as -r  -EP1 "..\download\touchAny.rar" "..\release"
 cd ..
 
 )
