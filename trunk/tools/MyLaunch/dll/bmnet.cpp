@@ -112,6 +112,5 @@ void testNet::run()
 	
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
 	exec();
-	clearObject();	
-	
+	clearObject();		
 }

@@ -202,6 +202,8 @@
 
 
 #define TEST_NET_URL HTTP_SERVER_URL"testnet.php"
+#define TOUCHANY_VERSION_URL HTTP_SERVER_URL"download/index.php"
+
 
 #define UPDATE_DIRECTORY "temp"
 #define UPDATE_DIRECTORY_SUFFIX UPDATE_DIRECTORY"/"
