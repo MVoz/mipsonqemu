@@ -304,11 +304,6 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 			QMessageBox::warning(this, tr(APP_NAME),text, QMessageBox::Ok,QMessageBox::Ok);
 			exit(1);
 		}
-	//inital language
-#ifdef CONFIG_PINYIN_FROM_DB
-#else
-	init_pinyin_utf8_list();
-#endif
 	gSemaphore.release(1);
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
@@ -357,9 +352,6 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
 	licon = new QLabel(label);
-
-	
-
 	ops = NULL;
 
 	tz::getUserIniDir(SET_MODE,dirs["userdir"][0]);

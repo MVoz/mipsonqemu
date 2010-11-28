@@ -13,6 +13,8 @@
 void bmSync::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 	md5key = resp.value("md5key");
+	if(resp.statusCode() == HTTP_OK)
+		STOP_TIMER(httpTimer); 
 }
 bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m): MyThread(parent,s),semaphore(p),mode(m)
 {
@@ -28,8 +30,6 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 	mgthread=NULL;
 	httpTimer = NULL;
 	needwatchchild = false;
-}
-bmSync::~bmSync(){
 }
 void bmSync::httpTimeout()
 {
@@ -235,7 +235,6 @@ void bmSync::bmxmlGetFinished(bool error)
 		}
 	}
 	status = BM_SYNC_FAIL_SERVER_BMXML_FAIL;
-
 	switch(http->error()){
 		case QHttp::ProxyAuthenticationRequiredError:
 			status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
