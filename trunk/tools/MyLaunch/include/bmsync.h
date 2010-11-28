@@ -69,7 +69,7 @@ public:
 	
 public:
 	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
-	~bmSync();
+	~bmSync(){};
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}
 	void setUsername(const QString& s){username = s;}

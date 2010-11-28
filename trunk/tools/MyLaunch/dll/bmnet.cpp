@@ -38,8 +38,6 @@ testNet::testNet(QObject * parent ,QSettings* s,int m):MyThread(parent,s),mode(m
 }
 void testNet::testServerFinished(QNetworkReply* reply)
 {
-
-
 	STOP_TIMER(testNetTimer);
 	QNetworkReply::NetworkError error=reply->error();
 	if(!error)

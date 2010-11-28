@@ -33,7 +33,6 @@ void appUpdater::testNetFinished()
 		break;
 	case TEST_NET_SUCCESS:
 		{
-			QDEBUG_LINE;
 			testThread = new testNet(NULL,settings,TEST_SERVER_VERSION);
 			testThread->moveToThread(this);
 			testThread->start(QThread::IdlePriority);				

@@ -42,7 +42,6 @@
 #include <config.h>
 #include <bmapi.h>
 #include <bmnet.h>
-using namespace boost;
 
 #if defined(POST_HTTP_DLL)
 #define POST_HTTP_CLASS_EXPORT __declspec(dllexport)
@@ -62,7 +61,7 @@ class  POST_HTTP_CLASS_EXPORT bmPost:public MyThread
 	Q_OBJECT;
 public:
 	bmPost(QObject * parent = 0,QSettings* s=0,int type=0);
-	~bmPost();
+	~bmPost(){};
 	void run();
 public:
 	QHttp * posthttp;
