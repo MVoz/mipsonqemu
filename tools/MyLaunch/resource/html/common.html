@@ -74,8 +74,8 @@ function accountTestClick()
 		<div class="main">
 			<div id="lm"></div>
 			<div id="rm">
-				<div class="cfgitem">
-					<p>启动</p>
+				<fieldset class="cfgitem">
+					<legend>启动</legend>
 					<table width="100%">
 					 <tr>
 						<td width="50%"><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</td>
@@ -113,16 +113,16 @@ function accountTestClick()
 						</table>
 					</tr>
 					</table>
-				</div>
-				<div class="cfgitem">
-					<p>帐号</p>
+				</fieldset>
+				<fieldset class="cfgitem">
+					<legend>帐号</legend>
 					<table width="100%">
 						<tr>
 							<td width="10%">用户:</td>
 							<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" /></td>
 							<td width="30%" align=right>
 							<div class="btn">
-							<a href="#" style="width:113px;" onclick="accountTestClick();"><label style="width:113px;height:25px;">测试</label></a>
+								<a href="#" onclick="accountTestClick();"><label>测试</label></a>
 							</div>
 							</td>
 						</tr>
@@ -144,7 +144,7 @@ function accountTestClick()
 							<td width="50%" id="lastsynctime"></td>
 						</tr>					
 					</table>
-				</div>
+				</fieldset>
 			</div>
 		</div>
 </div>
