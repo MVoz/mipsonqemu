@@ -16,8 +16,7 @@
 #define UPDATE_MODE_GET_INI 1
 #define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
-#define HTTP_OK 200
-#define HTTP_FILE_NOT_FOUND 404
+
 
 class FILE_GET_DLL_CLASS_EXPORT GetFileHttp:public MyThread
 {

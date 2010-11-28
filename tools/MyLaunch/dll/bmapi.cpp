@@ -43,11 +43,11 @@ typedef LONG (WINAPI *PROCNTQSI)(UINT,PVOID,ULONG,PULONG);
 
 PROCNTQSI NtQuerySystemInformation;
 
-uint gMaxGroupId=0;
+//uint gMaxGroupId=0;
 QString gUpdatetime;
-bool gPostError=0;
-uint gPostResponse=0;
-uint gBmId=0;
+//bool gPostError=0;
+//uint gPostResponse=0;
+//uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 static QString iePath;
 char* gLanguageList[]={"ch","en"};
@@ -99,7 +99,7 @@ char *statusString[]={
 
 //static int testnetresult = 0;
 //static int netProxyEnable = 0;
-static int runparameters[RUN_PARAMETER_END]={0,0,0,0};
+static int runparameters[RUN_PARAMETER_END]={0,0,0,0,0,0,0};
 static QNetworkProxy *netproxy = NULL;
 QList<struct dbtableinfo*> dbtableInfolist;
 
@@ -182,6 +182,7 @@ void setBrowserEnable(QSettings *s)
 		i++;
 	}
 }
+/*
 
 
 void setPostResponse(uint  type)
@@ -213,14 +214,7 @@ uint getMaxGroupId()
 	return gMaxGroupId;
 }
 
-void setUpdatetime(QString time)
-{
-	gUpdatetime=time;
-}
-void getUpdatetime(QString& time)
-{
-	time=gUpdatetime;;
-}
+
 void setBmId(uint bmid)
 {
 	gBmId=bmid;
@@ -228,6 +222,15 @@ void setBmId(uint bmid)
 uint getBmId()
 {
 	return gBmId;
+}
+*/
+void setUpdatetime(QString time)
+{
+	gUpdatetime=time;
+}
+void getUpdatetime(QString& time)
+{
+	time=gUpdatetime;;
 }
 
 

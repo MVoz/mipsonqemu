@@ -46,19 +46,21 @@ BMAPI_DLL_FUNCEXPORT int getDesktop();
 BMAPI_DLL_FUNCEXPORT void SetColor(unsigned short ForeColor,unsigned short BackGroundColor);
 BMAPI_DLL_FUNCEXPORT quint16 getFileChecksum(QFile *f);
 BMAPI_DLL_FUNCEXPORT int getFirefoxPath(QString &path);
+/*
 BMAPI_DLL_FUNCEXPORT void setMaxGroupId(uint id);
 BMAPI_DLL_FUNCEXPORT uint getMaxGroupId();
 BMAPI_DLL_FUNCEXPORT void setPostError(bool err);
 BMAPI_DLL_FUNCEXPORT bool getPostError();
 BMAPI_DLL_FUNCEXPORT void setPostResponse(uint type);
 BMAPI_DLL_FUNCEXPORT uint getPostResponse();
+*/
 BMAPI_DLL_FUNCEXPORT int getkeylength();
 BMAPI_DLL_FUNCEXPORT int handleUrlString(QString& url);
 BMAPI_DLL_FUNCEXPORT void setUpdatetime(QString time);
 BMAPI_DLL_FUNCEXPORT void getUpdatetime(QString& time);
 BMAPI_DLL_FUNCEXPORT uint qhashEx(QString str, int len);
-BMAPI_DLL_FUNCEXPORT void setBmId(uint bmid);
-BMAPI_DLL_FUNCEXPORT uint getBmId();
+//BMAPI_DLL_FUNCEXPORT void setBmId(uint bmid);
+//BMAPI_DLL_FUNCEXPORT uint getBmId();
 BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
@@ -122,6 +124,9 @@ enum BMAPI_DLL_CLASSEXPORT RUNPARAMETER{
 	RUN_PARAMETER_TESTNET_RESULT,
 	RUN_PARAMETER_NETPROXY_ENABLE,
 	RUN_PARAMETER_TESTNET_VERSION,
+	RUN_PARAMETER_POST_MAX_GROUPID,
+	RUN_PARAMETER_POST_BMID,
+	RUN_PARAMETER_POST_ERROR,
 	RUN_PARAMETER_END	
 };
 class BMAPI_DLL_CLASSEXPORT  tz {

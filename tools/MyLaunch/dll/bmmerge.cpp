@@ -90,7 +90,6 @@ void mergeThread::closeFirefox3Db(QSqlDatabase& db)
 		db.close();
 	QSqlDatabase::removeDatabase("dbFirefox");		
 }
-//uint  gMaxGroupId;
 #endif
 void bmMerge::clearObject()
 {
@@ -198,8 +197,8 @@ void bmMerge::handleBmData()
 {
 	THREAD_MONITOR_POINT;
 	int i = 0;
-	setPostError(false);
-
+	//setPostError(false);
+	SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,0);
 	/*for result */
 	QList < bookmark_catagory > result_bc[BROWSE_TYPE_MAX];
 	/*for current*/
@@ -457,7 +456,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		posthp->postString = postString;
 		posthp->start();
 		posthp->wait();
-		if(getPostError())
+		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
 			qDebug("post error happen!");
 			mergestatus = MERGE_STATUS_FAIL;
@@ -466,10 +465,20 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		}
 		if(action)//add
 		{
-			nowparentid=getMaxGroupId();
+			//nowparentid=getMaxGroupId();
+			nowparentid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID);
 			bc->groupId= nowparentid;
-			bc->bmid= getBmId();
-			//  foreach(bookmark_catagory bm, bc->list)
+			//mustn't be zero
+			if(bc->groupId==0)
+				{
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,1);
+					qDebug("post error happen!");
+					mergestatus = MERGE_STATUS_FAIL;
+					terminatedFlag = 1;
+					return;
+				}
+			//bc->bmid= getBmId();
+			bc->bmid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID);
 			for(int i=0;i<bc->list.size();i++)
 			{
 				qDebug()<<"Post to Server[add]:name:"<<bc->list.at(i).name<<" groupId:"<<bc->groupId;	
@@ -504,8 +513,9 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		posthp->start();
 		posthp->wait();
 		bc->groupId= 0;
-		bc->bmid= getBmId();
-		if(getPostError())
+		//bc->bmid= getBmId();
+		bc->bmid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID);
+		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
 			qDebug("post error happen!");
 			mergestatus = MERGE_STATUS_FAIL;
