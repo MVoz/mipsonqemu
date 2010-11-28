@@ -12,6 +12,14 @@ del /Q/S *
 
 cd ..
 
+cd /d version
+call :makefunc version
+nmake release
+cd ..
+
+cd /d fmd5
+call :makefunc fmd5
+cd ..
 
 cd /d include
 version.exe
