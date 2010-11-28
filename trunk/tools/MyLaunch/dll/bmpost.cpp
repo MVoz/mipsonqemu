@@ -2,8 +2,6 @@
 #include <bmsync.h>
 #include <bmapi.h>
 
-//extern uint gMaxGroupId;
-
 bmPost::bmPost(QObject * parent,QSettings* s,int type ):MyThread(parent,s)
 {
 	postType=type;
@@ -123,13 +121,20 @@ void bmPost::httpDone(bool error)
 				}
 			} 
 		}
-		setMaxGroupId(newgroupid);
-		setUpdatetime(lastModified);
-		setBmId(bmid);
+		//groupid maybe is zero,but bmid mustn't be zero
+		if((!lastModified.isEmpty())&&bmid){
+			//setMaxGroupId(newgroupid);
+			SET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID,newgroupid);
+			setUpdatetime(lastModified);
+			//setBmId(bmid);
+			SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);			
+		}else
+			error = QHttp::UnknownError;
 		DELETE_OBJECT(resultXml);
-		qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),getMaxGroupId(),qPrintable(lastModified),getBmId());
+		qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),GET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID),qPrintable(lastModified),GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID));
 	}
-	setPostError(error);
+	//setPostError(error);
+	SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,error);
 	exit(error);
 }
 
