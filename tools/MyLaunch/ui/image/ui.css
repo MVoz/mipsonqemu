@@ -1,0 +1,325 @@
+html{	background: none repeat scroll 0% 0% rgb(242, 242, 242);}
+body, fieldset, h1, h2, h3, h4, ul{	margin: 0pt;padding: 0pt;}
+a, a:visited{	color: rgb(0, 153, 0);}
+a:hover{	text-decoration: none;}
+body{	background: none repeat scroll 0% 0% rgb(242, 242, 242);color: rgb(51, 51, 51);
+	font: 75%/125% arial,sans-serif;text-align: center;
+}
+img{border: 0pt none;vertical-align: bottom;}
+fieldset{	border: 0pt none;}
+p{	margin: 0pt 0pt 1em;}
+#page
+{
+	background: url("bg.png") repeat-y scroll -980px top transparent;
+	margin: 10px auto;
+	text-align: left;
+	width: 980px;
+}
+#page div
+{
+	background: url("bg.png") no-repeat scroll -1960px bottom transparent;
+	overflow: hidden;
+	padding: 0pt 0pt 10px;
+	width: 980px;
+}
+#page div div
+{
+	padding: 0pt;
+}
+#page div
+ #header
+{
+	background: url("bg.png") no-repeat scroll left top transparent;
+	height: 62px;
+	margin-bottom: 17px;
+	padding: 22px 16px 0pt 25px;
+	width: 939px;
+}
+#page div #header
+{
+	height: 62px;
+	voice-family: inherit;
+	width: 939px;
+}
+html> body #page div #header
+{
+	height: 62px;
+	width: 939px;
+}
+#page div #header div
+{
+	background: none repeat scroll 0% 0% transparent;
+	float: left;
+	margin: 0pt;
+	padding: 0pt;
+	width: 585px;
+}
+#page div #header div h1
+{
+	color: rgb(255, 255, 255);
+	font-size: 2.5em;
+	font-weight: 700;
+	line-height: 1em;
+	padding: 2px 0pt 0pt;
+}
+#page div #header div p a
+{
+	color: rgb(255, 255, 255);
+	font-family: "palatino linotype",palatino,serif,arial;
+	font-size: 1.2em;
+	padding-left: 2px;
+	text-decoration: none;
+}
+#page div #header form
+{
+	float: right;
+	padding: 6px 0pt 0pt;
+	width: 338px;
+}
+#page div #header form fieldset
+{
+	width: 338px;
+}
+#page div #header form fieldset div
+{
+	background: url("bg.png") no-repeat scroll -8520px top transparent;
+	float: left;
+	height: 28px;
+	margin: 1px 0pt 0pt;
+	width: 234px;
+}
+#page div #header form fieldset div input
+{
+	background: none repeat scroll 0% 0% transparent;
+	border: 0pt none;
+	color: rgb(153, 153, 153);
+	font: 1.165em Arial,Sans-Serif;
+	height: 18px;
+	padding: 5px;
+	width: 224px;
+}
+#page div #header form fieldset input#search-submit
+{
+	background: url("bg.png") no-repeat scroll -8520px bottom transparent;
+	border: 0pt none;
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+	float: right;
+	font: bold 1.135em arial,sans-serif;
+	height: 30px;
+	text-transform: uppercase ! important;
+	width: 97px;
+}
+#page div .related h3
+{
+	color: rgb(204, 102, 0);
+	display: inline;
+	float: left;
+	font-size: 1em;
+	line-height: 18px;
+	margin: 1px 0pt 0pt 16px;
+}
+#page div .related h3 a
+{
+	color: rgb(204, 102, 0);
+	text-decoration: none;
+}
+#page div .related div div ul
+{
+	float: left;
+	list-style: none outside none;
+	margin: 0pt;
+	padding: 0pt 0pt 0pt 17px;
+	width: 700px;
+}
+#page div .related ul li
+{
+	display: inline;
+	line-height: 20px;
+	margin: 0pt 17px 0pt 0pt;
+}
+#page div .related
+{
+	background: url("bg.png") repeat-y scroll -3880px top transparent;
+	margin: 0pt 0pt 17px 20px;
+	width: 940px;
+}
+#page div .related div
+{
+	background: url("bg.png") no-repeat scroll -2940px top transparent;
+	margin: 0pt;
+	width: 940px;
+}
+#page div .related div div
+{
+	background: url("bg.png") no-repeat scroll -4820px bottom transparent;
+	font-size: 1.165em;
+	margin: 0pt;
+	padding: 14px 17px;
+	width: 906px;
+}
+#page div .related div div
+{
+	voice-family: inherit;
+	width: 906px;
+}
+html > body #page div .related div div
+{
+	width: 906px;
+}
+#page div .content
+{
+	background: url("bg.png") repeat-y scroll -7180px top transparent;
+	display: inline;
+	float: right;
+	margin: 0px 20px 20px 0pt;
+	width: 670px;
+}
+#inverted #page div .content
+{
+	float: left;
+	margin: 0pt 0pt 20px 20px;
+}
+#page div .content div
+{
+	background: url("bg.png") no-repeat scroll -6510px top transparent;
+	float: right;
+	width: 670px;
+}
+#page div .content div div
+{
+	background: url("bg.png") no-repeat scroll -7850px bottom transparent;
+	float: right;
+	padding: 17px 20px;
+	width: 630px;
+}
+#page div .content div div
+{
+	voice-family: inherit;
+	width: 630px;
+}
+html > body #page div .content div div
+{
+	width: 630px;
+}
+#page div .content div div h4
+{
+	border-bottom: 1px solid rgb(187, 207, 210);
+	color: rgb(51, 51, 51);
+	font-size: 1.365em;
+	line-height: 1em;
+	padding: 0pt 0pt 6px;
+}
+#page div .content div div h4 a
+{
+	color: rgb(51, 51, 51);
+	text-decoration: none;
+}
+#page div .content div div ul
+{
+	font-size: 1.165em;
+	list-style: none outside none;
+	padding: 18px 0pt 0pt 5px;
+}
+#page div .content div div ul li
+{
+	background: url("bg.png") no-repeat scroll -9144px 3px transparent;
+	padding: 0pt 0pt 25px 20px;
+}
+#page div .content div div ul li h2
+{
+	border: 0pt none;
+	color: rgb(51, 102, 255);
+	font-size: 1.29em;
+	font-weight: 400;
+	line-height: 1em;
+	padding: 0pt 0pt 6px;
+}
+#page div .content div div ul li h2 a
+{
+	color: rgb(51, 102, 255);
+}
+#page div .content div div ul li p
+{
+	line-height: 1.25em;
+	margin: 0pt 0pt 6px;
+}
+
+#page div .sidebar
+{
+	background: none repeat scroll 0% 0% transparent;
+	display: inline;
+	float: left;
+	margin: 0pt 0pt 20px 20px;
+	width: 250px;
+}
+#page div .sidebar img
+{
+	margin-bottom: 19px;
+}
+#inverted #page div .sidebar
+{
+	background: none repeat scroll 0% 0% transparent;
+	display: inline;
+	float: right;
+	margin: 0pt 20px 0pt 0pt;
+	width: 250px;
+}
+#page div .sidebar .keywords
+{
+	background: url("bg.png") repeat-y scroll -6010px top transparent;
+	margin: 0pt;
+	width: 250px;
+}
+#page div .sidebar .keywords div
+{
+	background: url("bg.png") no-repeat scroll -5760px top transparent;
+	width: 250px;
+}
+#page div .sidebar .keywords div div
+{
+	background: url("bg.png") no-repeat scroll -6260px bottom transparent;
+	font-size: 1.165em;
+	padding: 15px 26px;
+	width: 198px;
+}
+#page div .sidebar .keywords div div
+{
+	voice-family: inherit;
+	width: 198px;
+}
+html > body #page div .sidebar .keywords div div
+{
+	width: 198px;
+}
+#page div .sidebar .keywords div div h3
+{
+	color: rgb(204, 102, 0);
+	font-size: 1.15em;
+}
+#page div .sidebar .keywords div div h3 a
+{
+	color: rgb(204, 102, 0);
+	text-decoration: none;
+}
+#page div .sidebar .keywords div div ul
+{
+	list-style: none outside none;
+	margin-top: 26px;
+}
+#page div .sidebar .keywords div div ul li
+{
+	background: url("bg.png") no-repeat scroll -8756px 3px transparent;
+	padding: 0pt 0pt 22px 18px;
+}
+#footer
+{
+	color: rgb(221, 221, 221);
+	font: italic 15px verdana,geneva,sans-serif;
+	padding: 8px 0pt 0pt;
+}
+#footer a
+{
+	color: rgb(221, 221, 221);
+	text-decoration: none;
+}
