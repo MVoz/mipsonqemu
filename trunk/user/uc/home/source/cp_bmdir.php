@@ -109,7 +109,10 @@ if($_GET['op'] == 'delete') {
 		if($bmdirid&&deletebookmarkdir($bmdiritem['bmid'])) {
 			//Ìøµ½¸¸Ò»¼¶
 			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid.'&browserid='.$browserid;
-			showmessage('do_success', $url, 0);
+			if(empty($_SGLOBAL['client']))
+					showmessage('do_success', $url, 0);
+			else
+					showmessage('result="do_success"'.' lastmodified="'.$_SGLOBAL['supe_timestamp'].'"');
 		}else if(empty($bmdirid)&&clearbookmark($browserid)){
 			$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid.'&browserid='.$browserid;
 			showmessage('do_success', $url, 0);
