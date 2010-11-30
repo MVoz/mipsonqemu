@@ -357,8 +357,10 @@ ffout:
 	//qDebug()<<"updateTime="<<updateTime<<"modifiedFlag="<<modifiedFlag;
 	if(!terminatedFlag&&!updateTime.isEmpty())
 		settings->setValue("updateTime", updateTime);
+	if(terminatedFlag)
+		settings->setValue("updateTime", "0");
 	setUpdatetime("");	//set null
-	if(QFile::exists(localBmFullPath)){
+	if(!terminatedFlag&&QFile::exists(localBmFullPath)){
 		filemd5 = tz::fileMd5(localBmFullPath);
 		settings->setValue("localbmkey",qhashEx(filemd5,filemd5.length()));
 	}

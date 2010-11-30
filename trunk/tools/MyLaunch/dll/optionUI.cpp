@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDesktopWidget>
 #include <catalog.h>
 
-OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::FramelessWindowHint),settings(s),db(b)
+OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent),settings(s),db(b)
 {
 	manager=NULL;
 	reply=NULL;

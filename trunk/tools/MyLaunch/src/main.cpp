@@ -2258,7 +2258,7 @@ void MyWidget::testAccountFinished(bool err,QString result)
 	//gSyncer.reset();
 	if (!err&&syncDlg)
 	{
-		if(result==SUCCESSSTRING)
+		if(result==DOSUCCESSS)
 		{
 			syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS) ;
 			//createSynDlgTimer();

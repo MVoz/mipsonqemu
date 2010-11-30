@@ -51,7 +51,7 @@
 
 #define BM_XML_FROM_FIREFOX  "firefox.xml"
 
-#define SUCCESSSTRING "do_success"
+#define DOSUCCESSS  "do_success"
 
 #define DEFAULT_LANGUAGE 0 //chinese
 
