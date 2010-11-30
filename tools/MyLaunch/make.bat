@@ -80,7 +80,6 @@ cd ..
 
 call :copyfunc .\release .\download\portable
 
-copy .\win\installer\release\setup.exe .\download\setup\setup.exe 
 copy .\include\index.php .\download\index.php 
 
 cd  .\download
@@ -96,7 +95,8 @@ cd ..
 
 cd .\release
 del *.lib *.manifest
-"c:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
+"d:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
+copy .\win\installer\release\setup.exe .\download\setup\setup.exe 
 "D:\Program Files\WinRAR\WinRAR.exe" a -as -r  -EP1 "..\download\touchAny.rar" "..\release"
 cd ..
 
