@@ -114,13 +114,40 @@ void bmPost::httpDone(bool error)
 			{
 				if (resultXml->name() == "status" )
 				{
-					lastModified=resultXml->attributes().value("lastmodified").toString();
-					newgroupid=resultXml->attributes().value("groupid").toString().toUInt();
-					bmid=resultXml->attributes().value("bmid").toString().toUInt();
+					if(resultXml->attributes().value("result").toString()==DOSUCCESSS)
+					{
+						lastModified=resultXml->attributes().value("lastmodified").toString();
+						newgroupid=resultXml->attributes().value("groupid").toString().toUInt();
+						bmid=resultXml->attributes().value("bmid").toString().toUInt();
+					}
 					break;
 				}
 			} 
 		}
+		if(!lastModified.isEmpty()){
+			setUpdatetime(lastModified);
+		}else
+			error = QHttp::UnknownError;
+		switch(action){
+			case POST_HTTP_ACTION_DELETE_URL:					
+				break;
+			case POST_HTTP_ACTION_DELETE_DIR:
+				break;
+			case POST_HTTP_ACTION_ADD_URL:
+				if(bmid){
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);
+				}else
+					error = QHttp::UnknownError;
+				break;
+			case POST_HTTP_ACTION_ADD_DIR:
+				if(newgroupid&&bmid){
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID,newgroupid);
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);	
+				}else
+					error = QHttp::UnknownError;
+				break;
+		}
+		/*
 		//groupid maybe is zero,but bmid mustn't be zero
 		if((!lastModified.isEmpty())&&bmid){
 			//setMaxGroupId(newgroupid);
@@ -130,6 +157,7 @@ void bmPost::httpDone(bool error)
 			SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);			
 		}else
 			error = QHttp::UnknownError;
+		*/
 		DELETE_OBJECT(resultXml);
 		qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),GET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID),qPrintable(lastModified),GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID));
 	}
