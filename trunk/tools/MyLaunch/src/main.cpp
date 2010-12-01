@@ -361,11 +361,13 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
+/*
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
 	{
 		updateVersion(gSettings->value("version", 0).toInt());
 		showLaunchyFirstTime = true;
 	}
+*/
 	//pre-alloc the search result
 	gSearchResult=new CatItem[MAX_SEARCH_RESULT];
 	db = QSqlDatabase::addDatabase("QSQLITE", "dbManage");
@@ -436,11 +438,12 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 
 	// Check for udpates?
+	/*
 	if (gSettings->value("updatecheck", true).toBool())
 	{
 		checkForUpdate();
 	}
-
+	*/
 	// Set the hotkey
 #ifdef Q_WS_WIN
 	int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
@@ -1381,7 +1384,7 @@ void MyWidget::catalogBuilt(int type)
 	}else
 		close();
 }
-
+/*
 void MyWidget::checkForUpdate()
 {
 #if 0
@@ -1397,14 +1400,14 @@ void MyWidget::checkForUpdate()
 	http->get("http://www.launchy.net/version2.html", verBuffer);
 #endif	
 
-	/*
+
 	QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
 	header.setValue("Host", "m1.webstats.motigo.com");
 	header.setValue("Referer", "http://www.launchy.net/stats.html");
 	header.setContentType("image/gif, text/plain, text/html, text/htm");
 	http->setHost("m1.webstats.motigo.com");
 	http->request(header, NULL, counterBuffer);
-	*/
+
 }
 
 void MyWidget::httpGetFinished(bool error)
@@ -1433,6 +1436,7 @@ void MyWidget::httpGetFinished(bool error)
 	delete counterBuffer;
 }
 
+*/
 
 
 void MyWidget::setSkin(QString dir, QString name)
@@ -1450,10 +1454,11 @@ void MyWidget::setSkin(QString dir, QString name)
 	if (wasShowing)
 		showLaunchy(true);
 }
+/*
 
 void MyWidget::updateVersion(int oldVersion)
 {
-/*
+
 	if (oldVersion < 199)
 	{
 		// We've completely changed the database and ini between 1.25 and 2.0
@@ -1492,8 +1497,9 @@ void MyWidget::updateVersion(int oldVersion)
 		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
 		gSettings->setValue("version", LAUNCHY_VERSION);
 	}
-*/
+
 }
+*/
 
 /*
 QPair<double,double> MyWidget::relativePos() {
@@ -2419,10 +2425,11 @@ void MyWidget::menuOptions()
 }
 
 
+/*
 
 void MyWidget::shouldDonate()
 {
-/*
+
 	QDateTime time = QDateTime::currentDateTime();
 	QDateTime donateTime = gSettings->value("donateTime", time.addDays(21)).toDateTime();
 	if (donateTime.isNull())
@@ -2437,8 +2444,9 @@ void MyWidget::shouldDonate()
 		QDateTime def;
 		gSettings->setValue("donateTime", def);
 	}
-*/
+
 }
+*/
 
 void Fader::fadeIn()
 {
@@ -2535,7 +2543,7 @@ void MyWidget::fadeOut()
 
 void MyWidget::showLaunchy(bool now)
 {
-	shouldDonate();
+	//shouldDonate();
 	alternatives->hide();
 
 
@@ -2716,8 +2724,10 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 	{
 	case QSystemTrayIcon::Trigger:
 	case QSystemTrayIcon::DoubleClick:
+		activateWindow();
 		if (!isVisible())
 			showLaunchy();
+		
 		break;
 	case QSystemTrayIcon::MiddleClick:
 		break;

@@ -236,9 +236,9 @@ public:
 	void closeEvent(QCloseEvent *event);
 	void showLaunchy(bool now = false);
 	void hideLaunchy(bool now = false);
-	void updateVersion(int oldVersion);
-	void checkForUpdate();
-	void shouldDonate();
+//	void updateVersion(int oldVersion);
+//	void checkForUpdate();
+//	void shouldDonate();
 	void setCondensed(int condensed);
 	bool setHotkey(int, int);
 	void showAlternatives(bool show=true);
@@ -310,7 +310,7 @@ public slots:
 		void mousePressEvent(QMouseEvent *e);
 		void mouseMoveEvent(QMouseEvent *e);
 		void setSkin(QString, QString);
-		void httpGetFinished(bool result);
+//		void httpGetFinished(bool result);
 		void catalogBuilt(int);
 		void inputMethodEvent(QInputMethodEvent* e);
 		void keyPressEvent(QKeyEvent*);
