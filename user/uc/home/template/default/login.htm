@@ -29,8 +29,8 @@
 					f.type = "checkbox";
 					f.name = searchs[jQuery(this).attr("id")][i][0];
 					f.id = "check_"+i;
-					getObj('searchform').appendChild(f);
-					getObj(f.id).checked=(searchs[jQuery(this).attr("id")][i][6]==1)?true:false;
+					$('searchform').appendChild(f);
+					$(f.id).checked=(searchs[jQuery(this).attr("id")][i][6]==1)?true:false;
 					jQuery('#searchform').append('<span>'+searchs[jQuery(this).attr("id")][i][3]+'</span>');
 				  //set hidden form
 					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[jQuery(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[jQuery(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
@@ -47,7 +47,7 @@
 							f.name = e[0];
 							f.id = e[0];
 							f.value = e[1];
-							getObj('searchform_'+i).appendChild(f);
+							$('searchform_'+i).appendChild(f);
 						}
 					}
 				 }
