@@ -62,8 +62,8 @@ p{	margin: 0pt 0pt 1em;}
 {
 	background: none repeat scroll 0% 0% transparent;
 	float: left;
-	margin: 0pt;
-	padding: 0pt;
+	/*margin: 0pt;*/
+	/*padding: 0pt;*/
 	/*width: 560px;*/
 }
 #header div h1
@@ -335,4 +335,45 @@ html > body #page div .related div div
 {
 	color: rgb(221, 221, 221);
 	text-decoration: none;
+}
+
+#menu{
+		padding:20px 0px 0px 10px;
+		width:500px;
+		height:40px;
+	}
+#menu ul{
+			list-style:none;
+}
+#menu li{
+	list-style:none;
+	display:block;
+	float:left;
+	background:#192A63;						
+}
+#menu li a{
+	display:block;
+	float:left;
+	color:#fff;
+	text-transform:uppercase;
+	font-size:11px;
+	font-weight:bold;
+	line-height:35px;
+	text-decoration:none;
+	padding:0 25px;				
+}
+#menu li a:hover{color:#75902d;	}
+#menu li a.current{
+		display:block;
+		float:left;
+		color:#fff;
+		text-transform:uppercase;
+		font-size:11px;
+		font-weight:bold;
+		line-height:35px;
+		text-decoration:none;
+		padding:0 25px;	
+}
+#menu li a:hover.current{
+			color:#fff;
 }
