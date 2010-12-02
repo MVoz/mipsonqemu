@@ -1627,7 +1627,10 @@ function avatar($uid, $size='small', $returnsrc = FALSE) {
 	
 	$size = in_array($size, array('big', 'middle', 'small')) ? $size : 'small';
 	$avatarfile = avatar_file($uid, $size);
+/*
 	return $returnsrc ? UC_API.'/data/avatar/'.$avatarfile : '<img src="'.UC_API.'/data/avatar/'.$avatarfile.'" onerror="this.onerror=null;this.src=\''.UC_API.'/images/noavatar_'.$size.'.gif\'">';
+*/
+	return $returnsrc ? 'image/avatar/'.$avatarfile : '<img src="image/avatar/'.$avatarfile.'" onerror="this.onerror=null;this.src=\'images/noavatar_'.$size.'.gif\'">';
 }
 
 //得到头像
