@@ -33,7 +33,7 @@ function  categoryShow(value) {
 }
 /*search*/
 function googleHint(a) {
-    getObj("gsuggest") && getObj("gsuggest").parentNode.removeChild(getObj("gsuggest"));
+    $("gsuggest") && $("gsuggest").parentNode.removeChild($("gsuggest"));
     var b = document.body.appendChild(document.createElement("script"));
     b.language = "javascript";
     b.id = "gsuggest";
@@ -43,8 +43,8 @@ function googleHint(a) {
 
 function myhint(a) {
 	
-    var b = getObj("searchkey"),
-        c = getObj("suggests");
+    var b = $("searchkey"),
+        c = $("suggests");
     if (!b.value || !b.value.length || a.keyCode == 27 || a.keyCode == 13) c.style.display = "none";
     else if (a.keyCode == 38 || a.keyCode == 40) {
             if (c.style.display != "none") {
@@ -72,11 +72,11 @@ window.google.ac = {};
 window.google.ac.h = function (a) {
 	if(!a||(a.length == 2 || a.length == 3))
 		return;
-	if (a[0] == getObj("searchkey").value) {
+	if (a[0] == $("searchkey").value) {
         var b = "";
         a = a[1];
         for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"getObj('searchkey').value='" + a[c][0] + '\';javascript:searchSubmit(this);" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + "</td></tr>";
-        getObj("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
+        $("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
         setDisplay("suggests", 1)
     }
 };
@@ -84,7 +84,7 @@ window.google.ac.h = function (a) {
 function searchSubmit(a) {
     formInfo = a.parentNode.parentNode.parentNode.parentNode;
     if (formInfo.tagName == "FORM") {
-        if (getObj("backUrl")) getObj("backUrl").value = "http%3A//search.dangdang.com/search.aspx%3Fkey%3D" + getObj("searchkey").value;
+        if (getObj("backUrl")) getObj("backUrl").value = "http%3A//search.dangdang.com/search.aspx%3Fkey%3D" + $("searchkey").value;
         formInfo.submit()
     }
 };
@@ -177,12 +177,8 @@ function delCookie(a) {
                 document.cookie = a + "=" + escape(cval) + ";expires=" + c.toGMTString() + ";path=/;"
             }
     };
-function getObj(a) {
-        return document.getElementById(a)
-    };
-
 function setDisplay(a, b) {
-        if (getObj(a)) getObj(a).style.display = b ? "block" : "none"
+        if ($(a)) $(a).style.display = b ? "block" : "none"
     };
 /*menu*/
 function initMenuEx() {
