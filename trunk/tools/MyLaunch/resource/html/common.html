@@ -1,7 +1,6 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>index</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
 function $(a) {
@@ -67,90 +66,93 @@ function accountTestClick()
 }
 
 </script>
-</head>
-<body>
-<div id="wrap">
-		<div id="header"></div>
-		<div class="main">
-			<div id="lm"></div>
-			<div id="rm">
-				<fieldset class="cfgitem">
-					<legend>启动</legend>
-					<table width="100%">
-					 <tr>
-						<td width="50%"><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</td>
-						<td width="50%"><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</td>
-					</tr>	
-					 <tr>
-						<td width="50%"><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</td>
-						<td width="50%"><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</td>
-					</tr>
-					<tr>
-						<td width="50%"><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</td>
-						<td width="50%" align="right" cellspacing="0"></td>
-					</tr>
-					<tr>
-						<table width="100%">
-							<tr>
-								<td width="10%">快捷键:</td>
-								<td width="40%" align=left>
-									<select id="hotkey_0" width=40 class="select">	
-										<option value="134217728" > Alt</option>
-										<option value="33554432" > Shift</option>
-										<option value="268435456" > Win</option>
-										<option value="67108864"> Ctrl</option>				
-									</select>
-								</td>
-								<td width="40%">
-									<select id="hotkey_1" width=30 class="select" >
+</head>    
+    <body>
+		<div id="wrapper">
+			<div id="page">
+				<div id="header">
+					<div>
+						<h1>
+							Tanzhi.com
+						</h1>
+						<p>
+							<a href="http://www.tanzhi.com">
+								Anything is in touch!
+							</a>
+						</p>
+					</div>
+					<div id="menu">
+					</div>
+				</div>
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+					<h2>启动&raquo;</h2>
+					<ul>
+						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
+						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
+						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
+					</ul>
+					<p>
+						<span>快捷键:</span>
+						<span>
+							<select id="hotkey_0" class="select">	
+									<option value="134217728" > Alt</option>
+									<option value="33554432" > Shift</option>
+									<option value="268435456" > Win</option>
+									<option value="67108864"> Ctrl</option>				
+								</select>
+						</span>
+						<span>+</span>
+						<span>
+								<select id="hotkey_1" class="select" >
 										<option value="16777216" > Space</option>
 										<option value="16777217"> Tab</option>
 										<option value="16777219" > Backspace</option>
 										<option value="16777221" > Enter</option>
-									</select>
-								</td>
-							</tr>		
-						</table>
-					</tr>
-					</table>
+								</select>
+						</span>
+					</p>					
 				</fieldset>
 				<fieldset class="cfgitem">
-					<legend>帐号</legend>
-					<table width="100%">
-						<tr>
-							<td width="10%">用户:</td>
-							<td width="50%" align=left><input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" /></td>
-							<td width="30%" align=right>
-							<div class="btn">
-								<a href="#" onclick="accountTestClick();"><label>测试</label></a>
-							</div>
-							</td>
-						</tr>
-						<tr >
-							<td width="10%">密码:</td>
-							<td width="50%" align=left><input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" /></td>
-							<td width="30%" align=right>
-							<div class="btn">
-							<a href="#" onclick="syncClick();"><label>同步</label></a>
-							</div>
-							</td>
-						</tr>
-					</table>
-					<table width="100%">
-						<tr>
-							<td width="15%">上次状态:</td>
-							<td width="20%" align=left id="lastsyncstatus"><img src="qrc:image/loading.gif"></td>
-							<td width="25%">上次同步时间:</td>
-							<td width="50%" id="lastsynctime"></td>
-						</tr>					
-					</table>
+					<h2>帐号&raquo;</h2>
+					<p>
+						<span class="tl">用户:</span>
+						<span class="ip">
+							<input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" />
+						</span>
+					    <span class="tl">密码:</span>
+						<span class="ip">
+							<input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" />
+						</span>	
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="accountTestClick();">测试</a>
+						</span>
+					</p>
+					<p>
+
+						<span class="tl">上次状态:</span>
+						<span class="ip" id="lastsyncstatus">
+							&nbsp;
+						</span>
+						<span class="tl">上次同步时间:</span>
+						<span class="ip" id="lastsynctime">
+								&nbsp;
+						</span>
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="syncClick();">同步</a>
+						</span>
+					</p>
 				</fieldset>
+				</div>
+			</div>
+			 <div id="footer">
+				
 			</div>
 		</div>
-</div>
-<div id="applybtn"></div>
-</body>
+    </body>
 <script>
-	OptionsDlg.loading('common');
+	OptionsDlg.loading('Common');
 </script>
 </html>
