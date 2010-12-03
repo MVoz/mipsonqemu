@@ -2,7 +2,6 @@
 <html>    
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title>TanZhi.com </title>
 		<link rel="stylesheet" rev="stylesheet" href="image/ui.css" type="text/css">     
     </head>    
     <body>
@@ -11,144 +10,105 @@
 				<div id="header">
 					<div>
 						<h1>
-							Haoting.net
+							Tanzhi.com
 						</h1>
 						<p>
-							<a href="http://www.haoting.net/inquiry.html?d=haoting.net" target="_blank">
-								Inquire about this domain name
+							<a href="http://www.tanzhi.com">
+								Anything is in touch!
 							</a>
 						</p>
 					</div>
 					<div id="menu">
 						<ul>
-							<li><a href="#" class="current">home</a></li>
-							<li><a href="#">about us</a></li>
-							<li><a href="#">services</a></li>
-							<li><a href="#">solutions</a></li>							
+							<li><a href="#" class="current">通用</a></li>
+							<li><a href="#">Directory</a></li>
+							<li><a href="#">Customer</a></li>
+							<li><a href="#">Advance</a></li>
+							<li><a href="#">About</a></li>							
 						</ul>
 					</div>
-
-					<!--
-					<form action="http://www.haoting.net/s/" method="get" onsubmit="return InitiateInputSearchSubmit(this);">
-						<fieldset>
-							<div>
-								<input name="k" value="" size="20" maxlength="80">
-								<input name="enc" value="0"
-								type="hidden">
-								<input name="gst" value="" type="hidden">
-								<input name="d" value="haoting.net" type="hidden">
-								<input name="t" value="3" type="hidden">
-								<input name="v" value="4" type="hidden">
-								<input name="vs" value="" type="hidden">
-								<input name="sn" value="s" type="hidden">
-								<input name="cd" value="d" type="hidden">
-								<input name="bl" value="" type="hidden">
-							</div>
-							<input id="search-submit" value="Search" type="submit">
-						</fieldset>
-					</form>
-					-->
 				</div>
 				<div class="clearfix">
-					
-					<div class="content">
-						<div>
-						
-						  <div>
-                            <h4>
-                                <a href="#">
-                                    Sponsored Listings
-                                </a>
-                            </h4>
-                            <ul>
-                                <li>
-                                    <h2>
-                                        <a href="#">
-                                            Sp Triple money
-                                        </a>
-                                    </h2>
-                                    <p>
-                                        Brand new...daily outopayouts. Start now!
-                                    </p>
-                                    <a href="#">
-                                        www.sptriple.com
-                                    </a>
-                                </li>
-                                <li>
-                                    <h2>
-                                        <a href="#">
-                                            Home Business
-                                        </a>
-                                    </h2>
-                                    <p>
-                                        Free Website,Free Webtools,Training Build a Downline in know time-Free
-                                    </p>
-                                    <a href="#">
-                                        www.Freebizbuilder.org
-                                    </a>
-                                </li>
-                                <li>
-                                    <h2>
-                                        <a href="#">
-                                            1号店网上超市
-                                        </a>
-                                    </h2>
-                                    <p>
-                                        比超市更便宜，365天折扣促销不停档 支持在线支付、货到付款。即刻注册
-                                    </p>
-                                    <a href="#">
-                                        www.yihaodian.com
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-						  
-						</div>
-					</div>
-					<div class="sidebar">
-						<img src="image/template_54266.jpg"
-						alt="">
-						<div class="keywords">
-							<div>
-								<div>
-									<h3>
-										Related Searches
-									</h3>
-									<ul>
-										<li>
-											<a href="#">
-												Concert Tickets
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												Elton John
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												Music Department
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												Music Composition
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+					<fieldset class="cfgitem">
+					<h2>启动&raquo;</h2>
+					<ul>
+						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
+						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
+						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
+					</ul>
+					<p>
+						<span>快捷键:</span>
+						<span>
+							<select id="hotkey_0" class="select">	
+									<option value="134217728" > Alt</option>
+									<option value="33554432" > Shift</option>
+									<option value="268435456" > Win</option>
+									<option value="67108864"> Ctrl</option>				
+								</select>
+						</span>
+						<span>+</span>
+						<span>
+								<select id="hotkey_1" class="select" >
+										<option value="16777216" > Space</option>
+										<option value="16777217"> Tab</option>
+										<option value="16777219" > Backspace</option>
+										<option value="16777221" > Enter</option>
+								</select>
+						</span>
+					</p>					
+				</fieldset>
+				<fieldset class="cfgitem">
+					<h2>帐号&raquo;</h2>
+					<p>
+						<span class="tl">用户:</span>
+						<span class="ip">
+							<input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" />
+						</span>
+					    <span class="tl">密码:</span>
+						<span class="ip">
+							<input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" />
+						</span>	
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="accountTestClick();">测试</a>
+						</span>
+					</p>
+					<p>
+
+						<span class="tl">上次状态:</span>
+						<span class="ip" id="lastsyncstatus">
+							&nbsp;
+						</span>
+						<span class="tl">上次同步时间:</span>
+						<span class="ip" id="lastsynctime">
+								&nbsp;
+						</span>
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="syncClick();">同步</a>
+						</span>
+					</p>
+				</fieldset>
 				</div>
 			</div>
+			 <div id="footer">
+				<p>
+					<span class="btn">
+							<a href="#" onclick="syncClick();">同步</a>
+					</span>
+					<span class="btn">
+							<a href="#" onclick="syncClick();">同步</a>
+					</span>
+				</p>
+				<p style="text-align:center;">
+					Copyright 2010 
+					<a href="http://www.tanzhi.com" target="_blank">
+						haoting.net
+					</a>
+				</p>				
+			</div>
 		</div>
-        <div id="footer">
-            Copyright 2010 haoting.net
-            <a href="http://www.haoting.net/privacy.html" target="_blank">
-                Privacy
-            </a>
-        </div>
+       
 
     </body>
 

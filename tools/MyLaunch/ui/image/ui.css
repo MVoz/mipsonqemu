@@ -1,27 +1,17 @@
-* {
-	margin: 0; 
-	padding: 0;
-}
-html{	background: none repeat scroll 0% 0% rgb(242, 242, 242);}
+* {	margin: 0; 	padding: 0;	font-size:12px;}
+html{	background: none repeat scroll 0% 0% #f2f2f2;}
 body, fieldset, h1, h2, h3, h4, ul{	margin: 0pt;padding: 0pt;}
 a, a:visited{	color: rgb(0, 153, 0);}
 a:hover{	text-decoration: none;}
 body{	
-	background: none repeat scroll 0% 0% rgb(242, 242, 242);
-	color: rgb(51, 51, 51);
-	font: 75%/125% arial,sans-serif;
+	background: none repeat scroll 0% 0% #f2f2f2;
+	color: #333;
+	font: 100%/125% arial,sans-serif;
+
 }
 img{border: 0pt none;vertical-align: bottom;}
 fieldset{	border: 0pt none;}
-p{	margin: 0pt 0pt 1em;}
-
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
 .clearfix {
     display: inline-block;
 }
@@ -36,24 +26,17 @@ p{	margin: 0pt 0pt 1em;}
 	overflow: hidden;
 	padding: 0pt 0pt 10px;
 	width: 800px;
-	margin: 10px auto;
+	margin: 0px auto;
 }
 #page
 {
 	background: url("bg.png") repeat-y scroll -980px top transparent;
-}
-#page div
-{
-	/*background: url("bg.png") no-repeat scroll -1960px bottom transparent;*/
-	/*overflow: hidden;
-	padding: 0pt 0pt 10px;*/
-	/*width: 800px;*/
+		height:350px;
 }
 #header
 {
 	background: url("bg.png") no-repeat scroll left top transparent;
 	height: 62px;
-	/*width: 759px;*/
 	voice-family: inherit;
 	margin-bottom: 17px;
 	padding: 22px 16px 0pt 25px;
@@ -62,9 +45,6 @@ p{	margin: 0pt 0pt 1em;}
 {
 	background: none repeat scroll 0% 0% transparent;
 	float: left;
-	/*margin: 0pt;*/
-	/*padding: 0pt;*/
-	/*width: 560px;*/
 }
 #header div h1
 {
@@ -82,253 +62,11 @@ p{	margin: 0pt 0pt 1em;}
 	padding-left: 2px;
 	text-decoration: none;
 }
-#header form
-{
-	float: right;
-	padding: 6px 0pt 0pt;
-	width: 338px;
-}
-#header form fieldset
-{
-	width: 338px;
-}
-#header form fieldset div
-{
-	background: url("bg.png") no-repeat scroll -8520px top transparent;
-	float: left;
-	height: 28px;
-	margin: 1px 0pt 0pt;
-	width: 234px;
-}
-#header form fieldset div input
-{
-	background: none repeat scroll 0% 0% transparent;
-	border: 0pt none;
-	color: rgb(153, 153, 153);
-	font: 1.165em Arial,Sans-Serif;
-	height: 18px;
-	padding: 5px;
-	width: 224px;
-}
-#header form fieldset input#search-submit
-{
-	background: url("bg.png") no-repeat scroll -8520px bottom transparent;
-	border: 0pt none;
-	color: rgb(255, 255, 255);
-	cursor: pointer;
-	float: right;
-	font: bold 1.135em arial,sans-serif;
-	height: 30px;
-	text-transform: uppercase ! important;
-	width: 97px;
-}
-/*#page div .related h3
-{
-	color: rgb(204, 102, 0);
-	display: inline;
-	float: left;
-	font-size: 1em;
-	line-height: 18px;
-	margin: 1px 0pt 0pt 16px;
-}
-#page div .related h3 a
-{
-	color: rgb(204, 102, 0);
-	text-decoration: none;
-}
-#page div .related div div ul
-{
-	float: left;
-	list-style: none outside none;
-	margin: 0pt;
-	padding: 0pt 0pt 0pt 17px;
-	width: 500px;
-}
-#page div .related ul li
-{
-	display: inline;
-	line-height: 20px;
-	margin: 0pt 17px 0pt 0pt;
-}
-#page div .related
-{
-	background: url("bg.png") repeat-y scroll -3880px top transparent;
-	margin: 0pt 0pt 17px 20px;
-	width: 940px;
-}
-#page div .related div
-{
-	background: url("bg.png") no-repeat scroll -2940px top transparent;
-	margin: 0pt;
-	width: 940px;
-}
-#page div .related div div
-{
-	background: url("bg.png") no-repeat scroll -4820px bottom transparent;
-	font-size: 1.165em;
-	margin: 0pt;
-	padding: 14px 17px;
-	width: 906px;
-}
-#page div .related div div
-{
-	voice-family: inherit;
-	width: 906px;
-}
-html > body #page div .related div div
-{
-	width: 906px;
-}*/
-.content
-{
-	background: url("bg.png") repeat-y scroll -7180px top transparent;
-	display: inline;
-	float: right;
-	margin: 0px 20px 20px 0pt;
-	width: 510px;
-}
-/*#inverted #page div .content
-{
-	float: left;
-	margin: 0pt 0pt 20px 20px;
-}*/
-.content div
-{
-	background: url("bg.png") no-repeat scroll -6510px top transparent;
-	/*float: right;*/
-	/*width: 530px;*/
-}
-.content div div
-{
-	background: url("bg.png") no-repeat scroll -7950px bottom transparent;
-	padding: 10px;
-	/*float: right;*/
-	/*padding: 17px 20px;*/
-	/*width: 510px;/*
-}
-#page div .content div div
-{
-	voice-family: inherit;
-	/*width: 520px;*/
-}
-.content div div
-{
-	/*width: 460px;*/
-}
-.content div div h4
-{
-	border-bottom: 1px solid rgb(187, 207, 210);
-	color: rgb(51, 51, 51);
-	font-size: 1.365em;
-	line-height: 1em;
-	padding: 0pt 0pt 6px;
-}
-.content div div h4 a
-{
-	color: rgb(51, 51, 51);
-	text-decoration: none;
-}
-.content div div ul
-{
-	font-size: 1.165em;
-	list-style: none outside none;
-	padding: 18px 0pt 0pt 5px;
-}
-.content div div ul li
-{
-	background: url("bg.png") no-repeat scroll -9144px 3px transparent;
-	padding: 0pt 0pt 25px 20px;
-}
-.content div div ul li h2
-{
-	border: 0pt none;
-	color: rgb(51, 102, 255);
-	font-size: 1.29em;
-	font-weight: 400;
-	line-height: 1em;
-	padding: 0pt 0pt 6px;
-}
-.content div div ul li h2 a
-{
-	color: rgb(51, 102, 255);
-}
-.content div div ul li p
-{
-	line-height: 1.25em;
-	margin: 0pt 0pt 6px;
-}
 
-.sidebar
-{
-	background: none repeat scroll 0% 0% transparent;
-	display: inline;
-	float: left;
-	margin: 0pt 0pt 20px 20px;
-	width: 220px;
-}
-.sidebar img
-{
-	margin-bottom: 19px;
-}
-.sidebar
-{
-	background: none repeat scroll 0% 0% transparent;
-	display: inline;
-	float: right;
-	/*margin: 0pt 20px 0pt 0pt;*/
-	width: 250px;
-}
-.sidebar .keywords
-{
-	background: url("bg.png") repeat-y scroll -6010px top transparent;
-	margin: 0pt;
-	width: 250px;
-}
-.sidebar .keywords div
-{
-	background: url("bg.png") no-repeat scroll -5760px top transparent;
-	width: 250px;
-}
-.sidebar .keywords div div
-{
-	background: url("bg.png") no-repeat scroll -6260px bottom transparent;
-	font-size: 1.165em;
-	padding: 15px 26px;
-	width: 198px;
-}
-.sidebar .keywords div div
-{
-	voice-family: inherit;
-	width: 198px;
-}
-.sidebar .keywords div div
-{
-	width: 160px;
-}
-.sidebar .keywords div div h3
-{
-	color: rgb(204, 102, 0);
-	font-size: 1.15em;
-}
-.sidebar .keywords div div h3 a
-{
-	color: rgb(204, 102, 0);
-	text-decoration: none;
-}
-.sidebar .keywords div div ul
-{
-	list-style: none outside none;
-	margin-top: 26px;
-}
-.sidebar .keywords div div ul li
-{
-	background: url("bg.png") no-repeat scroll -8756px 3px transparent;
-	padding: 0pt 0pt 22px 18px;
-}
 #footer
 {
 	color: rgb(221, 221, 221);
-	font: italic 15px verdana,geneva,sans-serif;
+	font: 15px verdana,geneva,sans-serif;
 	padding: 8px 0pt 0pt;
 }
 #footer a
@@ -338,8 +76,8 @@ html > body #page div .related div div
 }
 
 #menu{
-		padding:20px 0px 0px 10px;
-		width:500px;
+		padding:20px 0px 0px 5px;
+		width:530px;
 		height:40px;
 	}
 #menu ul{
@@ -356,7 +94,7 @@ html > body #page div .related div div
 	float:left;
 	color:#fff;
 	text-transform:uppercase;
-	font-size:11px;
+	font-size:15px;
 	font-weight:bold;
 	line-height:35px;
 	text-decoration:none;
@@ -376,4 +114,124 @@ html > body #page div .related div div
 }
 #menu li a:hover.current{
 			color:#fff;
+}
+.select{display:block;border:1px solid #ccc;width:80px;height:25px;position:relative;line-height:20px;top:-3px;left:-2px;}
+
+.cfgitem{clear:left;;margin:0px 10px 0px;}
+.cfgitem h2{color:#192A63;width:95%;height:25px;margin:0px 0px 2px;padding-left:10px;line-height:25px;font-size:14px;border-bottom:solid 2px #ccc;}
+.cfgitem p {width:90%;margin:2px 0px;padding:4px 0 0 10px;clear:left;height:22px;}
+.cfgitem p span{display:block;float:left;}
+.cfgitem p .tl{padding:8px 2px;width:80px;}
+.cfgitem p .ip{padding:0px 2px;width:180px;}
+.cfgitem ul {margin:0px;padding:0px 10px;list-style:none;}
+.cfgitem li {float:left;width:240px;padding:2px 2px;}
+.cfgitem table{clear:left;float:left;width:100%;}
+
+.itext{border:1px solid #ddd;line-height:20px;height:22px;color:#333;width:150px;}
+.btn a,.btn a:hover{float:left;height:25px;line-height:25px;width:90px;text-align:center;color:#676767;text-decoration: none;}
+
+.btn a{background:url("btn.png");}
+.btn a:hover{background:url("btn_g.png");}
+
+
+#footer p{clear:both;padding:5px 150px 0px 0px;height:25px;width:100%;}
+#footer p span{float:right;display:block;padding-right:20px;}
+
+table, td, a {	color: #000;}
+
+div.tableContainer {
+	clear: both;
+	border: 1px solid #ccc;
+	height: 9em;
+	width: 720px;
+	overflow:scroll;
+	overflow-x:hidden;
+}
+
+div.tableContainer table {float: left;width: 700px;}
+html>body div.tableContainer table {width: 720px;}
+thead.fixedHeader tr {position: relative}
+html>body thead.fixedHeader tr {display: block}
+thead.fixedHeader th {
+	background: #192A63;
+	border-left: 0px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	font-weight: normal;
+	padding: 4px 3px;
+	text-align: left
+}
+thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited {
+	color: #FFF;
+	display: block;
+	text-decoration: none;
+	width: 100%
+}
+thead.fixedHeader a:hover {
+	color: #FFF;
+	display: block;
+	text-decoration: underline;
+	width: 100%
+}
+
+html>body tbody.scrollContent {
+	display: block;
+	height: 8em;
+	width: 100%
+
+}
+tbody.scrollContent td, tbody.scrollContent tr.even td {
+	background: #FFF;
+	border-bottom: none;
+	border-left: none;
+	border-right: 1px solid #CCC;
+	border-top: 1px solid #DDD;
+	padding: 2px 3px 3px 4px;
+	height:1em;
+}
+
+tbody.scrollContent tr.odd td {
+	background: #EEE;
+	border-bottom: none;
+	border-left: none;
+	border-right: 1px solid #CCC;
+	border-top: 1px solid #DDD;
+	padding: 2px 3px 3px 4px
+	height:1em;
+}
+
+html>body thead.fixedHeader th {
+	width: 30px
+}
+
+html>body thead.fixedHeader th + th {
+	width: 340px
+}
+
+html>body thead.fixedHeader th + th + th {
+	width: 100px
+}
+html>body thead.fixedHeader th + th + th + th {
+	width: 50px
+}
+html>body thead.fixedHeader th + th + th + th + th {
+	width: 30px
+}
+
+
+html>body tbody.scrollContent td {
+	width: 30px
+}
+
+html>body tbody.scrollContent td + td {
+	width: 340px
+}
+html>body tbody.scrollContent td + td + td {
+	width: 100px
+}
+html>body tbody.scrollContent td + td + td +td {
+	width: 50px
+}
+html>body tbody.scrollContent td + td + td +td +td{
+	width: 30px
 }
