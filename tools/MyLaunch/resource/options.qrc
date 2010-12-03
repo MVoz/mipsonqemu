@@ -11,6 +11,9 @@
      <file>image/top.png</file>
      <file>image/loading.gif</file>
      <file>image/logo.png</file>
+     <file>image/bg.png</file>
+     <file>image/btn.png</file>
+     <file>image/btn_g.png</file>
      <file>jm.css</file>
  </qresource>
  </RCC>

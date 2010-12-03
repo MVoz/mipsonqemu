@@ -197,6 +197,38 @@ void OptionsDlg::gohref(const QString & url)
 void OptionsDlg::loading(const QString & name)
 {
 	QString jsStr;
+#ifdef CONFIG_OPTION_NEWUI
+	//menu
+	QString menustring;
+	menustring.append("<ul>");
+	QStringList menulsit;
+	menulsit<<"Common"<<"Custom"<<"Advance"<<"About";
+	foreach (QString m, menulsit) {
+		menustring.append("<li>");
+		qDebug()<<m;
+    		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
+		menustring.append("</li>");
+        }
+	menustring.append("</ul>");
+	menustring.replace("\"","\\\"");
+	jsStr.append("$('menu').innerHTML=\""+menustring+"\";");
+	//footer
+	QString footerstring;
+	footerstring.append("<p>");
+	footerstring.append("<span class=\"btn\">");
+	footerstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");
+	footerstring.append("</span>");
+	footerstring.append("<span class=\"btn\">");
+	footerstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
+	footerstring.append("</span>");
+	footerstring.append("</p>");
+	footerstring.append("<p style=\"text-align:center;\">");
+	footerstring.append("Copyright 2010 ");
+	footerstring.append("<a  href=\""HTTP_SERVER_URL"\">"+tz::tr(APP_NAME)+"</a>");
+	footerstring.append("</p>");
+	footerstring.replace("\"","\\\"");
+	jsStr.append("$('footer').innerHTML=\""+footerstring+"\";");
+#else
 	struct menuhtml{
 		QString name;
 		QList<QString> child;
@@ -248,8 +280,8 @@ void OptionsDlg::loading(const QString & name)
 	
 	buttonstring.replace("\"","\\\"");
 	jsStr.append("$('applybtn').innerHTML=\""+buttonstring+"\";");
-
-	if (name == "common")
+#endif
+	if (name == "Common")
 	{
 		JS_APPEND_CHECKED("ckStartWithSystem","",false);
 		JS_APPEND_CHECKED("ckShowTray","",false);
@@ -322,8 +354,43 @@ void OptionsDlg::loading(const QString & name)
 		q.clear();
 		jsStr.append(QString("</table>';"));
 
-	} else if (name == "list_mg")
+	} else if (name == "Custom")
 	{
+#ifdef CONFIG_OPTION_NEWUI
+		dirLists.clear();
+		int count = settings->beginReadArray("directories");
+		jsStr.append("$('dirlist').innerHTML='");
+		for (int i = 0; i < count; ++i)
+		{
+			settings->setArrayIndex(i);
+			Directory tmp;
+			tmp.name = settings->value("name").toString();
+			tmp.types = settings->value("types").toStringList();
+			tmp.indexDirs = settings->value("indexDirs", false).toBool();
+			//tmp.indexExe = settings->value("indexExes", false).toBool();
+			tmp.depth = settings->value("depth", 100).toInt();
+			dirLists.append(tmp);
+
+			QString typesResult;
+			for (int j = 0; j < tmp.types.size(); j++)
+			{
+				typesResult += tmp.types.at(j);
+				if (j != (tmp.types.size() - 1))
+					typesResult += ";";
+			}
+			jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+			jsStr.append("<td><input type=\"radio\" name=\"select\" ");
+			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\">").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
+			jsStr.append("</td>");
+			jsStr.append("<td >"+settings->value("name").toString().replace("\\", "\\\\")+"</td>");
+			jsStr.append("<td >"+typesResult+"</td>");
+			jsStr.append(QString("<td >%1</td>").arg(settings->value("indexDirs", false).toBool()));
+			jsStr.append(QString("<td >%1</td>").arg(settings->value("depth", 100).toInt()));
+
+		}
+		jsStr.append("';");
+		settings->endArray();
+#else
 		jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
@@ -366,6 +433,7 @@ void OptionsDlg::loading(const QString & name)
 		settings->endArray();
 
 		jsStr.append(QString("</table>';"));
+#endif
 
 	}else if(name == "adv"){
 		JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);

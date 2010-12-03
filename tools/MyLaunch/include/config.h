@@ -414,5 +414,7 @@ enum TEST_NET_RESULT{
 #define HTTP_OK 200
 #define HTTP_FILE_NOT_FOUND 404
 
+#define CONFIG_OPTION_NEWUI
+
 #endif
 
