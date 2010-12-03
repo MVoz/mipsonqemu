@@ -95,8 +95,9 @@ cd ..
 
 cd .\release
 del *.lib *.manifest
+del ..\win\installer\release\setup.exe
 "d:\Program Files\Inno Setup 5\Compil32.exe"  /cc ..\win\installer\SETUP.iss
-copy .\win\installer\release\setup.exe .\download\setup\setup.exe 
+copy ..\win\installer\release\setup.exe ..\download\setup\setup.exe 
 "D:\Program Files\WinRAR\WinRAR.exe" a -as -r  -EP1 "..\download\touchAny.rar" "..\release"
 cd ..
 

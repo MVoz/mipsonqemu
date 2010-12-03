@@ -268,5 +268,14 @@ ch=书签同步失败 comma 无法登录代理服务器
 en=try to connect server......
 ch=正在连接服务器......
 
+[common]
+en=General
+ch=通用
+[Custom]
+en=Custom
+ch=自定义
+[Advance]
+en=Advance
+ch=高级
 
 
