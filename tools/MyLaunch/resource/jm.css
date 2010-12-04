@@ -108,7 +108,7 @@ fieldset{	border: 0pt none;}
 .select{display:block;border:1px solid #ccc;width:80px;height:25px;position:relative;line-height:20px;top:-3px;left:-2px;}
 
 .cfgitem{clear:left;;margin:0px 10px 0px;}
-.cfgitem h2{color:#192A63;width:95%;height:25px;margin:0px 0px 2px;padding-left:10px;line-height:25px;font-size:14px;border-bottom:solid 2px #ccc;}
+.cfgitem h2{color:#192A63;width:95%;height:25px;margin:0px 0px 5px;padding-left:10px;line-height:25px;font-size:14px;border-bottom:solid 2px #ccc;}
 .cfgitem p {width:90%;margin:2px 0px;padding:4px 0 0 10px;clear:left;height:22px;}
 .cfgitem p span{display:block;float:left;}
 .cfgitem p .tl{padding:8px 2px;width:80px;}
@@ -139,7 +139,7 @@ div.tableContainer {
 }
 
 div.tableContainer table {float: left;width: 735px;}
-html>body div.tableContainer table {width: 720px;}
+
 thead.fixedHeader tr {position: relative}
 html>body thead.fixedHeader tr {display: block}
 thead.fixedHeader th {
