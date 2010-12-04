@@ -1392,9 +1392,9 @@ int tz::checkSilentUpdateFiles()
 	}
 	return 0;
 }
-int tz::getSystemTempDir()
+QString tz::getSystemTempDir()
 {
 	TCHAR tmp[_MAX_PATH];
-	GetTempPath(_MAX_PATH, iType, tmp);
+	GetTempPath(_MAX_PATH,  tmp);
 	return QString::fromUtf16((const ushort *) tmp);
 }
