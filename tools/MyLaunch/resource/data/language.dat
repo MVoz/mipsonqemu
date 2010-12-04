@@ -270,12 +270,15 @@ ch=正在连接服务器......
 
 [common]
 en=General
-ch=通用
+ch=通 用
 [Custom]
 en=Custom
 ch=自定义
 [Advance]
 en=Advance
-ch=高级
+ch=高 级
+[Network]
+en=Network
+ch=网 络
 
 

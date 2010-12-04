@@ -202,7 +202,7 @@ void OptionsDlg::loading(const QString & name)
 	QString menustring;
 	menustring.append("<ul>");
 	QStringList menulsit;
-	menulsit<<"Common"<<"Custom"<<"Advance"<<"About";
+	menulsit<<"Common"<<"Custom"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
 		qDebug()<<m;
@@ -304,7 +304,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 
 
-	} else if (name == "net_mg")
+	} else if (name == "Network")
 	{
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
@@ -435,7 +435,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("</table>';"));
 #endif
 
-	}else if(name == "adv"){
+	}else if(name == "Advance"){
 		JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);
 		JS_APPEND_CHECKED("ckCaseSensitive","adv",false);
 		JS_APPEND_CHECKED("ckRebuilderCatalogTimer","adv",false);
@@ -444,7 +444,9 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
 		JS_APPEND_CHECKED("baidu","netfinder",true);
 		JS_APPEND_CHECKED("google","netfinder",true);
-	}else if(name=="about"){
+
+		
+	}else if(name=="About"){
 		jsStr.append(QString("$('version').innerHTML='%1';").arg(APP_VERSION));
 		jsStr.append(QString("$('buildtime').innerHTML='%1';").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
 	}

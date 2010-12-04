@@ -4,17 +4,9 @@
 <title>index</title>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
-function $(a) {
-        return document.getElementById(a);
-}
-function getHtml(path)
-{
-	OptionsDlg.getHtml(path);
-}
-function reject()
-{
-	OptionsDlg.reject();
-}
+function $(a){return document.getElementById(a);}
+function getHtml(p){OptionsDlg.getHtml(p);}
+function reject(){OptionsDlg.reject();}
 function apply(key)
 {
 		OptionsDlg.apply('adv/ckFuzzyMatch',$('ckFuzzyMatch').checked);
@@ -25,12 +17,6 @@ function apply(key)
 		OptionsDlg.apply('adv/ckSupportOpera',$('ckSupportOpera').checked);
 		OptionsDlg.apply('netfinder/baidu',$('baidu').checked);
 		OptionsDlg.apply('netfinder/google',$('google').checked);
-
-			OptionsDlg.apply('HttpProxy/proxyEnable',$('proxyEnable').checked);
-	OptionsDlg.apply('HttpProxy/proxyAddress',$('proxyAddress').value);
-	OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
-	OptionsDlg.apply('HttpProxy/proxyUsername',$('proxyUsername').value);
-	OptionsDlg.apply('HttpProxy/proxyPassword',$('proxyPassword').value);
 		OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
@@ -44,39 +30,6 @@ function   set_selected(s_value,id){
 		  }   
 	  }   
   }   
-function updateClick(type)
-	{
-		OptionsDlg.startUpdater();
-	}
-function proxyEnableClick()
-{
-			if($('proxyEnable').checked)
-					{
-						$('proxyAddress').disabled=false;
-						$('proxyPort').disabled=false;
-						$('proxyUsername').disabled=false;
-						$('proxyPassword').disabled=false;
-					}
-			 else{
-						$('proxyAddress').disabled=true;
-						$('proxyPort').disabled=true;
-						$('proxyUsername').disabled=true;
-						$('proxyPassword').disabled=true;
-			 }
-}
-
-function testProxyClick()
-{
-		with(document){
-			OptionsDlg.apply('HttpProxy/proxyEnable',$('proxyEnable').checked);
-			OptionsDlg.apply('HttpProxy/proxyAddress',$('proxyAddress').value);
-			OptionsDlg.apply('HttpProxy/proxyPort',$('proxyPort').value);
-			OptionsDlg.apply('HttpProxy/proxyUsername',$('proxyUsername').value);
-			OptionsDlg.apply('HttpProxy/proxyPassword',$('proxyPassword').value);
-			OptionsDlg.proxyTestClick(getElementById('proxyAddress').value,getElementById('proxyPort').value,getElementById('proxyUsername').value,getElementById('proxyPassword').value);
-			//OptionsDlg.proxyTestClick();
-		}
-}
 function tr(a)
 {
 		document.write(OptionsDlg.tr(a));
@@ -118,48 +71,15 @@ function tr(a)
 						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持Opera
 						<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</li>
-					</ul>
-					
+					</ul>					
 					</fieldset>
 					<fieldset class="cfgitem">
 						<h2>搜索引擎&raquo;</h2>
 						<p>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;<input type="checkbox" name="baidu" id="baidu" />&nbsp;百度<input type="checkbox" name="google" id="google" />&nbsp;Google&nbsp;&nbsp;搜索</p>
 					</fieldset>
-					<fieldset class="cfgitem">
-							<h2>HTTP代理&raquo;</h2>
-							<p><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();" />&nbsp启用HTTP代理</p>
-							<p>
-								<span class="tl">地址::</span>
-								<span class="ip">
-									<input name="proxyAddress" type="text" id="proxyAddress" size=20 class="itext"/>
-								</span>
-								<span class="tl">端口:</span>
-								<span class="ip">
-									<input name="proxyPort" type="text" id="proxyPort" size="5" />
-								</span>	
-								<span class="btn" style="float:right;">
-										&nbsp;
-								</span>
-							</p>
-														<p>
-								<span class="tl">用户:</span>
-								<span class="ip">
-									<input name="proxyUsername" type="text" id="proxyUsername" size=20 class="itext"/>
-								</span>
-								<span class="tl">密码:</span>
-								<span class="ip">
-									<input name="proxyPassword" type="password" id="proxyPassword" size=20 class="itext"/>
-								</span>	
-								<span class="btn" style="float:right;">
-										<a href="#" onclick="testProxyClick();">测试</a>		
-								</span>
-							</p>
-					</fieldset>
-
 				</div>
 			</div>
-			 <div id="footer">
-				
+			 <div id="footer">				
 			</div>
 		</div>
     </body>

@@ -1,4 +1,4 @@
-* {	margin: 0; 	padding: 0;	font-size:12px;}
+* {	margin: 0; 	padding: 0;	font-size:14px;}
 html{	background: none repeat scroll 0% 0% #f2f2f2;}
 body, fieldset, h1, h2, h3, h4, ul{	margin: 0pt;padding: 0pt;}
 a, a:visited{	color: rgb(0, 153, 0);}
@@ -38,7 +38,7 @@ fieldset{	border: 0pt none;}
 	background: url("qrc:image/bg.png") no-repeat scroll left top transparent;
 	height: 62px;
 	voice-family: inherit;
-	margin-bottom: 17px;
+	margin-bottom: 2px;
 	padding: 22px 16px 0pt 25px;
 }
 #header div
@@ -77,7 +77,7 @@ fieldset{	border: 0pt none;}
 
 #menu{
 		padding:20px 0px 0px 5px;
-		width:530px;
+		width:550px;
 		height:40px;
 	}
 #menu ul{
@@ -89,29 +89,19 @@ fieldset{	border: 0pt none;}
 	float:left;
 	background:#192A63;						
 }
-#menu li a{
+#menu li a,#menu li a.current{
 	display:block;
 	float:left;
 	color:#fff;
 	text-transform:uppercase;
-	font-size:11px;
+	font-size:15px;
 	font-weight:bold;
 	line-height:35px;
 	text-decoration:none;
-	padding:0 25px;				
+	padding:0 20px;				
 }
 #menu li a:hover{color:#75902d;	}
-#menu li a.current{
-		display:block;
-		float:left;
-		color:#fff;
-		text-transform:uppercase;
-		font-size:11px;
-		font-weight:bold;
-		line-height:35px;
-		text-decoration:none;
-		padding:0 25px;	
-}
+
 #menu li a:hover.current{
 			color:#fff;
 }
@@ -124,7 +114,7 @@ fieldset{	border: 0pt none;}
 .cfgitem p .tl{padding:8px 2px;width:80px;}
 .cfgitem p .ip{padding:0px 2px;width:180px;}
 .cfgitem ul {margin:0px;padding:0px 10px;list-style:none;}
-.cfgitem li {float:left;width:240px;padding:2px 2px;}
+.cfgitem li {padding:2px 2px;}
 .cfgitem table{clear:left;float:left;width:100%;}
 
 .itext{border:1px solid #ddd;line-height:20px;height:22px;color:#333;width:150px;}
@@ -143,12 +133,12 @@ div.tableContainer {
 	clear: both;
 	border: 1px solid #ccc;
 	height: 9em;
-	width: 720px;
+	width: 750px;
 	overflow:scroll;
 	overflow-x:hidden;
 }
 
-div.tableContainer table {float: left;width: 700px;}
+div.tableContainer table {float: left;width: 735px;}
 html>body div.tableContainer table {width: 720px;}
 thead.fixedHeader tr {position: relative}
 html>body thead.fixedHeader tr {display: block}
@@ -186,7 +176,7 @@ tbody.scrollContent td, tbody.scrollContent tr.even td {
 	border-left: none;
 	border-right: 1px solid #CCC;
 	border-top: 1px solid #DDD;
-	padding: 2px 3px 3px 4px;
+	padding: 2px 3px;
 	height:1em;
 }
 
@@ -196,42 +186,15 @@ tbody.scrollContent tr.odd td {
 	border-left: none;
 	border-right: 1px solid #CCC;
 	border-top: 1px solid #DDD;
-	padding: 2px 3px 3px 4px
+	padding: 2px 3px;
 	height:1em;
 }
 
-html>body thead.fixedHeader th {
-	width: 30px
-}
+thead.fixedHeader th,tbody.scrollContent td {width: 30px}
 
-html>body thead.fixedHeader th + th {
-	width: 340px
-}
+thead.fixedHeader th + th,tbody.scrollContent td + td {	width: 450px}
 
-html>body thead.fixedHeader th + th + th {
-	width: 100px
-}
-html>body thead.fixedHeader th + th + th + th {
-	width: 50px
-}
-html>body thead.fixedHeader th + th + th + th + th {
-	width: 30px
-}
+thead.fixedHeader th + th + th,tbody.scrollContent td + td + td  {width: 150px}
+thead.fixedHeader th + th + th + th,tbody.scrollContent td + td + td +td  {	width: 50px}
+thead.fixedHeader th + th + th + th + th,tbody.scrollContent td + td + td +td +td {	width: 30px}
 
-
-html>body tbody.scrollContent td {
-	width: 30px
-}
-
-html>body tbody.scrollContent td + td {
-	width: 340px
-}
-html>body tbody.scrollContent td + td + td {
-	width: 100px
-}
-html>body tbody.scrollContent td + td + td +td {
-	width: 50px
-}
-html>body tbody.scrollContent td + td + td +td +td{
-	width: 30px
-}
