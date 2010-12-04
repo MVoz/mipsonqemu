@@ -3,13 +3,12 @@
 <head>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
-function $(a) {
-        return document.getElementById(a);
-}
-function getHtml(path)
-{
-	OptionsDlg.getHtml(path);
-}
+function $(a){return document.getElementById(a);}
+function getHtml(path){OptionsDlg.getHtml(path);}
+function reject(){OptionsDlg.reject();}
+function tr(a){document.write(OptionsDlg.tr(a));}
+function gohref(url){OptionsDlg.gohref(url);}
+
 function postItem(path,suffix,isInclude,deep,index)
 {
 		$('listPath').value=path;
@@ -29,10 +28,6 @@ function listApply(type)
 function apply(key)
 {
 	OptionsDlg.accept();
-}
-function reject()
-{
-	OptionsDlg.reject();
 }
 function childDeepCheck()
 {
@@ -91,10 +86,6 @@ function rebuildcatalog()
 {
 	OptionsDlg.rebuildcatalog();
 }
-function tr(a)
-{
-		document.write(OptionsDlg.tr(a));
-}
 </script>
 </head>    
     <body>
@@ -133,10 +124,44 @@ function tr(a)
 						</table>
 						</div>	
 					</fieldset>
+					<fieldset class="cfgitem">
+						<h2>编辑&raquo;</h2>
+						<p>
+							<span class="tl">路径:</span>
+							<span class="ip">
+								<input name="listPath" type="text" id="listPath" size=40 class="itext"/>
+								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+							</span>
+							<span class="ip">
+								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+							</span>	
+						</p>
+						<p>
+							<span class="tl">后缀名:</span>
+							<span class="ip">
+								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+							</span>
+							<span class="tl">最大深度:</span>
+							<span class="ip">
+								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();"/>
+							</span>	
+						</p>
+						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
+						<p>
+							<span class="btn">
+									<a href="#" onclick="listApply(0);">增加</a>
+							</span>
+							<span class="btn">
+									<a href="#" onclick="listApply(1)">修改</a>
+							</span>
+							<span class="btn">
+									<a href="#" onclick="listApply(1)">删除</a>
+							</span>
+						</p>					
+					</fieldset>
 				</div>
 			</div>
-			 <div id="footer">
-				
+			 <div id="footer">				
 			</div>
 		</div>
     </body>

@@ -350,8 +350,8 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 			  {
 				  //	  CString filename;
 				  // filename.Format(_T("%s.txt"),m_fileName);
-					TCHAR filename[1024];
-					TCHAR temp[1024];
+				  TCHAR filename[1024]={0};
+				  TCHAR temp[1024]={0};
 					_tcscpy(temp,m_fileName);
 			  //enter the right directory
 				   TCHAR* pszToken = ::_tcstok(temp, _T("/"));
@@ -413,8 +413,8 @@ BOOL CMain::SaveSnapshot(void)
   if(!fileCreated)
 	{
 
-					TCHAR filename[1024];
-					TCHAR temp[1024];
+		TCHAR filename[1024]={0};
+		TCHAR temp[1024]={0};
 					_tcscpy(temp,m_fileName);
 				   TCHAR* pszToken = ::_tcstok(temp, _T("/"));
 				   TCHAR* rightToken=pszToken;
@@ -558,10 +558,10 @@ if(SUCCEEDED(hr)){
 
   CImage image;
   CImage image2;
-  TCHAR name_b[1024];
-  TCHAR name_l[1024];
+  TCHAR name_b[1024]={0};
+  TCHAR name_l[1024]={0};
   //enter the right directory
-			TCHAR temp[1024];
+  TCHAR temp[1024]={0};
 		 _tcscpy(temp,m_fileName);
 	 TCHAR* pszToken = ::_tcstok(temp, _T("/"));
 	 TCHAR* rightToken=pszToken;
@@ -638,7 +638,7 @@ IECaptHelp(void) {
     "");
 }
 
-int _tmain (int argc, _TCHAR* argv[])
+int main (int argc, _TCHAR* argv[])
 {
   int ax;
   int argHelp = 0;

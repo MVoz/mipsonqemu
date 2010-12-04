@@ -3,20 +3,13 @@
 <head>
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
-function $(a) {
-        return document.getElementById(a);
-}
-function getHtml(path)
-{
-	OptionsDlg.getHtml(path);
-}
-function syncClick()
-{
+function $(a){return document.getElementById(a);}
+function getHtml(path){OptionsDlg.getHtml(path);}
+function reject(){OptionsDlg.reject();}
+function tr(a){document.write(OptionsDlg.tr(a));}
+function gohref(url){OptionsDlg.gohref(url);}
+function syncClick(){
 	OptionsDlg.startSync();
-}
-function reject()
-{
-	OptionsDlg.reject();
 }
 function apply(key)
 {

@@ -281,6 +281,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	//      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
 	// Load settings
+	qDebug()<<tz::getSystemTempDir();
 	dirs = platform->GetDirectories();
 	if (QFile::exists(dirs["portConfig"][0]))
 		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);

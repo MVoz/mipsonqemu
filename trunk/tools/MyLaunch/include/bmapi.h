@@ -170,6 +170,7 @@ public :
 	static int checkToSetting(QSettings *,const QString &,QString& );
 	static int checkSilentUpdateSettings( QSettings* , QSettings* ,int);
 	static int checkSilentUpdateFiles();
+	static QString getSystemTempDir();
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
