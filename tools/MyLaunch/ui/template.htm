@@ -1,42 +1,35 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>index</title>
 <link rel="stylesheet" rev="stylesheet" href="image/ui.css" type="text/css">
 <script>
 function $(a){return document.getElementById(a);}
-function getHtml(p){OptionsDlg.getHtml(p);}
-function reject(){OptionsDlg.reject();}
+function getHtml(path){}
+function reject(){}
+function tr(a){}
+function gohref(url){}
+function syncClick(){
+
+}
 function apply(key)
 {
-		OptionsDlg.apply('adv/ckFuzzyMatch',$('ckFuzzyMatch').checked);
-		OptionsDlg.apply('adv/ckCaseSensitive',$('ckCaseSensitive').checked);
-		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$('ckRebuilderCatalogTimer').checked);
-		OptionsDlg.apply('adv/ckSupportIe',$('ckSupportIe').checked);
-		OptionsDlg.apply('adv/ckSupportFirefox',$('ckSupportFirefox').checked);
-		OptionsDlg.apply('adv/ckSupportOpera',$('ckSupportOpera').checked);
-		OptionsDlg.apply('netfinder/baidu',$('baidu').checked);
-		OptionsDlg.apply('netfinder/google',$('google').checked);
-		OptionsDlg.accept();
+	
 }
 function   set_selected(s_value,id){   
-	  if(s_value!=""){   
-	  s_obj   =   $(id).options;   
-	  len   =   s_obj.length;   
-		  for   (i   =   0;   i   <   len;   i++ ){   
-			  if(s_value   ==   s_obj[i].value){
-				s_obj[i].selected=   true; 
-				}   
-		  }   
-	  }   
-  }   
-function tr(a)
-{
-		document.write(OptionsDlg.tr(a));
+	
 }
+function checkUsername()
+{  
+ 
+}
+function accountTestClick()
+{
+
+}
+
 </script>
-</head>
- <body>
+</head>    
+    <body>
 		<div id="wrapper">
 			<div id="page">
 				<div id="header">
@@ -55,48 +48,74 @@ function tr(a)
 				</div>
 				<div class="clearfix">
 					<fieldset class="cfgitem">
-					<h2>高级&raquo;</h2>
+					<h2>启动&raquo;</h2>
 					<ul>
-						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
-						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
-						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>
-						<li>
-						<input type="checkbox" name="ckSupportIe" id="ckSupportIe" /><span>&nbsp支持IE</span><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-						</li>
-						<li>
-						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持firefox
-						<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-						</li>
-						<li>
-						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持Opera
-						<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-						</li>
-					</ul>					
-					</fieldset>
-					<fieldset class="cfgitem">
-						<h2>搜索引擎&raquo;</h2>
-						<p><span>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;</span><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></p>
-					</fieldset>
+						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
+						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
+						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
+					</ul>
+					<p>
+						<span>快捷键:</span>
+						<span>
+							<select id="hotkey_0" class="select">	
+									<option value="134217728" > Alt</option>
+									<option value="33554432" > Shift</option>
+									<option value="268435456" > Win</option>
+									<option value="67108864"> Ctrl</option>				
+								</select>
+						</span>
+						<span>&nbsp;+&nbsp;</span>
+						<span>
+								<select id="hotkey_1" class="select" >
+										<option value="16777216" > Space</option>
+										<option value="16777217"> Tab</option>
+										<option value="16777219" > Backspace</option>
+										<option value="16777221" > Enter</option>
+								</select>
+						</span>
+					</p>					
+				</fieldset>
+				<fieldset class="cfgitem">
+					<h2>帐号&raquo;</h2>
+					<p>
+						<span class="tl">用户:</span>
+						<span class="ip">
+							<input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" />
+						</span>
+					    <span class="tl">密码:</span>
+						<span class="ip">
+							<input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" />
+						</span>	
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="accountTestClick();">测试</a>
+						</span>
+					</p>
+					<p>
+
+						<span class="tl">上次状态:</span>
+						<span class="ip">
+							<div id="lastsyncstatus" class="success"></div>
+						</span>
+						<span class="tl">上次同步时间:</span>
+						<span class="ip" id="lastsynctime">
+								&nbsp;
+						</span>
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="syncClick();">同步</a>
+						</span>
+					</p>
+				</fieldset>
 				</div>
 			</div>
 			 <div id="footer">
-					<div class="btn">
-							<a href="#" onclick="syncClick();">同步</a>
-					</div>
-					<div class="btn">
-							<a href="#" onclick="syncClick();">同步</a>
-					</div>
-				<p class="cpy">
-					Copyright 2010 
-					<a href="http://www.tanzhi.com" target="_blank">
-						haoting.net
-					</a>
-				</p>				
+				
 			</div>
 		</div>
     </body>
-<body>
 <script>
-	OptionsDlg.loading('Advance');
+	$('lastsyncstatus').className = 'success';
+
 </script>
 </html>

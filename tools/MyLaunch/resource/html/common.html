@@ -127,7 +127,7 @@ function accountTestClick()
 
 						<span class="tl">上次状态:</span>
 						<span class="ip" id="lastsyncstatus">
-							&nbsp;
+							<div id="lastsyncstatus"></div>
 						</span>
 						<span class="tl">上次同步时间:</span>
 						<span class="ip" id="lastsynctime">
@@ -147,5 +147,6 @@ function accountTestClick()
     </body>
 <script>
 	OptionsDlg.loading('Common');
+//	$('lastsyncstatus').className = 'success';
 </script>
 </html>
