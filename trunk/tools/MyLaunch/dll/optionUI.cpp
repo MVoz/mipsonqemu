@@ -202,10 +202,9 @@ void OptionsDlg::loading(const QString & name)
 	QString menustring;
 	menustring.append("<ul>");
 	QStringList menulsit;
-	menulsit<<"Common"<<"Custom"<<"Advance"<<"Network"<<"About";
+	menulsit<<"Common"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
-		qDebug()<<m;
     		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
 		menustring.append("</li>");
         }
@@ -214,17 +213,15 @@ void OptionsDlg::loading(const QString & name)
 	jsStr.append("$('menu').innerHTML=\""+menustring+"\";");
 	//footer
 	QString footerstring;
-	footerstring.append("<p>");
-	footerstring.append("<span class=\"btn\">");
+	footerstring.append("<div class=\"btn\">");
 	footerstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");
-	footerstring.append("</span>");
-	footerstring.append("<span class=\"btn\">");
+	footerstring.append("</div >");
+	footerstring.append("<div  class=\"btn\">");
 	footerstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
-	footerstring.append("</span>");
-	footerstring.append("</p>");
+	footerstring.append("</div >");
 	footerstring.append("<p style=\"text-align:center;\">");
 	footerstring.append("Copyright 2010 ");
-	footerstring.append("<a  href=\""HTTP_SERVER_URL"\">"+tz::tr(APP_NAME)+"</a>");
+	footerstring.append("<a  href=\"#\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
 	footerstring.append("</p>");
 	footerstring.replace("\"","\\\"");
 	jsStr.append("$('footer').innerHTML=\""+footerstring+"\";");
@@ -291,8 +288,12 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_VALUE("Username","Account","");
 		JS_APPEND_PASSWD("Userpasswd","Account","");
 		//lastsynctime
-		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt()); 
+		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt());
+		uint lastsyncstatus=settings->value("lastsyncstatus", 0).toUInt();
 		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
+	//	jsStr.append(QString("$('lastsyncstatus').innerHTML ='<img src=\"image/%1.png\" style=\"width:25px;height:25px;\">';").arg(lastsyncstatus?"success":"fail"));	
+		jsStr.append(QString("$('lastsyncstatus').className ='%1';").arg(lastsyncstatus?"success":"fail"));	
+		
 #ifdef Q_WS_WIN
 		int curMeta = settings->value("hotkeyModifier", Qt::AltModifier).toInt();
 #endif
@@ -314,15 +315,17 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("$('version').innerHTML ='%1';").arg(APP_VERSION));
 		jsStr.append(QString("proxyEnableClick();"));
 
-	} else if (name == "cmd_mg")
+	} else if (name == "Command")
 	{
-		jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
+		/*jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
 							 <td width=\"15%\">"+tz::tr("html_name")+"</td>\
 							 <td width=\"60%\">"+tz::tr("html_command")+"</td>\
 							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
+		*/
+		jsStr.append("$('cmdlist').innerHTML='");
 		//cmdLists.clear();
 		QSqlQuery q("",*db);
 		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
@@ -333,8 +336,17 @@ void OptionsDlg::loading(const QString & name)
 			int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
 			int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
 			int args_Idx = rec.indexOf("args"); // index of the field "name" 
+			int i = 0;
 			while(q.next()) {
 				qDebug()<<q.value(shortName_Idx).toString()<<":"<<q.value(fullPath_Idx).toString();
+				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(args_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+				jsStr.append("</td>");
+				jsStr.append("<td >"+q.value(shortName_Idx).toString().replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+q.value(fullPath_Idx).toString().replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+q.value(args_Idx).toString()+"</td>");
+				/*				
 				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
 									 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
 									 <td width=\"15%\">%5</td>\
@@ -348,6 +360,8 @@ void OptionsDlg::loading(const QString & name)
 									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\"))
 									 .arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\"))
 									 .arg(q.value(args_Idx).toString()));
+				*/
+				i++;
 			}
 
 		}

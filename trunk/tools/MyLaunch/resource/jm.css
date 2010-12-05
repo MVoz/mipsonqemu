@@ -196,3 +196,5 @@ thead.fixedHeader th + th + th,tbody.scrollContent td + td + td  {width: 150px}
 thead.fixedHeader th + th + th + th,tbody.scrollContent td + td + td +td  {	width: 50px}
 thead.fixedHeader th + th + th + th + th,tbody.scrollContent td + td + td +td +td {	width: 30px}
 
+.success{width:25px;height:25px;background: url("qrc:image/success.png") no-repeat scroll 0 -3px transparent;}
+.fail{width:25px;height:25px;background: url("qrc:image/fail.png") no-repeat scroll 0 -3px transparent;}

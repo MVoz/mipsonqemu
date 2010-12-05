@@ -81,9 +81,10 @@ void bmSync::testNetFinished()
 				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 				filename_fromserver.clear();
 				getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
-				qDebug("random file from server:%s",qPrintable(filename_fromserver));
-				filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
-				qDebug("random file from server:%s",qPrintable(filename_fromserver));
+				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
+				//filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
+				filename_fromserver=tz::getSystemTempDir()+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
+				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				file = new QFile(filename_fromserver);
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);

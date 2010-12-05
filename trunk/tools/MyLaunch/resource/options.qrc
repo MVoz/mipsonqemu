@@ -1,18 +1,11 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-     <file>image/arrow_g.png</file>
-     <file>image/arrow_y.png</file>
-     <file>image/button.png</file>
-     <file>image/button01.png</file>
-     <file>image/button02.png</file>
-     <file>image/button03.png</file>
-     <file>image/button04.png</file>
-     <file>image/button_green.png</file>
-     <file>image/top.png</file>
+     <file>image/bg.png</file>
      <file>image/loading.gif</file>
      <file>image/logo.png</file>
-     <file>image/bg.png</file>
      <file>image/btn.png</file>
+     <file>image/success.png</file>
+     <file>image/fail.png</file>
      <file>image/btn_g.png</file>
      <file>jm.css</file>
  </qresource>
