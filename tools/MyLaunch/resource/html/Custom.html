@@ -129,7 +129,7 @@ function rebuildcatalog()
 						<p>
 							<span class="tl">路径:</span>
 							<span class="ip">
-								<input name="listPath" type="text" id="listPath" size=40 class="itext"/>
+								<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;"/>
 								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 							</span>
 							<span class="ip">
@@ -137,7 +137,7 @@ function rebuildcatalog()
 							</span>	
 						</p>
 						<p>
-							<span class="tl">后缀名:</span>
+							<span class="tl">后缀:</span>
 							<span class="ip">
 								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
 							</span>
@@ -147,17 +147,15 @@ function rebuildcatalog()
 							</span>	
 						</p>
 						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
-						<p>
-							<span class="btn">
-									<a href="#" onclick="listApply(0);">增加</a>
-							</span>
-							<span class="btn">
-									<a href="#" onclick="listApply(1)">修改</a>
-							</span>
-							<span class="btn">
+							<div class="btn">
 									<a href="#" onclick="listApply(1)">删除</a>
-							</span>
-						</p>					
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(1)">修改</a>
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(0);">增加</a>
+							</div>
 					</fieldset>
 				</div>
 			</div>

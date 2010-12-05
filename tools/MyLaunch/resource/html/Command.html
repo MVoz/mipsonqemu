@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
+<head>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function $(a){return document.getElementById(a);}
+function getHtml(path){OptionsDlg.getHtml(path);}
+function reject(){OptionsDlg.reject();}
+function tr(a){document.write(OptionsDlg.tr(a));}
+function gohref(url){OptionsDlg.gohref(url);}
+function postItem(name,cmd,args,index)
+{
+		$('cmdName').value=name;
+		$('cmdCommand').value=cmd;
+		$('cmdParameter').value=args;
+		$('cmdIndex').value=index;
+}
+function cmdApply(type)
+{
+	switch(type)
+	{
+		case 0://add
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
+		break;
+		case 1://modify
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
+		break
+		case 2://delete
+			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);			
+		break;
+	}
+	OptionsDlg.loading('cmd_mg');
+}
+</script>
+</head>    
+    <body>
+		<div id="wrapper">
+			<div id="page">
+				<div id="header">
+					<div>
+						<h1>
+							Tanzhi.com
+						</h1>
+						<p>
+							<a href="http://www.tanzhi.com">
+								Anything is in touch!
+							</a>
+						</p>
+					</div>
+					<div id="menu">
+					</div>
+				</div>
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+						<h2>目录&raquo;</h2>
+						<div id="tableContainer" class="tableContainer">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+							<thead class="fixedHeader">
+								<tr>
+									<th><a href="#">选择</a></th>
+									<th><a href="#">名字</a></th>
+									<th><a href="#">命令</a></th>
+									<th><a href="#">参数</a></th>
+								</tr>
+							</thead>
+							<tbody class="scrollContent" id="cmdlist">
+							</tbody>
+						</table>
+						</div>	
+					</fieldset>
+					<fieldset class="cfgitem">
+						<h2>编辑&raquo;</h2>
+						<p>
+							<span class="tl">名字:</span>
+							<span class="ip">
+								<input name="cmdName" type="text" id="cmdName" size=20 class="itext"/>
+							</span>	
+							<span class="tl">参数:</span>
+							<span class="ip">
+								<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/>
+							</span>	
+						</p>
+						<p>
+							<span class="tl">命令:</span>
+							<span class="ip">
+								<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;"/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);" />
+							</span>								
+						</p>
+						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex"></p>
+							<div class="btn">
+									<a href="#" onclick="listApply(1)">删除</a>
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(1)">修改</a>
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(0);">增加</a>
+							</div>
+					</fieldset>
+				</div>
+			</div>
+			 <div id="footer">				
+			</div>
+		</div>
+    </body>
+<script>
+	OptionsDlg.loading('Custom');
+</script>
+</html>

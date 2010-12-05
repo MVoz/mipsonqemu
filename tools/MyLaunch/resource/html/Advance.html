@@ -5,8 +5,10 @@
 <link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
 <script>
 function $(a){return document.getElementById(a);}
-function getHtml(p){OptionsDlg.getHtml(p);}
+function getHtml(path){OptionsDlg.getHtml(path);}
 function reject(){OptionsDlg.reject();}
+function tr(a){document.write(OptionsDlg.tr(a));}
+function gohref(url){OptionsDlg.gohref(url);}
 function apply(key)
 {
 		OptionsDlg.apply('adv/ckFuzzyMatch',$('ckFuzzyMatch').checked);
@@ -30,10 +32,6 @@ function   set_selected(s_value,id){
 		  }   
 	  }   
   }   
-function tr(a)
-{
-		document.write(OptionsDlg.tr(a));
-}
 </script>
 </head>
  <body>
@@ -61,21 +59,21 @@ function tr(a)
 						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
 						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>
 						<li>
-						<input type="checkbox" name="ckSupportIe" id="ckSupportIe" />&nbsp支持IE<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						<input type="checkbox" name="ckSupportIe" id="ckSupportIe" /><span>&nbsp支持IE</span><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</li>
 						<li>
-						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持firefox
-						<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" /><span>&nbsp支持firefox</span>
+						<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</li>
 						<li>
-						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持Opera
-						<input name="listPath" type="text" id="listPath" size=40 class="itext"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" /><span>&nbsp支持Opera</span>
+						<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</li>
 					</ul>					
 					</fieldset>
 					<fieldset class="cfgitem">
 						<h2>搜索引擎&raquo;</h2>
-						<p>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;<input type="checkbox" name="baidu" id="baidu" />&nbsp;百度<input type="checkbox" name="google" id="google" />&nbsp;Google&nbsp;&nbsp;搜索</p>
+						<p><span>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;</span><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></p>
 					</fieldset>
 				</div>
 			</div>
