@@ -502,7 +502,7 @@ border:1px solid #DDD;margin-top:1px;}
 /*********************************network css****************************************************************/
 #header{width:970px;height:60px;clear:both;margin:0 auto 5px}
 #header .h_logo{background:url("image/bm_logo.jpg") no-repeat scroll 0 0 transparent;float:left;margin:10px 0 0;width:305px;}
-#header .h_logo a {color:#FFF;display:block;height:50px;overflow:hidden;text-indent:-3000px;width:200px;}
+#header .h_logo a {color:#FFF;display:block;height:58px;overflow:hidden;text-indent:-3000px;width:200px;}
 #header .h_adv {float:left;margin:10px 0 0 auto;position:relative;width:365px;}
 #header .h_r {float:right;margin-top:10px;position:relative;text-align:right;word-spacing:-3px;}
 #header .h_r .first {background:none repeat scroll 0 0 transparent;}
