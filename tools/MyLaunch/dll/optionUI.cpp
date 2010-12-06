@@ -23,7 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDesktopWidget>
 #include <catalog.h>
 
-OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent),settings(s),db(b)
+OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::SplashScreen|Qt::MSWindowsFixedSizeDialogHint
+| Qt::WindowTitleHint),settings(s),db(b)
 {
 	manager=NULL;
 	reply=NULL;
@@ -35,7 +36,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	webView = new QWebView(this);
 
 	webView->setObjectName(QString::fromUtf8("webView"));
-	webView->setMinimumSize(QSize(805, 500));
+	webView->setMinimumSize(QSize(805, 480));
 	webView->setMaximumSize(QSize(805, 16777215));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
