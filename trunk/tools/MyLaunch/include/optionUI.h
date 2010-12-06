@@ -122,6 +122,7 @@ public slots:
 	void proxyTestTimeout();
 	void rebuildcatalog();
 	void startUpdater();
+	void getSyncStatus();
 	QString tr(const QString & s);
 signals:
 	void rebuildcatalogSignal();

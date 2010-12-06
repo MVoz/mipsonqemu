@@ -198,7 +198,6 @@ void OptionsDlg::gohref(const QString & url)
 void OptionsDlg::loading(const QString & name)
 {
 	QString jsStr;
-#ifdef CONFIG_OPTION_NEWUI
 	//menu
 	QString menustring;
 	menustring.append("<ul>");
@@ -226,59 +225,7 @@ void OptionsDlg::loading(const QString & name)
 	footerstring.append("</p>");
 	footerstring.replace("\"","\\\"");
 	jsStr.append("$('footer').innerHTML=\""+footerstring+"\";");
-#else
-	struct menuhtml{
-		QString name;
-		QList<QString> child;
-	}menuHtml[4];
 
-	menuHtml[0].name = "common";
-	menuHtml[0].child<<"list_mg"<<"cmd_mg";
-	menuHtml[1].name = "adv";
-	menuHtml[1].child<<"net_mg";
-	menuHtml[2].name = "interface";
-	//menuHtml[2].child<<"skin_mg"<<"language_mg";
-	menuHtml[3].name = "about";
-    
-	
-	//menu parts
-	
-	QString menustring;
-	menustring.append("<ul id=\"menu\">");
-	for(int j = 0; j < 4 ; j++){
-		menustring.append("<li>");
-		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+menuHtml[j].name+".html');\" style=\""+((name==menuHtml[j].name)?"font-weight:bold;":"")+"\">"+tz::tr(TOCHAR(menuHtml[j].name))+"</a>");
-		if(menuHtml[j].child.count()){
-			menustring.append("<ul>");
-			foreach(QString childname,menuHtml[j].child){
-				menustring.append("<li>");
-				menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+childname+".html');\" style=\""+((name==childname)?"font-weight:bold;":"")+"\">"+tz::tr(TOCHAR(childname))+"</a>");
-				menustring.append("</li>");
-			}
-			menustring.append("</ul>");
-		}
-		menustring.append("</li>");
-	}
-	menustring.append("</ul>");	
-	menustring.replace("\"","\\\"");
-	jsStr.append("$('lm').innerHTML=\""+menustring+"\";");
-
-	//button parts
-	QString buttonstring;
-	buttonstring.append("<table width=\"100%\"><tr>");
-	buttonstring.append("<td width=\"30%\"><span style=\"padding-left:-280px;\"><a  href=\""HTTP_SERVER_URL"\">"+tz::tr(APP_NAME)+"</a>,"+tz::tr(APP_SLOGAN)+"!</span></td>");
-	buttonstring.append("<td width=\"30%\" align=right>");
-	buttonstring.append("<div class=\"btn\">");
-	buttonstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
-	buttonstring.append("</div></td>");				
-	buttonstring.append("<td width=\"30%\" align=right>");	
-	buttonstring.append("<div class=\"btn\">");	
-	buttonstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");	
-	buttonstring.append("</div></td></tr></table>");
-	
-	buttonstring.replace("\"","\\\"");
-	jsStr.append("$('applybtn').innerHTML=\""+buttonstring+"\";");
-#endif
 	if (name == "Common")
 	{
 		JS_APPEND_CHECKED("ckStartWithSystem","",false);
@@ -290,10 +237,22 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_PASSWD("Userpasswd","Account","");
 		//lastsynctime
 		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt());
-		uint lastsyncstatus=settings->value("lastsyncstatus", 0).toUInt();
+		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAIL).toUInt();
 		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
-	//	jsStr.append(QString("$('lastsyncstatus').innerHTML ='<img src=\"image/%1.png\" style=\"width:25px;height:25px;\">';").arg(lastsyncstatus?"success":"fail"));	
-		jsStr.append(QString("$('lastsyncstatus').className ='%1';").arg(lastsyncstatus?"success":"fail"));	
+		switch(lastsyncstatus){
+			case SYNC_STATUS_FAIL:
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').className ='fail';"));	
+				break;
+			case SYNC_STATUS_SUCCESS:
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').className ='success';"));	
+				break;
+			case SYNC_STATUS_PROCESSING:
+				jsStr.append(QString("$('lastsyncstatus').className ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='processing...';"));	
+				break;
+		}		
 		
 #ifdef Q_WS_WIN
 		int curMeta = settings->value("hotkeyModifier", Qt::AltModifier).toInt();
@@ -729,6 +688,30 @@ void OptionsDlg::startUpdater()
 
 	updaterDlg->setModal(1);
 	updaterDlg->show();	
+}
+void OptionsDlg::getSyncStatus()
+{
+		//lastsynctime
+		QString jsStr;
+		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt());
+		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAIL).toUInt();
+		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
+		switch(lastsyncstatus){
+			case SYNC_STATUS_FAIL:
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').className ='fail';"));	
+				break;
+			case SYNC_STATUS_SUCCESS:
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').className ='success';"));	
+				break;
+			case SYNC_STATUS_PROCESSING:
+				jsStr.append(QString("$('lastsyncstatus').className ='';"));	
+				jsStr.append(QString("$('lastsyncstatus').innerHTML ='processing...';"));	
+				break;
+		}		
+		
+		webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
 /*
 synchronizeDlg parts

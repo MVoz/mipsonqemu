@@ -267,10 +267,16 @@ void bmSync::mergeDone()
 			break;
 		}
 		if((status == BM_SYNC_SUCCESS_NO_ACTION)||(status == BM_SYNC_SUCCESS_WITH_ACTION)){
-			settings->setValue("lastsyncstatus",1);
+			settings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESS);
 			settings->sync();
 			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_ACTION);
+		}else{
+			settings->setValue("lastsyncstatus",SYNC_STATUS_FAIL);
+			settings->sync();
 		}
+	}else{
+		settings->setValue("lastsyncstatus",SYNC_STATUS_FAIL);
+		settings->sync();
 	}
 	DELETE_OBJECT(mgthread);
 	exit(status);

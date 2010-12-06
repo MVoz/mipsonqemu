@@ -416,5 +416,11 @@ enum TEST_NET_RESULT{
 
 #define CONFIG_OPTION_NEWUI
 
+
+#define SYNC_STATUS_FAIL 0
+#define SYNC_STATUS_PROCESSING  1
+#define SYNC_STATUS_SUCCESS  2
+
+
 #endif
 

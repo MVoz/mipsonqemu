@@ -57,7 +57,11 @@ function accountTestClick()
 {
 	OptionsDlg.accountTestClick($('Username').value,$('Userpasswd').value);
 }
-
+function getSyncStatus()
+{
+	OptionsDlg.getSyncStatus();
+}
+setInterval("getSyncStatus()",1000);
 </script>
 </head>    
     <body>
@@ -126,7 +130,7 @@ function accountTestClick()
 					<p>
 
 						<span class="tl">上次状态:</span>
-						<span class="ip" id="lastsyncstatus">
+						<span class="ip" id="lastsyncstatus" style="width:150px;">
 							<div id="lastsyncstatus"></div>
 						</span>
 						<span class="tl">上次同步时间:</span>

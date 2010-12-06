@@ -2113,7 +2113,7 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 	if(name.isEmpty()||password.isEmpty())
-		return;	
+		goto	SYNCTIMER;
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE)&&syncDlg)
 		{
@@ -2214,7 +2214,7 @@ void MyWidget::_startSync(int mode,int silence)
 #endif
 	gSyncer->setUrl(url);
 	gSyncer->start();
-	gSettings->setValue("lastsyncstatus",0);
+	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
 	gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
 	return;
