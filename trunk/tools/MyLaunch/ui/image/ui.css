@@ -137,72 +137,75 @@ fieldset{	border: 0pt none;}
 #footer .cpy{text-align:center;font-size:14px;padding:0px;height:1.5em;}
 table, td, a {	color: #000;}
 
-div.tableContainer {
+div.tableContainer ,.clt{
 	clear: both;
 	border: 1px solid #ccc;
 	height: 9em;
 	width: 750px;
 	overflow:scroll;
-	overflow-x:hidden;
+	overflow-x:hidden;	
 }
+div.tableContainer table,.clt table {float: left;width: 735px;}
+thead.fixedHeader tr,thead.clt_h tr {position: relative;display: block}
 
-div.tableContainer table {float: left;width: 700px;}
-html>body div.tableContainer table {width: 735px;}
-thead.fixedHeader tr {position: relative}
-html>body thead.fixedHeader tr {display: block}
-thead.fixedHeader th {
+thead.fixedHeader th,thead.clt_h th {
 	background: #192A63;
 	border-left: 0px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-top: 1px solid #ccc;
 	font-weight: normal;
 	padding: 4px 3px;
-	text-align: left
+	text-align: left;
+	display: block;
+	overflow-x:hidden;
+	float:left;
 }
-thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited {
+thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited ,thead.clt_h a,thead.clt_h a:link,thead.clt_h a:visited {
+	color: #FFF;
+	display: block;
+	text-decoration: none;
+	width: 100%;
+	font-size:12px;
+	text-align:center;
+}
+thead.fixedHeader a:hover,thead.clt_h a:visited {
 	color: #FFF;
 	display: block;
 	text-decoration: none;
 	width: 100%
 }
-thead.fixedHeader a:hover {
-	color: #FFF;
-	display: block;
-	text-decoration: underline;
-	width: 100%
-}
 
-html>body tbody.scrollContent {
+html>body tbody.scrollContent,tbody.clt_c {
 	display: block;
 	height: 8em;
 	width: 100%
-
 }
-tbody.scrollContent td, tbody.scrollContent tr.even td {
+tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even td,tbody.clt_c tr.odd td {
+	border-bottom: 1px solid #DDD;
+	border-left: none;
+	border-right: 1px solid #CCC;
+	border-top:none;
+	padding: 4px 3px;
+	height:1em;
+	overflow-x:hidden;
+	display: block;
+	float:left;
+	font-size:12px;
+}
+tbody.scrollContent tr.even td,tbody.clt_c tr.even td{
 	background: #FFF;
-	border-bottom: none;
-	border-left: none;
-	border-right: 1px solid #CCC;
-	border-top: 1px solid #DDD;
-	padding: 2px 3px;
-	height:1em;
 }
-
-tbody.scrollContent tr.odd td {
+tbody.scrollContent tr.odd td,tbody.clt_c tr.odd td{
 	background: #EEE;
-	border-bottom: none;
-	border-left: none;
-	border-right: 1px solid #CCC;
-	border-top: 1px solid #DDD;
-	padding: 2px 3px;
-	height:1em;
 }
 
-thead.fixedHeader th,tbody.scrollContent td {width: 30px}
-
-thead.fixedHeader th + th,tbody.scrollContent td + td {	width: 450px}
-
+thead.fixedHeader th,tbody.scrollContent td {width: 50px}
+thead.clt_h th,tbody.clt_c td {width: 50px}
+thead.fixedHeader th + th,tbody.scrollContent td + td {	width: 420px}
+thead.clt_h th+th,tbody.clt_c td+td {width: 107px}
 thead.fixedHeader th + th + th,tbody.scrollContent td + td + td  {width: 150px}
+thead.clt_h th + th + th,tbody.clt_c td + td + td  {width: 400px}
 thead.fixedHeader th + th + th + th,tbody.scrollContent td + td + td +td  {	width: 50px}
+thead.clt_h th + th + th + th,tbody.clt_c td + td + td +td  {	width: 150px}
 thead.fixedHeader th + th + th + th + th,tbody.scrollContent td + td + td +td +td {	width: 30px}
 
