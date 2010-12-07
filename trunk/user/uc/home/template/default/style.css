@@ -760,7 +760,7 @@ background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0
 /*soft*/
 .soft{  width:679px; height:180px; }
 
-.soft h1{float:left; width:283px; height:180px;}
+.soft h1{float:left; width:283px; height:175px;}
 .soft img{ float:right; display:block; width:391px; height:175px; padding-top:0px;}
 .soft h1 ul {height:130px;}
 .soft h1 ul li{font-weight:normal;font-size:110%;line-height:25px;color:#666; height:25px; /*list-style:url(image/list_icon.gif);*/ margin-left:25px; border-bottom:dotted 1px #939393; padding-left:10px;}
@@ -768,6 +768,18 @@ background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0
 .soft p{padding:10px;}
 .soft .btn{text-align:center;float:left;margin:2px 3px;color:#FFF;background-color:#ccc;border:0 none;font-size:12px;font-weight:bold;height:25px;	line-height:25px;width:80px;}
 .soft .btn:hover,.soft .cur{background-color:#FF6A00;}
+
+/*step*/
+#step { list-style-position:inside;margin:30px 2px 20px 1px ;display:block;float:left;}
+#step.thst li{width:220px;}
+#step.thst li a{width:220px;}
+#step li{height:40px;list-style:none;float:left;background-color:#E9EEF2;background-image: url(image/step1.gif);background-repeat: no-repeat;background-position: right top;}
+#step li.secst{background-color:#7BAD00;background-image: url(image/step2.gif);}
+#step li.thdst{background-color:#FF6A00;background-image: url(image/step3.gif);}
+#step li a em{width:150px;display:block;margin:4px 0 0 10px;font-style:normal;font-weight:bold;color:#8FC320}
+#step li a span{width:200px;display:block;margin-left:10px;font-weight:normal;color:#888;}
+#step li a{height:36px;display:block;}
+
 
 
 
