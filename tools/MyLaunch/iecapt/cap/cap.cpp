@@ -43,6 +43,7 @@
 
 class CMain;
 class CEventSink;
+#pragma comment(lib, "atl.lib") 
 #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
 //////////////////////////////////////////////////////////////////
 // CEventSink
@@ -152,7 +153,7 @@ STDMETHODIMP CEventSink::Invoke(DISPID dispid, REFIID riid, LCID lcid,
 
     if (!m_pMain->m_pWebBrowser.IsEqualObject(pDisp))
       break;
-
+    printf("%s %d web loading successfully!\n",__FUNCTION__,__LINE__);
     BOOL bSuccess = m_pMain->DelayedSnapshot();
     break;
   }
@@ -184,22 +185,18 @@ LRESULT CMain::OnCreate(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
   IUnknown * pUnk = NULL;
   GetClientRect(&old);
 
-  m_hwndWebBrowser = ::CreateWindow(_T(ATLAXWIN_CLASS), m_URI,
-      /*WS_POPUP|*/WS_CHILD|WS_DISABLED, old.top, old.left, old.right,
-      old.bottom, m_hWnd, NULL, ::GetModuleHandle(NULL), NULL);
+ m_hwndWebBrowser = ::CreateWindow(_T("AtlAxWin80"), m_URI,
+     WS_CHILD|WS_DISABLED, old.top, old.left, old.right,
+   old.bottom, m_hWnd, NULL, ::GetModuleHandle(NULL), NULL);
 
-  // TODO: Quit if m_hwndWebBrowser is null.
+ // TODO: Quit if m_hwndWebBrowser is null.
 
   hr = AtlAxGetControl(m_hwndWebBrowser, &m_pWebBrowserUnk);
-
   if (FAILED(hr))
       return 1;
-
   if (m_pWebBrowserUnk == NULL)
       return 1;
-
   hr = m_pWebBrowserUnk->QueryInterface(IID_IWebBrowser2, (void**)&m_pWebBrowser);
-
   if (FAILED(hr))
       return 1;
 
@@ -350,8 +347,8 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 			  {
 				  //	  CString filename;
 				  // filename.Format(_T("%s.txt"),m_fileName);
-				  TCHAR filename[1024]={0};
-				  TCHAR temp[1024]={0};
+				   TCHAR filename[1024]={0};
+				   TCHAR temp[1024]={0};
 					_tcscpy(temp,m_fileName);
 			  //enter the right directory
 				   TCHAR* pszToken = ::_tcstok(temp, _T("/"));
@@ -399,9 +396,7 @@ BOOL CMain::SaveSnapshot(void)
   long bodyHeight, bodyWidth, rootHeight, rootWidth, height, width;
 
   CComPtr<IDispatch> pDispatch;
-
   HRESULT hr = m_pWebBrowser->get_Document(&pDispatch);
-
   if (FAILED(hr))
     return true;
 
@@ -431,7 +426,7 @@ BOOL CMain::SaveSnapshot(void)
 	}
 	 CComBSTR lTitle;
 	 hr=spDocument->get_title(&lTitle) ;
-if(SUCCEEDED(hr)){
+    if(SUCCEEDED(hr)){
 			   CString writestr;
 			   writestr.Format(_T("title=%s\r\n"), CString(lTitle.m_str));
 			   TCHAR   *pBuff   =   writestr.GetBuffer(writestr.GetLength());   
@@ -498,7 +493,7 @@ if(SUCCEEDED(hr)){
 #if 0
  // height = rootHeight > bodyHeight ? rootHeight : bodyHeight;
 #else
-  height=768;
+  height=(bodyWidth*3)/4;
 #endif
 
   // TODO: What if width or height exceeds 32767? It seems Windows limits
@@ -556,8 +551,7 @@ if(SUCCEEDED(hr)){
     return false;
   }
 
-  CImage image;
-  CImage image2;
+
   TCHAR name_b[1024]={0};
   TCHAR name_l[1024]={0};
   //enter the right directory
@@ -577,13 +571,16 @@ if(SUCCEEDED(hr)){
 					  if   (hSearch   ==   INVALID_HANDLE_VALUE)//ÎÞÐ§Ä¿Â¼   
 					  {   
 						  ::CreateDirectory(rightToken,NULL);
-					  }
+					  }else
+						  FindClose(hSearch);
 					::SetCurrentDirectory(rightToken);
 			}
 			
 		}
 
-
+  CImage image_orig;
+  CImage image_mid;
+  CImage image_big;
   //end to enter the right dirctory
    _tcscpy(name_b,_T( "b_"));
    _tcscat(name_b,rightToken);
@@ -592,22 +589,40 @@ if(SUCCEEDED(hr)){
 
   // TODO: check return value;
   // TODO: somehow enable alpha
+#define MIDDLE_WIDTH 112
+#define MIDDLE_HEIGHT 83
+#define BIG_WIDTH 200
+#define BIG_HEIGHT 150
+    image_orig.Create(width, height, 24);
+   printf("width=%d height=%d\n",width,height);
 
-    image.Create(width, height, 24);
+   HDC imgDc = image_orig.GetDC();
 
-
-   HDC imgDc = image.GetDC();
-   image2.Create(width/6, height/6, 24);
-   HDC imgDc2=image2.GetDC();
+   //image_mid 112x83
+   image_mid.Create(MIDDLE_WIDTH, MIDDLE_HEIGHT, 24);
+   HDC imgDc_mid=image_mid.GetDC();
    hr = spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, imgDc,
                           imgDc, &rcBounds, NULL, NULL, 0);
-   ::SetStretchBltMode(imgDc2,STRETCH_HALFTONE);
+   ::SetStretchBltMode(imgDc_mid,STRETCH_HALFTONE);
 
-   ::StretchBlt(imgDc2,0,0,width/6,height/6,imgDc,0,0,width,height,SRCCOPY  );
-   ::SetBrushOrgEx(imgDc2, 0, 0, NULL); 
-   image2.ReleaseDC();
-   image2.Save(name_l);
-   image.ReleaseDC();
+   ::StretchBlt(imgDc_mid,0,0,MIDDLE_WIDTH,MIDDLE_HEIGHT,imgDc,0,0,width,height,SRCCOPY  );
+   ::SetBrushOrgEx(imgDc_mid, 0, 0, NULL); 
+   image_mid.ReleaseDC();
+   image_mid.Save(name_l);
+
+      //image_big 200x150
+   image_big.Create(BIG_WIDTH, BIG_HEIGHT, 24);
+   HDC imgDc_big=image_big.GetDC();
+   hr = spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, imgDc,
+                          imgDc, &rcBounds, NULL, NULL, 0);
+   ::SetStretchBltMode(imgDc_big,STRETCH_HALFTONE);
+
+   ::StretchBlt(imgDc_big,0,0,BIG_WIDTH,BIG_HEIGHT,imgDc,0,0,width,height,SRCCOPY  );
+   ::SetBrushOrgEx(imgDc_big, 0, 0, NULL); 
+   image_big.ReleaseDC();
+   image_big.Save(name_b);
+
+   image_orig.ReleaseDC();
 
   if (SUCCEEDED(hr))
   {
@@ -665,9 +680,7 @@ int main (int argc, _TCHAR* argv[])
       argHelp = 1;
       break;
     } 
-
     value = _tcschr(s, '=');
-
     if (value == NULL) {
       if (argUrl == NULL) {
         argUrl = s;
@@ -686,7 +699,6 @@ int main (int argc, _TCHAR* argv[])
     // --name=value options
     if (_tcsncmp(_T("--url"), s, nlen) == 0) {
       argUrl = value;
-
     } else if (_tcsncmp(_T("--min-width"), s, nlen) == 0) {
       // TODO: add error checking here?
       argMinWidth = (unsigned int)_tstoi(value);
@@ -707,7 +719,7 @@ int main (int argc, _TCHAR* argv[])
       argHelp = 1;
     }
   }
-
+CoInitialize( NULL );
   if (argUrl == NULL || argOut == NULL || argHelp) {
     IECaptHelp();
     return EXIT_FAILURE;
@@ -744,6 +756,6 @@ int main (int argc, _TCHAR* argv[])
   _Main.Term();
 
   Gdiplus::GdiplusShutdown(gdiplusToken);
-
+CoUninitialize();
   return EXIT_SUCCESS;
 }
