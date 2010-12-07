@@ -68,91 +68,93 @@ uint qhashEx(QString str, int len)
 	}
 	return h;
 }
-void runProgram(QString path, QString args) {
-#ifdef Q_WS_WIN
+#ifdef WAIT_FOR_SINGLE
+HANDLE runProgram(QString path, QString args) 
+#else
+void runProgram(QString path, QString args) 
+#endif
+{
 
+#ifdef WAIT_FOR_SINGLE
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+	
+		ZeroMemory( &si, sizeof(si) );
+		si.cb = sizeof(si);
+		ZeroMemory( &pi, sizeof(pi) );
+		QString patharg=path+" "+args;
+	
+		// Start the child process. 
+		if( !CreateProcess( NULL,	// No module name (use command line)
+			 (LPWSTR) patharg.utf16(),		// Command line
+			NULL,			// Process handle not inheritable
+			NULL,			// Thread handle not inheritable
+			FALSE,			// Set handle inheritance to FALSE
+			0,				// No creation flags
+			NULL,			// Use parent's environment block
+			NULL,			// Use parent's starting directory 
+			&si,			// Pointer to STARTUPINFO structure
+			&pi )			// Pointer to PROCESS_INFORMATION structure
+		) 
+		{
+			return NULL;
+		}
+		return pi.hProcess;
+#else
 	SHELLEXECUTEINFO ShExecInfo;
-
-	//qDebug("%s %s",qPrintable(path),qPrintable(args));
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-
 	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
-
 	ShExecInfo.hwnd = NULL;
-
 	ShExecInfo.lpVerb = NULL;
-
 	ShExecInfo.lpFile = (LPCTSTR) (path).utf16();
 	if (args != "") {
-
 		ShExecInfo.lpParameters = (LPCTSTR) args.utf16();
-
 	} else {
 		ShExecInfo.lpParameters = NULL;
-
 	}
 
 	QDir dir(path);
-
 	QFileInfo info(path);
 	if (!info.isDir() && info.isFile())
-
 		dir.cdUp();
 
 	ShExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
 	ShExecInfo.nShow = SW_NORMAL;
-
 	ShExecInfo.hInstApp = NULL;
-
 	ShellExecuteEx(&ShExecInfo);
-
 #endif
-
-
-#ifdef Q_WS_MAC
-
-
-#endif
-
-
-#ifdef Q_WS_X11
-
-
-#endif
-
-
 }
+/*
+void GetWindowCommandLine(QString& buf,DWORD pid)
+{
+// LPTSTR  *P=::GetCommandLine();
+ LPTSTR *pEvn;
+ LPTSTR *pAddr;
+ LPTSTR  *pFunction;
+ pFunction=(LPTSTR *)::GetCommandLine();
+ memcpy(&pAddr,pFunction+1,sizeof(LPTSTR *));
+ DWORD dwRet;
+ HANDLE hProcess=::OpenProcess(PROCESS_ALL_ACCESS, false,pid);
+ ::ReadProcessMemory(hProcess, pAddr,&pEvn, sizeof(DWORD),&dwRet);
+ char Buff[512];
+ ::ReadProcessMemory(hProcess, pEvn, Buff, 512, &dwRet);
+ buf=QString("%1").arg(Buff);
+ CloseHandle(hProcess);
+}
+*/
 Window::Window()
 {
 	installEnvironment();
 
 	getTagDataFromServer(0);
-	//   proxyModel = new QSortFilterProxyModel;
-	//    proxyModel->setDynamicSortFilter(true);
-	//failedModel= new QStandardItemModel(0, 3, this);
+
 	sourceGroupBox = new QGroupBox(tr("Original Model"));
 	midGroupBox = new QGroupBox(tr("mid"));
 	bottomGroupBox = new QGroupBox(tr("command"));
-	//failedModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Id"));
-	// failedModel->setHeaderData(1, Qt::Horizontal, QObject::tr("name"));
-	// failedModel->setHeaderData(2, Qt::Horizontal, QObject::tr("url"));
 
 	sourceView = new QTreeView;
 	sourceView->setRootIsDecorated(false);
 	sourceView->setAlternatingRowColors(true);
-	//	sourceView->setSortingEnabled(true);
-	//   proxyView = new QTreeView;
-	//   proxyView->setRootIsDecorated(false);
-	//   proxyView->setAlternatingRowColors(true);
-	//   proxyView->setModel(failedModel);
-	//    proxyView->setSortingEnabled(true);
-
-	//   sortCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive sorting"));
-	//    filterCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive filter"));
-
-	// filterPatternLineEdit = new QLineEdit;
-	// filterPatternLabel = new QLabel(tr("&Filter pattern:"));
-	// filterPatternLabel->setBuddy(filterPatternLineEdit);
 
 	getTagBtn=new QPushButton("Get Tag");
 	getDataBtn=new QPushButton("Get Data(F2)");
@@ -161,9 +163,9 @@ Window::Window()
 	snapBtn->setShortcut(tr("F3"));
 	commitBtn=new QPushButton("Commit(F12)");
 	commitBtn->setShortcut(tr("F12"));
-    tableComboBox = new QComboBox();
+        tableComboBox = new QComboBox();
 	tableComboBox->insertItem(0, "link");
-    tableComboBox->insertItem(1, "site");
+        tableComboBox->insertItem(1, "site");
 	quitButton = new QPushButton(tr("Quit"));
 	QVBoxLayout *bottomlayout = new QVBoxLayout;
 	buttonBox = new QDialogButtonBox;
@@ -173,8 +175,8 @@ Window::Window()
 	buttonBox->addButton(snapBtn, QDialogButtonBox::ActionRole);
 	buttonBox->addButton(commitBtn, QDialogButtonBox::ActionRole);
 	buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
-     bottomlayout->addWidget(tableComboBox);
-	  bottomlayout->addWidget(buttonBox);
+        bottomlayout->addWidget(tableComboBox);
+	bottomlayout->addWidget(buttonBox);
 	bottomGroupBox->setLayout(bottomlayout);
 
 	QHBoxLayout *sourceLayout = new QHBoxLayout;
@@ -207,14 +209,9 @@ Window::Window()
 	itemGridLayout->addWidget(classidLabel,line,0);
 	itemGridLayout->addWidget(classidLineEdit,line,1,1,1);
 	line++;
-
-
 	classnameGroupBox=new QGroupBox(tr(""));
 
 	QVBoxLayout *classtabLayout = new QVBoxLayout;
-
-
-
 
 	classbtns=new QButtonGroup;	
 	classbtns->setExclusive(false);
@@ -242,27 +239,10 @@ Window::Window()
 			classtabbox->addWidget(ab);
 			++mapi;
 		}
-
 		classtab->addTab(w,classlist[i].classname);
 	}
-#if 0
-	QMapIterator<int,QString> mapi(classmap);
-	while (mapi.hasNext()) {
-		mapi.next();
-		qDebug() << mapi.key() << ": " << mapi.value() ;
-		QWidget *w=new QWidget();
 
-		if(!(class_i%10))
-		{
-			classtab=new QTabWidget();
-			classtabLayout->addWidget(classtab);
-		}
-		classtab->addTab(w,mapi.value());
-		class_i++;
-	}
-#endif
 	connect(classbtns, SIGNAL(buttonClicked(int)),this, SLOT(classbuttonClicked(int)));
-
 
 	classnameGroupBox->setLayout(classtabLayout);	
 	itemGridLayout->addWidget(classnameGroupBox,line,0,1,2);
@@ -291,7 +271,7 @@ Window::Window()
 	line++;
 
 	tagnameGroupBox=new QGroupBox(tr(""));
-#if 1
+
 	QHBoxLayout *tagtabLayout = new QHBoxLayout;
 	tagtab=new QTabWidget();
 
@@ -322,41 +302,16 @@ Window::Window()
 
 	tagtabLayout->addWidget(tagtab);
 	tagnameGroupBox->setLayout(tagtabLayout);
-#else
-	QGridLayout *tagLayout = new QGridLayout;
-	tagbtns=new QButtonGroup;
-	tagnameGroupBox->setLayout(tagLayout);
-	QMapIterator<int,QString> mapj(tagmap);
-	uint tag_i=0;
-	while (mapj.hasNext()) {
-		mapj.next();
-		qDebug() << mapj.key() << ": " << mapj.value() ;
-		QPushButton *ab=new QPushButton(mapj.value());
-		ab->setFlat(true);
-		//ab->setFixedSize(30,20);
-		QPalette newPalette = ab->palette();
-		newPalette.setColor(QPalette::ButtonText, QColor(16,103,8));
-		ab->setPalette(newPalette);
 
-		tagbtns->addButton(ab,mapj.key());
-		tagLayout->addWidget(ab,(tag_i/15),(tag_i%15),1,1);
-		tag_i++;
-	}
-#endif
 	connect(tagbtns, SIGNAL(buttonClicked(int)),this, SLOT(tagbuttonClicked(int)));
 	itemGridLayout->addWidget(tagnameGroupBox,line,0,1,2);
 	line++;
-
-
-
 	imgGroupBox=new QGroupBox(tr(""));
 	QVBoxLayout *imgLayout = new QVBoxLayout;
 	imgLabel=new QLabel(tr("load image......"));
 	imgLayout->addWidget(imgLabel);
 	imgGroupBox->setLayout(imgLayout);
 	itemGridLayout->addWidget(imgGroupBox,0,2,line,1);
-
-
 	desLabel = new QLabel(tr("Des:"));
 	desTextEdit = new QTextEdit("");
 	desLabel->setBuddy(desTextEdit);
@@ -372,7 +327,6 @@ Window::Window()
 	itemApplyBtn= new QPushButton("apply");
 	itemSnapBtn= new QPushButton("snap");
 
-
 	itemButtonBox->addButton(itemPrevBtn, QDialogButtonBox::ActionRole);
 	itemButtonBox->addButton(itemSnapBtn, QDialogButtonBox::ActionRole);
 	itemButtonBox->addButton(itemApplyBtn, QDialogButtonBox::ActionRole);
@@ -385,70 +339,32 @@ Window::Window()
 
 	itemGridLayout->addWidget(itemButtonBox,line,0,1,3);
 	line++;
-
 	itemGroupBox->setLayout(itemGridLayout);
-
 	midLayout->addWidget(logGroupBox);
-
 	QHBoxLayout *logLayout = new QHBoxLayout;
-
-
-
 	logGroupBox->setLayout(logLayout);
 
 	logedit = new QPlainTextEdit;
-
 	logedit->setObjectName(QString::fromUtf8("sqlEdit"));
-
 	logLayout->addWidget(logedit);
-
 	midGroupBox->setLayout(midLayout);
-	// QGridLayout *proxyLayout = new QGridLayout;
-	// proxyLayout->addWidget(proxyView, 0, 0, 1, 3);
-	// proxyLayout->addWidget(filterPatternLabel, 1, 0);
-	// proxyLayout->addWidget(filterPatternLineEdit, 1, 1, 1, 2);
-	//proxyLayout->addWidget(getTagBtn, 2, 0,1,1);
 	connect(getTagBtn, SIGNAL(clicked(bool)),this, SLOT(getTagDataFromServer(bool)));
-	// proxyLayout->addWidget(getDataBtn, 2, 1,1,1);
 	connect(getDataBtn, SIGNAL(clicked(bool)),this, SLOT(getUrlDataFromServer(bool)));
-	//  proxyLayout->addWidget(snapBtn, 2, 2, 1, 1);
 	connect(snapBtn, SIGNAL(clicked(bool)),this, SLOT(startUrlSnap(bool)));
-	//  proxyLayout->addWidget(commitBtn, 2, 3, 1, 1);
 	connect(commitBtn, SIGNAL(clicked(bool)),this, SLOT(modelCommit(bool)));
 	snapBtn->setEnabled(false);
 	commitBtn->setEnabled(true);
-	//  proxyLayout->addWidget(filterSyntaxLabel, 2, 0);
-	//   proxyLayout->addWidget(filterSyntaxComboBox, 2, 1, 1, 2);
-	//  proxyLayout->addWidget(filterColumnLabel, 3, 0);
-	//   proxyLayout->addWidget(filterColumnComboBox, 3, 1, 1, 2);
-	//    proxyLayout->addWidget(filterCaseSensitivityCheckBox, 4, 0, 1, 2);
-	//    proxyLayout->addWidget(sortCaseSensitivityCheckBox, 4, 2);
-	//  proxyGroupBox->setLayout(proxyLayout);
-
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(sourceGroupBox,0,0);
 	mainLayout->addWidget(midGroupBox,1,0);
 	mainLayout->addWidget(bottomGroupBox,2,0);
-
-	// mainLayout->setColStretch( 0, 3 );
-	//   mainLayout->setColStretch( 1, 2 );
 	setLayout(mainLayout);
-
 	setWindowTitle(tr("url2img"));
-	//resize(500, 450);
 	showMaximized();
 	successfulNums=0;
 	failedNums=0;
 	totalNums=0;
-	// proxyView->sortByColumn(1, Qt::AscendingOrder);
-	// filterColumnComboBox->setCurrentIndex(1);
-
-	// filterPatternLineEdit->setText("Andy|Grace");
-	//  filterCaseSensitivityCheckBox->setChecked(true);
-	//  sortCaseSensitivityCheckBox->setChecked(true);
-
 	fileflag=0;
-
 	if(gSettings->value("automode",0).toUInt())
 	{
 		//automode
@@ -477,19 +393,6 @@ void Window::itemNextBtnClicked(bool status)
 void Window::itemApplyBtnClicked(bool status)
 {
 	model->setData(model->index(nowRow, LINK_TABLE_ID), idLineEdit->text());
-#if 0
-	QString classstring=classidLineEdit->text();
-	QString classidstring;
-	classstring.trimmed();
-	QStringList classstringlist=classstring.split(",", QString::SkipEmptyParts);
-	for (int i = 0; i < classstringlist.size(); ++i)
-	{
-		if(!classidstring.isEmpty())
-			classidstring.append(",");
-		classidstring.append(tr("%1").arg(classxmap[classstringlist.at(i)]));
-	}
-	model->setData(model->index(nowRow, LINK_TABLE_CLASSID),  classidstring);
-#endif
 	model->setData(model->index(nowRow, LINK_TABLE_NAME),  nameLineEdit->text());
 	model->setData(model->index(nowRow, LINK_TABLE_URL),  urlLineEdit->text());
 	model->setData(model->index(nowRow, LINK_TABLE_TAG),  tagLineEdit->text());
@@ -754,10 +657,6 @@ void Window::snapDone()
 {
 	QString tipstr=QString("Porcess total %1 url.\n<span style=\"color:green\">Successful:%2</span><span style=\"color:red\">  Failed:%3</span>").arg(totalNums).arg(successfulNums).arg(failedNums);
 	snapLog(tipstr);	
-	//if(failedNums)
-	// QMessageBox::warning(this, tr("url2image"),tipstr, QMessageBox::Ok);
-	// else
-	// QMessageBox::information(this, tr("url2image"),tipstr);
 	autoclass();
 	commitBtn->setEnabled(TRUE);
 	if(gSettings->value("automode",0).toUInt()){
@@ -840,9 +739,7 @@ void Window::modelCommit(bool status)
 		}
 	}
 	fileflag=0;
-	startFtp();	
-	
-	
+	startFtp();		
 }
 void Window::startFtp()
 {
@@ -1199,36 +1096,6 @@ void Window::activatedAction(const QModelIndex& index)
 	{
 		btn_list[i]->setChecked(false);				
 	}
-#if 0
-	QString classidstring=model->data(model->index(nowRow,LINK_TABLE_CLASSID)).toString();
-	QStringList classidstringlist=classidstring.split(",", QString::SkipEmptyParts);
-	QString classname;
-	for (int i = 0; i < classidstringlist.size(); ++i)
-	{
-		if(!classname.isEmpty())
-			classname.append(",");
-		classname.append(classmap[classidstringlist.at(i).toUInt()]);
-		if(classbtns->button(classidstringlist.at(i).toUInt()))
-			classbtns->button(classidstringlist.at(i).toUInt())->setChecked(true);
-		else
-		{
-			//shoule be tab
-			for (int j = 0; j < classtablist.size(); ++j)
-			{
-				QTabWidget* tw=classtablist.at(j);
-				for(int m=0;m<tw->count();m++)
-				{
-					if(tw->tabText(m)==classmap[classidstringlist.at(i).toUInt()])
-					{
-						//tw->widget(m)->setBackgroundRole(QPalette::BrightText);
-						tw->setCurrentIndex(m);
-					}
-				}
-			}
-		}
-	}
-	classidLineEdit->setText(classname);
-#endif
 	nameLineEdit->setText(model->data(model->index(nowRow,LINK_TABLE_NAME)).toString());
 	urlLineEdit->setText(model->data(model->index(nowRow,LINK_TABLE_URL)).toString());
 	tagLineEdit->setText(model->data(model->index(nowRow,LINK_TABLE_TAG)).toString());
@@ -1263,8 +1130,47 @@ void Window::snapLog(QString str)
 {
 	logedit->appendHtml(str);
 }
+
+
 void snapThread::monitorSnapFinished()
 {
+#ifdef WAIT_FOR_SINGLE
+	 
+	  int exitprocess = 0;
+	  int count=getringurlList.count();
+	   qDebug()<<__FUNCTION__<<" "<<__LINE__<<count;
+	  HANDLE* threads = new HANDLE[count];
+	   for (int i = 0; i < count; i++)
+	   {
+	     	 threads[i] =getringurlList.at(i).process;
+	   }
+	  exitprocess= WaitForMultipleObjects(count, threads, FALSE, INFINITE);
+	  if(exitprocess>=WAIT_OBJECT_0&&exitprocess<=(WAIT_OBJECT_0+count-1))
+	{ 
+			   exitprocess-=WAIT_OBJECT_0;
+
+			  qDebug()<<__FUNCTION__<<"  exit "<<exitprocess;
+			   QDir dir(".");
+			   QString apath=dir.absolutePath();
+			   struct MonitorUrl mu=getringurlList.at(exitprocess);
+			   QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
+			   if(QFile::exists(littleFilename)&&QFile::exists(QString(mu.filename).append(".jpg.txt")))
+			   {
+				emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
+				emit snapSuccessfulNoitfy(mu.index);
+			   }else{
+					emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
+					emit snapFailedNoitfy(mu.index);
+			   }
+			   getringurlList.removeAt(exitprocess);
+			   dir.cd(apath);
+	  }
+	   qDebug()<<__FUNCTION__<<" "<<__LINE__<<count;
+	for (int j = 0; j <count; j++)
+		   	 CloseHandle(threads[j]);
+	 delete[] threads;	   
+#else
+	
 	int count=getringurlList.count();
 	QDir dir(".");
 	QString apath=dir.absolutePath();
@@ -1291,6 +1197,7 @@ void snapThread::monitorSnapFinished()
 		}
 		dir.cd(apath);
 	}
+#endif
 
 }
 void snapThread::run()
@@ -1329,18 +1236,25 @@ void snapThread::run()
 			mu.filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
 			QDateTime dt=QDateTime::currentDateTime ();
 			mu.startTime= dt.toTime_t();
-			getringurlList.push_back(mu);
+			
 			//create directory
 		//	qDebug()<<"url="<<mu.url<<" filepath="<<mu.filepath<<" filename="<<mu.filename;
 			dir.mkpath(mu.filepath);
 			QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
 
-			if(	!QFile::exists(littleFilename)||!QFile::exists(QString(mu.filename).append(".jpg.txt")))
+			if(!QFile::exists(littleFilename)||!QFile::exists(QString(mu.filename).append(".jpg.txt")))
 			{
 
 				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
 				emit snapLogNotify(QString("<span>start to snap <strong>%1</strong></span>").arg(mu.url));
-				runProgram(ieCaptBin,runargs);
+#ifdef WAIT_FOR_SINGLE
+				mu.process=runProgram(ieCaptBin,runargs);
+				qDebug()<<__FUNCTION__<<"  "<<mu.process;
+				if(mu.process)
+					getringurlList.push_back(mu);
+#else
+				getringurlList.push_back(mu);
+#endif
 			}			
 		}else
 		{
