@@ -42,6 +42,15 @@
 #include <QtSql>
 #include <QtNetwork>
 #include <QtGui>
+
+#include <windows.h>
+#include <shlobj.h>
+#include <tchar.h>
+
+
+#define WAIT_FOR_SINGLE 1
+
+
 QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 class QCheckBox;
@@ -161,6 +170,9 @@ struct MonitorUrl{
 	QString filepath;
 	QString filename;
 	uint startTime;
+#ifdef WAIT_FOR_SINGLE
+	HANDLE process;
+#endif
 };
 enum SNAP_TABLE_MODE{
 	LINK_TABLE_MODE=0,
