@@ -45,6 +45,9 @@
 #include <tchar.h>
 
 #define IECAPT_PROGRAM   "/cap.exe"
+#define IECAPT_PROGRAM_NAME   "cap.exe"
+
+
 
 QSqlDatabase local_db;
 QSqlDatabase server_db;
@@ -69,19 +72,16 @@ uint qhashEx(QString str, int len)
 	return h;
 }
 #ifdef WAIT_FOR_SINGLE
-HANDLE runProgram(QString path, QString args) 
+BOOL runProgram(QString path, QString args,STARTUPINFO *si,PROCESS_INFORMATION *pi) 
 #else
 void runProgram(QString path, QString args) 
 #endif
 {
 
 #ifdef WAIT_FOR_SINGLE
-		STARTUPINFO si;
-		PROCESS_INFORMATION pi;
-	
-		ZeroMemory( &si, sizeof(si) );
-		si.cb = sizeof(si);
-		ZeroMemory( &pi, sizeof(pi) );
+		ZeroMemory( si, sizeof(*si) );
+		si->cb = sizeof(*si);
+		ZeroMemory( pi, sizeof(*pi) );
 		QString patharg=path+" "+args;
 	
 		// Start the child process. 
@@ -93,13 +93,13 @@ void runProgram(QString path, QString args)
 			0,				// No creation flags
 			NULL,			// Use parent's environment block
 			NULL,			// Use parent's starting directory 
-			&si,			// Pointer to STARTUPINFO structure
-			&pi )			// Pointer to PROCESS_INFORMATION structure
+			si,			// Pointer to STARTUPINFO structure
+			pi )			// Pointer to PROCESS_INFORMATION structure
 		) 
 		{
-			return NULL;
+			return FALSE;
 		}
-		return pi.hProcess;
+		return TRUE;
 #else
 	SHELLEXECUTEINFO ShExecInfo;
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -124,6 +124,25 @@ void runProgram(QString path, QString args)
 	ShellExecuteEx(&ShExecInfo);
 #endif
 }
+
+DWORD GetSpecifiedProcessById(DWORD processId)
+{
+	DWORD id=0;
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0) ;
+	PROCESSENTRY32 pInfo; 
+	pInfo.dwSize = sizeof(pInfo);
+	Process32First(hSnapShot, &pInfo) ; 
+	do
+	{
+		if((pInfo.th32ProcessID ==processId)&&(lstrcmp(_wcslwr(_wcsdup(pInfo.szExeFile)), QString(IECAPT_PROGRAM_NAME).utf16()) == 0))
+		{
+			id = pInfo.th32ProcessID ;
+			break ;
+		}
+	}while(Process32Next(hSnapShot, &pInfo) != FALSE);
+	return id;
+} 
+
 /*
 void GetWindowCommandLine(QString& buf,DWORD pid)
 {
@@ -144,6 +163,7 @@ void GetWindowCommandLine(QString& buf,DWORD pid)
 */
 Window::Window()
 {
+	currenttime = QDateTime::currentDateTime().toString("yyyymmddhhmmss");
 	installEnvironment();
 
 	getTagDataFromServer(0);
@@ -346,6 +366,7 @@ Window::Window()
 
 	logedit = new QPlainTextEdit;
 	logedit->setObjectName(QString::fromUtf8("sqlEdit"));
+	logedit->setMaximumBlockCount(1024);
 	logLayout->addWidget(logedit);
 	midGroupBox->setLayout(midLayout);
 	connect(getTagBtn, SIGNAL(clicked(bool)),this, SLOT(getTagDataFromServer(bool)));
@@ -648,6 +669,23 @@ void Window::snapFailed(int modelIndex)
 	failedNums++;
 	uint trynum=model->data(model->index(modelIndex, LINK_TABLE_TRYNUM)).toUInt();
 	model->setData(model->index(modelIndex, LINK_TABLE_TRYNUM), trynum+1);
+	qDebug()<<__FUNCTION__;
+	QDir dir(".");	
+	if(!dir.exists("log")) 
+			dir.mkdir("log");
+	QString logfilename=QString("./log/log").append(currenttime).append(".txt");	
+	 QFile debugfile(logfilename);
+	 debugfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	 QTextStream debugos(&debugfile);
+	 debugos.setCodec("UTF-8");
+	 debugos << "[";
+	 debugos << QDateTime::currentDateTime().toString("hh:mm:ss");
+	 debugos << "] " << tableComboBox->currentText()<<":";
+	 debugos <<  " id:"<<model->data(model->index(modelIndex, LINK_TABLE_ID)).toUInt()<<";";
+	  debugos <<  " url:"<<model->data(model->index(modelIndex,LINK_TABLE_URL)).toString();
+	 debugos << "\n";
+	 debugfile.close();
+	//dir.cdUp();
 	//failedModel->insertRow(0);
 	//failedModel->setData(failedModel->index(0, 0), model->data(model->index(modelIndex, 0)).toUInt());
 	//failedModel->setData(failedModel->index(0, 1), model->data(model->index(modelIndex, 1)).toString());
@@ -1131,44 +1169,35 @@ void Window::snapLog(QString str)
 	logedit->appendHtml(str);
 }
 
-
 void snapThread::monitorSnapFinished()
 {
 #ifdef WAIT_FOR_SINGLE
-	 
-	  int exitprocess = 0;
-	  int count=getringurlList.count();
-	   qDebug()<<__FUNCTION__<<" "<<__LINE__<<count;
-	  HANDLE* threads = new HANDLE[count];
-	   for (int i = 0; i < count; i++)
-	   {
-	     	 threads[i] =getringurlList.at(i).process;
-	   }
-	  exitprocess= WaitForMultipleObjects(count, threads, FALSE, INFINITE);
-	  if(exitprocess>=WAIT_OBJECT_0&&exitprocess<=(WAIT_OBJECT_0+count-1))
-	{ 
-			   exitprocess-=WAIT_OBJECT_0;
-
-			  qDebug()<<__FUNCTION__<<"  exit "<<exitprocess;
-			   QDir dir(".");
-			   QString apath=dir.absolutePath();
-			   struct MonitorUrl mu=getringurlList.at(exitprocess);
-			   QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
-			   if(QFile::exists(littleFilename)&&QFile::exists(QString(mu.filename).append(".jpg.txt")))
-			   {
-				emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
-				emit snapSuccessfulNoitfy(mu.index);
-			   }else{
-					emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
-					emit snapFailedNoitfy(mu.index);
-			   }
-			   getringurlList.removeAt(exitprocess);
-			   dir.cd(apath);
-	  }
-	   qDebug()<<__FUNCTION__<<" "<<__LINE__<<count;
-	for (int j = 0; j <count; j++)
-		   	 CloseHandle(threads[j]);
-	 delete[] threads;	   
+	int count=getringurlList.count();
+	QDir dir(".");
+	QString apath=dir.absolutePath();
+	for(int i=count-1;i>=0;i--)
+	{
+		struct MonitorUrl mu=getringurlList.at(i);
+		if(GetSpecifiedProcessById(mu.pi.dwProcessId)==0){			
+				QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
+				if(QFile::exists(littleFilename)&&QFile::exists(QString(mu.filename).append(".jpg.txt")))
+				{
+					emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
+					qDebug()<<"urllist count="<<getringurlList.count();
+					emit snapSuccessfulNoitfy(mu.index);
+				}else{
+						emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
+						
+						emit snapFailedNoitfy(mu.index);
+				}
+				
+			CloseHandle( mu.pi.hProcess );
+			CloseHandle( mu.pi.hThread );
+			getringurlList.removeAt(i);
+		}
+		dir.cd(apath);
+	}
+  
 #else
 	
 	int count=getringurlList.count();
@@ -1248,10 +1277,8 @@ void snapThread::run()
 				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
 				emit snapLogNotify(QString("<span>start to snap <strong>%1</strong></span>").arg(mu.url));
 #ifdef WAIT_FOR_SINGLE
-				mu.process=runProgram(ieCaptBin,runargs);
-				qDebug()<<__FUNCTION__<<"  "<<mu.process;
-				if(mu.process)
-					getringurlList.push_back(mu);
+				if(runProgram(ieCaptBin,runargs,&mu.si,&mu.pi))
+						getringurlList.push_back(mu);
 #else
 				getringurlList.push_back(mu);
 #endif

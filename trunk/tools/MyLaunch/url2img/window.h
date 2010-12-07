@@ -46,6 +46,10 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <tchar.h>
+#include <commctrl.h>
+#include <Shellapi.h>
+#include <stdio.h>
+#include <Tlhelp32.h>
 
 
 #define WAIT_FOR_SINGLE 1
@@ -171,7 +175,8 @@ struct MonitorUrl{
 	QString filename;
 	uint startTime;
 #ifdef WAIT_FOR_SINGLE
-	HANDLE process;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
 #endif
 };
 enum SNAP_TABLE_MODE{
@@ -321,6 +326,7 @@ private:
 	 uint nowRow;
 	 QTabWidget *tagtab;
 	 QList<QTabWidget*> classtablist;
+	 QString currenttime;
 
 };
 
