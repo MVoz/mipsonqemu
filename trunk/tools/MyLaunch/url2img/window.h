@@ -251,6 +251,7 @@ private slots:
 	  void itemApplyBtnClicked(bool status);
 	  void itemSnapBtnClicked(bool status);
 	  void startUrlSnap(bool status);
+	  void applyParameter(bool status);
 	  void modelCommit(bool status);
 	  void snapSuccessful(int modelIndex);
 	  void snapFailed(int modelIndex);
@@ -316,6 +317,22 @@ private:
 	QPushButton *itemSnapBtn;
 	QDialogButtonBox* itemButtonBox;
 
+	QLabel* trynumLabel;
+	QLabel* trynumlineLabel;
+	QLabel* getnumLabel;
+	QLabel* snapnumLabel;
+
+	QLineEdit* trynumLineEdit_s;
+	QLineEdit* trynumLineEdit_e;
+	QLineEdit* getnumLineEdit;
+	QLineEdit* snapnumLineEdit;
+
+	QLabel *startIdLabel ;
+	QLineEdit* startIdLineEdit ;
+
+
+	QCheckBox* automode ;
+	QPushButton* applyparameter;
 
 	QPushButton *getTagBtn;
 	QPushButton *getDataBtn;
