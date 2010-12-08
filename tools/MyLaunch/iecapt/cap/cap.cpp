@@ -44,7 +44,7 @@
 class CMain;
 class CEventSink;
 #pragma comment(lib, "atl.lib") 
-#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
+//#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
 //////////////////////////////////////////////////////////////////
 // CEventSink
 //////////////////////////////////////////////////////////////////
@@ -190,8 +190,14 @@ LRESULT CMain::OnCreate(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 		old.bottom, m_hWnd, NULL, ::GetModuleHandle(NULL), NULL);
 
 	// TODO: Quit if m_hwndWebBrowser is null.
-	if(!m_hwndWebBrowser)
+	if(!m_hwndWebBrowser){
+		CString errBuf;
+		errBuf.Format("error=%d",GetLastError());
+		MessageBox(errBuf.GetBuffer(errBuf.GetLength()),_T("cap"),MB_OK);
+		errBuf.ReleaseBuffer();
+		PostMessage(WM_CLOSE);
 		return 1;
+	}
 	hr = AtlAxGetControl(m_hwndWebBrowser, &m_pWebBrowserUnk);
 	if (FAILED(hr))
 		return 1;
@@ -410,7 +416,8 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 BOOL CMain::SaveSnapshot(void)
 {
 	long bodyHeight, bodyWidth, rootHeight, rootWidth, height, width;
-
+	if(!m_pWebBrowser)
+		return TRUE;
 	CComPtr<IDispatch> pDispatch;
 	HRESULT hr = m_pWebBrowser->get_Document(&pDispatch);
 	if (FAILED(hr))
