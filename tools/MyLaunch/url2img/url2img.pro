@@ -35,7 +35,7 @@ win32 {
     DESTDIR =     ./
    }
    CONFIG(release, debug|release) {
-      DESTDIR =    ./
+      DESTDIR =    ../tool/
   }
 }
 }
