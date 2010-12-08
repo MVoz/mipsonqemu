@@ -50,7 +50,7 @@
 #include <Shellapi.h>
 #include <stdio.h>
 #include <Tlhelp32.h>
-
+#include <QHostInfo>
 
 #define WAIT_FOR_SINGLE 1
 
@@ -173,7 +173,7 @@ struct MonitorUrl{
 	uint index;
 	QString filepath;
 	QString filename;
-	uint startTime;
+	//uint startTime;
 #ifdef WAIT_FOR_SINGLE
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -214,7 +214,6 @@ signals:
 		void snapFailedNoitfy(int modelIndex);
 		void snapDoneNoitfy();
 		void snapLogNotify(QString str);
-
 };
 
 extern QSqlDatabase local_db;
