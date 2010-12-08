@@ -193,9 +193,36 @@ Window::Window()
 	snapBtn->setShortcut(tr("F3"));
 	commitBtn=new QPushButton("Commit(F12)");
 	commitBtn->setShortcut(tr("F12"));
-        tableComboBox = new QComboBox();
+	
+         tableComboBox = new QComboBox();
 	tableComboBox->insertItem(0, "link");
-        tableComboBox->insertItem(1, "site");
+         tableComboBox->insertItem(1, "site");
+
+	trynumLabel = new QLabel(tr("TryNum:"));
+	trynumLineEdit_s = new QLineEdit("");
+	trynumLabel->setBuddy(trynumLineEdit_s);
+	
+	trynumlineLabel = new QLabel(tr("-"));
+	trynumLineEdit_e = new QLineEdit("");
+	trynumlineLabel->setBuddy(trynumLineEdit_e);
+
+	getnumLabel = new QLabel(tr("GetNum:"));
+	getnumLineEdit = new QLineEdit("");
+	getnumLabel->setBuddy(getnumLineEdit);
+
+	snapnumLabel = new QLabel(tr("SnapNum:"));
+	snapnumLineEdit = new QLineEdit("");
+	snapnumLabel->setBuddy(snapnumLineEdit);
+
+	
+	startIdLabel = new QLabel(tr("ID Start:"));
+	startIdLineEdit = new QLineEdit("");
+	startIdLabel->setBuddy(startIdLineEdit);
+
+	automode = new QCheckBox("Auto");
+	applyparameter = new QPushButton("Apply"); 
+	
+		 
 	quitButton = new QPushButton(tr("Quit"));
 	QVBoxLayout *bottomlayout = new QVBoxLayout;
 	buttonBox = new QDialogButtonBox;
@@ -205,7 +232,33 @@ Window::Window()
 	buttonBox->addButton(snapBtn, QDialogButtonBox::ActionRole);
 	buttonBox->addButton(commitBtn, QDialogButtonBox::ActionRole);
 	buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
-        bottomlayout->addWidget(tableComboBox);
+
+	QGroupBox *parameterGroupBox=new QGroupBox;
+	
+	QHBoxLayout *parameterLayout = new QHBoxLayout;
+           parameterLayout->addWidget(tableComboBox);
+
+	  parameterLayout->addWidget(startIdLabel);	  
+	  parameterLayout->addWidget(startIdLineEdit);	
+		   
+	  parameterLayout->addWidget(trynumLabel);	  
+	  parameterLayout->addWidget(trynumLineEdit_s);	
+	  parameterLayout->addWidget(trynumlineLabel);	
+	  parameterLayout->addWidget(trynumLineEdit_e);	
+	  parameterLayout->addWidget(getnumLabel);		  
+	  parameterLayout->addWidget(getnumLineEdit);	
+	  parameterLayout->addWidget(snapnumLabel);	
+	  parameterLayout->addWidget(snapnumLineEdit);	
+	  parameterLayout->addWidget(automode);
+	  parameterLayout->addWidget(applyparameter);	
+	  connect(applyparameter, SIGNAL(clicked(bool)),this, SLOT(applyParameter(bool)));
+
+	
+
+	  
+	  parameterGroupBox->setLayout(parameterLayout);
+
+	  
 	bottomlayout->addWidget(buttonBox);
 	bottomGroupBox->setLayout(bottomlayout);
 
@@ -389,7 +442,8 @@ Window::Window()
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(sourceGroupBox,0,0);
 	mainLayout->addWidget(midGroupBox,1,0);
-	mainLayout->addWidget(bottomGroupBox,2,0);
+	mainLayout->addWidget(parameterGroupBox,2,0);
+	mainLayout->addWidget(bottomGroupBox,3,0);
 	setLayout(mainLayout);
 	setWindowTitle(tr("url2img"));
 	showMaximized();
@@ -397,7 +451,27 @@ Window::Window()
 	failedNums=0;
 	totalNums=0;
 	fileflag=0;
-	if(gSettings->value("automode",0).toUInt())
+
+	trynumLineEdit_s->setText(QString("%1").arg(gSettings->value("trynum_s",0).toUInt()));
+	trynumLineEdit_e->setText(QString("%1").arg(gSettings->value("trynum_e",3).toUInt()));
+
+	getnumLineEdit->setText(QString("%1").arg(gSettings->value("getnum",20).toUInt()));
+	snapnumLineEdit->setText(QString("%1").arg(gSettings->value("snapnum",10).toUInt()));
+
+	if(gSettings->value("automode",FALSE).toBool())
+	automode->setCheckState(Qt::Checked);
+
+	if(gSettings->value("table","link").toString()=="link")
+		tableComboBox->setCurrentIndex(0);
+	else
+		tableComboBox->setCurrentIndex(1);
+	if(tableComboBox->currentIndex()==0){
+		startIdLineEdit->setText(QString("%1").arg(gSettings->value("linkid",10).toUInt()));
+	}else{
+		startIdLineEdit->setText(QString("%1").arg(gSettings->value("siteid",10).toUInt()));
+	}
+
+	if(gSettings->value("automode",FALSE).toBool())
 	{
 		//automode
 		getUrlDataFromServer(0);
@@ -707,7 +781,7 @@ void Window::snapDone()
 	snapLog(tipstr);	
 	autoclass();
 	commitBtn->setEnabled(TRUE);
-	if(gSettings->value("automode",0).toUInt()){
+	if(gSettings->value("automode",FALSE).toBool()){
 		//automode
 		modelCommit(0);
 	}
@@ -806,12 +880,23 @@ void Window::startFtp(int mode)
 	if(i >= (rows-1))
 	{
 		snapLog(tr("commit  to mysql server"));
-		gSettings->setValue("siteid",model->data(model->index(rows-1, LINK_TABLE_ID)).toUInt());
+		
+		if(tableComboBox->currentIndex()==0){
+			gSettings->setValue("linkid",model->data(model->index(rows-1, LINK_TABLE_ID)).toUInt());
+		}else{
+			gSettings->setValue("siteid",model->data(model->index(rows-1, LINK_TABLE_ID)).toUInt());
+		}
+		startIdLineEdit->setText(QString("%1").arg(model->data(model->index(rows-1, LINK_TABLE_ID)).toUInt()));
 		gSettings->sync();
 		model->submitAll();
 		snapBtn->setEnabled(false);
 		commitBtn->setEnabled(false);
-		closeftp();			
+		closeftp();	
+
+		if(gSettings->value("automode",FALSE).toBool())
+		{
+			getUrlDataFromServer(0);
+		}
 		return;
 	}
 	
@@ -850,9 +935,7 @@ void Window::startFtp(int mode)
 
 			snapLog(tr("Begin to put %1 to ftp server!").arg(ftpfile->fileName()));
 			ftp->put(ftpfile,filetotalname);
-//transfer big file
-		
-			
+//transfer big file			
 
 out:
 			for (int j = 0; j < dirlist.size(); ++j){
@@ -1036,6 +1119,7 @@ void Window::getUrlDataFromServer(bool status)
 	successfulNums=0;
 	failedNums=0;
 	totalNums=0;
+	fileflag=0;
 	if(model)
 		delete model;
 	model=new QSqlTableModel(this,server_db);
@@ -1142,7 +1226,7 @@ void Window::getUrlDataFromServer(bool status)
 		connect(sourceView,SIGNAL(clicked(const QModelIndex&)),this,SLOT(activatedAction(const QModelIndex&)));
 		connect(sourceView,SIGNAL(activated(const QModelIndex&)),this,SLOT(activatedAction(const QModelIndex&)));
 		snapBtn->setEnabled(TRUE);
-		if(gSettings->value("automode",0).toUInt()){
+		if(gSettings->value("automode",FALSE).toBool()){
 			//automode
 			startUrlSnap(0);
 		}
@@ -1188,6 +1272,25 @@ void Window::startUrlSnap(bool status)
 	connect(thread,SIGNAL(snapFailedNoitfy(int)),this,SLOT(snapFailed(int)));
 	connect(thread,SIGNAL(snapDoneNoitfy()),this,SLOT(snapDone()));
 	connect(thread,SIGNAL(snapLogNotify(QString)),this,SLOT(snapLog(QString)));
+}
+void  Window::applyParameter(bool status)
+{
+		gSettings->setValue("trynum_s",trynumLineEdit_s->text().toUInt());
+		gSettings->setValue("trynum_e",trynumLineEdit_e->text().toUInt());
+		gSettings->setValue("getnum",getnumLineEdit->text().toUInt());
+		gSettings->setValue("snapnum",snapnumLineEdit->text().toUInt());
+	
+		gSettings->setValue("automode",(automode->checkState()==Qt::Checked)?TRUE:FALSE);
+
+		gSettings->setValue("table",tableComboBox->itemText(tableComboBox->currentIndex()));
+
+		if(tableComboBox->currentIndex()==0){
+			gSettings->setValue("linkid",startIdLineEdit->text().toUInt());
+		}else{
+			gSettings->setValue("siteid",startIdLineEdit->text().toUInt());
+		}
+		gSettings->sync();
+	
 }
 void Window::snapLog(QString str)
 {
