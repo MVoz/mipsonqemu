@@ -132,7 +132,9 @@ enum site_db_struct{
 	SITE_ENDTIME,
 	SITE_REMARK,
 	SITE_VIEWNUM,
+	SITE_TODAYVIEWNUM,
 	SITE_STORENUM,
+	SITE_TODAYSTORENUM,
 	SITE_DATELINE,
 	SITE_PIC,
 	SITE_PICFLAG,
@@ -185,6 +187,12 @@ enum SNAP_TABLE_MODE{
 };
 #define ONCE_GET_URL 10
 #define MAX_WAIT_SEC 120
+
+enum {
+	FTP_MODE_LITTLE=0,
+	FTP_MODE_MIDDLE,
+	FTP_MODE_BIG
+};
 class snapThread : public QThread
 {
 	Q_OBJECT;
@@ -251,7 +259,7 @@ private slots:
       void ftpCommandFinished(int commandId, bool error);
       void updateDataTransferProgress(qint64 readBytes,qint64 totalBytes);
 	  void closeftp();
-	  void startFtp();
+	  void startFtp(int mode);
 	  void classbuttonClicked(int id);
 	  void tagbuttonClicked(int id);
 	  void activatedAction(const QModelIndex& );
@@ -277,6 +285,7 @@ private:
 	QSqlDatabase db;
 	QFtp* ftp;
 	QFile* ftpfile;
+	int ftpmode;
 	QComboBox* tableComboBox;
 
 	QStandardItemModel *failedModel;

@@ -164,6 +164,16 @@ void GetWindowCommandLine(QString& buf,DWORD pid)
 Window::Window()
 {
 	currenttime = QDateTime::currentDateTime().toString("yyyymmddhhmmss");
+	model = NULL;
+	ftpmode = 0;
+	ftp = NULL;
+	ftpfile = NULL;
+	thread = NULL;
+	successfulNums = 0;
+	failedNums = 0;
+	totalNums = 0;
+	fileflag = 0;
+	nowRow = 0;
 	installEnvironment();
 
 	getTagDataFromServer(0);
@@ -777,31 +787,57 @@ void Window::modelCommit(bool status)
 		}
 	}
 	fileflag=0;
-	startFtp();		
+	startFtp(FTP_MODE_MIDDLE);		
 }
-void Window::startFtp()
+void Window::startFtp(int mode)
 {
+	ftpmode = mode;
 	uint rows=model->rowCount();
-	uint i=fileflag;
-	ftpfile = NULL;
+	if(!rows)
+		return;
+	uint i=fileflag;	
+	if(ftpfile){
+			if(ftpfile->isOpen())
+				ftpfile->close();
+			delete ftpfile;
+			ftpfile =NULL;
+	}
 	snapLog(tr("startFtp"));
-	if(i<rows)
-	{	
-		uint picflag=model->data(model->index(i, LINK_TABLE_PICFLAG)).toUInt();
-		if(picflag){
+	if(i >= (rows-1))
+	{
+		snapLog(tr("commit  to mysql server"));
+		gSettings->setValue("siteid",model->data(model->index(rows-1, LINK_TABLE_ID)).toUInt());
+		gSettings->sync();
+		model->submitAll();
+		snapBtn->setEnabled(false);
+		commitBtn->setEnabled(false);
+		closeftp();			
+		return;
+	}
+	
+	uint picflag=model->data(model->index(i, LINK_TABLE_PICFLAG)).toUInt();
+	if(picflag){
 			QString filepath=model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			QString filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
-			QString filetotalpathname=QString("%1/%2.jpg").arg(filepath).arg(filename);
-			QString filetotalname=QString("%2.jpg").arg(filename);
+			
+			QString filetotalpathname;
+			QString filetotalname;
+
+			if(mode == FTP_MODE_MIDDLE){
+				 filetotalpathname=QString("%1/%2.jpg").arg(filepath).arg(filename);
+				 filetotalname=QString("%1.jpg").arg(filename);
+			}else if(mode==FTP_MODE_BIG){
+			 	filetotalpathname=QString("%1/b_%2.jpg").arg(filepath).arg(filename);
+				 filetotalname=QString("b_%1.jpg").arg(filename);
+			}
+			
 			QStringList dirlist=filepath.split("/");
 			for (int j = 0; j < dirlist.size(); ++j){
 				qDebug()<<dirlist.at(j);
 				ftp->cd(dirlist.at(j));
 			}
-			if(ftpfile){
-					delete ftpfile;
-					ftpfile =NULL;
-			}
+			
+			
 			ftpfile = new QFile(filetotalpathname);
 
 			if (!ftpfile->open(QIODevice::ReadOnly)) {
@@ -814,25 +850,20 @@ void Window::startFtp()
 
 			snapLog(tr("Begin to put %1 to ftp server!").arg(ftpfile->fileName()));
 			ftp->put(ftpfile,filetotalname);
+//transfer big file
+		
+			
 
 out:
 			for (int j = 0; j < dirlist.size(); ++j){
 				ftp->cd("..");
 			}
 		}else{
-			fileflag++;
-			startFtp();
-			//最后一个picflag为0时，由此提交mysql server
-			if(fileflag==model->rowCount()){
-				snapLog(tr("commit  to mysql server"));
-				model->submitAll();
-				snapBtn->setEnabled(false);
-				commitBtn->setEnabled(false);
-				closeftp();	
+			if(mode == FTP_MODE_MIDDLE){
+				fileflag++;
+				startFtp(mode);				
 			}
-		}
-	}
-	
+	}	
 }
 void Window::updateDataTransferProgress(qint64 readBytes, qint64 totalBytes)
 {
@@ -877,29 +908,19 @@ void Window::ftpCommandFinished(int commandId, bool error)
 
 	}
 	if (ftp->currentCommand() == QFtp::Put) {
+
 		if (error) {
 			snapLog(tr("Canceled upload  <strong> %1</strong>.") .arg(ftpfile->fileName()));
-
+			model->setData(model->index(fileflag, LINK_TABLE_PICFLAG),0);
 		} else {
-			snapLog(tr("Successfully to  upload  <strong> %1</strong>.") .arg(ftpfile->fileName()));
-			
+			snapLog(tr("Successfully to  upload  <strong> %1</strong>.") .arg(ftpfile->fileName()));			
 		}
-		if(ftpfile){
-					ftpfile->close();
-					delete ftpfile;
-					ftpfile =NULL;
-		}
-		//delete ftpfile;
-		fileflag++;
-		if(fileflag<model->rowCount()){
-			startFtp();
-		}else{
-			snapLog(tr("commit  to mysql server"));
-			model->submitAll();
-			snapBtn->setEnabled(false);
-			commitBtn->setEnabled(false);
-			closeftp();	
-		}
+
+		if(error||(ftpmode==FTP_MODE_BIG)){
+			fileflag++;			
+			startFtp(FTP_MODE_MIDDLE);
+		}else
+			startFtp(FTP_MODE_BIG);
 	}
 }
 /*
@@ -1015,6 +1036,8 @@ void Window::getUrlDataFromServer(bool status)
 	successfulNums=0;
 	failedNums=0;
 	totalNums=0;
+	if(model)
+		delete model;
 	model=new QSqlTableModel(this,server_db);
 	model->setTable(QString("uchome_%1").arg(tableComboBox->currentText()));
 	model->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -1024,11 +1047,11 @@ void Window::getUrlDataFromServer(bool status)
 	}else if(tableComboBox->currentText()=="site"){
 	//	model->setFilter("picflag = 0 and trynum<3 order by id limit 0,20");
 	//	model->setFilter("picflag = 0 and trynum<3 and class=653 order by id ");
-		
+	//	SELECT * FROM uchome_site WHERE picflag = 0 AND trynum<3 ORDER BY id LIMIT 10
 		gSettings->sync();
-		qDebug()<<gSettings->value("sitefilter", "").toString();
-		model->setFilter(gSettings->value("sitefilter", "").toString());
-		
+		//qDebug()<<gSettings->value("sitefilter", "").toString();
+		//model->setFilter(gSettings->value("sitefilter", "").toString());
+		model->setFilter(QString("picflag = 0 AND trynum<3 AND id >%1 ORDER BY id LIMIT %2").arg(gSettings->value("siteid", 0).toUInt()).arg(gSettings->value("sitenum", 20).toUInt()));		
 	}
 	if(model->select()){
 
@@ -1076,7 +1099,9 @@ void Window::getUrlDataFromServer(bool status)
 		//model->removeColumn(SITE_PICFLAG);
 		//model->removeColumn(SITE_PIC);
 		model->removeColumn(SITE_DATELINE);
+		model->removeColumn(SITE_TODAYSTORENUM);		
 		model->removeColumn(SITE_STORENUM);
+		model->removeColumn(SITE_TODAYVIEWNUM);	
 		model->removeColumn(SITE_VIEWNUM);	
 		//model->removeColumn(SITE_REMARK);
 		model->removeColumn(SITE_ENDTIME);
@@ -1171,7 +1196,6 @@ void Window::snapLog(QString str)
 
 void snapThread::monitorSnapFinished()
 {
-#ifdef WAIT_FOR_SINGLE
 	int count=getringurlList.count();
 	QDir dir(".");
 	QString apath=dir.absolutePath();
@@ -1179,14 +1203,14 @@ void snapThread::monitorSnapFinished()
 	{
 		struct MonitorUrl mu=getringurlList.at(i);
 		if(GetSpecifiedProcessById(mu.pi.dwProcessId)==0){			
-				QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
-				if(QFile::exists(littleFilename)&&QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
+				QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+				QString bigFilename=QString("%1/%2/b_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
+				if(QFile::exists(littleFilename)&&QFile::exists(bigFilename)&&QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 				{
 					emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
 					emit snapSuccessfulNoitfy(mu.index);
 				}else{
 						emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
-						
 						emit snapFailedNoitfy(mu.index);
 				}
 				
@@ -1196,37 +1220,6 @@ void snapThread::monitorSnapFinished()
 		}
 		dir.cd(apath);
 	}
-  
-#else
-	
-	int count=getringurlList.count();
-	QDir dir(".");
-	QString apath=dir.absolutePath();
-	for(int i=count-1;i>=0;i--)
-	{
-		struct MonitorUrl mu=getringurlList.at(i);
-		QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
-		//	qDebug("filename=%s\n",qPrintable(mu.filename));
-		if(	QFile::exists(littleFilename)&&QFile::exists(QString(mu.filename).append(".jpg.txt")))
-		{
-			emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
-			getringurlList.removeAt(i);
-			qDebug()<<"urllist count="<<getringurlList.count();
-			emit snapSuccessfulNoitfy(mu.index);
-		}else{
-			QDateTime dt=QDateTime::currentDateTime ();
-			uint nowtime= dt.toTime_t();
-			if((nowtime-mu.startTime)>(maxWait+1))
-			{
-				emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
-				getringurlList.removeAt(i);
-				emit snapFailedNoitfy(mu.index);
-			}
-		}
-		dir.cd(apath);
-	}
-#endif
-
 }
 void snapThread::run()
 {
@@ -1271,8 +1264,8 @@ void snapThread::run()
 		//	qDebug()<<"url="<<mu.url<<" filepath="<<mu.filepath<<" filename="<<mu.filename;
 			dir.mkpath(mu.filepath);
 			QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
-
-			if(!QFile::exists(littleFilename)||!QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
+			QString bigFilename=QString("%1/%2/b_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+			if(!QFile::exists(littleFilename)||!QFile::exists(bigFilename)||!QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 			{
 	 			QHostInfo info = QHostInfo::fromName(QUrl(mu.url).host());				
 			      if(info.error() != QHostInfo::NoError) {
