@@ -10,7 +10,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += .
 CONFIG += debug_and_release
-CONFIG += console
+
 INCLUDEPATH += ../include/
 LIBS += -LC:\MySQL\MySQLServer5\lib\opt -llibmysql
 INCLUDEPATH += C:\MySQL\MySQLServer5\include
@@ -31,10 +31,11 @@ win32 {
 
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
+    CONFIG += console
     DESTDIR =     ./
    }
    CONFIG(release, debug|release) {
-      DESTDIR =    ../release/
+      DESTDIR =    ./
   }
 }
 }

@@ -367,6 +367,7 @@ Window::Window()
 	logedit = new QPlainTextEdit;
 	logedit->setObjectName(QString::fromUtf8("sqlEdit"));
 	logedit->setMaximumBlockCount(1024);
+	logedit->setReadOnly(TRUE);
 	logLayout->addWidget(logedit);
 	midGroupBox->setLayout(midLayout);
 	connect(getTagBtn, SIGNAL(clicked(bool)),this, SLOT(getTagDataFromServer(bool)));
@@ -617,7 +618,7 @@ void Window::setSourceModel(QAbstractItemModel *model)
 void Window::snapSuccessful(int modelIndex)
 {
 	successfulNums++;
-	QString txtUrlFilename=QString("%1.jpg.txt").arg(model->data(model->index(modelIndex, LINK_TABLE_MD5URL)).toString());
+	QString txtUrlFilename=QString("content/%1.jpg.txt").arg(model->data(model->index(modelIndex, LINK_TABLE_MD5URL)).toString());
 	//qDebug()<<txtUrlFilename;
 	if(QFile::exists(txtUrlFilename))
 	{
@@ -656,7 +657,7 @@ void Window::snapSuccessful(int modelIndex)
 			}
 		}
 		file.close();	
-		QFile::remove(txtUrlFilename);
+		//QFile::remove(txtUrlFilename);
 	}
 	//qDebug()<<"fail "<<txtUrlFilename;
 	model->setData(model->index(modelIndex, LINK_TABLE_PICFLAG), 1);
@@ -669,7 +670,6 @@ void Window::snapFailed(int modelIndex)
 	failedNums++;
 	uint trynum=model->data(model->index(modelIndex, LINK_TABLE_TRYNUM)).toUInt();
 	model->setData(model->index(modelIndex, LINK_TABLE_TRYNUM), trynum+1);
-	qDebug()<<__FUNCTION__;
 	QDir dir(".");	
 	if(!dir.exists("log")) 
 			dir.mkdir("log");
@@ -1180,10 +1180,9 @@ void snapThread::monitorSnapFinished()
 		struct MonitorUrl mu=getringurlList.at(i);
 		if(GetSpecifiedProcessById(mu.pi.dwProcessId)==0){			
 				QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
-				if(QFile::exists(littleFilename)&&QFile::exists(QString(mu.filename).append(".jpg.txt")))
+				if(QFile::exists(littleFilename)&&QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 				{
 					emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
-					qDebug()<<"urllist count="<<getringurlList.count();
 					emit snapSuccessfulNoitfy(mu.index);
 				}else{
 						emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> failed</span>").arg(mu.url));
@@ -1240,7 +1239,6 @@ void snapThread::run()
 	{	
 		if(getringurlList.count()<onceGet)
 		{		
-			qDebug()<<"urxxxllist count="<<getringurlList.count();
 			struct MonitorUrl mu;		
 			mu.index=i;
 			mu.url=model->data(model->index(i, LINK_TABLE_URL)).toString();
@@ -1261,28 +1259,42 @@ void snapThread::run()
 				model->setData(model->index(i, LINK_TABLE_PRIVATEFLAG),1);
 				goto NEXT;
 			}
+			
+			
+			
 			mu.filepath=model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			mu.filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
-			QDateTime dt=QDateTime::currentDateTime ();
-			mu.startTime= dt.toTime_t();
+			//QDateTime dt=QDateTime::currentDateTime ();
+			//mu.startTime= dt.toTime_t();
 			
 			//create directory
 		//	qDebug()<<"url="<<mu.url<<" filepath="<<mu.filepath<<" filename="<<mu.filename;
 			dir.mkpath(mu.filepath);
 			QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
 
-			if(!QFile::exists(littleFilename)||!QFile::exists(QString(mu.filename).append(".jpg.txt")))
+			if(!QFile::exists(littleFilename)||!QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 			{
-
+	 			QHostInfo info = QHostInfo::fromName(QUrl(mu.url).host());				
+			      if(info.error() != QHostInfo::NoError) {
+				         qDebug() << "Lookup failed:" << info.errorString();
+					 emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> host not found</span>").arg(mu.url));
+					 emit snapFailedNoitfy(mu.index);
+			      }else{
 				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
 				emit snapLogNotify(QString("<span>start to snap <strong>%1</strong></span>").arg(mu.url));
 #ifdef WAIT_FOR_SINGLE
+				qDebug()<<"args:"<<runargs;
 				if(runProgram(ieCaptBin,runargs,&mu.si,&mu.pi))
 						getringurlList.push_back(mu);
 #else
 				getringurlList.push_back(mu);
 #endif
-			}			
+			      	}
+			}else{
+				//has snapshoted it
+				emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
+				emit snapSuccessfulNoitfy(mu.index);
+			}
 		}else
 		{
 			monitorSnapFinished();
