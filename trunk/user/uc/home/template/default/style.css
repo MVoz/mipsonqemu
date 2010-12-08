@@ -501,7 +501,7 @@ border:1px solid #DDD;margin-top:1px;}
 
 /*********************************network css****************************************************************/
 #header{width:970px;height:60px;clear:both;margin:0 auto 5px}
-#header .h_logo{background:url("image/bm_logo.jpg") no-repeat scroll 0 0 transparent;float:left;margin:10px 0 0;width:305px;}
+#header .h_logo{background:url("image/logo.jpg") no-repeat scroll 0 0 transparent;float:left;margin:2px 0 0;width:200px;}
 #header .h_logo a {color:#FFF;display:block;height:58px;overflow:hidden;text-indent:-3000px;width:200px;}
 #header .h_adv {float:left;margin:10px 0 0 auto;position:relative;width:365px;}
 #header .h_r {float:right;margin-top:10px;position:relative;text-align:right;word-spacing:-3px;}
@@ -758,7 +758,7 @@ background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0
 .num_con em em{color:#4C4C4C;font-size:10px;font-weight:normal;font-style: normal;}
 
 /*soft*/
-.soft{  width:679px; height:180px; }
+.soft{  width:679px; height:240px; }
 
 .soft h1{float:left; width:283px; height:175px;}
 .soft img{ float:right; display:block; width:391px; height:175px; padding-top:0px;}
@@ -770,15 +770,15 @@ background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0
 .soft .btn:hover,.soft .cur{background-color:#FF6A00;}
 
 /*step*/
-#step { list-style-position:inside;margin:30px 2px 20px 1px ;display:block;float:left;}
-#step.thst li{width:220px;}
-#step.thst li a{width:220px;}
-#step li{height:40px;list-style:none;float:left;background-color:#E9EEF2;background-image: url(image/step1.gif);background-repeat: no-repeat;background-position: right top;}
+#step { list-style-position:inside;margin:5px 2px 5px 1px ;display:block;float:left;}
+#step.thst li{width:210px;margin:5px;}
+#step.thst li a{width:210px;}
+#step li{height:45px;list-style:none;float:left;background-color:#E9EEF2;/*background-image: url(image/step1.gif);background-repeat: no-repeat;background-position: right top;*/}
 #step li.secst{background-color:#7BAD00;background-image: url(image/step2.gif);}
 #step li.thdst{background-color:#FF6A00;background-image: url(image/step3.gif);}
 #step li a em{width:150px;display:block;margin:4px 0 0 10px;font-style:normal;font-weight:bold;color:#8FC320}
 #step li a span{width:200px;display:block;margin-left:10px;font-weight:normal;color:#888;}
-#step li a{height:36px;display:block;}
+#step li a{height:41px;display:block;}
 
 
 
