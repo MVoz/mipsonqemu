@@ -83,6 +83,10 @@ public:
 	CMain(LPTSTR uri, LPTSTR file, UINT delay, BOOL silent) : m_uDelay(delay),
 		m_dwCookie(0), m_URI(uri), m_fileName(file), m_bSilent(silent) { 
 			fileCreated=0;
+			m_hwndWebBrowser = NULL;
+			m_pWebBrowserUnk = NULL;
+			m_pWebBrowser = NULL;
+			m_pEventSink =NULL;
 	}
 
 	BEGIN_MSG_MAP(CMainWindow)
@@ -165,9 +169,10 @@ case DISPID_NAVIGATEERROR: {
 
 	// A navigation error occured in the main frame, so abort.
 	// TODO: perhaps this should generate some error message.
+	m_pMain->KillTimer(ID_TIMEOUTTIMER);
 	m_pMain->PostMessage(WM_CLOSE);
 	break;
-						   }
+   }
 default:
 	break;
 	}
@@ -238,15 +243,17 @@ LRESULT CMain::OnSize(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 LRESULT
 CMain::OnTimer(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	WPARAM timerid = wParam;
 	if (wParam != ID_DELAYTIMER &&
 		wParam != ID_TIMEOUTTIMER)
 		return 0;
 
 	// TODO: should this also clear the other timer?
 	KillTimer(wParam);
-	BOOL bSuccess = SaveSnapshot();
-	PostMessage(WM_CLOSE);
-
+	if( timerid == ID_DELAYTIMER)
+		 SaveSnapshot();
+	PostQuitMessage(0);
+	printf("%s %d\n",__FUNCTION__,__LINE__);
 	return 0;
 }
 
@@ -258,8 +265,8 @@ LRESULT CMain::OnDestroy(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled
 	if (m_dwCookie != 0)
 		hr = AtlUnadvise(m_pWebBrowserUnk, DIID_DWebBrowserEvents2, m_dwCookie);
 
-	m_pWebBrowser.Release();
-	m_pWebBrowserUnk.Release();
+	if(m_pWebBrowser)	m_pWebBrowser.Release();
+	if(m_pWebBrowserUnk)m_pWebBrowserUnk.Release();
 
 	PostQuitMessage(0);
 
@@ -392,7 +399,6 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 					TCHAR   *pBuff   =   writestr.GetBuffer(writestr.GetLength());   
 					writestr.ReleaseBuffer();   	    
 					file.Write(pBuff,   writestr.GetLength());   	
-					file.Close();
 					::SetCurrentDirectory(curDir);
 				}   
 			}   
@@ -467,7 +473,6 @@ BOOL CMain::SaveSnapshot(void)
 		TCHAR   *pBuff   =   writestr.GetBuffer(writestr.GetLength());   
 		writestr.ReleaseBuffer();   	    
 		file.Write(pBuff,   writestr.GetLength());   
-		file.Close();
 	}
 	::SetCurrentDirectory(curDir);
 	/*add by ramen*/
@@ -787,12 +792,14 @@ int main (int argc, _TCHAR* argv[])
 		MainWnd.SetTimer(ID_TIMEOUTTIMER, argMaxWait);
 
 	MSG msg;
+	
 	while (GetMessage(&msg, NULL, 0, 0)) {
+	//		if (msg.message == WM_CLOSE)       
+	//				   break ;    
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
-	_Main.Term();
 
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 	CoUninitialize();
