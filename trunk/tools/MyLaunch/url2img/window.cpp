@@ -1260,7 +1260,7 @@ void Window::activatedAction(const QModelIndex& index)
 void Window::startUrlSnap(bool status)
 {
 	totalNums=model->rowCount();
-	thread=new snapThread(model,ONCE_GET_URL,MAX_WAIT_SEC);
+	thread=new snapThread(model,gSettings->value("snapnum", ONCE_GET_URL).toUInt(),MAX_WAIT_SEC);
 	if(tableComboBox->currentText()=="link"){
 		thread->setMode(LINK_TABLE_MODE);
 	}else if(tableComboBox->currentText()=="site"){
