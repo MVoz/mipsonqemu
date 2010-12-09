@@ -861,7 +861,7 @@ void Window::modelCommit(bool status)
 		}
 	}
 	fileflag=0;
-	startFtp(FTP_MODE_MIDDLE);		
+	startFtp(FTP_MODE_LITTLE);		
 }
 void Window::startFtp(int mode)
 {
@@ -876,7 +876,7 @@ void Window::startFtp(int mode)
 			delete ftpfile;
 			ftpfile =NULL;
 	}
-	snapLog(tr("startFtp"));
+	
 	if(i >= (rows-1))
 	{
 		snapLog(tr("commit  to mysql server"));
@@ -902,13 +902,16 @@ void Window::startFtp(int mode)
 	
 	uint picflag=model->data(model->index(i, LINK_TABLE_PICFLAG)).toUInt();
 	if(picflag){
+			snapLog(tr("startFtp"));
 			QString filepath=model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			QString filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
 			
 			QString filetotalpathname;
 			QString filetotalname;
-
-			if(mode == FTP_MODE_MIDDLE){
+			if(mode == FTP_MODE_LITTLE){
+				 filetotalpathname=QString("%1/l_%2.jpg").arg(filepath).arg(filename);
+				 filetotalname=QString("%1.jpg").arg(filename);
+			}else if(mode == FTP_MODE_MIDDLE){
 				 filetotalpathname=QString("%1/%2.jpg").arg(filepath).arg(filename);
 				 filetotalname=QString("%1.jpg").arg(filename);
 			}else if(mode==FTP_MODE_BIG){
@@ -942,7 +945,7 @@ out:
 				ftp->cd("..");
 			}
 		}else{
-			if(mode == FTP_MODE_MIDDLE){
+			if(mode == FTP_MODE_LITTLE){
 				fileflag++;
 				startFtp(mode);				
 			}
@@ -1001,9 +1004,13 @@ void Window::ftpCommandFinished(int commandId, bool error)
 
 		if(error||(ftpmode==FTP_MODE_BIG)){
 			fileflag++;			
-			startFtp(FTP_MODE_MIDDLE);
-		}else
-			startFtp(FTP_MODE_BIG);
+			startFtp(FTP_MODE_LITTLE);
+		}else{
+			if(ftpmode==FTP_MODE_LITTLE)
+				startFtp(FTP_MODE_MIDDLE);
+			else
+				startFtp(FTP_MODE_BIG);
+		}
 	}
 }
 /*
@@ -1305,10 +1312,11 @@ void snapThread::monitorSnapFinished()
 	for(int i=count-1;i>=0;i--)
 	{
 		struct MonitorUrl mu=getringurlList.at(i);
-		if(GetSpecifiedProcessById(mu.pi.dwProcessId)==0){			
-				QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+		if(GetSpecifiedProcessById(mu.pi.dwProcessId)==0){	
+				QString littleFilename=QString("%1/%2/l_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+				QString middleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
 				QString bigFilename=QString("%1/%2/b_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);	
-				if(QFile::exists(littleFilename)&&QFile::exists(bigFilename)&&QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
+				if(QFile::exists(littleFilename)&&QFile::exists(middleFilename)&&QFile::exists(bigFilename)&&QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 				{
 					emit snapLogNotify(QString("<span style=\"color:green\">snap <strong>%1</strong> successfuly</span>").arg(mu.url));
 					emit snapSuccessfulNoitfy(mu.index);
@@ -1366,9 +1374,10 @@ void snapThread::run()
 			//create directory
 		//	qDebug()<<"url="<<mu.url<<" filepath="<<mu.filepath<<" filename="<<mu.filename;
 			dir.mkpath(mu.filepath);
-			QString littleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+			QString littleFilename=QString("%1/%2/l_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
+			QString middleFilename=QString("%1/%2/%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
 			QString bigFilename=QString("%1/%2/b_%3.jpg").arg(apath).arg(mu.filepath).arg(mu.filename);
-			if(!QFile::exists(littleFilename)||!QFile::exists(bigFilename)||!QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
+			if(!QFile::exists(littleFilename)||!QFile::exists(middleFilename)||!QFile::exists(bigFilename)||!QFile::exists(QString("content/").append(mu.filename).append(".jpg.txt")))
 			{
 	 			QHostInfo info = QHostInfo::fromName(QUrl(mu.url).host());				
 			      if(info.error() != QHostInfo::NoError) {
