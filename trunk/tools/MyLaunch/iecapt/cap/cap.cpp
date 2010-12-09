@@ -43,8 +43,9 @@
 
 class CMain;
 class CEventSink;
+BOOL isFinish = FALSE;
 #pragma comment(lib, "atl.lib") 
-//#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
+#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
 //////////////////////////////////////////////////////////////////
 // CEventSink
 //////////////////////////////////////////////////////////////////
@@ -87,6 +88,7 @@ public:
 			m_pWebBrowserUnk = NULL;
 			m_pWebBrowser = NULL;
 			m_pEventSink =NULL;
+			isFinish =FALSE;
 	}
 
 	BEGIN_MSG_MAP(CMainWindow)
@@ -115,7 +117,6 @@ private:
 	BOOL   m_bSilent;
 	UINT   m_uDelay;
 	UINT   m_nIDEvent;
-
 
 protected:
 	CComPtr<IUnknown> m_pWebBrowserUnk;
@@ -253,6 +254,7 @@ CMain::OnTimer(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	if( timerid == ID_DELAYTIMER)
 		 SaveSnapshot();
 	PostQuitMessage(0);
+	isFinish = TRUE;
 	printf("%s %d\n",__FUNCTION__,__LINE__);
 	return 0;
 }
@@ -385,8 +387,6 @@ HRESULT CMain::CheckMetaTags(IHTMLDocument2*   pDocument)
 						  ::FindClose(hSearch);
 					  ::SetCurrentDirectory(_T("content"));
 				  }
-
-
 				  //end to enter the right dirctory
 				  _tcscpy(filename,rightToken);
 				  _tcscat(filename,_T(".txt"));
@@ -595,6 +595,7 @@ BOOL CMain::SaveSnapshot(void)
 
 	GetCurrentDirectory(1024, curDir);
 
+	TCHAR name_m[1024]={0};
 	TCHAR name_b[1024]={0};
 	TCHAR name_l[1024]={0};
 	//enter the right directory
@@ -622,16 +623,21 @@ BOOL CMain::SaveSnapshot(void)
 	}
 
 	CImage image_orig;
+	CImage image_little;
 	CImage image_mid;
 	CImage image_big;
 	//end to enter the right dirctory
 	_tcscpy(name_b,_T( "b_"));
 	_tcscat(name_b,rightToken);
+	_tcscpy(name_l,_T( "l_"));
+	_tcscat(name_l,rightToken);
 	//_tcscpy(name_l,"l_");
-	_tcscpy(name_l,rightToken);
+	_tcscpy(name_m,rightToken);
 
 	// TODO: check return value;
 	// TODO: somehow enable alpha
+#define LITTLE_WIDTH 75
+#define LITTLE_HEIGHT 75
 #define MIDDLE_WIDTH 112
 #define MIDDLE_HEIGHT 83
 #define BIG_WIDTH 200
@@ -641,25 +647,36 @@ BOOL CMain::SaveSnapshot(void)
 
 	HDC imgDc = image_orig.GetDC();
 
+
+	//image_mid 75x75
+	image_little.Create(LITTLE_WIDTH, LITTLE_HEIGHT, 24);
+	HDC imgDc_little=image_little.GetDC();
+	::SetStretchBltMode(imgDc_little,STRETCH_HALFTONE);
+	hr = spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, imgDc,
+		imgDc, &rcBounds, NULL, NULL, 0);
+	::StretchBlt(imgDc_little,0,0,LITTLE_WIDTH,LITTLE_HEIGHT,imgDc,0,0,width,height,SRCCOPY  );
+	::SetBrushOrgEx(imgDc_little, 0, 0, NULL); 
+	image_little.ReleaseDC();
+	image_little.Save(name_l);
+
+
 	//image_mid 112x83
 	image_mid.Create(MIDDLE_WIDTH, MIDDLE_HEIGHT, 24);
 	HDC imgDc_mid=image_mid.GetDC();
+	::SetStretchBltMode(imgDc_mid,STRETCH_HALFTONE);
 	hr = spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, imgDc,
 		imgDc, &rcBounds, NULL, NULL, 0);
-	::SetStretchBltMode(imgDc_mid,STRETCH_HALFTONE);
-
 	::StretchBlt(imgDc_mid,0,0,MIDDLE_WIDTH,MIDDLE_HEIGHT,imgDc,0,0,width,height,SRCCOPY  );
 	::SetBrushOrgEx(imgDc_mid, 0, 0, NULL); 
 	image_mid.ReleaseDC();
-	image_mid.Save(name_l);
+	image_mid.Save(name_m);
 
 	//image_big 200x150
 	image_big.Create(BIG_WIDTH, BIG_HEIGHT, 24);
 	HDC imgDc_big=image_big.GetDC();
+	::SetStretchBltMode(imgDc_big,STRETCH_HALFTONE);
 	hr = spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, imgDc,
 		imgDc, &rcBounds, NULL, NULL, 0);
-	::SetStretchBltMode(imgDc_big,STRETCH_HALFTONE);
-
 	::StretchBlt(imgDc_big,0,0,BIG_WIDTH,BIG_HEIGHT,imgDc,0,0,width,height,SRCCOPY  );
 	::SetBrushOrgEx(imgDc_big, 0, 0, NULL); 
 	image_big.ReleaseDC();
@@ -794,8 +811,8 @@ int main (int argc, _TCHAR* argv[])
 	MSG msg;
 	
 	while (GetMessage(&msg, NULL, 0, 0)) {
-	//		if (msg.message == WM_CLOSE)       
-	//				   break ;    
+		if (isFinish)       
+				   break ;    
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
