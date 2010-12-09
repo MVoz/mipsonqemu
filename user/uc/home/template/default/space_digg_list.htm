@@ -10,12 +10,13 @@
 							</a>
 						</div>						
 				</div>
-				<div class="rt">
-						<!--{if $value[picflag] }-->
+				<!--{if $value[picflag] }-->
+				<div class="rt_p">
 						<div class="lfx_p">
-						<!--{else}-->
+				<!--{else}-->
+				<div class="rt">
 						<div class="lfx">
-						<!--{/if}-->	
+				<!--{/if}-->	
 							 <div class="tle">
 								<a class="id_dg_$value['diggid']"></a>
 								<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
@@ -30,23 +31,27 @@
 								<!--{loop $value[tag] $tagid $tagname}-->
 									<a id="$tagid" class="id_dg_tag">$tagname</a>
 								<!--{/loop}-->					
-							   </span>						
-							   发布者:
-							   <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
+							   </span>	
+							   <span>
+								发布者:
+								 <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
 								     有
+								</span>
 							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
-								弹指人参与围观								
+							   <span>弹指人参与围观</span>							
 								<span class="rateup">
 										<a class="up" id="$value[diggid]"></a>
 								</span>
-								(<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>)	
+								<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>								
 								<span class="ratedown">
 										<a class="down" id="$value[diggid]"></a>
 								</span>
-								(<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>)
+								<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
-								<a class="edit" id="$value[diggid]"></a>
-								<a class="delete diggbtn" id="$value[diggid]"></a>			
+								<span>
+									<a class="edit" id="$value[diggid]"></a>
+									<a class="delete diggbtn" id="$value[diggid]"></a>			
+								</span>
 								<!--{/if}-->
 						</div>				
 				</div>
