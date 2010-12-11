@@ -181,7 +181,7 @@ h2.title img { margin: 0 5px 0 0; vertical-align: middle; }
 	.comments_list .magicbar{ float: right; margin: 0 5px 0 0; }
 
 
-.page { padding: 3px; text-align: center;height:16px; }
+.page { padding: 3px; text-align: center;height:20px; }
     .page * { margin: 0 3px 0 0; padding: 3px 5px; border: 1px solid #EBE6C9; background: #FCF9E6; color: #999; }
     .page em { border-color: #FEE4AB; color: #C30; font-style: normal; }
     .page strong { background: #FEE4AB; color: #C30; }
@@ -405,7 +405,6 @@ a.c_link {
 .menu_item .menu_list li {padding:0 0 0 10px; background: url(image/dot.gif) no-repeat 0px 10px; width:160px;text-align:left;font-size: 12px;font-style: normal}
 
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
-#diggcontent {height:700px;}
 /*link*/
 .cont  {float:left;padding-left:0px;width:420px;}
 .tagcont ul {width:400px;height:100px;}
