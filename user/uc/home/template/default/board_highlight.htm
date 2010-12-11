@@ -1,4 +1,4 @@
-<div id="highlight"> 
+<div id="hhlt"> 
 	<p>
 		<span id="todayviewnum">今日访问</span>
 		<span id="todaystorenum">今日收藏</span>
@@ -21,21 +21,5 @@
 	<!--{/loop}-->		
 </div>
 <script language="javascript" type="text/javascript" >
-	$(document).ready(function(){
-			$("#highlight .num_con").css("margin-top","-20px");
-			$("#highlight a").css("display","block").css("width","180px");
-			$("#highlight p span").css("cursor","pointer");
-			$("#highlight span:odd").css("background-color","#7BAD00");
-			$("#highlight span:even").css("background-color","#FF8901");
-			$("#highlight span:first").css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); 
-			$("#highlight dl:not(:first)").hide();
-			$("#highlight span").click(function(){ 
-				$("#highlight span").removeClass("currentx"); 
-				$("#highlight span:odd").css("background-color","#7BAD00");
-				$("#highlight span:even").css("background-color","#FF8901");
-				$(this).css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); ; 
-				$("#highlight dl").hide(); 
-				$("."+$(this).attr("id")).show();
-		});
-	});
+
 </script>
