@@ -480,13 +480,13 @@ border:1px solid #DDD;}
 #highlight a{font-size:12px;}
 
 .search_area {height:95px;width:672px;float:right;}
-.search_area,.popular_site{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
-.search_area p,.popular_site p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
-.search_area p span,.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
-#highlight p span.currentx,.search_area p span.currentx,.popular_site p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
-.search_area >li,.popular_site >li{padding-bottom:3px;margin:5px 0;}
+.search_area,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
+.search_area p,.prse p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
+.search_area p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+#highlight p span.currentx,.search_area p span.currentx,.prse p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.search_area >li,.prse >li{padding-bottom:3px;margin:5px 0;}
 
- .popular_site {height:150px;width:672px;float:right;}
+ .prse {height:150px;width:672px;float:right;}
 .allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
 
 .row-list,.row-list_l{display:block;clear:both;}
