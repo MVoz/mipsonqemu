@@ -559,10 +559,10 @@ $(function(){
 });
 
 $(function(){
-			$(".search_area span:first").addClass("currentx");
+			$(".shaa span:first").addClass("currentx");
 			currentid= getCookie(getSearchTabCookieName());
-			$(".search_area span").click(function(){
-				$(".search_area span").removeClass("currentx");  
+			$(".shaa span").click(function(){
+				$(".shaa span").removeClass("currentx");  
 				$(this).addClass("currentx"); 
 				$('#searchform input[type=checkbox]').remove();
 				$('#searchform span').remove();
@@ -603,10 +603,10 @@ $(function(){
 				 //set button value				 
 				 $("#searchbtn").attr("value",$(this).html()+'搜索');
 		});
-		if($('.search_area #'+currentid))
-			$('.search_area #'+currentid).click(); 
+		if($('.shaa #'+currentid))
+			$('.shaa #'+currentid).click(); 
 		else
-			$(".search_area span:first").click();
+			$(".shaa span:first").click();
 });
 
 $(function(){
