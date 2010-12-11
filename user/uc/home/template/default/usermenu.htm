@@ -20,4 +20,17 @@
 				<!--{template feeds}-->
 		</div>
 </div>
+<script language="javascript"  type="text/javascript">
+	$(document).ready(function(){
+			$(".tabs_header .tabs #"+$browserid).addClass("active");  
+			$(".menu_list").hide();
+			$(".menu_list_"+$browserid).show(); 
+			$(".tabs_header .tabs >li").click(function(){ 
+				$(".tabs_header .tabs >li").removeClass("active"); 
+				$(this).addClass("active"); 
+				$(".menu_item .menu_list").hide();
+				$(".menu_item .menu_list_"+$(this).attr("id")).show();  
+		});
+	});
+</script>
 

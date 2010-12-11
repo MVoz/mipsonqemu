@@ -531,8 +531,7 @@ border:1px solid #DDD;}
 /*************************************************NETWORK PAGE***/
 #network{  overflow: hidden; }
 
-.box,.boxb{ margin:6px 0 0 0; width: 970px; overflow: hidden;float:left;}
-.boxb{ background:url("image/boxb.png") no-repeat scroll 0 0 transparent; background-position: bottom left;}
+.box{ margin:6px 0 0 0; width: 970px; overflow: hidden;float:left;}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxb h2 { font-size: 12px; }
 .box h3 , .boxb h3{ font-size: 12px; }

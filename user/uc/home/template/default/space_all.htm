@@ -3,57 +3,11 @@
 	  <!--{template space_bookmark_list}-->
 <!--{else}-->
 <!--{template board}-->
-<div class="box" style="height:705px;">
-	<div class="box_l" style="height:700px;">
-		<!--{template space_bookmark_title}-->
-		<div id="bmcontent">
-			<!--{template space_bookmark_list}-->	
-		</div>
-	</div>	 
-	<div class="box_r" style="height:700px;">
-		<!--{template usermenu}-->	
-<script language="javascript"  type="text/javascript">
-	$(document).ready(function(){
-			$(".tabs_header .tabs #"+$browserid).addClass("active");  
-			$(".menu_list").hide();
-			$(".menu_list_"+$browserid).show(); 
-			$(".tabs_header .tabs >li").click(function(){ 
-				$(".tabs_header .tabs >li").removeClass("active"); 
-				$(this).addClass("active"); 
-				$(".menu_item .menu_list").hide();
-				$(".menu_item .menu_list_"+$(this).attr("id")).show();  
-		});
-	});
-</script>
-	</div>	  						
-</div>
-<div  class="box">
-	<!--{template todayhot}-->
-	<div id="relatedcontent">
 
-	</div>	
-</div>
-<script language="javascript"  type="text/javascript">
-	$('#relatedcontent').html($('#relatehtm').html());
-	$('relatehtm').remove();
-</script>
+<!--{template bookmark}-->
+<!--{template recommend}-->
+<!--{template digg}-->
 
-<div class="boxb" style="height:890px;">
-		<div class="box_l" style="height:890px;">
-			<h2 class="ntitle">
-				<span><a href="space.php?do=digg">更多$_SC['digg_name']</a></span>
-				<p>$_SC['digg_name'] &raquo;</p>
-			</h2>
-			<div id="diggcontent">
-				<!--{template space_digg_list}-->
-			</div>
-		</div>
-		<div class="box_r" style="height:890px;">
-				<h2 class="ntitle">
-				</h2>
-				<!--{template space_digg_sortlist}-->
-		</div>
-</div>
 <div class="fbbottom"></div>
 <!--{template footer}-->
 <!--{/if}-->
