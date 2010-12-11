@@ -35,8 +35,8 @@
 	</div>				  
 </div>
 <script language="javascript" type="text/javascript">
-		jQuery(".id_st_$value['relate']['siteid']").attr("href","$value[relate][url]").attr("target","_blank").attr("title","$value['relate']['subject']").attr("onclick","updatebookmarkview($value['relate']['siteid'])");
-		jQuery(".id_st_tag_$value['relate']['siteid']").each(function(){
+		$(".id_st_$value['relate']['siteid']").attr("href","$value[relate][url]").attr("target","_blank").attr("title","$value['relate']['subject']").attr("onclick","updatebookmarkview($value['relate']['siteid'])");
+		$(".id_st_tag_$value['relate']['siteid']").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});
 </script> 

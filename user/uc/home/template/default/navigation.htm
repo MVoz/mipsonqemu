@@ -14,8 +14,8 @@
 		<!--{/loop}-->						
 </div> 
 <script language="javascript" type="text/javascript">	
-		jQuery(".navi_catalog a").each(function(){
+		$(".navi_catalog a").each(function(){
 			this.href ="javascript:;";
-			jQuery(this).attr("onclick","ajaxget('space.php?do=navigation&classid="+this.id+"', 'bmcontent');");
+			$(this).attr("onclick","ajaxget('space.php?do=navigation&classid="+this.id+"', 'bmcontent');");
 		});
 </script>

@@ -57,8 +57,8 @@
 		siteload();
 <!--{loop $bookmarklist $key $value}-->	
 		var id_st_$value['siteid']_title="$value['subject']";
-		jQuery(".id_st_$value['siteid']").attr("href","$value[url]").attr("title",id_st_$value['siteid']_title);		
-		jQuery(".id_st_$value['siteid']:empty").html(id_st_$value['siteid']_title);
+		$(".id_st_$value['siteid']").attr("href","$value[url]").attr("title",id_st_$value['siteid']_title);		
+		$(".id_st_$value['siteid']:empty").html(id_st_$value['siteid']_title);
 <!--{/loop}-->		
 </script>
 
