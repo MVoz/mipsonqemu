@@ -639,8 +639,8 @@ border:1px solid #DDD;}
 	.fbbottom{ height: 0px;  clear: both; overflow: hidden; }
 
 
-	.quickmenu_drop  {background:none repeat scroll 0 0 #FFFFFF;border:1px solid #EBE6C9;margin:-1px 0 0;padding:0 2px 0px;width:60px;;z-index:200;}
-	.quickmenu_drop li {height:22px;line-height:22px;}
+	.quickmenu_drop  {background:none repeat scroll 0 0 #FFFFFF;border:1px solid #EBE6C9;;width:60px;;z-index:200;}
+	.quickmenu_drop li {height:18px;line-height:18px;padding:2px 0 0;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
 	#board .searchinfo{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
