@@ -20,7 +20,7 @@ if (top.location != location) {
 function $obj(id) {
 	return document.getElementById(id);
 }
-
+ /*
 function addSort(obj) {
 	if (obj.value == 'addoption') {
  	var newOptDiv = document.createElement('div')
@@ -64,7 +64,7 @@ function checkAll(form, name) {
 		}
 	}
 }
-
+ */
 function cnCode(str) {
 	return is_ie && document.charset == 'utf-8' ? encodeURIComponent(str) : str;
 }
@@ -355,7 +355,7 @@ function urlto(url) {
 function explode(sep, string) {
 	return string.split(sep);
 }
-
+/*
 function selector(pattern, context) {
 	var re = new RegExp('([a-z]*)([\.#:]*)(.*|$)', 'ig');
 	var match = re.exec(pattern);
@@ -403,6 +403,7 @@ function selector(pattern, context) {
 		return list;
 	}
 }
+*/
 function add_favorite()
 { 
 	if (document.all)  
@@ -513,6 +514,39 @@ function diggload(){
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
 }
+function searchsubmit()
+{
+			 var i=0;				
+			 $('#searchform input[type=checkbox]').each(function(){ 					 
+					if($(this).attr("checked")==true){ 						
+						$("#"+'searchkey_'+i).val($('#searchkey').val());	
+						$("#"+'searchform_'+i).submit();
+					}
+					i++;
+			 });
+			 return false;
+}
+
+function setquickmenu(type)
+{
+	 var qkmus = {
+		  lastvisit: [['最近访问']],
+		  oftenvisit: [['经常访问']],
+		  lastadd: [['最新添加']],
+		  mycharts: [['我的上榜']]
+	 };
+	 getbmview(type);
+	 $('#qkmut').text(qkmus[type][0][0]);
+	 $('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');
+	 if($('#groupdo'))
+		 $('#groupdo').html("");
+	 if($('#groupname'))
+		 $('#groupname').html(qkmus[type][0][0]+' &raquo;');
+
+	
+}
+function qkmu_open(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'visible');}
+function qkmu_close(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');}
 $(function(){
 		$(".popular_site span:first").addClass("currentx");  
 			$(".popular_site ul:not(:first)").hide(); 
@@ -573,26 +607,10 @@ $(function(){
 			$('.search_area #'+currentid).click(); 
 		else
 			$(".search_area span:first").click();
-});	
-function searchsubmit()
-{
-			 var i=0;				
-			 $('#searchform input[type=checkbox]').each(function(){ 					 
-					if($(this).attr("checked")==true){ 						
-						$("#"+'searchkey_'+i).val($('#searchkey').val());	
-						$("#"+'searchform_'+i).submit();
-					}
-					i++;
-			 });
-			 return false;
-}
-function setquickmenu(type,menustr)
-{
-	 $('#qkmua').attr("onclick","getbmview('+type+')");
-	 $('#qkmut').text(menustr);
-	 $('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');
-	 if($('#groupdo'))
-		 $('#groupdo').html("");
-	 if($('#groupname'))
-		 $('#groupname').html(menustr+' &raquo;');
-}
+});
+
+$(function(){
+	$('#qkmu > li').bind('mouseover', qkmu_open);
+	$('#qkmu > li').bind('mouseout',  qkmu_close);
+});
+document.onclick = qkmu_close;
