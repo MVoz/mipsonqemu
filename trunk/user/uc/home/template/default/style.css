@@ -639,8 +639,13 @@ border:1px solid #DDD;}
 	.fbbottom{ height: 0px;  clear: both; overflow: hidden; }
 
 
-	.quickmenu_drop  {background:none repeat scroll 0 0 #FFFFFF;border:1px solid #EBE6C9;;width:60px;;z-index:200;}
-	.quickmenu_drop li {height:18px;line-height:18px;padding:2px 0 0;}
+	#qkmu {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
+	#qkmu li{float:left;list-style: none;}
+	#qkmu li a{display: block;padding: 5px 0px;text-decoration: none;width: 60px;white-space: nowrap}
+	#qkmu li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
+	#qkmu li ul li	{float: none;display: inline}
+	#qkmu li ul li a {width: auto;}
+	#qkmu #qkmut{font-style:normal;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
 	#board .searchinfo{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
