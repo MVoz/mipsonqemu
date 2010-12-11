@@ -552,9 +552,9 @@ border:1px solid #DDD;}
 	.ntitle span .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
-.box_l { float: left; width: 680px;  overflow: hidden; }
+.box_l { float: left; width: 680px;  overflow: hidden;height:100%; }
 	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 0 transparent;}
-.box_r { padding:0px;float: right; width:289px;}
+.box_r { padding:0px;float: right; width:289px;height:100%;}
 		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px 0 transparent; line-height: 32px; }
 
 	.bloglist_ad {padding:15px 2px 2px 2px;position:relative;left:120px;bottom:10px;}
