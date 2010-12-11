@@ -15,15 +15,15 @@
 	<div class="box_r" style="height:700px;">
 		<!--{template usermenu}-->	
 <script language="javascript"  type="text/javascript">
-	jQuery(document).ready(function(){
-			jQuery(".tabs_header .tabs #"+$browserid).addClass("active");  
-			jQuery(".menu_list").hide();
-			jQuery(".menu_list_"+$browserid).show(); 
-			jQuery(".tabs_header .tabs >li").click(function(){ 
-				jQuery(".tabs_header .tabs >li").removeClass("active"); 
-				jQuery(this).addClass("active"); 
-				jQuery(".menu_item .menu_list").hide();
-				jQuery(".menu_item .menu_list_"+jQuery(this).attr("id")).show();  
+	$(document).ready(function(){
+			$(".tabs_header .tabs #"+$browserid).addClass("active");  
+			$(".menu_list").hide();
+			$(".menu_list_"+$browserid).show(); 
+			$(".tabs_header .tabs >li").click(function(){ 
+				$(".tabs_header .tabs >li").removeClass("active"); 
+				$(this).addClass("active"); 
+				$(".menu_item .menu_list").hide();
+				$(".menu_item .menu_list_"+$(this).attr("id")).show();  
 		});
 	});
 </script>
@@ -36,8 +36,8 @@
 	</div>	
 </div>
 <script language="javascript"  type="text/javascript">
-	$('relatedcontent').innerHTML=$('relatehtm').innerHTML;
-	$('relatehtm').parentNode.removeChild($('relatehtm'));
+	$('#relatedcontent').html($('#relatehtm').html());
+	$('relatehtm').remove();
 </script>
 <!--{template footer}-->
 <!--{/if}-->

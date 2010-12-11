@@ -35,10 +35,10 @@
 					<!--{/loop}-->
 					</ul>
 <script language="javascript" type="text/javascript">		
-		jQuery(".toolbar_$key em").attr("style","width:$_SGLOBAL['linktoolbartype'][$key]['width']px");
-		jQuery(".toolbar_$key a").attr("target","_blank");
-		jQuery(".toolbar_$key a").each(function(){
-			this.title=jQuery(this).text();
+		$(".toolbar_$key em").attr("style","width:$_SGLOBAL['linktoolbartype'][$key]['width']px");
+		$(".toolbar_$key a").attr("target","_blank");
+		$(".toolbar_$key a").each(function(){
+			this.title=$(this).text();
 		});	
 </script> 
 <!--{/loop}-->  

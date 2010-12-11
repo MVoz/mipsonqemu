@@ -66,16 +66,16 @@
 		var gpid=$value[groupid];
 		var bsid=$value[browserid];		
 		bookmarkload();
-		jQuery(".bloglist .delete").each(function(){
+		$(".bloglist .delete").each(function(){
 			this.href =this.href+"&at=$at";			
 		});
-		jQuery(".bloglist .edit").each(function(){
+		$(".bloglist .edit").each(function(){
 			this.href =this.href+"&at=$at";			
 		});	
 <!--{loop $bookmarklist $key $value}-->	
 		var id_bm_$value['bmid']_title="$value['subject']";
-		jQuery(".id_bm_$value['bmid']").attr("href","$value[url]").attr("title",id_bm_$value['bmid']_title);		
-		jQuery(".id_bm_$value['bmid']:empty").html(id_bm_$value['bmid']_title);
+		$(".id_bm_$value['bmid']").attr("href","$value[url]").attr("title",id_bm_$value['bmid']_title);		
+		$(".id_bm_$value['bmid']:empty").html(id_bm_$value['bmid']_title);
 <!--{/loop}-->		
 </script>
 	

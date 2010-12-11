@@ -15,12 +15,12 @@
 </ul>
 </div>
 <script language="javascript" type="text/javascript">	
-		jQuery(".mgn2").each(function(){
-			var o = jQuery(this);
+		$(".mgn2").each(function(){
+			var o = $(this);
 			var url = o.children(".thumb").attr("href");
 			var title = o.children(".thumb").attr("title");
 			o.children("span").children("a").attr("href",url);
 			o.children("span").children("a").html(title);
 		});
-		jQuery(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"82px" });		
+		$(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"82px" });		
 </script>

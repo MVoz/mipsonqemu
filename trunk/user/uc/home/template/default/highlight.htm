@@ -21,21 +21,21 @@
 	<!--{/loop}-->		
 </div>
 <script language="javascript" type="text/javascript" >
-	jQuery(document).ready(function(){
-			jQuery("#highlight .num_con").css("margin-top","-20px");
-			jQuery("#highlight a").css("display","block").css("width","180px");
-			jQuery("#highlight p span").css("cursor","pointer");
-			jQuery("#highlight span:odd").css("background-color","#7BAD00");
-			jQuery("#highlight span:even").css("background-color","#FF8901");
-			jQuery("#highlight span:first").css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); 
-			jQuery("#highlight dl:not(:first)").hide();
-			jQuery("#highlight span").click(function(){ 
-				jQuery("#highlight span").removeClass("currentx"); 
-				jQuery("#highlight span:odd").css("background-color","#7BAD00");
-				jQuery("#highlight span:even").css("background-color","#FF8901");
-				jQuery(this).css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); ; 
-				jQuery("#highlight dl").hide(); 
-				jQuery("."+jQuery(this).attr("id")).show();
+	$(document).ready(function(){
+			$("#highlight .num_con").css("margin-top","-20px");
+			$("#highlight a").css("display","block").css("width","180px");
+			$("#highlight p span").css("cursor","pointer");
+			$("#highlight span:odd").css("background-color","#7BAD00");
+			$("#highlight span:even").css("background-color","#FF8901");
+			$("#highlight span:first").css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); 
+			$("#highlight dl:not(:first)").hide();
+			$("#highlight span").click(function(){ 
+				$("#highlight span").removeClass("currentx"); 
+				$("#highlight span:odd").css("background-color","#7BAD00");
+				$("#highlight span:even").css("background-color","#FF8901");
+				$(this).css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); ; 
+				$("#highlight dl").hide(); 
+				$("."+$(this).attr("id")).show();
 		});
 	});
 </script>

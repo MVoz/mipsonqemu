@@ -39,9 +39,9 @@
 	</p> 						
 </div>	
 <script language="javascript" type="text/javascript">	
-		jQuery(".id_td_$todayhot[siteid]").attr("href","$todayhot['url']").attr("target","_blank").attr("title","$todayhot['subject']").attr("onclick","updatesiteview($todayhot['siteid']);this.href=this.href+'&title=$todayhot['subject']';");
-		jQuery(".id_td_tag_$todayhot[siteid]").each(function(){
+		$(".id_td_$todayhot[siteid]").attr("href","$todayhot['url']").attr("target","_blank").attr("title","$todayhot['subject']").attr("onclick","updatesiteview($todayhot['siteid']);this.href=this.href+'&title=$todayhot['subject']';");
+		$(".id_td_tag_$todayhot[siteid]").each(function(){
 			this.href = "javascript:;";
-			jQuery(this).attr("onclick","ajaxget('space.php?do=linktag&tagid="+this.id+"&ajaxdiv=bmcontent', 'bmcontent')");
+			$(this).attr("onclick","ajaxget('space.php?do=linktag&tagid="+this.id+"&ajaxdiv=bmcontent', 'bmcontent')");
 		});
 </script>

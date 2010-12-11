@@ -1,45 +1,46 @@
 <script language="javascript" type="text/javascript" >
-	jQuery(document).ready(function(){
-		jQuery(".popular_site span:first").addClass("currentx");  
-			jQuery(".popular_site ul:not(:first)").hide(); 
-			jQuery(".popular_site span").click(function(){ 
-				jQuery(".popular_site span").removeClass("currentx"); 
-				jQuery(this).addClass("currentx"); 
-				jQuery(".popular_site ul").hide(); 
-				jQuery("."+jQuery(this).attr("id")).show();
+	$(document).ready(function(){
+		$(".popular_site span:first").addClass("currentx");  
+			$(".popular_site ul:not(:first)").hide(); 
+			$(".popular_site span").click(function(){ 
+				$(".popular_site span").removeClass("currentx"); 
+				$(this).addClass("currentx"); 
+				$(".popular_site ul").hide(); 
+				$("."+$(this).attr("id")).show();
 		});
 	});
 
-	jQuery(document).ready(function(){
-			jQuery(".search_area span:first").addClass("currentx");
+	$(document).ready(function(){
+			$(".search_area span:first").addClass("currentx");
 			currentid= getCookie(getSearchTabCookieName());
-			jQuery(".search_area span").click(function(){
-				jQuery(".search_area span").removeClass("currentx");  
-				jQuery(this).addClass("currentx"); 
-				jQuery('#searchform input[type=checkbox]').remove();
-				jQuery('#searchform span').remove();
+			$(".search_area span").click(function(){
+				$(".search_area span").removeClass("currentx");  
+				$(this).addClass("currentx"); 
+				$('#searchform input[type=checkbox]').remove();
+				$('#searchform span').remove();
 
-				jQuery("#hidden_form").empty();
+				$("#hidden_form").empty();
 				var i=0;
-				setSearchTab(jQuery(this).attr("id"));
-				var len = searchs[jQuery(this).attr("id")].length;
+				setSearchTab($(this).attr("id"));
+				var len = searchs[$(this).attr("id")].length;
 				for (i = 0; i < len; i++) {
 				 //set checkbox
 					var f = document.createElement("INPUT");
 					f.type = "checkbox";
-					f.name = searchs[jQuery(this).attr("id")][i][0];
+					f.name = searchs[$(this).attr("id")][i][0];
 					f.id = "check_"+i;
-					$('searchform').appendChild(f);
-					$(f.id).checked=(searchs[jQuery(this).attr("id")][i][6]==1)?true:false;
-					jQuery('#searchform').append('<span>'+searchs[jQuery(this).attr("id")][i][3]+'</span>');
+					$('#searchform').append(f);
+					$("#"+f.id).attr("checked",(searchs[$(this).attr("id")][i][6]==1)?true:false);
+					
+					$('#searchform').append('<span>'+searchs[$(this).attr("id")][i][3]+'</span>');
 				  //set hidden form
-					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[jQuery(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[jQuery(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
+					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[$(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[$(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
 
 					
-					jQuery("#hidden_form").append(hiddenformArr);					
+					$("#hidden_form").append(hiddenformArr);					
 					//set hidden input						 
-					 if (searchs[jQuery(this).attr("id")][i][7]!= null) {
-						var c = searchs[jQuery(this).attr("id")][i][7].split(";");
+					 if (searchs[$(this).attr("id")][i][7]!= null) {
+						var c = searchs[$(this).attr("id")][i][7].split(";");
 						for (var d = 0, l = c.length; d < l; d++) {
 							var e = c[d].split(":");
 							var f = document.createElement("INPUT");
@@ -47,30 +48,28 @@
 							f.name = e[0];
 							f.id = e[0];
 							f.value = e[1];
-							$('searchform_'+i).appendChild(f);
+							$('#searchform_'+i).append(f);
 						}
 					}
 				 }
 				 //set button value				 
-				 jQuery("#searchbtn").attr("value",jQuery(this).html()+'搜索');
+				 $("#searchbtn").attr("value",$(this).html()+'搜索');
 		});
-		if(jQuery('.search_area #'+currentid))
-			jQuery('.search_area #'+currentid).click(); 
+		if($('.search_area #'+currentid))
+			$('.search_area #'+currentid).click(); 
 		else
-			jQuery(".search_area span:first").click();
-		//jQuery(".popular_site span:first").click();
+			$(".search_area span:first").click();
+		//$(".popular_site span:first").click();
 });	
 </script>
 <script>
 		function searchsubmit()
 		{
-			 var i=0;
-			 jQuery('#searchform input[type=checkbox]').each(function(){ 
-					var form_id='searchform_'+i;
-					var searchkey_id='searchkey_'+i;
-					if(jQuery(this).attr("checked")==true){
-						$(searchkey_id).value=$('searchkey').value;		
-						$(form_id).submit();
+			 var i=0;				
+			 $('#searchform input[type=checkbox]').each(function(){ 					 
+					if($(this).attr("checked")==true){ 						
+						$("#"+'searchkey_'+i).val($('#searchkey').val());	
+						$("#"+'searchform_'+i).submit();
 					}
 					i++;
 			 });

@@ -65,14 +65,14 @@
 	
 	</div>
 <script language="javascript" type="text/javascript">	
-		var url = jQuery(".sitepic > a").attr("href");
-		var click = jQuery(".sitepic > a").attr("onclick");
-		jQuery(".url").attr("href",url).attr("onclick",click);
-		jQuery(".tags").each(function(){
-			jQuery(this).attr("href","space.php?do=sitetag&tagid="+this.id);
+		var url = $(".sitepic > a").attr("href");
+		var click = $(".sitepic > a").attr("onclick");
+		$(".url").attr("href",url).attr("onclick",click);
+		$(".tags").each(function(){
+			$(this).attr("href","space.php?do=sitetag&tagid="+this.id);
 		});
-		jQuery(".action").each(function(){
-			jQuery(this).attr("href","cp.php?ac=site&op="+this.name+"&siteid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
+		$(".action").each(function(){
+			$(this).attr("href","cp.php?ac=site&op="+this.name+"&siteid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
 		});		
 </script>
 	<div class="box_r">

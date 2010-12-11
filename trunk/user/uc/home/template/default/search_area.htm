@@ -37,14 +37,14 @@
 									</div>
 								<script type="text/javascript">
 									function AutoScroll(obj){
-										jQuery(obj).find("ul:first").animate({
+										$(obj).find("ul:first").animate({
 											marginTop:"-25px"
 										},500,function(){
-											jQuery(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+											$(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
 										});	
 									}
 									
-									jQuery(document).ready(function(){
+									$(document).ready(function(){
 										setInterval('AutoScroll("#diggscroll")',5000);
 									});
 									

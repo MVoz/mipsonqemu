@@ -92,13 +92,13 @@
 	</div>
 </div>
 <script language="javascript" type="text/javascript">	
-	var url = jQuery(".playpic").attr("href");
-	var click = jQuery(".playpic").attr("onclick");
-	jQuery(".url").attr("href",url).attr("onclick",click);
-	jQuery(".tags").each(function(){
-		jQuery(this).attr("href","space.php?do=linktag&tagid="+this.id);
+	var url = $(".playpic").attr("href");
+	var click = $(".playpic").attr("onclick");
+	$(".url").attr("href",url).attr("onclick",click);
+	$(".tags").each(function(){
+		$(this).attr("href","space.php?do=linktag&tagid="+this.id);
 	});
-	jQuery(".action").each(function(){
-		jQuery(this).attr("href","cp.php?ac=bookmark&op="+this.name+"&bmid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
+	$(".action").each(function(){
+		$(this).attr("href","cp.php?ac=bookmark&op="+this.name+"&bmid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
 	});	
 </script>

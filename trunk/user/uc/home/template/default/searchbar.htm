@@ -1,5 +1,6 @@
 ﻿<!--search bar start-->
 <script>
+/*
 	function searchsubmit()
 	{
 		if($('searchkey').value==''||$('searchkey').value=='请输入关键词')
@@ -21,6 +22,7 @@
 		}
 		return false;
 	}
+*/
 </script>
     <div class="floatleft searchForm">
          <ul>
@@ -29,32 +31,7 @@
 					<input type="text" value="请输入关键词" onfocus="if(this.value=='请输入关键词'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键词';}" name="q" maxlength="255" id="searchkey" class="t_input" style="padding:5px" size="50">
                     <input class="submit" type="submit" value="搜索" onclick="return searchsubmit();">
 				</li>
-		</form>
-		<form id="googlesearchform" target="_blank" action=""  method="get" style="float:left">
-				<input type="text" name="q"  id="searchgooglekey"  style="display:none" >
-		</form>
-		<form id="googlesearchform_s" target="_blank" action=""  method="get" style="float:left">
-				<li>
-                    <input type="checkbox" size="2" maxlength="2" id="searchgoogleck" value="googleck" checked>
-                </li>
-                <li>
-                    <a href="#" class="logogoogle">&nbsp;</a>
-                </li>
-                </li>
-
-		</form>
-		<form id="baidusearchform" name="baidusearchform"  target="_blank" action="" method="get" style="float:left">
-				<input type="text" name="wd" id="searchbaidukey" style="display:none" >
-				<input type="text" name="ie" value="utf-8" style="display:none" >
-		</form>
-		<form id="baidusearchform_s" name="baidusearchform_s"  target="_blank" action="" method="get" style="float:left">
-                <li>
-                    <input type="checkbox" size="2" maxlength="2" id="searchbaiduck" value="baiduck" checked>
-                </li>
-                <li>
-                    <a href="#" class="logobaidu">&nbsp;</a>
-                </li>
-		 </form>
+		</form>		
          </ul>
        
     </div>

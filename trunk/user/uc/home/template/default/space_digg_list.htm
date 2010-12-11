@@ -26,32 +26,26 @@
 							</div>
 						</div>
 						<div class="rb gray">
-							   <span class="tags">					
+							   <p class="tags">					
 							   标签:
 								<!--{loop $value[tag] $tagid $tagname}-->
 									<a id="$tagid" class="id_dg_tag">$tagname</a>
 								<!--{/loop}-->					
-							   </span>	
-							   <span>
+							   </p>	
+							   <p>
 								发布者:
 								 <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
-								     有
-								</span>
-							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</span>
-							   <span>弹指人参与围观</span>							
-								<span class="rateup">
-										<a class="up" id="$value[diggid]"></a>
-								</span>
-								<span id="digg_up_num_id_$value[diggid]">$value[upnum]</span>								
-								<span class="ratedown">
-										<a class="down" id="$value[diggid]"></a>
-								</span>
-								<span id="digg_down_num_id_$value[diggid]">$value[downnum]</span>
+								</p>
+							   <p class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</p>
+							   <p>弹指人参与围观</p>							
+
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
-								<span>
+								<p>
 									<a class="edit" id="$value[diggid]"></a>
+								</p>
+								<p>
 									<a class="delete diggbtn" id="$value[diggid]"></a>			
-								</span>
+								</p>
 								<!--{/if}-->
 						</div>				
 				</div>
@@ -74,8 +68,8 @@
 		diggload();
 <!--{loop $digglist $key $value}-->	
 		var id_dg_$value['diggid']_title="$value['subject']";
-		jQuery(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatediggview($value[diggid])");		
-		jQuery(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
+		$(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatediggview($value[diggid])");		
+		$(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
 <!--{/loop}-->
 </script>		
 
