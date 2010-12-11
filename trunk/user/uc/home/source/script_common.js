@@ -548,12 +548,12 @@ function setquickmenu(type)
 function qkmu_open(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'visible');}
 function qkmu_close(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');}
 $(function(){
-		$(".popular_site span:first").addClass("currentx");  
-			$(".popular_site ul:not(:first)").hide(); 
-			$(".popular_site span").click(function(){ 
-				$(".popular_site span").removeClass("currentx"); 
+		$(".prse span:first").addClass("currentx");  
+			$(".prse ul:not(:first)").hide(); 
+			$(".prse span").click(function(){ 
+				$(".prse span").removeClass("currentx"); 
 				$(this).addClass("currentx"); 
-				$(".popular_site ul").hide(); 
+				$(".prse ul").hide(); 
 				$("."+$(this).attr("id")).show();
 			});
 });
