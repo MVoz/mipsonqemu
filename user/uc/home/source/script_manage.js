@@ -1,7 +1,7 @@
 function linkclasstag_add(sid, result) {
 	if(result) {
 		//linkclassform_1=>linkclassform_1_tag
-		var obj = $(sid+'_tag');
+		var obj = $obj(sid+'_tag');
 		var newli = document.createElement("h4");
 		var x = new Ajax();
 		x.get('do.php?ac=ajax&op=linkclasstag', function(s){
@@ -13,7 +13,7 @@ function linkclasstag_add(sid, result) {
 function linkclass_add(sid, result) {
 	if(result) {
 		//linkclassform_1=>linkclassform_1_tag
-		var obj = $(sid+'_name');
+		var obj = $obj(sid+'_name');
 		var newli = document.createElement("h4");
 		var x = new Ajax();
 		x.get('do.php?ac=ajax&op=linkclass', function(s){
@@ -25,15 +25,12 @@ function linkclass_add(sid, result) {
 }
 
 function  categoryShow(value) {
-	if(value==0) {
-		$('tb_bookmark').style.display = '';
-	}else {
-		$('tb_bookmark').style.display = 'none';
-	}
+	$('#tb_bookmark').css("display",value?"":"none");
 }
 /*search*/
 function googleHint(a) {
-    $("gsuggest") && $("gsuggest").parentNode.removeChild($("gsuggest"));
+	if($("#gsuggest"))
+		$("#gsuggest").remove();
     var b = document.body.appendChild(document.createElement("script"));
     b.language = "javascript";
     b.id = "gsuggest";
@@ -43,8 +40,8 @@ function googleHint(a) {
 
 function myhint(a) {
 	
-    var b = $("searchkey"),
-        c = $("suggests");
+    var b = $obj("searchkey"),
+        c = $obj("suggests");
     if (!b.value || !b.value.length || a.keyCode == 27 || a.keyCode == 13) c.style.display = "none";
     else if (a.keyCode == 38 || a.keyCode == 40) {
             if (c.style.display != "none") {
@@ -72,26 +69,14 @@ window.google.ac = {};
 window.google.ac.h = function (a) {
 	if(!a||(a.length == 2 || a.length == 3))
 		return;
-	if (a[0] == $("searchkey").value) {
+	if (a[0] == $("#searchkey").val()) {
         var b = "";
         a = a[1];
-        for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"getObj('searchkey').value='" + a[c][0] + '\';javascript:searchSubmit(this);" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + "</td></tr>";
-        $("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
-        setDisplay("suggests", 1)
+        for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"$obj('searchkey').value='" + a[c][0] + '\';" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + "</td></tr>";
+        $obj("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
+        $("#suggests").css("display","block");
     }
 };
-
-function searchSubmit(a) {
-    formInfo = a.parentNode.parentNode.parentNode.parentNode;
-    if (formInfo.tagName == "FORM") {
-        if (getObj("backUrl")) getObj("backUrl").value = "http%3A//search.dangdang.com/search.aspx%3Fkey%3D" + $("searchkey").value;
-        formInfo.submit()
-    }
-};
-
-
-var j;
-
 
 var searchs = {
     web_page: [
@@ -178,51 +163,52 @@ function delCookie(a) {
             }
     };
 function setDisplay(a, b) {
-        if ($(a)) $(a).style.display = b ? "block" : "none"
+		if ($("#"+a)) 
+			$("#"+a).css({"display":(b ? "block" : "none")});
     };
 /*menu*/
 function initMenuEx() {
-    jQuery('#menu ul').hide();
-    jQuery('.showit').each(
+    $('#menu ul').hide();
+    $('.showit').each(
     function() {
-        var obj = jQuery(this);
-        jQuery(this).show();
+        var obj = $(this);
+        $(this).show();
         obj.parents('ul').each(function() {
-            jQuery(this).show();
+            $(this).show();
         });
     });
-    jQuery('#menu li a').click(
+    $('#menu li a').click(
     function() {
-        var obj = jQuery(this);
-        jQuery('#menu li a').removeClass('green');
-        jQuery('#menuroot').removeClass('green');
+        var obj = $(this);
+        $('#menu li a').removeClass('green');
+        $('#menuroot').removeClass('green');
         obj.addClass('green');
         if (1) {
-            jQuery('#menu ul:visible').each(function() {
-                var id = jQuery(this).attr('id');
+            $('#menu ul:visible').each(function() {
+                var id = $(this).attr('id');
                 var isParent = 0;
                 obj.parents('ul').each(function() {
-                    if (id == jQuery(this).attr('id')) {
+                    if (id == $(this).attr('id')) {
                         isParent = 1;
                     }
                 });
-                if (!isParent) jQuery(this).slideUp('normal');
+                if (!isParent) $(this).slideUp('normal');
             });
         }
-        var cE = jQuery(this).next();
+        var cE = $(this).next();
         if ((cE.is('ul')) && (cE.is(':visible'))) {
             cE.slideUp('normal');
         }
 
         if ((cE.is('ul')) && (!cE.is(':visible'))) {
-            jQuery('#menu ul:visible').each(function() {
-                var id = jQuery(this).attr('id');
+            $('#menu ul:visible').each(function() {
+                var id = $(this).attr('id');
                 var isParent = 0;
                 cE.parents('ul').each(function() {
-                    if (id == jQuery(this).attr('id')) isParent = 1;
+                    if (id == $(this).attr('id')) isParent = 1;
                 });
                 if (!isParent) {
-                    jQuery(this).slideUp('normal');
+                    $(this).slideUp('normal');
 
                 }
             });
@@ -278,14 +264,14 @@ function getLength(value)
 function check_subject(id, min, max, specialchar)
 {
 	if ($(id)) {
-		if(!rangelen_validate($(id).value,min,max))    	
+		if(!rangelen_validate($obj(id).value,min,max))    	
 		{
-            warning($(id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
+            warning($obj(id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
             return false;
         }
 		if(!specialchar&&illegachar_validate($(id).value))//不支持特殊字符
 		{
-		   warning($(id+'_tip'),"标题不允许含有特殊字符");
+		   warning($obj(id+'_tip'),"标题不允许含有特殊字符");
 		   return false;
 		}
 	
@@ -295,14 +281,14 @@ function check_subject(id, min, max, specialchar)
 function check_tag(id, min, max)
 {
 	if ($(id)) {
-		if(!rangelen_validate($(id).value,min,max))    	
+		if(!rangelen_validate($obj(id).value,min,max))    	
 		{
-            warning($(id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
+            warning($obj(id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
             return false;
         }
-		if(illegachar_validate($(id).value))//不支持特殊字符
+		if(illegachar_validate($obj(id).value))//不支持特殊字符
 		{
-		   warning($(id+'_tip'),"标签不允许含有特殊字符");
+		   warning($obj(id+'_tip'),"标签不允许含有特殊字符");
 		   return false;
 		}
 	
@@ -312,9 +298,9 @@ function check_tag(id, min, max)
 function check_description(id, min, max)
 {
 	if ($(id)) {
-		if(!rangelen_validate($(id).value,min,max))    	
+		if(!rangelen_validate($obj(id).value,min,max))    	
 		{
-            warning($(id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
+            warning($obj(id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
             return false;
         }
     }
@@ -324,9 +310,9 @@ function check_description(id, min, max)
 function check_url(id, min, max)
 {
 	if ($(id)) {
-		if(!url_validate($(id).value)||!rangelen_validate($('address').value,min,max))    	
+		if(!url_validate($obj(id).value)||!rangelen_validate($obj('address').value,min,max))    	
 			{
-				warning($(id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
+				warning($obj(id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
 				return false;
 			}
 		
@@ -336,12 +322,12 @@ function check_url(id, min, max)
 function check_seccode(obj,id)
 {
 	if($(id)) {
-		var code = $(id).value;
+		var code = $obj(id).value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
-				 warning($('checkseccode'),s);
+				 warning($obj('checkseccode'),s);
            		 return false;
 			}else {
 				obj.form.submit();
@@ -356,12 +342,12 @@ function check_seccode(obj,id)
 function check_seccode_x(formobj,id)
 {
 	if($(id)) {
-		var code = $(id).value;
+		var code = $obj(id).value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
-				 warning($('checkseccode'),s);
+				 warning($obj('checkseccode'),s);
            		 return false;
 			}else {
 				formobj.submit();
@@ -376,9 +362,9 @@ function check_seccode_x(formobj,id)
 function check_number(id,min,max)
 {
 	if ($(id)) {
-		if(!range_validate($(id).value,min,max))    	
+		if(!range_validate($obj(id).value,min,max))    	
 			{
-				warning($(id+'_tip'),"请填写一个("+min+"~"+max+")之间的整数合要求");
+				warning($obj(id+'_tip'),"请填写一个("+min+"~"+max+")之间的整数合要求");
 				return false;
 			}
     }
@@ -387,9 +373,9 @@ function check_number(id,min,max)
 function check_email(id)
 {
 	if ($(id)) {
-		if(!email_validate($(id).value))    	
+		if(!email_validate($obj(id).value))    	
 			{
-				warning($(id+'_tip'),"请填写一个合法的email地址");
+				warning($obj(id+'_tip'),"请填写一个合法的email地址");
 				return false;
 			}
     }
@@ -398,7 +384,7 @@ function check_email(id)
 function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialchar) {
 	var    titlelen=subjectlen;
 	var	   iscategory=0;
-	if($('category')&&$('category').value==1) //dir
+	if($obj('category')&&$obj('category').value==1) //dir
 	{
 		titlelen=dirlen; 
 		iscategory=1;
@@ -425,14 +411,14 @@ function link_validate(obj,seccode_id, subjectlen,  urlen, specialchar) {
 	return true;   
 }
 function report_validate(obj) {
-    if($('seccode')) {
-		var code = $('seccode').value;
+    if($obj('seccode')) {
+		var code = $obj('seccode').value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
 				alert(s);
-				$('seccode').focus();
+				$obj('seccode').focus();
            		return false;
 			} else {
 				obj.form.submit();
@@ -446,14 +432,14 @@ function report_validate(obj) {
 }
 function linktoolbar_validate(obj)
 {
-	 if($('seccode')) {
-		var code = $('seccode').value;
+	 if($obj('seccode')) {
+		var code = $obj('seccode').value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
 				alert(s);
-				$('seccode').focus();
+				$obj('seccode').focus();
            		return false;
 			} else {
 				obj.form.submit();

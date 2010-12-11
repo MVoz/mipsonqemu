@@ -23,19 +23,19 @@ function getbmfromid(groupid,browserid,name,isroot) {
 	
 	if(groupid!=0&&isroot==0)
 	{
-		$('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="bmdir_edit_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_edit_'+groupid+'\',this.id,1)">修改</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="bmdir_delete_'+groupid+'" onclick="ajaxmenu(event,this.id,1)">删除</a></span>';
+		$obj('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="bmdir_edit_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_edit_'+groupid+'\',this.id,1)">修改</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="bmdir_delete_'+groupid+'" onclick="ajaxmenu(event,this.id,1)">删除</a></span>';
 	}
 	else{
-		$('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></span>';
+		$obj('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></span>';
 	}
-	$('groupname').innerHTML=name+'&raquo;';
+	$obj('groupname').innerHTML=name+'&raquo;';
 }
 //cp_link.htm browser show
 
 function getdirtreefrombrowserid(id)
 {
-	$('browserid').value=id;
-	$('menu').parentNode.removeChild($('menu'));
+	$obj('browserid').value=id;
+	$obj('menu').parentNode.removeChild($obj('menu'));
 	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
 }
 
@@ -47,7 +47,7 @@ function setbookmarkgroupid(id)
 		jQuery('#menu li a').removeClass('green');
 		jQuery('#menu ul').hide();
 	}
-	$('browsergroupid').value=id;
+	$obj('browsergroupid').value=id;
 }
 
 function updatebookmarkview(id) {
@@ -131,7 +131,7 @@ function getrelatedlinkfromid(id) {
 
 var lastSecCode='';
 function checkSeccode() {
-		var  seccodeVerify= $('seccode').value;
+		var  seccodeVerify= $obj('seccode').value;
 		
 		if(seccodeVerify == lastSecCode) {
 			return;
@@ -144,7 +144,7 @@ function checkSeccode() {
 function warning(obj, msg) {
 	/*
 		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
-			$(ton).select();
+			$obj(ton).select();
 		}
 	*/
 		obj.style.display = '';

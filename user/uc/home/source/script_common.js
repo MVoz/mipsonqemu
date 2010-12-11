@@ -17,7 +17,7 @@ if (top.location != location) {
 	top.location.href = location.href;
 }
 
-function $(id) {
+function $obj(id) {
 	return document.getElementById(id);
 }
 
@@ -29,14 +29,14 @@ function addSort(obj) {
  	newOptDiv.className = 'popupmenu_centerbox';
  	newOptDiv.style.cssText = 'position: absolute; left: 50%; top: 200px; width: 400px; margin-left: -200px;';
  	document.body.appendChild(newOptDiv);
- 	$('newsort').focus();
+ 	$obj('newsort').focus();
  	}
 }
 	
 function addOption(sid, aid) {
-	var obj = $(aid);
-	var newOption = $(sid).value;
-	$(sid).value = "";
+	var obj = $obj(aid);
+	var newOption = $obj(sid).value;
+	$obj(sid).value = "";
 	if (newOption!=null && newOption!='') {
 		var newOptionTag=document.createElement('option');
 		newOptionTag.text=newOption;
@@ -110,14 +110,14 @@ function seccode() {
 }
 function updateseccode() {
 	var img = 'do.php?ac=seccode&rand='+Math.random();
-	if($('img_seccode')) {
-		$('img_seccode').src = img;
+	if($obj('img_seccode')) {
+		$obj('img_seccode').src = img;
 	}
 }
 function updateseccodeex(id) {
 	var img = 'do.php?ac=seccode&rand='+Math.random();
-	if($(id)) {
-		$(id).src = img;
+	if($obj(id)) {
+		$obj(id).src = img;
 	}
 }
 
@@ -125,7 +125,7 @@ function updateseccodeex(id) {
 function ctrlEnter(event, btnId, onlyEnter) {
 	if(isUndefined(onlyEnter)) onlyEnter = 0;
 	if((event.ctrlKey || onlyEnter) && event.keyCode == 13) {
-		$(btnId).click();
+		$obj(btnId).click();
 		return false;
 	}
 	return true;
@@ -148,7 +148,7 @@ function ischeck(id, prefix) {
 	return false;
 }
 function showPreview(val, id) {
-	var showObj = $(id);
+	var showObj = $obj(id);
 	if(typeof showObj == 'object') {
 		showObj.innerHTML = val.replace(/\n/ig, "<br />");
 	}
@@ -179,7 +179,7 @@ function insertWebImg(obj) {
 }
 
 function checkFocus(target) {
-	var obj = $(target);
+	var obj = $obj(target);
 	if(!obj.hasfocus) {
 		obj.focus();
 	}
@@ -190,7 +190,7 @@ function insertImage(text) {
 }
 
 function insertContent(target, text) {
-	var obj = $(target);
+	var obj = $obj(target);
 	selection = document.selection;
 	checkFocus(target);
 	if(!isUndefined(obj.selectionStart)) {
@@ -211,14 +211,14 @@ function checkImage(url) {
 }
 */
 function quick_validate(obj) {
-    if($('seccode')) {
-		var code = $('seccode').value;
+    if($obj('seccode')) {
+		var code = $obj('seccode').value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s != 'succeed') {
 				alert(s);
-				$('seccode').focus();
+				$obj('seccode').focus();
            		return false;
 			} else {
 				obj.form.submit();
@@ -241,7 +241,7 @@ function trim(str) {
 function startMarquee(h, speed, delay, sid) {
 	var t = null;
 	var p = false;
-	var o = $(sid);
+	var o = $obj(sid);
 	o.innerHTML += o.innerHTML;
 	o.onmouseover = function() {p = true}
 	o.onmouseout = function() {p = false}
@@ -290,14 +290,14 @@ function showreward() {
 */
 function msgwin(s, t) {
 	
-	var msgWinObj = $('msgwin');
+	var msgWinObj = $obj('msgwin');
 	if(!msgWinObj) {
 		var msgWinObj = document.createElement("div");
 		msgWinObj.id = 'msgwin';
 		msgWinObj.style.display = 'none';
 		msgWinObj.style.position = 'absolute';
 		msgWinObj.style.zIndex = '100000';
-		$('append_parent').appendChild(msgWinObj);
+		$obj('append_parent').appendChild(msgWinObj);
 	}
 	msgWinObj.innerHTML = s;
 	msgWinObj.style.display = '';
@@ -313,7 +313,7 @@ function msgwin(s, t) {
 
 function showmsgwin(b, e, a, t) {
 	step = (b - e) / 10;
-	var msgWinObj = $('msgwin');
+	var msgWinObj = $obj('msgwin');
 	newp = (parseInt(msgWinObj.style.top) - step);
 	if(newp > e) {
 		msgWinObj.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + a + ')';
@@ -328,23 +328,23 @@ function showmsgwin(b, e, a, t) {
 }
 
 function displayOpacity(id, n) {
-	if(!$(id)) {
+	if(!$obj(id)) {
 		return;
 	}
 	if(n >= 0) {
 		n -= 10;
-		$(id).style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + n + ')';
-		$(id).style.opacity = n / 100;
+		$obj(id).style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + n + ')';
+		$obj(id).style.opacity = n / 100;
 		setTimeout('displayOpacity(\'' + id + '\',' + n + ')', 50);
 	} else {
-		$(id).style.display = 'none';
-		$(id).style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=100)';
-		$(id).style.opacity = 1;
+		$obj(id).style.display = 'none';
+		$obj(id).style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=100)';
+		$obj(id).style.opacity = 1;
 	}
 }
 
 function display(id) {
-	var obj = $(id);
+	var obj = $obj(id);
 	obj.style.display = obj.style.display == '' ? 'none' : '';
 }
 
@@ -403,114 +403,196 @@ function selector(pattern, context) {
 		return list;
 	}
 }
-function $E(id){ return document.getElementById(id);}
 function add_favorite()
 { 
 	if (document.all)  
 	{
-		$E("homepage").setHomePage('http://www.tanzhi.com');
+		$obj("homepage").setHomePage('http://www.tanzhi.com');
 	}
 	else if (window.sidebar)  
 	window.sidebar.addPanel('弹指网', 'http://www.tanzhi.com', "");
 }
 
 function bookmarkload(){
-		jQuery(".id_nodes").each(function(){
-			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
+		$(".id_nodes").each(function(){
+			$(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		jQuery(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
+		$(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 
-		jQuery(".bloglist .edit").each(function(){
+		$(".bloglist .edit").each(function(){
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit";			
-			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 			this.id="bookmark_edit_"+this.id;
 		});	
-		jQuery(".bloglist .delete").each(function(){
+		$(".bloglist .delete").each(function(){
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete";
 			this.id="bookmark_delete_"+this.id;
-			jQuery(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		jQuery(".bloglist .get").each(function(){
+		$(".bloglist .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
-		jQuery(".bloglist .url").each(function(){
-			jQuery(this).attr("onclick","updatebookmarkview("+this.id+")");
+		$(".bloglist .url").each(function(){
+			$(this).attr("onclick","updatebookmarkview("+this.id+")");
 		});	
 		
-		jQuery(".bloglist a").attr("target","_blank");
+		$(".bloglist a").attr("target","_blank");
 		
-		jQuery(".id_bm_tag").each(function(){
+		$(".id_bm_tag").each(function(){
 			//this.href = "space.php?do=linktag&tagid=" + this.id;
 			this.href = "javascript:;";
-			jQuery(this).attr("onclick","getbmtagview("+this.id+");").attr("target","_self");
+			$(this).attr("onclick","getbmtagview("+this.id+");").attr("target","_self");
 		});	
 
-		jQuery(".bloglist .share").each(function(){
+		$(".bloglist .share").each(function(){
 			this.href="javascript:void(0)";
-			jQuery(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
+			$(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
 		});	
-		jQuery(".bloglist > li:even").addClass("list_r");;
-		jQuery(".bloglist .delete").html("删除");
-		jQuery(".bloglist .share").html("分享");
-		jQuery(".bloglist .edit").html("编辑");
-		jQuery(".bloglist .get").html("详情");
+		$(".bloglist > li:even").addClass("list_r");;
+		$(".bloglist .delete").html("删除");
+		$(".bloglist .share").html("分享");
+		$(".bloglist .edit").html("编辑");
+		$(".bloglist .get").html("详情");
 }
 function siteload(){
-		jQuery(".id_nodes").each(function(){
-			jQuery(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
+		$(".id_nodes").each(function(){
+			$(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		jQuery(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
-		jQuery(".id_st_tag").each(function(){
+		$(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		$(".id_st_tag").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});	
-		jQuery(".bloglist .edit").each(function(){
+		$(".bloglist .edit").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
-			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 			this.id="bookmark_edit2_"+this.id;
 		});	
-		jQuery(".bloglist .delete").each(function(){
+		$(".bloglist .delete").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete";
 			this.id="bookmark_delete_"+this.id;
-			jQuery(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		jQuery(".bloglist .bm").each(function(){
+		$(".bloglist .bm").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
 			this.id="bookmark_edit2_"+this.id;
 		});	
-		jQuery(".bloglist .get").each(function(){
+		$(".bloglist .get").each(function(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
-		jQuery(".bloglist .url").each(function(){
-			jQuery(this).attr("onclick","updatesiteview("+this.id+")");
+		$(".bloglist .url").each(function(){
+			$(this).attr("onclick","updatesiteview("+this.id+")");
 		});			
-		jQuery(".bloglist a").attr("target","_blank");
-		jQuery(".bloglist .tags > span").html("什么也没留下...");
-		jQuery(".bloglist .collect").each(function(){
+		$(".bloglist a").attr("target","_blank");
+		$(".bloglist .tags > span").html("什么也没留下...");
+		$(".bloglist .collect").each(function(){
 			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
 		});
-		jQuery(".bloglist > li:even").addClass("list_r");
-		jQuery(".bloglist .delete").html("删除");
-		jQuery(".bloglist .edit").html("编辑");
-		jQuery(".bloglist .get").html("详情");
-		jQuery(".bloglist .collect").html("收藏");
+		$(".bloglist > li:even").addClass("list_r");
+		$(".bloglist .delete").html("删除");
+		$(".bloglist .edit").html("编辑");
+		$(".bloglist .get").html("详情");
+		$(".bloglist .collect").html("收藏");
 }
 
 function diggload(){
-		jQuery(".id_dg_tag").each(function(){
+		$(".id_dg_tag").each(function(){
 			this.href = "space.php?do=diggtag&tagid=" + this.id;
 		});	
-		jQuery(".tlist .edit").each(function(){
-			jQuery(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
+		$(".tlist .edit").each(function(){
+			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
 		});	
-		jQuery(".tlist .delete").each(function(){
-			jQuery(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
+		$(".tlist .delete").each(function(){
+			$(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
 		});	
-		jQuery(".tlist .up").each(function(){
-			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
+		$(".tlist .up").each(function(){
+			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
 		});	
-		jQuery(".tlist .down").each(function(){
-			jQuery(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
+		$(".tlist .down").each(function(){
+			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
 		});	
-		jQuery(".tlist .delete").html("删除");
-		jQuery(".tlist .edit").html("编辑");
+		$(".tlist .delete").html("删除");
+		$(".tlist .edit").html("编辑");
+}
+$(function(){
+		$(".popular_site span:first").addClass("currentx");  
+			$(".popular_site ul:not(:first)").hide(); 
+			$(".popular_site span").click(function(){ 
+				$(".popular_site span").removeClass("currentx"); 
+				$(this).addClass("currentx"); 
+				$(".popular_site ul").hide(); 
+				$("."+$(this).attr("id")).show();
+			});
+});
+
+$(function(){
+			$(".search_area span:first").addClass("currentx");
+			currentid= getCookie(getSearchTabCookieName());
+			$(".search_area span").click(function(){
+				$(".search_area span").removeClass("currentx");  
+				$(this).addClass("currentx"); 
+				$('#searchform input[type=checkbox]').remove();
+				$('#searchform span').remove();
+
+				$("#hidden_form").empty();
+				var i=0;
+				setSearchTab($(this).attr("id"));
+				var len = searchs[$(this).attr("id")].length;
+				for (i = 0; i < len; i++) {
+				 //set checkbox
+					var f = document.createElement("INPUT");
+					f.type = "checkbox";
+					f.name = searchs[$(this).attr("id")][i][0];
+					f.id = "check_"+i;
+					$('#searchform').append(f);
+					$("#"+f.id).attr("checked",(searchs[$(this).attr("id")][i][6]==1)?true:false);
+					
+					$('#searchform').append('<span>'+searchs[$(this).attr("id")][i][3]+'</span>');
+				  //set hidden form
+					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[$(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[$(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
+
+					
+					$("#hidden_form").append(hiddenformArr);					
+					//set hidden input						 
+					 if (searchs[$(this).attr("id")][i][7]!= null) {
+						var c = searchs[$(this).attr("id")][i][7].split(";");
+						for (var d = 0, l = c.length; d < l; d++) {
+							var e = c[d].split(":");
+							var f = document.createElement("INPUT");
+							f.type = "hidden";
+							f.name = e[0];
+							f.id = e[0];
+							f.value = e[1];
+							$('#searchform_'+i).append(f);
+						}
+					}
+				 }
+				 //set button value				 
+				 $("#searchbtn").attr("value",$(this).html()+'搜索');
+		});
+		if($('.search_area #'+currentid))
+			$('.search_area #'+currentid).click(); 
+		else
+			$(".search_area span:first").click();
+});	
+function searchsubmit()
+{
+			 var i=0;				
+			 $('#searchform input[type=checkbox]').each(function(){ 					 
+					if($(this).attr("checked")==true){ 						
+						$("#"+'searchkey_'+i).val($('#searchkey').val());	
+						$("#"+'searchform_'+i).submit();
+					}
+					i++;
+			 });
+			 return false;
+}
+function setquickmenu(type,menustr)
+{
+	 $('#qkmua').attr("onclick","getbmview('+type+')");
+	 $('#qkmut').text(menustr);
+	 $('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');
+	 if($('#groupdo'))
+		 $('#groupdo').html("");
+	 if($('#groupname'))
+		 $('#groupname').html(menustr+' &raquo;');
 }

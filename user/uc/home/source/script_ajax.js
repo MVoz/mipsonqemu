@@ -18,7 +18,7 @@ function Ajax(recvType, waitId) {
 
 	aj.loading = 'Loading...';//public
 	aj.recvType = recvType ? recvType : 'XML';//public
-	aj.waitId = waitId ? $(waitId) : null;//public
+	aj.waitId = waitId ? $obj(waitId) : null;//public
 
 	aj.resultHandle = null;//private
 	aj.sendString = '';//private
@@ -35,7 +35,7 @@ function Ajax(recvType, waitId) {
 	}
 
 	aj.setWaitId = function(waitid) {
-		aj.waitId = typeof waitid == 'object' ? waitid : $(waitid);
+		aj.waitId = typeof waitid == 'object' ? waitid : $obj(waitid);
 	}
 
 	aj.createXMLHttpRequest = function() {
@@ -182,8 +182,8 @@ function evalscript(s) {
 function appendscript(src, text, reload, charset) {
 	var id = hash(src + text);
 	if(!reload && in_array(id, evalscripts)) return;
-	if(reload && $(id)) {
-		$(id).parentNode.removeChild($(id));
+	if(reload && $obj(id)) {
+		$obj(id).parentNode.removeChild($obj(id));
 	}
 
 	evalscripts.push(id);
@@ -197,7 +197,7 @@ function appendscript(src, text, reload, charset) {
 		} else if(text){
 			scriptNode.text = text;
 		}
-		$('append_parent').appendChild(scriptNode);
+		$obj('append_parent').appendChild(scriptNode);
 	} catch(e) {}
 }
 
@@ -230,19 +230,20 @@ function ajaxupdateevent(o) {
 }
 
 function ajaxget(url, showid, waitid) {
+	
 	waitid = typeof waitid == 'undefined' || waitid === null ? showid : waitid;
 	var x = new Ajax();
 	x.setLoading();
 	x.setWaitId(waitid);
 	x.display = '';
-	x.showId = $(showid);
+	x.showId = $obj(showid);
 	if(x.showId) x.showId.orgdisplay = typeof x.showId.orgdisplay === 'undefined' ? x.showId.style.display : x.showId.orgdisplay;
 
 	if(url.substr(strlen(url) - 1) == '#') {
 		url = url.substr(0, strlen(url) - 1);
 		x.autogoto = 1;
 	}
-
+	  
 	var url = url + '&inajax=1&ajaxtarget=' + showid;
 	x.get(url, function(s, x) {
 		evaled = false;
@@ -274,7 +275,7 @@ function ajaxgetextend(url,func,showid, waitid) {
 	x.setLoading();
 	x.setWaitId(waitid);
 	x.display = '';
-	x.showId = $(showid);
+	x.showId = $obj(showid);
 	if(x.showId) x.showId.orgdisplay = typeof x.showId.orgdisplay === 'undefined' ? x.showId.style.display : x.showId.orgdisplay;
 
 	if(url.substr(strlen(url) - 1) == '#') {
@@ -341,7 +342,7 @@ function ajaxgetex(url, showid,subid,subexid,waitid) {
 	x.setLoading();
 	x.setWaitId(waitid);
 	x.display = '';
-	x.showId = $(showid);
+	x.showId = $obj(showid);
 	if(x.showId) x.showId.orgdisplay = typeof x.showId.orgdisplay === 'undefined' ? x.showId.style.display : x.showId.orgdisplay;
 
 	if(url.substr(strlen(url) - 1) == '#') {
@@ -366,8 +367,8 @@ function ajaxgetex(url, showid,subid,subexid,waitid) {
 				changedisplay(x.showId, x.display);
 				x.showId.orgdisplay = x.showId.style.display;
 				ajaxinnerhtml(x.showId, s);
-				$(subid).innerHTML=$(subexid).innerHTML;
-				$(subexid).parentNode.removeChild($(subexid));
+				$obj(subid).innerHTML=$obj(subexid).innerHTML;
+				$obj(subexid).parentNode.removeChild($obj(subexid));
 				ajaxupdateevents(x.showId);
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
 			}
@@ -386,7 +387,7 @@ function ajaxpost(formid, func, timeout) {
 		return false;
 	}
 	var ajaxframeid = 'ajaxframe';
-	var ajaxframe = $(ajaxframeid);
+	var ajaxframe = $obj(ajaxframeid);
 	if(ajaxframe == null) {
 		if (is_ie && !is_opera) {
 			ajaxframe = document.createElement("<iframe name='" + ajaxframeid + "' id='" + ajaxframeid + "'></iframe>");
@@ -396,10 +397,10 @@ function ajaxpost(formid, func, timeout) {
 			ajaxframe.id = ajaxframeid;
 		}
 		ajaxframe.style.display = 'none';
-		$('append_parent').appendChild(ajaxframe);
+		$obj('append_parent').appendChild(ajaxframe);
 	}
-	$(formid).target = ajaxframeid;
-	$(formid).action = $(formid).action + '&inajax=1';
+	$obj(formid).target = ajaxframeid;
+	$obj(formid).action = $obj(formid).action + '&inajax=1';
 	
 	ajaxpostHandle = [formid, func, timeout];
 	
@@ -410,7 +411,7 @@ function ajaxpost(formid, func, timeout) {
 		document.removeEventListener('load', ajaxpost_load, true);
 		ajaxframe.addEventListener('load', ajaxpost_load, false);
 	}
-	$(formid).submit();
+	$obj(formid).submit();
 	return false;
 }
 
@@ -425,9 +426,9 @@ function ajaxpost_load() {
 	showloading('none');
 	
 	if(is_ie) {
-		var s = $('ajaxframe').contentWindow.document.XMLDocument.text;
+		var s = $obj('ajaxframe').contentWindow.document.XMLDocument.text;
 	} else {
-		var s = $('ajaxframe').contentWindow.document.documentElement.firstChild.nodeValue;
+		var s = $obj('ajaxframe').contentWindow.document.documentElement.firstChild.nodeValue;
 	}
 	evaled = false;
 	if(s.indexOf('ajaxerror') != -1) {
@@ -443,9 +444,9 @@ function ajaxpost_load() {
 	if(func) {
 		setTimeout(func + '(\'' + formid + '\',' + ajaxpostresult + ')', 10);
 	}
-	if(!evaled && $(formstatus)) {
-		$(formstatus).style.display = '';		
-		ajaxinnerhtml($(formstatus), s);
+	if(!evaled && $obj(formstatus)) {
+		$obj(formstatus).style.display = '';		
+		ajaxinnerhtml($obj(formstatus), s);
 		evalscript(s);
 	}
 
@@ -478,18 +479,18 @@ function ajaxmenu(e, ctrlid, isbox, timeout, func) {
 	} else {
 		divclass = 'popupmenu_popup';
 	}
-	var div = $(ctrlid + '_menu');
+	var div = $obj(ctrlid + '_menu');
 	if(!div) {
 		div = document.createElement('div');
 		div.ctrlid = ctrlid;
 		div.id = ctrlid + '_menu';
 		div.style.display = 'none';
 		div.className = divclass;
-		$('append_parent').appendChild(div);
+		$obj('append_parent').appendChild(div);
 	}
 
 	var x = new Ajax();
-	var href = !isUndefined($(ctrlid).href) ? $(ctrlid).href : $(ctrlid).attributes['href'].value;
+	var href = !isUndefined($obj(ctrlid).href) ? $obj(ctrlid).href : $obj(ctrlid).attributes['href'].value;
 	x.div = div;
 	x.etype = e.type;
 
@@ -537,7 +538,7 @@ function ajaxmenuEx(e,imageid, ctrlid, isbox, timeout, func) {
 	} else {
 		divclass = 'popupmenu_popup';
 	}
-	var div = $(ctrlid + '_menu');
+	var div = $obj(ctrlid + '_menu');
 
 	if(!div) {
 		div = document.createElement('div');
@@ -545,10 +546,10 @@ function ajaxmenuEx(e,imageid, ctrlid, isbox, timeout, func) {
 		div.id = ctrlid + '_menu';
 		div.style.display = 'none';
 		div.className = divclass;
-		$('append_parent').appendChild(div);
+		$obj('append_parent').appendChild(div);
 	}
 	var x = new Ajax();
-	var href = !isUndefined($(ctrlid).href) ? $(ctrlid).href : $(ctrlid).attributes['href'].value;
+	var href = !isUndefined($obj(ctrlid).href) ? $obj(ctrlid).href : $obj(ctrlid).attributes['href'].value;
 	x.div = div;
 	x.etype = e.type;
 
@@ -606,8 +607,8 @@ function stringxor(s1, s2) {
 function showloading(display, wating) {
 	var display = display ? display : 'block';
 	var wating = wating ? wating : 'Loading...';
-	$('ajaxwaitid').innerHTML = wating;
-	$('ajaxwaitid').style.display = display;
+	$obj('ajaxwaitid').innerHTML = wating;
+	$obj('ajaxwaitid').style.display = display;
 }
 
 function ajaxinnerhtml(showid, s) {
@@ -620,7 +621,7 @@ function ajaxinnerhtml(showid, s) {
 		var div1 = document.createElement('DIV');
 		div1.id = showid.id+'_div';
 		div1.innerHTML = '<table><tbody id="'+showid.id+'_tbody">'+s+'</tbody></table>';
-		$('append_parent').appendChild(div1);
+		$obj('append_parent').appendChild(div1);
 		var trs = div1.getElementsByTagName('TR');
 		var l = trs.length;
 		for(var i=0; i<l; i++) {
@@ -642,7 +643,7 @@ function ajaxupdate(ac,objname, data) {
 			var codes=new Array();
 			s=getremovescript(s,codes);
 							
-			var obj = $(objname);
+			var obj = $obj(objname);
 			if(obj){
 					obj.style.display = '';
 					obj.innerHTML =s;
