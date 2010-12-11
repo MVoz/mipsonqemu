@@ -474,20 +474,20 @@ a.c_link {
 #relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 
-#highlight {padding-left:5px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
-border:1px solid #DDD;margin-top:1px;}
+#highlight {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
+border:1px solid #DDD;}
 #highlight p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
 #highlight p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
 #highlight a{font-size:12px;}
 
-.search_area {height:95px;}
+.search_area {height:95px;width:672px;float:right;}
 .search_area,.popular_site{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
 .search_area p,.popular_site p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
 .search_area p span,.popular_site p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
 #highlight p span.currentx,.search_area p span.currentx,.popular_site p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
 .search_area >li,.popular_site >li{padding-bottom:3px;margin:5px 0;}
 
- .popular_site {height:150px;}
+ .popular_site {height:150px;width:672px;float:right;}
 .allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
 
 .row-list,.row-list_l{display:block;clear:both;}
@@ -644,10 +644,10 @@ border:1px solid #DDD;margin-top:1px;}
 	.quickmenu_drop  {background:none repeat scroll 0 0 #FFFFFF;border:1px solid #EBE6C9;margin:-1px 0 0;padding:0 2px 0px;width:60px;;z-index:200;}
 	.quickmenu_drop li {height:22px;line-height:22px;}
 
-#login {clear:both;float:left;margin:5px 0 0 0;width:970px;}
-	#login .searchinfo{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:269px;line-height:1.6;position:relative;width:962px;overflow:hidden;}
-	#login .searchinfo .searchinfo_1{ float:left;margin:0px;padding:1px;width:672px;overflow:hidden;}
-	#login .dynamicinfo{background:url("image/ui_b_2.png") no-repeat scroll 0px 0 #E9EEF2;float:right;font-size:14px;height:269px;width:8px;}
+#board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
+	#board .searchinfo{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
+	#board .searchinfo .searchinfo_1{ float:left;margin:0px;padding:1px;width:672px;overflow:hidden;}
+	#board .dynamicinfo{background:url("image/ui_b_2.png") no-repeat scroll 0px 0 #E9EEF2;float:right;font-size:14px;height:269px;width:8px;}
 
 
 
