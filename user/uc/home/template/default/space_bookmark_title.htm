@@ -1,46 +1,18 @@
 <h2 class="ntitle">
-<style type="text/css">
-/* menu styles */
-#qkmu li{float:left;list-style: none;}
-#qkmu li a{display: block;padding: 5px 0px;text-decoration: none;width: 60px;white-space: nowrap}
-#qkmu li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
-#qkmu li ul li	{float: none;display: inline}
-#qkmu li ul li a {width: auto;}
-#qkmu #qkmut{font-style:normal;}
-</style>
- <script language="javascript" type="text/javascript">
-function qkmu_open()
-{	
-	$(this).find('ul').eq(0).css('visibility', 'visible');
-}
-
-function qkmu_close()
-{	$(this).find('ul').eq(0).css('visibility', 'hidden');}
-
-
-
-$(document).ready(function()
-{	$('#qkmu > li').bind('mouseover', qkmu_open);
-	$('#qkmu > li').bind('mouseout',  qkmu_close);});
-
-document.onclick = qkmu_close;
-</script>
 			<p id="groupname">$groupname &raquo;</p>
-			<ul id="qkmu" style="float:right;height:18px;line-height:18px;padding:8px 2px 0 0;">
+			<ul id="qkmu">
 				<li>
-					<a href="javascript:;" onclick="getbmview('lastvisit')" id="qkmua" >
+					<a href="javascript:;" id="qkmua" >
 					<cite id="qkmut">最近访问</cite><img align="absmiddle" src="image/more.gif" >
 					</a>	
 					<ul>
-						<li><a href="javascript:;" onclick="getbmview('lastvisit');setquickmenu('lastvisit','最近访问');">最近访问</a></li>
-						<li><a href="javascript:;" onclick="getbmview('oftenvisit');setquickmenu('oftenvisit','经常访问');">经常访问</a></li>
-						<li><a href="javascript:;" onclick="getbmview('lastadd');setquickmenu('lastadd','最新添加');">最新添加</a></li>
-						<li><a href="javascript:;" onclick="getlinkview('mycharts');setquickmenu('mycharts','我的上榜');">我的上榜</a></li>
+						<li><a href="javascript:;" onclick="setquickmenu('lastvisit');">最近访问</a></li>
+						<li><a href="javascript:;" onclick="setquickmenu('oftenvisit');">经常访问</a></li>
+						<li><a href="javascript:;" onclick="setquickmenu('lastadd');">最新添加</a></li>
+						<li><a href="javascript:;" onclick="setquickmenu('mycharts');">我的上榜</a></li>
 					</ul> 
 				</li>
-			</ul>
-
-			
+			</ul> 			
 			  <span id="groupdo">
 				 <!--{if ($op=='browser')}-->
 						<span class="addcomment">
@@ -56,6 +28,5 @@ document.onclick = qkmu_close;
 						</span>
 						  <!--{/if}-->
 				  <!--{/if}-->
-			</span>
-			
+			</span>				
 </h2>  		
