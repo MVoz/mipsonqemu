@@ -473,18 +473,18 @@ a.c_link {
 #relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
 
-#highlight {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
+#hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
 border:1px solid #DDD;}
-#highlight p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
-#highlight p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
-#highlight a{font-size:12px;}
+#hhlt p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
+#hhlt p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
+#hhlt a{font-size:12px;}
 
-.search_area {height:95px;width:672px;float:right;}
-.search_area,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
-.search_area p,.prse p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
-.search_area p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
-#highlight p span.currentx,.search_area p span.currentx,.prse p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
-.search_area >li,.prse >li{padding-bottom:3px;margin:5px 0;}
+.shaa {height:95px;width:672px;float:right;}
+.shaa,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
+.shaa p,.prse p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
+.shaa p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+#hhlt p span.currentx,.shaa p span.currentx,.prse p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
+.shaa >li,.prse >li{padding-bottom:3px;margin:5px 0;}
 
  .prse {height:150px;width:672px;float:right;}
 .allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
