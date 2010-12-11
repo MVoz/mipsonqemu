@@ -608,7 +608,23 @@ $(function(){
 		else
 			$(".shaa span:first").click();
 });
-
+$(function(){
+			$("#hhlt .num_con").css("margin-top","-20px");
+			$("#hhlt a").css("display","block").css("width","180px");
+			$("#hhlt p span").css("cursor","pointer");
+			$("#hhlt span:odd").css("background-color","#7BAD00");
+			$("#hhlt span:even").css("background-color","#FF8901");
+			$("#hhlt span:first").css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); 
+			$("#hhlt dl:not(:first)").hide();
+			$("#hhlt span").click(function(){ 
+				$("#hhlt span").removeClass("currentx"); 
+				$("#hhlt span:odd").css("background-color","#7BAD00");
+				$("#hhlt span:even").css("background-color","#FF8901");
+				$(this).css("background-color","#FFF").css("border-color","#fff").addClass("currentx"); ; 
+				$("#hhlt dl").hide(); 
+				$("."+$(this).attr("id")).show();
+		});
+});
 $(function(){
 	$('#qkmu > li').bind('mouseover', qkmu_open);
 	$('#qkmu > li').bind('mouseout',  qkmu_close);
