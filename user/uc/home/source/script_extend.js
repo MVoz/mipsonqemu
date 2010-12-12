@@ -123,7 +123,7 @@ function updatediggview(id) {
 	ajaxupdate('digg','digg_view_num_id_'+id, 'op=updatediggviewnum&diggid=' + id);
 }
 function getrelatedlinkfromid(id) {
-	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'relatedsitecontent');    
+	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
 }
 
 
