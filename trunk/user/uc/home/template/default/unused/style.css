@@ -529,9 +529,9 @@ a.button { padding: 5px; }
 
 #help p{ margin: 0 0 10px; padding: 0 10px; }
 
-.menu_list { padding: 0 10px; width: 230px; overflow: hidden; }
-    .menu_list li { float: left; width: 50%; line-height: 180%; text-align: center;list-style-position: outside; }
-	.menu_list #menu { float: left;padding-left:5px; width: 50%; line-height: 180%; text-align: center; }
+.mult { padding: 0 10px; width: 230px; overflow: hidden; }
+    .mult li { float: left; width: 50%; line-height: 180%; text-align: center;list-style-position: outside; }
+	.mult #menu { float: left;padding-left:5px; width: 50%; line-height: 180%; text-align: center; }
 .facebox { padding: 8px; width: 250px; border: 1px solid #CCC; background: #FFF; z-index: 100000;}
     .facebox ul li { float: left; width: 25px; height: 25px; overflow: hidden; }
 #bottom { height: 10px; clear: both; overflow: hidden; }
@@ -818,13 +818,13 @@ a.c_link {
 }
 .muim .quickmenu{ 		width:250px;}
 .muim .quickmenu span {float:left;width:120px;padding:5px 0px;}
-.muim .menu_list{
+.muim .mult{
 	width:230px;height:300px;overflow:auto;
 }
-.muim .menu_list ul {
+.muim .mult ul {
 	padding-right: 10px; padding-left: 0px; padding-bottom: 0px; overflow: hidden; padding-top: 0px; 
 }
-.muim .menu_list li {
+.muim .mult li {
 	padding-right: 0px; padding-left: 10px; background: url(image/dot.gif) no-repeat 0px 10px; padding-bottom: 0px; padding-top: 0px;width:160px;text-align:left;font-size: 12px;font-style: normal
 }
 /************************************************************************logined windows****/
