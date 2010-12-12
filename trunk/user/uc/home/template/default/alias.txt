@@ -10,3 +10,5 @@ sitedetail-sedl
 sitepic-sepc
 sitescore-sese
 relatedsitecontent-rdsect
+searchinfo-shio
+dynamicinfo-dcio
