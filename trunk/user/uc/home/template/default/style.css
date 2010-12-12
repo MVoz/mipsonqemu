@@ -496,7 +496,7 @@ border:1px solid #DDD;}
 .row-list em a,.row-list_l em a{overflow:hidden;white-space:nowrap;}
 #shfm{height:30px;padding:10px 10px 2px 10px;}
 #googlesearchform_s a img,#baidusearchform_s a img {height:25px;width:84px;border:medium none;border:vertical-align:middle;}
-#suggests {background:none repeat scroll 0 0 #FFF;border:1px solid #ccc;display:none;left:20px;position:absolute;top:72px;width:373px;z-index:5;}
+#sts {background:none repeat scroll 0 0 #FFF;border:1px solid #ccc;display:none;left:20px;position:absolute;top:72px;width:373px;z-index:5;}
 
 /*********************************network css****************************************************************/
 #header{width:970px;height:60px;clear:both;margin:0 auto 5px}
@@ -691,17 +691,17 @@ border:1px solid #DDD;}
 
 
 /**********************linkinfo****************************/
-.siteinfo {line-height:21px;overflow:hidden;}  
-.siteinfo .sitedetail{	color:#C8C8C8;display:inline;float:left;line-height:21px;overflow:hidden;width:440px;}
-.siteinfo .sitedetail p strong{font-weight:normal;color:#606060;}
-.siteinfo .sitepic {float:left;margin:5px 0 0 10px;background: url('image/200x150_thumb_bg') no-repeat;width:200px;height:140px;padding:7px 8px;}
-.siteinfo .sitepic img {width:180px;height:135px}
-.siteinfo .siteact{float:left;width:220px;}
-.siteinfo .sitescore {	background:none repeat scroll 0 0 #F6F6F6;display:inline;float:right;overflow:hidden;padding:10px;width:195px;}
-.siteinfo .sitescore p {color:#CCDFF2;line-height:21px;}
-.siteinfo .sitescore p span { color:#FF8624;}
-.siteinfo .sitescore p strong {color:#606060;}
-.siteinfo .sitescore p a {font-weight:bold;}
+.seio {line-height:21px;overflow:hidden;}  
+.seio .sedl{	color:#C8C8C8;display:inline;float:left;line-height:21px;overflow:hidden;width:440px;}
+.seio .sedl p strong{font-weight:normal;color:#606060;}
+.seio .sepc {float:left;margin:5px 0 0 10px;background: url('image/200x150_thumb_bg') no-repeat;width:200px;height:140px;padding:7px 8px;}
+.seio .sepc img {width:180px;height:135px}
+.seio .siteact{float:left;width:220px;}
+.seio .sitescore {	background:none repeat scroll 0 0 #F6F6F6;display:inline;float:right;overflow:hidden;padding:10px;width:195px;}
+.seio .sitescore p {color:#CCDFF2;line-height:21px;}
+.seio .sitescore p span { color:#FF8624;}
+.seio .sitescore p strong {color:#606060;}
+.seio .sitescore p a {font-weight:bold;}
 .rateup,.ratedown {display:inline-block;height:15px;margin:4px 0px 3px 0;position:relative; top:-2px;vertical-align:middle; width:15px;}
 .rateup a{
 	background:url("image/icon_support.jpg") no-repeat scroll 0 0px transparent;
