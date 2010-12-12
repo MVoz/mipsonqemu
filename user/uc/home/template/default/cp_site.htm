@@ -516,37 +516,6 @@
 			</textarea>
 		</td>
 	</tr>
-<!--
-<tr>
-		<th width="40">分类</th>
-		<td>
-			<div class="cont">
-				<ul class="type-1">
-					<!--{loop $classlist $key $value}-->
-								<ul class="type-2">
-									<li><a style="color:#00ADEF;">$value['classname']</a></li>
-									<!--{loop $value[son] $key $valueson}-->
-											<!--{if empty($valueson[grandson])}-->
-												<li><a id="category_li_$valueson['classid']" href="javascript:fSetCategorySelect($valueson['classid']);">$valueson['classname']</a></li>
-											<!--{else}-->
-												<li>
-													<div class="dropmenu" id="usettingli_$valueson['classid']" onmouseover="showMenu(this.id)"><a id="category_li_$valueson['classid']" href="javascript:;">$valueson['classname']<img src="image/more.gif" align="absmiddle"></a></div>
-														<ul id="usettingli_$valueson['classid']_menu" class="categorymenu_drop" style="display:none;">
-														<!--{loop $valueson[grandson] $key $valuegrandson}-->
-															<li><a href="javascript:setcategoryid('usettingli_$valueson['classid']','$valuegrandson['classname']',$valuegrandson['classid'])">$valuegrandson['classname']</a></li>
-														<!--{/loop}-->
-														</ul>
-												</li>
-											<!--{/if}-->
-									<!--{/loop}-->
-								</ul>
-					<!--{/loop}-->
-				
-				</ul>
-			</div>
-	</td>
-</tr>
--->
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
 	<tr>

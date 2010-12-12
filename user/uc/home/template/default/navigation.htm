@@ -1,9 +1,9 @@
 <h2 class="ntitle">
 	<em>导航菜单&raquo;</em>
 </h2> 
-<div class="navi_content">
+<div class="nnct">
 		<!--{loop $_SGLOBAL['siteclass'] $key $value}-->
-					<dl class="navi_catalog">
+					<dl class="nncg">
 						<dt>$value['classname']</dt>
 							<dd >
 								<!--{loop $value[son] $key $valueson}-->  								
@@ -14,7 +14,7 @@
 		<!--{/loop}-->						
 </div> 
 <script language="javascript" type="text/javascript">	
-		$(".navi_catalog a").each(function(){
+		$(".nncg a").each(function(){
 			this.href ="javascript:;";
 			$(this).attr("onclick","ajaxget('space.php?do=navigation&classid="+this.id+"', 'bmcontent');");
 		});
