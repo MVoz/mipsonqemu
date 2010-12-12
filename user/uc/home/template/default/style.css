@@ -573,18 +573,18 @@ border:1px solid #DDD;}
 */
 	.side_rbox_ad { padding:2px; }
 
-	.bloglist { padding: 5px 0 0 5px; line-height: 150%; overflow: hidden;}
-	.bloglist li { float: left; margin: 0 10px 15px 0; width: 325px; }
-	.bloglist li.pass{background: url(image/print.gif) no-repeat 50% 50%;}
-		.bloglist li.list_r { margin-right: 0; }		
-		.bloglist h3{ margin: 0 0 5px; height: 20px; font-size: 12px; overflow: hidden; }
+	.bklt { padding: 5px 0 0 5px; line-height: 150%; overflow: hidden;}
+	.bklt li { float: left; margin: 0 10px 15px 0; width: 325px; }
+	.bklt li.pass{background: url(image/print.gif) no-repeat 50% 50%;}
+		.bklt li.list_r { margin-right: 0; }		
+		.bklt h3{ margin: 0 0 5px; height: 20px; font-size: 12px; overflow: hidden; }
 		
-		.bloglist p.message { margin: 0 0 5px 0; padding: 0; width: 180px; height: 55px; color: #666; overflow: hidden;text-indent:15px; }
-		.bloglist p.messagenopic { margin: 0 0 5px 0; padding: 0; width: 320px; height: 52px; color: #666; overflow: hidden;text-indent:15px; }
-		.bloglist p.tags{background:url("image/g.png") no-repeat scroll -210px -48px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;}
-		.bloglist p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		
-		.bloglist .nhot{ float: left; color: #EF9822; }
-		.bloglist .nhot a{ color: #EF9822; }
+		.bklt p.message { margin: 0 0 5px 0; padding: 0; width: 180px; height: 55px; color: #666; overflow: hidden;text-indent:15px; }
+		.bklt p.messagenopic { margin: 0 0 5px 0; padding: 0; width: 320px; height: 52px; color: #666; overflow: hidden;text-indent:15px; }
+		.bklt p.tags{background:url("image/g.png") no-repeat scroll -210px -48px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;}
+		.bklt p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		
+		.bklt .nhot{ float: left; color: #EF9822; }
+		.bklt .nhot a{ color: #EF9822; }
 
 	.d_avatar{ float: left; margin: 0px 0px 0px 0px;}
 	.d_avatar img{ width: 112px; height: 83px; }
