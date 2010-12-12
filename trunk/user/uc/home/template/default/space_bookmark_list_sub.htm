@@ -1,4 +1,4 @@
-			<ul class="bloglist">
+			<ul class="bklt">
 			<!--{loop $bookmarklist $key $value}-->
 			<li>
 					<h3>
@@ -64,10 +64,10 @@
 		var gpid=$value[groupid];
 		var bsid=$value[browserid];		
 		bookmarkload();
-		$(".bloglist .delete").each(function(){
+		$(".bklt .delete").each(function(){
 			this.href =this.href+"&at=$at";			
 		});
-		$(".bloglist .edit").each(function(){
+		$(".bklt .edit").each(function(){
 			this.href =this.href+"&at=$at";			
 		});	
 <!--{loop $bookmarklist $key $value}-->	
