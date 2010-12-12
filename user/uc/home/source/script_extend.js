@@ -1,8 +1,8 @@
 function getbmview(type) {
-		ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','relatedcontent','relatehtm');	    
+		ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');	    
 }
 function getbmtagview(tagid) {
-		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','relatedcontent','relatehtm');	    
+		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','rdct','relatehtm');	    
 		ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
 }
 function getbrowserview(browserid) {
@@ -19,7 +19,7 @@ function getbmfromid(groupid,browserid,name,isroot) {
 		jQuery('#menu li a').removeClass('green');
 		jQuery('#menu ul').hide();
 	}
-	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','relatedcontent','relatehtm');
+	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','rdct','relatehtm');
 	
 	if(groupid!=0&&isroot==0)
 	{
