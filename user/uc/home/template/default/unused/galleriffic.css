@@ -33,9 +33,9 @@ a.thumb:focus {	outline: none; }
 ul.thumbs img {		height:75px;	width:75px;		border: none;	display: block;}
 
 div.content{ 	float:right; 	width:250px;	height:220px;}
-div.content #relatedsitecontent p{clear:both;}
-div.content #relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;}
-div.content #relatedsitecontent .relate_tag{height:20px;line-height:20px;}
+div.content #rdsect p{clear:both;}
+div.content #rdsect .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;}
+div.content #rdsect .relate_tag{height:20px;line-height:20px;}
 
 .content_login{float:right; 	width:210px;	height:220px;}
 .content_login .slideshow a img {
