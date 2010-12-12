@@ -3,8 +3,8 @@
 		<h2 class="ntitle">
 			<p>$item[subject]</p>			
 		</h2>
-		<div class="siteinfo">
-					<div class="sitepic">
+		<div class="seio">
+					<div class="sepc">
 						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">
 								 <!--{if empty($item['picflag'])}-->
 									<img src="$item['tmppic']">
@@ -13,7 +13,7 @@
 								 <!--{/if}-->							
 						</a>
 					</div>
-					<div class="sitedetail">
+					<div class="sedl">
 						<p>
 							<strong>名称: </strong>
 							<a class="url">$item['subject']</a>
@@ -65,8 +65,8 @@
 	
 	</div>
 <script language="javascript" type="text/javascript">	
-		var url = $(".sitepic > a").attr("href");
-		var click = $(".sitepic > a").attr("onclick");
+		var url = $(".sepc > a").attr("href");
+		var click = $(".sepc > a").attr("onclick");
 		$(".url").attr("href",url).attr("onclick",click);
 		$(".tags").each(function(){
 			$(this).attr("href","space.php?do=sitetag&tagid="+this.id);
