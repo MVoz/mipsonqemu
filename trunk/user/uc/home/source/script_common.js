@@ -418,81 +418,80 @@ function bookmarkload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$(".bloglist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
+		$(".bklt >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 
-		$(".bloglist .edit").each(function(){
+		$(".bklt .edit").each(function(){
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit";			
 			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 			this.id="bookmark_edit_"+this.id;
 		});	
-		$(".bloglist .delete").each(function(){
+		$(".bklt .delete").each(function(){
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete";
 			this.id="bookmark_delete_"+this.id;
 			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		$(".bloglist .get").each(function(){
+		$(".bklt .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
-		$(".bloglist .url").each(function(){
+		$(".bklt .url").each(function(){
 			$(this).attr("onclick","updatebookmarkview("+this.id+")");
 		});	
 		
-		$(".bloglist a").attr("target","_blank");
+		$(".bklt a").attr("target","_blank");
 		
 		$(".id_bm_tag").each(function(){
-			//this.href = "space.php?do=linktag&tagid=" + this.id;
 			this.href = "javascript:;";
 			$(this).attr("onclick","getbmtagview("+this.id+");").attr("target","_self");
 		});	
 
-		$(".bloglist .share").each(function(){
+		$(".bklt .share").each(function(){
 			this.href="javascript:void(0)";
 			$(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
 		});	
-		$(".bloglist > li:even").addClass("list_r");;
-		$(".bloglist .delete").html("删除");
-		$(".bloglist .share").html("分享");
-		$(".bloglist .edit").html("编辑");
-		$(".bloglist .get").html("详情");
+		$(".bklt > li:even").addClass("list_r");;
+		$(".bklt .delete").html("删除");
+		$(".bklt .share").html("分享");
+		$(".bklt .edit").html("编辑");
+		$(".bklt .get").html("详情");
 }
 function siteload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$(".bloglist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		$(".bklt >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
 		$(".id_st_tag").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});	
-		$(".bloglist .edit").each(function(){
+		$(".bklt .edit").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
 			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 			this.id="bookmark_edit2_"+this.id;
 		});	
-		$(".bloglist .delete").each(function(){
+		$(".bklt .delete").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete";
 			this.id="bookmark_delete_"+this.id;
 			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		$(".bloglist .bm").each(function(){
+		$(".bklt .bm").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
 			this.id="bookmark_edit2_"+this.id;
 		});	
-		$(".bloglist .get").each(function(){
+		$(".bklt .get").each(function(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
-		$(".bloglist .url").each(function(){
+		$(".bklt .url").each(function(){
 			$(this).attr("onclick","updatesiteview("+this.id+")");
 		});			
-		$(".bloglist a").attr("target","_blank");
-		$(".bloglist .tags > span").html("什么也没留下...");
-		$(".bloglist .collect").each(function(){
+		$(".bklt a").attr("target","_blank");
+		$(".bklt .tags > span").html("什么也没留下...");
+		$(".bklt .collect").each(function(){
 			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
 		});
-		$(".bloglist > li:even").addClass("list_r");
-		$(".bloglist .delete").html("删除");
-		$(".bloglist .edit").html("编辑");
-		$(".bloglist .get").html("详情");
-		$(".bloglist .collect").html("收藏");
+		$(".bklt > li:even").addClass("list_r");
+		$(".bklt .delete").html("删除");
+		$(".bklt .edit").html("编辑");
+		$(".bklt .get").html("详情");
+		$(".bklt .collect").html("收藏");
 }
 
 function diggload(){
@@ -517,7 +516,7 @@ function diggload(){
 function searchsubmit()
 {
 			 var i=0;				
-			 $('#searchform input[type=checkbox]').each(function(){ 					 
+			 $('#shfm input[type=checkbox]').each(function(){ 					 
 					if($(this).attr("checked")==true){ 						
 						$("#"+'searchkey_'+i).val($('#searchkey').val());	
 						$("#"+'searchform_'+i).submit();
@@ -564,8 +563,8 @@ $(function(){
 			$(".shaa span").click(function(){
 				$(".shaa span").removeClass("currentx");  
 				$(this).addClass("currentx"); 
-				$('#searchform input[type=checkbox]').remove();
-				$('#searchform span').remove();
+				$('#shfm input[type=checkbox]').remove();
+				$('#shfm span').remove();
 
 				$("#hidden_form").empty();
 				var i=0;
@@ -577,10 +576,10 @@ $(function(){
 					f.type = "checkbox";
 					f.name = searchs[$(this).attr("id")][i][0];
 					f.id = "check_"+i;
-					$('#searchform').append(f);
+					$('#shfm').append(f);
 					$("#"+f.id).attr("checked",(searchs[$(this).attr("id")][i][6]==1)?true:false);
 					
-					$('#searchform').append('<span>'+searchs[$(this).attr("id")][i][3]+'</span>');
+					$('#shfm').append('<span>'+searchs[$(this).attr("id")][i][3]+'</span>');
 				  //set hidden form
 					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[$(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[$(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
 
