@@ -1,7 +1,7 @@
 <h2 class="ntitle">	
 	<em>菜单&raquo;</em>
 </h2>
-<div class="menu_item">
+<div class="muim">
        	<div class="tabs_header">
 			<ul class="tabs">
                 <!--{eval mkbrowsertab($browserid)}-->
@@ -28,8 +28,8 @@
 			$(".tabs_header .tabs >li").click(function(){ 
 				$(".tabs_header .tabs >li").removeClass("active"); 
 				$(this).addClass("active"); 
-				$(".menu_item .menu_list").hide();
-				$(".menu_item .menu_list_"+$(this).attr("id")).show();  
+				$(".muim .menu_list").hide();
+				$(".muim .menu_list_"+$(this).attr("id")).show();  
 		});
 	});
 </script>
