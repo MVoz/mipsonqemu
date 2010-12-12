@@ -813,18 +813,18 @@ a.c_link {
 	padding-left:5px;
 }
 /*********************************************************************menu****/
-.menu_item{
+.muim{
 		padding: 1px;width:250px;
 }
-.menu_item .quickmenu{ 		width:250px;}
-.menu_item .quickmenu span {float:left;width:120px;padding:5px 0px;}
-.menu_item .menu_list{
+.muim .quickmenu{ 		width:250px;}
+.muim .quickmenu span {float:left;width:120px;padding:5px 0px;}
+.muim .menu_list{
 	width:230px;height:300px;overflow:auto;
 }
-.menu_item .menu_list ul {
+.muim .menu_list ul {
 	padding-right: 10px; padding-left: 0px; padding-bottom: 0px; overflow: hidden; padding-top: 0px; 
 }
-.menu_item .menu_list li {
+.muim .menu_list li {
 	padding-right: 0px; padding-left: 10px; background: url(image/dot.gif) no-repeat 0px 10px; padding-bottom: 0px; padding-top: 0px;width:160px;text-align:left;font-size: 12px;font-style: normal
 }
 /************************************************************************logined windows****/

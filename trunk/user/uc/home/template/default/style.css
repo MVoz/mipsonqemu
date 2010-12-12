@@ -397,12 +397,12 @@ a.c_link {
 .ndate{font-weight: normal; font-size: 12px; color: #999;}
 .ndate span{padding-left:5px;}
 /*********************************************************************menu****/
-.menu_item{	padding: 1px;width:250px;}
-.menu_item .quickmenu{width:250px;}
-.menu_item .quickmenu span {float:left;width:120px;padding:5px 0px;}
-.menu_item .menu_list{	width:230px;height:300px;overflow:auto;}
-.menu_item .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
-.menu_item .menu_list li {padding:0 0 0 10px; background: url(image/dot.gif) no-repeat 0px 10px; width:160px;text-align:left;font-size: 12px;font-style: normal}
+.muim{	padding: 1px;width:250px;}
+.muim .quickmenu{width:250px;}
+.muim .quickmenu span {float:left;width:120px;padding:5px 0px;}
+.muim .menu_list{	width:230px;height:300px;overflow:auto;}
+.muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
+.muim .menu_list li {padding:0 0 0 10px; background: url(image/dot.gif) no-repeat 0px 10px; width:160px;text-align:left;font-size: 12px;font-style: normal}
 
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
 /*link*/
