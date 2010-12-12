@@ -905,11 +905,12 @@ left:expression(this.nextSibling.offsetLeft);
 .type-1 .on {background:none repeat scroll 0 0 #00ADEF;color:#FFFFFF;padding:4px;}
 .type-1 a {color:#00ADEF;padding:4px;}
 .type-2 a {color:#669900;padding:4px;white-space: nowrap}
+/*
  .categorymenu_drop { margin: -1px 0 0; padding: 0 2px 2px; width: 60px; border: 1px solid #EBE6C9; background: #FFF; z-index: 200; }
       .categorymenu_drop li { padding: 2px 2px; border-bottom: 1px solid #EEE; }
         .categorymenu_drop li a { color: #2C629E; font-size: 12px; font-weight: normal; }
 		.categorymenu_drop .active { font-weight: bold; }
-
+*/
 /*linkclass show*/
 /*
 .linkclassshow .firstlayer {background:none repeat scroll 0 0 #eee;}
