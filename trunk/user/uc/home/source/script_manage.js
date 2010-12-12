@@ -41,7 +41,7 @@ function googleHint(a) {
 function myhint(a) {
 	
     var b = $obj("searchkey"),
-        c = $obj("suggests");
+        c = $obj("sts");
     if (!b.value || !b.value.length || a.keyCode == 27 || a.keyCode == 13) c.style.display = "none";
     else if (a.keyCode == 38 || a.keyCode == 40) {
             if (c.style.display != "none") {
@@ -73,8 +73,8 @@ window.google.ac.h = function (a) {
         var b = "";
         a = a[1];
         for (var c = 0; c < a.length; c++) b += "<tr style=\"cursor:hand\" onmousedown=\"$obj('searchkey').value='" + a[c][0] + '\';" onmouseover="javascript:this.style.background=\'#E6E6E6\'" onmouseout="javascript:this.style.background=\'#FFF\';"><td style="color:#000;font-size:12px;" align="left" _h="' + a[c][0] + '">' + a[c][0] + "</td></tr>";
-        $obj("suggests").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
-        $("#suggests").css("display","block");
+        $obj("sts").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
+        $("#sts").css("display","block");
     }
 };
 
