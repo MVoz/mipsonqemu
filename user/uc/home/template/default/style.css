@@ -648,9 +648,9 @@ border:1px solid #DDD;}
 	#qkmu #qkmut{font-style:normal;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
-	#board .searchinfo{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
-	#board .searchinfo .searchinfo_1{ float:left;margin:0px;padding:1px;width:672px;overflow:hidden;}
-	#board .dynamicinfo{background:url("image/ui_b_2.png") no-repeat scroll 0px 0 #E9EEF2;float:right;font-size:14px;height:269px;width:8px;}
+	#board .shio{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
+	#board .shio .searchinfo_1{ float:left;margin:0px;padding:1px;width:672px;overflow:hidden;}
+	#board .dcio{background:url("image/ui_b_2.png") no-repeat scroll 0px 0 #E9EEF2;float:right;font-size:14px;height:269px;width:8px;}
 
 
 
