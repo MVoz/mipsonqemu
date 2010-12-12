@@ -468,10 +468,10 @@ a.c_link {
 #thumbs .big .hottag p span {color:#717171;font-weight:bold;}
 #thumbs .big .hottag p a {margin:0 3px;}
 
-#relatedsitecontent{float:right;width:270px;height:220px;}
-#relatedsitecontent p{clear:both;}
-#relatedsitecontent .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
-#relatedsitecontent .relate_tag{height:20px;line-height:20px;}
+#rdsect{float:right;width:270px;height:220px;}
+#rdsect p{clear:both;}
+#rdsect .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
+#rdsect .relate_tag{height:20px;line-height:20px;}
 
 #hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
 border:1px solid #DDD;}
@@ -697,11 +697,11 @@ border:1px solid #DDD;}
 .seio .sepc {float:left;margin:5px 0 0 10px;background: url('image/200x150_thumb_bg') no-repeat;width:200px;height:140px;padding:7px 8px;}
 .seio .sepc img {width:180px;height:135px}
 .seio .siteact{float:left;width:220px;}
-.seio .sitescore {	background:none repeat scroll 0 0 #F6F6F6;display:inline;float:right;overflow:hidden;padding:10px;width:195px;}
-.seio .sitescore p {color:#CCDFF2;line-height:21px;}
-.seio .sitescore p span { color:#FF8624;}
-.seio .sitescore p strong {color:#606060;}
-.seio .sitescore p a {font-weight:bold;}
+.seio .sese {background:none repeat scroll 0 0 #F6F6F6;display:inline;float:right;overflow:hidden;padding:10px;width:195px;}
+.seio .sese p {color:#CCDFF2;line-height:21px;}
+.seio .sese p span { color:#FF8624;}
+.seio .sese p strong {color:#606060;}
+.seio .sese p a {font-weight:bold;}
 .rateup,.ratedown {display:inline-block;height:15px;margin:4px 0px 3px 0;position:relative; top:-2px;vertical-align:middle; width:15px;}
 .rateup a{
 	background:url("image/icon_support.jpg") no-repeat scroll 0 0px transparent;
