@@ -1,8 +1,7 @@
 <!--{template header}-->
 <!--{if $_GET[op] == 'delete'}-->
-<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<div style="padding:1px;">
 <h1>删除收藏</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid&browserid=$browserid">
 	<p>确定删除指定的收藏吗？</p>
@@ -35,9 +34,8 @@
 	<!--{template bookmark_item_detail}-->
 <!--{else}-->
 <!--{if !empty($_SGLOBAL['inajax'])}-->
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
-<h1>编辑书签</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
+<div style="padding:1px;" id="innerdiv">
+<h1>编辑书签</h1> 
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bookmark&op=edit&bmid=$bmid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
