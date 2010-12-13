@@ -48,11 +48,12 @@
 							<p><strong>评价</strong> <span>(点击顶踩评价)</span></p>
 							<span>
 								<span class="rateup">
-									<a target="_self" onclick="updatesiteup($item[siteid])"  href="javascript:void(0)"></a>
+									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num')"  href="javascript:void(0)"></a>
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
 								<span class="ratedown">
-									<a  target="_self"  onclick="updatesitedown($item[siteid])"  href="javascript:void(0)"></a>
+									<a  target="_self" onclick="updatestatics('site','updatesitedownnum',$item[siteid],'down_num')" 
+									href="javascript:void(0)"></a>
 								</span>
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  
