@@ -1,5 +1,36 @@
+function executeScript(html)
+{
+	if(html.indexOf('<script') == -1) return html;
+    var reg = /<script[^>]*>([^\x00]+)$/i;
+    var htmlBlock = html.split("<\/script>");
+    for (var i in htmlBlock) 
+    {
+        var blocks;
+		if (blocks = htmlBlock[i].match(reg)) 
+        {
+            var code = blocks[1].replace(/<!--/, '');
+            try 
+            {
+                eval(code) //执行脚本
+            } 
+            catch (e) 
+            {
+            }
+        }
+    }
+}
+
 function getbmview(type) {
-		ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');	    
+		//ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');
+		$.ajax({
+			  type: "GET",
+			  url:'space.php?do=bookmark&inajax=1&op='+type,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+		});
 }
 function getbmtagview(tagid) {
 		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','rdct','relatehtm');	    
@@ -19,8 +50,16 @@ function getbmfromid(groupid,browserid,name,isroot) {
 		$('#menu li a').removeClass('green');
 		$('#menu ul').hide();
 	}
-	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','rdct','relatehtm');
-	
+	//ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','rdct','relatehtm');
+	$.ajax({
+		  type: "GET",
+		  url:'space.php?do=bookmark&inajax=1&&op=browser&groupid='+groupid+'&browserid='+browserid,
+		  success:function(data){
+			if($('#bmcontent'))
+				$('#bmcontent').html($(data).find('root').text());
+			executeScript($(data).find('root').text());
+		  }
+	});
 	if(groupid!=0&&isroot==0)
 	{
 		$obj('groupdo').innerHTML='<span class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="bmdir_edit_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_edit_'+groupid+'\',this.id,1)">修改</a></span><span class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="bmdir_delete_'+groupid+'" onclick="ajaxmenu(event,this.id,1)">删除</a></span>';
