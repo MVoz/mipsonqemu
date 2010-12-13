@@ -34,7 +34,16 @@ function getbmview(type) {
 }
 function getbmtagview(tagid) {
 		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','rdct','relatehtm');	    
-		ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
+		//ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
+		$.ajax({
+			  type: "GET",
+			  url:"space.php?do=linktag&inajax=1&tagid="+tagid,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+		});
 }
 function getbrowserview(browserid) {
 		//ajaxget("space.php?do=bookmark&op=browser&browserid="+browserid, 'bmcontent');

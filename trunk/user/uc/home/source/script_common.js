@@ -421,14 +421,18 @@ function bookmarkload(){
 		$(".bklt >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 
 		$(".bklt .edit").each(function(){
-			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit";			
-			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
-			this.id="bookmark_edit_"+this.id;
+			$(this).addClass("thickbox");
+//			this.href="cp.php?ac=bookmark&bmid=189&groupid=0&browserid=1&op=edit"; 
+			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit&inajax=1";			
+			//$(this).attr("onclick",
+			//	"ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+//			this.id="bookmark_edit_"+this.id;
 		});	
 		$(".bklt .delete").each(function(){
-			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete";
-			this.id="bookmark_delete_"+this.id;
-			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			$(this).addClass("thickbox");
+			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete&inajax=1&height=85";
+			//this.id="bookmark_delete_"+this.id;
+			//$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
 		$(".bklt .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
