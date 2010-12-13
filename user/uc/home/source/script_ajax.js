@@ -173,7 +173,7 @@ function evalscript(s) {
 			//获取字符集
 			var re = /charset=\"([\w\-]+?)\"/i;
 			var charsetarr = re.exec(arr1[1]);
-			appendscript('', arr1[2], arr1[1].indexOf('reload=') != -1, charsetarr[1]);
+			if(charsetarr) appendscript('', arr1[2], arr1[1].indexOf('reload=') != -1, charsetarr[1]);
 		}
 	}
 	return s;
