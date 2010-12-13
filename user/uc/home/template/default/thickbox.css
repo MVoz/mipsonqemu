@@ -91,7 +91,18 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	text-align:right;
 	float:right;
 }
-
+#TB_closeWindowButton {
+background:url("image/delete.gif") no-repeat scroll 0 0 transparent;
+display:block;
+height:14px;
+overflow:hidden;
+position:absolute;
+right:5px;
+text-indent:-999em;
+top:2px;
+width:13px;
+}
+#TB_closeWindowButton:hover { background-position: 0 -14px; }
 #TB_ajaxWindowTitle{
 	float:left;
 	padding:7px 0 5px 10px;
@@ -99,8 +110,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 }
 
 #TB_title{
-	background-color:#e8e8e8;
-	height:27px;
+	height:15px;
 }
 
 #TB_ajaxContent{
