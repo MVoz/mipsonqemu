@@ -185,7 +185,7 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 			var queryString = url.replace(/^[^\?]+\??/,'');
 			var params = tb_parseQuery( queryString );
 			TB_WIDTH = (params['width']*1) + 30 || 540; //defaults to 630 if no paramaters were added to URL
-			TB_HEIGHT = (params['height']*1) + 40 || 480; //defaults to 440 if no paramaters were added to URL
+			TB_HEIGHT = (params['height']*1) + 40 || 500; //defaults to 440 if no paramaters were added to URL
 			ajaxContentW = TB_WIDTH - 30;
 			ajaxContentH = TB_HEIGHT - 45;
 			
