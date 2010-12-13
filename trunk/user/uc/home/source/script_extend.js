@@ -9,10 +9,7 @@ function executeScript(html)
 		if (blocks = htmlBlock[i].match(reg)) 
         {
             var code = blocks[1].replace(/<!--/, '');
-            try 
-            {
-                eval(code) //执行脚本
-            } 
+            try{eval(code)}
             catch (e) 
             {
             }
