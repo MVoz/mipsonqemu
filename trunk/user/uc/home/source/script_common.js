@@ -434,7 +434,7 @@ function bookmarkload(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
 		$(".bklt .url").each(function(){
-			$(this).attr("onclick","updatebookmarkview("+this.id+")");
+			$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
 		});	
 		
 		$(".bklt a").attr("target","_blank");
@@ -480,7 +480,7 @@ function siteload(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
 		$(".bklt .url").each(function(){
-			$(this).attr("onclick","updatesiteview("+this.id+")");
+			$(this).attr("onclick","updatestatics('site','updatesiteviewnum',"+this.id+")");
 		});			
 		$(".bklt a").attr("target","_blank");
 		$(".bklt .tags > span").html("什么也没留下...");

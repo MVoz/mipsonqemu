@@ -15,9 +15,9 @@ function getlinkview(type) {
 function getbmfromid(groupid,browserid,name,isroot) {
 	if(groupid==0)
 	{
-		jQuery('#menuroot').addClass('green');
-		jQuery('#menu li a').removeClass('green');
-		jQuery('#menu ul').hide();
+		$('#menuroot').addClass('green');
+		$('#menu li a').removeClass('green');
+		$('#menu ul').hide();
 	}
 	ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','rdct','relatehtm');
 	
@@ -43,76 +43,32 @@ function setbookmarkgroupid(id)
 {
 	if(id==0)
 	{
-		jQuery('#menuroot').addClass('green');
-		jQuery('#menu li a').removeClass('green');
-		jQuery('#menu ul').hide();
+		$('#menuroot').addClass('green');
+		$('#menu li a').removeClass('green');
+		$('#menu ul').hide();
 	}
 	$obj('browsergroupid').value=id;
 }
+var updatestaticss = {
+    bookmark: [ ["bmid"] ],
+	site: [ ["siteid"] ],
+	digg: [ ["diggid"] ]
+};
+function updatestatics(type,op,id,o)
+{
+		$.ajax({
+			  type: "GET",
+			  url:'cp.php?ac='+type+'&op='+op+'&inajax=1&'+updatestaticss[type][0][0]+'='+id,
+			  success:function(data){
+				if($('#'+o))
+					$('#'+o).html($(data).find('root').text());				
+			  }
+		});
+		this.blur();
+		return false;
+}
 
-function updatebookmarkview(id) {
-	ajaxupdate('bookmark','visitstat', 'op=updatebookmarkview&bmid=' + id);
-}
-var updatebookmarkupclick=0;
-function updatebookmarkup(id) {
-	if(!updatebookmarkupclick)
-	{
-		ajaxupdate('bookmark','up_num', 'op=updatebookmarkupnum&bmid=' + id);
-		updatebookmarkupclick=1;
-	}else
-		alert(errors['failed_to_up_operation']);
-}
-var updatebookmarkdownclick=0;
-function updatebookmarkdown(id) {
-	if(!updatebookmarkdownclick)
-	{
-		ajaxupdate('bookmark','down_num', 'op=updatebookmarkdownnum&bmid=' + id);
-		updatebookmarkdownclick=1;
-	}else
-		alert(errors['failed_to_up_operation']);
-}
-/*
-var updatelinkupclick=0;
-function updatelinkup(id) {
-	if(!updatelinkupclick)
-	{
-		ajaxupdate('link','up_num', 'op=updatelinkupnum&linkid=' + id);
-		updatelinkupclick=1;
-	}
-}
-var updatelinkdownclick=0;
-function updatelinkdown(id) {
-	if(!updatelinkdownclick)
-	{
-		ajaxupdate('link','down_num', 'op=updatelinkdownnum&linkid=' + id);
-		updatelinkdownclick=1;
-	}
-}
-function updatelinkview(id) {
-	ajaxupdate('link','view_num', 'op=updatelinkviewnum&linkid=' + id);
-}
-*/
-var updatesiteupclick=0;
-function updatesiteup(id) {
-	if(!updatesiteupclick)
-	{
-		ajaxupdate('site','up_num', 'op=updatesiteupnum&siteid=' + id);
-		updatesiteupclick=1;
-	}else
-		alert(errors['failed_to_up_operation']);
-}
-var updatesitedownclick=0;
-function updatesitedown(id) {
-	if(!updatesitedownclick)
-	{
-		ajaxupdate('site','down_num', 'op=updatesitedownnum&siteid=' + id);
-		updatesitedownclick=1;
-	}else
-		alert(errors['failed_to_up_operation']);
-}
-function updatesiteview(id) {
-	ajaxupdate('site','view_num', 'op=updatesiteviewnum&siteid=' + id);
-}
+
 function updatediggup(id) {
 	ajaxupdate('digg','digg_up_num_id_'+id, 'op=updatediggupnum&diggid=' + id);
 }
@@ -125,9 +81,6 @@ function updatediggview(id) {
 function getrelatedlinkfromid(id) {
 	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
 }
-
-
-
 
 var lastSecCode='';
 function checkSeccode() {

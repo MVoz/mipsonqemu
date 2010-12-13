@@ -22,13 +22,14 @@ function tb_init(domChunk){
 	var t = this.title || this.name || null;
 	var a = this.href || this.alt;
 	var g = this.rel || false;
-	tb_show(t,a,g);
+	var id = this.id;
+	tb_show(t,a,g,id);
 	this.blur();
 	return false;
 	});
 }
 
-function tb_show(caption, url, imageGroup) {//function called when the user clicks on a thickbox link
+function tb_show(caption, url, imageGroup,secode_id) {//function called when the user clicks on a thickbox link
 
 	try {
 		if (typeof document.body.style.maxHeight === "undefined") {//if IE 6
@@ -245,6 +246,8 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 					  success: function(data) {
 						 // call up the thickbox handler again / reinitialise the plugin
 						 $("#TB_ajaxContent").html($(data).find('root').text());
+						 if(secode_id!="")
+								updateseccodeex('img_seccode_'+secode_id);
 						 tb_position();
 						 $("#TB_load").remove();
 						 tb_init("#TB_ajaxContent a.thickbox");
