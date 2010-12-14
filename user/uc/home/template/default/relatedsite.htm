@@ -3,7 +3,7 @@
 			<!--{loop $relatedlist $value}-->
 				<li>
 					<a  title="$value['link_description']" onclick="getrelatedlinkfromid($value['linkid']);">
-						<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']"/>
+						<img src="$value['pic']/l_$value['md5url'].$_SC['link_image_suffix']"/>
 					</a>
 					<p><a href="$value['url']">$value['link_subject']</a></p>							
 				</li>
