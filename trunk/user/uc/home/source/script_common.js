@@ -347,7 +347,10 @@ function display(id) {
 	var obj = $obj(id);
 	obj.style.display = obj.style.display == '' ? 'none' : '';
 }
-
+function setDisplay(a, b){
+	if ($("#"+a)) 
+		$("#"+a).css({"display":(b ? "block" : "none")});
+};
 function urlto(url) {
 	window.location.href = url;
 }
@@ -567,7 +570,7 @@ $(function(){
 
 $(function(){
 			$(".shaa span:first").addClass("currentx");
-			currentid= getCookie(getSearchTabCookieName());
+			currentid= Cookie.get(getSearchTabCookieName());
 			$(".shaa span").click(function(){
 				$(".shaa span").removeClass("currentx");  
 				$(this).addClass("currentx"); 
@@ -576,7 +579,8 @@ $(function(){
 
 				$("#hidden_form").empty();
 				var i=0;
-				setSearchTab($(this).attr("id"));
+				//setSearchTab($(this).attr("id"));
+				Cookie.set(getSearchTabCookieName(), $(this).attr("id"), 1E3 * 3600 * 24 * 5);
 				var len = searchs[$(this).attr("id")].length;
 				for (i = 0; i < len; i++) {
 				 //set checkbox

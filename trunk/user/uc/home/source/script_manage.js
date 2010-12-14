@@ -1,3 +1,4 @@
+/*
 function linkclasstag_add(sid, result) {
 	if(result) {
 		//linkclassform_1=>linkclassform_1_tag
@@ -27,6 +28,7 @@ function linkclass_add(sid, result) {
 function  categoryShow(value) {
 	$('#tb_bookmark').css("display",value?"":"none");
 }
+*/
 /*search*/
 function googleHint(a) {
 	if($("#gsuggest"))
@@ -125,22 +127,26 @@ var searchs = {
 
 function getSearchTabCookieName() {
         return "tanzhi_search"
-    };
-
+};
+/*
 function setSearchTab(a) {
-        setCookie(getSearchTabCookieName(), a, 1E3 * 3600 * 24 * 5)
+        //setCookie(getSearchTabCookieName(), a, 1E3 * 3600 * 24 * 5)
+		Cookie.set(getSearchTabCookieName(), a, 1E3 * 3600 * 24 * 5);
     }
+
 function getSearchTabByIndex(a) {
         a = a ? a : 0;
         a = getCookie(getSearchTabCookieName());
         if (a == null || a == "") return 1;
         return a
     };
+
 function getCookie(a) {
-        var b;
-        var c = new RegExp("(^| )" + a + "=([^;]*)(;|$)");
-        if (b = document.cookie.match(c)) return unescape(b[2]);
-        else return null ;
+     //   var b;
+     //   var c = new RegExp("(^| )" + a + "=([^;]*)(;|$)");
+     //   if (b = document.cookie.match(c)) return unescape(b[2]);
+      //  else return null ;
+		return Cookie.get(a);
     };
 
 function setCookie(a, b) {
@@ -150,6 +156,7 @@ function setCookie(a, b) {
         var e = "tanzhi.com";
         document.cookie = a + "=" + escape(b); + ";expires=" + d.toGMTString() + ";path=/;domain=" + e ;
     };
+
 
 function delCookie(a) {
         var b = -1,
@@ -162,10 +169,8 @@ function delCookie(a) {
                 document.cookie = a + "=" + escape(cval) + ";expires=" + c.toGMTString() + ";path=/;"
             }
     };
-function setDisplay(a, b) {
-		if ($("#"+a)) 
-			$("#"+a).css({"display":(b ? "block" : "none")});
-    };
+*/
+
 /*menu*/
 function initMenuEx() {
     $('#menu ul').hide();
