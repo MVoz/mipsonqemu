@@ -445,7 +445,7 @@ function bookmarkload(){
 		
 		$(".id_bm_tag").each(function(){
 			this.href = "javascript:;";
-			$(this).attr("onclick","getbmtagview("+this.id+");").attr("target","_self");
+			$(this).attr("onclick","getAjax('bmtagview',"+this.id+");").attr("target","_self");
 		});	
 
 		$(".bklt .share").each(function(){
@@ -457,6 +457,7 @@ function bookmarkload(){
 		$(".bklt .share").html("分享");
 		$(".bklt .edit").html("编辑");
 		$(".bklt .get").html("详情");
+		tb_init('a.thickbox');
 }
 function siteload(){
 		$(".id_nodes").each(function(){
@@ -467,14 +468,16 @@ function siteload(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});	
 		$(".bklt .edit").each(function(){
-			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
-			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
-			this.id="bookmark_edit2_"+this.id;
+			$(this).addClass("thickbox");
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit&inajax=1";			
+			//$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
+			//this.id="bookmark_edit2_"+this.id;
 		});	
 		$(".bklt .delete").each(function(){
-			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete";
-			this.id="bookmark_delete_"+this.id;
-			$(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			$(this).addClass("thickbox");
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete&inajax=1&height=85";
+		//	this.id="bookmark_delete_"+this.id;
+		//	$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
 		$(".bklt .bm").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
@@ -496,6 +499,7 @@ function siteload(){
 		$(".bklt .edit").html("编辑");
 		$(".bklt .get").html("详情");
 		$(".bklt .collect").html("收藏");
+		tb_init('a.thickbox');
 }
 
 function diggload(){
@@ -538,7 +542,7 @@ function setquickmenu(type)
 		  lastadd: [['最新添加']],
 		  mycharts: [['我的上榜']]
 	 };
-	 getbmview(type);
+	 getAjax('bmview',type);
 	 $('#qkmut').text(qkmus[type][0][0]);
 	 $('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');
 	 if($('#groupdo'))
