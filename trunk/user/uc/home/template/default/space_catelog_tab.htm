@@ -10,12 +10,12 @@ $(document).ready(function(){
 <ul class="nav_tab">
 	<!--{loop $child_class $key $value}-->
 			<!--{if $key }--> 			
-					<li><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li> 				
+					<li><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>			
 			<!--{else}-->
 				<!--{if $isSecClass }-->
-					<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li>
+					<li class="nav_on"><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>
 				<!--{else}-->
-					<li class="nav_on"><a href="javascript:;" onclick="ajaxget('space.php?do=$do&classid=$value[classid]', 'bmcontent');">$value[classname]</a></li>
+					<li class="nav_on"><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>
 				<!--{/if}-->
 			<!--{/if}-->
 	<!--{/loop}-->

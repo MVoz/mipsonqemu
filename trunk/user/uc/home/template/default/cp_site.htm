@@ -1,8 +1,7 @@
 <!--{template header}-->
 <!--{if $op == 'delete'}-->
-<div style="padding:1em;border: 3px solid #FF8E00;background: #FCF9E6;">
+<div style="padding:1px;">
 <h1>删除</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=link&op=delete&siteid=$item['siteid']">
 	<p>确定删除标题为<span style="color:#368332">$item['subject']</span>的站点吗？</p>
@@ -280,9 +279,8 @@
 </div>
 <!--{elseif $op == 'edit'}-->
 <!--{if !empty($_SGLOBAL['inajax'])}-->
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<div style="padding:1px;" id="innerdiv">
 <h1>编辑站点</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 
 <form method="post" action="cp.php?ac=$ac&op=$op&siteid=$item[siteid]" >
