@@ -1,22 +1,16 @@
-<script language="javascript" type="text/javascript" >
-$(document).ready(function(){
-			$(".nav_tab li:first").addClass("nav_on");
-			$(".nav_tab li").click(function(){
-				$(".nav_tab li").removeClass("nav_on"); 
-				$(this).addClass("nav_on");		
-		});	
-});
-</script>
 <ul class="nav_tab">
 	<!--{loop $child_class $key $value}-->
 			<!--{if $key }--> 			
-					<li><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>			
+					<li><a id="$value[classid]" class="navc">$value[classname]</a></li>			
 			<!--{else}-->
 				<!--{if $isSecClass }-->
-					<li class="nav_on"><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>
+					<li class="nav_on"><a id="$value[classid]" class="navc" >$value[classname]</a></li>
 				<!--{else}-->
-					<li class="nav_on"><a href="javascript:;" onclick="getAjax('siteview','$value[classid]');">$value[classname]</a></li>
+					<li class="nav_on"><a id="$value[classid]" class="navc">$value[classname]</a></li>
 				<!--{/if}-->
 			<!--{/if}-->
 	<!--{/loop}-->
 </ul>
+<script language="javascript" type="text/javascript" >
+	navtabload();
+</script>
