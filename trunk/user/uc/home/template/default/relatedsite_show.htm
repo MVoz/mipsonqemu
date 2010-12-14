@@ -1,6 +1,6 @@
 <div id="rdsect">
 	<div id="slideshow" class="link200">
-		<a>
+		<a href="$relatedlist[0]['url']" title="$relatedlist[0]['link_subject']">
 			<img src="$relatedlist[0]['pic']/b_$relatedlist[0]['md5url'].$_SC['link_image_suffix']"/>
 		</a>
 	</div>
@@ -18,11 +18,9 @@
 	</p>
 </div>
 <script language="javascript" type="text/javascript">
-	var relateurl = $relatedlist[0]['url'];
-	var relatesubject = $relatedlist[0]['link_subject'];
-	$('#slideshow > a').attr("href",relateurl);
+	var relateurl = $('#slideshow > a').attr('href');
+	var relatesubject = $('#slideshow > a').attr('title');
     $('#rdsect .relate_desc a').attr("href",relateurl);
 	$('#rdsect .relate_desc a').html(relatesubject);
-	$('#slideshow > a').attr("title",relatesubject);
 	$('#slideshow > a >img').attr("title",relatesubject);
 </script>

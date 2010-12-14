@@ -439,11 +439,13 @@ a.c_link {
 #rdsect .relate_tag{height:20px;line-height:20px;}
 #rdsect .relate_tag > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
 
-#hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
+#hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;
 border:1px solid #DDD;}
+#hhlt dl{float:left;width:240px;padding-top:8px;overflow:hidden;}
 #hhlt p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
 #hhlt p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
-#hhlt a{font-size:12px;}
+#hhlt a{display:block;font-size:12px;width:180px;}
+#hhlt .num_con{margin-top:-20px;}
 
 .shaa {height:95px;width:672px;float:right;}
 .shaa,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
@@ -516,9 +518,9 @@ border:1px solid #DDD;}
 	.ntitle span .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
-.box_l { float: left; width: 680px;  overflow: hidden;height:100%; }
+.box_l { float: left; width: 680px;height:100%;overflow: hidden;}
 	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 0 transparent;}
-.box_r { padding:0px;float: right; width:289px;height:100%;}
+.box_r { padding:0px;float: right; width:289px;height:100%;overflow:hidden;}
 		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px 0 transparent; line-height: 32px; }
 
 	.bloglist_ad {padding:15px 2px 2px 2px;position:relative;left:120px;bottom:10px;}
@@ -684,7 +686,7 @@ background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0
 .nnct .nncg dt{clear:both;font-weight:bold;padding:2px 5px;color:#0099BB;font-size:110%;border-bottom:1px solid #DDD;}
 .nnct .nncg a{padding:5px 5px;float:left;white-space:nowrap;}
 /*tab*/
-.digg_sortlist{background-color:#fff;margin:5px 10px;height:75px;width:270px;}
+.dgst{background-color:#fff;margin:5px 10px;width:270px;}
 
 .tab{clear:both;list-style-type:none;margin:0;padding:0 25px;height:25px;line-height:25px;background: url(./image/tag1.gif);width:218px;font-size:12px }
 .tab a{	padding:0 0 0 15px; height:25px;color:#ccc;	float:left;	text-decoration:none;}
