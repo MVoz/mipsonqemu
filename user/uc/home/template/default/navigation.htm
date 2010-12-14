@@ -16,6 +16,6 @@
 <script language="javascript" type="text/javascript">	
 		$(".nncg a").each(function(){
 			this.href ="javascript:;";
-			$(this).attr("onclick","ajaxget('space.php?do=navigation&classid="+this.id+"', 'bmcontent');");
+			$(this).attr("onclick","getAjax('siteview',"+this.id+");");
 		});
 </script>
