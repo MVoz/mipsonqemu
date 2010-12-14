@@ -55,6 +55,8 @@
 
 <script language="javascript" type="text/javascript">	
 		siteload();
+		navtabclick();
+
 <!--{loop $bookmarklist $key $value}-->	
 		var id_st_$value['siteid']_title="$value['subject']";
 		$(".id_st_$value['siteid']").attr("href","$value[url]").attr("title",id_st_$value['siteid']_title);		
