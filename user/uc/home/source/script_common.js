@@ -524,6 +524,13 @@ function diggload(){
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
 }
+function navtabload()
+{
+		$(".nav_tab .navc").each(function(){
+				$(this).attr("onclick","getAjax('siteview','"+this.id+"');$('.nav_tab li').removeClass('nav_on');$(this).parent().addClass('nav_on');");
+				$(this).attr("href","javascript:;");
+			});
+}
 function searchsubmit()
 {
 			 var i=0;				
@@ -640,4 +647,5 @@ $(function(){
 	$('#qkmu > li').bind('mouseover', qkmu_open);
 	$('#qkmu > li').bind('mouseout',  qkmu_close);
 });
+
 document.onclick = qkmu_close;
