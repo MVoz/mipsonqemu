@@ -2338,7 +2338,7 @@ function mkbrowsertab($id)
 		/*
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
 		*/
-		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getbrowserview('.$browserid.')" href="javascript:;" ><span>'.$key.'</span></a></li>';
+		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\','.$browserid.')" href="javascript:;" ><span>'.$key.'</span></a></li>';
 		
     }
 }
@@ -2347,7 +2347,7 @@ function mkbrowsershowtab($id)
     global $_SGLOBAL;
 	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
-	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getdirtreefrombrowserid('.$browserid.');" href="javascript:;"><span>'.$key.'</span></a></li>';
+	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getAjax(\'dirtree\','.$browserid.');" href="javascript:;"><span>'.$key.'</span></a></li>';
 		/*echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="cp.php?ac=link&op=bookmark&linkid='.$linkid.'&browserid='.$browserid.'">'.$key.'</span></a></li>';*/
     }
 }

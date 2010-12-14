@@ -16,7 +16,37 @@ function executeScript(html)
         }
     }
 }
-
+var ajaxtypes = {
+    bmview: [ ["space.php?do=bookmark&op=","bmcontent"] ],
+	siteview: [ ["space.php?do=navigation&classid=","bmcontent"] ],
+	bmtagview: [ ["space.php?do=linktag&tagid=","bmcontent"] ],
+	browserview: [ ["space.php?do=bookmark&op=browser&browserid=","bmcontent"] ],
+	dirtree: [ ["space.php?do=browser&op=show&browserid=","browserdirtree"] ]
+};
+function getAjax(type,id)
+{
+	$.ajax({
+			  type: "GET",
+			  url:ajaxtypes[type][0][0]+id+"&inajax=1",
+			  success:function(data){
+				if($('#'+ajaxtypes[type][0][1]))
+					$('#'+ajaxtypes[type][0][1]).html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+	});
+}
+/*
+function getsiteview(classid){
+	$.ajax({
+			  type: "GET",
+			  url:'space.php?do=navigation&inajax=1&classid='+classid,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+	});
+}
 function getbmview(type) {
 		//ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');
 		$.ajax({
@@ -57,7 +87,7 @@ function getbrowserview(browserid) {
 function getlinkview(type) {
 	ajaxget('space.php?do=link&op='+type, 'bmcontent');
 }
-
+*/
 function getbmfromid(groupid,browserid,name,isroot) {
 	if(groupid==0)
 	{
@@ -85,14 +115,24 @@ function getbmfromid(groupid,browserid,name,isroot) {
 	$obj('groupname').innerHTML=name+'&raquo;';
 }
 //cp_link.htm browser show
-
+/*
 function getdirtreefrombrowserid(id)
 {
 	$obj('browserid').value=id;
 	$obj('menu').parentNode.removeChild($obj('menu'));
-	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
+//	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
+	$.ajax({
+		  type: "GET",
+		  url:'space.php?do=browser&op=show&browserid='+id+'&inajax=1',
+		  success:function(data){
+			if($('#browserdirtree'))
+				$('#browserdirtree').html($(data).find('root').text());
+			executeScript($(data).find('root').text());
+			initMenuEx();
+		  }
+	});
 }
-
+*/
 function setbookmarkgroupid(id)
 {
 	if(id==0)
