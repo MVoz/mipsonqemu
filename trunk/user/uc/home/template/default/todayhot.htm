@@ -4,7 +4,7 @@
 			<h2>站长推荐</h2>
 			<div class="s_avatar">
 					<a class="id_td_$todayhot[siteid]">
-						<img src="$todayhot['pic']/$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['subject']" />
+						<img src="$todayhot['pic']/b_$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['subject']" />
 					</a>
 			</div>
 			<div class="s_cnts">
@@ -33,9 +33,7 @@
 					<a class="id_td_tag_$todayhot[siteid]" id="$subkey">$subvalue</a>
 					<!--{/loop}-->
 			</span>
-			<span style="float:right;padding-right:5px;">
-					<a  id="bookmark_add_$todayhot[siteid]" href="cp.php?ac=site&siteid=$todayhot[siteid]&op=bookmark" >我要收藏</a>
-			</span>
+			<a id="bookmark_add_$todayhot[siteid]" href="cp.php?ac=site&siteid=$todayhot[siteid]&op=bookmark" >我要收藏</a>
 	</p> 						
 </div>	
 <script language="javascript" type="text/javascript">	

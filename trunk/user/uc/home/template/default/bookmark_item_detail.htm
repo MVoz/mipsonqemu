@@ -7,9 +7,9 @@
 					<div class="sepc">
 						<a class="playpic" href="$item['url']" onclick="updatebookmarkview($item[bmid])">
 							<!--{if empty($item[picflag])}-->
-								<img  src="$item['tmppic']">
+								<img  src="template/default/image/b_webloading.gif">
 							<!--{else}-->
-								<img  src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
+								<img  src="$item['pic']/b_$item['md5url'].$_SC['link_image_suffix']">
 							<!--{/if}-->
 						</a>
 					</div>

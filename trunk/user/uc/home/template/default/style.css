@@ -437,6 +437,7 @@ a.c_link {
 #rdsect p{clear:both;}
 #rdsect .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #rdsect .relate_tag{height:20px;line-height:20px;}
+#rdsect .relate_tag > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
 
 #hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;background-color:#FFF;
 border:1px solid #DDD;}
@@ -612,6 +613,7 @@ border:1px solid #DDD;}
 .recml .description{height:40px;width:320px;}
 .recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 .recml .rlt_line{height:20px;line-height:20px;width:330px;}
+.recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
 .tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/icons.gif") no-repeat scroll 0 -396px transparent;}
 		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 330px; height: 160px; background: #F7F7F7; overflow: hidden; }
 			#user_recomm h2 { position: absolute; left: 5px; top: 5px; width: 36px; height: 120px; background: url(image/showuser_label.gif) no-repeat 0 0; text-indent: -9999px; z-index: 10; }
