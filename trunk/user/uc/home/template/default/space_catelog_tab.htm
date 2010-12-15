@@ -1,16 +1,19 @@
-<ul class="nav_tab">
-	<!--{loop $child_class $key $value}-->
-			<!--{if $key }--> 			
-					<li><a id="$value[classid]" class="navc">$value[classname]</a></li>			
-			<!--{else}-->
-				<!--{if $isSecClass }-->
-					<li class="nav_on"><a id="$value[classid]" class="navc" >$value[classname]</a></li>
-				<!--{else}-->
-					<li class="nav_on"><a id="$value[classid]" class="navc">$value[classname]</a></li>
-				<!--{/if}-->
-			<!--{/if}-->
-	<!--{/loop}-->
-</ul>
+<h2 class="navtab_x" style="display:none;">
+		<p id="groupname">$classitem['classname']&raquo;</p>
+		<ul class="nav_tab">
+			<!--{loop $child_class $key $value}-->
+					<!--{if $key }--> 			
+							<li><a id="$value[classid]" class="navc">$value[classname]</a></li>			
+					<!--{else}-->
+						<!--{if $isSecClass }-->
+							<li class="nav_on"><a id="$value[classid]" class="navc" >$value[classname]</a></li>
+						<!--{else}-->
+							<li class="nav_on"><a id="$value[classid]" class="navc">$value[classname]</a></li>
+						<!--{/if}-->
+					<!--{/if}-->
+			<!--{/loop}-->
+		</ul>
+</h2>
 <script language="javascript" type="text/javascript" >
 	navtabload();
 </script>

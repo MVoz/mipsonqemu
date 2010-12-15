@@ -4,7 +4,7 @@
 <h1>删除收藏</h1>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bookmark&op=delete&bmid=$bmid&browserid=$browserid">
-	<p>确定删除指定的收藏吗？</p>
+	<p>确定删除标题为<span style="color:#368332">$item['subject']</span>的收藏吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$url" />
 		<input type="hidden" name="deletesubmit" value="true" />
