@@ -113,7 +113,7 @@
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
 		<input type="hidden" id="address" name="address" value="$item[url]" />
 		<input type="hidden" name="addsubmit" value="true" />
-		<input type="button" id="btnsubmit" name="btnsubmit" value="提交" class="submit" tabindex="6" onclick=" setformaction(this);updatesitetodaystorenum($item['siteid']);bookmark_validate(this,'seccode',linkcond[$('browserid').value][0], linkcond[$('browserid').value][1], linkcond[$('browserid').value][2],linkcond[$('browserid').value][3]);"/>
+		<input type="button" id="btnsubmit" name="btnsubmit" value="提交" class="submit" tabindex="6" onclick=" setformaction(this);updatesitetodaystorenum($item['siteid']);bookmark_validate(this,'seccode',linkcond[$('#browserid').val()][0], linkcond[$('#browserid').val()][1], linkcond[$('#browserid').val()][2],linkcond[$('#browserid').val()][3]);"/>
 		</td>
 	</tr>
 	<tr><th>&nbsp;</th><td id="__registerform" style="color:red; font-weight:bold;"></td></tr>
@@ -128,10 +128,11 @@
 		<!--{/loop}-->
 	];
 	function setformaction(obj){
-		obj.form.action="cp.php?ac=bmdir&op=add&bmdirid="+$('browsergroupid').value+"&browserid="+$('browserid').value;
+		obj.form.action="cp.php?ac=bmdir&op=add&bmdirid="+$('#browsergroupid').val()+"&browserid="+$('#browserid').val();
 	}
 	function updatesitetodaystorenum(id) {
-		ajaxupdate('site','todaystorenum', 'op=updatesitetodaystorenum&siteid=' + id);
+	//	ajaxupdate('site','todaystorenum', 'op=updatesitetodaystorenum&siteid=' + id);
+	//	updatestatics('site','updatesitetodaystorenum',id,'todaystorenum');
 	}
 </script>
 <script type="text/javascript">
@@ -157,10 +158,10 @@
 	}
 	function fSetTag(tag)
 	{
-		if(!strlen($('tag').value))
-			$('tag').value=tag+' ';
+		if(!strlen($('#tag').val()))
+			$('#tag').val(tag+' ');
 		else
-			$('tag').value=$('tag').value+' '+tag;
+			$('#tag').val($('#tag').val()+' '+tag);
 	}
 //-->
 </script>
