@@ -3135,7 +3135,9 @@ function get_page_start($perpage)
 function gethttpbrowserid()
 {
 	//如果没指定或指定错误，则为ie
-	global $_GET,$_SGLOBAL;
+	global $_GET,$_SGLOBAL,$_SCOOKIE;
+	if(!empty($_SCOOKIE['browser'])&&(in_array(intval($_SCOOKIE['browser']),$_SGLOBAL['browsertype'])))
+		return intval($_SCOOKIE['browser']);
 	return  (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 }
 function gethttpgroupid($browserid)
