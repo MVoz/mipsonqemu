@@ -21,16 +21,19 @@
 		</div>
 </div>
 <script language="javascript"  type="text/javascript">
-	$(document).ready(function(){
+	$(function(){
 			$(".tabs_header .tabs #"+$browserid).addClass("active");  
 			$(".menu_list").hide();
-			$(".menu_list_"+$browserid).show(); 
+			$(".menu_list_"+$browserid).show();
 			$(".tabs_header .tabs >li").click(function(){ 
+				Cookie.set("tanzhi_browser", $(this).attr("id"), 1E3 * 3600 * 24 * 5);
 				$(".tabs_header .tabs >li").removeClass("active"); 
 				$(this).addClass("active"); 
 				$(".muim .menu_list").hide();
 				$(".muim .menu_list_"+$(this).attr("id")).show();  
-		});
+			});
+			//if($(".tabs_header .tabs #"+Cookie.get("tanzhi_browser")))
+			//	$(".tabs_header .tabs #"+Cookie.get("tanzhi_browser")).click();
 	});
 </script>
 
