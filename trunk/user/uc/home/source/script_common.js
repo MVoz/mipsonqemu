@@ -421,9 +421,9 @@ function bookmarkload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$(".bklt >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
+		$("#bklist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 
-		$(".bklt .edit").each(function(){
+		$("#bklist .edit").each(function(){
 			$(this).addClass("thickbox");
 //			this.href="cp.php?ac=bookmark&bmid=189&groupid=0&browserid=1&op=edit"; 
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit&inajax=1";			
@@ -431,78 +431,78 @@ function bookmarkload(){
 			//	"ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 //			this.id="bookmark_edit_"+this.id;
 		});	
-		$(".bklt .delete").each(function(){
+		$("#bklist .delete").each(function(){
 			$(this).addClass("thickbox");
 			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete&inajax=1&height=85";
 			//this.id="bookmark_delete_"+this.id;
 			//$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		$(".bklt .get").each(function(){
+		$("#bklist .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
-		$(".bklt .url").each(function(){
+		$("#bklist .url").each(function(){
 			$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
 		});	
 		
-		$(".bklt a").attr("target","_blank");
+		$("#bklist a").attr("target","_blank");
 		
 		$(".id_bm_tag").each(function(){
 			this.href = "javascript:;";
 			$(this).attr("onclick","getAjax('bmtagview',"+this.id+");").attr("target","_self");
 		});	
 
-		$(".bklt .share").each(function(){
+		$("#bklist .share").each(function(){
 			this.href="javascript:void(0)";
 			$(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
 		});	
-		$(".bklt > li:even").addClass("list_r");;
-		$(".bklt .delete").html("删除");
-		$(".bklt .share").html("分享");
-		$(".bklt .edit").html("编辑");
-		$(".bklt .get").html("详情");
-		tb_init('a.thickbox');
+		$("#bklistt > li:even").addClass("list_r");;
+		$("#bklist .delete").html("删除");
+		$("#bklist .share").html("分享");
+		$("#bklist .edit").html("编辑");
+		$("#bklist .get").html("详情");
+		tb_init('#bklist a.thickbox');
 }
 function siteload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$(".bklt >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
+		$("#stlist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
 		$(".id_st_tag").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});	
-		$(".bklt .edit").each(function(){
+		$("#stlist .edit").each(function(){
 			$(this).addClass("thickbox");
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit&inajax=1";			
 			//$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
 			//this.id="bookmark_edit2_"+this.id;
 		});	
-		$(".bklt .delete").each(function(){
+		$("#stlist .delete").each(function(){
 			$(this).addClass("thickbox");
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete&inajax=1&height=85";
 		//	this.id="bookmark_delete_"+this.id;
 		//	$(this).attr("onclick","ajaxmenu(event, this.id,1)");
 		});	
-		$(".bklt .bm").each(function(){
+		$("#stlist .bm").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
 			this.id="bookmark_edit2_"+this.id;
 		});	
-		$(".bklt .get").each(function(){
+		$("#stlist .get").each(function(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
-		$(".bklt .url").each(function(){
+		$("#stlist .url").each(function(){
 			$(this).attr("onclick","updatestatics('site','updatesiteviewnum',"+this.id+")");
 		});			
-		$(".bklt a").attr("target","_blank");
-		$(".bklt .tags > span").html("什么也没留下...");
-		$(".bklt .collect").each(function(){
+		$("#stlist a").attr("target","_blank");
+		$("#stlist .tags > span").html("什么也没留下...");
+		$("#stlist .collect").each(function(){
 			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
 		});
-		$(".bklt > li:even").addClass("list_r");
-		$(".bklt .delete").html("删除");
-		$(".bklt .edit").html("编辑");
-		$(".bklt .get").html("详情");
-		$(".bklt .collect").html("收藏");
-		tb_init('a.thickbox');
+		$("#stlist > li:even").addClass("list_r");
+		$("#stlist .delete").html("删除");
+		$("#stlist .edit").html("编辑");
+		$("#stlist .get").html("详情");
+		$("#stlist .collect").html("收藏");
+		tb_init('#stlist a.thickbox');
 }
 
 function diggload(){
@@ -510,10 +510,16 @@ function diggload(){
 			this.href = "space.php?do=diggtag&tagid=" + this.id;
 		});	
 		$(".tlist .edit").each(function(){
-			$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
+			$(this).addClass("thickbox");
+			$(this).attr("href","cp.php?ac=digg&op=edit&height=700&inajax=1&diggid="+this.id).attr("target","_blank");
+			//.attr("id","digg_edit_"+this.id);
+		
+		//	$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
 		});	
 		$(".tlist .delete").each(function(){
-			$(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
+			$(this).addClass("thickbox");
+			//$(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
+			$(this).attr("href","cp.php?ac=digg&op=delete&inajax=1&height=85&diggid="+this.id);
 		});	
 		$(".tlist .up").each(function(){
 			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
@@ -523,9 +529,13 @@ function diggload(){
 		});	
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
+		tb_init('.tlist a.thickbox');
 }
 function navtabload()
 {
+		$(".navtab").html($(".navtab_x").html());
+		$(".navtab_x").remove();
+		$(".navtab").addClass("ntitle"); 
 		$(".nav_tab .navc").each(function(){
 				$(this).attr("onclick","getAjax('siteview','"+this.id+"');$('.nav_tab li').removeClass('nav_on');$(this).parent().addClass('nav_on');");
 				$(this).attr("href","javascript:;");

@@ -31,7 +31,7 @@ function getAjax(type,id)
 			  success:function(data){
 				if($('#'+ajaxtypes[type][0][1]))
 					$('#'+ajaxtypes[type][0][1]).html($(data).find('root').text());
-				executeScript($(data).find('root').text());
+				//executeScript($(data).find('root').text());
 			  }
 	});
 }
