@@ -497,11 +497,12 @@ border:1px solid #DDD;}
 /*************************************************NETWORK PAGE***/
 #network{  overflow: hidden; }
 
-.box{ margin:6px 0 0 0; width: 970px; overflow: hidden;float:left;}
+.box,.boxnb{ margin:6px 0 0; width: 970px; overflow: hidden;float:left;}
+.box{background: transparent url(image/boxb) no-repeat 0 bottom;}
 .box .gray, .box .gray a { color: #aaa; }
-.box h2 , .boxb h2 { font-size: 12px; }
-.box h3 , .boxb h3{ font-size: 12px; }
-.box h4 , .boxb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
+.box h2 , .boxnb h2 { font-size: 12px; }
+.box h3 , .boxnb h3{ font-size: 12px; }
+.box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 10px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
 	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-5px;line-height:11px; }
@@ -518,7 +519,7 @@ border:1px solid #DDD;}
 	.ntitle span .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
-.box_l { float: left; width: 680px;height:100%;overflow: hidden;}
+.box_l { float: left; width: 680px;height:100%;overflow: hidden;margin-bottom:5px;}
 	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 0 transparent;}
 .box_r { padding:0px;float: right; width:289px;height:100%;overflow:hidden;}
 		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px 0 transparent; line-height: 32px; }
