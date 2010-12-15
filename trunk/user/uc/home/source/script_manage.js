@@ -326,18 +326,20 @@ function check_url(id, min, max)
 }
 function check_seccode(obj,id)
 {
-	if($(id)) {
-		var code = $obj(id).value;
-		var x = new Ajax();
-		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
-			s = trim(s);
-			if(s.indexOf('succeed') == -1) {
-				 warning($obj('checkseccode'),s);
-           		 return false;
-			}else {
-				obj.form.submit();
-				return true;
-			}
+	if($('#'+id)) {
+		$.ajax({
+			  type: "GET",
+			  url:'cp.php?ac=common&op=seccode&inajax=1&code='+$('#'+id).val(),
+			  success:function(data){
+				s=trim($(data).find('root').text());
+				if(s.indexOf('succeed') == -1) {
+					 warning($obj('checkseccode'),s);
+           			 return false;
+				}else {
+					obj.form.submit();
+					return true;
+				}
+			  }
 		});
     }else{
 		obj.form.submit();
