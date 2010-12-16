@@ -29,7 +29,7 @@ caption, th { text-align: left; }
   caption { font-size: 14px; font-weight: bold; }
   caption p { font-weight: normal; }
 
-.avatar48 { padding: 5px 0 0 5px; width: 55px; height: 55px; background: url(image/g.png) no-repeat scroll -150px -310px transparent; }
+.avatar48 { padding: 5px 0 0 5px; width: 55px; height: 55px; background: url(image/g.png) no-repeat scroll -149px -309px transparent; }
   .avatar48 img { width: 48px; height: 48px; }
 
 .avatar125 {padding:5px 0 0 5px; background:url("image/g.png") no-repeat scroll 0 -310px transparent; width: 125px; height: 95px }
@@ -498,7 +498,7 @@ border:1px solid #DDD;}
 #network{  overflow: hidden; }
 
 .box,.boxnb{ margin:6px 0 0; width: 970px; overflow: hidden;float:left;}
-.box{background:url("image/g.png") no-repeat scroll 0 665px transparent}
+.box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
 .box h3 , .boxnb h3{ font-size: 12px; }
@@ -581,7 +581,7 @@ border:1px solid #DDD;}
 
 	#qkmu {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
 	#qkmu li{float:left;list-style: none;}
-	#qkmu li a{display: block;padding: 5px 0px;text-decoration: none;width: 60px;white-space: nowrap}
+	#qkmu li a{display: block;padding: 5px 0px;text-decoration: none;width: 60px;white-space: nowrap;background: url("image/g.png") no-repeat scroll -909px -456px transparent;}
 	#qkmu li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
 	#qkmu li ul li	{float: none;display: inline}
 	#qkmu li ul li a {width: auto;}
