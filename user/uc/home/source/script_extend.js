@@ -35,59 +35,6 @@ function getAjax(type,id)
 			  }
 	});
 }
-/*
-function getsiteview(classid){
-	$.ajax({
-			  type: "GET",
-			  url:'space.php?do=navigation&inajax=1&classid='+classid,
-			  success:function(data){
-				if($('#bmcontent'))
-					$('#bmcontent').html($(data).find('root').text());
-				executeScript($(data).find('root').text());
-			  }
-	});
-}
-function getbmview(type) {
-		//ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');
-		$.ajax({
-			  type: "GET",
-			  url:'space.php?do=bookmark&inajax=1&op='+type,
-			  success:function(data){
-				if($('#bmcontent'))
-					$('#bmcontent').html($(data).find('root').text());
-				executeScript($(data).find('root').text());
-			  }
-		});
-}
-function getbmtagview(tagid) {
-		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','rdct','relatehtm');	    
-		//ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
-		$.ajax({
-			  type: "GET",
-			  url:"space.php?do=linktag&inajax=1&tagid="+tagid,
-			  success:function(data){
-				if($('#bmcontent'))
-					$('#bmcontent').html($(data).find('root').text());
-				executeScript($(data).find('root').text());
-			  }
-		});
-}
-function getbrowserview(browserid) {
-		//ajaxget("space.php?do=bookmark&op=browser&browserid="+browserid, 'bmcontent');
-		$.ajax({
-			  type: "GET",
-			  url:"space.php?do=bookmark&inajax=1&op=browser&browserid="+browserid,
-			  success:function(data){
-				if($('#bmcontent'))
-					$('#bmcontent').html($(data).find('root').text());
-				executeScript($(data).find('root').text());
-			  }
-		});
-}
-function getlinkview(type) {
-	ajaxget('space.php?do=link&op='+type, 'bmcontent');
-}
-*/
 function getbmfromid(groupid,browserid,name,isroot) {
 	if(groupid==0)
 	{
@@ -107,7 +54,7 @@ function getbmfromid(groupid,browserid,name,isroot) {
 	});
 	if(groupid!=0&&isroot==0)
 	{
-		$obj('groupdo').innerHTML='<li class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></li><li class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="bmdir_edit_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_edit_'+groupid+'\',this.id,1)">修改</a></li><li class="addtrackback"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="bmdir_delete_'+groupid+'" onclick="ajaxmenu(event,this.id,1)">删除</a></li>';
+		$obj('groupdo').innerHTML='<li class="bkad"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'" class="thickbox">增加</a></li><li class="bket"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="'+groupid+'" class="thickbox">修改</a></li><li class="bkde"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="'+groupid+'" class="thickbox">删除</a></li>';
 	}
 	else{
 		//$obj('groupdo').innerHTML='<li class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></li>';
@@ -116,25 +63,6 @@ function getbmfromid(groupid,browserid,name,isroot) {
 	$('#groupname').html(name+'&raquo;');
 	tb_init('#groupdo a.thickbox');
 }
-//cp_link.htm browser show
-/*
-function getdirtreefrombrowserid(id)
-{
-	$obj('browserid').value=id;
-	$obj('menu').parentNode.removeChild($obj('menu'));
-//	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
-	$.ajax({
-		  type: "GET",
-		  url:'space.php?do=browser&op=show&browserid='+id+'&inajax=1',
-		  success:function(data){
-			if($('#browserdirtree'))
-				$('#browserdirtree').html($(data).find('root').text());
-			executeScript($(data).find('root').text());
-			initMenuEx();
-		  }
-	});
-}
-*/
 function setbookmarkgroupid(id)
 {
 	if(id==0)
@@ -190,19 +118,19 @@ function checkSeccode() {
 		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
 }
 
-function warning(obj, msg) {
+function warning(id, msg) {
 	/*
 		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
 			$obj(ton).select();
 		}
 	*/
-		obj.style.display = '';
-		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
-		obj.className = "warning";
+		$('#'+id).css('display','');
+		$('#'+id).html('<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg);
+		$('#'+id).addClass('warning');
 }
-function clearwarning(obj){
-		obj.style.display = 'none';
-		obj.innerHTML = '';		
+function clearwarning(id){
+		$('#'+id).css('display','none');
+		$('#'+id).html('');		
 }
 function killspace(str)
 {
@@ -248,3 +176,77 @@ function strLen(str) {
 	return len;
 }
 
+
+/*
+function getsiteview(classid){
+	$.ajax({
+			  type: "GET",
+			  url:'space.php?do=navigation&inajax=1&classid='+classid,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+	});
+}
+function getbmview(type) {
+		//ajaxgetex('space.php?do=bookmark&op='+type, 'bmcontent','rdct','relatehtm');
+		$.ajax({
+			  type: "GET",
+			  url:'space.php?do=bookmark&inajax=1&op='+type,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+		});
+}
+function getbmtagview(tagid) {
+		//ajaxgetex("space.php?do=linktag&tagid="+tagid, 'bmcontent','rdct','relatehtm');	    
+		//ajaxget("space.php?do=linktag&tagid="+tagid, 'bmcontent');
+		$.ajax({
+			  type: "GET",
+			  url:"space.php?do=linktag&inajax=1&tagid="+tagid,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+		});
+}
+function getbrowserview(browserid) {
+		//ajaxget("space.php?do=bookmark&op=browser&browserid="+browserid, 'bmcontent');
+		$.ajax({
+			  type: "GET",
+			  url:"space.php?do=bookmark&inajax=1&op=browser&browserid="+browserid,
+			  success:function(data){
+				if($('#bmcontent'))
+					$('#bmcontent').html($(data).find('root').text());
+				executeScript($(data).find('root').text());
+			  }
+		});
+}
+function getlinkview(type) {
+	ajaxget('space.php?do=link&op='+type, 'bmcontent');
+}
+*/
+
+//cp_link.htm browser show
+/*
+function getdirtreefrombrowserid(id)
+{
+	$obj('browserid').value=id;
+	$obj('menu').parentNode.removeChild($obj('menu'));
+//	ajaxgetextend('space.php?do=browser&op=show&browserid='+id,initMenuEx,'browserdirtree'); 
+	$.ajax({
+		  type: "GET",
+		  url:'space.php?do=browser&op=show&browserid='+id+'&inajax=1',
+		  success:function(data){
+			if($('#browserdirtree'))
+				$('#browserdirtree').html($(data).find('root').text());
+			executeScript($(data).find('root').text());
+			initMenuEx();
+		  }
+	});
+}
+*/

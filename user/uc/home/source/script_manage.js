@@ -268,15 +268,15 @@ function getLength(value)
 
 function check_subject(id, min, max, specialchar)
 {
-	if ($(id)) {
-		if(!rangelen_validate($obj(id).value,min,max))    	
+	if ($('#'+id)) {
+		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
-            warning($obj(id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
+            warning((id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
             return false;
         }
 		if(!specialchar&&illegachar_validate($(id).value))//不支持特殊字符
 		{
-		   warning($obj(id+'_tip'),"标题不允许含有特殊字符");
+		   warning((id+'_tip'),"标题不允许含有特殊字符");
 		   return false;
 		}
 	
@@ -285,15 +285,15 @@ function check_subject(id, min, max, specialchar)
 }
 function check_tag(id, min, max)
 {
-	if ($(id)) {
-		if(!rangelen_validate($obj(id).value,min,max))    	
+	if ($('#'+id)) {
+		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
-            warning($obj(id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
+            warning((id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
             return false;
         }
-		if(illegachar_validate($obj(id).value))//不支持特殊字符
+		if(illegachar_validate($('#'+id).val()))//不支持特殊字符
 		{
-		   warning($obj(id+'_tip'),"标签不允许含有特殊字符");
+		   warning((id+'_tip'),"标签不允许含有特殊字符");
 		   return false;
 		}
 	
@@ -302,10 +302,10 @@ function check_tag(id, min, max)
 }
 function check_description(id, min, max)
 {
-	if ($(id)) {
-		if(!rangelen_validate($obj(id).value,min,max))    	
+	if ($('#'+id)) {
+		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
-            warning($obj(id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
+            warning((id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
             return false;
         }
     }
@@ -314,10 +314,10 @@ function check_description(id, min, max)
 
 function check_url(id, min, max)
 {
-	if ($(id)) {
-		if(!url_validate($obj(id).value)||!rangelen_validate($obj('address').value,min,max))    	
+	if ($('#'+id)) {
+		if(!url_validate($('#'+id).val())||!rangelen_validate($obj('address').value,min,max))    	
 			{
-				warning($obj(id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
+				warning((id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
 				return false;
 			}
 		
@@ -333,7 +333,8 @@ function check_seccode(obj,id)
 			  success:function(data){
 				s=trim($(data).find('root').text());
 				if(s.indexOf('succeed') == -1) {
-					 warning($obj('checkseccode'),s);
+					 warning('checkseccode',s);
+					 blur();
            			 return false;
 				}else {
 					obj.form.submit();
@@ -368,10 +369,10 @@ function check_seccode_x(formobj,id)
 }
 function check_number(id,min,max)
 {
-	if ($(id)) {
-		if(!range_validate($obj(id).value,min,max))    	
+	if ($('#'+id)) {
+		if(!range_validate($('#'+id).val(),min,max))    	
 			{
-				warning($obj(id+'_tip'),"请填写一个("+min+"~"+max+")之间的整数合要求");
+				warning((id+'_tip'),"请填写一个("+min+"~"+max+")之间的整数合要求");
 				return false;
 			}
     }
@@ -379,10 +380,10 @@ function check_number(id,min,max)
 }
 function check_email(id)
 {
-	if ($(id)) {
-		if(!email_validate($obj(id).value))    	
+	if ($('#'+id)) {
+		if(!email_validate($('#'+id).val()))    	
 			{
-				warning($obj(id+'_tip'),"请填写一个合法的email地址");
+				warning((id+'_tip'),"请填写一个合法的email地址");
 				return false;
 			}
     }
@@ -390,16 +391,11 @@ function check_email(id)
 }
 function bookmark_validate(obj,seccode_id, subjectlen, dirlen, urlen, specialchar) {
 	var    titlelen=subjectlen;
-	var	   iscategory=0;
-	if($obj('category')&&$obj('category').value==1) //dir
-	{
+	var	   isdir=$('input:radio[@name=category][@checked]').val();
+	if(isdir)
 		titlelen=dirlen; 
-		iscategory=1;
-	}
-			
-	if(!check_subject('subject', 1, titlelen, specialchar)||((!iscategory)&&!check_url('address',1,urlen)))
+	if(!check_subject('subject', 1, titlelen, specialchar)||((!isdir)&&!check_url('address',1,urlen)))
 		return false;
-	
     if(!check_seccode(obj,seccode_id))
 	    return false;
 	return true;
