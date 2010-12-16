@@ -16,17 +16,20 @@
 			<ul id="groupdo" class="nelt">
 				 <!--{if ($op=='browser')}-->
 						<li class="bkad">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=add" id="$groupid" class="thickbox">增加</a>
+						<a href="cp.php?ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=add" id="$groupid" class="thickbox">增加</a>
 						</li>
 						<!--{if ($browserid!=$_SGLOBAL['browsertype']['firefox']&&empty($groupid))||($browserid==$_SGLOBAL['browsertype']['firefox'])&&($groupid==$_SGLOBAL['firefox_menu_groupid']||$groupid==$_SGLOBAL['firefox_tool_groupid'])}-->
 						<!--{else}-->
 						<li class="bket">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=edit" id="$groupid" class="thickbox">修改</a>
+						<a href="cp.php?ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=edit&height=180" id="$groupid" class="thickbox">修改</a>
 						</li>
 						<li class="bkde">
-						<a href="cp.php?uid=$space[uid]&ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=delete" id="$groupid" class="thickbox">删除</a>
+						<a href="cp.php?ac=bmdir&bmdirid=$groupid&browserid=$browserid&op=delete&height=120" id="$groupid" class="thickbox">删除</a>
 						</li>
 						  <!--{/if}-->
 				  <!--{/if}-->
 			</ul>				
-</h2>  		
+</h2> 
+<script language="javascript" type="text/javascript" >
+	tb_init('#groupdo a.thickbox');
+</script>
