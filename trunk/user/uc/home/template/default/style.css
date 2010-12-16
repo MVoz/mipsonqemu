@@ -659,18 +659,17 @@ border:1px solid #DDD;}
  /****************drank************************/
 .drank {list-style:none outside none;margin:0; padding:0;}								  
 .drank .l1, .drank .l2, .drank .l3, .drank .l4, .drank .l5, .drank .l6, .drank .l7, .drank .l8, .drank .l9, .drank .l10 {
-background:url("image/v_v3.png") no-repeat scroll 0 0 transparent; padding:4px 0 0px 22px;}
-
-.drank  .l1 {background-position:0 -244px;}
-.drank  .l2 {background-position:0 -374px;}
-.drank  .l3 {background-position:0 -504px;}
-.drank  .l4 {background-position:0 -574px;}
-.drank  .l5 {background-position:0 -644px;}
-.drank  .l6 {background-position:0 -714px;}
-.drank  .l7 {background-position:0 -754px;}
-.drank  .l8 {background-position:0 -794px;}
-.drank  .l9 {background-position:0 -834px;}
-.drank  .l10 {background-position:0 -874px;}
+background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0px 22px;}
+.drank  .l1 {background-position:-526px -195px;}
+.drank  .l2 {background-position:-526px -325px;}
+.drank  .l3 {background-position:-526px -455px;}
+.drank  .l4 {background-position:-526px -525px;}
+.drank  .l5 {background-position:-526px -595px;}
+.drank  .l6 {background-position:-526px -665px;}
+.drank  .l7 {background-position:-526px -705px;}
+.drank  .l8 {background-position:-526px -745px;}
+.drank  .l9 {background-position:-526px -785px;}
+.drank  .l10 {background-position:-526px -825px;}
 .drank a {color:#666; text-decoration:none;}
 
 * .pack {overflow:hidden; }
