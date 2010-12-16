@@ -767,8 +767,7 @@ function sstrtotime($string) {
 	}
 	return $time;
 }
-
-//分页
+/*
 function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0) {
 	global $_SCONFIG, $_SGLOBAL;
 	if($curpage==0)
@@ -852,6 +851,106 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 			$multipage .= "<a ";
 			if($_SGLOBAL['inajax']) {
 				$multipage .= "href=\"javascript:;\" onclick=\"ajaxget('{$mpurl}page=$pages&ajaxdiv=$ajaxdiv', '$ajaxdiv')\"";
+			} else {
+				$multipage .= "href=\"{$mpurl}page=$pages{$urlplus}\"";
+			}
+			$multipage .= " class=\"last\">... $realpages</a>";
+		}
+		if($multipage) {
+			//$multipage = '<em>&nbsp;'.$num.'&nbsp;</em>'.$multipage;
+			$totalpages = ceil($num/$perpage);
+			$multipage = '<em>&nbsp;共'.$totalpages.'页&nbsp;</em>'.$multipage;
+
+		}
+	}
+	$_SGLOBAL['inajax']=$inajax;
+	return $multipage;
+}
+*/
+//分页
+function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0) {
+	global $_SCONFIG, $_SGLOBAL;
+	if($curpage==0)
+			$curpage=1;
+	$inajax=$_SGLOBAL['inajax'];
+	$_SGLOBAL['inajax']=empty($_SGLOBAL['inajax'])?$ajax:$_SGLOBAL['inajax'];
+	if(empty($ajaxdiv) && $_SGLOBAL['inajax']) {
+		$ajaxdiv = $_GET['ajaxdiv'];
+	}
+
+	$page = 5;
+	if($_SGLOBAL['showpage']) $page = $_SGLOBAL['showpage'];
+
+	$multipage = '';
+	//$mpurl .= strpos($mpurl, '?') ? '&' : '?';
+	$realpages = 1;
+	if($num > $perpage) {
+		$offset = 2;
+		$realpages = @ceil($num / $perpage);
+		$pages = $_SCONFIG['maxpage'] && $_SCONFIG['maxpage'] < $realpages ? $_SCONFIG['maxpage'] : $realpages;
+		if($page > $pages) {
+			$from = 1;
+			$to = $pages;
+		} else {
+			$from = $curpage - $offset;
+			$to = $from + $page - 1;
+			if($from < 1) {
+				$to = $curpage + 1 - $from;
+				$from = 1;
+				if($to - $from < $page) {
+					$to = $page;
+				}
+			} elseif($to > $pages) {
+				$from = $pages - $page + 1;
+				$to = $pages;
+			}
+		}
+		$multipage = '';
+		$urlplus = $todiv?"#$todiv":'';
+		if($curpage - $offset > 1 && $pages > $page) {
+			$multipage .= "<a ";
+			if($_SGLOBAL['inajax']) {
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '1')\"";
+			} else {
+				$multipage .= "href=\"{$mpurl}page=1{$urlplus}\"";
+			}
+			$multipage .= " class=\"first\">1 ...</a>";
+		}
+		if($curpage > 1) {
+			$multipage .= "<a ";
+			if($_SGLOBAL['inajax']) {
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}','".($curpage-1)."')\"";
+			} else {
+				$multipage .= "href=\"{$mpurl}page=".($curpage-1)."$urlplus\"";
+			}
+			$multipage .= " class=\"prev\">前一页</a>";
+		}
+		for($i = $from; $i <= $to; $i++) {
+			if($i == $curpage) {
+				$multipage .= '<strong>'.$i.'</strong>';
+			} else {
+				$multipage .= "<a ";
+				if($_SGLOBAL['inajax']) {
+					$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '$i')\"";
+				} else {
+					$multipage .= "href=\"{$mpurl}page=$i{$urlplus}\"";
+				}
+				$multipage .= ">$i</a>";
+			}
+		}
+		if($curpage < $pages) {
+			$multipage .= "<a ";
+			if($_SGLOBAL['inajax']) {
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".($curpage+1)."')\"";
+			} else {
+				$multipage .= "href=\"{$mpurl}page=".($curpage+1)."{$urlplus}\"";
+			}
+			$multipage .= " class=\"next\">后一页</a>";
+		}
+		if($to < $pages) {
+			$multipage .= "<a ";
+			if($_SGLOBAL['inajax']) {
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '$pages')\"";
 			} else {
 				$multipage .= "href=\"{$mpurl}page=$pages{$urlplus}\"";
 			}

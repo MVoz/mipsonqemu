@@ -21,7 +21,8 @@ include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./source/space_hotdigg.php');
 //digg
 $digglist = array();
-$theurl="space.php?do=digg&show=".($_SC['digg_show_maxnum']/2);
+//$theurl="space.php?do=digg&show=".($_SC['digg_show_maxnum']/2);
+$theurl="diggpage";
 //显示数量
 $shownum = $_SC['digg_show_maxnum']/2;
 //获取总条数
@@ -69,8 +70,8 @@ foreach($digglist as $key => $value) {
 	$digglist[$key] = $value;
 }
 //分页
-$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);	 
-
+$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);	
+//$diggmulti = multi($count, $perpage, $page, 'diggpage','diggcontent','diggcontent',1);	
 /*
 //投票
 $cachefile = S_ROOT.'./data/cache_network_poll.txt';
