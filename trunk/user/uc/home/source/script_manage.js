@@ -24,11 +24,11 @@ function linkclass_add(sid, result) {
 		
 	}
 }
-
-function  categoryShow(value) {
-	$('#tb_bookmark').css("display",value?"":"none");
-}
 */
+function  categoryShow(value) {
+	$('#tb_bookmark').css("visibility",value?"visible":"hidden");
+}
+
 /*search*/
 function googleHint(a) {
 	if($("#gsuggest"))
