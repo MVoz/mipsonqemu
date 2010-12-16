@@ -37,13 +37,13 @@
 
 <!--{else}-->
 <!--{if !empty($_SGLOBAL['inajax'])}-->
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<div style="padding:1px;" id="innerdiv">
 	<!--{if $_GET[op] == 'edit'}-->
-	<h1>编辑收藏</h1>
+	<h2>编辑收藏</h2>
 	<!--{else}-->
-	<h1>增加收藏</h1>
+	<h2>增加收藏</h2>
+	<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
 	<!--{/if}-->
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid">
 <table cellspacing="0" cellpadding="3">
@@ -75,10 +75,14 @@
 <tr>
 <th><label for="category">分类：</label></th>
 <td>
-<select id="category" name="category" onchange="categoryShow(this.value);" tabindex="2"/>
+<!--
+<select id="category" name="category"  tabindex="2"/>
 		<option value="0">&nbsp;书签</option>
 		<option value="1">&nbsp;目录</option>
 </select>
+-->
+<input type="radio" value="0" name="category" onchange="categoryShow(1);" checked>书签
+<input type="radio" value="1" name="category" onchange="categoryShow(0);">目录
 </td>
 </tr>
 <tbody id="tb_bookmark" >
@@ -97,12 +101,12 @@
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
-</tbody>
-<!--{/if}-->
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5"></textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 120px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5"></textarea></td>
 </tr>
+</tbody>
+<!--{/if}-->
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
 	<tr>
@@ -121,9 +125,9 @@
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_$_GET[op]_$bmdirid" src='' align="absmiddle">
+			<img id="img_seccode_$bmdirid" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$_GET[op]_$bmdirid')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bmdirid')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
 	</tr>
