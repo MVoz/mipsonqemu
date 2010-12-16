@@ -242,7 +242,7 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 					*/
 					$.ajax({
 					  type: "GET",
-					  url: url,
+					  url: url+'&inajax=1',
 					  success: function(data) {
 						 // call up the thickbox handler again / reinitialise the plugin
 						 $("#TB_ajaxContent").html($(data).find('root').text());
