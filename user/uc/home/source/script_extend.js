@@ -49,12 +49,12 @@ function getbmfromid(groupid,browserid,name,isroot) {
 		  success:function(data){
 			if($('#bmcontent'))
 				$('#bmcontent').html($(data).find('root').text());
-			executeScript($(data).find('root').text());
+			//executeScript($(data).find('root').text());
 		  }
 	});
 	if(groupid!=0&&isroot==0)
 	{
-		$obj('groupdo').innerHTML='<li class="bkad"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'" class="thickbox">增加</a></li><li class="bket"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit" id="'+groupid+'" class="thickbox">修改</a></li><li class="bkde"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete" id="'+groupid+'" class="thickbox">删除</a></li>';
+		$('#groupdo').html('<li class="bkad"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'" class="thickbox">增加</a></li><li class="bket"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit&height=180" id="'+groupid+'" class="thickbox">修改</a></li><li class="bkde"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete&height=120" id="'+groupid+'" class="thickbox">删除</a></li>');
 	}
 	else{
 		//$obj('groupdo').innerHTML='<li class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></li>';
