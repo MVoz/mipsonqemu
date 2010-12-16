@@ -58,7 +58,7 @@ function getbmfromid(groupid,browserid,name,isroot) {
 	}
 	else{
 		//$obj('groupdo').innerHTML='<li class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></li>';
-		$('#groupdo').html('<li class="addcomment"><a class="thickbox" href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'">增加</a></li>');
+		$('#groupdo').html('<li class="bkad"><a class="thickbox" href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'">增加</a></li>');
 	}
 	$('#groupname').html(name+'&raquo;');
 	tb_init('#groupdo a.thickbox');
