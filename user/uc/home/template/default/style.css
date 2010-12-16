@@ -514,8 +514,8 @@ border:1px solid #DDD;}
 	.ntitle em {color:#8FC320;}
 
 	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:4px;overflow:hidden; }
-	.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}
-	.ntitle span .addcomment {background:url("image/icons.gif") no-repeat scroll 0 -111px transparent;}
+	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
+	.ntitle ul .addcomment a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -510px transparent;}
 	.ntitle span .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
 
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
@@ -579,13 +579,14 @@ border:1px solid #DDD;}
 	.fbbottom{ height: 0px;  clear: both; overflow: hidden; }
 
 
-	#qkmu {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
-	#qkmu li{float:left;list-style: none;}
-	#qkmu li a{display: block;padding: 5px 0px;text-decoration: none;width: 60px;white-space: nowrap;background: url("image/g.png") no-repeat scroll -909px -456px transparent;}
-	#qkmu li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
-	#qkmu li ul li	{float: none;display: inline}
-	#qkmu li ul li a {width: auto;}
-	#qkmu #qkmut{font-style:normal;}
+	.nelt {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
+	.nelt li{float:left;list-style: none;}
+	.nelt li a{display: block;text-decoration: none;width: 30px;white-space: nowrap;}
+	.nelt #qkmua{background: url("image/g.png") no-repeat scroll -909px -456px transparent;width: 60px;padding: 5px 0px;}
+	.nelt li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
+	.nelt li ul li	{float: none;display: inline}
+	.nelt li ul li a {width: auto;padding: 5px 0px;}
+	.nelt #qkmut{font-style:normal;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
 	#board .shio{background:url("image/ui_b_2.png") no-repeat scroll -12px 0 #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
