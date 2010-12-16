@@ -21,7 +21,8 @@ var ajaxtypes = {
 	siteview: [ ["space.php?do=navigation&classid=","bmcontent"] ],
 	bmtagview: [ ["space.php?do=linktag&tagid=","bmcontent"] ],
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=","bmcontent"] ],
-	dirtree: [ ["space.php?do=browser&op=show&browserid=","browserdirtree"] ]
+	dirtree: [ ["space.php?do=browser&op=show&browserid=","browserdirtree"] ],
+	diggpage: [ ["space.php?do=digg&show=8&page=","diggcontent"] ],
 };
 function getAjax(type,id)
 {

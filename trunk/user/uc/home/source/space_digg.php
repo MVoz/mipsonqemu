@@ -33,8 +33,8 @@ else
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 $perpage=$shownum;
 $start=$page?(($page-1)*$perpage):0;
-$theurl="space.php?do=$do&show=".$shownum;
-
+//$theurl="space.php?do=$do&show=".$shownum;
+$theurl="diggpage";
 //digg
 $digglist = array();
 
