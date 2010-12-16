@@ -515,9 +515,9 @@ border:1px solid #DDD;}
 
 	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:4px;overflow:hidden; }
 	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
-	.ntitle ul .addcomment a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -510px transparent;}
-	.ntitle span .addtrackback {background:url("image/icons.gif") no-repeat scroll 0 -144px transparent;}
-
+	.ntitle ul .bkad a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -510px transparent;}
+	.ntitle ul .bket a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -477px transparent;}
+	.ntitle ul .bkde a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -493px transparent;}
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
 .box_l { float: left; width: 680px;height:100%;overflow: hidden;margin-bottom:5px;}
 	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 -80px transparent;}
