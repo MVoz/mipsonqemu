@@ -1,19 +1,10 @@
 <!--{template header}-->
 <!--{if !empty($_SGLOBAL[inajax])}-->
 	   	   <!--{template space_site_list_sub}-->
-<!--{if $isSecClass }-->
-
-				<!--{template space_catelog_tab}-->	
-</h2>
-<script language="javascript" type="text/javascript" >		
-
-</script>
-<!--{/if}-->
+	<!--{if $isSecClass }-->
+		   <!--{template space_catelog_tab}-->	
+	<!--{/if}-->
 <!--{else}-->
-<script language="javascript" type="text/javascript" >
-	$("#nav_menu li").removeClass("current"); 
-	$("#nav_menu #nav_navigation").addClass("current");
-</script>
 <!--{template board}-->
 <!--{if empty($classid)}-->
 <div class="box">
