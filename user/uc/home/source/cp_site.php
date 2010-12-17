@@ -39,8 +39,7 @@ $link_priority=array(
  'updatesitedownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatesiteviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'updatesitetodaystorenum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
-// 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
+ 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 //È¨ÏÞ¼ì²é
 $ret=check_valid($op,$siteid,$item,$item['postuid'],'managelink',$link_priority);
