@@ -868,7 +868,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 }
 */
 //分页
-function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0) {
+function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0,$paras='') {
 	global $_SCONFIG, $_SGLOBAL;
 	if($curpage==0)
 			$curpage=1;
@@ -910,7 +910,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 		if($curpage - $offset > 1 && $pages > $page) {
 			$multipage .= "<a ";
 			if($_SGLOBAL['inajax']) {
-				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '1')\"";
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".$paras."1')\"";
 			} else {
 				$multipage .= "href=\"{$mpurl}page=1{$urlplus}\"";
 			}
@@ -919,7 +919,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 		if($curpage > 1) {
 			$multipage .= "<a ";
 			if($_SGLOBAL['inajax']) {
-				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}','".($curpage-1)."')\"";
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}','".$paras.($curpage-1)."')\"";
 			} else {
 				$multipage .= "href=\"{$mpurl}page=".($curpage-1)."$urlplus\"";
 			}
@@ -931,7 +931,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 			} else {
 				$multipage .= "<a ";
 				if($_SGLOBAL['inajax']) {
-					$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '$i')\"";
+					$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".$paras."$i')\"";
 				} else {
 					$multipage .= "href=\"{$mpurl}page=$i{$urlplus}\"";
 				}
@@ -941,7 +941,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 		if($curpage < $pages) {
 			$multipage .= "<a ";
 			if($_SGLOBAL['inajax']) {
-				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".($curpage+1)."')\"";
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".$paras.($curpage+1)."')\"";
 			} else {
 				$multipage .= "href=\"{$mpurl}page=".($curpage+1)."{$urlplus}\"";
 			}
@@ -950,7 +950,7 @@ function multi($num, $perpage, $curpage, $mpurl, $ajaxdiv='', $todiv='',$ajax=0)
 		if($to < $pages) {
 			$multipage .= "<a ";
 			if($_SGLOBAL['inajax']) {
-				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '$pages')\"";
+				$multipage .= "href=\"javascript:;\" onclick=\"getAjax('{$mpurl}', '".$paras."$pages')\"";
 			} else {
 				$multipage .= "href=\"{$mpurl}page=$pages{$urlplus}\"";
 			}

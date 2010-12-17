@@ -186,7 +186,6 @@ function setDisplay(a, b){
 function urlto(url) {
 	window.location.href = url;
 }
-
 function explode(sep, string) {
 	return string.split(sep);
 }
@@ -314,8 +313,7 @@ function check_tag(id, min, max)
 		{
 		   warning((id+'_tip'),"标签不允许含有特殊字符");
 		   return false;
-		}
-	
+		}	
     }
 	return true;
 }
@@ -659,15 +657,6 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 						$("#TB_window").css({display:"block"});
 					}
 				}else{
-					//alert(queryString);
-					 /*
-					$("#TB_ajaxContent").load(url += "&random=" + (new Date().getTime()),function(){//to do a post change this load method
-						tb_position();
-						$("#TB_load").remove();
-						tb_init("#TB_ajaxContent a.thickbox");
-						$("#TB_window").css({display:"block"});
-					});
-					*/
 					$.ajax({
 					  type: "GET",
 					  url: url+'&inajax=1',
@@ -682,22 +671,6 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 						 $("#TB_window").css({display:"block"});
 					  }
 					});
-					 /*
-					$("#TB_ajaxContent").ajax({//to do a post change this load method
-						url: queryString,
-						dataType:   "xml", 
-						success: function(xml){
-							$(xml).find("root").each(function(){
-								alert($(this).text());
-								tb_position();
-								$("#TB_load").remove();
-								tb_init("#TB_ajaxContent a.thickbox");
-								$("#TB_window").css({display:"block"});
-							  });
-							
-						}
-					});
-					*/
 				}
 			
 		}
@@ -859,7 +832,7 @@ function bookmarkload(){
 		$("#bklist a").attr("target","_blank");		
 		$(".id_bm_tag").each(function(){
 			this.href = "javascript:;";
-			$(this).attr("onclick","getAjax('bmtagview',"+this.id+");").attr("target","_self");
+			$(this).attr("onclick","getAjax('bmtagview','"+this.id+"');").attr("target","_self");
 		});	
 		$("#bklist .share").each(function(){
 			this.href="javascript:void(0)";

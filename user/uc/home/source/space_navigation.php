@@ -151,9 +151,10 @@ foreach($bookmarklist as $key => $value) {
 	$bookmarklist[$key] = $value;	
 }
 */
-$theurl="space.php?do=$do&classid=$classid&childid=$childid";
+//$theurl="space.php?do=$do&classid=$classid&childid=$childid";
+$theurl="sitepage";
 //分页
-$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
+$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|');
 $_TPL['css'] = 'network';
 include_once template("space_navigation");
 /*
