@@ -17,7 +17,7 @@ include_once(S_ROOT.'./source/space_highlight.php');
 
 include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./data/data_diggcategory.php');
-
+include_once(S_ROOT.'./source/function_digg.php');
 include_once(S_ROOT.'./source/space_hotdigg.php');
 //digg
 $digglist = array();
@@ -65,8 +65,9 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	
 }
 foreach($digglist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
+//	realname_set($value['uid'], $value['username']);
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
+	$value['viewnum'] = getdiggviewnum($value['diggid']);
 	$digglist[$key] = $value;
 }
 //分页
