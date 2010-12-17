@@ -68,7 +68,7 @@
 		diggload();
 <!--{loop $digglist $key $value}-->	
 		var id_dg_$value['diggid']_title="$value['subject']";
-		$(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatediggview($value[diggid])");		
+		$(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');").attr("target","_blank");		
 		$(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
 <!--{/loop}-->
 </script>		
