@@ -21,11 +21,12 @@ function executeScript(html)
 var ajaxtypes = {
     bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
 	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
-	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
 	bmtagview: [ ["space.php?do=linktag&tagid=#","bmcontent"] ],
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
-	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ]
+	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
+	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ],
+	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ]
 };
 function getAjax(type,id)
 {

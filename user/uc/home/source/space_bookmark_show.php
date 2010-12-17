@@ -28,7 +28,8 @@ $browserid=gethttpbrowserid();;
 if($op=='browser'){	    
 		$groupid = gethttpgroupid($browserid);
 		$groupname = getbookmarkgroupname($browserid,$groupid);		
-		$theurl="space.php?do=$do&op=$op&groupid=$groupid&browserid=$browserid";
+		//$theurl="space.php?do=$do&op=$op&groupid=$groupid&browserid=$browserid";
+		$theurl="bookmarkpage";
 }else{
 		$viewstr=array(
 			'lastvisit'=>array('order'=>'lastvisit','groupname'=>'最近访问'),
@@ -74,7 +75,7 @@ if(($op!='browser')){
 }
 
 //分页
-$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
+$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$groupid.'|'.$browserid.'|');
 
 //获得相关联的网站
 $relatedlist=array();
