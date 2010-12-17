@@ -441,28 +441,17 @@ function digg_validate(obj,seccode_id)
 	return true;
 }
 /*thickbox*/
-/*
- * Thickbox 3.1 - One Box To Rule Them All.
- * By Cody Lindley (http://www.codylindley.com)
- * Copyright (c) 2007 cody lindley
- * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
-*/
-		  
-//on page load call tb_init
 $(function(){   
-//	tb_init('a.thickbox, area.thickbox, input.thickbox');//pass where to apply thickbox
 	imgLoader = new Image();// preload image
 	imgLoader.src = "template/default/image/ajax-loader.gif";
 });
-
-//add thickbox to href & area elements that have a class of .thickbox
 function tb_init(domChunk){
 	$(domChunk).click(function(){
 	var t = this.title || this.name || null;
 	var a = this.href || this.alt;
 	var g = this.rel || false;
-	var id = this.id;
-	tb_show(t,a,g,id);
+	var ids = this.id.split("|");
+	tb_show(t,a,g,ids[0]);
 	this.blur();
 	return false;
 	});
@@ -851,35 +840,27 @@ function bookmarkload(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
 		$("#bklist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
-
 		$("#bklist .edit").each(function(){
 			$(this).addClass("thickbox");
-//			this.href="cp.php?ac=bookmark&bmid=189&groupid=0&browserid=1&op=edit"; 
-			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=edit&inajax=1";			
-			//$(this).attr("onclick",
-			//	"ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
-//			this.id="bookmark_edit_"+this.id;
+			var ids = this.id.split("|");//ids='bmid_groupid_browserid'
+			this.href = "cp.php?ac=bookmark&bmid="+ids[0]+"&groupid="+ids[1]+"&browserid="+ids[2]+"&op=edit";			
 		});	
 		$("#bklist .delete").each(function(){
 			$(this).addClass("thickbox");
-			this.href = "cp.php?ac=bookmark&bmid="+this.id+"&groupid="+gpid+"&browserid="+bsid+"&op=delete&inajax=1&height=85";
-			//this.id="bookmark_delete_"+this.id;
-			//$(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			var ids = this.id.split("|");
+			this.href = "cp.php?ac=bookmark&bmid="+ids[0]+"&groupid="+ids[1]+"&browserid="+ids[2]+"&op=delete&height=95";
 		});	
 		$("#bklist .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
 		});	
 		$("#bklist .url").each(function(){
 			$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
-		});	
-		
-		$("#bklist a").attr("target","_blank");
-		
+		});			
+		$("#bklist a").attr("target","_blank");		
 		$(".id_bm_tag").each(function(){
 			this.href = "javascript:;";
 			$(this).attr("onclick","getAjax('bmtagview',"+this.id+");").attr("target","_self");
 		});	
-
 		$("#bklist .share").each(function(){
 			this.href="javascript:void(0)";
 			$(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
@@ -901,15 +882,11 @@ function siteload(){
 		});	
 		$("#stlist .edit").each(function(){
 			$(this).addClass("thickbox");
-			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit&inajax=1";			
-			//$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);");
-			//this.id="bookmark_edit2_"+this.id;
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=edit";			
 		});	
 		$("#stlist .delete").each(function(){
 			$(this).addClass("thickbox");
-			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete&inajax=1&height=85";
-		//	this.id="bookmark_delete_"+this.id;
-		//	$(this).attr("onclick","ajaxmenu(event, this.id,1)");
+			this.href = "cp.php?ac=site&siteid="+this.id+"&op=delete&height=95";
 		});	
 		$("#stlist .bm").each(function(){
 			this.href = "cp.php?ac=site&siteid="+this.id+"&op=bookmark";
@@ -940,15 +917,11 @@ function diggload(){
 		});	
 		$(".tlist .edit").each(function(){
 			$(this).addClass("thickbox");
-			$(this).attr("href","cp.php?ac=digg&op=edit&height=700&inajax=1&diggid="+this.id).attr("target","_blank");
-			//.attr("id","digg_edit_"+this.id);
-		
-		//	$(this).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("id","digg_edit_"+this.id);
+			$(this).attr("href","cp.php?ac=digg&op=edit&height=700&diggid="+this.id).attr("target","_blank");
 		});	
 		$(".tlist .delete").each(function(){
 			$(this).addClass("thickbox");
-			//$(this).attr("onclick","ajaxmenu(event,this.id,1)").attr("href","cp.php?ac=digg&op=delete&diggid="+this.id).attr("id","digg_delete_"+this.id);
-			$(this).attr("href","cp.php?ac=digg&op=delete&inajax=1&height=85&diggid="+this.id);
+			$(this).attr("href","cp.php?ac=digg&op=delete&height=85&diggid="+this.id);
 		});	
 		$(".tlist .up").each(function(){
 			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
@@ -968,7 +941,7 @@ function navtabload()
 		$(".nav_tab .navc").each(function(){
 				$(this).attr("onclick","getAjax('siteview','"+this.id+"');$('.nav_tab li').removeClass('nav_on');$(this).parent().addClass('nav_on');");
 				$(this).attr("href","javascript:;");
-			});
+		});
 }
 function searchsubmit()
 {
@@ -997,9 +970,7 @@ function setquickmenu(type)
 	 if($('#groupdo'))
 		 $('#groupdo').html("");
 	 if($('#groupname'))
-		 $('#groupname').html(qkmus[type][0][0]+' &raquo;');
-
-	
+		 $('#groupname').html(qkmus[type][0][0]+' &raquo;');	
 }
 function qkmu_open(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'visible');}
 function qkmu_close(){$('#qkmu >li').find('ul').eq(0).css('visibility', 'hidden');}
@@ -1021,10 +992,8 @@ $(function(){
 				$(this).addClass("currentx"); 
 				$('#shfm input[type=checkbox]').remove();
 				$('#shfm span').remove();
-
 				$("#hidden_form").empty();
 				var i=0;
-				//setSearchTab($(this).attr("id"));
 				Cookie.set("tanzhi_search", $(this).attr("id"), 1E3 * 3600 * 24 * 5);
 				var len = searchs[$(this).attr("id")].length;
 				for (i = 0; i < len; i++) {
