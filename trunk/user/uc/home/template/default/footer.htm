@@ -4,26 +4,11 @@
 		<div id="bottom"></div>
 	<!--/main-->
 	<!--{/if}-->
+<!--
 	<script language="javascript" type="text/javascript" src="/source/script_extend.js">	</script>
+-->
 	<script type="text/javascript">
 		function ajaxresponse(objname, data,flag) {
-		    /*
-			var x = new Ajax('XML', objname);
-			x.get('do.php?ac=$_SCONFIG[register_action]&' + data, function(s){
-				var obj = $(objname);
-				s = trim(s);
-				if((s.indexOf('succeed') > -1)) {
-					if(flag!=1)
-					{
-						obj.style.display = '';
-						obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
-						obj.className = "warning";
-					}
-				} else {
-					warning(obj, s);
-				}
-			});
-			*/
 			$.ajax({
 			  type: "GET",
 			  url:'do.php?ac=$_SCONFIG[register_action]&inajax=1&' + data,
