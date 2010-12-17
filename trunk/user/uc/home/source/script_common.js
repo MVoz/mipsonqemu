@@ -864,24 +864,12 @@ function updatestatics(type,op,id,o)
 			  type: "GET",
 			  url:'cp.php?ac='+type+'&op='+op+'&inajax=1&'+updatestaticss[type][0][0]+'='+id,
 			  success:function(data){
-				if($('#'+o))
-					$('#'+o).html($(data).find('root').text());				
+				if($('#'+o)) $('#'+o).html($(data).find('root').text());				
 			  }
 		});
 		this.blur();
 		return false;
-}
-
-
-function updatediggup(id) {
-	ajaxupdate('digg','digg_up_num_id_'+id, 'op=updatediggupnum&diggid=' + id);
-}
-function updatediggdown(id) {
-	ajaxupdate('digg','digg_down_num_id_'+id, 'op=updatediggdownnum&diggid=' + id);
-}
-function updatediggview(id) {
-	ajaxupdate('digg','digg_view_num_id_'+id, 'op=updatediggviewnum&diggid=' + id);
-}
+} 
 function getrelatedlinkfromid(id) {
 	//ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
 	alert("need complement");
@@ -1004,12 +992,6 @@ function diggload(){
 		$(".tlist .delete").each(function(){
 			$(this).addClass("thickbox");
 			$(this).attr("href","cp.php?ac=digg&op=delete&height=85&diggid="+this.id);
-		});	
-		$(".tlist .up").each(function(){
-			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggup("+this.id+")").attr("target","_self");
-		});	
-		$(".tlist .down").each(function(){
-			$(this).attr("href","javascript:void(0)").attr("onclick","updatediggdown("+this.id+")").attr("target","_self");
 		});	
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
