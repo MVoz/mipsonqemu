@@ -395,6 +395,7 @@ function linkerr_post($POST, $olds=array())
 	}
 	return 1;
 }
+/*
 function linktoolbar_post($POST)
 {
 	global $_SGLOBAL, $_SC, $space,$_GET;
@@ -430,7 +431,7 @@ function linktoolbar_post($POST)
 	}
 	return 1;
 }
-
+*/
 function getLinkStorenum($linkid)
 {
 	global $_SGLOBAL;

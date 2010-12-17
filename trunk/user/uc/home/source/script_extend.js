@@ -1,3 +1,4 @@
+/*
 function executeScript(html)
 {
 	if(html.indexOf('<script') == -1) return html;
@@ -16,6 +17,7 @@ function executeScript(html)
         }
     }
 }
+*/
 var ajaxtypes = {
     bmview: [ ["space.php?do=bookmark&op=","bmcontent"] ],
 	siteview: [ ["space.php?do=navigation&classid=","bmcontent"] ],
@@ -37,7 +39,6 @@ function getAjax(type,id)
 	});
 }
 function getbmfromid(groupid,browserid,name,isroot) {
-	alert('xx');
 	if(groupid==0)
 	{
 		$('#menuroot').addClass('green');
@@ -105,13 +106,13 @@ function updatediggview(id) {
 	ajaxupdate('digg','digg_view_num_id_'+id, 'op=updatediggviewnum&diggid=' + id);
 }
 function getrelatedlinkfromid(id) {
-	ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
+	//ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
+	alert("need complement");
 }
 
 var lastSecCode='';
 function checkSeccode() {
-		var  seccodeVerify= $obj('seccode').value;
-		
+		var  seccodeVerify= $('#seccode').val();		
 		if(seccodeVerify == lastSecCode) {
 			return;
 		} else {
@@ -121,11 +122,6 @@ function checkSeccode() {
 }
 
 function warning(id, msg) {
-	/*
-		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
-			$obj(ton).select();
-		}
-	*/
 		$('#'+id).css('display','');
 		$('#'+id).html('<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg);
 		$('#'+id).addClass('warning');

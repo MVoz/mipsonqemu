@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','reporterr','toolbar');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','reporterr');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -37,8 +37,8 @@ $link_priority=array(
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
+ 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
+// 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
 );
 $ret=check_valid($op,$linkid,$item,$item['postuid'],'managelink',$link_priority);
 switch($ret)
@@ -243,13 +243,15 @@ elseif($_GET['op'] == 'edithot') {
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
-}elseif($_GET['op']=='toolbar'){
+}
+/*elseif($_GET['op']=='toolbar'){
 	  if(submitcheck('addsubmit')) {
 		include_once(S_ROOT.'./source/function_link.php');
 		linktoolbar_post($_POST);
 		showmessage('do_success', $_SGLOBAL['refer'], 0);
 	}
-}else {
+}*/
+else {
 	 if(submitcheck('addsubmit')) {
 		//验证码
 		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
