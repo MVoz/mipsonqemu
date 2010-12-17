@@ -351,82 +351,6 @@
 <!--{/if}-->
 
 	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>
-<!--{elseif $op == 'toolbar'}--> 
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
-<h1>编辑快捷地址</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
-<div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=$ac&op=$op">
-<table cellspacing="0" cellpadding="3">
-<tr>
-<th><label for="subject">名称：</label></th>
-<td>	
-<input type="text" id="subject" name="subject" value="" style="width: 396px;" class="t_input" tabindex="1"  />
-</td>
-</tr>
-<tr>
-<th><label for="address">地址：</label></th>
-<td>
-<input type="text" id="address" name="address" value="" style="width: 396px;" class="t_input" tabindex="2" />
-<p style="color:gray">请正确填写网页地址(http(s)://)</p>
-</td>
-</tr> 
-<tr>
-<th><label for="category">分类</label></th>
-<td>
-			<select id="category" name="category" tabindex="4"/>
-				<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
-					<option value="$key">&nbsp;$value</option>
-				<!--{/loop}-->
-			</select>
-		</td>
-</tr>
-<th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea></td>
-</tr>
-	<!--{if $_SCONFIG['seccode_register']}-->
-	<!--{if $_SCONFIG['questionmode']}-->
-	<tr>
-		<th style="vertical-align: top;">请先回答问题</th>
-		<td>
-			<p><!--{eval question();}--></p>
-			<input type="text" id="seccode" name="seccode" value="" class="t_input"  tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
-		</td>
-	</tr>
-	<!--{else}-->
-	<tr>
-		<th style="vertical-align: top;">验证码</th>
-		<td>
-		<!--{if empty($_SGLOBAL['inajax'])}-->
-			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" size="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
-		<!--{else}-->
-			<img id="img_seccode_0" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="5" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_0')">更换一张</a></p>
-		<!--{/if}-->
-		</td>
-	</tr>
-	<!--{/if}-->
-	<!--{/if}-->
-<tr>
-<th>&nbsp;</th>
-<td>
-<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-<input type="hidden" name="addsubmit" value="true" />
-<!--{if empty($_SGLOBAL['inajax'])}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="linktoolbar_validate(this);"/>
-<!--{else}-->
-<input type="button" name="btnsubmit" value="确定" class="submit"  onclick="linktoolbar_validate(this);"/>
-<!--{/if}-->
-</td>
-</tr>
-</table>
-<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
-</form>
-</div>
-</div>
 <!--{else}-->
 <script>
 	function register(id, result) {
@@ -614,11 +538,6 @@
 		function GetFullYear(y){return ((y<30 ? "20" : "19") + y)|0;}
 	}
  }
-
-   function copyToClipBoard(clipBoardContent){
-    window.clipboardData.setData("Text",clipBoardContent); 
-    alert("地址已经复制成功，您可以粘贴到其他需要的地方！"); 
-  } 
 </script>
 <form id="registerform" name="registerform" action="cp.php?ac=link" method="post" class="c_form" onSubmit="return (Validator.Validate(this,3)&&announce_validate($('registerform'),'seccode'))">
 <table cellpadding="0" cellspacing="0" class="formtable">
