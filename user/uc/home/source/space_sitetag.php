@@ -40,6 +40,6 @@ $multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
 
 $_TPL['css'] = 'network';
 
-include_once template("space_linktag");
+include_once template("space_sitetag");
 
 ?>
