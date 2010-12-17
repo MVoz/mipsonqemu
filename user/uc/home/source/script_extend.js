@@ -39,9 +39,9 @@ function getAjax(type,id)
 	$.ajax({
 			  type: "GET",
 			  url:urls+"&inajax=1",
-			  success:function(data){
+			  success:function(s){
 				if($('#'+ajaxtypes[type][0][1]))
-					$('#'+ajaxtypes[type][0][1]).html($(data).find('root').text());
+					$('#'+ajaxtypes[type][0][1]).html($(s).find('root').text());
 				//executeScript($(data).find('root').text());
 			  }
 	});
@@ -53,22 +53,12 @@ function getbmfromid(groupid,browserid,name,isroot) {
 		$('#menu li a').removeClass('green');
 		$('#menu ul').hide();
 	}
-	//ajaxgetex('space.php?do=bookmark&op=browser&groupid='+groupid+'&browserid='+browserid, 'bmcontent','rdct','relatehtm');
-	$.ajax({
-		  type: "GET",
-		  url:'space.php?do=bookmark&inajax=1&&op=browser&groupid='+groupid+'&browserid='+browserid,
-		  success:function(data){
-			if($('#bmcontent'))
-				$('#bmcontent').html($(data).find('root').text());
-			//executeScript($(data).find('root').text());
-		  }
-	});
+	getAjax('bookmarkpage',groupid+'|'+browserid+'|0');
 	if(groupid!=0&&isroot==0)
 	{
 		$('#groupdo').html('<li class="bkad"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'" class="thickbox">增加</a></li><li class="bket"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit&height=180" id="'+groupid+'" class="thickbox">修改</a></li><li class="bkde"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete&height=120" id="'+groupid+'" class="thickbox">删除</a></li>');
 	}
 	else{
-		//$obj('groupdo').innerHTML='<li class="addcomment"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="bmdir_add_'+groupid+'" onclick="ajaxmenuEx(event,\'img_seccode_add_'+groupid+'\',this.id,1)">增加</a></li>';
 		$('#groupdo').html('<li class="bkad"><a class="thickbox" href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'">增加</a></li>');
 	}
 	$('#groupname').html(name+'&raquo;');
