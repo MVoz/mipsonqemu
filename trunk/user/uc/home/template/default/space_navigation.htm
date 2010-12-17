@@ -13,7 +13,7 @@
 		<div id="bmcontent">
 			<!--{loop $navlist $key $bookmarklist}-->
 				<div  style="height:105px;" class="ntitle">
-						<a style="float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;line-height:20px;"id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
+						<a class="navname" id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
 						$bookmarklist['classname']
 						</a>						
 						<!--{template navigation_class}-->						
@@ -27,7 +27,7 @@
 </div>
 <!--{else}-->	
 <div class="boxb" style="height:805px;">
-	<div class="box_l" style="height:800px;">		
+	<div class="box_l">		
 		<h2 class="ntitle navtab">
 				<p id="groupname">$classitem['classname']&raquo;</p>
 				<!--{template space_catelog_tab}-->	
@@ -36,7 +36,7 @@
 				<!--{template site_list_sub}-->				  
 		</div>
 	</div>
-	<div class="box_r" style="height:800px;">	
+	<div class="box_r">	
 			 <!--{template navigation_menu}-->	 
 	</div> 
 </div>
