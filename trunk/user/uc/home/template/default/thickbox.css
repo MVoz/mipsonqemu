@@ -92,7 +92,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	float:right;
 }
 #TB_closeWindowButton {
-background:url("image/delete.gif") no-repeat scroll 0 0 transparent;
+background:url("image/g.png") no-repeat scroll -958px -567px transparent;
 display:block;
 height:14px;
 overflow:hidden;
@@ -102,7 +102,7 @@ text-indent:-999em;
 top:2px;
 width:13px;
 }
-#TB_closeWindowButton:hover { background-position: 0 -14px; }
+#TB_closeWindowButton:hover { background-position: -958px -581px; }
 #TB_ajaxWindowTitle{
 	float:left;
 	padding:7px 0 5px 10px;
