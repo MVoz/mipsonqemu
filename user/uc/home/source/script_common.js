@@ -95,7 +95,34 @@ Cookie = {
 		}
 	}
 }
-
+var ajaxtypes = {
+    bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
+	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
+	bmtagview: [ ["space.php?do=linktag&tagid=#","bmcontent"] ],
+	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
+	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
+	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
+	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ],
+	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ]
+};
+function getAjax(type,id)
+{
+	var ids = id.split('|');
+	var urls = ajaxtypes[type][0][0];
+	for(i=0;i<ids.length;i++)
+	{
+		urls=urls.replace(/#/, ids[i]);
+	}
+	$.ajax({
+			  type: "GET",
+			  url:urls+"&inajax=1",
+			  success:function(s){
+				if($('#'+ajaxtypes[type][0][1]))
+					$('#'+ajaxtypes[type][0][1]).html($(s).find('root').text());
+				//executeScript($(data).find('root').text());
+			  }
+	});
+}
 //iframe包含
 if (top.location != location) {
 	top.location.href = location.href;
@@ -797,6 +824,88 @@ function initMenuEx() {
             cE.slideDown('normal');
         }
     });
+}
+function getbmfromid(groupid,browserid,name,isroot) {
+	if(groupid==0)
+	{
+		$('#menuroot').addClass('green');
+		$('#menu li a').removeClass('green');
+		$('#menu ul').hide();
+	}
+	getAjax('bookmarkpage',groupid+'|'+browserid+'|0');
+	if(groupid!=0&&isroot==0)
+	{
+		$('#groupdo').html('<li class="bkad"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'" class="thickbox">增加</a></li><li class="bket"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=edit&height=180" id="'+groupid+'" class="thickbox">修改</a></li><li class="bkde"><a href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=delete&height=120" id="'+groupid+'" class="thickbox">删除</a></li>');
+	}
+	else{
+		$('#groupdo').html('<li class="bkad"><a class="thickbox" href="cp.php?ac=bmdir&bmdirid='+groupid+'&browserid='+browserid+'&op=add" id="'+groupid+'">增加</a></li>');
+	}
+	$('#groupname').html(name+'&raquo;');
+	tb_init('#groupdo a.thickbox');
+}
+function setbookmarkgroupid(id)
+{
+	if(id==0)
+	{
+		$('#menuroot').addClass('green');
+		$('#menu li a').removeClass('green');
+		$('#menu ul').hide();
+	}
+	$obj('browsergroupid').value=id;
+}
+var updatestaticss = {
+    bookmark: [ ["bmid"] ],
+	site: [ ["siteid"] ],
+	digg: [ ["diggid"] ]
+};
+function updatestatics(type,op,id,o)
+{
+		$.ajax({
+			  type: "GET",
+			  url:'cp.php?ac='+type+'&op='+op+'&inajax=1&'+updatestaticss[type][0][0]+'='+id,
+			  success:function(data){
+				if($('#'+o))
+					$('#'+o).html($(data).find('root').text());				
+			  }
+		});
+		this.blur();
+		return false;
+}
+
+
+function updatediggup(id) {
+	ajaxupdate('digg','digg_up_num_id_'+id, 'op=updatediggupnum&diggid=' + id);
+}
+function updatediggdown(id) {
+	ajaxupdate('digg','digg_down_num_id_'+id, 'op=updatediggdownnum&diggid=' + id);
+}
+function updatediggview(id) {
+	ajaxupdate('digg','digg_view_num_id_'+id, 'op=updatediggviewnum&diggid=' + id);
+}
+function getrelatedlinkfromid(id) {
+	//ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
+	alert("need complement");
+}
+
+var lastSecCode='';
+function checkSeccode() {
+		var  seccodeVerify= $('#seccode').val();		
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
+}
+
+function warning(id, msg) {
+		$('#'+id).css('display','');
+		$('#'+id).html('<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg);
+		$('#'+id).addClass('warning');
+}
+function clearwarning(id){
+		$('#'+id).css('display','none');
+		$('#'+id).html('');		
 }
 function add_favorite()
 { 
