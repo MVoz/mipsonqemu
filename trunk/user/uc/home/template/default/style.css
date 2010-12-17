@@ -537,7 +537,7 @@ border:1px solid #DDD;}
 		.bklt p.message { margin: 0 0 5px 0; padding: 0; width: 180px; height: 55px; color: #666; overflow: hidden;text-indent:15px; }
 		.bklt p.messagenopic { margin: 0 0 5px 0; padding: 0; width: 320px; height: 52px; color: #666; overflow: hidden;text-indent:15px; }
 		.bklt p.tags{background:url("image/g.png") no-repeat scroll -952px -200px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;}
-		.bklt p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		
+/*		.bklt p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		*/
 		.bklt .nhot{ float: left; color: #EF9822; }
 		.bklt .nhot a{ color: #EF9822; }
 
@@ -618,7 +618,7 @@ border:1px solid #DDD;}
 .recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 .recml .rlt_line{height:20px;line-height:20px;width:330px;}
 .recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
-.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/icons.gif") no-repeat scroll 0 -396px transparent;}
+.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -200px transparent;}
 		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 330px; height: 160px; background: #F7F7F7; overflow: hidden; }
 			#user_recomm h2 { position: absolute; left: 5px; top: 5px; width: 36px; height: 150px; background: url(image/g.png) no-repeat -270px -200px; text-indent: -9999px; z-index: 10; }
 			#user_recomm .s_avatar { float: left; padding: 5px 5px 5px 35px; }
