@@ -456,8 +456,9 @@ a.c_link {
 	.feeds li {height:60px;overflow: hidden;}
 	.feeds p  {float:left;padding:2px;width:215px;}
 	.feeds .more{font-weight:normal;font-size:90%;float:right;}
-
+.ntitle .navname{float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;line-height:20px;}
 #thumbs *{overflow:hidden;padding:0;margin:0;}
+.ntitle #thumbs{float:left;height:92px;padding:0px 3px;}
 #thumbs {height:220px;float:left;}	
 #thumbs ul{float:left;}
 #thumbs li {float: left;padding: 4px 3px;list-style: none;height:100px;width:82px;}
