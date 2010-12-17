@@ -19,18 +19,25 @@ function executeScript(html)
 }
 */
 var ajaxtypes = {
-    bmview: [ ["space.php?do=bookmark&op=","bmcontent"] ],
-	siteview: [ ["space.php?do=navigation&classid=","bmcontent"] ],
-	bmtagview: [ ["space.php?do=linktag&tagid=","bmcontent"] ],
-	browserview: [ ["space.php?do=bookmark&op=browser&browserid=","bmcontent"] ],
-	dirtree: [ ["space.php?do=browser&op=show&browserid=","browserdirtree"] ],
-	diggpage: [ ["space.php?do=digg&show=8&page=","diggcontent"] ]
+    bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
+	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
+	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
+	bmtagview: [ ["space.php?do=linktag&tagid=#","bmcontent"] ],
+	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
+	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
+	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ]
 };
 function getAjax(type,id)
 {
+	var ids = id.split('|');
+	var urls = ajaxtypes[type][0][0];
+	for(i=0;i<ids.length;i++)
+	{
+		urls=urls.replace(/#/, ids[i]);
+	}
 	$.ajax({
 			  type: "GET",
-			  url:ajaxtypes[type][0][0]+id+"&inajax=1",
+			  url:urls+"&inajax=1",
 			  success:function(data){
 				if($('#'+ajaxtypes[type][0][1]))
 					$('#'+ajaxtypes[type][0][1]).html($(data).find('root').text());
