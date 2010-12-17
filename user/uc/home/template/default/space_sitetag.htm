@@ -1,0 +1,30 @@
+<!--{template header}-->
+<!--{if !empty($_SGLOBAL[inajax])}-->
+	<script language="javascript" type="text/javascript">
+		$('.box_l .ntitle').html('<p id="groupname"> $tagname &raquo;</p>');
+	</script>
+	<!--{template space_site_list_sub}-->
+	<div class="page">$multi</div>
+<!--{else}-->
+	<!--{template board}-->
+	<div class="box" style="height:650px;">
+		<div class="box_l">
+					<h2 class="ntitle">
+						<p class="groupname">$tagname &raquo;</p>
+					</h2>
+			<div id="bmcontent">
+					<!--{template space_site_list_sub}-->
+			</div>
+		</div>
+		<div class="box_r">
+			<h2 class="ntitle">
+				<span><a href="space.php?do=doing&view=all">更多记录</a></span>
+				<em>记录 &raquo;</em>
+			</h2>
+		</div>							
+	</div>
+		<div class="fbbottom"></div>
+	</div>
+	</div>
+<!--{template footer}-->
+<!--{/if}-->
