@@ -128,18 +128,22 @@ function clearwarning(id){
 		$('#'+id).css('display','none');
 		$('#'+id).html('');		
 }
-function killspace(str)
-{
-	while( str.charAt(0)==" " )
-	{
-		str=str.substr(1,str.length);
+
+
+/*
+function strLen(str) {
+	var charset = document.charset; 
+	var len = 0;
+	for(var i = 0; i < str.length; i++) {
+		len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? (charset == "utf-8" ? 3 : 2) : 1;
 	}
-	
-	while( str.charAt(str.length-1)==" " )
-	{
-		str=str.substr(0,str.length-1);  
-	}
-	return str;
+	return len;
+}
+
+
+function byteLength (sStr) {
+	aMatch = sStr.match(/[^\x00-\x80]/g);
+	return (sStr.length + (! aMatch ? 0 : aMatch.length));
 }
 function getStrbylen(str, len) {
 	var num = 0;
@@ -159,21 +163,19 @@ function getStrbylen(str, len) {
 	}
 	return newstr;
 }
-function byteLength (sStr) {
-	aMatch = sStr.match(/[^\x00-\x80]/g);
-	return (sStr.length + (! aMatch ? 0 : aMatch.length));
-}
-function strLen(str) {
-	var charset = document.charset; 
-	var len = 0;
-	for(var i = 0; i < str.length; i++) {
-		len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? (charset == "utf-8" ? 3 : 2) : 1;
+function killspace(str)
+{
+	while( str.charAt(0)==" " )
+	{
+		str=str.substr(1,str.length);
 	}
-	return len;
+	
+	while( str.charAt(str.length-1)==" " )
+	{
+		str=str.substr(0,str.length-1);  
+	}
+	return str;
 }
-
-
-/*
 function getsiteview(classid){
 	$.ajax({
 			  type: "GET",
