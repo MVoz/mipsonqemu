@@ -22,7 +22,7 @@ var ajaxtypes = {
 	bmtagview: [ ["space.php?do=linktag&tagid=","bmcontent"] ],
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=","bmcontent"] ],
 	dirtree: [ ["space.php?do=browser&op=show&browserid=","browserdirtree"] ],
-	diggpage: [ ["space.php?do=digg&show=8&page=","diggcontent"] ],
+	diggpage: [ ["space.php?do=digg&show=8&page=","diggcontent"] ]
 };
 function getAjax(type,id)
 {
@@ -37,6 +37,7 @@ function getAjax(type,id)
 	});
 }
 function getbmfromid(groupid,browserid,name,isroot) {
+	alert('xx');
 	if(groupid==0)
 	{
 		$('#menuroot').addClass('green');

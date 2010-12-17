@@ -38,8 +38,7 @@ function googleHint(a) {
     b.id = "gsuggest";
     b.charset = "utf-8";
     b.src = "http://www.google.cn/complete/search?hl=zh-CN&client=suggest&js=true&q=" + encodeURIComponent(a)
-};
-
+}
 function myhint(a) {
 	
     var b = $obj("searchkey"),
@@ -65,7 +64,7 @@ function myhint(a) {
             googleHint(b.value);
             with(c.style) width = b.offsetWidth - 2
         }
-};
+}
 window.google = {};
 window.google.ac = {};
 window.google.ac.h = function (a) {
@@ -78,7 +77,7 @@ window.google.ac.h = function (a) {
         $obj("sts").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
         $("#sts").css("display","block");
     }
-};
+}
 
 var searchs = {
     web_page: [
@@ -120,14 +119,12 @@ var searchs = {
 	tanzhi: [
         ["\u7f51\u9875", "http://map.baidu.com/#", "word", "\u767e\u5ea6", -1, "http://map.baidu.com/",1],
         ["\u7f51\u9875", "http://ditu.google.com/maps", "q", "\u8c37\u6b4c", -29, "http://www.google.com/",0, "hl:zh-CN;ie:utf-8"]
-    ]
-		
-		
-};
+    ]		
+}
 
 function getSearchTabCookieName() {
-        return "tanzhi_search"
-};
+        return "tanzhi_search";
+}
 /*
 function setSearchTab(a) {
         //setCookie(getSearchTabCookieName(), a, 1E3 * 3600 * 24 * 5)
@@ -278,8 +275,7 @@ function check_subject(id, min, max, specialchar)
 		{
 		   warning((id+'_tip'),"标题不允许含有特殊字符");
 		   return false;
-		}
-	
+		}	
     }
 	return true;
 }
