@@ -3,19 +3,17 @@
 	<script language="javascript" type="text/javascript">
 		$('.box_l .ntitle').html('<p id="groupname"> $tagname &raquo;</p>');
 	</script>
-	<!--{template space_bookmark_list_sub}-->
+	<!--{template bookmark_list_sub}-->
 	<div class="page">$multi</div>
 <!--{else}-->
-	<div id="login">
-		<!--{template login}-->
-	</div>
+	<!--{template board}-->
 	<div class="box" style="height:650px;">
 		<div class="box_l">
-			<div id="bmcontent">
 					<h2 class="ntitle">
 						<p class="groupname">$tagname &raquo;</p>
 					</h2>
-					<!--{template space_bookmark_list_sub}-->
+			<div id="bmcontent">
+					<!--{template bookmark_list_sub}-->
 			</div>
 		</div>
 		<div class="box_r">
