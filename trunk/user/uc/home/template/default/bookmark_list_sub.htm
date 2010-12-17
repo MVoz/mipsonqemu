@@ -50,7 +50,12 @@
 					</p>					
 					<p class="oper">		 
 						<a class="share nhot" id="$value['bmid']"></a>
-						<span>|</span><a class="get" id="$value['bmid']"></a><span>|</span><a class="edit" id="$value['bmid']"></a><span>|</span><a class="delete" id="$value['bmid']"></a>
+						<span>|</span>
+						<a class="get" id="$value['bmid']"></a>
+						<span>|</span>
+						<a class="edit" id="$value['bmid']|$value['groupid']|$value['browserid']"></a>
+						<span>|</span>
+						<a class="delete" id="$value['bmid']|$value['groupid']|$value['browserid']"></a>
 					</p> 
 				</li>
 
@@ -61,8 +66,8 @@
 		<img src="./template/default/image/468x60.jpg">
 </div>
 <script language="javascript" type="text/javascript" charset="$_SC[charset]">	
-		var gpid=$groupid;
-		var bsid=$browserid;
+	//	var gpid=$groupid;
+	//	var bsid=$browserid;
 		bookmarkload();
 		$(".bklt .delete").each(function(){
 			this.href =this.href+"&at=$at";			
