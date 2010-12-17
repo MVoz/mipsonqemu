@@ -7,7 +7,7 @@ var note_step = 0;
 var note_oldtitle = document.title;
 var note_timer;
 var searchs = {
-    web_page: [
+    web: [
         ["\u7f51\u9875", "http://www.baidu.com/s", "wd", "\u767e\u5ea6", -1, "http://www.baidu.com/index.php",1,"ie:utf-8"],
         ["\u7f51\u9875", "http://www.google.cn/search", "q", "\u8c37\u6b4c", -29, "http://www.google.cn/webhp?client=aff-360daohang",1, "client:aff-360daohang;hl:zh-CN;ie:utf-8"]
     ],
@@ -194,10 +194,6 @@ window.google.ac.h = function (a) {
         $obj("sts").innerHTML = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' + b + "</table>";
         $("#sts").css("display","block");
     }
-}
-
-function getSearchTabCookieName() {
-        return "tanzhi_search";
 }
 function  categoryShow(value) {
 	$('#tb_bookmark').css("visibility",value?"visible":"hidden");
@@ -971,8 +967,7 @@ $(function(){
 });
 
 $(function(){
-			$(".shaa span:first").addClass("currentx");
-			currentid= Cookie.get(getSearchTabCookieName());
+			currentid= Cookie.get("tanzhi_search");
 			$(".shaa span").click(function(){
 				$(".shaa span").removeClass("currentx");  
 				$(this).addClass("currentx"); 
@@ -982,7 +977,7 @@ $(function(){
 				$("#hidden_form").empty();
 				var i=0;
 				//setSearchTab($(this).attr("id"));
-				Cookie.set(getSearchTabCookieName(), $(this).attr("id"), 1E3 * 3600 * 24 * 5);
+				Cookie.set("tanzhi_search", $(this).attr("id"), 1E3 * 3600 * 24 * 5);
 				var len = searchs[$(this).attr("id")].length;
 				for (i = 0; i < len; i++) {
 				 //set checkbox
@@ -996,8 +991,6 @@ $(function(){
 					$('#shfm').append('<span>'+searchs[$(this).attr("id")][i][3]+'</span>');
 				  //set hidden form
 					 hiddenformArr='<form id="searchform_'+i+'" target="_blank" action="'+searchs[$(this).attr("id")][i][1]+'"  method="get" style="display:none">'+' <p> <input type="text" name="'+searchs[$(this).attr("id")][i][2]+'"  id="searchkey_'+i+'"></p></form>';
-
-					
 					$("#hidden_form").append(hiddenformArr);					
 					//set hidden input						 
 					 if (searchs[$(this).attr("id")][i][7]!= null) {
@@ -1016,6 +1009,7 @@ $(function(){
 				 //set button value				 
 				 $("#searchbtn").attr("value",$(this).html()+'搜索');
 		});
+		
 		if($('.shaa #'+currentid))
 			$('.shaa #'+currentid).click(); 
 		else
