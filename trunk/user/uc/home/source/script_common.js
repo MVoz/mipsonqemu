@@ -652,5 +652,7 @@ $(function(){
 	$('#qkmu > li').bind('mouseover', qkmu_open);
 	$('#qkmu > li').bind('mouseout',  qkmu_close);
 });
-
+$(function(){
+       		initMenuEx();			
+});
 document.onclick = qkmu_close;
