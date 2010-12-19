@@ -4,9 +4,8 @@
 			<li>
 				<div class="lf">
 						<div style="float: left;" class="avatar48">
-							<a href="space.php?do=digg&type=$value[categoryid]" class="$_SGLOBAL['diggcategory'][$value[categoryid]]['categoryname']" >
-								<!--<img src="template/default/image/diggtype.jpg">-->
-								<img onerror="this.onerror=null;this.src='http://192.168.115.2/ucenter/images/noavatar_small.gif'" src="http://192.168.115.2/ucenter/images/noavatar_small.gif">
+							<a href="space.php?do=digg&uid=$value[postuid]">
+								<!--{avatar($value[uid],small)}-->
 							</a>
 						</div>						
 				</div>
@@ -68,7 +67,11 @@
 		diggload();
 <!--{loop $digglist $key $value}-->	
 		var id_dg_$value['diggid']_title="$value['subject']";
-		$(".id_dg_$value['diggid']").attr("href","$value[url]").attr("title",id_dg_$value['diggid']_title). attr("onclick","updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');").attr("target","_blank");		
+		$(".id_dg_$value['diggid']").attr({
+			href:"link.php?url=$value[url]",
+			title:id_dg_$value['diggid']_title, onclick:"updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');",
+			target:"_blank"
+		});		
 		$(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
 <!--{/loop}-->
 </script>		
