@@ -656,12 +656,12 @@ border:1px solid #DDD;}
 .green2 {color:#0069B7;font-size:16px;font-weight:800;}
 
 
-.recml{float:left;height:225px;width:330px;overflow: hidden;}
-.recml .description{height:40px;width:320px;}
-.recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
-.recml .rlt_line{height:20px;line-height:20px;width:330px;}
-.recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
-.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -200px transparent;}
+#recml{float:left;height:225px;width:330px;overflow: hidden;}
+#recml .description{height:40px;width:320px;}
+#recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
+#recml .rlt_line{height:20px;line-height:20px;width:330px;}
+#recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
+.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -198px transparent;}
 		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 330px; height: 160px; background: #F7F7F7; overflow: hidden; }
 			#user_recomm h2 { position: absolute; left: 5px; top: 5px; width: 36px; height: 150px; background: url(image/g.png) no-repeat -270px -200px; text-indent: -9999px; z-index: 10; }
 			#user_recomm .s_avatar { float: left; padding: 5px 5px 5px 35px; }

@@ -1,20 +1,20 @@
 <div id="rdsect">
 	<div id="slideshow" class="link200">
-		<a href="$relatedlist[0]['url']" title="$relatedlist[0]['link_subject']">
+		<a href="$relatedlist[0]['url']" title="$relatedlist[0]['subject']">
 			<img src="$relatedlist[0]['pic']/b_$relatedlist[0]['md5url'].$_SC['link_image_suffix']"/>
 		</a>
 	</div>
 	<p class="relate_desc">
 			<a></a>:
-			$relatedlist[0]['link_description']...
+			$relatedlist[0]['description']...
 	</p>
 	<p class="relate_tag">
 			<span class="tag" style="width:180px;">
-				<!--{loop $relatedlist[0]['link_tag'] $subkey $subvalue}-->
-						<a onclick="ajaxget('space.php?uid=$_SGLOBAL['supe_uid']&do=linktag&tagid=$subkey&ajaxdiv=bmcontent', 'bmcontent')" href="javascript:;">$subvalue</a>
+				<!--{loop $relatedlist[0]['tag'] $subkey $subvalue}-->
+						<a id='$subkey'>$subvalue</a>
 				<!--{/loop}-->
 			</span>
-			<a  id="bookmark_add_$relatedlist[0][linkid]" href="cp.php?ac=link&linkid=$relatedlist[0][linkid]&op=bookmark" >我要收藏</a>
+			<a  id="bookmark_add_$relatedlist[0][siteid]" href="cp.php?ac=site&siteid=$relatedlist[0][siteid]&op=bookmark" >我要收藏</a>
 	</p>
 </div>
 <script language="javascript" type="text/javascript">
@@ -22,5 +22,15 @@
 	var relatesubject = $('#slideshow > a').attr('title');
     $('#rdsect .relate_desc a').attr("href",relateurl);
 	$('#rdsect .relate_desc a').html(relatesubject);
+	if($('#rdsect .relate_tag .tag a').length==0)
+		$('#rdsect .relate_tag .tag').html("<span class='gray'>什么也没留下...</span>");
+	else{
+	   $('#rdsect .relate_tag .tag a').each(function(){
+			$(this).attr({
+				href:'space.php?do=sitetag&tagid='+$(this).id,
+				target:'_blank'
+			});
+	   });
+	}
 	$('#slideshow > a >img').attr("title",relatesubject);
 </script>
