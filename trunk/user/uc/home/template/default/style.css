@@ -35,7 +35,7 @@ caption, th { text-align: left; }
 .avatar125 {padding:5px 0 0 5px; background:url("image/g.png") no-repeat scroll 0 -310px transparent; width: 125px; height: 95px }
 	.avatar125 img {width: 112px; height: 83px}
 
-.link200 {float: left;margin:5px 0 0 30px; background: url(image/g.png) no-repeat 0 -410px; width: 200px;  height: 140px;padding:7px 8px;}
+.link200 {float: left;margin:5px 0 0 30px !important;margin:5px 0 0 18px ; background: url(image/g.png) no-repeat 0 -410px; width: 200px;  height: 140px;padding:7px 8px;}
 	.link200 img { width: 180px; height: 135px}
 	
 .avatar125_1 {padding:5px 0 0 5px; background: url(image/125x95_thumb_bg.gif) no-repeat; width: 125px; height: 95px }
@@ -424,7 +424,7 @@ a.c_link {
 .muim{	padding: 1px;width:250px;}
 .muim .menu_list{	width:230px;height:315px;overflow:auto;}
 .muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
-.muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;font-size: 12px;font-style: normal}
+.muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;height:1.5em;overflow:hidden;}
 
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
 /*link*/
@@ -659,13 +659,13 @@ border:1px solid #DDD;}
 .green2 {color:#0069B7;font-size:16px;font-weight:800;}
 
 
-#recml{float:left;height:225px;width:330px;overflow: hidden;}
+#recml{float:left;height:225px;width:342px;overflow: hidden;}
 #recml .description{height:40px;width:320px;}
 #recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #recml .rlt_line{height:20px;line-height:20px;width:330px;}
 #recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
 .tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -197px transparent;}
-		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 330px; height: 160px; background: #F7F7F7; overflow: hidden; }
+		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 342px; height: 160px; background: #F7F7F7; overflow: hidden; }
 			#user_recomm h2 { position: absolute; left: 5px; top: 5px; width: 36px; height: 150px; background: url(image/g.png) no-repeat -270px -200px; text-indent: -9999px; z-index: 10; }
 			#user_recomm .s_avatar { float: left; padding: 5px 5px 5px 35px; }
 				#user_recomm .s_avatar a { display: block; width: 200px; height: 150px; background: #FFF; }
