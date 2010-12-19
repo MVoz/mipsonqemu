@@ -994,7 +994,15 @@ function diggload(){
 		$(".tlist .delete").each(function(){
 			$(this).addClass("thickbox");
 			$(this).attr("href","cp.php?ac=digg&op=delete&height=85&diggid="+this.id);
-		});	
+		});
+		$(".tlist .up").each(function(){
+			$(this).attr({
+				href:"javascript:;",
+				onclick:"updatestatics('digg','updatediggupnum','"+this.id+"');",
+			});
+		});
+		
+		$(".tlist .up").html("推一下");
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
 		tb_init('.tlist a.thickbox');
