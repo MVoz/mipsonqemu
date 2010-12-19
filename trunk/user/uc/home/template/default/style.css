@@ -454,7 +454,8 @@ a.c_link {
 .feeds {float:left;width: 280px; overflow: hidden;}
 	.feeds h2 {color:#F4950D;font-weight:bold;font-size:110%;}
 	.feeds li {height:60px;overflow: hidden;}
-	.feeds p  {float:left;padding:2px;width:215px;}
+	.feeds p  {display: inline;padding:2px;}
+	.feeds .fdct  {float:left;padding:2px;width:215px;}
 	.feeds .more{font-weight:normal;font-size:90%;float:right;}
 .ntitle .navname{float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;line-height:20px;}
 #thumbs *{overflow:hidden;padding:0;margin:0;}
@@ -600,9 +601,10 @@ border:1px solid #DDD;}
 		.tlist .rt .lfx{float:left;width:600px;}
 		.tlist .rt_p .lfx_p{float:left;width:460px;}		
 
-		.tlist .rt_p .tle,.tlist .rt .tle{ height:20px; width:auto; line-height:16px; padding-top:2px;font-size:105%;}
-		.tlist .rt_p .tle a,.tlist .rt .tle a{white-space: nowrap;text-overflow:ellipsis; overflow:hidden; display:block;float:left; max-width:350px;padding:0 2px;}
-		.tlist .rt_p .ds,.tlist .rt .ds {line-height:16px;word-break: break-all;text-indent:15px; }
+		.tlist .tle{ height:20px; width:auto; line-height:16px; padding-top:2px;font-size:105%;}
+		.tlist .tle a{white-space: nowrap;text-overflow:ellipsis; overflow:hidden; display:block;float:left; max-width:350px;padding:0 2px;}
+		.tlist .tle p{float:left;}
+		.tlist .ds {line-height:16px;word-break: break-all;text-indent:15px; }
        	.tlist .rt_p .ds a,.tlist .rt .ds a{color:#666;}	
 		.tlist .rt .lfx .ds {width:600px; }
 		.tlist .rt_p .lfx_p .ds {width:470px; }
@@ -613,7 +615,7 @@ border:1px solid #DDD;}
 		.tlist .rb{float:left;height:20px;width:470px;}
 		.tlist .rb p{float:left;height:16px;padding:0px 2px 0px 1px;}
 		.tlist .rb a{color:#2C629E;text-decoration: none;}
-		.tlist .rb .tags{max-width:200px;min-width:100px;overflow:hidden;}
+		.tlist .rb .tags{max-width:200px;min-width:100px;overflow:hidden;float:left;}
 		.tlist .rb .publisher{color:#EF9822;}
 		.tlist .rb .emnum{color:#8ABC2B;font-weight:bold;margin-top:0px !important;margin-top:-2px;}
 

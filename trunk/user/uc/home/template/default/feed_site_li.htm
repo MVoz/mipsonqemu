@@ -2,18 +2,18 @@
 	<div class="lfx_p">
 		 <div class="tle">
 				$value[title_template]
-				<a class="id_st_$value['relate']['siteid']">$value[body_template]</a>
+				<a class="id_st_$value['id']">$value[body_template]</a>
 				<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 		 </div>
 		 <div class="ds">
-				<a class="id_st_$value['relate']['siteid']">$value[relate][description]...</a> 
+				<a class="id_st_$value['id']">$value[body_general]...</a> 
 		</div>
 	</div>
 	<div class="rb gray">
 	    <span class="tags">
 			标签:
 				<!--{loop $value[relate][tag] $tagid $tagname}-->
-					<a class="id_st_tag_$value['relate']['siteid']" id="$tagid">$tagname</a>
+					<a class="id_st_tag_$value['id']" id="$tagid">$tagname</a>
 				<!--{/loop}-->					
 		</span>	
  	    发布者:
@@ -22,7 +22,7 @@
 </div>
 <div class="rightx">						
 	<div class="d_avatar avatar125">
-		 <a class="id_st_$value['relate']['siteid']">
+		 <a class="id_st_$value['id']">
 				<!--{if empty($value['picflag'])}-->
 					<img src="template/default/image/webloading.gif">
 				<!--{else}-->
@@ -32,11 +32,11 @@
 	</div>				  
 </div>
 <script language="javascript" type="text/javascript">
-		$(".id_st_$value['relate']['siteid']").attr({
+		$(".id_st_$value['id']").attr({
 			href:"$value[relate][url]",
 			target:"_blank",
 			title:"$value['relate']['subject']",
-			onclick:"updatestatics('site','updatesiteviewnum',$value['relate']['siteid'],'digg_view_num_id_$value['relate']['siteid']');"
+			onclick:"updatestatics('site','updatesiteviewnum',$value['id'],'digg_view_num_id_$value['reid']');"
 		});
 		$(".id_st_tag_$value['relate']['siteid']").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
