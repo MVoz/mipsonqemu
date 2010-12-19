@@ -81,14 +81,10 @@ elseif($op == 'edit'){
 			} elseif($item) {
 				showmessage('do_error');
 			}
-		}		
-		//正确显示tag，array-->string
-		$item['tag'] =implode(" ",$item['tag']); 
+		}
 }
 elseif($op == 'relate'){
-		//正确显示tag
-		$item['link_tag'] = empty($item['link_tag'])?array():unserialize($item['link_tag']);
-		$relatedlist[]=$item;
+		$relatedlist[]=$item;		
 }
 elseif($_GET['op'] == 'delete') {
 	//删除

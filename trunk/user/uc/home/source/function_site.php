@@ -321,9 +321,11 @@ function siteerr_post($POST, $olds=array())
 
 function getsitestorenum($siteid)
 {
-	global $_SGLOBAL,$_SC;
 	$count = 0;
-	$count=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT storenum FROM ".tname('site')." where id=".$siteid),0);
+	$wherearr = array(
+			'id'=>$siteid
+	);
+	$count = getcount('site',$wherearr,'storenum');
 	echo  $count;
 }
 //siteid为排除在外
@@ -359,8 +361,47 @@ function getrelatesite($classid,$siteid)
 		$tmp = unserialize(sreadfile(S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_page'.$i.'.txt'));
 		$randsrc=array_merge($randsrc,$tmp);
 	}
-	unset($randsrc[$siteid]);
+	//remove self
+	foreach($randsrc as $k=>$v){
+		if($v['id']==$siteid){
+			unset($randsrc[$k]);
+			break;
+		}
+	}
 	$ret = sarray_rand($randsrc,$_SC['related_site_num']);
+	return $ret;
+}
+//bookmark获取相关网站
+/*
+	bmid-bookmark的id
+	siteid-如果存在的bookmark的siteid
+	tags-bookmark的tag array
+*/
+function getrelatesiteforbookmark($bmid,$siteid,$classid,$tags)
+{
+	
+	global $_SGLOBAL,$_SC;
+	$siteids=array();
+	$ret = array();
+	if($classid&&$siteid){
+		return 	getrelatesite($classid,$siteid);
+	}
+	
+	foreach ($tags as $tagid => $tagname) {
+		  $q=$_SGLOBAL['db']->query("SELECT main.siteid FROM ".tname('sitetagsite')." main where main.tagid=".$tagid." AND main.uid !=".$_SGLOBAL['supe_uid']);
+		  while($s = $_SGLOBAL['db']->fetch_array($q))
+		  {
+			if($s['siteid']!=$siteid)
+				$siteids[]=$s['siteid'];
+		  }		
+	}
+	
+	$siteids=array_unique($siteids);
+	$siteids = sarray_rand($siteids,$_SC['today_related_site_num']);
+	
+	foreach($siteids as $k => $id) {
+		$ret[]=getsite($id);
+	}
 	return $ret;
 }
 ?>

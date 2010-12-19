@@ -103,7 +103,8 @@ var ajaxtypes = {
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
 	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
 	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ],
-	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ]
+	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
+	siterelate: [ ["cp.php?ac=site&op=relate&siteid=#","rdsect"] ] 
 };
 function getAjax(type,id)
 {
@@ -176,14 +177,18 @@ function seccode() {
 }
 function updateseccode() {
 	var img = 'do.php?ac=seccode&rand='+Math.random();
-	if($obj('img_seccode')) {
-		$obj('img_seccode').src = img;
+	if($('#img_seccode')) {
+		$('#img_seccode').attr({ 
+          src: img
+        });
 	}
 }
 function updateseccodeex(id) {
 	var img = 'do.php?ac=seccode&rand='+Math.random();
-	if($obj(id)) {
-		$obj(id).src = img;
+	if($('#'+id)) {
+		$('#'+id).attr({ 
+          src: img
+        });
 	}
 }
 
@@ -203,11 +208,10 @@ function trim(str) {
 }
 
 function display(id) {
-	var obj = $obj(id);
-	obj.style.display = obj.style.display == '' ? 'none' : '';
+	$('#'+id).css('display',($('#'+id).css('display')=='')?'none' : '');
 }
 function setDisplay(a, b){
-	if ($("#"+a)) 
+	if ($("#"+a).length>0) 
 		$("#"+a).css({"display":(b ? "block" : "none")});
 };
 function urlto(url) {
@@ -222,7 +226,7 @@ function copyToClipBoard(clipBoardContent){
 } 
 /*search*/
 function googleHint(a) {
-	if($("#gsuggest"))
+	if($("#gsuggest").length>0)
 		$("#gsuggest").remove();
     var b = document.body.appendChild(document.createElement("script"));
     b.language = "javascript";
@@ -314,7 +318,7 @@ function getLength(value)
 
 function check_subject(id, min, max, specialchar)
 {
-	if ($('#'+id)) {
+	if ($('#'+id).length>0) {
 		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
             warning((id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
@@ -330,7 +334,7 @@ function check_subject(id, min, max, specialchar)
 }
 function check_tag(id, min, max)
 {
-	if ($('#'+id)) {
+	if ($('#'+id).length>0) {
 		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
             warning((id+'_tip'),"标签("+min+"~"+max+"字符)不符合要求");
@@ -346,7 +350,7 @@ function check_tag(id, min, max)
 }
 function check_description(id, min, max)
 {
-	if ($('#'+id)) {
+	if ($('#'+id).length>0) {
 		if(!rangelen_validate($('#'+id).val(),min,max))    	
 		{
             warning((id+'_tip'),"描述("+min+"~"+max+"字符)不符合要求");
@@ -358,7 +362,7 @@ function check_description(id, min, max)
 
 function check_url(id, min, max)
 {
-	if ($('#'+id)) {
+	if ($('#'+id).length>0) {
 		if(!url_validate($('#'+id).val())||!rangelen_validate($obj('address').value,min,max))    	
 			{
 				warning((id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
@@ -870,10 +874,6 @@ function updatestatics(type,op,id,o)
 		this.blur();
 		return false;
 } 
-function getrelatedlinkfromid(id) {
-	//ajaxget('cp.php?ac=link&op=relate&linkid='+id, 'rdsect');    
-	alert("need complement");
-}
 
 var lastSecCode='';
 function checkSeccode() {
@@ -920,9 +920,11 @@ function bookmarkload(){
 			var ids = this.id.split("|");
 			this.href = "cp.php?ac=bookmark&bmid="+ids[0]+"&groupid="+ids[1]+"&browserid="+ids[2]+"&op=delete&height=95";
 		});	
+		/*
 		$("#bklist .get").each(function(){
 			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
-		});	
+		});
+		*/
 		$("#bklist .url").each(function(){
 			$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
 		});			
@@ -939,7 +941,7 @@ function bookmarkload(){
 		$("#bklist .delete").html("删除");
 		$("#bklist .share").html("分享");
 		$("#bklist .edit").html("编辑");
-		$("#bklist .get").html("详情");
+	//	$("#bklist .get").html("详情");
 		tb_init('#bklist a.thickbox');
 }
 function siteload(){
@@ -1090,9 +1092,10 @@ $(function(){
 				 //set button value				 
 				 $("#searchbtn").attr("value",$(this).html()+'搜索');
 		});
-		
-		if($('.shaa #'+currentid))
-			$('.shaa #'+currentid).click(); 
+		if($('.shaa #'+currentid).length>0)
+			{
+				$('.shaa #'+currentid).click(); 
+			}
 		else
 			$(".shaa span:first").click();
 });
