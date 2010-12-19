@@ -1,5 +1,10 @@
+<!--{if empty($value['picflag'])}-->
 <div class="rt">							
+	<div class="lfx">
+<!--{else}-->
+<div class="rt_p">							
 	<div class="lfx_p">
+<!--{/if}-->
 		 <div class="tle">
 				$value[title_template]
 				<a class="id_bm_$value['relate']['bmid']">$value[body_template]</a>
@@ -15,31 +20,27 @@
 	    <span class="tags">
 			标签:
 				<!--{loop $value[relate][tag] $tagid $tagname}-->
-					<a class="id_bm_tag_$value['relate']['bmid']" id="$tagid">$tagname</a>
+					<a>$tagname</a>
 				<!--{/loop}-->					
 		</span>	
 		   发布者:
 		   <a href="space.php?do=feed&uid=$value[uid]" class="publisher">$value[username]</a>
-			 有
-		   <span class="emnum" id="bookmark_view_num_id_$value[id]">$value[relate][viewnum]</span>
-			弹指人参与围观	
 	</div>
 </div>
-<div class="rightx">						
+<div class="rightx">
+<!--{if !empty($value['picflag'])}-->
 	<div class="d_avatar avatar125">
 		 <a class="id_bm_$value['relate']['bmid']">
-				<!--{if empty($value['picflag'])}-->
-					<img src="$value[relate]['tmppic']">
-				<!--{else}-->
-					<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">
-				<!--{/if}-->
+			<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">				
 		 </a>
-	</div>				  
+	</div>
+<!--{/if}-->
 </div>
 <script language="javascript" type="text/javascript">
-		$(".id_bm_$value['relate']['bmid']").attr("href","$value[relate][url]").attr("target","_blank").attr("title","$value['relate']['subject']").attr("onclick","updatebookmarkview($value['relate']['bmid'])");
-		$(".id_bm_tag_$value['relate']['bmid']").each(function(){
-			this.href = "space.php?do=sitetag&tagid=" + this.id;
-		});		
+		$(".id_bm_$value['relate']['bmid']").attr({
+			href:"$value[relate][url]",
+			target:"_blank",
+			title:"$value['relate']['subject']",
+		});	
 </script> 
 							 	

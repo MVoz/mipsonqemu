@@ -589,20 +589,20 @@ border:1px solid #DDD;}
 	/*
 		digg
 	*/
-		.tlist ul li{padding:5px 2px 0px 5px;list-style-image:none;width:666px;list-style-type:none;height:95px;border-bottom:dashed 1px #ddd;}
+		.tlist ul li{float:left;padding:5px 2px 0px 5px;list-style-image:none;width:666px;list-style-type:none;,margin-bottom:5px;border-bottom:dashed 1px #ddd;}
 		.tlist .lf{clear:left;float:left;width:60px;}
 		.tlist .lf .lt{height:50px;}
 		.tlist .lf .lt a{display:block;width:50px;height:50px;}
 	
-		.tlist .rt{float:left;width:600px;height:95px;overflow:hidden;}
-		.tlist .rt_p {float:left;width:470px;height:95px;}
+		.tlist .rt{float:left;width:600px;overflow:hidden;}
+		.tlist .rt_p {float:left;width:470px;}
 
 		.tlist .rt .lfx{float:left;width:600px;}
 		.tlist .rt_p .lfx_p{float:left;width:460px;}		
 
 		.tlist .rt_p .tle,.tlist .rt .tle{ height:20px; width:auto; line-height:16px; padding-top:2px;font-size:105%;}
 		.tlist .rt_p .tle a,.tlist .rt .tle a{white-space: nowrap;text-overflow:ellipsis; overflow:hidden; display:block;float:left; max-width:350px;padding:0 2px;}
-		.tlist .rt_p .ds,.tlist .rt .ds {height:55px;line-height:16px;word-break: break-all;text-indent:15px; }
+		.tlist .rt_p .ds,.tlist .rt .ds {line-height:16px;word-break: break-all;text-indent:15px; }
        	.tlist .rt_p .ds a,.tlist .rt .ds a{color:#666;}	
 		.tlist .rt .lfx .ds {width:600px; }
 		.tlist .rt_p .lfx_p .ds {width:470px; }
