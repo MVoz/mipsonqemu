@@ -1002,7 +1002,7 @@ function diggload(){
 		$(".tlist .up").each(function(){
 			$(this).attr({
 				href:"javascript:;",
-				onclick:"updatestatics('digg','updatediggupnum','"+this.id+"');",
+				onclick:"updatestatics('digg','updatediggupnum','"+this.id+"');"
 			});
 		});
 		
