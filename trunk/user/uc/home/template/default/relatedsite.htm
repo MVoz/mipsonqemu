@@ -2,10 +2,10 @@
 		<ul style="width:360px;">
 			<!--{loop $relatedlist $value}-->
 				<li>
-					<a  title="$value['link_description']" onclick="getrelatedlinkfromid($value['linkid']);">
+					<a  title="$value['description']" onclick="getAjax('siterelate','$value['siteid']');">
 						<img src="$value['pic']/l_$value['md5url'].$_SC['link_image_suffix']"/>
 					</a>
-					<p><a href="$value['url']">$value['link_subject']</a></p>							
+					<p><a href="$value['url']">$value['subject']</a></p>							
 				</li>
 			<!--{/loop}-->
 		</ul>
