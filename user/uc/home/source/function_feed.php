@@ -299,7 +299,6 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{link}';
 				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
 				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
@@ -326,7 +325,6 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{link}';
 				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
 				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
@@ -352,7 +350,6 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{link}';
 				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[link_subject]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
 			//	$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
@@ -377,9 +374,8 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = cplang($idtype);
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{site}';
-				$setarr['body_data'] = array('site'=>"<a href=\"$value[url]\" target=\"_blank\">$value[name]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
-			//	$setarr['body_general'] = $value['description'];
+				$setarr['body_data'] = array('site'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
+				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
 			}
@@ -405,8 +401,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{bookmark}';
 				$setarr['body_data'] = array('bookmark'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
-				$arr['body_data'] = serialize($arr['body_data']);//数组转化
-			//	$setarr['body_general'] = $value['description'];
+				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
 			}

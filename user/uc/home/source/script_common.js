@@ -934,8 +934,12 @@ function bookmarkload(){
 			$(this).attr("onclick","getAjax('bmtagview','"+this.id+"');").attr("target","_self");
 		});	
 		$("#bklist .share").each(function(){
-			this.href="javascript:void(0)";
-			$(this).attr("onclick","updatebookmarkup("+this.id+")").attr("target","_self");
+			$(this).attr({
+				onclick:'updatestatics("bookmark","updatebookmarkupnum","'+this.id+'")',
+				href:"javascript:void(0)",
+				target:"_self"
+			});
+
 		});	
 		$("#bklistt > li:even").addClass("list_r");;
 		$("#bklist .delete").html("删除");
