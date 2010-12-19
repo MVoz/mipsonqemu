@@ -4,6 +4,7 @@
 				<a href="space.php?do=feed">更多</a>
 		</span>
 </h2>
+<div  id="feedscroll">
 <ul>
 		<!--{loop $sitefeed_list $value}-->
 			<!--{eval $value = mkfeed($value);}-->
@@ -22,4 +23,19 @@
 			</div>
 		</li>
 		<!--{/loop}-->
-</ul>                       
+</ul>
+</div>
+<script type="text/javascript">
+	function AutoScroll(obj){
+			$(obj).find("ul:first").animate({
+				marginTop:"-60px"
+				},500,function(){
+				$(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+			});	
+	}
+									
+	$(function(){
+		setInterval('AutoScroll("#feedscroll")',5000);
+	});
+									
+</script>

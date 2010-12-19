@@ -216,7 +216,7 @@ h2.title img { margin: 0 5px 0 0; vertical-align: middle; }
 	.comments_list .magicbar{ float: right; margin: 0 5px 0 0; }
 
 
-.page { padding: 3px; text-align: center;height:20px; }
+.page { padding: 3px; text-align: center;height:20px;clear: both; }
     .page * { margin: 0 3px 0 0; padding: 3px 5px; border: 1px solid #EBE6C9; background: #FCF9E6; color: #999; }
     .page em { border-color: #FEE4AB; color: #C30; font-style: normal; }
     .page strong { background: #FEE4AB; color: #C30; }
@@ -283,7 +283,7 @@ a.button { padding: 5px; }
 #footer { padding: 10px 0;min-width:990px;position:relative;margin-top:10px; border-top: 1px solid #EBE6C9; color: #333; text-align: center; }
     #footer a { color: #333; }
     .noimage{ float: left; margin: 0 5px 0 0; }
-
+	#footer .r_option a{  background: url("image/g.png") no-repeat scroll -952px -181px transparent; width: 18px;display:block;height:18px;margin-left: auto;margin-right: auto;}
 #ajaxwaitid { position: absolute; width: 100px; height: 1.6em; background: #DD0000; color: #FFF; line-height: 1.6em; z-index: 100; top: 0px; right: 0px; overflow: hidden; display: none; }
 .pipe { padding: 0 0.4em; color: #DDD; }
 /*
@@ -422,7 +422,7 @@ a.c_link {
 .ndate span{padding-left:5px;}
 /*********************************************************************menu****/
 .muim{	padding: 1px;width:250px;}
-.muim .menu_list{	width:230px;height:300px;overflow:auto;}
+.muim .menu_list{	width:230px;height:315px;overflow:auto;}
 .muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
 .muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;font-size: 12px;font-style: normal}
 
@@ -457,6 +457,7 @@ a.c_link {
 	.feeds p  {display: inline;padding:2px;}
 	.feeds .fdct  {float:left;padding:2px;width:215px;}
 	.feeds .more{font-weight:normal;font-size:90%;float:right;}
+	.feeds #feedscroll{height:300px;overflow: hidden;}
 .ntitle .navname{float:left;width:10px;padding-top:20px;color:#FF6A00;font-size:14px;font-weight:bold;line-height:20px;}
 #thumbs *{overflow:hidden;padding:0;margin:0;}
 .ntitle #thumbs{float:left;height:92px;padding:0px 3px;}
@@ -519,21 +520,21 @@ border:1px solid #DDD;}
 #header .h_r a {color:#A3A3A3;text-decoration:none;}
 
 #header .h_act a {background-position:0 -352px;}
-#header .h_act a, .h_user strong, .h_user span, .h_user .g_drop_box {background:url("image/n7.png") no-repeat scroll 0px -351px ;display:inline;font-weight:normal;padding:0 6px 0 8px;}
+#header .h_act a, .h_user strong, .h_user span, .h_user .g_drop_box {background:url("image/g.png") no-repeat scroll -968px -149px ;display:inline;font-weight:normal;padding:0 6px 0 8px;}
 #header .h_act .gs_upload {background:url("image/g.png") no-repeat scroll 0 -270px transparent;color:#952800 !important;display:inline-block;height:26px;line-height:26px;padding:0 0 0 23px;text-align:left;text-decoration:none;width:55px;}
 
 #header .h_user {position:absolute;right:0;top:34px;width:320px;}
 #header .h_user strong {font-weight:400;padding:0 8px;color:#A3A3A3;}
 
-#header .h_user .gs_submit {background:url("image/n7.png") no-repeat scroll 0 -120px transparent;border:0 none;color:#952800;cursor:pointer;float:left;height:26px;margin:0 0 0 4px;padding:4px 0 6px;width:48px;}
+/*#header .h_user .gs_submit {background:url("image/n7.png") no-repeat scroll 0 -120px transparent;border:0 none;color:#952800;cursor:pointer;float:left;height:26px;margin:0 0 0 4px;padding:4px 0 6px;width:48px;}*/
 #header .h_user .gs_tanzhi{	color:#7BAD00;	font-weight:bold;}
 
 
 #toolbar  {background:url("image/g.png") repeat-x scroll 0 -950px transparent;height:32px;min-width:990px;position:relative;z-index:0;}
 #toolbar .tb_m {height:32px;margin:0 auto;position:relative;width:970px;}
 #toolbar .tb_menu  {clip:rect(-3px, 500px, 3000px, 0pt);height:32px;left:0;position:absolute;top:0;}
-#toolbar .tb_menu li {background:url("image/n7.png") no-repeat scroll 0 -150px transparent;float:left;padding:0px 0px;z-index:-99;width:70px;}
-#toolbar .tb_menu a {background:url("image/n7.png") no-repeat scroll 0px -150px transparent;color:#FFF;display:block;font-size:14px;height:32px;line-height:32px;outline:medium none;text-align:center;text-decoration:none;width:100%;}
+#toolbar .tb_menu li {background:url("image/g.png") no-repeat scroll 0 -747px transparent;float:left;padding:0px 0px;z-index:-99;width:70px;}
+#toolbar .tb_menu a {color:#FFF;display:block;font-size:14px;height:32px;line-height:32px;outline:medium none;text-align:center;text-decoration:none;width:100%;}
 #toolbar .tb_menu .current a,#toolbar .tb_menu .current a:hover {background:url("image/g.png") no-repeat scroll  0 -700px transparent;}
 #toolbar .tb_menu li a:hover,#toolbar .tb_menu li.selected a {background:url("image/g.png") no-repeat scroll  0 -700px;text-decoration:none;}
 
@@ -663,7 +664,7 @@ border:1px solid #DDD;}
 #recml .rlt_des{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #recml .rlt_line{height:20px;line-height:20px;width:330px;}
 #recml .rlt_line > a{float:right;padding-right:5px;font-weight:bold;color:#7BAD00;}
-.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -198px transparent;}
+.tag{float:left;height:20px;line-height:20px;width:220px;padding-left:19px;overflow:hidden;background:url("image/g.png") no-repeat scroll -952px -197px transparent;}
 		#user_recomm { position: relative; float: left; margin: 2px 1px 0 0; width: 330px; height: 160px; background: #F7F7F7; overflow: hidden; }
 			#user_recomm h2 { position: absolute; left: 5px; top: 5px; width: 36px; height: 150px; background: url(image/g.png) no-repeat -270px -200px; text-indent: -9999px; z-index: 10; }
 			#user_recomm .s_avatar { float: left; padding: 5px 5px 5px 35px; }
