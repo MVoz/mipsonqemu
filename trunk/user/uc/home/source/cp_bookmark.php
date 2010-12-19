@@ -6,7 +6,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-$ops=array('get','edit','delete','updatebookmarkview','checkseccode');
+$ops=array('get','edit','delete','updatebookmarkview','checkseccode','updatebookmarkupnum');
 //ºÏ≤È–≈œ¢
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 
