@@ -21,6 +21,7 @@ $theurl="space.php?do=$do";
 
 $sitefeed_list = array();
 include_once(S_ROOT.'./source/function_common.php');
+include_once(S_ROOT.'./source/space_highlight.php');
 
 $wherearr='';
 if(!empty($uid))
@@ -33,44 +34,38 @@ $username = getnamefromuid($uid);
 $query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('feed')." main ".$wherearr." ORDER BY main.dateline desc LIMIT $start,$shownum");
 
 while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-					
-			switch($value['icon'])
+	switch($value['icon'])
+	{
+		case 'digg':
+			$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." where diggid=".$value['id']);
+			if($s = $_SGLOBAL['db']->fetch_array($q))
 			{
-				case 'digg':
-						$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." where diggid=".$value['id']);
-						if($s = $_SGLOBAL['db']->fetch_array($q))
-						{
-						   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);
-						   $value['relate']= $s;
-						} else
-						continue;
-					break;
-				case 'site':
-						if($s=getsite($value['id']))
-						{
-							$value['relate']= $s;
-						}else
-						   continue	;
-					break;
-				case 'bookmark':
-
-						if($s=getbookmark($value['id']))
-						{
-							$value['relate']= $s;
-						}else
-						   continue	;
-					
-				break;
-				default:
-					continue;
-					break;
-			}
-			//realname_set($value['uid'], $value['username']);
-			$sitefeed_list[] = $value; 
+			   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);
+			   $value['relate']= $s;
+			} else
+				continue;
+			break;
+		case 'site':
+			if($s=getsite($value['id']))
+			{
+				$value['relate']= $s;
+			}else
+			   continue	;
+			break;
+		case 'bookmark':
+			if($s=getbookmark($value['id']))
+			{
+				$value['relate']= $s;
+			}else
+			   continue	;
+			break;
+		default:
+			continue;
+			break;
+	}
+	//realname_set($value['uid'], $value['username']);
+	$sitefeed_list[] = $value; 
 };
-
-
 $feedmulti = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1);
 include_once template("space_feed");
-
 ?>
