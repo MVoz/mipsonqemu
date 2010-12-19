@@ -36,7 +36,10 @@
 								 <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
 								</p>
 							   <p class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</p>
-							   <p>弹指人参与围观</p>							
+							   <p>弹指人参与围观</p>
+							    <p>
+									<a class="up" id="$value[diggid]"></a>
+								</p>
 
 								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<p>
