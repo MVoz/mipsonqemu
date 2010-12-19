@@ -22,7 +22,7 @@ $at=$op;
 include_once(S_ROOT.'./source/function_link.php');
 include_once(S_ROOT.'./source/function_bookmark.php');
 include_once(S_ROOT.'./source/function_cache.php');
-
+include_once(S_ROOT.'./source/function_site.php');
 //浏览器类型
 $browserid=gethttpbrowserid();;
 if($op=='browser'){	    
@@ -79,6 +79,7 @@ $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent'
 
 //获得相关联的网站
 $relatedlist=array();
+/*
 $wherearr='';
 $wherearr=$wherearr." WHERE origin=".$_SC['link_origin_link'];
 $wherearr=$wherearr." AND verify=".$_SC['link_verify_passed'];
@@ -90,13 +91,19 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 			$value['link_description'] = getstr($value['link_description'], $_SC['description_related_length'], 0, 0, 0, 0, -1);
 			$value['link_subject'] = getstr($value['link_subject'], $_SC['subject_related_length'], 0, 0, 0, 0, -1);
 			$relatedlist[] = $value;
-	}
-
-foreach($relatedlist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
-	$relatedlist[$key] = $value;	
 }
-realname_get();
+*/
+if($_SGLOBAL['inajax']==0){ 
+	foreach($bookmarklist as $key => $value) { 
+		$relatedlist=array_merge($relatedlist,getrelatesiteforbookmark($value['bmid'],$value['siteid'],$value['classid'],$value['tag']));
+	}
+	/*
+	foreach($relatedlist as $key => $value) {
+		$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
+		$relatedlist[$key] = $value;	
+	}
+	*/
+	$relatedlist = sarray_rand($relatedlist,$_SC['today_related_site_num']);
 
+}
 ?>

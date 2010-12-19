@@ -2990,6 +2990,7 @@ function getlinkfromsite($arr)
 	$arr['storenum']=$site['storenum'];
 	$arr['link_viewnum']=$site['viewnum'];
 	$arr['picflag']=$site['picflag'];
+	$arr['classid']=$site['class'];
 	return $arr;
 }
 function getbookmark($bmid)
