@@ -17,7 +17,7 @@ $cachefile = S_ROOT.'./data/cache_feed.txt';
 if(check_feed_cache()) {
 	$sitefeed_list = unserialize(sreadfile($cachefile));
 } else {
-	 $query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('feed')." ORDER BY dateline DESC LIMIT 0,5");
+	 $query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('feed')." ORDER BY dateline DESC LIMIT 0,20");
 	 while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 					//realname_set($value['uid'], $value['username']);
 					$sitefeed_list[] = $value; 		
