@@ -67,7 +67,7 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 foreach($digglist as $key => $value) {
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	include_once(S_ROOT.'./source/function_digg.php');
-	$value['viewnum'] = getdiggviewnum($value['diggid']);
+	$value['viewnum'] = getdiggnumparameter($value['diggid'],'viewnum');
 	$digglist[$key] = $value;
 }
 //分页
