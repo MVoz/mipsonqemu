@@ -8,10 +8,22 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 } 
 
-$f =  S_ROOT.'./data/data_hotdigg.txt';
-if(!file_exists($f)){
+$cachefile =  S_ROOT.'./data/data_hotdigg.txt';
+if(!check_hotdigg_cache($cachefile)) {
 	include_once(S_ROOT.'./source/function_cache.php');
 	hotdigg_cache();
 }
-$_SGLOBAL['hotdigg'] = unserialize(sreadfile($f));
+
+$_SGLOBAL['hotdigg'] = unserialize(sreadfile($cachefile));
+
+function check_hotdigg_cache() {
+		global $_SGLOBAL;
+		$cachefile = S_ROOT.'./data/data_hotdigg.txt';
+		$ftime = filemtime($cachefile);
+		//24 hours
+		if($_SGLOBAL['timestamp'] - $ftime < (24*60*60)) {
+			return true;
+		}
+		return false;
+}
 ?>

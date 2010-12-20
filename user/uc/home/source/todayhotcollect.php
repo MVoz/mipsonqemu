@@ -7,12 +7,25 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-	//$todayhotcollect=array();
-	if(!file_exists(S_ROOT.'./data/todayhotcollect.txt')){
-	
-		include_once(S_ROOT.'./source/function_cache.php');
-		everydayhotcollect_cache();
+//首页每日热藏
+$bookmarklist=array();
+$cachefile=S_ROOT.'./data/todayhotcollect.txt';
+if(!check_everydayhotcollect_cache($cachefile)) {
+	include_once(S_ROOT.'./source/function_cache.php');
+	everydayhotcollect_cache();
+}
 
+$todayhotcollect = unserialize(sreadfile($cachefile));
+
+function check_everydayhotcollect_cache() {
+	global $_SGLOBAL;
+	$cachefile = S_ROOT.'./data/todayhotcollect.txt';
+	$ftime = filemtime($cachefile);
+	//24 hours
+	if($_SGLOBAL['timestamp'] - $ftime < (24*60*60)) {
+		return true;
 	}
-	$bookmarklist= unserialize(sreadfile(S_ROOT.'./data/todayhotcollect.txt'));
+	return false;
+}
+
 ?>
