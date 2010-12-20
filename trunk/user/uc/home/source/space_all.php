@@ -112,7 +112,7 @@ foreach($polllist as $key => $value) {
 
 //今日热荐
 include_once(S_ROOT.'./source/every_todayhot.php');
-include_once(S_ROOT.'./source/sitefeed.php');
+include_once(S_ROOT.'./source/every_feed.php');
 /*
 //竞价排名
 $showlist = array();
