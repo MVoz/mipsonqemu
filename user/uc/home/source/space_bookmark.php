@@ -16,7 +16,7 @@ include_once(S_ROOT.'./source/space_highlight.php');
 include_once(S_ROOT.'./source/space_bookmark_show.php');
 
 //今日热荐
-include_once(S_ROOT.'./source/todayhot.php');
+include_once(S_ROOT.'./source/every_todayhot.php');
 
 //最后登录名
 //$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
