@@ -7,7 +7,6 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./data/data_browsertype.php');
 include_once(S_ROOT.'./data/data_browser.php');
 include_once(S_ROOT.'./data/data_linkerrtype.php');

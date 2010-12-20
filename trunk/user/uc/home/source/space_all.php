@@ -16,7 +16,6 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/every_highlight.php');
 
 include_once(S_ROOT.'./source/space_bookmark_show.php');
-//include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./source/function_digg.php');
 include_once(S_ROOT.'./source/every_hotdigg.php');
 //digg
@@ -52,7 +51,6 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	}
 
 } else {
-
     $start=$page?(($page-1)*$perpage):0;
    	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
 	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline DESC LIMIT $start,$shownum");
@@ -65,7 +63,6 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	
 }
 foreach($digglist as $key => $value) {
-//	realname_set($value['uid'], $value['username']);
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$value['viewnum'] = getdiggviewnum($value['diggid']);
 	$digglist[$key] = $value;
@@ -73,67 +70,11 @@ foreach($digglist as $key => $value) {
 //分页
 $diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);	
 //$diggmulti = multi($count, $perpage, $page, 'diggpage','diggcontent','diggcontent',1);	
-/*
-//投票
-$cachefile = S_ROOT.'./data/cache_network_poll.txt';
-if(check_network_cache('poll')) {
-	$polllist = unserialize(sreadfile($cachefile));
-} else {
-	$sqlarr = mk_network_sql('poll',
-		array('pid', 'uid'),
-		array('hot','voternum','replynum'),
-		array('dateline'),
-		array('dateline','voternum','replynum','hot')
-	);
-	extract($sqlarr);
-
-	//显示数量
-	$shownum = 9;
-	
-	$polllist = array();
-	$query = $_SGLOBAL['db']->query("SELECT main.*
-		FROM ".tname('poll')." main
-		WHERE ".implode(' AND ', $wherearr)."
-		ORDER BY main.{$order} $sc LIMIT 0,$shownum");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		realname_set($value['uid'], $value['username']);
-		$polllist[] = $value;
-	}
-	if($_SGLOBAL['network']['poll']['cache']) {
-		swritefile($cachefile, serialize($polllist));
-	}
-}
-foreach($polllist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
-	$polllist[$key] = $value;
-}
-
-*/
 
 //今日热荐
 include_once(S_ROOT.'./source/every_todayhot.php');
 include_once(S_ROOT.'./source/every_feed.php');
-/*
-//竞价排名
-$showlist = array();
-$query = $_SGLOBAL['db']->query("SELECT sh.note, s.* FROM ".tname('show')." sh
-	LEFT JOIN ".tname('space')." s ON s.uid=sh.uid
-	ORDER BY sh.credit DESC LIMIT 0,23");
-while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-	realname_set($value['uid'], $value['username'], $value['name'], $value['namestatus']);
-	$value['note'] = addslashes(getstr($value['note'], 80, 0, 0, 0, 0, -1));
-	$showlist[$value['uid']] = $value;
-}
-if(empty($star) && $showlist) {
-	$star = sarray_rand($showlist, 1);
-}
 
-
-//在线人数
-$olcount = getcount('session', array());
-*/
-
-realname_get();
 
 //最后登录名
 //$membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
