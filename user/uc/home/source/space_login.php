@@ -8,13 +8,7 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 
-//是否公开
-if(empty($_SCONFIG['networkpublic'])) {
-	checklogin();//需要登录
-}
-
-//include_once(S_ROOT.'./source/space_bookmark_show.php');
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 //今日热荐
 include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/sitefeed.php');
@@ -25,6 +19,4 @@ if(!empty($_SCOOKIE['cookiecheck']))
 	$cookiecheck = ' checked';
 $_TPL['css'] = 'network';
 include_once template("space_login");
-
-
 ?>

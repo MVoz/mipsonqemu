@@ -3359,20 +3359,7 @@ function updatesiteall()
 	}
 }
 
-function readsitecachefile($type)
-{
-	$f =  S_ROOT.'./data/site_'.$type.'.txt';
-	if(!file_exists($f)){
-		include_once(S_ROOT.'./source/function_cache.php');
-		site_today_cache($type);
-	}
-	$ret = unserialize(sreadfile($f));
-	$r = array();
-	foreach($ret as $k=>$v){
-		$r[] = $v;
-	}
-	return $r;
-}
+
 function get_right_refer($at,$groupid,$browserid){
 	global $_GET,$_SGLOBAL;
 	switch($at){

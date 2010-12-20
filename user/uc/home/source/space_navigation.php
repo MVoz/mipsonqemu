@@ -13,7 +13,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
 
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 
 //bookmarklist
 $classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
