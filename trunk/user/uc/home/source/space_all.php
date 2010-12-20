@@ -28,8 +28,7 @@ include_once template("space_all");
 
 //检查缓存
 function check_network_cache($type) {
-	global $_SGLOBAL;
-	
+	global $_SGLOBAL;	
 	if($_SGLOBAL['network'][$type]['cache']) {
 		$cachefile = S_ROOT.'./data/cache_network_'.$type.'.txt';
 		$ftime = filemtime($cachefile);

@@ -2927,6 +2927,23 @@ function check_cachelock($type)
 		return true;
 	return false;
 }
+function open_cachelock($type)
+{
+	//create lock
+	$i = 0;
+	while(check_cachelock()){
+		if($i>(1000*5))
+			return false;
+		 usleep(1000);//1ms
+		 $i++;
+	}
+	create_cachelock($type);
+	return true;
+}
+function close_cachelock($type)
+{
+	delete_cachelock($type);
+}
 
 function getnamefromuid($uid)
 {

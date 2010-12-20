@@ -45,10 +45,9 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 		$digglist = $_SGLOBAL['diggcache'][$nowpage];
 	}
 } else {
-   
+	//include_once(S_ROOT.'./source/function_cache.php');
+   // digg_cacheall();
 	$wherearr='';
-	if(!empty($type))
-		 $wherearr=' where main.categoryid='.$type;
 	if(!empty($uid))
 		 $wherearr=' where main.postuid='.$uid;
 

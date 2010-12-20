@@ -933,6 +933,8 @@ function digg_cache_user($user)
 	global $_SGLOBAL,$_SC;
 	if(!$user)
 		return;
+	if(!open_cachelock('digg'))
+		return;
 	$maxpages = 6;
 	$shownum = $_SC['digg_show_maxnum']; 
 
@@ -960,10 +962,12 @@ function digg_cache_user($user)
 	} 
 	//记录总数
 	swritefile(S_ROOT.'./data/diggcache/digg_user_'.$user.'_count.txt', $count) ;
+	close_cachelock('digg');
 }
 /*
 	$category:digg分类，为0不考虑
 */
+/*
 function digg_cache_category($category)
 {
 	global $_SGLOBAL,$_SC;
@@ -997,80 +1001,72 @@ function digg_cache_category($category)
 	//记录总数
 	swritefile(S_ROOT.'./data/diggcache/digg_'.$category.'_count.txt', $count) ;
 }
-/*
-	$nowcategory:现在的digg分类
-	$oldcategory:过去的digg分类，为0不考虑
 */
-function digg_cache($nowcategory,$oldcategory,$user)
+/*
+	$flag:	0--从头开始	1--从上次开始
+	$type:  0--正常  1--user
+*/
+function digg_cache($flag,$type,$userid)
 {
 	global $_SGLOBAL,$_SC;
-	//create lock
-	 while(check_cachelock()){
-		 usleep(1000);//1ms
-	 }
-	 create_cachelock('digg');
-	
-  //显示数量
-	$maxpages = 6;
-	$shownum = $_SC['digg_show_maxnum']; 
-
-    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
-
-	$total = $maxpages*$shownum; 
+	$numperpage = $_SC['digg_show_maxnum']/2; 
 	$i = 0;
+	$start = 0;
+	$end = 0;
+	$pagenum = 0;
 	$digglist = array();
-
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main	ORDER BY main.dateline DESC LIMIT 0,$total");
-
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-
-					$digglist[] = $value;
-					if(sizeof($digglist) == $shownum )
-					{
-						cache_write_x('diggcache'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
-						$digglist = array();
-						$i++;
-					}
+	$wherearr='';
+	$fileprefix='';
+	if(!open_cachelock('digg'))
+			return;
+	if($type == 0){
+		$fileprefix='./data/diggcache/digg_';
+	}else if($type == 1){
+		$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
+		$wherearr=' where postuid='.$userid;
 	}
-	if(sizeof($digglist))
-	{
-	  cache_write_x('diggcache'.$i, "_SGLOBAL['diggcache'][$i]", $digglist,'diggcache');
-	} 
+
+    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg').$wherearr),0);
+	$maxdiggid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT MAX(diggid) FROM ".tname('digg').$wherearr),0);
+
+	if($flag != 0)
+			$start = sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');		
+	if($wherearr=='')
+			$wherearr=' where ';
+	else
+			$wherearr=$wherearr.' and ';
+	
+	$start =((floor($start/$numperpage))*$numperpage)+1;
+    while($start<=$maxdiggid){
+		$end = $start+$numperpage-1;
+		$pagenum = floor($start/$numperpage);
+		$query = $_SGLOBAL['db']->query("SELECT *	FROM ".tname('digg').$wherearr." diggid BETWEEN ".$start." AND ".$end.";");
+
+		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+				$digglist[] = $value;				
+		}
+		if(sizeof($digglist)){
+			swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'.txt', serialize($digglist));
+			swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'_count.txt', sizeof($digglist));
+		}
+
+		$digglist=array();
+		$start+=$numperpage;
+	}	
 	//记录总数
-	swritefile(S_ROOT.'./data/diggcache/digg_count.txt', $count) ;
-//更新分类的cache
-	digg_cache_category($nowcategory);
-	if($nowcategory != $oldcategory)
-		digg_cache_category($oldcategory);
-	digg_cache_user($user);
-	//delete
-	delete_cachelock('digg');
-				
+	swritefile(S_ROOT.$fileprefix.'count.txt', $count);
+	swritefile(S_ROOT.$fileprefix.'maxdiggid.txt', $maxdiggid);
+	close_cachelock('digg');				
 }
 
 function digg_cacheall()
 {
 	global $_SGLOBAL;
-	digg_cache(0,0);
-	$query = $_SGLOBAL['db']->query("SELECT categoryid FROM ".tname('diggcategory'));
-
-	//create lock
-	 while(check_cachelock()){
-		 usleep(1000);//1ms
-	 }
-	 create_cachelock('digg');
-
-	while($value = $_SGLOBAL['db']->fetch_array($query)){
-		digg_cache_category($value['categoryid']);
-	}
-
+	digg_cache(0,0,0);
 	$query = $_SGLOBAL['db']->query("SELECT  DISTINCT postuid FROM ".tname('digg'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-		digg_cache_user($value['postuid']);
+		digg_cache(0,1,$value['postuid']);
 	}
-
-	//delete
-	delete_cachelock('digg');
 }
 
 function site_today_cache($type)
