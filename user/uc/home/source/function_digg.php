@@ -194,11 +194,11 @@ function deletedigg($diggid){
 	feed_delete($diggid, 'diggid');
 	return 1;
 }
-function getdiggviewnum($diggid)
+function getdiggnumparameter($diggid,$type)
 {
 		$wherearr = array(
 				'diggid'=>$diggid
 		);
-		return getcount('digg',$wherearr,'viewnum');
+		return getcount('digg',$wherearr,$type);
 }
 ?>
