@@ -322,7 +322,9 @@ function linkerrtype_cache(){
 	cache_write('linkerrtype', "_SGLOBAL['linkerrtype']", $_SGLOBAL['linkerrtype']);
 }
 //更新digg ategory类型
+/*
 function diggcategory_cache(){
+
 	global $_SGLOBAL;
 
 	$_SGLOBAL['diggcategory'] = array();
@@ -334,6 +336,7 @@ function diggcategory_cache(){
 	}
 	cache_write('diggcategory', "_SGLOBAL['diggcategory']", $_SGLOBAL['diggcategory']);
 }
+*/
 //更新浏览器类型 
 function browsertype_cache(){
 	global $_SGLOBAL;
