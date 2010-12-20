@@ -16,7 +16,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 //include_once(S_ROOT.'./source/space_bookmark_show.php');
 include_once(S_ROOT.'./source/space_highlight.php');
 //今日热荐
-include_once(S_ROOT.'./source/todayhotcollect.php');
+include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/sitefeed.php');
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
