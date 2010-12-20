@@ -10,15 +10,17 @@
 					<dt class="l1">
 						<div class="pack ">
 							<h6><a title="$value[subject]" target="new" href="#">$value[subject]</a></h6>
+							<!--{if $value['picflag'] }-->
 								<div class="pic">
 									<a href="#" title="$value[subject]" target="new" >
-										<img  src="http://i01.img.tudou.com/data/imgs/i/049/979/002/m35.jpg">
+										<img  src="$value[pic]">
 									</a>
 								</div>
+							<!--{/if}-->
 								<div class="info">
 									$value[description]..
 									<span class="gray">2010-06-12</span>
-									<a class="publisher" href="space.php?do=digg&amp;uid=10">城市森林</a>
+									<a class="publisher" href="space.php?do=digg&uid=$value['postuid']">$value[username]</a>
 								</div>
 						</div>										
 					 </dt>
