@@ -3401,4 +3401,11 @@ function getinitaward($award)
 		$award = 9000;
 	return $award;
 }
+function getdiggpage($id,$perpage)
+{
+	if($id%$perpage)
+	 return floor($id/$perpage);
+	else
+	 return (($id/$perpage)-1);
+}
 ?>

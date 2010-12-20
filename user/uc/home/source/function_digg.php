@@ -43,7 +43,7 @@ function digg_post($POST, $olds=array()) {
 		'username'=> $_SGLOBAL['name'],
 		'description' => $POST['description'],
 		'url'=>$POST['address'],
-		'categoryid' => $POST['category']
+//		'categoryid' => $POST['category']
 	);
 	$diggarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 
@@ -89,10 +89,20 @@ function digg_post($POST, $olds=array()) {
 	updatetable('digg', array('tag'=>$tag), array('diggid'=>$diggid));
 	//更新digg cache
 	include_once(S_ROOT.'./source/function_cache.php');
-	if(empty($olds))
-		digg_cache($diggarr['categoryid'],$olds['categoryid'],$_SGLOBAL['supe_uid']);
-	else
-		digg_cache($diggarr['categoryid'],0,$_SGLOBAL['supe_uid']);
+	if(empty($olds)){
+		//增加
+		digg_cache(1,0,0,0);
+		digg_cache(1,0,$_SGLOBAL['supe_uid'],0);
+	}else{
+		//修改
+		digg_cache(0,1,0,$diggid);
+		digg_cache(0,1,$_SGLOBAL['supe_uid'],$diggid);
+	}
+		
+	//if(empty($olds))
+	//	digg_cache($diggarr['categoryid'],$olds['categoryid'],$_SGLOBAL['supe_uid']);
+	//else
+	//	digg_cache($diggarr['categoryid'],0,$_SGLOBAL['supe_uid']);
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;
 
@@ -175,7 +185,7 @@ function deletedigg($diggid){
 	//处理tag
 	$query=$_SGLOBAL['db']->query("SELECT * from ".tname('diggtagdigg')." WHERE diggid=".$diggid);
 	$updatetagids=array();
-	while($values=$_SGLOBAL['db']->fetch_array($query))
+	if($values=$_SGLOBAL['db']->fetch_array($query))
 	{
 		$updatetagids[]=$values['tagid'];		
 	}
@@ -186,7 +196,9 @@ function deletedigg($diggid){
 	$_SGLOBAL['db']->query("DELETE  from ".tname('digg')." WHERE diggid=".$diggid);
 	//更新digg cache
 	include_once(S_ROOT.'./source/function_cache.php');
-	digg_cache($$values['categoryid'],0);
+	//删除：
+	digg_cache(0,1,0,$diggid);
+	digg_cache(0,1,$values['postuid'],$diggid);
 	//去掉feed
 	include_once(S_ROOT.'./source/function_feed.php');
 	feed_delete($diggid, 'diggid');
