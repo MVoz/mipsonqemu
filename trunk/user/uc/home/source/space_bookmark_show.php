@@ -7,6 +7,9 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
+//今日热荐
+include_once(S_ROOT.'./source/every_todayhot.php');
+include_once(S_ROOT.'./source/every_feed.php');
 
 $ops = array('lastvisit', 'lastadd', 'oftenvisit', 'album', 'lastrecommend','browser');
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'lastvisit':$_GET['op'];	 
