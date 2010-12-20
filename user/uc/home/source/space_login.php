@@ -11,7 +11,7 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/every_highlight.php');
 //今日热荐
 include_once(S_ROOT.'./source/every_todayhotcollect.php');
-include_once(S_ROOT.'./source/sitefeed.php');
+include_once(S_ROOT.'./source/every_feed.php');
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
 //$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
