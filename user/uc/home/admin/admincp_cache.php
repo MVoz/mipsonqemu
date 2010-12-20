@@ -38,7 +38,7 @@ if(submitcheck('cachesubmit')) {
 		app_cache();
 		network_cache();
 		linkerrtype_cache();
-		diggcategory_cache();
+		//diggcategory_cache();
 		browsertype_cache();
 		browser_cache();
 		linktoolbartype_cache();
