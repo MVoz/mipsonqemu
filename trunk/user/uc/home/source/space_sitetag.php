@@ -7,7 +7,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 //是否公开
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录

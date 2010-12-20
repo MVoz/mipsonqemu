@@ -13,7 +13,7 @@ if(!defined('IN_UCHOME')) {
 	checklogin();//需要登录
 //}
 //bookmarklist
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 
 include_once(S_ROOT.'./source/space_bookmark_show.php');
 //include_once(S_ROOT.'./data/data_diggcategory.php');

@@ -21,7 +21,7 @@ $theurl="space.php?do=$do";
 
 $sitefeed_list = array();
 include_once(S_ROOT.'./source/function_common.php');
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 
 $wherearr='';
 if(!empty($uid))

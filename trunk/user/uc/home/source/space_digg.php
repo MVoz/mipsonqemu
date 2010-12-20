@@ -13,9 +13,9 @@ if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
 
-include_once(S_ROOT.'./source/space_highlight.php');
+include_once(S_ROOT.'./source/every_highlight.php');
 include_once(S_ROOT.'./data/data_network.php');
-include_once(S_ROOT.'./data/data_diggcategory.php');
+//include_once(S_ROOT.'./data/data_diggcategory.php');
 
 $type = empty($_GET['type'])?0:intval($_GET['type']);
 //检查type合法性
