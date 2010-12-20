@@ -967,9 +967,18 @@ function digg_cache_category($category)
 */
 /*
 	$flag:	0--从头开始	1--从上次开始
-	$type:  0--正常  1--user
+	$type: 
+		0--正常 
+		1--user
+		2--modify+$diggid / delete+$diggid
+
+	//重新cache-all: digg_cache(0,0,0,0);
+	//重新cache-user: digg_cache(0,0,userid,0);
+	//增加：digg_cache(1,0,0,0)+digg_cache(1,0,userid,0)
+	//修改：digg_cache(0,1,0,$diggid)+digg_cache(0,1,$userid,$diggid)
+	//删除：digg_cache(0,1,0,$diggid)+digg_cache(0,1,$userid,$diggid)
 */
-function digg_cache($flag,$type,$userid)
+function digg_cache($flag,$type,$userid,$diggid)
 {
 	global $_SGLOBAL,$_SC;
 	$numperpage = $_SC['digg_show_maxnum']/2; 
@@ -983,39 +992,59 @@ function digg_cache($flag,$type,$userid)
 	if(!open_cachelock('digg'))
 			return;
 	if($type == 0){
-		$fileprefix='./data/diggcache/digg_';
+		if(empty($userid))
+			$fileprefix='./data/diggcache/digg_';
+		else{
+			$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
+			$wherearr=' where postuid='.$userid;
+		}
 	}else if($type == 1){
-		$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
-		$wherearr=' where postuid='.$userid;
+		if(empty($userid))
+			$fileprefix='./data/diggcache/digg_';
+		else{
+			$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
+			$wherearr=' where postuid='.$userid;
+		}
 	}
 
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg').$wherearr),0);
 	$maxdiggid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT MAX(diggid) FROM ".tname('digg').$wherearr),0);
-
-	if($flag != 0)
-			$start = sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');		
-	if($wherearr=='')
-			$wherearr=' where ';
-	else
-			$wherearr=$wherearr.' and ';
-	
-	$start =((floor($start/$numperpage))*$numperpage)+1;
-    while($start<=$maxdiggid){
+	if($type=0||$type==1){
+		if($flag != 0)
+				$start = sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');		
+		if($wherearr=='')
+				$wherearr=' where ';
+		else
+				$wherearr=$wherearr.' and ';
+		
+		$start =(getdiggpage($start,$numperpage)*$numperpage)+1;
+		while($start<=$maxdiggid){
+			$end = $start+$numperpage-1;
+			$pagenum = getdiggpage($start,$numperpage);
+			$query = $_SGLOBAL['db']->query("SELECT *	FROM ".tname('digg').$wherearr." diggid BETWEEN ".$start." AND ".$end." ORDER BY diggid DESC;"); 
+			while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+					$digglist[] = $value;				
+			}
+			if(sizeof($digglist)){
+				swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'.txt', serialize($digglist));
+				swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'_count.txt', sizeof($digglist));
+			}
+			$digglist=array();
+			$start+=$numperpage;
+		}
+	}else{
+		$pagenum = getdiggpage($diggid,$numperpage);
+		$start =($pagenum*$numperpage)+1;
 		$end = $start+$numperpage-1;
-		$pagenum = floor($start/$numperpage);
-		$query = $_SGLOBAL['db']->query("SELECT *	FROM ".tname('digg').$wherearr." diggid BETWEEN ".$start." AND ".$end." ORDER BY diggid DESC;");
-
+		$query = $_SGLOBAL['db']->query("SELECT *	FROM ".tname('digg').$wherearr." diggid BETWEEN ".$start." AND ".$end." ORDER BY diggid DESC;"); 
 		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 				$digglist[] = $value;				
 		}
 		if(sizeof($digglist)){
-			swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'.txt', serialize($digglist));
-			swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'_count.txt', sizeof($digglist));
+				swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'.txt', serialize($digglist));
+				swritefile( S_ROOT.$fileprefix.'page_'.$pagenum.'_count.txt', sizeof($digglist));
 		}
-
-		$digglist=array();
-		$start+=$numperpage;
-	}	
+	}
 	//记录总数
 	swritefile(S_ROOT.$fileprefix.'count.txt', $count);
 	swritefile(S_ROOT.$fileprefix.'maxdiggid.txt', $maxdiggid);
@@ -1028,7 +1057,7 @@ function digg_cacheall()
 	digg_cache(0,0,0);
 	$query = $_SGLOBAL['db']->query("SELECT  DISTINCT postuid FROM ".tname('digg'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-		digg_cache(0,1,$value['postuid']);
+		digg_cache(0,0,$value['postuid']);
 	}
 }
 
