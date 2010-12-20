@@ -883,33 +883,13 @@ function everydayhot_cache()
 {
 	global $_SGLOBAL,$_SC;
 	$todayhot = array();
-	//$todayhotlist = array();
-
-	//获得link的统计数
-	//$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('link')." main where //main.origin=$_SC['link_origin_link']"),0);
-
 	$_SCONFIG['todayhot']=array(1,3,6,10);
 	$todayhotid = sarray_rand($_SCONFIG['todayhot'], 1);
 	foreach($todayhotid as $key=>$val){
-		
 		$value = getsite($val);
 		$value['short_subject'] = getstr(trim($value['subject']), $_SC['subject_todayhot_length']);	
 		$value['short_description'] = getstr(trim($value['description']), $_SC['description_todayhot_length']);
 		$todayhot= $value;		
-		/*
-		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid=$val");
-		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-				$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
-				$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
-				include_once(S_ROOT.'./source/function_link.php');
-				$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
-				$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
-				
-				//$value['link_subject']=preg_replace("'([\r\n])[\s]+'", "", $value['link_subject']);
-				$value['link_subject']=preg_replace("/[\s|\n|\r|\f]+/","",$value['link_subject']);	
-				$todayhot= $value;
-		}	
-		*/
 	}
 	swritefile( S_ROOT.'./data/todayhot.txt', serialize($todayhot));
 }
@@ -945,9 +925,6 @@ function everydayhotcollect_cache()
 				$todaytag[]= $value;
 	}	
 	$todayhotcollect['sontag'] = sarray_rand($todaytag, 7);
-	
-
-
 	swritefile( S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
 }
 //digg cache 操作,最多前($maxpages*$_SC['digg_show_maxnum'])

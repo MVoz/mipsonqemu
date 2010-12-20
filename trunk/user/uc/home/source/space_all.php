@@ -16,7 +16,7 @@ if(!defined('IN_UCHOME')) {
 include_once(S_ROOT.'./source/space_highlight.php');
 
 include_once(S_ROOT.'./source/space_bookmark_show.php');
-include_once(S_ROOT.'./data/data_diggcategory.php');
+//include_once(S_ROOT.'./data/data_diggcategory.php');
 include_once(S_ROOT.'./source/function_digg.php');
 include_once(S_ROOT.'./source/space_hotdigg.php');
 //digg

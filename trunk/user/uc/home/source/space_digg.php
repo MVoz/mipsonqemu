@@ -100,14 +100,14 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 	}
 }
 foreach($digglist as $key => $value) {
-	realname_set($value['uid'], $value['username']);
+	//realname_set($value['uid'], $value['username']);
 	$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 	$digglist[$key] = $value;
 }
 //分页
 $diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);
 
-realname_get();
+//realname_get();
 
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
