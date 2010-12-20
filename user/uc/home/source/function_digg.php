@@ -23,8 +23,6 @@ function digg_post($POST, $olds=array()) {
 	$POST['subject'] = getstr(trim($POST['subject']), 80, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
 		
-	
-
 	//ÄÚÈÝ
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr(trim($POST['description']), 0, 1, 0, 1, 1);
