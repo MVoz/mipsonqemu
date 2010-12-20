@@ -14,39 +14,51 @@ $digglist = array();
 //修正一下page ，0不变，其它情况减1
 $nowpage=($page)?($page-1):0;
 $start=$page?(($page-1)*$perpage):0;
+$count = 0;
 if($uid){
-		$cachefile = S_ROOT.'./data/diggcache/data_diggcache_user_'.$uid.'_'.$nowpage.'.php';
-		$count=sreadfile(S_ROOT.'./data/diggcache/digg_user_'.$uid.'_count.txt');
-		$theurl = $theurl.'&uid='.$uid;
+	$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
+	$theurl = $theurl.'&uid='.$uid;
 }else{
-		$cachefile = S_ROOT.'./data/diggcache/data_diggcache'.$nowpage.'.php';
-		$count=sreadfile(S_ROOT.'./data/diggcache/digg_count.txt');
+	$fileprefix='./data/diggcache/digg_';
 }
-if(!check_cachelock('digg')&&file_exists($cachefile)) {
+if(!check_cachelock('digg')) {
 	//没有lock,则可以读取
-	include_once($cachefile);		
-	if($shownum!=$_SC['digg_show_maxnum'])
-	{
-		$realpage = floor((($nowpage+1)*$shownum)/$_SC['digg_show_maxnum']);
-		$digglist = $_SGLOBAL['diggcache'][$realpage];
-		//偶数去前8个，奇数取后8个
-		if($page==0)
-			$page = 1;
-		$tmpdigglist = array_chunk($digglist, $shownum);
-		if($page%2)//奇数
-		{
-			//取前8个
-			$digglist = $tmpdigglist[0];
-		}else{
-			//移除前8个
-			$digglist = $tmpdigglist[1];
-		}
-	}else{
-		$digglist = $_SGLOBAL['diggcache'][$nowpage];
+	$count = sreadfile(S_ROOT.$fileprefix.'count.txt');
+	$maxdiggid=sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');
+	$maxpage = floor($maxdiggid/($_SC['digg_show_maxnum']/2));
+
+	$i = $maxpage;
+	$diggcount = 0;
+	//find the start page 
+	while($i>=0){
+		$diggcount+=sreadfile(S_ROOT.$fileprefix.'page_'.$i.'_count.txt');		
+		if($diggcount>=$start)
+			break;
+		$i--;
 	}
+	$left = $perpage;
+	if($diggcount>$start){
+			$digglist=unserialize(sreadfile(S_ROOT.$fileprefix.'page_'.($i).'.txt'));
+			$digglist=array_slice($digglist,$start-$diggcount,$diggcount-$start);
+			$left =  $left-($diggcount-$start);
+	}
+ 	while($left&&((--$i)>=0)){
+		   $digglist_part=array();
+		   $digglist_part=unserialize(sreadfile(S_ROOT.$fileprefix.'page_'.($i).'.txt'));
+		   $sizeofdigglist_part=sizeof($digglist_part);
+		   if($sizeofdigglist_part>$left){
+			   $digglist_part=array_slice($digglist_part,0,$left);
+			   $digglist=array_merge($digglist,$digglist_part);
+			   $left= $left-$left;
+		   }else{
+				$digglist=array_merge($digglist,$digglist_part);
+				$left= $left-$sizeofdigglist_part;
+		   }
+	}
+
 } else {
 	//include_once(S_ROOT.'./source/function_cache.php');
-   // digg_cacheall();
+    //digg_cacheall();
 	$wherearr='';
 	if(!empty($uid))
 		 $wherearr=' where main.postuid='.$uid;
@@ -60,7 +72,7 @@ if(!check_cachelock('digg')&&file_exists($cachefile)) {
 		$digglist[] = $value;
 	}
 	if($_SGLOBAL['network']['digg']['cache']) {
-		swritefile($cachefile, serialize($digglist));
+
 	}
 }
 foreach($digglist as $key => $value) {
