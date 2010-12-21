@@ -14,7 +14,7 @@ if(empty($_SCONFIG['networkpublic'])) {
 }
 
 include_once(S_ROOT.'./source/every_highlight.php');
-
+include_once(S_ROOT.'./source/every_hotdigg.php');
 //根据postuser来查看
 $uid = empty($_GET['uid'])?0:intval($_GET['uid']);
 //显示数量
