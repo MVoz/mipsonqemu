@@ -456,6 +456,7 @@ function login_validate(obj)
 }
 function digg_validate(obj,seccode_id)
 {
+	alert('xx');
 	if(!check_subject('subject', 1, 80, 1))
 		return false;
 	if(!check_url('address',1,512))
