@@ -16,7 +16,7 @@ class mod_famous_class
      */
     public static function get_class_list()
     {
-        $class_list = app_db::select('ylmf_linktoolbartype', '*', '1 ORDER BY displayorder');
+        $class_list = app_db::select('ylmf_popularbar', '*', '1 ORDER BY displayorder');
         if ($class_list)
         {
             return $class_list;
@@ -36,7 +36,7 @@ class mod_famous_class
         {
             return false;
         }
-        $class = app_db::select('ylmf_linktoolbartype', '*', "classid='$class_id'");
+        $class = app_db::select('ylmf_popularbar', '*', "classid='$class_id'");
         if($class)
         {
             return $class[0];
@@ -69,7 +69,7 @@ class mod_famous_class
                     mod_login::message("自定义路径只允许是数字,字母和下划线组合!",'');
                 }
             }
-            app_db::query("SELECT count(*) as cnt FROM ylmf_linktoolbartype where classname = '$classnewname'");
+            app_db::query("SELECT count(*) as cnt FROM ylmf_popularbar where classname = '$classnewname'");
             $rs = app_db::fetch_one();
             if($rs['cnt']>0)
             {
@@ -77,7 +77,7 @@ class mod_famous_class
             }
             else
             {
-                app_db::query("INSERT INTO ylmf_linktoolbartype (classname,displayorder,path)VALUES ('$classnewname','$orderid','$path')");
+                app_db::query("INSERT INTO ylmf_popularbar (classname,displayorder,path)VALUES ('$classnewname','$orderid','$path')");
 
                 //mod_make_html::auto_update('catalog', app_db::insert_id());
                 mod_login::message("添加成功!",'?c=famous_class&a=index');
@@ -111,7 +111,7 @@ class mod_famous_class
                     mod_login::message("自定义路径只允许是数字,字母和下划线组合!",'?c=class&a=index&type='.$type.'&classid='.$returnid);
                 }
             }
-            app_db::query("UPDATE ylmf_linktoolbartype SET classname='$classnewname', path='$path', displayorder='$orderid' WHERE classid='$id'");
+            app_db::query("UPDATE ylmf_popularbar SET classname='$classnewname', path='$path', displayorder='$orderid' WHERE classid='$id'");
 
             //mod_make_html::auto_update('catalog', $id);
         }
@@ -132,7 +132,7 @@ class mod_famous_class
             return array();
         }
 
-        $search_rs = app_db::select('ylmf_linktoolbartype', '*', "classname like '%" . $keyword . "%'");
+        $search_rs = app_db::select('ylmf_popularbar', '*', "classname like '%" . $keyword . "%'");
         if( !$search_rs )
         {
             return array();
@@ -166,7 +166,7 @@ class mod_famous_class
                 $key=intval($key);
                 $newpath=$val;
                 $order[$key]=intval($order[$key]);
-                app_db::query("UPDATE ylmf_linktoolbartype SET path='$newpath', displayorder='$order[$key]' WHERE classid=$key");
+                app_db::query("UPDATE ylmf_popularbar SET path='$newpath', displayorder='$order[$key]' WHERE classid=$key");
             }
         }
     }
@@ -181,7 +181,7 @@ class mod_famous_class
     {
         $id = intval( $id );
         //mod_cool_site::delete_by_class($id);
-        app_db::delete('ylmf_linktoolbartype', "classid = {$id}");
+        app_db::delete('ylmf_popularbar', "classid = {$id}");
         //mod_make_html::auto_update('index');
     }
 
@@ -194,7 +194,7 @@ class mod_famous_class
     public static function update_site_count( $id )
     {
         $count = app_db::select('ylmf_site', 'count(*) count', "class='$id'" );
-        app_db::query("update ylmf_linktoolbartype set sitenum='" . $count[0]['count'] . "' where classid=$id");
+        app_db::query("update ylmf_popularbar set sitenum='" . $count[0]['count'] . "' where classid=$id");
     }
 
 }
