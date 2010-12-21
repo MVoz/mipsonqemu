@@ -464,7 +464,7 @@ a.c_link {
 .ntitle #thumbs{float:left;height:92px;padding:0px 3px;}
 #thumbs {height:220px;float:left;}	
 #thumbs ul{float:left;}
-#thumbs li {float: left;padding: 4px 3px;list-style: none;height:100px;width:89px;}
+#thumbs li {float: left;padding: 4px 2px;list-style: none;height:100px;width:89px;}
 #thumbs li img {height:75px;width:83px;	border: none;display: block;}
 #thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
 #thumbs li p{text-align:center;width:82px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
@@ -549,7 +549,7 @@ border:1px solid #DDD;}
 .box h2 , .boxnb h2 { font-size: 12px; }
 .box h3 , .boxnb h3{ font-size: 12px; }
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
-	.ntitle{ padding: 0 10px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
+	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
 	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-5px;line-height:11px; }
 		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
