@@ -1,6 +1,6 @@
 <div class="prse">
 <p>
-		<!--{loop $_SGLOBAL['linktoolbartype'] $key $value}-->
+		<!--{loop $_SGLOBAL['popularbar'] $key $value}-->
 					<!--{if $key==1 }-->
 							<span id="toolbar_$key" class="currentx">$value['classname']</span>
 					<!--{else}-->
@@ -8,15 +8,15 @@
 					<!--{/if}-->
 		<!--{/loop}--> 
 </p>
-<!--{loop $_SGLOBAL['linktoolbar'] $key $value}-->
+<!--{loop $_SGLOBAL['popularsite'] $key $value}-->
 					<!--{if $key==1 }-->
 							<ul class="toolbar_$key" style="display: block;">
 					<!--{else}-->
 							<ul class="toolbar_$key" style="display: none;">
 					<!--{/if}-->
 					<!--{loop $value $k $val}-->
-									<!--{if ($k%$_SGLOBAL['linktoolbartype'][$key]['rownum'])==0 }-->
-											<!--{if (($k%($_SGLOBAL['linktoolbartype'][$key]['rownum']*2))==0)}-->
+									<!--{if ($k%$_SGLOBAL['popularbar'][$key]['rownum'])==0 }-->
+											<!--{if (($k%($_SGLOBAL['popularbar'][$key]['rownum']*2))==0)}-->
 												<li class="row-list">
 											<!--{else}-->
 												<li class="row-list_l">
@@ -36,7 +36,7 @@
 					<!--{/loop}-->
 					</ul>
 <script language="javascript" type="text/javascript">		
-		$(".toolbar_$key em").attr("style","width:$_SGLOBAL['linktoolbartype'][$key]['width']px");
+		$(".toolbar_$key em").attr("style","width:$_SGLOBAL['popularbar'][$key]['width']px");
 		$(".toolbar_$key a").attr("target","_blank");
 		$(".toolbar_$key a").each(function(){
 			this.title=$(this).text();
