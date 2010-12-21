@@ -41,8 +41,8 @@ if(submitcheck('cachesubmit')) {
 		//diggcategory_cache();
 		browsertype_cache();
 		browser_cache();
-		linktoolbartype_cache();
-		linktoolbar_cache();
+		//linktoolbartype_cache();
+		//linktoolbar_cache();
 		hotdigg_cache();
 		//linkclass_cache();
 		//link_cache();
