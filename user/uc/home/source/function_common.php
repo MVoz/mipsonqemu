@@ -12,8 +12,8 @@ include_once(S_ROOT.'./data/data_browser.php');
 include_once(S_ROOT.'./data/data_linkerrtype.php');
 include_once(S_ROOT.'./data/data_popularbar.php');
 include_once(S_ROOT.'./data/data_popularsite.php');
-include_once(S_ROOT.'./data/data_linkclass.php');
-include_once(S_ROOT.'./data/data_siteclass.php');
+//include_once(S_ROOT.'./data/data_linkclass.php');
+//include_once(S_ROOT.'./data/data_siteclass.php');
 //debug outpur
 function debugOutput($name,$value){
 	global $_SGLOBAL;
