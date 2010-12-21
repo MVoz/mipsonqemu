@@ -32,7 +32,7 @@ class mod_famous_site
 		}
 	    $sql = 'SELECT SQL_CALC_FOUND_ROWS a.id, b.classid, b.classname, a.name, a.url, a.displayorder,
                        a.good, a.starttime, a.endtime, a.namecolor
-                FROM ylmf_mingzhan AS a, ylmf_linktoolbartype AS b
+                FROM ylmf_mingzhan AS a, ylmf_popularbar AS b
                 WHERE a.class = b.classid ' . $condition;
 		$query = app_db::query($sql);
 
@@ -88,7 +88,7 @@ class mod_famous_site
 
 	    $sql = 'SELECT SQL_CALC_FOUND_ROWS a.id, b.classid, b.classname, a.name, a.url, a.displayorder,
                        a.good, a.starttime, a.endtime, a.namecolor
-                FROM ylmf_mingzhan AS a, ylmf_linktoolbartype AS b
+                FROM ylmf_mingzhan AS a, ylmf_popularbar AS b
                 WHERE  a.class = b.classid ' . $condition;
 		$query = app_db::query($sql);
 
@@ -175,7 +175,7 @@ class mod_famous_site
 	{
 	    $sql = 'SELECT  a.id, b.classid, b.classname, b.path as classurl, a.name, a.url, a.displayorder,
                        a.good, a.starttime, a.endtime, a.namecolor
-                FROM ylmf_mingzhan AS a, ylmf_linktoolbartype AS b
+                FROM ylmf_mingzhan AS a, ylmf_popularbar AS b
                 WHERE a.class = b.classid order by b.displayorder, a.displayorder';
 		$query = app_db::query($sql);
 
