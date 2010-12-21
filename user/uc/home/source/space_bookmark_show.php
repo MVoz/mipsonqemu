@@ -86,7 +86,7 @@ $relatedlist=array();
 if($_SGLOBAL['inajax']==0){ 
 	foreach($bookmarklist as $key => $value) { 
 		$relatedlist=array_merge($relatedlist,getrelatesiteforbookmark($value['bmid'],$value['siteid'],$value['classid'],$value['tag']));
-	}
-	$relatedlist = sarray_rand($relatedlist,$_SC['today_related_site_num']);
+}	
+$relatedlist = sarray_rand($relatedlist,$_SC['today_related_site_num']);
 }
 ?>
