@@ -59,6 +59,7 @@ caption, th { text-align: left; }
 
 #TB_window .t_input{padding:2px;}
 #TB_window *{margin:0px;padding:1px 0 0 0;}
+#TB_window h1{font-size:1.2em;color:#FF6A00;border-bottom: 1px solid #CCCCCC;padding-bottom:5px;}
 #TB_secondLine {font-size:10px;color:#666;}
 
 #TB_window a:link,#TB_window a:visited,#TB_window a:active,#TB_window a:focus {color: #666;}
