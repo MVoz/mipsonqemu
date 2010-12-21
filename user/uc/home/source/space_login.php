@@ -17,6 +17,5 @@ $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuse
 //$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
 if(!empty($_SCOOKIE['cookiecheck']))
 	$cookiecheck = ' checked';
-$_TPL['css'] = 'network';
 include_once template("space_login");
 ?>

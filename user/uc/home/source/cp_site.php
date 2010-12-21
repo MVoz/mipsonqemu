@@ -56,6 +56,7 @@ switch($ret)
 }
 include_once(S_ROOT.'./source/function_site.php');
 if($op == 'get'){
+	include_once(S_ROOT.'./source/every_todayhotcollect.php');
 	//得到siteclassname
 	$item['classname']=getsiteclassname($item['class']);
 	//得到此site的相关site
