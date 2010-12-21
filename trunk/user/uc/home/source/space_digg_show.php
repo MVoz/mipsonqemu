@@ -23,6 +23,13 @@ if($uid){
 }
 if(!check_cachelock('digg')) {
 	//没有lock,则可以读取
+	if(!file_exists(S_ROOT.$fileprefix.'count.txt')){
+		include_once(S_ROOT.'./source/function_cache.php');
+		if($uid)
+			digg_cache(0,0,$uid,0);
+		else
+			digg_cacheall();
+	}
 	$count = sreadfile(S_ROOT.$fileprefix.'count.txt');
 	$maxdiggid=sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');
 	$maxpage = floor($maxdiggid/($_SC['digg_show_maxnum']/2));
@@ -57,14 +64,12 @@ if(!check_cachelock('digg')) {
 	}
 
 } else {
-	//include_once(S_ROOT.'./source/function_cache.php');
-    //digg_cacheall();
 	$wherearr='';
 	if(!empty($uid))
 		 $wherearr=' where main.postuid='.$uid;
 
     $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg')),0);
-	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main ".$wherearr." ORDER BY main.dateline LIMIT $start,$shownum");
+	$query = $_SGLOBAL['db']->query("SELECT main.*	FROM ".tname('digg')." main ".$wherearr." ORDER BY main.dateline DESC LIMIT $start,$shownum");
 
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['subject'] = getstr($value['subject'], 50);

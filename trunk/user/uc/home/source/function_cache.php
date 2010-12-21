@@ -1009,17 +1009,16 @@ function digg_cache($flag,$type,$userid,$diggid)
 			$wherearr=' where postuid='.$userid;
 		}
 	}
-
-    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg').$wherearr),0);
+	$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('digg').$wherearr),0);
 	$maxdiggid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT MAX(diggid) FROM ".tname('digg').$wherearr),0);
-	if($type=0||$type==1){
+	if(empty($wherearr))
+		$wherearr=' where ';
+	else
+		$wherearr=$wherearr.' and ';
+
+	if($type==0){
 		if($flag != 0)
 				$start = sreadfile(S_ROOT.$fileprefix.'maxdiggid.txt');		
-		if($wherearr=='')
-				$wherearr=' where ';
-		else
-				$wherearr=$wherearr.' and ';
-		
 		$start =(getdiggpage($start,$numperpage)*$numperpage)+1;
 		while($start<=$maxdiggid){
 			$end = $start+$numperpage-1;
@@ -1057,10 +1056,10 @@ function digg_cache($flag,$type,$userid,$diggid)
 function digg_cacheall()
 {
 	global $_SGLOBAL;
-	digg_cache(0,0,0);
+	digg_cache(0,0,0,0);
 	$query = $_SGLOBAL['db']->query("SELECT  DISTINCT postuid FROM ".tname('digg'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-		digg_cache(0,0,$value['postuid']);
+		digg_cache(0,0,$value['postuid'],0);
 	}
 }
 
