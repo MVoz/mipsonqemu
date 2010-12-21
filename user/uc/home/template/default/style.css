@@ -469,7 +469,7 @@ a.c_link {
 #thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
 #thumbs li p{text-align:center;width:90px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
 
-#thumbs .big{float:left;width:395px;height:220px;/*border:1px solid #eee;border-width:0px 1px 0px 1px;*/}
+#thumbs .big{float:left;width:395px;height:220px;background:url("image/g.png") no-repeat scroll 0px -680px transparent;}
 #thumbs .big .big_l{float:right;width:120px;height:150px;overflow:hidden;padding:5px;margin-bottom:3px;;}
 #thumbs .big .big_l .bimg{float:left;width:120px;height:100px;overflow:hidden;}
 #thumbs .big .big_l a img{display:block;height: 90px;width:112px;border: 1px solid #ccc;padding:3px;text-align:center;}
@@ -534,10 +534,10 @@ border:1px solid #DDD;}
 #toolbar  {background:url("image/g.png") repeat-x scroll 0 -950px transparent;height:32px;min-width:990px;position:relative;z-index:0;}
 #toolbar .tb_m {height:32px;margin:0 auto;position:relative;width:970px;}
 #toolbar .tb_menu  {clip:rect(-3px, 500px, 3000px, 0pt);height:32px;left:0;position:absolute;top:0;}
-#toolbar .tb_menu li {background:url("image/g.png") no-repeat scroll 0 -747px transparent;float:left;padding:0px 0px;z-index:-99;width:70px;}
+#toolbar .tb_menu li {background:url("image/g.png") no-repeat scroll -150px -571px transparent;float:left;padding:0px 0px;z-index:-99;width:70px;}
 #toolbar .tb_menu a {color:#FFF;display:block;font-size:14px;height:32px;line-height:32px;outline:medium none;text-align:center;text-decoration:none;width:100%;}
-#toolbar .tb_menu .current a,#toolbar .tb_menu .current a:hover {background:url("image/g.png") no-repeat scroll  0 -700px transparent;}
-#toolbar .tb_menu li a:hover,#toolbar .tb_menu li.selected a {background:url("image/g.png") no-repeat scroll  0 -700px;text-decoration:none;}
+#toolbar .tb_menu .current a,#toolbar .tb_menu .current a:hover {background:url("image/g.png") no-repeat scroll -15px -570px transparent;}
+#toolbar .tb_menu li a:hover,#toolbar .tb_menu li.selected a {background:url("image/g.png") no-repeat scroll -15px -570px;text-decoration:none;}
 
 
 /*************************************************NETWORK PAGE***/
