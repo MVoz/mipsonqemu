@@ -19,6 +19,8 @@ $_SGLOBAL['hotdigg'] = unserialize(sreadfile($cachefile));
 function check_hotdigg_cache() {
 		global $_SGLOBAL;
 		$cachefile = S_ROOT.'./data/data_hotdigg.txt';
+		if(!file_exists($cachefile))
+			return false;
 		$ftime = filemtime($cachefile);
 		//24 hours
 		if($_SGLOBAL['timestamp'] - $ftime < (24*60*60)) {

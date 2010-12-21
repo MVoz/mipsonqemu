@@ -87,21 +87,21 @@ if($classid)
 	//显示导航
 	//include_once(S_ROOT.'./source/space_bookmark_show.php');
 	//获取显示的nav分类	
-	if(!file_exists($S_ROOT.'./data/navigation_cache.txt'))
+	if(!file_exists(S_ROOT.'./data/navigation_cache.txt'))
 	{
-		include_once($S_ROOT.'./source/function_cache.php');
+		include_once(S_ROOT.'./source/function_cache.php');
 		navigation_cache();			
 	}
 	$navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
 }
 
-if(!file_exists($S_ROOT.'./data/navigation_siteclass.txt'))
+if(!file_exists(S_ROOT.'./data/navigation_siteclass.txt'))
 {
-	include_once($S_ROOT.'./source/function_cache.php');
+	include_once(S_ROOT.'./source/function_cache.php');
 	siteclass_cache();			
 }
 //获取class分类
-$siteclass = unserialize(sreadfile($S_ROOT.'./data/navigation_siteclass.txt'));
+$siteclass = unserialize(sreadfile(S_ROOT.'./data/navigation_siteclass.txt'));
 $theurl="sitepage";
 //分页
 $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|');
