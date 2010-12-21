@@ -1,6 +1,7 @@
 <div  id="thumbs">
-<ul style="width:265px;">
-<!--{loop $item['relate'] $key $value}-->
+<ul style="width:285px;">
+<!--{loop $todayhotcollect['site'] $key $value}-->
+<!--{if $key>3 }-->
 <li>
 	<a href="$value[url]" title="{$value[subject]}" target="_blank" class="thumb">
 			<!--{if empty($value['picflag'])}-->
@@ -11,12 +12,14 @@
 	</a>
 	<p><a href="$value[url]">$value[subject]</a></p>							
 </li>
+<!--{/if}-->
 <!--{/loop}-->
 </ul>
 
 
 <div class="big" >
-<!--{loop $item['bigrelate'] $key $value}-->
+<!--{loop $todayhotcollect['site'] $key $value}-->
+<!--{if $key<3 }-->
 		<div class="big_l">
 				<a href="$value[url]" title="{$value[subject]}" class="bimg">
 					<!--{if empty($value['picflag'])}-->
@@ -37,6 +40,7 @@
 				</p>
 				-->
 		</div>
+<!--{/if}-->
 <!--{/loop}-->
 		<div class="hottag">
 						<p><span>特色分类:</span>								
