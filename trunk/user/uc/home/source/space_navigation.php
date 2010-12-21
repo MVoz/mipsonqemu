@@ -114,13 +114,21 @@ if($classid)
 	//include_once(S_ROOT.'./source/space_bookmark_show.php');
 	//获取显示的nav分类
 	
-	if(!file_exists( S_ROOT.'./data/navigation_cache.txt'))
+	if(!file_exists($S_ROOT.'./data/navigation_cache.txt'))
 	{
-		include_once(S_ROOT.'./source/function_cache.php');
+		include_once($S_ROOT.'./source/function_cache.php');
 		navigation_cache();			
 	}
 	$navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
 }
+
+if(!file_exists($S_ROOT.'./data/navigation_siteclass.txt'))
+{
+	include_once($S_ROOT.'./source/function_cache.php');
+	siteclass_cache();			
+}
+$siteclass = unserialize(sreadfile($S_ROOT.'./data/navigation_siteclass.txt'));
+
 
 //获取书签分类列表
 //获取class分类
@@ -155,7 +163,7 @@ foreach($bookmarklist as $key => $value) {
 $theurl="sitepage";
 //分页
 $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|');
-$_TPL['css'] = 'network';
+//$_TPL['css'] = 'network';
 include_once template("space_navigation");
 /*
 }

@@ -111,8 +111,8 @@ function link_post($POST, $olds=array()) {
 			//cache更新，先获得classid,如果classid为0则无动作
 			if(!empty($olds[classid]))
 			{
-				include_once(S_ROOT.'./source/function_cache.php');
-				link_cache_classid($olds[classid]);
+				//include_once(S_ROOT.'./source/function_cache.php');
+				//link_cache_classid($olds[classid]);
 			}
 	//角色切换
 	if(!empty($__SGLOBAL)) $_SGLOBAL = $__SGLOBAL;

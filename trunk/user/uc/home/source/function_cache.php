@@ -408,34 +408,30 @@ function popularsite_cache()
 //siteclass
 function siteclass_cache()
 {
-/*
 	global $_SGLOBAL;
-
-	$_SGLOBAL['siteclass'] = array();
-
+	$siteclass = array();
 	$class_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main WHERE main.parentid=0");
 	while($value =$_SGLOBAL['db']->fetch_array($class_query))
 	{
 		//获取二级目录
 		$classnd_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main WHERE main.parentid=".$value['classid']);
 		while($classnd_value =$_SGLOBAL['db']->fetch_array($classnd_query))
-		{			
-		
-			//获取本层class的tag
-			
+		{	
+			/*
+			//获取本层class的tag			
 			$classtag_query  = $_SGLOBAL['db']->query("SELECT field.tagid,field.tagname FROM ".tname('linkclass')." main	LEFT JOIN ".tname('linkclasstag')." field ON main.classid=field.classid  WHERE main.classid=".$classnd_value['classid']);
 			while($classtag_value =$_SGLOBAL['db']->fetch_array($classtag_query))
 			{
 						$classnd_value['tag'][]= $classtag_value;
-			}
-			
+			}			
+			*/
 			$value['son'][]=$classnd_value;
 		}
-		$_SGLOBAL['siteclass'][$value['classid']]=$value;
+		$siteclass[$value['classid']]=$value;
 	}
-	cache_write('siteclass', "_SGLOBAL['siteclass']", $_SGLOBAL['siteclass']);
-*/
+	swritefile($S_ROOT.'./data/navigation_siteclass.txt', serialize($siteclass));
 }
+/*
 //linkclass	
 function linkclass_cache()
 {
@@ -465,6 +461,7 @@ function linkclass_cache()
 	}
 	cache_write('linkclass', "_SGLOBAL['linkclass']", $_SGLOBAL['linkclass']);
 }
+*/
 function createCategoryXmlCache($fp,$arr)
 {
 		global $_SGLOBAL,$_SC;
@@ -661,7 +658,6 @@ function usermenu_cache()
 	$usermenulist=array();
 	foreach($_SGLOBAL['browsertype'] as $k=>$v)
 	{
-		
 		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=".$groupid.' AND browserid='.$v);
 		while($value =$_SGLOBAL['db']->fetch_array($query))
 		{
@@ -685,12 +681,6 @@ function site_cache_2classid($classid)
 	$groupid = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT main.parentid FROM ".tname('siteclass')." main where main.classid=".$classitem['parentid']));
 	if($groupid != 0)
 		return;
-	/*
-	if(!file_exists(S_ROOT.'./data/sitecache/'.$classid))
-	{
-		mkdir(S_ROOT.'./data/sitecache/'.$classid, 0777);	
-	}
-	*/
 	//遍历子目录
 	$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('siteclass')." main where main.parentid=".$classid);	
 	while($value =$_SGLOBAL['db']->fetch_array($query))
@@ -755,6 +745,7 @@ function sitetag_cache($tagid)
 		swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist));
 	swritefile($fileprefix.'_'.$tagid.'_count.txt', getsitetagtotalnum($tagid)) ;
 }
+/*
 //link cache
 function link_cache_classid($classid)
 {
@@ -800,6 +791,7 @@ function link_cache()
 	   link_cache_classid($value['classid']);
 	}
 }
+*/
 //navigation的页面的cache，读取coolclass和coolsite
 function navigation_cache()
 {
@@ -812,8 +804,6 @@ function navigation_cache()
 			$qry=$_SGLOBAL['db']->query("SELECT main.url FROM ".tname('coolsite')." main where main.class=".$value['classid']." limit 8");
 			while($val =$_SGLOBAL['db']->fetch_array($qry))
 			{
-			//	$val['link_description']= getstr($val['remark'], $_SC['description_nbox_title_length'], 0, 0, 0, 0, -1);
-			//	$val['link_subject']= getstr($val['name'], $_SC['subject_nbox_title_length'], 0, 0, 0, 0, -1);
 				$val['url']=handleUrlString($val['url']);
 				$site_q=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('site')." main where main.hashurl=".qhash($val['url'])." limit 1");
 				$v =$_SGLOBAL['db']->fetch_array($site_q);
@@ -825,20 +815,6 @@ function navigation_cache()
 						$value['son'][]=$v;
 					}
 			}
-			/*
-			//获取此类的子分类
-			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclass')." main where main.parentid=".$value['groupid']);
-			while($val =$_SGLOBAL['db']->fetch_array($qry))
-			{
-				$value['sonclass'][]=$val;
-			}
-			//获取此类的关键词
-			$qry=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('linkclasstag')." main where main.classid=".$value['classid']." limit 5");
-			while($val =$_SGLOBAL['db']->fetch_array($qry))
-			{
-				$value['sontag'][]=$val;
-			}
-			*/
 			$navlist[]=$value;
 	}
 	swritefile($S_ROOT.'./data/navigation_cache.txt', serialize($navlist));
