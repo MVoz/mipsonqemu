@@ -32,6 +32,8 @@ function readsitecachefile($type)
 function check_todayhighlist_cache($filename) {
 		global $_SGLOBAL;
 		$ftime = filemtime($filename);
+		if(!file_exists($cachefile))
+			return false;
 		//24 hours
 		if($_SGLOBAL['timestamp'] - $ftime < (24*60*60)) {
 			return true;

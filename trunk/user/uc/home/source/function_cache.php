@@ -429,7 +429,7 @@ function siteclass_cache()
 		}
 		$siteclass[$value['classid']]=$value;
 	}
-	swritefile($S_ROOT.'./data/navigation_siteclass.txt', serialize($siteclass));
+	swritefile(S_ROOT.'./data/navigation_siteclass.txt', serialize($siteclass));
 }
 /*
 //linkclass	
@@ -817,7 +817,7 @@ function navigation_cache()
 			}
 			$navlist[]=$value;
 	}
-	swritefile($S_ROOT.'./data/navigation_cache.txt', serialize($navlist));
+	swritefile(S_ROOT.'./data/navigation_cache.txt', serialize($navlist));
 }
 //每日热门标签
 function everydayhottag_cache()
@@ -830,7 +830,7 @@ function everydayhottag_cache()
 		$tmp[]=$value;
 	}
 	$todayhottag = sarray_rand($tmp,$_SC['hot_tag_num']);
-	swritefile( S_ROOT.'./data/todayhottag.txt', serialize($todayhottag));
+	swritefile(S_ROOT.'./data/todayhottag.txt', serialize($todayhottag));
 }
 //每日热门分类
 function everydayhotclass_cache()
@@ -843,56 +843,70 @@ function everydayhotclass_cache()
 		$tmp[]=$value;
 	}
 	$todayhotclass = sarray_rand($tmp,$_SC['hot_class_num']);
-	swritefile( S_ROOT.'./data/todayhotclass.txt', serialize($todayhotclass));
+	swritefile(S_ROOT.'./data/todayhotclass.txt', serialize($todayhotclass));
+}
+//推荐站点列表，及为site中设置推荐属性，每日推荐和相似站点的剩余部分皆来自此处
+function topsite_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$topsiteids = array();
+	$q=$_SGLOBAL['db']->query("SELECT main.id FROM ".tname('site')." main where main.good=1 order by main.gooddisplayorder");
+	while($v =$_SGLOBAL['db']->fetch_array($q)){
+			$topsiteids[]=$v['id'];
+	}
+	swritefile(S_ROOT.'./data/topsiteids.txt', serialize($topsiteids));
 }
 //每日推荐
 function everydayhot_cache()
 {
 	global $_SGLOBAL,$_SC;
 	$todayhot = array();
-	$_SCONFIG['todayhot']=array(1,3,6,10);
-	$todayhotid = sarray_rand($_SCONFIG['todayhot'], 1);
+	if(!file_exists(S_ROOT.'./data/topsiteids.txt'))
+	{
+		topsite_cache();			
+	}	
+	$todayhotids=unserialize(sreadfile(S_ROOT.'./data/topsiteids.txt'));
+	$todayhotid = sarray_rand($todayhotids, 1);
 	foreach($todayhotid as $key=>$val){
 		$value = getsite($val);
 		$value['short_subject'] = getstr(trim($value['subject']), $_SC['subject_todayhot_length']);	
 		$value['short_description'] = getstr(trim($value['description']), $_SC['description_todayhot_length']);
 		$todayhot= $value;		
 	}
-	swritefile( S_ROOT.'./data/todayhot.txt', serialize($todayhot));
+	swritefile(S_ROOT.'./data/todayhot.txt', serialize($todayhot));
 }
 //首页每日热藏
 function everydayhotcollect_cache()
 {
 	global $_SGLOBAL,$_SC;
 	$todayhotcollect = array();
-	$_SCONFIG['hotcollect']=array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
-	$todayhotid = sarray_rand($_SCONFIG['hotcollect'], 9);
+	if(!file_exists(S_ROOT.'./data/topsiteids.txt'))
+	{
+		topsite_cache();			
+	}	
+	$todayhotids=unserialize(sreadfile(S_ROOT.'./data/topsiteids.txt'));
+	$todayhotid = sarray_rand($todayhotids, 9);
 	foreach($todayhotid as $key=>$val){
-		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('link')." WHERE linkid=$val");
-		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-				$value['link_short_subject'] = getstr(trim($value['link_subject']), $_SC['subject_todayhot_length']);	
-				$value['link_short_description'] = getstr(trim($value['link_description']), $_SC['description_todayhot_length']);
-				include_once(S_ROOT.'./source/function_link.php');
-				$value['link_tag'] = convertlinktag($value['linkid'],$value['link_tag']);
-				$value['link_tag'] = empty($value['link_tag'])?array():unserialize($value['link_tag']);
-				$todayhotcollect['son'][]= $value;
-		}	
+			$value = getsite($val);
+			$value['short_subject'] = getstr(trim($value['subject']), $_SC['subject_todayhot_length']);	
+			$value['short_description'] = getstr(trim($value['description']), $_SC['description_todayhot_length']);
+			$todayhotcollect['son'][]= $value;
 	}
 	//推荐分类
 	$todayclass=array();
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linkclass')." WHERE groupid between 2000 and 3000");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-				$todayclass[]= $value;
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('siteclass')." WHERE parentid between 0 and 10");
+	while ($value = $_SGLOBAL['db']->fetch_array($query)){
+		$todayclass[]= $value;
 	}	
 	$todayhotcollect['sonclass'] = sarray_rand($todayclass, 7);
 	//推荐标签
 	$todaytag=array();
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktag')." order by totalnum DESC limit 20");
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('sitetag')." order by sitetotalnum DESC limit 20");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-				$todaytag[]= $value;
+		$todaytag[]= $value;
 	}	
 	$todayhotcollect['sontag'] = sarray_rand($todaytag, 7);
-	swritefile( S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
+	swritefile(S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
 }
 /*
 	$category:digg分类，为0不考虑
@@ -1037,7 +1051,7 @@ function site_today_cache($type)
 	while($value =$_SGLOBAL['db']->fetch_array($query)){
 		$todayview[]=getsite($value['id']);
 	}
-	swritefile( S_ROOT.'./data/site_'.$type.'.txt', serialize($todayview));
+	swritefile(S_ROOT.'./data/site_'.$type.'.txt', serialize($todayview));
 }
 function site_today_cacheall()
 {
