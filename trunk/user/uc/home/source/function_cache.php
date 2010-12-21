@@ -377,45 +377,33 @@ function hotdigg_cache()
 	swritefile(S_ROOT.'./data/data_hotdigg.txt', serialize($hotdigg));
 }
 //linktoolbartype
-function linktoolbartype_cache()
+function popularbar_cache()
 {
 	global $_SGLOBAL;
 
-	$_SGLOBAL['linktoolbartype'] = array();
+	$_SGLOBAL['popularbar'] = array();
 	// 从数据库获取
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype')." order by displayorder");
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('popularbar')." order by displayorder");
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-	    $_SGLOBAL['linktoolbartype'][$value[classid]] = $value;
+	    $_SGLOBAL['popularbar'][$value[classid]] = $value;
 	}
-	cache_write('linktoolbartype', "_SGLOBAL['linktoolbartype']", $_SGLOBAL['linktoolbartype']);
+	cache_write('popularbar', "_SGLOBAL['popularbar']", $_SGLOBAL['popularbar']);
 }
 //linktoolbar
-function linktoolbar_cache()
+function popularsite_cache()
 {
 	global $_SGLOBAL;
 //ramen 20100911合并114 database
-	$_SGLOBAL['linktoolbar'] = array();
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
+	$_SGLOBAL['popularsite'] = array();
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('popularbar'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
 		// 从数据库获取
 		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('mingzhan')." where class=".$value[classid]." order by displayorder");	 
 		while($v = $_SGLOBAL['db']->fetch_array($q)){
-			$_SGLOBAL['linktoolbar'][$value[classid]][] = $v;
+			$_SGLOBAL['popularsite'][$value[classid]][] = $v;
 		}
 	}
-	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
-/*
-	$_SGLOBAL['linktoolbar'] = array();
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbartype'));
-	while($value = $_SGLOBAL['db']->fetch_array($query)){
-		// 从数据库获取
-		$q = $_SGLOBAL['db']->query("SELECT * FROM ".tname('linktoolbar')." where classid=".$value[id]);	 
-		while($v = $_SGLOBAL['db']->fetch_array($q)){
-			$_SGLOBAL['linktoolbar'][$value[id]][] = $v;
-		}
-	}
-	cache_write('linktoolbar', "_SGLOBAL['linktoolbar']", $_SGLOBAL['linktoolbar']);
-*/
+	cache_write('popularsite', "_SGLOBAL['popularsite']", $_SGLOBAL['popularsite']);
 }
 //siteclass
 function siteclass_cache()
