@@ -467,7 +467,7 @@ a.c_link {
 #thumbs li {float: left;padding: 4px 2px;list-style: none;height:100px;width:89px;}
 #thumbs li img {height:75px;width:83px;	border: none;display: block;}
 #thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
-#thumbs li p{text-align:center;width:82px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
+#thumbs li p{text-align:center;width:90px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
 
 #thumbs .big{float:left;width:395px;height:220px;/*border:1px solid #eee;border-width:0px 1px 0px 1px;*/}
 #thumbs .big .big_l{float:right;width:120px;height:150px;overflow:hidden;padding:5px;margin-bottom:3px;;}
@@ -479,7 +479,7 @@ a.c_link {
 #thumbs .big .hottag p span {color:#717171;font-weight:bold;}
 #thumbs .big .hottag p a {margin:0 3px;}
 
-#rdsect{float:right;width:270px;height:220px;}
+#rdsect{float:right;width:250px;height:220px;}
 #rdsect p{clear:both;}
 #rdsect .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
 #rdsect .relate_tag{height:20px;line-height:20px;}
@@ -587,7 +587,7 @@ border:1px solid #DDD;}
 		.bklt .nhot{ float: left; color: #EF9822; }
 		.bklt .nhot a{ color: #EF9822; }
 
-	.d_avatar{ float: left; margin: 0px 0px 0px 0px;}
+	.d_avatar{ float: left; margin:0px;}
 	.d_avatar img{ width: 112px; height: 83px; }
 	/*
 		digg
@@ -760,16 +760,12 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .soft h1 ul li{font-weight:normal;font-size:110%;line-height:25px;color:#666; height:25px; /*list-style:url(image/list_icon.gif);*/ margin-left:25px; border-bottom:dotted 1px #939393; padding-left:10px;}
 
 .soft p{padding:10px;}
-.soft .btn{text-align:center;float:left;margin:2px 3px;color:#FFF;background-color:#ccc;border:0 none;font-size:12px;font-weight:bold;height:25px;	line-height:25px;width:80px;}
-.soft .btn:hover,.soft .cur{background-color:#FF6A00;}
 
 /*step*/
 #step { list-style-position:inside;margin:5px 2px 5px 1px ;display:block;float:left;}
 #step.thst li{width:210px;margin:5px;}
 #step.thst li a{width:210px;}
 #step li{height:45px;list-style:none;float:left;background-color:#E9EEF2;/*background-image: url(image/step1.gif);background-repeat: no-repeat;background-position: right top;*/}
-#step li.secst{background-color:#7BAD00;background-image: url(image/step2.gif);}
-#step li.thdst{background-color:#FF6A00;background-image: url(image/step3.gif);}
 #step li a em{width:150px;display:block;margin:4px 0 0 10px;font-style:normal;font-weight:bold;color:#8FC320}
 #step li a span{width:200px;display:block;margin-left:10px;font-weight:normal;color:#888;}
 #step li a{height:41px;display:block;}
