@@ -890,7 +890,7 @@ function everydayhotcollect_cache()
 			$value = getsite($val);
 			$value['short_subject'] = getstr(trim($value['subject']), $_SC['subject_todayhot_length']);	
 			$value['short_description'] = getstr(trim($value['description']), $_SC['description_todayhot_length']);
-			$todayhotcollect['son'][]= $value;
+			$todayhotcollect['site'][]= $value;
 	}
 	//推荐分类
 	$todayclass=array();
@@ -898,14 +898,14 @@ function everydayhotcollect_cache()
 	while ($value = $_SGLOBAL['db']->fetch_array($query)){
 		$todayclass[]= $value;
 	}	
-	$todayhotcollect['sonclass'] = sarray_rand($todayclass, 7);
+	$todayhotcollect['class'] = sarray_rand($todayclass, 7);
 	//推荐标签
 	$todaytag=array();
 	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('sitetag')." order by sitetotalnum DESC limit 20");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$todaytag[]= $value;
 	}	
-	$todayhotcollect['sontag'] = sarray_rand($todaytag, 7);
+	$todayhotcollect['tag'] = sarray_rand($todaytag, 7);
 	swritefile(S_ROOT.'./data/todayhotcollect.txt', serialize($todayhotcollect));
 }
 /*
