@@ -164,5 +164,31 @@ function readtemplate($name) {
 	$content = sreadfile($tplfile);
 	return $content;
 }
+function parse_static($tpl)
+{
+	$tplfile = S_ROOT.'./data/tpl_cache/template_default_'.$tpl.'.php';
 
+	//read
+	if(!file_exists($tplfile)) {
+			return;
+	}
+	$template = sreadfile($tplfile);
+	if(empty($template)) {
+		exit("Template file : $tplfile Not found or have no access!");
+	}
+	$template = preg_replace("/\<\!\-\-\<static\s+([a-z0-9_\/]+)\>\-\-\>(.+?)\<\!\-\-\<\/static\>\-\-\>/ies", "readstatic('\\1')", $template);
+	if(!swritefile($tplfile, $template)) {
+		exit("File: $objfile can not be write!");
+	}
+}
+function readstatic($name) {
+	global $_SGLOBAL, $_SCONFIG; 	
+	$tplfile = S_ROOT.'./data/htm_cache/'.$name.'.htm';
+	
+	if(!file_exists($tplfile)) {
+		return;
+	}
+	$content = sreadfile($tplfile);
+	return $content;
+}
 ?>

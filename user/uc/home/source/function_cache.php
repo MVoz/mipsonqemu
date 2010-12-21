@@ -405,6 +405,12 @@ function popularsite_cache()
 	}
 	cache_write('popularsite', "_SGLOBAL['popularsite']", $_SGLOBAL['popularsite']);
 }
+function popular_htm_cache()
+{
+ include_once(S_ROOT.'./data/data_popularbar.php');
+ include_once(S_ROOT.'./data/data_popularsite.php');
+ 
+}
 //siteclass
 function siteclass_cache()
 {

@@ -24,6 +24,7 @@ $page=empty($_GET['page'])?0:intval($_GET['page']);
 
 include_once(S_ROOT.'./source/space_digg_show.php');
 
+
 include_once template("space_all");
 
 //检查缓存
@@ -38,4 +39,5 @@ function check_network_cache($type) {
 	}
 	return false;
 }
+
 ?>
