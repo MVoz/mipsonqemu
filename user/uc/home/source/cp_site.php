@@ -60,7 +60,8 @@ if($op == 'get'){
 	//得到siteclassname
 	$item['classname']=getsiteclassname($item['class']);
 	//得到此site的相关site
-	$item['relate'] = getrelatesite($item['class'],$siteid);
+	$todayhotcollect['site'] = getrelatesite($item['class'],$siteid);
+/*
 	$big_nums = 0;
 	foreach($item['relate'] as $key=>$v){
 		$item['bigrelate'][$key] = $item['relate'][$key];
@@ -69,9 +70,10 @@ if($op == 'get'){
 		if((++$big_nums)>=$_SC['related_big_site_num'])
 			break;
 	}
+*/
 	//获取hotclass
-	$hotclass = unserialize(sreadfile(S_ROOT.'./data/todayhotclass.txt'));
-	$hottag = unserialize(sreadfile(S_ROOT.'./data/todayhottag.txt'));
+	//$hotclass = unserialize(sreadfile(S_ROOT.'./data/todayhotclass.txt'));
+	//$hottag = unserialize(sreadfile(S_ROOT.'./data/todayhottag.txt'));
 }
 elseif($op == 'edit'){
 		//处理edit提交
