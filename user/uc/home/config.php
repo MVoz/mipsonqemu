@@ -71,6 +71,7 @@ $_SC['unknown_tag']='什么也没留下...';
 $_SC['digg_name']='嘀咕';
 
 $_SC['related_site_num']=9;
+$_SC['today_related_site_num']=8;
 $_SC['related_big_site_num']=3;
 
 $_SC['hot_tag_num']=8;
