@@ -40,12 +40,12 @@
 <!--{/loop}-->
 		<div class="hottag">
 						<p><span>特色分类:</span>								
-							<!--{loop $hotclass $key $value}-->								
+							<!--{loop $todayhotcollect['class'] $key $value}-->								
 								<a  href="space.php?do=navigation&classid=$value[classid]">$value[classname]</a>|
 							<!--{/loop}-->
 						</p>
 						<p><span>热门标签:</span>
-						<!--{loop $hottag $key $value}-->								
+						<!--{loop $todayhotcollect['tag'] $key $value}-->								
 								<a href="space.php?do=sitetag&tagid=$value[tagid]">$value[tagname]</a>|
 						<!--{/loop}-->						
 						</p>
