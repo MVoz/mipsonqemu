@@ -1045,6 +1045,7 @@ function template($name) {
 		if(TEMPLATE_CACHE_UPDATE||!file_exists($objfile)) {
 			include_once(S_ROOT.'./source/function_template.php');
 			parse_template($tpl);
+			parse_static($name);
 		}
 	}
 	return $objfile;
