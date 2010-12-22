@@ -1,3 +1,4 @@
+<!--<static navigation_menu>--> 
 <h2 class="ntitle">
 	<em>导航菜单&raquo;</em>
 </h2> 
@@ -7,7 +8,7 @@
 						<dt>$value['classname']</dt>
 							<dd >
 								<!--{loop $value[son] $key $valueson}-->  								
-								<a  id="$valueson['classid']">$valueson['classname']</a>
+								<a id="$valueson['classid']">$valueson['classname']</a>
 								<!--{/loop}-->
 							</dd>
 					</dl>
@@ -19,3 +20,4 @@
 			$(this).attr("onclick","getAjax('siteview','"+this.id+"');");
 		});
 </script>
+<!--</static>--> 
