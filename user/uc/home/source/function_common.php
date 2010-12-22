@@ -1098,7 +1098,6 @@ function getcount($tablename, $wherearr=array(), $get='COUNT(*)') {
 //调整输出
 function ob_out() {
 	global $_SGLOBAL, $_SCONFIG, $_SC;
-
 	$content = ob_get_contents();
 
 	$preg_searchs = $preg_replaces = $str_searchs = $str_replaces = array();
@@ -1133,7 +1132,7 @@ function ob_out() {
 	if($str_searchs) {
 		$content = trim(str_replace($str_searchs, $str_replaces, $content));
 	}
-
+	ob_produce_static_html_cache($content);
 	obclean();
 	if($_SGLOBAL['inajax']) {
 		xml_out($content);

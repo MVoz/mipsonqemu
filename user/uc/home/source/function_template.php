@@ -176,17 +176,19 @@ function parse_static($tpl)
 	if(empty($template)) {
 		exit("Template file : $tplfile Not found or have no access!");
 	}
-	$template = preg_replace("/\<\!\-\-\<static\s+([a-z0-9_\/]+)\>\-\-\>(.+?)\<\!\-\-\<\/static\>\-\-\>/ies", "readstatic('\\1')", $template);
+	$template = preg_replace("/\<\!\-\-\<static\s+([a-z0-9_\/]+)\>\-\-\>(.+?)\<\!\-\-\<\/static\>\-\-\>/ies", "readstatic('\\1','\\2')", $template);
 	if(!swritefile($tplfile, $template)) {
 		exit("File: $objfile can not be write!");
 	}
 }
-function readstatic($name) {
+function readstatic($name,$original) {
 	global $_SGLOBAL, $_SCONFIG; 	
 	$tplfile = S_ROOT.'./data/htm_cache/'.$name.'.htm';
 	
-	if(!file_exists($tplfile)) {
-		return;
+	if(!file_exists($tplfile)) {		
+		$original=str_replace("\\\"", "\"", $original);
+		$original = '<!--<static '.$name.'>-->'.$original.'<!--</static>-->';
+		return $original;
 	}
 	$content = sreadfile($tplfile);
 	return $content;
