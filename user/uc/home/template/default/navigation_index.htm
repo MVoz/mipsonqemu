@@ -1,0 +1,35 @@
+<!--<static navigation_index>--> 
+<!--{loop $navlist $key $bookmarklist}-->
+<div  style="height:105px;" class="ntitle">
+	<a class="navname" id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
+		$bookmarklist['classname']
+	</a>
+	<div id="thumbs" >
+	<ul class="thumbs noscript">
+	<!--{loop $bookmarklist['son'] $key $value}-->
+	<li class="mgn2">
+		<a href="$value[url]" title="{$value[subject]}" class="thumb" onclick="updatesiteview($value['siteid'])">
+		<!--{if empty($value[picflag])}-->
+			<img  src="$value['tmppic']">
+		<!--{else}-->
+			<img  src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+		<!--{/if}-->
+		</a>
+		<span><a></a></span>						
+	</li>
+	<!--{/loop}-->
+	</ul>
+	</div>
+</div>	
+<!--{/loop}-->
+<script language="javascript" type="text/javascript">	
+		$(".mgn2").each(function(){
+			var o = $(this);
+			var url = o.children(".thumb").attr("href");
+			var title = o.children(".thumb").attr("title");
+			o.children("span").children("a").attr("href",url);
+			o.children("span").children("a").html(title);
+		});
+		$(".mgn2 > span").css({"height": "15px", "text-align": "center","width":"90px" });		
+</script>
+<!--</static>--> 
