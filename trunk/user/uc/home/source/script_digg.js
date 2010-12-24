@@ -7,12 +7,12 @@
 function digg_submit(obj)
 {
 	mainForm = obj.form;
-	forms = $('attachbody').getElementsByTagName("FORM");
-	albumid = $('uploadalbum').value;
+	forms = $obj('attachbody').getElementsByTagName("FORM");
+	albumid = $obj('uploadalbum').value;
 	upload();
 }
 function validate(obj) {
-    var subject = $('subject');
+    var subject = $obj('subject');
     if (subject) {
     	var slen = strlen(subject.value);
         if (slen < 1 || slen > 80) {
@@ -21,7 +21,7 @@ function validate(obj) {
             return false;
         }
     }
-    var address = $('address');
+    var address = $obj('address');
     if (address) {
         var   regUrl   =   /([http|https]\:\/\/)([\w.]+)(\/[\w-   \.\/\?%&=]*)?/gi;
 		var   result   =   address.value.match(regUrl);
@@ -31,7 +31,7 @@ function validate(obj) {
 				return false;
         }
     }
-	var tag = $('tag');
+	var tag = $obj('tag');
     if (tag) {
     	var slen = strlen(tag.value);
         if (slen < 1 ) {
@@ -40,7 +40,7 @@ function validate(obj) {
             return false;
         }
     }
-	var description = $('description');
+	var description = $obj('description');
     if (description) {
     	var slen = strlen(description.value);
         if (slen < 10 || slen > 200 ) {
@@ -49,14 +49,14 @@ function validate(obj) {
             return false;
         }
     }
-    if($('seccode')) {
-		var code = $('seccode').value;
+    if($obj('seccode')) {
+		var code = $obj('seccode').value;
 		var x = new Ajax();
 		x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
 			s = trim(s);
 			if(s.indexOf('succeed') == -1) {
 				alert(s);
-				$('seccode').focus();
+				$obj('seccode').focus();
            		return false;
 			} else {
 				digg_submit(obj);
@@ -70,7 +70,7 @@ function validate(obj) {
 }
 
 function edit_album_show(id) {
-	var obj = $('uchome-edit-'+id);
+	var obj = $obj('uchome-edit-'+id);
 	if(obj.style.display == '') {
 		obj.style.display = 'none';
 	} else {

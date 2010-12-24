@@ -20,7 +20,6 @@ var topicid = 0;
 var mainForm;
 var successState = false;
 var ieVersion = userAgent.substr(userAgent.indexOf('msie') + 5, 3);
-
 function delAttach(id) {
 	$obj('attachbody').removeChild($obj('attach_' + id).parentNode.parentNode.parentNode);
 	if($obj('attachbody').innerHTML == '') {
@@ -61,7 +60,6 @@ function addAttach() {
 		}
 	}
 	aid++;
-
 	$obj('attachbody').appendChild(newnode);
 }
 

@@ -454,9 +454,24 @@ function login_validate(obj)
 	obj.submit();
    	return true;
 }
+function edit_album_show(id) {
+	var obj = $obj('uchome-edit-'+id);
+	if(obj.style.display == '') {
+		obj.style.display = 'none';
+	} else {
+		obj.style.display = '';
+	}
+}
+function digg_submit(obj)
+{
+	mainForm = obj.form;
+	forms = $obj('attachbody').getElementsByTagName("FORM");
+	albumid = $obj('uploadalbum').value;
+	upload();
+}
 function digg_validate(obj,seccode_id)
 {
-	alert('xx');
+	
 	if(!check_subject('subject', 1, 80, 1))
 		return false;
 	if(!check_url('address',1,512))
@@ -465,9 +480,30 @@ function digg_validate(obj,seccode_id)
 		return false;
 	if(!check_description('description', 10, 200, 1))
 		return false;
-
+/*
 	if(!check_seccode(obj,seccode_id))
 	    return false;
+*/
+	if($('#'+seccode_id)) {
+		$.ajax({
+			  type: "GET",
+			  url:'cp.php?ac=common&op=seccode&inajax=1&code='+$('#'+seccode_id).val(),
+			  success:function(data){
+				s=trim($(data).find('root').text());
+				if(s.indexOf('succeed') == -1) {
+					 warning('checkseccode',s);
+					 blur();
+           			 return false;
+				}else {
+						digg_submit(obj);;
+					return true;
+				}
+			  }
+		});
+    }else{
+		obj.form.submit();
+		return true;
+	}
 	return true;
 }
 /*thickbox*/
