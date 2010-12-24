@@ -1132,7 +1132,6 @@ function ob_out() {
 	if($str_searchs) {
 		$content = trim(str_replace($str_searchs, $str_replaces, $content));
 	}
-	ob_produce_static_html_cache($content);
 	obclean();
 	if($_SGLOBAL['inajax']) {
 		xml_out($content);
