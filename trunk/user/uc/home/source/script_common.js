@@ -455,7 +455,7 @@ function login_validate(obj)
    	return true;
 }
 function edit_album_show(id) {
-	var obj = $obj('uchome-edit-'+id);
+	var obj = $obj('tanzhi-edit-'+id);
 	if(obj.style.display == '') {
 		obj.style.display = 'none';
 	} else {

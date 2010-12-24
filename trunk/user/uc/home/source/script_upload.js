@@ -61,6 +61,9 @@ function addAttach() {
 	}
 	aid++;
 	$obj('attachbody').appendChild(newnode);
+	if(aid>=2){
+		newnode.style.display="none";
+	}
 }
 
 addAttach();
@@ -86,7 +89,7 @@ function insertAttach(id) {
 		var picPath = getPath($obj('attach_' + id));
 		var imgCache = new Image();
 		imgCache.src = picPath;
-		inhtml += '<td><img src="' + picPath +'" width="60" height="80">&nbsp;</td>';
+		inhtml += '<td><img src="' + picPath +'" width="150" height="120">&nbsp;</td>';
 	}
 	if(is_ie && typeof no_insert=='undefined' || insertType==0) {
 		localfile += '&nbsp;<a href="javascript:;" title="点击这里插入内容中当前光标的位置" onclick="insertAttachimgTag(' + id + ');return false;">[插入]</a>';
