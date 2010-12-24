@@ -169,7 +169,7 @@ function pic_save($FILE, $albumid, $title, $topicid=0) {
 		'topicid' => $topicid
 	);
 	$setarr['picid'] = inserttable('pic', $setarr, 1);
-
+/*
 	//更新附件大小
 	//积分
 	$setsql = '';
@@ -194,7 +194,7 @@ function pic_save($FILE, $albumid, $title, $topicid=0) {
 	
 	//统计
 	updatestat('pic');
-
+*/
 	return $setarr;
 }
 
