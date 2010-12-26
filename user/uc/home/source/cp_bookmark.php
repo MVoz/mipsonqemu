@@ -109,7 +109,6 @@ if($_GET['op'] == 'delete') {
 		if(updatestatistic('bookmark','up',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid'])))
 			showmessage($item['up']+1);
 		else{
-			$errstr=$item['up'];
 			include_once template("message");
 			return;
 

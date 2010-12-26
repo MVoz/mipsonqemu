@@ -60,7 +60,20 @@ if($op == 'get'){
 	//得到siteclassname
 	$item['classname']=getsiteclassname($item['class']);
 	//得到此site的相关site
-	$todayhotcollect['site'] = getrelatesite($item['class'],$siteid);
+	$relatesites = getrelatesite($item['class'],$siteid);
+	if(sizeof($relatesites)==$_SC['related_site_num'])
+	{
+		$todayhotcollect['site']=array();
+		foreach($relatesites as $k=>$v){
+			$todayhotcollect['site'][]=$v;
+		}
+	}else{
+		$needadd = $_SC['related_site_num']-sizeof($relatesites);
+		for($i=0;$i<$needadd ;$i++){
+			$relatesites[]=$todayhotcollect['site'][$i];
+		}
+		$todayhotcollect['site']=$relatesites;
+	}
 /*
 	$big_nums = 0;
 	foreach($item['relate'] as $key=>$v){
@@ -196,6 +209,7 @@ elseif($_GET['op'] == 'delete') {
 	}
 	//添加编辑
 	//将从上榜获得的tag中的,去掉
+	/*
 	$_GET['tag']=(empty($_GET['tag']))?'':str_replace(array(','), array(' '), $_GET['tag']);
 
 	//获取常用的tag
@@ -203,6 +217,7 @@ elseif($_GET['op'] == 'delete') {
 	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('sitetag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$taglist[$value['tagid']]=$value['tagname'];
+	*/
 }
 
 include_once template("cp_site");

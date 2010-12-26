@@ -6,6 +6,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
+include_once(S_ROOT.'./source/function_digg.php');
 $ops=array('add','edit','delete','updatediggupnum','updatediggdownnum','updatediggviewnum');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
@@ -49,8 +50,7 @@ if(empty($diggitem)) {
 	if(!checkperm('allowdigg')) {
 		ckspacelog();
 		showmessage('no_authority_to_add_digg');
-	}
-	
+	}	
 	
 	//判断是否发布太快
 	$waittime = interval_check('post');
@@ -76,7 +76,6 @@ if(submitcheck('editsubmit')) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-	include_once(S_ROOT.'./source/function_digg.php');
 	if($newbmdir = digg_post($_POST, $diggitem)) {
 		$url=$_SGLOBAL['refer'];	
 		showmessage('do_success', $url, 0);
@@ -89,21 +88,16 @@ if(submitcheck('editsubmit')) {
 	if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 		showmessage('incorrect_code');
 	}
-	include_once(S_ROOT.'./source/function_digg.php');
 	$digg = digg_post($_POST, $diggitem);
 	if(!empty($digg)) {
-	//	$url=$_SGLOBAL['refer'];
-	//	showmessage('do_success', $url, 0);
 		showmessage('do_success');
 	} else {
 		showmessage('that_should_at_least_write_things');
-	}
-
+	}	
 }
 if($_GET['op'] == 'delete') {
 	//删除
 	if(submitcheck('deletesubmit')) {
-		include_once(S_ROOT.'./source/function_digg.php');
 		if(deletedigg($diggid)) {
 			$url=$_SGLOBAL['refer'];
 			showmessage('do_success', $url, 0);
@@ -126,21 +120,28 @@ if($_GET['op'] == 'delete') {
 			feed_publish($blog['blogid'], 'blogid');
 		} else {
 			updatetable('feed', array('hot'=>$_POST['hot']), array('id'=>$blog['blogid'], 'idtype'=>'blogid'));
-		}
-		
+		}  		
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
 }elseif($_GET['op']=='updatediggupnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
-        updatediggupnum($_GET['diggid']);
-		showmessage($diggitem['upnum']+1);
+        if(updatediggupnum($_GET['diggid']))
+			showmessage($diggitem['upnum']+1);
+		else{
+			include_once template("message");
+			return;
+		}
 }elseif($_GET['op']=='updatediggdownnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
-        updatediggdownnum($_GET['diggid']);
-		showmessage($diggitem['downnum']+1);
+        if(updatediggdownnum($_GET['diggid']))
+			showmessage($diggitem['downnum']+1);
+		else{
+			include_once template("message");
+			return;
+		}
 }elseif($_GET['op']=='updatediggviewnum'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
@@ -158,10 +159,12 @@ if($_GET['op'] == 'delete') {
 		$diggitem['tag']=$_GET['tag'];
 	}
 	//获取常用的digg tag
-	$shownums=30;
-	$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('diggtag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
-	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
-		$diggtaglist[$value['tagid']]=$value['tagname'];
+	if($op == 'add'){
+		$shownums=30;
+		$tag_query  = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('diggtag')." main ORDER BY main.totalnum DESC limit 0,".$shownums);
+		while($value =$_SGLOBAL['db']->fetch_array($tag_query))
+			$diggtaglist[$value['tagid']]=$value['tagname'];
+	}
 }
 
 include_once template("cp_digg");

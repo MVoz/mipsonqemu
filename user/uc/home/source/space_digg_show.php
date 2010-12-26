@@ -87,5 +87,5 @@ foreach($digglist as $key => $value) {
 	$digglist[$key] = $value;
 }
 //分页
-$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1);
+$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1,$shownum.'|');
 ?>

@@ -43,12 +43,14 @@ function digg_post($POST, $olds=array()) {
 		'username'=> $_SGLOBAL['name'],
 		'description' => $POST['description'],
 		'url'=>$POST['address'],
+		'hashurl'=>qhash($POST['address']),
+		'md5url'=>md5($POST['address']),
 //		'categoryid' => $POST['category']
 	);
 	$diggarr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
 
 		//标题图片
-	$titlepic = '';
+	//$titlepic = '';
 	//图片地址
 	//获取上传的图片
 
@@ -57,13 +59,13 @@ function digg_post($POST, $olds=array()) {
 		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('pic')." WHERE picid IN (".simplode($picids).") AND uid='$_SGLOBAL[supe_uid]'");
 		if ($value = $_SGLOBAL['db']->fetch_array($query)) {
 			if(empty($titlepic) && $value['thumb']) {
-				$titlepic = $value['filepath'].'.thumb.jpg';
+				//$titlepic = $value['filepath'].'.thumb.jpg';
 				$diggarr['picflag'] = $value['remote']?2:1;
 			}
-			$diggarr['pic'] = pic_get($value['filepath'], $value['thumb'], $value['remote'], 0);
+			$diggarr['pic'] = pic_get($value['filepath'], $value['thumb'], $value['remote'], 1);
 		}
 		if(empty($titlepic) && $value) {
-			$titlepic = $value['filepath'];
+			//$titlepic = $value['filepath'];
 			$diggarr['picflag'] = $value['remote']?2:1;
 		}
 	}
@@ -78,9 +80,14 @@ function digg_post($POST, $olds=array()) {
 			2:修改bookmark时，表示该item
 			*/
 	if(empty($olds)){
-		$diggid = inserttable('digg', $diggarr, 1);
-		include_once(S_ROOT.'./source/function_feed.php');
-		feed_publish($diggid, 'diggid', 1);
+		//检查是否已存在
+		if(!is_digg_exist($diggarr['url'])){
+			$diggid = inserttable('digg', $diggarr, 1);
+			include_once(S_ROOT.'./source/function_feed.php');
+			feed_publish($diggid, 'diggid', 1);
+		}else{
+			showmessage('digg_is_existed');
+		}
 	}else{
 		updatetable('digg', $diggarr, array('diggid'=>$diggid));
 	}				
@@ -108,6 +115,7 @@ function digg_post($POST, $olds=array()) {
 
 	return $diggarr;
 }
+
 //处理tag
 function digg_tag_batch($diggid, $tags) {
 	global $_SGLOBAL;
@@ -160,18 +168,27 @@ function   updatediggdownnum($diggid){
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
             return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET downnum=downnum+1 WHERE diggid=".$diggid);
+	    
 		include_once(S_ROOT.'./source/function_feed.php');
-		feed_publish($diggid, 'downdiggid', 1);
+		if(feed_publish($diggid, 'downdiggid', 1))
+		{
+			$_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET downnum=downnum+1 WHERE diggid=".$diggid);
+			return 1;
+		}
+		return 0;
 }
 function   updatediggupnum($diggid){
 	//更新digg顶统计信息
 	    global $_SGLOBAL,$_SC;
         if(!$_SGLOBAL['supe_uid'])
-            return;
-	    $_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET upnum=upnum+1 WHERE diggid=".$diggid);
+            return 0;		   
 		include_once(S_ROOT.'./source/function_feed.php');
-		feed_publish($diggid, 'updiggid', 1);
+		if(feed_publish($diggid, 'updiggid', 1))
+		{
+			 $_SGLOBAL['db']->query("UPDATE ".tname('digg')." SET upnum=upnum+1 WHERE diggid=".$diggid);
+			 return 1;
+		}
+		return 0;
 }
 function   updatediggviewnum($diggid){
 	//更新digg踩统计信息
@@ -210,5 +227,17 @@ function getdiggnumparameter($diggid,$type)
 				'diggid'=>$diggid
 		);
 		return getcount('digg',$wherearr,$type);
+}
+function is_digg_exist($url)
+{
+	global $_SGLOBAL;
+	if(strlen($url)){
+			$hashurl=qhash($url); 
+			$md5url=md5($url);
+			$diggid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT diggid FROM ".tname('digg')." WHERE hashurl=".$hashurl." AND md5url='".$md5url."'"));
+			if(!empty($diggid))
+				return true;
+	}
+	return false;
 }
 ?>
