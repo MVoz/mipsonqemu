@@ -156,13 +156,7 @@
 		 } 
 
 	}
-	function fSetTag(tag)
-	{
-		if(!strlen($('#tag').val()))
-			$('#tag').val(tag+' ');
-		else
-			$('#tag').val($('#tag').val()+' '+tag);
-	}
+
 //-->
 </script>
 <!--{elseif $op == 'reporterr'}-->
@@ -423,7 +417,7 @@
 						<li class="ll">
 							<ul class="type-2">
 							<!--{loop $taglist $key $value}-->
-								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>		
 							<!--{/loop}-->
 							</ul>
 					 </ul>

@@ -1,16 +1,18 @@
 <div id="thumbs">
 		<ul style="width:375px;">
-			<!--{loop $relatedlist $value}-->
+			<!--{loop $relatedlist $key $value}-->
+				<!--{if !empty($key) }-->
 				<li>
-					<a  title="$value['description']" onclick="getAjax('siterelate','$value['siteid']');">
+					<a  title="$value['description']" href="$value['url']" target="_blank">
 						<img src="$value['pic']/l_$value['md5url'].$_SC['link_image_suffix']"/>
 					</a>
 					<p><a href="$value['url']">$value['subject']</a></p>							
 				</li>
+				<!--{/if}-->
 			<!--{/loop}-->
 		</ul>
 </div>
 <script language="javascript" type="text/javascript">	
-	$("#thumbs li>a").attr("class","thumb").attr("href","javascript:;");
+	$("#thumbs li>a").attr("class","thumb");
 </script>
 
