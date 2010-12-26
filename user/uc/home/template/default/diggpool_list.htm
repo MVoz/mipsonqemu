@@ -4,7 +4,7 @@
 			<li>
 				<div class="lf">
 						<div style="float: left;" class="avatar48">
-							<a href="space.php?do=digg&uid=$value[postuid]">
+							<a href="space.php?do=diggpool&uid=$value[postuid]">
 								<!--{avatar($value[uid],small)}-->
 							</a>
 						</div>						
@@ -17,37 +17,28 @@
 						<div class="lfx">
 				<!--{/if}-->	
 							 <div class="tle">
-								<a class="id_dg_$value['diggid']"></a>
+								<a class="id_dg_$value['diggpoolid']"></a>
 								<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-								<span class="gray" id="digg_ud_$value['diggid']"></span>
 							 </div>
 							 <div class="ds">
-								<a class="id_dg_$value['diggid']">$value[description]...</a> 
+								<a class="id_dg_$value['diggpoolid']">$value[description]...</a> 
 							</div>
 						</div>
 						<div class="rb gray">
 							   <p class="tags">					
 							   标签:
-								<!--{loop $value[tag] $tagid $tagname}-->
-									<a id="$tagid" class="id_dg_tag">$tagname</a>
-								<!--{/loop}-->					
+									<a>$value[tag]</a>			
 							   </p>	
 							   <p>
 								发布者:
-								 <a href="space.php?do=digg&uid=$value[postuid]" class="publisher">$value[username]</a>
+								 <a href="space.php?do=diggpool&uid=$value[postuid]" class="publisher">$value[username]</a>
 								</p>
-							   <p class="emnum" id="digg_view_num_id_$value[diggid]">$value[viewnum]</p>
-							   <p>弹指人参与围观</p>
-							    <p>
-									<a class="up" id="$value[diggid]"></a>
-								</p>
-
-								<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
+							  	<!--{if $value[uid]=$_SGLOBAL[supe_uid]||checkperm('allowdigg') }-->
 								<p>
-									<a class="edit" id="$value[diggid]"></a>
+									<a class="publish" id="$value[diggpoolid]"></a>
 								</p>
 								<p>
-									<a class="delete diggbtn" id="$value[diggid]"></a>			
+									<a class="delete diggbtn" id="$value[diggpoolid]"></a>			
 								</p>
 								<!--{/if}-->
 						</div>				
@@ -55,7 +46,7 @@
 					<!--{if $value[picflag] }-->	
 						<div class="rightx">						
 							<div class="d_avatar avatar125">
-							   <a class="id_dg_$value['diggid']">
+							   <a class="id_dg_$value['diggpoolid']">
 									<img src="$value[pic]">
 							   </a>
 						  </div>				  
@@ -67,15 +58,15 @@
 <div class="page">$diggmulti</div>
 </div>
 <script language="javascript" type="text/javascript">	
-		diggload();
+		diggpoolload();
 <!--{loop $digglist $key $value}-->	
-		var id_dg_$value['diggid']_title="$value['subject']";
-		$(".id_dg_$value['diggid']").attr({
+		var id_dg_$value['diggpoolid']_title="$value['subject']";
+		$(".id_dg_$value['diggpoolid']").attr({
 			href:"link.php?url=$value[url]",
-			title:id_dg_$value['diggid']_title, onclick:"updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');",
+			title:id_dg_$value['diggpoolid']_title, 
 			target:"_blank"
 		});		
-		$(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
+		$(".id_dg_$value['diggpoolid']:empty").html(id_dg_$value['diggpoolid']_title);
 <!--{/loop}-->
 </script>		
 

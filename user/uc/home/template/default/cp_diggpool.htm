@@ -3,7 +3,7 @@
 <div style="padding:1px;">
 <h1>删除话题</h1>
 <div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=$ac&op=$_GET[op]&diggid=$diggid">
+<form method="post" action="cp.php?ac=$ac&op=$_GET[op]&diggpoolid=$diggpoolid">
 	<p>确定删除指定的话题吗？</p>
 	<p class="btn_line">
 		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
@@ -14,44 +14,23 @@
 </form>
 </div>
 </div>
-<!--{elseif $op == 'edithot'}-->
-
-<h1>调整热度</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
-<div class="popupmenu_inner">
-<form method="post" action="cp.php?ac=blog&op=edithot&blogid=$blogid">
-	<p class="btn_line">
-		新的热度：<input type="text" name="hot" value="$blog[hot]" size="5"> 
-		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
-		<input type="hidden" name="hotsubmit" value="true" />
-		<input type="submit" name="btnsubmit" value="确定" class="submit" />
-	</p>
-<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
-</form>
-</div>
-
 <!--{else}-->
-
 <!--{if $op == 'add'}-->
 <div>
 <!--{else}-->
 <div style="padding:1px;">
 <div class="popupmenu_inner">
 <!--{/if}-->
-<form method="post" action="cp.php?ac=$ac&op=$op&diggid=$diggid">
+<form method="post" action="cp.php?ac=$ac&op=$op">
 <table cellpadding="0" cellspacing="0" class="formtable">
 <caption>
-<!--{if $op == 'add'}-->
-		<h2>添加$_SC['digg_name']</h2>
-<!--{else}-->
-		<h2>编辑$_SC['digg_name']</h2>
-<!--{/if}-->
+<h2>添加$_SC['digg_name']</h2> 
 <p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
 </caption>
 	<tr>
 		<th width="40"><label for="subject">名称</label></th>
 		<td>	
-		<input type="text" id="subject" name="subject" value="$diggitem[subject]" onfocus="clearwarning('subject_tip');" style="width: 396px;" class="t_input" tabindex="1"  />
+		<input type="text" id="subject" name="subject" value="$diggpoolitem[subject]" onfocus="clearwarning('subject_tip');" style="width: 396px;" class="t_input" tabindex="1"  />
 		<p id="subject_tip"></p>
 		</td>
 	</tr>
@@ -61,7 +40,7 @@
 	<!--{if empty($diggitem[url])}-->
 		<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='';clearwarning('address_tip');" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" value="http://" />
 	<!--{else}-->
-		<input type="text" id="address" name="address" value="$diggitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';clearwarning('address_tip');" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
+		<input type="text" id="address" name="address" value="$diggpoolitem[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';clearwarning('address_tip');" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" />
 	<!--{/if}-->
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
 		<p id="address_tip"></p>
@@ -70,7 +49,7 @@
 	<tr>
 		<th width="40"><label for="tag">标签</label></th>
 		<td>
-		<input type="text" id="tag" name="tag" value="$diggitem[tag]" onfocus="clearwarning('tag_tip');" style="width: 396px;" class="t_input" tabindex="3"  />
+		<input type="text" id="tag" name="tag" value="$diggpoolitem[tag]" onfocus="clearwarning('tag_tip');" style="width: 396px;" class="t_input" tabindex="3"  />
 		<p style="color:gray">多个标签请用空格隔开</p>
 		<p id="tag_tip"></p>
 		</td>
@@ -83,7 +62,7 @@
 						<li class="ll">
 							<ul class="type-2">
 							<!--{loop $diggtaglist $key $value}-->
-								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>	
+								<li><a id="tag_li_$key" href="javascript:fSetTag('$value');">$value</a></li>								
 							<!--{/loop}-->
 							</ul>
 					 </ul>
@@ -114,7 +93,7 @@
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
-<!--{if $op == 'add'}-->
+
 <table cellpadding="0" cellspacing="0" class="formtable" >
 	<tr>
 		<th width="40"><label>图片</label></th>
@@ -123,7 +102,7 @@
 		</td>
 	</tr>
 </table>
-<!--{/if}-->
+
 <table cellpadding="0" cellspacing="0" class="formtable"  id="tanzhi-edit-pic"  style="display:none;">
 	<tr>
 		<th width="40">&nbsp;</th>
@@ -178,10 +157,10 @@
 			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
-			<img id="img_seccode_$diggitem[diggid]" src='' align="absmiddle">
+			<img id="img_seccode_$diggpoolitem[diggpoolid]" src='' align="absmiddle">
 			<input type="text" id="seccode" name="seccode" value="" maxlength="4" onfocus="clearwarning('checkseccode');" class="t_input"  tabindex="5" autocomplete="off" />
 			<p id="checkseccode"></p>
-			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$diggitem[diggid]')">更换一张</a></p>
+			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$diggpoolitem[diggpoolid]')">更换一张</a></p>
 		<!--{/if}-->
 		</td>
 	</tr>
