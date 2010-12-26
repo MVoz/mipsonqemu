@@ -95,6 +95,136 @@ Cookie = {
 		}
 	}
 }
+/**
+ * jQuery.timers - Timer abstractions for jQuery
+**/	
+jQuery.fn.extend({
+	everyTime: function(interval, label, fn, times) {
+		return this.each(function() {
+			jQuery.timer.add(this, interval, label, fn, times);
+		});
+	},
+	oneTime: function(interval, label, fn) {
+		return this.each(function() {
+			jQuery.timer.add(this, interval, label, fn, 1);
+		});
+	},
+	stopTime: function(label, fn) {
+		return this.each(function() {
+			jQuery.timer.remove(this, label, fn);
+		});
+	}
+});
+
+jQuery.extend({
+	timer: {
+		global: [],
+		guid: 1,
+		dataKey: "jQuery.timer",
+		regex: /^([0-9]+(?:\.[0-9]*)?)\s*(.*s)?$/,
+		powers: {
+			// Yeah this is major overkill...
+			'ms': 1,
+			'cs': 10,
+			'ds': 100,
+			's': 1000,
+			'das': 10000,
+			'hs': 100000,
+			'ks': 1000000
+		},
+		timeParse: function(value) {
+			if (value == undefined || value == null)
+				return null;
+			var result = this.regex.exec(jQuery.trim(value.toString()));
+			if (result[2]) {
+				var num = parseFloat(result[1]);
+				var mult = this.powers[result[2]] || 1;
+				return num * mult;
+			} else {
+				return value;
+			}
+		},
+		add: function(element, interval, label, fn, times) {
+			var counter = 0;
+			
+			if (jQuery.isFunction(label)) {
+				if (!times) 
+					times = fn;
+				fn = label;
+				label = interval;
+			}
+			
+			interval = jQuery.timer.timeParse(interval);
+
+			if (typeof interval != 'number' || isNaN(interval) || interval < 0)
+				return;
+
+			if (typeof times != 'number' || isNaN(times) || times < 0) 
+				times = 0;
+			
+			times = times || 0;
+			
+			var timers = jQuery.data(element, this.dataKey) || jQuery.data(element, this.dataKey, {});
+			
+			if (!timers[label])
+				timers[label] = {};
+			
+			fn.timerID = fn.timerID || this.guid++;
+			
+			var handler = function() {
+				if ((++counter > times && times !== 0) || fn.call(element, counter) === false)
+					jQuery.timer.remove(element, label, fn);
+			};
+			
+			handler.timerID = fn.timerID;
+			
+			if (!timers[label][fn.timerID])
+				timers[label][fn.timerID] = window.setInterval(handler,interval);
+			
+			this.global.push( element );
+			
+		},
+		remove: function(element, label, fn) {
+			var timers = jQuery.data(element, this.dataKey), ret;
+			
+			if ( timers ) {
+				
+				if (!label) {
+					for ( label in timers )
+						this.remove(element, label, fn);
+				} else if ( timers[label] ) {
+					if ( fn ) {
+						if ( fn.timerID ) {
+							window.clearInterval(timers[label][fn.timerID]);
+							delete timers[label][fn.timerID];
+						}
+					} else {
+						for ( var fn in timers[label] ) {
+							window.clearInterval(timers[label][fn]);
+							delete timers[label][fn];
+						}
+					}
+					
+					for ( ret in timers[label] ) break;
+					if ( !ret ) {
+						ret = null;
+						delete timers[label];
+					}
+				}
+				
+				for ( ret in timers ) break;
+				if ( !ret ) 
+					jQuery.removeData(element, this.dataKey);
+			}
+		}
+	}
+});
+
+jQuery(window).bind("unload", function() {
+	jQuery.each(jQuery.timer.global, function(index, item) {
+		jQuery.timer.remove(item);
+	});
+});
 var ajaxtypes = {
     bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
 	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
@@ -102,7 +232,7 @@ var ajaxtypes = {
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
 	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
-	diggpage: [ ["space.php?do=digg&show=8&page=#","diggcontent"] ],
+	diggpage: [ ["space.php?do=digg&show=#&page=#","diggcontent"] ],
 	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
 	siterelate: [ ["cp.php?ac=site&op=relate&siteid=#","rdsect"] ] 
 };
@@ -224,6 +354,13 @@ function copyToClipBoard(clipBoardContent){
     window.clipboardData.setData("Text",clipBoardContent); 
     alert("地址已经复制成功，您可以粘贴到其他需要的地方！"); 
 } 
+function fSetTag(tag)
+{
+	if(!strlen($('#tag').val()))
+		$('#tag').val(tag+' ');
+	else
+			$('#tag').val($('#tag').val()+' '+tag);
+}
 /*search*/
 function googleHint(a) {
 	if($("#gsuggest").length>0)
@@ -905,10 +1042,44 @@ function updatestatics(type,op,id,o)
 			  type: "GET",
 			  url:'cp.php?ac='+type+'&op='+op+'&inajax=1&'+updatestaticss[type][0][0]+'='+id,
 			  success:function(data){
-				if($('#'+o)) $('#'+o).html($(data).find('root').text());				
+					s =	$(data).find('root').text();
+					if((type=='bookmark')&&(op=='updatebookmarkupnum')){
+						if(s.indexOf('error') == -1)
+						{
+							$('#share_bm_'+id).html('分享成功');
+							if($('#'+o)) $('#'+o).html(s);
+						}
+						else
+							 $('#share_bm_'+id).html('今天已分享'); 						
+					   $('#share_bm_'+id).oneTime(1000, function() {
+						$(this).html('');
+						});
+					}
+					if((type=='site')&&((op=='updatesiteupnum')||(op=='updatesitedownnum'))){
+						if(s.indexOf('error') == -1){
+							 $('#site_ud_'+id).html('(感谢您的参与)');
+							 if($('#'+o)) $('#'+o).html(s);
+						}
+						else
+							 $('#site_ud_'+id).html('(今天您已参与)'); 						
+					   $('#site_ud_'+id).oneTime(1000, function() {
+						$(this).html('点击顶踩评价');
+						});
+					}
+					if((type=='digg')&&((op=='updatediggupnum'))){
+						if(s.indexOf('error') == -1){
+							 $('#digg_ud_'+id).html('(感谢您的参与)');
+							 if($('#'+o)) $('#'+o).html(s);
+						}
+						else
+							 $('#digg_ud_'+id).html('(今天您已参与)'); 						
+						$('#digg_ud_'+id).oneTime(1000, function() {
+							$(this).html('');
+						});
+					}
 			  }
 		});
-		this.blur();
+		//this.blur();
 		return false;
 } 
 
@@ -1046,6 +1217,22 @@ function diggload(){
 		$(".tlist .up").html("推一下");
 		$(".tlist .delete").html("删除");
 		$(".tlist .edit").html("编辑");
+		tb_init('.tlist a.thickbox');
+}
+function diggpoolload(){
+		$(".tlist .delete").each(function(){
+			$(this).addClass("thickbox");
+			$(this).attr("href","cp.php?ac=diggpool&op=delete&height=85&diggpoolid="+this.id);
+		});
+		$(".tlist .publish").each(function(){
+			$(this).addClass("thickbox");
+			$(this).attr({				 				
+				href:"cp.php?ac=diggpool&op=publish&height=85&diggpoolid="+this.id,
+			});
+		});
+		
+		$(".tlist .publish").html("发表");
+		$(".tlist .delete").html("删除");
 		tb_init('.tlist a.thickbox');
 }
 function navtabload()

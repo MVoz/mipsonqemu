@@ -2435,7 +2435,7 @@ function mkbrowsertab($id)
 		/*
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
 		*/
-		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\','.$browserid.')" href="javascript:;" ><span>'.$key.'</span></a></li>';
+		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\',\''.$browserid.'\')" href="javascript:;" ><span>'.$key.'</span></a></li>';
 		
     }
 }
@@ -2444,7 +2444,7 @@ function mkbrowsershowtab($id)
     global $_SGLOBAL;
 	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
-	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getAjax(\'dirtree\','.$browserid.');" href="javascript:;"><span>'.$key.'</span></a></li>';
+	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getAjax(\'dirtree\',\''.$browserid.'\');" href="javascript:;"><span>'.$key.'</span></a></li>';
 		/*echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="cp.php?ac=link&op=bookmark&linkid='.$linkid.'&browserid='.$browserid.'">'.$key.'</span></a></li>';*/
     }
 }
@@ -3171,7 +3171,6 @@ function updatestatistic($type,$mode,$ids)
 				//24小时之内只能顶或踩一次
 				if(!feed_publish($ids['feedid'], $type.'_'.$mode, 1))
 					return 0;
-
 		}
 		switch($type){
 			case 'link':
@@ -3251,9 +3250,11 @@ function gethttpbrowserid()
 {
 	//如果没指定或指定错误，则为ie
 	global $_GET,$_SGLOBAL,$_SCOOKIE;
-	if(!empty($_SCOOKIE['browser'])&&(in_array(intval($_SCOOKIE['browser']),$_SGLOBAL['browsertype'])))
-		return intval($_SCOOKIE['browser']);
-	return  (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
+	if(empty($_SGLOBAL['inajax'])){
+		if(!empty($_SCOOKIE['browser'])&&(in_array(intval($_SCOOKIE['browser']),$_SGLOBAL['browsertype'])))
+			return intval($_SCOOKIE['browser']);
+	}
+	return (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
 }
 function gethttpgroupid($browserid)
 {

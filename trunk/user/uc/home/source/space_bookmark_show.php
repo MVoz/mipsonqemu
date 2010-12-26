@@ -27,7 +27,7 @@ include_once(S_ROOT.'./source/function_bookmark.php');
 include_once(S_ROOT.'./source/function_cache.php');
 include_once(S_ROOT.'./source/function_site.php');
 //浏览器类型
-$browserid=gethttpbrowserid();;
+$browserid=gethttpbrowserid();
 if($op=='browser'){	    
 		$groupid = gethttpgroupid($browserid);
 		$groupname = getbookmarkgroupname($browserid,$groupid);		
@@ -89,6 +89,21 @@ if($_SGLOBAL['inajax']==0){
 		if(sizeof($relatedlist)>=16)
 			break;
 	}	
-	$relatedlist = sarray_rand($relatedlist,$_SC['today_related_site_num']);
+
+	if(sizeof($relatesites)>=$_SC['related_site_num'])
+	{
+		$relatedarray = sarray_rand($relatedlist,$_SC['related_site_num']);
+	}else{
+		include_once(S_ROOT.'./source/every_todayhotcollect.php');
+		$needadd = $_SC['related_site_num']-sizeof($relatesites);
+		for($i=0;$i<$needadd ;$i++){
+			$relatedarray[]=$todayhotcollect['site'][$i];
+		}
+	}	
+
+	$relatedlist =array();
+	foreach($relatedarray as $k => $v) {
+		$relatedlist[]=$v;
+	}
 }
 ?>
