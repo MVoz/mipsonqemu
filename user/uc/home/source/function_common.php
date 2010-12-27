@@ -2433,9 +2433,9 @@ function mkbrowsertab($id)
 	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
 		/*
-	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="space.php?do=bookmark&op=browser&browserid='.$browserid.'"><span>'.$key.'</span></a></li>';
+		echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\',\''.$browserid.'\')" href="javascript:;" ><span>'.$key.'</span></a></li>';
 		*/
-		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\',\''.$browserid.'\')" href="javascript:;" ><span>'.$key.'</span></a></li>';
+		 echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getbmfromid(\'0\',\''.$browserid.'\',\'根目录\')" href="javascript:;" ><span>'.$key.'</span></a></li>';
 		
     }
 }
