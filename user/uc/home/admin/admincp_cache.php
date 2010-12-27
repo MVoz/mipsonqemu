@@ -27,17 +27,17 @@ if(submitcheck('cachesubmit')) {
 		profilefield_cache();
 		profield_cache();
 		censor_cache();
-		block_cache();
-		eventclass_cache();
-		magic_cache();
-		click_cache();
-		task_cache();
-		ad_cache();
-		creditrule_cache();
-		userapp_cache();
-		app_cache();
-		network_cache();
-		linkerrtype_cache();
+	//	block_cache();
+	//	eventclass_cache();
+	//	magic_cache();
+	//	click_cache();
+	//	task_cache();
+	//	ad_cache();
+	//	creditrule_cache();
+	//	userapp_cache();
+	//	app_cache();
+	//	network_cache();
+		siteerrtype_cache();
 		//diggcategory_cache();
 		browsertype_cache();
 		browser_cache();
@@ -48,7 +48,7 @@ if(submitcheck('cachesubmit')) {
 		//link_cache();
 		handlesiteformat();
 		siteclass_cache();
-		digg_cacheall();		
+		digg_cacheall();
 	}
 	
 	//Ä£°å±àÒë»º´æ
