@@ -201,11 +201,13 @@ elseif($_GET['op'] == 'delete') {
 	$browserid=gethttpbrowserid(); 
 }else {
 	 if(submitcheck('addsubmit')) {
-		//验证码
+		 //收录站点
 		if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 			showmessage('incorrect_code');
 		}
-
+		include_once(S_ROOT.'./source/function_site.php');
+		$item = announce_post($_POST);
+		exit();
 	}
 	//添加编辑
 	//将从上榜获得的tag中的,去掉
