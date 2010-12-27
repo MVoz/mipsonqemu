@@ -1,4 +1,5 @@
 <div id="network">
+	<div class="box">
 	<div class="box_l">
 		<h2 class="ntitle">
 			<p>$item[subject]</p>			
@@ -36,11 +37,11 @@
 						<a class="url">访问</a> 
 						<!--{if $ac=='site' }-->
 						<a href="cp.php?ac=site&siteid=$item[siteid]&op=bookmark">收藏</a>
-						<a class="action"  id="$item[siteid]" name="reporterr">举报</a>
+						<a class="reporterr"  id="$item[siteid]">举报</a>
 						<!--{/if}-->
 						<!--{if $_SGLOBAL[supe_uid]&&checkperm('managelink') }-->
-							<a class="action"  id="$item[siteid]" name="edit">编辑</a>
-							<a class="action"  id="$item[siteid]" name="delete">删除</a>
+							<a class="edit"  id="$item[siteid]" >编辑</a>
+							<a class="delete"  id="$item[siteid]" >删除</a>
 						<!--{/if}-->
 						</p>
 					</div>
@@ -72,9 +73,25 @@
 		$(".tags").each(function(){
 			$(this).attr("href","space.php?do=sitetag&tagid="+this.id);
 		});
-		$(".action").each(function(){
-			$(this).attr("href","cp.php?ac=site&op="+this.name+"&siteid="+this.id).attr("onclick","ajaxmenuEx(event,'img_seccode_"+this.id+"', this.id,1);").attr("id","bookmark_"+this.name+"_"+this.id);
-		});		
+		$(".reporterr").each(function(){
+			$(this).attr({
+				href:"cp.php?ac=site&op="+$(this).attr('class')+"&siteid="+this.id,
+				class:"thickbox"
+			});
+		});	
+		$(".edit").each(function(){
+			$(this).attr({
+				href:"cp.php?ac=site&height=500&op="+$(this).attr('class')+"&siteid="+this.id,
+				class:"thickbox"
+			});
+		});	
+		$(".delete").each(function(){
+			$(this).attr({
+				href:"cp.php?ac=site&height=100&op="+$(this).attr('class')+"&siteid="+this.id,
+				class:"thickbox"
+			});
+		});	
+		tb_init('.sedl a.thickbox');
 </script>
 	<div class="box_r">
 		<h2 class="ntitle">
@@ -97,5 +114,6 @@
 		</h2>
 			<!--{template space_navigation_list}-->	
 	</div>
+</div>
 </div>
 
