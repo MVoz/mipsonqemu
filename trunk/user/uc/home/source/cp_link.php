@@ -8,7 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','reporterr');
+$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $linkid= empty($_GET['linkid'])?0:intval(trim($_GET['linkid']));
@@ -36,9 +36,7 @@ $link_priority=array(
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0), 
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
-// 'toolbar'=>array('permit'=>1,'owner'=>0,'id'=>0,'item'=>0)
+ 'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 $ret=check_valid($op,$linkid,$item,$item['postuid'],'managelink',$link_priority);
 switch($ret)
@@ -139,23 +137,6 @@ elseif($_GET['op'] == 'edithot') {
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
-}elseif($_GET['op']=='reporterr'){
-		//举报错误
-		  include_once(S_ROOT.'./data/data_linkerrtype.php');
-		  include_once(S_ROOT.'./source/function_link.php');
-		  if(submitcheck('errsubmit')) {
-			//验证码
-			if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
-				showmessage('incorrect_code');
-			}
-			include_once(S_ROOT.'./source/function_link.php');
-			$ret = linkerr_post($_POST, $item);
-			if($ret) {	
-				showmessage('do_success',$_SGLOBAL[refer]);
-			} else{
-				showmessage('that_should_at_least_write_things');
-			}
-		}
 }elseif($_GET['op']=='manage'){
 
 		$wherearr='';

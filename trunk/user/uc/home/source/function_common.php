@@ -9,7 +9,7 @@ if(!defined('IN_UCHOME')) {
 }
 include_once(S_ROOT.'./data/data_browsertype.php');
 include_once(S_ROOT.'./data/data_browser.php');
-include_once(S_ROOT.'./data/data_linkerrtype.php');
+include_once(S_ROOT.'./data/data_siteerrtype.php');
 include_once(S_ROOT.'./data/data_popularbar.php');
 include_once(S_ROOT.'./data/data_popularsite.php');
 //include_once(S_ROOT.'./data/data_linkclass.php');

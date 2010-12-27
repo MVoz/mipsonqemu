@@ -149,13 +149,13 @@ elseif($_GET['op'] == 'delete') {
 	  exit();
 }elseif($_GET['op']=='reporterr'){
 		//举报错误
-		  include_once(S_ROOT.'./data/data_linkerrtype.php');
+		  include_once(S_ROOT.'./data/data_siteerrtype.php');
 		  if(submitcheck('errsubmit')) {
 			//验证码
 			if(checkperm('seccode') && !ckseccode($_POST['seccode'])) {
 				showmessage('incorrect_code');
 			}
-			$ret = linkerr_post($_POST, $item);
+			$ret = siteerr_post($_POST, $item);
 			if($ret) {	
 				showmessage('do_success',$_SGLOBAL[refer]);
 			} else{
