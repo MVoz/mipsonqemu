@@ -173,11 +173,11 @@
 	</div>
 	<div class="div_table_radio_question">
 		<ul>
-		<!--{loop $_SGLOBAL['linkerrtype'] $key $value}-->
+		<!--{loop $_SGLOBAL['siteerrtype'] $key $value}-->
 			<!--{if ($key==255)}-->
 				<li style="width: 99%;"><input type="checkbox" id="chk1_$key" name="chk1_$key">
 					<label for="chk1_$key">$value</label> 
-					<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
+					<textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px; float: left; margin-left: 18px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');"></textarea>
 				</li>
 			<!--{else}-->
 				<li style="width: 99%;">

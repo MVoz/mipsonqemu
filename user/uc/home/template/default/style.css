@@ -466,8 +466,8 @@ a.c_link {
 #thumbs ul{float:left;}
 #thumbs li {float: left;padding: 4px 2px;list-style: none;height:100px;width:89px;}
 #thumbs li img {height:75px;width:83px;	border: none;display: block;}
-#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;}
-#thumbs li p{text-align:center;width:90px;padding:2px 0;white-space: nowrap;text-overflow: ellipsis;}
+#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;margin-bottom: 5px;}
+#thumbs li p{text-align:center;width:90px;white-space: nowrap;text-overflow: ellipsis;}
 
 #thumbs .big{float:left;width:395px;height:220px;background:url("image/g.png") no-repeat scroll 0px -680px transparent;}
 #thumbs .big .big_l{float:right;width:120px;height:150px;overflow:hidden;padding:5px;margin-bottom:3px;;}
@@ -490,8 +490,9 @@ border:1px solid #DDD;}
 #hhlt dl{float:left;width:240px;padding-top:8px;overflow:hidden;}
 #hhlt p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
 #hhlt p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
-#hhlt a{display:block;font-size:12px;width:180px;}
+#hhlt a{display:block;font-size:12px;width:150px;overflow:hidden;height:20px}
 #hhlt .num_con{margin-top:-20px;}
+#hhlt .num_con a{display:inline;color:#2C629E;font-weight:normal;}
 
 .shaa {height:95px;width:672px;float:right;}
 .shaa,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
@@ -559,7 +560,7 @@ border:1px solid #DDD;}
 	.ntitle p {color:#FF6A00;}
 	.ntitle em {color:#8FC320;}
 
-	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:4px;overflow:hidden; }
+	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:10px;overflow:hidden; }
 	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
 	.ntitle ul .bkad a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -510px transparent;}
 	.ntitle ul .bket a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -477px transparent;}
@@ -617,7 +618,7 @@ border:1px solid #DDD;}
 		.tlist .rb{float:left;height:20px;width:470px;}
 		.tlist .rb p{float:left;height:16px;padding:0px 2px 0px 1px;}
 		.tlist .rb a{color:#2C629E;text-decoration: none;}
-		.tlist .rb .tags{max-width:200px;min-width:100px;overflow:hidden;float:left;}
+		.tlist .rb .tags{max-width:200px;min-width:50px;overflow:hidden;float:left;}
 		.tlist .rb .publisher{color:#EF9822;}
 		.tlist .rb .emnum{color:#8ABC2B;font-weight:bold;margin-top:0px !important;margin-top:-2px;}
 
@@ -734,6 +735,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .nnct{float:left;padding:0 5px;}
 .nnct .nncg dt{clear:both;font-weight:bold;padding:2px 5px;color:#0099BB;font-size:110%;border-bottom:1px solid #DDD;}
 .nnct .nncg a{padding:5px 5px;float:left;white-space:nowrap;}
+.nnct .nncg a:hover{color:#8ABC2B;}
 /*tab*/
 .dgst{background-color:#fff;margin:5px 10px;width:270px;}
 
