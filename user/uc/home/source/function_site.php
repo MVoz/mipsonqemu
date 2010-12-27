@@ -284,36 +284,36 @@ function siteerr_post($POST, $olds=array())
 	global $_SGLOBAL, $_SC, $space,$_GET;
 	if(empty($olds))
 		return 0;
-	$linkerr_arr = array(
+	$siteerr_arr = array(
 		'siteid' => $olds['siteid'],
 		'uid' => $_SGLOBAL['supe_uid']		
 	);
-	$linkerr_arr['dateline'] =( empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline']);
-	foreach($_SGLOBAL['linkerrtype'] as $key=>$value){
+	$siteerr_arr['dateline'] =( empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline']);
+	foreach($_SGLOBAL['siteerrtype'] as $key=>$value){
 		if(isset($POST['chk1_'.$key]))
 		{
 			if($key==255)
 			{
 				$POST['description'] = getstr($POST['description'], 250, 1,1, 1);
-				$linkerr_arr['other']=empty($POST['description']);
+				$siteerr_arr['other']=empty($POST['description']);
 			}
 			else
-				$linkerr_arr['errid']=$linkerr_arr['errid'].(empty($linkerr_arr['errid'])?'':',').$key;
+				$siteerr_arr['errid']=$siteerr_arr['errid'].(empty($siteerr_arr['errid'])?'':',').$key;
 		}
 	}
-	if(empty($linkerr_arr['errid'])&&empty($linkerr_arr['other']))
+	if(empty($siteerr_arr['errid'])&&empty($siteerr_arr['other']))
 		return 0;
 	//检查是否已经存在
-	$linkerr_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('linkerr')." main WHERE  main.siteid= ".$olds['siteid']);
-	$linkerritem=$_SGLOBAL['db']->fetch_array($linkerr_query);
-	if(empty($linkerritem))	
-		$linkerrid = inserttable('linkerr', $linkerr_arr, 1);
+	$siteerr_query=$_SGLOBAL['db']->query("SELECT * FROM ".tname('siteerr')." main WHERE  main.siteid= ".$olds['siteid']);
+	$siteerritem=$_SGLOBAL['db']->fetch_array($siteerr_query);
+	if(empty($siteerritem))	
+		$siteerrid = inserttable('siteerr', $siteerr_arr, 1);
 	else
 	{
-		$err1=explode(",",$linkerr_arr['errid']);
-		$err2=explode(",",$linkerritem['errid']);
-		$linkerr_arr['errid']=implode(",",array_unique(array_merge($err1,$err2)));
-		updatetable('linkerr',$linkerr_arr, array('linkerrid'=>$linkerritem['linkerrid']));
+		$err1=explode(",",$siteerr_arr['errid']);
+		$err2=explode(",",$siteerritem['errid']);
+		$siteerr_arr['errid']=implode(",",array_unique(array_merge($err1,$err2)));
+		updatetable('siteerr',$siteerr_arr, array('siteerrid'=>$siteerritem['siteerrid']));
 	}
 	return 1;
 }

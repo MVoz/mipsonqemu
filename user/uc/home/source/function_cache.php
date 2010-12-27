@@ -309,17 +309,17 @@ function magic_cache(){
 	}
 	cache_write('magic', "_SGLOBAL['magic']", $_SGLOBAL['magic']);
 }
-//更新link错误类型
-function linkerrtype_cache(){
+//更新site错误类型
+function siteerrtype_cache(){
 	global $_SGLOBAL;
 
-	$_SGLOBAL['linkerrtype'] = array();
+	$_SGLOBAL['siteerrtype'] = array();
 	// 从数据库获取
-	$query = $_SGLOBAL['db']->query("SELECT errid, errname FROM ".tname('linkerrtype'));
+	$query = $_SGLOBAL['db']->query("SELECT errid, errname FROM ".tname('siteerrtype'));
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
-	    $_SGLOBAL['linkerrtype'][$value['errid']] = $value['errname'];
+	    $_SGLOBAL['siteerrtype'][$value['errid']] = $value['errname'];
 	}
-	cache_write('linkerrtype', "_SGLOBAL['linkerrtype']", $_SGLOBAL['linkerrtype']);
+	cache_write('siteerrtype', "_SGLOBAL['siteerrtype']", $_SGLOBAL['siteerrtype']);
 }
 //更新digg ategory类型
 /*
@@ -1029,11 +1029,11 @@ function site_today_cache($type)
 {
 	global $_SGLOBAL,$_SC;
 	$todayview = array();	
-	$tmp =array();
-
 	$query=$_SGLOBAL['db']->query("SELECT main.id FROM ".tname('site')." main order by main.".$type." DESC limit 10");
 	while($value =$_SGLOBAL['db']->fetch_array($query)){
-		$todayview[]=getsite($value['id']);
+		$site=getsite($value['id']);
+		$site['classname']=getsiteclassname($site['class']);
+		$todayview[]=$site;
 	}
 	swritefile(S_ROOT.'./data/site_'.$type.'.txt', serialize($todayview));
 }

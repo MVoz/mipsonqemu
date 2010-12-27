@@ -9,7 +9,7 @@ var note_timer;
 var searchs = {
     web: [
         ["\u7f51\u9875", "http://www.baidu.com/s", "wd", "\u767e\u5ea6", -1, "http://www.baidu.com/index.php",1,"ie:utf-8"],
-        ["\u7f51\u9875", "http://www.google.cn/search", "q", "\u8c37\u6b4c", -29, "http://www.google.cn/webhp?client=aff-360daohang",1, "client:aff-360daohang;hl:zh-CN;ie:utf-8"]
+        ["\u7f51\u9875", "http://www.google.com.hk/search", "q", "\u8c37\u6b4c", -29, "http://www.google.cn/webhp?client=aff-360daohang",1, "client:aff-360daohang;hl:zh-CN;ie:utf-8"]
     ],
     music: [
         ["MP3", "http://mp3.baidu.com/m", "word", "\u767e\u5ea6", -1, "http://mp3.baidu.com/",1, "f:ms;ct:134217728;ie:utf-8"],
@@ -1225,7 +1225,7 @@ function diggpoolload(){
 		$(".tlist .publish").each(function(){
 			$(this).addClass("thickbox");
 			$(this).attr({				 				
-				href:"cp.php?ac=diggpool&op=publish&height=85&diggpoolid="+this.id,
+				href:"cp.php?ac=diggpool&op=publish&height=85&diggpoolid="+this.id
 			});
 		});
 		
