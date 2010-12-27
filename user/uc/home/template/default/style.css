@@ -771,7 +771,10 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 #step li a span{width:200px;display:block;margin-left:10px;font-weight:normal;color:#888;}
 #step li a{height:41px;display:block;}
 
-
+.div_table_radio_question ul li {color:#666;}
+#stlist h3 a{float: left; max-width: 250px; overflow: hidden;}
+#stlist h3 span{color:#999;font-weight:normal;}
+#bklist h3 a{float: left; max-width: 300px; overflow: hidden;}
 
 
 

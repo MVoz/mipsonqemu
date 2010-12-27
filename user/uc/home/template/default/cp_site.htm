@@ -160,15 +160,13 @@
 //-->
 </script>
 <!--{elseif $op == 'reporterr'}-->
-<div style="padding:1em;border: 3px solid #CEE89F;background: #EEF9EB;" id="innerdiv">
+<div style="padding:1px;" id="innerdiv">
 <h1>举报错误</h1>
-<a href="javascript:hideMenu();" class="float_del" title="关闭">关闭</a>
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=$ac&op=$op&siteid=$siteid">
 <div style="padding:5px;">
 	<div style="color:#333;font-size:110%;font-weight:bold;line-height:20px;">
-		<div>您对标题为<span>$item[link_subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
-			<span style="color:#0066FF;">&nbsp;[多选题]</span>
+		<div>您对标题为<span style="color:#8FC320">$item[subject]</span>主页可能存在如下的问题:：（可多选，方框中可填入具体原因）
 		</div>
 		<div style="clear: both;">
 		</div>
@@ -228,8 +226,7 @@
 </form>
 </div>
 </div>
-
-	<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
+<iframe style="position:absolute;z-index:-1;width:expression(this.previousSibling.offsetWidth);height:expression(this.previousSibling.offsetHeight);top:0;left:0;"   frameborder="0"></iframe>	
 <!--{elseif $op == 'relate'}-->
 		<!--{template relatedsite_show}-->
 <!--{elseif $op == 'pass'}-->
