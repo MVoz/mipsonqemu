@@ -82,8 +82,8 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 #TB_closeAjaxWindow{padding:7px 10px 5px 0;margin-bottom:1px;text-align:right;float:right;}
 #TB_closeWindowButton {background:url("image/g.png") no-repeat scroll -958px -565px transparent;display:block;height:14px;overflow:hidden;position:absolute;right:5px;text-indent:-999em;top:2px;width:13px;}
 #TB_closeWindowButton:hover { background-position: -958px -579px; }
-#TB_ajaxWindowTitle{float:left;padding:7px 0 5px 10px;margin-bottom:1px;}
-#TB_title{height:15px;}
+#TB_ajaxWindowTitle{float:left;}
+#TB_title{height:10px;}
 #TB_ajaxContent{	clear:both;	padding:2px 15px 15px 15px;	overflow:auto;	text-align:left;	line-height:1.4em;}
 #TB_ajaxContent.TB_modal{padding:15px;}
 #TB_ajaxContent p{padding:5px 0px 5px 0px;}
@@ -466,7 +466,7 @@ a.c_link {
 #thumbs ul{float:left;}
 #thumbs li {float: left;padding: 4px 2px;list-style: none;height:100px;width:89px;}
 #thumbs li img {height:75px;width:83px;	border: none;display: block;}
-#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;margin-bottom: 5px;}
+#thumbs a.thumb {padding: 2px;	display: block;	border: 1px solid #ccc;margin-bottom: 3px;}
 #thumbs li p{text-align:center;width:90px;white-space: nowrap;text-overflow: ellipsis;}
 
 #thumbs .big{float:left;width:395px;height:220px;background:url("image/g.png") no-repeat scroll 0px -680px transparent;}
@@ -552,7 +552,7 @@ border:1px solid #DDD;}
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
-	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-5px;line-height:11px; }
+	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-2px;line-height:14px; }
 		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
 		.ntr{ float: right;  padding: 0 30px 0 0;  background: transparent url(image/nlr.gif) no-repeat right center;}
 
