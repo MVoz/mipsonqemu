@@ -306,6 +306,7 @@ class mod_login
                     '添加网址'=>'?c=site_manage&a=edit&action=add',
                     '一键生成'=>'?c=make_html',
                     '收录管理'=>'?c=url_add',
+					'举报管理'=>'?c=site_report',
                     '意见反馈'=>'?c=feedback',
                     '用户管理'=>'?c=member',
                     ),
