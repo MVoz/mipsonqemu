@@ -841,7 +841,7 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 						$("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
 						$("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
 						$("#TB_ajaxContent")[0].scrollTop = 0;
-						$("#TB_ajaxWindowTitle").html(caption);
+						//$("#TB_ajaxWindowTitle").html(caption);
 					}
 			}
 					
@@ -1117,7 +1117,6 @@ function bookmarkload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_bm_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_bm_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$("#bklist >li >h3 >a").attr("style","float:left;max-width:200px;overflow:hidden;");
 		$("#bklist .edit").each(function(){
 			$(this).addClass("thickbox");
 			var ids = this.id.split("|");//ids='bmid_groupid_browserid'
@@ -1160,7 +1159,6 @@ function siteload(){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，你可以点击<a class=\"edit id_st_edit_"+this.id+"\" id=\""+this.id+"\">编辑</a>按钮或者等待服务器更新 ...");
 		});
-		$("#stlist >li >h3 >a").attr("style","float:left;width:250px;overflow:hidden;");
 		$(".id_st_tag").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
 		});	
