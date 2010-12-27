@@ -832,14 +832,14 @@ function tb_show(caption, url, imageGroup,secode_id) {//function called when the
 			}else{// not an iframe, ajax
 					if($("#TB_window").css("display") != "block"){
 						if(params['modal'] != "true"){//ajax no modal
-						$("#TB_window").append("<div id='TB_title'><div id='TB_ajaxWindowTitle'>"+caption+"</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>&nbsp;</a></div></div><div id='TB_ajaxContent' style='width:"+ajaxContentW+"px;height:"+ajaxContentH+"px'></div>");
+						$("#TB_window").append("<div id='TB_title'><div id='TB_ajaxWindowTitle'>"+caption+"</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>&nbsp;</a></div></div><div id='TB_ajaxContent'></div>");
 						}else{//ajax modal
 						$("#TB_overlay").unbind();
-						$("#TB_window").append("<div id='TB_ajaxContent' class='TB_modal' style='width:"+ajaxContentW+"px;height:"+ajaxContentH+"px;'></div>");	
+						$("#TB_window").append("<div id='TB_ajaxContent' class='TB_modal'></div>");	
 						}
 					}else{//this means the window is already up, we are just loading new content via ajax
-						$("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
-						$("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
+						//$("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
+						//$("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
 						$("#TB_ajaxContent")[0].scrollTop = 0;
 						//$("#TB_ajaxWindowTitle").html(caption);
 					}
