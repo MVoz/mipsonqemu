@@ -6,7 +6,7 @@
 		</h2>
 		<div class="seio">
 					<div class="sepc">
-						<a target="_target" href="$item['url']" onclick="updatesiteview($item[siteid])">
+						<a target="_target" href="$item['url']" onclick="updatestatics('site','updatesiteviewnum','$item[siteid]')">
 								 <!--{if empty($item['picflag'])}-->
 									<img src="$item['tmppic']">
 								 <!--{else}-->
@@ -74,22 +74,13 @@
 			$(this).attr("href","space.php?do=sitetag&tagid="+this.id);
 		});
 		$(".reporterr").each(function(){
-			$(this).attr({
-				href:"cp.php?ac=site&op="+$(this).attr('class')+"&siteid="+this.id,
-				class:"thickbox"
-			});
+			$(this).attr("href","cp.php?ac=site&op="+$(this).attr('class')+"&siteid="+this.id).attr("class","thickbox");
 		});	
 		$(".edit").each(function(){
-			$(this).attr({
-				href:"cp.php?ac=site&height=500&op="+$(this).attr('class')+"&siteid="+this.id,
-				class:"thickbox"
-			});
+			$(this).attr("href","cp.php?ac=site&op="+$(this).attr('class')+"&siteid="+this.id).attr("class","thickbox");
 		});	
 		$(".delete").each(function(){
-			$(this).attr({
-				href:"cp.php?ac=site&height=100&op="+$(this).attr('class')+"&siteid="+this.id,
-				class:"thickbox"
-			});
+			$(this).attr("href","cp.php?ac=site&op="+$(this).attr('class')+"&siteid="+this.id).attr("class","thickbox");
 		});	
 		tb_init('.sedl a.thickbox');
 </script>
