@@ -633,6 +633,7 @@ border:1px solid #DDD;}
 	.nelt li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
 	.nelt li ul li	{float: none;display: inline}
 	.nelt li ul li a {width: auto;padding: 5px 0px;}
+	.nelt li ul li a:hover {color:#FF6600;}
 	.nelt #qkmut{font-style:normal;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
