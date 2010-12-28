@@ -4,8 +4,6 @@
 <meta http-equiv="content-type" content="text/html; charset=$_SC[charset]" />
 <title><!--{if $space}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
-<script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
-<script language="javascript" type="text/javascript" src="source/script_ajax.js"></script>
 <style type="text/css">
 * { word-break: break-all; word-wrap: break-word; }
 	body, th, td, input, select, textarea, button { font: 12px/1.5em Verdana, "Lucida Grande",Arial, Helvetica,sans-serif; }
@@ -31,7 +29,8 @@
 		<td height="26" class="link_td">
 			<img src="image/icon/profile.gif" align="absmiddle"> <a href="$_SGLOBAL[refer]">返回我的空间</a> <span class="pipe">|</span>
 			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="do_share();">分享</a> <span class="pipe">|</span>
-			<img src="image/icon/network.gif" align="absmiddle"> <a target="_blank" href="$url">$url</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)
+			<img src="image/icon/network.gif" align="absmiddle"> <a target="_blank" href="link.php?$type=$id">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)
+			<a target="_blank" href="link.php?$type=$id2">下一篇:$title2</a>
 		</td>
 	</tr>
 	<tr>
@@ -95,14 +94,14 @@
 
 <script type="text/javascript">
 	function do_share() {
-		$('divshare').style.display = 'block';
+		$('#divshare').css("display",'block');
 	}
 	function hideShare() {
-		$('divshare').style.display = 'none';
+		$('#divshare').css("display",'none');
 	}
 	function frame_share_add(sid, result) {
 		if(result) {
-			$('divshare').innerHTML = '<br><br>分享完成了 [<a href="javascript:hideShare()">关闭</a>]<br><br><br>';
+			$('#divshare').html('<br><br>分享完成了 [<a href="javascript:hideShare()">关闭</a>]<br><br><br>');
 			setTimeout("hideShare();", 1000);
 		}
 	}
