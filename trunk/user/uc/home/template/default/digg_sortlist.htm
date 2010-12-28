@@ -4,7 +4,7 @@
 			<!--{if $key }-->
 				<!--{eval $key=$key+1;}-->
 					<dt class="l$key">
-						<a target="new" title="$value[subject]" href="$value[url]">$value[subject]</a>
+						<a target="diggidframe" title="$value[subject]" href="link.php?diggid=$value['diggid']">$value[subject]</a>
 					</dt>
 			<!--{else}-->
 					<dt class="l1">
