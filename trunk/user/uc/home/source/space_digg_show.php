@@ -16,8 +16,7 @@ $nowpage=($page)?($page-1):0;
 $start=$page?(($page-1)*$perpage):0;
 $count = 0;
 if($uid){
-	$fileprefix='./data/diggcache/digg_user_'.$userid.'_';
-	$theurl = $theurl.'&uid='.$uid;
+	$fileprefix='./data/diggcache/digg_user_'.$uid.'_';
 }else{
 	$fileprefix='./data/diggcache/digg_';
 }
@@ -87,5 +86,5 @@ foreach($digglist as $key => $value) {
 	$digglist[$key] = $value;
 }
 //分页
-$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1,$shownum.'|');
+$diggmulti = multi($count, $perpage, $page, $theurl,'diggcontent','diggcontent',1,$uid.'|'.$shownum.'|');
 ?>

@@ -17,13 +17,11 @@ include_once(S_ROOT.'./source/every_hotdigg.php');
 
 include_once(S_ROOT.'./source/function_digg.php');
 include_once(S_ROOT.'./source/space_bookmark_show.php');
-
 $uid = 0;//digg
 $perpage=$shownum = $_SC['digg_show_maxnum']/2;
 $page=empty($_GET['page'])?0:intval($_GET['page']);
 
 include_once(S_ROOT.'./source/space_digg_show.php');
-
 
 include_once template("space_all");
 
