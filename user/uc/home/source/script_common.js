@@ -98,6 +98,7 @@ Cookie = {
 /**
  * jQuery.timers - Timer abstractions for jQuery
 **/	
+
 jQuery.fn.extend({
 	everyTime: function(interval, label, fn, times) {
 		return this.each(function() {
