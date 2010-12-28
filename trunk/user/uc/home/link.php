@@ -13,6 +13,7 @@ if(empty($_GET['url'])&&empty($diggid)) {
 } else {
 	if($diggid){
 		$type = 'diggid';
+		$frame = $type.'_frame';
 		include_once(S_ROOT.'./source/function_digg.php');
 		$diggs = gettwodigg($diggid);
 		$url = $diggs[0]['url'];
@@ -29,11 +30,12 @@ if(empty($_GET['url'])&&empty($diggid)) {
 		}
 	}
 }
-/*
+
 $space = array();
 if($_SGLOBAL['supe_uid']) {
 	$space = getspace($_SGLOBAL['supe_uid']);
 }
+/*
 if(empty($space)) {
 	//游客直接跳转
 	showmessage('do_success', $url, 0);
