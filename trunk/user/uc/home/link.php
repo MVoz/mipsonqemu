@@ -5,17 +5,31 @@
 */
 
 include_once('./common.php');
-
-if(empty($_GET['url'])) {
+$diggid= empty($_GET['diggid'])?0:intval(trim($_GET['diggid']));
+$diggs = array();
+$type='';
+if(empty($_GET['url'])&&empty($diggid)) {
 	showmessage('do_success', $refer, 0);
 } else {
-	$url = $_GET['url'];
-	$title = $_GET['title'];
-	if(!$_SCONFIG['linkguide']) {
-		showmessage('do_success', $url, 0);//直接跳转
+	if($diggid){
+		$type = 'diggid';
+		include_once(S_ROOT.'./source/function_digg.php');
+		$diggs = gettwodigg($diggid);
+		$url = $diggs[0]['url'];
+		$title = $diggs[0]['subject'];
+		$id = $diggs[0]['diggid'];
+		$url2 = $diggs[1]['url'];
+		$title2 = $diggs[1]['subject'];
+		$id2 = $diggs[1]['diggid'];
+	}else{
+		$url = $_GET['url'];
+		$title = $_GET['title'];
+		if(!$_SCONFIG['linkguide']) {
+			showmessage('do_success', $url, 0);//直接跳转
+		}
 	}
 }
-
+/*
 $space = array();
 if($_SGLOBAL['supe_uid']) {
 	$space = getspace($_SGLOBAL['supe_uid']);
@@ -24,7 +38,7 @@ if(empty($space)) {
 	//游客直接跳转
 	showmessage('do_success', $url, 0);
 }
-
+*/
 $url = shtmlspecialchars($url);
 if(!preg_match("/^http\:\/\//i", $url)) $url = "http://".$url;
 
