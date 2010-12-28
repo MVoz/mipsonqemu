@@ -240,4 +240,19 @@ function is_digg_exist($url)
 	}
 	return false;
 }
+function gettwodigg($diggid)
+{
+	global $_SGLOBAL;
+	$ret=array();
+	$q=$_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." WHERE diggid=".$diggid." limit 2");
+	while($v=$_SGLOBAL['db']->fetch_array($q))
+	{
+		$ret[]=$v;
+	}
+	if(sizeof($ret)==1){
+		$q=$_SGLOBAL['db']->query("SELECT * FROM ".tname('digg')." limit 1");
+		$ret[]=$_SGLOBAL['db']->fetch_array($q);
+	}
+	return $ret;
+}
 ?>
