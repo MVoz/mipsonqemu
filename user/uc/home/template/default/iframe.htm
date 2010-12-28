@@ -2,8 +2,22 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=$_SC[charset]" />
-<title><!--{if $space}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] - Powered by UCenter Home</title>
+<title>
+<!--{if $_TPL['titles']}-->
+	<!--{loop $_TPL['titles'] $value}-->
+		<!--{if $value}-->
+			$value -
+		<!--{/if}-->
+	<!--{/loop}-->
+	<!--{/if}-->
+	<!--{if $_SN[$space[uid]]}-->
+		{$space[name]}-
+	<!--{/if}-->
+	$_SCONFIG[sitename] - Powered by tanzhi.com
+</title>
+<script language="javascript" type="text/javascript" src="/source/jquery-1.2.1.pack.js"></script>
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
+<link rel="shortcut icon" href="image/favicon.ico" />
 <style type="text/css">
 * { word-break: break-all; word-wrap: break-word; }
 	body, th, td, input, select, textarea, button { font: 12px/1.5em Verdana, "Lucida Grande",Arial, Helvetica,sans-serif; }
@@ -25,14 +39,26 @@
 <div id="ajaxwaitid"></div>
 
 <table border="0" cellPadding="0" cellSpacing="0" height="100%" width="100%">
+<!--{if $type=='diggid' }-->
+	<tr>
+		<td height="26" class="link_td">
+			<img src="image/icon/profile.gif" align="absmiddle"> <a href="$_SGLOBAL[refer]">返回我的空间</a> <span class="pipe">|</span>
+			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="updatestatics('digg','updatediggupnum','$id');">分享</a>
+			<span class="pipe">|</span>
+			<span id="digg_ud_$id" class="gray"></span>
+			<img src="image/icon/network.gif" align="absmiddle"> <a style="color:#FF6A00" target="$frame" href="link.php?$type=$id">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)<span class="pipe">|</span>
+			<a target="$frame" href="link.php?$type=$id2" style="color:#2C629E">下一篇:$title2</a>
+		</td>
+	</tr>
+<!--{else}-->
 	<tr>
 		<td height="26" class="link_td">
 			<img src="image/icon/profile.gif" align="absmiddle"> <a href="$_SGLOBAL[refer]">返回我的空间</a> <span class="pipe">|</span>
 			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="do_share();">分享</a> <span class="pipe">|</span>
-			<img src="image/icon/network.gif" align="absmiddle"> <a target="_blank" href="link.php?$type=$id">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)
-			<a target="_blank" href="link.php?$type=$id2">下一篇:$title2</a>
+			<img src="image/icon/network.gif" align="absmiddle"> <a target="_blank" href="$url">$url</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)
 		</td>
 	</tr>
+<!--{/if}-->
 	<tr>
 		<td>
 			<iframe id="url_mainframe" frameborder="0" scrolling="yes" name="main" src="$url" style="height: 100%; visibility: inherit; width: 100%; z-index: 1;overflow: visible;"></iframe>

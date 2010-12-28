@@ -73,7 +73,7 @@
 		$(".id_dg_$value['diggid']").attr({
 			href:"link.php?diggid=$value['diggid']",
 			title:id_dg_$value['diggid']_title, onclick:"updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');",
-			target:"_blank"
+			target:"diggid_frame"
 		});		
 		$(".id_dg_$value['diggid']:empty").html(id_dg_$value['diggid']_title);
 <!--{/loop}-->
