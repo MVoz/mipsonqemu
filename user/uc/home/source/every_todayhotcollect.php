@@ -8,7 +8,6 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 //首页每日热藏
-$bookmarklist=array();
 $cachefile=S_ROOT.'./data/todayhotcollect.txt';
 if(!check_everydayhotcollect_cache($cachefile)) {
 	include_once(S_ROOT.'./source/function_cache.php');

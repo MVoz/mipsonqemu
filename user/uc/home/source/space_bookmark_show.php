@@ -62,6 +62,7 @@ if(($op!='browser')){
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$bookmarklist[] = getbookmark($value['bmid']);
 	}
+
 }else{
 	$bmcachefile=S_ROOT.'./data/bmcache/'.$_SGLOBAL['supe_uid'].'/bookmark_'.$browserid.'_'.$groupid.'.txt';
 	if(!file_exists($bmcachefile)){
@@ -100,7 +101,6 @@ if($_SGLOBAL['inajax']==0){
 			$relatedarray[]=$todayhotcollect['site'][$i];
 		}
 	}	
-
 	$relatedlist =array();
 	foreach($relatedarray as $k => $v) {
 		$relatedlist[]=$v;
