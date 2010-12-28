@@ -71,7 +71,7 @@
 <!--{loop $digglist $key $value}-->	
 		var id_dg_$value['diggid']_title="$value['subject']";
 		$(".id_dg_$value['diggid']").attr({
-			href:"link.php?url=$value[url]",
+			href:"link.php?diggid=$value['diggid']",
 			title:id_dg_$value['diggid']_title, onclick:"updatestatics('digg','updatediggviewnum',$value[diggid],'digg_view_num_id_$value[diggid]');",
 			target:"_blank"
 		});		
