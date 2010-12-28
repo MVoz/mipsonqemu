@@ -478,7 +478,7 @@ a.c_link {
 #thumbs .big .hottag p {height:20px;overflow:hidden;}
 #thumbs .big .hottag p span {color:#717171;font-weight:bold;}
 #thumbs .big .hottag p a {margin:0 3px;}
-
+#thumbs	span a{line-height:14px;}	
 #rdsect{float:right;width:250px;height:220px;}
 #rdsect p{clear:both;}
 #rdsect .relate_desc{text-indent:5px;height:40px;padding-top:2px;overflow:hidden;color:#666;}
@@ -552,7 +552,7 @@ border:1px solid #DDD;}
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
-	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-2px;line-height:14px; }
+	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-2px;line-height:12px; }
 		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
 		.ntr{ float: right;  padding: 0 30px 0 0;  background: transparent url(image/nlr.gif) no-repeat right center;}
 
@@ -572,7 +572,7 @@ border:1px solid #DDD;}
 		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px -80px transparent; line-height: 32px; }
 
 	.bloglist_ad {padding:15px 2px 2px 2px;position:relative;left:120px;bottom:10px;}
-		
+	
 	.side_rbox_ad { padding:2px; }
 
 	.bklt { padding: 5px 0 0 5px; line-height: 150%; overflow: hidden;}
