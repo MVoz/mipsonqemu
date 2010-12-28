@@ -15,12 +15,13 @@ if($_SGLOBAL['supe_uid']) {
 }
 
 $refer = empty($_GET['refer'])?rawurldecode($_SCOOKIE['_refer']):$_GET['refer'];
+/*
 preg_match("/(admincp|do|cp)\.php\?ac\=([a-z]+)/i", $refer, $ms);
 if($ms) {
 	if($ms[1] != 'cp' || $ms[2] != 'sendmail') $refer = '';
 }
+*/
 if(empty($refer)) {
-	//$refer = 'space.php?do=home';
 	$refer = 'space.php?do=all';
 }
 

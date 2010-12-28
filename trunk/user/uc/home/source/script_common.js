@@ -1199,11 +1199,11 @@ function diggload(){
 		});	
 		$(".tlist .edit").each(function(){
 			$(this).addClass("thickbox");
-			$(this).attr("href","cp.php?ac=digg&op=edit&height=700&diggid="+this.id).attr("target","_blank");
+			$(this).attr("href","cp.php?ac=digg&op=edit&diggid="+this.id).attr("target","_blank");
 		});	
 		$(".tlist .delete").each(function(){
 			$(this).addClass("thickbox");
-			$(this).attr("href","cp.php?ac=digg&op=delete&height=85&diggid="+this.id);
+			$(this).attr("href","cp.php?ac=digg&op=delete&diggid="+this.id);
 		});
 		$(".tlist .up").each(function(){
 			$(this).attr({
