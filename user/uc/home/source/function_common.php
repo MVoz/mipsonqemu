@@ -168,7 +168,37 @@ function getonlineip($format=0) {
 		return $_SGLOBAL['onlineip'];
 	}
 }
-
+//修正rebot的参数。主要修正siteid和diggid
+function fixrobotparameter()
+{
+	global $_SGLOBAL;
+	if($_GET['ac']=='digg'){
+		$maxdiggid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT MAX(diggid) FROM ".tname('digg')), 0);
+		//diggid越大，概率越大
+		$randseed = rand(1,10);
+		$_GET['diggid'] = rand(floor($maxdiggid/$randseed),$maxdiggid);
+	}else if($_GET['ac']=='site'){
+		$maxsiteid=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT MAX(id) FROM ".tname('site')), 0);
+		$_GET['siteid'] = rand(1,$maxsiteid);
+	}
+}
+//机器人登录
+function robotlogin()
+{
+	//机器人 id号为1~200
+	global $_SGLOBAL, $_SC, $_SCONFIG, $_SCOOKIE, $_SN;
+	$robot_id_s=1;
+	$robot_id_e=10;
+	$randomrobot = rand($robot_id_s,$robot_id_e);
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('member')." WHERE uid='$randomrobot'");
+	if($member = $_SGLOBAL['db']->fetch_array($query)) {
+				$_SGLOBAL['supe_username'] = addslashes($member['username']);
+				$_SGLOBAL['name'] = $member['name'];
+				$_SGLOBAL['supe_uid'] = $member['uid'];
+	} else {
+				$_SGLOBAL['supe_uid'] = 0;
+	}
+}
 //判断当前用户登录状态
 function checkauth() {
 	global $_SGLOBAL, $_SC, $_SCONFIG, $_SCOOKIE, $_SN;
