@@ -17,7 +17,10 @@
 <script language="javascript" type="text/javascript">	
 		$(".nncg a").each(function(){
 			this.href ="javascript:;";
-			$(this).attr("onclick","getAjax('siteview','"+this.id+"');");
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+					getAjax('siteview',$(this).attr("id"));
+
+			}); 
 		});
 </script>
 <!--</static>--> 
