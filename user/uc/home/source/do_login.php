@@ -22,7 +22,10 @@ if($ms) {
 }
 */
 if(empty($refer)) {
-	$refer = 'space.php?do=all';
+	if(empty($_SGLOBAL['refer']))
+		$refer = 'space.php?do=all';
+	else
+		$refer = $_SGLOBAL['refer'];
 }
 
 //ºÃÓÑÑûÇë
