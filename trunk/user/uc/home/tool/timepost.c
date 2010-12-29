@@ -51,7 +51,7 @@ int sighandler_timer(int signo)
 	
 	char *p = strchr(url,'#');
 	if(p){
-		sprintf(p,"%d",3);
+		sprintf(p,"%d",1);
 	}
 	sprintf(url,"%s&robot=%s",url,robotid);
 	printf("url=%s\n",url);
