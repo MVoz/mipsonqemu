@@ -10,9 +10,7 @@ include_once(S_ROOT.'./source/function_cp.php');
 //include_once(S_ROOT.'./source/function_magic.php');
 
 //允许的方法
-$acs = array('bookmark','bmdir','bm','space','digg','diggpool','site','link','linkclass','linkclasstag', 'common', 'class','config','style','upload',
-	 'avatar',  'invite','sendmail',
-	 'password','share'  
+$acs = array('bookmark','bmdir','bm','space','digg','diggpool','site','link','linkclass','linkclasstag', 'common', 'class','config','style','upload', 'avatar',  'invite','sendmail', 'password','share'  
 	);
 /*
 	cancel action
@@ -22,22 +20,30 @@ $acs = array('bookmark','bmdir','bm','space','digg','diggpool','site','link','li
 $ac = (empty($_GET['ac']) || !in_array($_GET['ac'], $acs))?'config':$_GET['ac'];
 $op = empty($_GET['op'])?'':$_GET['op'];
 
+if(
+	($ac=='site'&&$op=='get')
+  )
+{
+}else{
 //权限判断
-if(empty($_SGLOBAL['supe_uid'])) {
-	if($_SERVER['REQUEST_METHOD'] == 'GET') {
-		ssetcookie('_refer', rawurlencode($_SERVER['REQUEST_URI']));
-	} else {
-		ssetcookie('_refer', rawurlencode('cp.php?ac='.$ac));
+	if(empty($_SGLOBAL['supe_uid'])) {
+
+			if($_SERVER['REQUEST_METHOD'] == 'GET') {
+				ssetcookie('_refer', rawurlencode($_SERVER['REQUEST_URI']));
+			} else {
+				ssetcookie('_refer', rawurlencode('cp.php?ac='.$ac));
+			}
+			showmessage('to_login', 'do.php?ac='.$_SCONFIG['login_action']);
+		
 	}
-	showmessage('to_login', 'do.php?ac='.$_SCONFIG['login_action']);
-}
 
-//获取空间信息
-$space = getspace($_SGLOBAL['supe_uid']);
-if(empty($space)) {
-	showmessage('space_does_not_exist');
+	//获取空间信息
+	$space = getspace($_SGLOBAL['supe_uid']);
+	if(empty($space)) {
+		showmessage('space_does_not_exist');
+	}
 }
-
+/*
 //是否关闭站点
 if(!in_array($ac, array('common', 'pm'))) {
 	checkclose();
@@ -55,7 +61,7 @@ if(!in_array($ac, array('common', 'pm'))) {
 		showmessage('no_privilege');
 	}
 }
-
+*/
 //菜单
 $actives = array($ac => ' class="active"');
 runlog('action', 'cp_'.$ac);
