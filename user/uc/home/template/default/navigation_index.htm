@@ -1,7 +1,7 @@
 <!--<static navigation_index>--> 
 <!--{loop $navlist $key $bookmarklist}-->
 <div  style="height:105px;" class="ntitle">
-	<a class="navname" id="groupname" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">
+	<a class="navname" id="groupname" href="javascript:;" onclick="getAjax('siteview','$bookmarklist['siteclassid']');">
 		$bookmarklist['classname']
 	</a>
 	<div id="thumbs" >
