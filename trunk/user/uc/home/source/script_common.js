@@ -1186,7 +1186,7 @@ function siteload(){
 					updatestatics('site','updatesiteviewnum',this.id);
 			}); 
 		});			
-		$("#stlist a").attr("target","_blank");
+		$("#stlist a[class!=share]").attr("target","_blank");
 		$("#stlist .tags > span").html("什么也没留下...");
 		$("#stlist .collect").each(function(){
 			this.href="cp.php?ac=site&op=bookmark&siteid="+this.id;			
@@ -1195,6 +1195,7 @@ function siteload(){
 		$("#stlist .delete").html("删除");
 		$("#stlist .edit").html("编辑");
 		$("#stlist .get").html("详情");
+		$("#stlist .share").html("分享");
 		$("#stlist .collect").html("收藏");
 		tb_init('#stlist a.thickbox');
 }
@@ -1211,7 +1212,7 @@ function diggload(){
 			$(this).addClass("thickbox");
 			$(this).attr("href","cp.php?ac=digg&op=delete&diggid="+this.id);
 		});
-		$(".tlist .up").each(function(){
+		$(".tlist .up_u").each(function(){
 			$(this).attr({
 				href:"javascript:;"
 			});
