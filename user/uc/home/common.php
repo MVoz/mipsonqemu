@@ -86,6 +86,7 @@ if(empty($_GET['m_timestamp']) || $_SGLOBAL['mobile'] != md5($_GET['m_timestamp'
 //登录注册防灌水机
 if(empty($_SCONFIG['login_action'])) $_SCONFIG['login_action'] = md5('login'.md5($_SCONFIG['sitekey']));
 if(empty($_SCONFIG['register_action'])) $_SCONFIG['register_action'] = md5('register'.md5($_SCONFIG['sitekey']));
+if(empty($_SCONFIG['robot_action'])) $_SCONFIG['robot_action'] = md5('robot'.md5($_SCONFIG['sitekey']));
 
 //整站风格
 if(empty($_SCONFIG['template'])) {
@@ -113,11 +114,17 @@ if($_SERVER['REQUEST_URI']) {
 }
 
 //$log->debug('xxx',shtmlspecialchars('hello<>w?o"r%l&d'));
-//判断用户登录状态
-if(empty($_SGLOBAL['client']))
-	checkauth();
-else
-	checkclientauth($_GET);
+//机器人登录
+if(!empty($_GET['robot'])&&($_GET['robot']==$_SCONFIG['robot_action'])){
+	robotlogin();
+	fixrobotparameter();
+}else{
+	//判断用户登录状态
+	if(empty($_SGLOBAL['client']))
+		checkauth();
+	else
+		checkclientauth($_GET);
+}
 $_SGLOBAL['uhash'] = md5($_SGLOBAL['supe_uid']."\t".substr($_SGLOBAL['timestamp'], 0, 6));
 
 //ramen 查看cache，如果没有，则创建
