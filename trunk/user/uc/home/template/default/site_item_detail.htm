@@ -18,7 +18,6 @@
 						<p>
 							<strong>名称: </strong>
 							<a class="url">$item['subject']</a>
-							<span class="num_con"><span><cite><!--{eval linkaward($item[award],0);}--></cite>.<!--{eval linkaward($item[award],1);}--></span><em>(<em>$item['storenum']</em>人收)</em></span>
 						</p>
 						<p><strong>地址: </strong><a class="url">$item['url']</a></p>		
 						<p><strong>所属分类: </strong><a href="space.php?do=navigation&classid=$item['class']" target="_blank">$item['classname']</a></p>						
@@ -49,12 +48,21 @@
 							<p><strong>评价</strong> <span id='site_ud_$item[siteid]'>(点击顶踩评价)</span></p>
 							<span>
 								<span class="rateup">
-									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num')"  href="javascript:void(0)"></a>
+								<!--{if empty($_SGLOBAL[supe_uid]) }-->
+									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']">
+								<!--{else}-->
+									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num')"  href="javascript:void(0)">
+								<!--{/if}-->
+									</a>
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
 								<span class="ratedown">
+								<!--{if empty($_SGLOBAL[supe_uid]) }-->
+									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']">
+								<!--{else}-->
 									<a  target="_self" onclick="updatestatics('site','updatesitedownnum',$item[siteid],'down_num')" 
 									href="javascript:void(0)"></a>
+								<!--{/if}-->
 								</span>
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  

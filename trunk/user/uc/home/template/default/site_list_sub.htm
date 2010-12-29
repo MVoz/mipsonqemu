@@ -33,11 +33,19 @@
 						<!--{/if}-->
 		</p>									
 		<p class="oper">
+					<!--{if empty($_SGLOBAL[supe_uid]) }-->
+					<a target="_self" class="share thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
+					<span>|</span>
+					<!--{else}-->
+					<a  target="_self" class="share" onclick="updatestatics('site','updatesiteupnum',$value[siteid],'up_num')" 
+									href="javascript:void(0)"></a>
+					<span>|</span>
+					<!--{/if}-->
 					<a class="nhot collect" id="$value['siteid']"></a>
 					<span>|</span>
-				    <a class="get" id="$value['siteid']"></a>
-					<span>|</span>
+				    <a class="get" id="$value['siteid']"></a>					
 				  	<!--{if $_SGLOBAL[supe_uid]&&checkperm('managesite') }-->
+					<span>|</span>
 					<a class="edit" id="$value['siteid']"></a><span>|</span><a class="delete" id="$value['siteid']"></a>
 					<!--{else}-->
 					<!--{/if}-->
