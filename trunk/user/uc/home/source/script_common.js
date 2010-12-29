@@ -1143,10 +1143,12 @@ function bookmarkload(){
 		});	
 		$("#bklist .share").each(function(){
 			$(this).attr({
-				onclick:'updatestatics("bookmark","updatebookmarkupnum","'+this.id+'")',
 				href:"javascript:void(0)",
 				target:"_self"
 			});
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				updatestatics('bookmark','updatebookmarkupnum',this.id);
+			}); 
 
 		});	
 		$("#bklistt > li:even").addClass("list_r");;
@@ -1179,7 +1181,10 @@ function siteload(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
 		$("#stlist .url").each(function(){
-			$(this).attr("onclick","updatestatics('site','updatesiteviewnum',"+this.id+")");
+			//$(this).attr("onclick","updatestatics('site','updatesiteviewnum',"+this.id+")");
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+					updatestatics('site','updatesiteviewnum',this.id);
+			}); 
 		});			
 		$("#stlist a").attr("target","_blank");
 		$("#stlist .tags > span").html("什么也没留下...");
@@ -1208,9 +1213,11 @@ function diggload(){
 		});
 		$(".tlist .up").each(function(){
 			$(this).attr({
-				href:"javascript:;",
-				onclick:"updatestatics('digg','updatediggupnum','"+this.id+"');"
+				href:"javascript:;"
 			});
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				updatestatics('digg','updatediggupnum',this.id);
+			}); 
 		});
 		
 		$(".tlist .up").html("推一下");
