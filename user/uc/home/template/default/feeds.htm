@@ -26,14 +26,22 @@
 </ul>
 </div>
 <script type="text/javascript">
-	function AutoScroll(obj){
-			$(obj).find("ul:first").animate({
+	function AutoScroll(){
+			$('#feedscroll').find("ul:first").animate({
 				marginTop:"-60px"
 				},500,function(){
 				$(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
 			});	
-	}									
+	}			
+	var feedscroll_as;
+	$('#feedscroll').mouseover(function(){
+		$(this).find("ul:first").stop();
+		clearInterval(feedscroll_as);
+	});
+	$('#feedscroll').mouseout(function(){
+		feedscroll_as=setInterval('AutoScroll()',5000);
+	});
 	$(function(){
-		setInterval('AutoScroll("#feedscroll")',5000);
+		feedscroll_as=setInterval('AutoScroll()',5000);
 	});									
 </script>
