@@ -606,7 +606,7 @@ border:1px solid #DDD;}
 
 		.tlist .tle{ height:20px; width:auto; line-height:16px; padding-top:2px;font-size:105%;}
 		.tlist .tle a{white-space: nowrap;text-overflow:ellipsis; overflow:hidden; display:block;float:left; max-width:350px;padding:0 2px;}
-		.tlist .tle p{float:left;}
+		.tlist .tle p{float:left;color:#666;}
 		.tlist .ds {line-height:16px;word-break: break-all;text-indent:15px; }
        	.tlist .rt_p .ds a,.tlist .rt .ds a{color:#666;}	
 		.tlist .rt .lfx .ds {width:600px; }
@@ -618,7 +618,7 @@ border:1px solid #DDD;}
 		.tlist .rb{float:left;height:20px;width:470px;}
 		.tlist .rb p{float:left;height:16px;padding:0px 2px 0px 1px;}
 		.tlist .rb a{color:#2C629E;text-decoration: none;}
-		.tlist .rb .tags{max-width:200px;min-width:50px;overflow:hidden;float:left;}
+		.tlist .rb .tags{max-width:200px;min-width:50px;overflow:hidden;float:left;height:20px;}
 		.tlist .rb .emnum{color:#8ABC2B;font-weight:bold;margin-top:0px !important;margin-top:-2px;}
 
 
