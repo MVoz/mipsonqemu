@@ -6,12 +6,12 @@
 			<div class="lfx">
 <!--{/if}-->	
 				 <div class="tle">										
-						<a class="dg_im_$value[relate][diggid]">$value[title_template]</a>
-						<a class="dg_im_$value[relate][diggid]">$value[body_template]</a> 
+						<a class="id_dg_$value[relate][diggid]">$value[title_template]</a>
+						<a class="id_dg_$value[relate][diggid]">$value[body_template]</a> 
 						<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 				 </div>
 				 <div class="ds">
-						<a class="dg_im_$value[relate][diggid]">$value[relate][description]...</a> 
+						<a class="id_dg_$value[relate][diggid]">$value[relate][description]...</a> 
 				</div>
 			</div>
 			<div class="rb gray">
@@ -24,21 +24,21 @@
 							   发布者:
 							   <a href="space.php?do=feed&uid=$value[relate][postuid]" class="publisher">$value[relate][username]</a>
 								 有
-							   <span class="emnum" id="digg_view_num_id_$value[diggid]">$value[relate][viewnum]</span>
+							   <span class="emnum" id="digg_view_num_id_$value[relate][diggid]">$value[relate][viewnum]</span>
 								弹指人参与围观	
 			</div>
 </div>
 <!--{if $value[relate][picflag] }-->	
 			<div class="rightx">						
 					<div class="d_avatar avatar125">
-						   <a class="dg_im_$value[relate][diggid]">
+						   <a class="id_dg_$value[relate][diggid]">
 								<img src="$value[relate][pic]">
 						   </a>
 					  </div>				  
 			</div>
 <!--{/if}-->
 <script type="text/javascript">
-	$(".dg_im_$value[relate][diggid]").each(function(){
+	$(".id_dg_$value[relate][diggid]").each(function(){
 			this.href = "link.php?diggid=$value[relate][diggid]";
 			this.target = "diggid_frame";
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
