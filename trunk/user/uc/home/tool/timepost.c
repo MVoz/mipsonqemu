@@ -1,13 +1,17 @@
-#include <stdio.h>
 #include <curl/curl.h>
-#include <stdlib.h>
 #include <signal.h>
-#include<time.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
 
 CURL *easy_handle=NULL;
 FILE *fp = NULL;
-#define MAX_TIME_INTERVAL 5 
-#define MINUTE 60
+#define MAX_TIME_INTERVAL 100 
 char *httpserver = "http://192.168.115.2/";
 char *robotid = "f69c1725e2a57ec91d1c89d452396c1f";
 char *action[]={
@@ -17,6 +21,57 @@ char *action[]={
 	{"cp.php?ac=digg&op=updatediggviewnum&inajax=1&diggid=#"},
 	{"cp.php?ac=diggpool&op=publish&inajax=1"}
 };
+
+struct timer_action
+{
+	char **ac;
+	int time[2];
+};
+struct timer_action a[]={
+	{&action[0],{8,24}},
+	{&action[1],{8,24}},
+	{&action[2],{0,24}},
+	{&action[3],{0,24}},
+	{&action[4],{6,23}}
+};
+pid_t pid, sid;
+
+void init_daemon(void)
+{
+/* Fork off the parent process */
+        pid = fork();
+        if (pid < 0) {
+            exit(EXIT_FAILURE);
+        }
+        /* If we got a good PID, then
+           we can exit the parent process. */
+        if (pid > 0) {
+            exit(EXIT_SUCCESS);
+        }
+ 
+        /* Change the file mode mask */
+        umask(0);
+ 
+        /* Create a new SID for the child process */
+        sid = setsid();
+        if (sid < 0) {
+            /* Log the failure */
+            exit(EXIT_FAILURE);
+        }
+ 
+        /* Change the current working directory */
+        if ((chdir("/")) < 0) {
+            /* Log the failure */
+            exit(EXIT_FAILURE);
+        }
+ 
+        /* Close out the standard file descriptors */
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+}
+
+
 /**
  *	@brief libcurl接收到数据时的回调函数
  *
@@ -39,6 +94,11 @@ size_t process_data(void *buffer, size_t size, size_t nmemb, void *user_p)
 int sighandler_timer(int signo)
 {
 	// 设置easy handle属性
+	time_t now;
+	struct tm  *nowtime;
+	now = time(NULL);
+	nowtime = localtime(&now);
+	printf("Local time is: %s", asctime(nowtime));
 	
 	int action_r = sizeof(action)/sizeof(char*);
 
@@ -66,13 +126,42 @@ int sighandler_timer(int signo)
 	//随机定时
 	srand((int)time(0));
 	int n = MAX_TIME_INTERVAL;
-	t=1+(int)(((float)(n))*rand()/(RAND_MAX+1.0));
-//	alarm(t*MINUTE);
+	t=5+(int)(((float)(n))*rand()/(RAND_MAX+1.0));
 	alarm(t);
 }
+void PrintUsage(int argc, char *argv[]) {
+    if (argc >=1) {
+        printf("Usage: %s -h -nn", argv[0]);
+        printf("  Options:n");
+        printf("      -ntDon't fork off as a daemon.n");
+        printf("      -htShow this help screen.n");
+        printf("n");
+    }
+}
+
 int main(int argc, char **argv)
 {
+	int c;
+	int daemonize = 0;
+    while( (c = getopt(argc, argv, "dh|help")) != -1) {
+        switch(c){
+            case 'h':
+                PrintUsage(argc, argv);
+                exit(0);
+                break;
+            case 'd':
+                daemonize = 1;
+                break;
+            default:
+                PrintUsage(argc, argv);
+                exit(0);
+                break;
+        }
+    }
 
+	tzset();
+	if(daemonize)
+		init_daemon();
 	// 初始化libcurl
 	CURLcode return_code;
 	return_code = curl_global_init(CURL_GLOBAL_ALL );
