@@ -2977,6 +2977,7 @@ function close_cachelock($type)
 function getnamefromuid($uid)
 {
 	global $_SGLOBAL,$_SC,$_SN;
+	
 	if(!empty($_SN[$uid]))
 		return 	$_SN[$uid];
 	$name = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT name FROM ".tname('member')." where uid=".$uid),0);
