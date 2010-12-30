@@ -7,7 +7,7 @@
 			<li>
 				<div class="lf">
 					<div class="avatar48" style="float:left">
-						<a href="space.php?uid=$value[uid]">
+						<a href="space.php?do=$do&uid=$value[uid]">
 							<!--{avatar($value[uid],small)}-->
 						</a>
 					</div>
@@ -26,13 +26,10 @@
 	</div>
 <!--{else}-->	
 	<!--{template board}-->
-<div  class="boxb" style="height:705px;">
-	<div class="box_l" style="height:700px;">		
+<div  class="box" >
+	<div class="box_l" >		
 				<h2 class="ntitle">
 					<p>$username 最近动态 &raquo;</p>
-					<!--{if !empty($username) }-->
-						<a href="space.php?do=feed" style="float:right;padding-right:5px;">全部</a>
-					<!--{/if}-->
 				</h2>
 		<div id="bmcontent">
 				<div class="tlist">		
@@ -54,7 +51,7 @@
 							<!--{elseif $value[icon]=='bookmark' }-->
 									<!--{template feed_bookmark_li}-->
 							<!--{/if}-->
-						 <!--{/if}-->
+
 						</li>
 						<!--{/loop}-->
 					</ul>
@@ -67,5 +64,6 @@
 			  
 	</div> 						
 </div>
-<!--{template footer}-->
 <!--{/if}-->
+<!--{template footer}-->
+
