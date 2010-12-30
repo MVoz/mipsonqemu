@@ -6,12 +6,12 @@
 			<div class="lfx">
 <!--{/if}-->	
 				 <div class="tle">										
-						<a href="link.php?diggid=$value[relate][diggid]" onclick="updatestatics('digg','updatediggviewnum',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');" target="diggid_frame">$value[title_template]</a>
-						<a href="link.php?diggid=$value[relate][diggid]" onclick="updatestatics('digg','updatediggviewnum',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');" target="diggid_frame">$value[body_template]</a> 
+						<a class="dg_im_$value[relate][diggid]">$value[title_template]</a>
+						<a class="dg_im_$value[relate][diggid]">$value[body_template]</a> 
 						<span class="gray"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 				 </div>
 				 <div class="ds">
-						<a href="link.php?diggid=$value[relate][diggid]" onclick="updatestatics('digg','updatediggviewnum',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');" target="diggid_frame">$value[relate][description]...</a> 
+						<a class="dg_im_$value[relate][diggid]">$value[relate][description]...</a> 
 				</div>
 			</div>
 			<div class="rb gray">
@@ -28,14 +28,22 @@
 								弹指人参与围观	
 			</div>
 </div>
-			<!--{if $value[relate][picflag] }-->	
-					<div class="rightx">						
-							<div class="d_avatar avatar125">
-								   <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatediggview($value[relate][diggid])">
-									<img onerror="this.onerror=null;this.src='./template/default/image/1_1264944905dc86.jpg'"
-													src="$value[relate][pic]">
-								   </a>
-							  </div>				  
-						</div>
-			<!--{/if}-->
+<!--{if $value[relate][picflag] }-->	
+			<div class="rightx">						
+					<div class="d_avatar avatar125">
+						   <a class="dg_im_$value[relate][diggid]">
+								<img src="$value[relate][pic]">
+						   </a>
+					  </div>				  
+			</div>
+<!--{/if}-->
+<script type="text/javascript">
+	$(".dg_im_$value[relate][diggid]").each(function(){
+			this.href = "link.php?diggid=$value[relate][diggid]";
+			this.target = "diggid_frame";
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				updatestatics('digg','updatediggviewnum',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');
+			});			
+	});	
+</script>
 						
