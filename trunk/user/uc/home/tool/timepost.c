@@ -16,11 +16,11 @@ unsigned int maxinterval=100;
 char *httpserver = "http://192.168.115.2/";
 char *robotid = "f69c1725e2a57ec91d1c89d452396c1f";
 char *action[]={
-	{"cp.php?ac=digg&op=updatediggupnum&inajax=1&diggid=#"},
-	{"cp.php?ac=site&op=updatesiteupnum&inajax=1&siteid=#"},
-	{"cp.php?ac=site&op=updatesiteviewnum&inajax=1&siteid=#"},
-	{"cp.php?ac=digg&op=updatediggviewnum&inajax=1&diggid=#"},
-	{"cp.php?ac=diggpool&op=publish&inajax=1"}
+	{"cp.php?ac=digg&op=updatediggupnum&inajax=1&diggid=#"},//3
+	{"cp.php?ac=site&op=updatesiteupnum&inajax=1&siteid=#"},//2
+	{"cp.php?ac=site&op=updatesiteviewnum&inajax=1&siteid=#"},//4
+	{"cp.php?ac=digg&op=updatediggviewnum&inajax=1&diggid=#"},//5
+	{"cp.php?ac=diggpool&op=publish&inajax=1"}//3
 };
 
 struct timer_action
@@ -30,18 +30,27 @@ struct timer_action
 };
 struct timer_action timer_actions[]={
 	{&action[0],{8,24}},
-	{&action[3],{0,24}},
-	{&action[4],{6,23}},
-	{&action[2],{0,24}},
+	{&action[0],{8,24}},
+	{&action[0],{8,24}},
+
 	{&action[1],{8,24}},
-	{&action[3],{0,24}},
-	{&action[4],{6,23}},
+	{&action[1],{8,24}},
+
 	{&action[2],{0,24}},
-	{&action[3],{0,24}},
 	{&action[2],{0,24}},
-	{&action[4],{6,23}},
+	{&action[2],{0,24}},
+	{&action[2],{0,24}},
+
 	{&action[3],{0,24}},
-	{&action[4],{6,23}}
+	{&action[3],{0,24}},	
+	{&action[3],{0,24}},	
+	{&action[3],{0,24}},
+	{&action[3],{0,24}},
+		
+	{&action[4],{6,23}},
+	{&action[4],{6,23}},
+	{&action[4],{6,23}}	
+
 };
 /**
  *	@brief libcurl接收到数据时的回调函数
@@ -98,10 +107,8 @@ int sighandler_timer(int signo)
 	}
 	// 释放资源
 	//随机定时
-	printf("maxinterval=%u\n",maxinterval);
 	srand((int)time(0));
-	int n = MAX_TIME_INTERVAL;
-	t=5+(int)(((float)(n))*rand()/(RAND_MAX+1.0));
+	t=5+(int)(((float)(maxinterval))*rand()/(RAND_MAX+1.0));
 	alarm(t);
 }
 pid_t pid, sid;
