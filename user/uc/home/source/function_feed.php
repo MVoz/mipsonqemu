@@ -298,7 +298,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] = cplang('digg_link'); 
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{link}';
-				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
+				$setarr['body_data'] = array('link'=>"<a class=\"id_dg_$value[diggid]\">$value[subject]</a>", 'data'=>$value[url]);
 				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
@@ -324,7 +324,7 @@ function feed_publish($id, $idtype, $add=0) {
 				$setarr['title_template'] =($idtype=='updiggid')?cplang('updigg_link'):cplang('downdigg_link'); 
 				$setarr['title_template'] = '{actor} '.$setarr['title_template'];
 				$setarr['body_template'] = '{link}';
-				$setarr['body_data'] = array('link'=>"<a href=\"$value[url]\" target=\"_blank\">$value[subject]</a>", 'data'=>$value[url]);
+				$setarr['body_data'] = array('link'=>"<a class=\"id_dg_$value[diggid]\">$value[subject]</a>", 'data'=>$value[url]);
 				$setarr['body_general'] = $value['description'];
 				//$setarr['image_1'] = $value['image'];
 				//$setarr['image_1_link'] = $value['image_link'];
