@@ -28,7 +28,8 @@
                         <input type="button" value="添加网址" onclick="self.location='?c=site_manage&a=edit&action=add&classid=<{$class_id}>'"/>&nbsp;
                         <label for="alltopic"><a href='?c=class'>选择分类</a></label>&nbsp;
                         &nbsp;&nbsp;<a href='?c=site_manage'>查看所有分类</a></label>&nbsp;
-                        &nbsp;&nbsp;<a href="?c=site_manage&isend=1">查看过期站点</a>&nbsp;
+			&nbsp;&nbsp;<a href="?c=site_manage&isgood=1">查看推荐站点</a>&nbsp;
+                        &nbsp;&nbsp;<a href="?c=site_manage&isend=1">查看过期站点</a>&nbsp;			
                         </div>
                     </div>
                     <table class="admin-tb" id="js_data_source">
