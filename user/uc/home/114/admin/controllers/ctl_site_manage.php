@@ -79,15 +79,16 @@ class ctl_site_manage
             $class_id = (empty($_GET['classid'])) ? 0 : $_GET['classid'];
             // 显示过期站点
             $isend = (empty($_GET['isend'])) ? 0 : 1;
-
+			//显示推荐站点
+			$isgood= (empty($_GET['isgood'])) ? 0 : 1;
             // 结果
             $start = (empty($_GET['start'])) ? 0 : (int)$_GET['start'];
-            $result = mod_site_manage::get_list($class_id, $isend, $start, PAGE_ROWS);
+            $result = mod_site_manage::get_list($class_id, $isgood, $isend, $start, PAGE_ROWS);
 
             if (!empty($result))
             {
                 app_tpl::assign('list', $result['data']);
-                app_tpl::assign('page_url', "?c=site_manage&classid={$class_id}&isend={$isend}");
+                app_tpl::assign('page_url', "?c=site_manage&classid={$class_id}&isend={$isend}&isgood={$isgood}");
                 app_tpl::assign('pages', mod_pager::get_page_number_list($result['total'], $start, PAGE_ROWS));
             }
             app_tpl::assign('referer', $_SERVER['REQUEST_URI']);
