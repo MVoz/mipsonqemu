@@ -71,7 +71,7 @@ class mod_site_manage
 	 * @param int $num[optional]
 	 * @return array
 	 */
-	public static function get_list($class_id = 0, $isend = false, $start = 0, $num = 20)
+	public static function get_list($class_id = 0, $isgood=false, $isend = false, $start = 0, $num = 20)
 	{
 		$condition = '';
 
@@ -127,6 +127,11 @@ class mod_site_manage
 		{
 			$condition .= (!empty($condition)) ? ' AND `endtime` > 0 AND `endtime` < ' . time() :
 												 ' AND `endtime` > 0 AND `endtime` < ' . time();
+		}
+		//推荐
+		if ($isgood)
+		{
+			$condition .= (!empty($condition)) ? ' AND `good` = 1 ':' AND `good` = 1 ';
 		}
 
 		$condition .= ' ORDER BY class, a.displayorder';
