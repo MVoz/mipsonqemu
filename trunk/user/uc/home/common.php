@@ -87,6 +87,7 @@ if(empty($_GET['m_timestamp']) || $_SGLOBAL['mobile'] != md5($_GET['m_timestamp'
 if(empty($_SCONFIG['login_action'])) $_SCONFIG['login_action'] = md5('login'.md5($_SCONFIG['sitekey']));
 if(empty($_SCONFIG['register_action'])) $_SCONFIG['register_action'] = md5('register'.md5($_SCONFIG['sitekey']));
 if(empty($_SCONFIG['robot_action'])) $_SCONFIG['robot_action'] = md5('robot'.md5($_SCONFIG['sitekey']));
+if(empty($_SCONFIG['114_action'])) $_SCONFIG['114_action'] = md5('114'.md5($_SCONFIG['sitekey']));
 
 //ÕûÕ¾·ç¸ñ
 if(empty($_SCONFIG['template'])) {
