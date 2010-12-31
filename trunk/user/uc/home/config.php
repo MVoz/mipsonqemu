@@ -120,4 +120,9 @@ $_SC['error'][-1*$_SC['error']['err_bookmark_add_overflow']]='err_bookmark_add_o
 $_SC['error']['err_bmdir_add_overflow']=-11;
 $_SC['error'][-1*$_SC['error']['err_bmdir_add_overflow']]='err_bmdir_add_overflow';
 
+
+$_SCONFIG['114_action'] = '2a13fb1e443a92cad5d126b0e529e394';
+$_SCONFIG['robot_action'] = 'f69c1725e2a57ec91d1c89d452396c1f';
+$_SCONFIG['login_action'] = '4e9ded254714e0a04aca9db62e5e8fd9';
+$_SCONFIG['register_action'] = '5ce646b2ee3505b0d3caaaf775698fd0';
 ?>
