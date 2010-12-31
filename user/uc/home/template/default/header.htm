@@ -1,4 +1,5 @@
 <!--{if empty($_SGLOBAL['inajax'])}-->
+<!--<static header>--> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -43,6 +44,7 @@
 						<a href="http://www.tudou.com/my/soft/">弹指软件</a>
 						<a class="gs_upload" href="cp.php?ac=site">我要上榜</a>
 					</div>
+<!--</static>--> 
 					<div class="h_user">
 						   <!--{if $_SGLOBAL[supe_uid]}-->
 							<strong class="first">你好，<a target="_blank" href="space.php?do=all">$_SGLOBAL['name']</a></strong>
@@ -52,7 +54,7 @@
 							<span><a href="admincp.php">管理</a></span>
 						   <!--{/if}-->
 						   <!--{if $_SGLOBAL[supe_uid]&&checkperm('managelinkclass') }-->
-								<span><a href="/114/admin" target="_blank">分类</a></span>
+								<span><a href="/$_SCONFIG['114_action']/admin" target="_blank">分类</a></span>
 						   <!--{/if}-->
 						   <!--{else}-->
 							<strong class="first">你好，欢迎</strong>
