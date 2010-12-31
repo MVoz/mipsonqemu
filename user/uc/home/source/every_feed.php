@@ -13,7 +13,15 @@ $cachefile = S_ROOT.'./data/cache_feed.txt';
 if(check_feed_cache()) {
 	$sitefeed_list = unserialize(sreadfile($cachefile));
 } else {
-	 $query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('feed')." ORDER BY dateline DESC LIMIT 0,20");
+	//只保留前48项
+	//
+	 $feedcount=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('feed')), 0);
+	 if( $feedcount > 48){
+		$deletecount = $feedcount - 48;
+		$_SGLOBAL['db']->query("DELETE FROM ".tname('feed')." ORDER BY feedid ASC LIMIT ".$deletecount);
+	 }
+
+	 $query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('feed')." ORDER BY feedid DESC LIMIT 0,20");
 	 while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 			$sitefeed_list[] = $value; 		
 	 };
