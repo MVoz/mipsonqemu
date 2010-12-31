@@ -1,30 +1,12 @@
 <!--{if empty($_SGLOBAL['inajax'])}-->
+<!--<static footer>--> 
 	<!--{if empty($_TPL['nosidebar'])}-->
 		<!--{if $_SGLOBAL['ad']['contentbottom']}--><br style="line-height:0;clear:both;"/><div id="ad_contentbottom"><!--{ad/contentbottom}--></div><!--{/if}-->
 		<div id="bottom"></div>
 	<!--/main-->
 	<!--{/if}-->
 	<script type="text/javascript">
-		function ajaxresponse(objname, data,flag) {
-			$.ajax({
-			  type: "GET",
-			  url:'do.php?ac=$_SCONFIG[register_action]&inajax=1&' + data,
-			  success:function(data){
-				var obj = $obj(objname);
-				data = trim(data);
-				if((s.indexOf('succeed') > -1)) {
-				if(flag!=1)
-					{
-						obj.style.display = '';
-						obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
-						obj.className = "warning";
-					}
-				} else {
-					warning(obj, s);
-				} 							
-			  }
-			});
-		}
+
 	</script>
 </div>
 <!--/wrap-->
@@ -60,9 +42,9 @@
 			<!--{if $_SCONFIG['miibeian']}--> - <a  href="http://www.miibeian.gov.cn" target="_blank">$_SCONFIG[miibeian]</a><!--{/if}-->
 		</p>
 		<p>
-			Powered by <a  href="http://u.discuz.net" target="_blank"><strong>UCenter Home</strong></a> <span title="<!--{eval echo X_RELEASE;}-->"><!--{eval echo X_VER;}--></span>
+			Powered by <a  href="http://www.tanzhi.com" target="_blank"><strong>tanzhi.com</strong></a> <span title="<!--{eval echo X_RELEASE;}-->"><!--{eval echo X_VER;}--></span>
 			<!--{if !empty($_SCONFIG['licensed'])}--><a  href="http://license.comsenz.com/?pid=7&host=$_SERVER[HTTP_HOST]" target="_blank">Licensed</a><!--{/if}-->
-			&copy; 2001-2009 <a  href="http://www.comsenz.com" target="_blank">Comsenz Inc.</a>
+			&copy; 2001-2009 <a  href="http://www.tanzhi.com" target="_blank">tanzhi Inc.</a>
 		</p>
 		<!--{if $_SCONFIG['debuginfo']}-->
 		<p><!--{eval echo debuginfo();}--></p>
@@ -92,4 +74,5 @@
 <!--{/if}-->
 </body>
 </html>
+<!--</static>--> 
 <!--{/if}-->
