@@ -112,5 +112,5 @@ if($op == 'delete') {
 	while($value =$_SGLOBAL['db']->fetch_array($tag_query))
 		$diggtaglist[$value['tagid']]=$value['tagname'];
 }  
-include_once template("cp_digg");
+include_once template("cp_diggpool");
 ?>

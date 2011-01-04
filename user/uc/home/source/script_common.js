@@ -1084,7 +1084,26 @@ function updatestatics(type,op,id,o)
 		//this.blur();
 		return false;
 } 
-
+function ajaxresponse(objname, data,flag) {
+	$.ajax({
+		  type: "GET",
+		  url:'do.php?ac=$_SCONFIG[register_action]&inajax=1&' + data,
+		  success:function(data){
+			var obj = $obj(objname);
+			data = trim(data);
+			if((s.indexOf('succeed') > -1)) {
+				if(flag!=1)
+					{
+						obj.style.display = '';
+						obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+						obj.className = "warning";
+					}
+				} else {
+					warning(obj, s);
+				} 							
+			  }
+		});
+}
 var lastSecCode='';
 function checkSeccode() {
 		var  seccodeVerify= $('#seccode').val();		
