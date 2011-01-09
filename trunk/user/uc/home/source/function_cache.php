@@ -847,6 +847,7 @@ function everydayhot_cache()
 	$todayhotid = sarray_rand($todayhotids, 1);
 	foreach($todayhotid as $key=>$val){
 		$value = getsite($val);
+		$value['classname']=getsiteclassname($val['class']);
 		$value['short_subject'] = getstr(trim($value['subject']), $_SC['subject_todayhot_length']);	
 		$value['short_description'] = getstr(trim($value['description']), $_SC['description_todayhot_length']);
 		$todayhot= $value;		
