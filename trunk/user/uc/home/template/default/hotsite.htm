@@ -1,0 +1,24 @@
+<div id="expressnav">	
+<!--{loop $navlist $key $bookmarklist}-->
+	<dl class="line">
+		<dt><a title="$bookmarklist['classname']" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">$bookmarklist['classname']</a></dt>
+		<!--{loop $bookmarklist['son'] $key $value}-->
+			<dd>
+				<a href="{$value[url]}" id="$value['siteid']">$value[subject]</a>
+			</dd>						
+		<!--{/loop}-->
+		<dd class="more"><a title="更多 &gt;&gt;" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">更多 &gt;&gt;</a></dd>	
+	</dl>
+<!--{/loop}-->
+</div>
+<script language="javascript" type="text/javascript">	
+		$("#expressnav a").each(function(){
+			this.target ="_blank";
+		});	
+		$("#expressnav dd[class!='more'] a").each(function(){
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+					updatesiteview($(this).attr("id"));
+			});
+			this.title =$(this).html();			
+		});
+</script>
