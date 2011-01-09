@@ -12,6 +12,15 @@ include_once(S_ROOT.'./source/every_highlight.php');
 //今日热荐
 include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/every_feed.php');
+
+//获取快速导航
+if(!file_exists(S_ROOT.'./data/navigation_cache.txt'))
+{
+	include_once(S_ROOT.'./source/function_cache.php');
+	navigation_cache();			
+}
+$navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
+
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
 //$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
