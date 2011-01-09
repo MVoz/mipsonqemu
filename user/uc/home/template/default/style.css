@@ -548,7 +548,7 @@ border:1px solid #DDD;}
 .box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
-.box h3 , .boxnb h3{ font-size:15px;color:#8ABC2B; }
+.box h3 , .boxnb h3{ font-size:15px;color:#8ABC2B;margin-bottom:5px; }
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
@@ -782,9 +782,9 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .headline .desc p{ color:#666;}
 
 #expressnav{width:100%;margin-bottom: 30px;}
-#expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 32px;line-height: 32px; padding: 0 0 0 10px;overflow:hidden;}
-#expressnav dl dt{ width: 65px;float: left;}
-#expressnav dl dd{ display: inline;  float: left;   font-size: 13px;width: 87px;overflow:hidden;}
+#expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 25px;line-height: 25px; padding: 0 0 0 10px;overflow:hidden;}
+#expressnav dl dt{ width: 45px;float: left;}
+#expressnav dl dd{ display: inline;  float: left;   font-size: 13px;width: 90px;overflow:hidden;}
 #expressnav dl dd a{ color:#666;}
 
 
