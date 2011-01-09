@@ -10,8 +10,10 @@ if(!defined('IN_UCHOME')) {
 
 include_once(S_ROOT.'./source/every_highlight.php');
 //今日热荐
+include_once(S_ROOT.'./source/every_todayhot.php');
 include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/every_feed.php');
+include_once(S_ROOT.'./source/every_hotdigg.php');
 
 //支取hotcollect前4个
 $hotsite = array_slice($todayhotcollect['site'], 0, 4);
