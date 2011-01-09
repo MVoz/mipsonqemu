@@ -1,0 +1,29 @@
+<div class="headline">
+		<a class="pic" class="id_td_$todayhot[siteid]">
+			<img src="$todayhot['pic']/b_$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['subject']" />
+		</a>
+		<div class="desc">
+					<h3>
+					<a href="$todayhot['url']">$todayhot['subject']</a>
+					<a href="space.php?do=navigation&classid=$todayhot['class']" target="_blank" style="color:#8ABC2B;">[{$todayhot['classname']}]</a>
+					</h3>
+					<p>
+<!--{if !empty($todayhot['description'])}-->
+					$todayhot['description']...
+<!--{else}-->
+					&nbsp;&nbsp;&nbsp;&nbsp;暂时没有对站点&nbsp;<a class="" href="$todayhot['url']">$todayhot['subject']</a>&nbsp;的详细描述，请等待服务器更新 ...&nbsp;
+<!--{/if}-->		
+					<!--{date('Y-m-d',$value[dateline],1)}-->&nbsp;&nbsp; ($todayhot['storenum']人收藏)
+					</p>
+					<p>$todayhot['up']人推荐</p>					
+					
+					<p>
+						<span class="tag" style="min-width:100px;">
+								<!--{loop $todayhot['tag'] $subkey $subvalue}-->
+								<a id="$subkey">$subvalue</a>
+								<!--{/loop}-->
+						</span>
+							<a href="cp.php?ac=site&siteid=$todayhot[siteid]&op=bookmark" >我要收藏</a>
+					</p> 					
+		</div>
+</div>
