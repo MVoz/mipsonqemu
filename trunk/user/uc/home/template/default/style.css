@@ -780,11 +780,11 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .headline{width:100%;margin-bottom: 30px;}
 .headline .pic{ float: left; margin-right: 20px;}
 
-.expressnav{width:100%;margin-bottom: 30px;}
-.expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 32px;line-height: 32px; padding: 0 0 0 10px;}
-.expressnav dl dt{ width: 65px;float: left;}
-.expressnav dl dd{ display: inline;  float: left;   font-size: 13px;width: 87px;}
-.expressnav dl dd a{ color:#666;}
+#expressnav{width:100%;margin-bottom: 30px;}
+#expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 32px;line-height: 32px; padding: 0 0 0 10px;overflow:hidden;}
+#expressnav dl dt{ width: 65px;float: left;}
+#expressnav dl dd{ display: inline;  float: left;   font-size: 13px;width: 87px;overflow:hidden;}
+#expressnav dl dd a{ color:#666;}
 
 
 
