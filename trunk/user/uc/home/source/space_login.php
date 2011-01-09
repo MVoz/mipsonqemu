@@ -13,6 +13,8 @@ include_once(S_ROOT.'./source/every_highlight.php');
 include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/every_feed.php');
 
+//支取hotcollect前4个
+$hotsite = array_slice($todayhotcollect['site'], 0, 4);
 //获取快速导航
 if(!file_exists(S_ROOT.'./data/navigation_cache.txt'))
 {
