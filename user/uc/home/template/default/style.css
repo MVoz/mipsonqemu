@@ -759,8 +759,8 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .soft h1{float:left;clear:both;width:283px; height:175px;}
 .soft img{ float:right; display:block; width:391px; height:175px; padding-top:0px;}
 .soft h1 ul {height:130px;}
-.soft h1 ul li{font-weight:normal;font-size:110%;line-height:25px;color:#666; height:25px; /*list-style:url(image/list_icon.gif);*/ margin-left:25px; border-bottom:dotted 1px #939393; padding-left:10px;}
-
+.soft h1 ul li{font-weight:normal;font-size:110%;line-height:25px;color:#666; height:25px; background:url("image/g.png") no-repeat scroll -948px -58px transparent; margin-left:10px; padding-left:22px;}
+.soft h1 ul li span{font-weight:bold;}
 .soft p{padding:10px;}
 
 /*step*/
