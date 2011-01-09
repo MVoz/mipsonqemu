@@ -1,24 +1,59 @@
-<div id="expressnav">	
-<!--{loop $navlist $key $bookmarklist}-->
-	<dl class="line">
-		<dt><a title="$bookmarklist['classname']" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">$bookmarklist['classname']</a></dt>
-		<!--{loop $bookmarklist['son'] $key $value}-->
-			<dd>
-				<a href="{$value[url]}" id="$value['siteid']">$value[subject]</a>
-			</dd>						
-		<!--{/loop}-->
-		<dd class="more"><a title="更多 &gt;&gt;" href="space.php?do=navigation&classid=$bookmarklist['siteclassid']">更多 &gt;&gt;</a></dd>	
-	</dl>
-<!--{/loop}-->
-</div>
-<script language="javascript" type="text/javascript">	
-		$("#expressnav a").each(function(){
-			this.target ="_blank";
-		});	
-		$("#expressnav dd[class!='more'] a").each(function(){
-			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-					updatesiteview($(this).attr("id"));
-			});
-			this.title =$(this).html();			
-		});
+<ul class="bklt" id="stlist">
+	<!--{loop $hotsite $key $value}-->
+		<li>
+		<h3>
+			<a class="url id_st_$value['siteid']" id="$value['siteid']"></a>
+			<span>($value['storenum']人收)</span>
+		</h3>
+		<div class="d_avatar avatar125">
+				<a class="url id_st_$value['siteid']" id="$value['siteid']">
+						 <!--{if empty($value['picflag'])}-->
+								<img src="$value['tmppic']">
+						 <!--{else}-->
+								<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
+						 <!--{/if}-->							
+				</a>
+		</div>		
+						<!--{if !empty($value['description'])}-->
+		<p class="message">
+								$value['description'] ...
+						<!--{else}-->
+		<p class="message ">
+								<span class="id_nodes" id="$value['siteid']"></span>
+						<!--{/if}-->
+						<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+		</p>
+		<p class="tags"> 
+						<!--{if !empty($value['tag'])}-->
+							<!--{loop $value[tag] $subkey $subvalue}-->
+								<a id="$subkey" class="id_st_tag">$subvalue</a>
+							<!--{/loop}-->
+						<!--{else}-->
+								<span></span>
+						<!--{/if}-->
+		</p>									
+		<p class="oper">
+					<!--{if empty($_SGLOBAL[supe_uid]) }-->
+					<a target="_self" class="share thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
+					<span>|</span>
+					<!--{else}-->
+					<a  target="_self" class="share" onclick="updatestatics('site','updatesiteupnum',$value[siteid],'up_num')" 
+									href="javascript:void(0)"></a>
+					<span>|</span>
+					<!--{/if}-->
+					<a class="nhot collect" id="$value['siteid']"></a>
+					<span>|</span>
+				    <a class="get" id="$value['siteid']"></a>
+					</p>					 
+				</li>
+				<!--{/loop}-->
+			</ul>
+<script language="javascript" type="text/javascript">
+		siteload();
+<!--{loop $hotsite $key $value}-->	
+		var id_st_$value['siteid']_title="$value['subject']";
+		$(".id_st_$value['siteid']").attr("href","$value[url]").attr("title",id_st_$value['siteid']_title);		
+		$(".id_st_$value['siteid']:empty").html(id_st_$value['siteid']_title);
+<!--{/loop}-->		
 </script>
+
