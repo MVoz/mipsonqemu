@@ -6,7 +6,7 @@
 		</h2>
 		<div class="seio">
 					<div class="sepc">
-						<a target="_target" href="$item['url']" onclick="updatestatics('site','updatesiteviewnum','$item[siteid]')">
+						<a target="_target" href="$item['url']" onclick="updatestatics('site','updatesiteviewnum','$item[siteid]');">
 								 <!--{if empty($item['picflag'])}-->
 									<img src="template/default/image/b_webloading.gif">
 								 <!--{else}-->
@@ -46,32 +46,32 @@
 					</div>
 					<div class="sese">
 							<p><strong>评价</strong> <span id='site_ud_$item[siteid]'>(点击顶踩评价)</span></p>
-							<span>
 								<span class="rateup">
 								<!--{if empty($_SGLOBAL[supe_uid]) }-->
-									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']">
+									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
 								<!--{else}-->
-									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num')"  href="javascript:void(0)">
+									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num');"  href="javascript:void(0)"></a>
 								<!--{/if}-->
-									</a>
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
 								<span class="ratedown">
 								<!--{if empty($_SGLOBAL[supe_uid]) }-->
-									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']">
+									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
 								<!--{else}-->
-									<a  target="_self" onclick="updatestatics('site','updatesitedownnum',$item[siteid],'down_num')" 
+									<a  target="_self" onclick="updatestatics('site','updatesitedownnum',$item[siteid],'down_num');" 
 									href="javascript:void(0)"></a>
 								<!--{/if}-->
 								</span>
 								(<span id="down_num">$item['down']</span>人踩)
-							</span>	  
 					</div>
 				</div>	
-				</div>
-				<h3>站点简介</h3>
-					<p style="height:60px;padding:10px 0;">$item[description]</p>
-					<p>&nbsp;</p>
+			</div>
+			<h3>站点简介</h3>
+				<p style="height:60px;padding:10px 0;color:#666;">$item[description]</p>
+				<p>&nbsp;</p>
+
+		<h3>相似站点&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·</h3>
+				<!--{template hotsite}-->	
 	
 	</div>
 <script language="javascript" type="text/javascript">	
@@ -93,25 +93,7 @@
 		tb_init('.sedl a.thickbox');
 </script>
 	<div class="box_r">
-		<h2 class="ntitle">
-			<em>类似站点&raquo;</em>
-		</h2>
-		<div style="padding:10px 22px;">
-			<img src="template/default/image/adv_240x200.jpg">
-		</div>
-		<!--
-		-->
-		   <dl class="drank">
-				<!--{template hotdigg}-->
-		   </dl>
-		<!--
-		-->
-	</div>
-	<div class="box_l" style="height:250px;">			
-		<h2 class="ntitle">				
-			<p>相似站点&raquo;</p>
-		</h2>
-			<!--{template space_navigation_list}-->	
+		<!--{template digg_sortlist}-->
 	</div>
 </div>
 </div>
