@@ -15,8 +15,10 @@ $digglist = array();
 $nowpage=($page)?($page-1):0;
 $start=$page?(($page-1)*$perpage):0;
 $count = 0;
+$diggusername = '';
 if($uid){
 	$fileprefix='./data/diggcache/digg_user_'.$uid.'_';
+	$diggusername = getnamefromuid($uid);
 }else{
 	$fileprefix='./data/diggcache/digg_';
 }
