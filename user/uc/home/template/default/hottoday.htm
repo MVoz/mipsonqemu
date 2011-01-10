@@ -1,11 +1,15 @@
 <div class="headline">
 		<a class="pic" class="id_td_$todayhot[siteid]">
+ <!--{if empty($todayhot['picflag'])}-->
+			<img src="template/default/image/b_webloading.gif">
+<!--{else}-->
 			<img src="$todayhot['pic']/b_$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['subject']" />
+<!--{/if}-->	
 		</a>
 		<div class="desc">
 					<h3>
 					<a href="$todayhot['url']">$todayhot['subject']</a>
-					<a href="space.php?do=navigation&classid=$todayhot['class']" target="_blank" style="color:#8ABC2B;">[{$todayhot['classname']}]</a>
+					
 					</h3>
 					<p>
 <!--{if !empty($todayhot['description'])}-->
@@ -15,10 +19,15 @@
 <!--{/if}-->		
 					<!--{date('Y-m-d',$value[dateline],1)}-->&nbsp;&nbsp; ($todayhot['storenum']人收藏)
 					</p>
-					<p>$todayhot['up']人推荐</p>					
+					<p>网址:&nbsp;&nbsp;<a href="$todayhot['url']">$todayhot['url']</a></p>
+					<p>
+						分类:&nbsp;&nbsp;<a href="space.php?do=navigation&classid=$todayhot['class']" target="_blank" style="color:#8ABC2B;">{$todayhot['classname']}</a>
+					</p>
+										
 					
 					<p>
-						<span class="tag" style="min-width:100px;">
+						<span style="min-width:100px;float:left;">
+								标签:&nbsp;&nbsp;
 								<!--{loop $todayhot['tag'] $subkey $subvalue}-->
 								<a id="$subkey">$subvalue</a>
 								<!--{/loop}-->
