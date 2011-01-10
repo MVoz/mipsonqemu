@@ -8,35 +8,33 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 include_once(S_ROOT.'./source/every_highlight.php');
-//是否公开
-if(empty($_SCONFIG['networkpublic'])) {
-	checklogin();//需要登录
-}
+include_once(S_ROOT.'./source/every_hotdigg.php');
 
-    $tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
-    //获取总条数
-    $page=empty($_GET['page'])?0:intval($_GET['page']);
-    $perpage=$_SC['digg_show_maxnum'];
-    $start=$page?(($page-1)*$perpage):0;
-    $theurl="space.php?uid=$space[uid]&do=$do&tagid=$tagid";
-    $count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('diggtagdigg')." main where main.tagid=".$tagid),0);
-    //获取tag名字
-    $tagname=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT tagname FROM ".tname('diggtag')." main where main.tagid=".$tagid),0);
-    $tagname="标签:".$tagname;
-    //获取digglist
 
-	$query = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('diggtagdigg')." main
+$tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
+//获取总条数
+$page=empty($_GET['page'])?0:intval($_GET['page']);
+$perpage=$_SC['digg_show_maxnum'];
+$start=$page?(($page-1)*$perpage):0;
+$theurl="space.php?uid=$space[uid]&do=$do&tagid=$tagid";
+$count = $_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(*) FROM ".tname('diggtagdigg')." main where main.tagid=".$tagid),0);
+//获取tag名字
+$tagname=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT tagname FROM ".tname('diggtag')." main where main.tagid=".$tagid),0);
+$tagname="标签:".$tagname;
+//获取digglist
+
+$query = $_SGLOBAL['db']->query("SELECT main.*, sub.* FROM ".tname('diggtagdigg')." main
 		LEFT JOIN ".tname('digg')." sub ON main.diggid=sub.diggid where main.tagid=".$tagid." ORDER BY sub.dateline DESC limit ".$start." , ".$_SC['digg_show_maxnum']);
-	$bookmarklist = array();
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+$digglist = array();
+while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		$value['tag'] = empty($value['tag'])?array():unserialize($value['tag']);
 		$digglist[] = $value;
-	}
+}
 
 //分页
 $multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
 
-$_TPL['css'] = 'network';
+
 include_once template("space_digg");
 
 
