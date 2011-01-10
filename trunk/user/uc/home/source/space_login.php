@@ -25,6 +25,8 @@ if(!file_exists(S_ROOT.'./data/navigation_cache.txt'))
 }
 $navlist = unserialize(sreadfile(S_ROOT.'./data/navigation_cache.txt'));
 
+$indexpage = 1;
+
 //最后登录名
 $membername = empty($_SCOOKIE['loginuser'])?'':sstripslashes($_SCOOKIE['loginuser']);
 //$wheretime = $_SGLOBAL['timestamp']-3600*24*30;
