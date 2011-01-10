@@ -57,6 +57,7 @@ switch($ret)
 include_once(S_ROOT.'./source/function_site.php');
 if($op == 'get'){
 	include_once(S_ROOT.'./source/every_todayhotcollect.php');
+	include_once(S_ROOT.'./source/every_hotdigg.php');
 	//得到siteclassname
 	$item['classname']=getsiteclassname($item['class']);
 	//得到此site的相关site
@@ -74,6 +75,8 @@ if($op == 'get'){
 		}
 		$todayhotcollect['site']=$relatesites;
 	}
+	//支取todayhotcollect前8个
+	$hotsite = array_slice($todayhotcollect['site'], 0, 8);
 /*
 	$big_nums = 0;
 	foreach($item['relate'] as $key=>$v){
