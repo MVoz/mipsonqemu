@@ -4,7 +4,15 @@
 <!--{if $do!='digg' }-->
 				<span><a href="space.php?do=digg">更多$_SC['digg_name']</a></span>
 <!--{/if}-->
+<!--{if !empty($tagname) }-->
+				<p>$tagname &raquo;</p>
+ <!--{else}-->
+<!--{if !empty($diggusername) }-->
+				<p>$diggusername 的$_SC['digg_name'] &raquo;</p>
+ <!--{else}-->
 				<p>$_SC['digg_name'] &raquo;</p>
+<!--{/if}-->
+<!--{/if}-->
 			</h2>
 			<div id="diggcontent">
 				<!--{template digg_list}-->
