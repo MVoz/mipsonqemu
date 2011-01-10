@@ -30,10 +30,15 @@ if($_SCONFIG['allowrewrite'] && isset($_GET['rewrite'])) {
 }
 */
 //允许动作
+$dos = array('all','bookmark','navigation','login','digg','diggpool','diggtag','browser','sitetag',
+'feed', 'soft'
+);
+/*
 $dos = array('all','bookmark','navigation','login','link','linktag','digg','diggpool','diggtag','browser','sitetag',
 'feed', 'doing', 'mood', 'blog', 'album', 'thread', 'mtag', 'friend', 'wall', 'tag', 'notice', 'share', 'topic', 'home', 'pm', 'event', 'poll', 'top', 'info', 'videophoto'
 
 );
+*/
 
 //获取变量
 $isinvite = 0;
