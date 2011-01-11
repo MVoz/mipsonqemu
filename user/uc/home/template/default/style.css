@@ -797,28 +797,15 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
     min-height: 180px;
     padding-left: 15px;
 }
-#inhe ol li {
-    height: 50px;
-    list-style: none outside none;
-    margin: 0;
-    position: relative;
-}
-#inhe ol li p {
-    background: url("image/bg-bullet.png") no-repeat scroll 0 50% transparent;
-    min-height: 40px;
-    padding: 10px 0 0 50px;
-}
-#inhe ol li p span {
-    color: #FFFFFF;
-    font-size: 18px;
-    font-weight: bold;
-    left: 17px;
-    position: absolute;
-    top: 11px;
-}
+#inhe ol li { height: 50px;list-style: none outside none; margin: 0; position: relative;}
+#inhe ol li p { background: url("image/bg-bullet.png") no-repeat scroll 0 50% transparent; min-height: 40px; padding: 10px 0 0 50px;color:#666;}
+#inhe ol li p span {color: #fff;font-size: 18px; font-weight: bold; left: 17px; position: absolute; top: 11px;}
 .third{ width: 320px;float: left; margin-right: 30px;}
 .last{margin-right: 0;padding-right:0;}
-.third h5{font-size:1.2em;margin-bottom:5px;}
+.third h5{font-size:1.2em;margin-bottom:5px;color:#666;}
+
+.olne {margin:5px 0px;width:100%;float:left;}
+.olne p{padding: 2px 0 2px 0px;color:#666;font-size:110%}
 
 
 
