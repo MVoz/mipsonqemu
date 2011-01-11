@@ -1,0 +1,27 @@
+<!--{template header}-->
+<style type="text/css">
+#help{margin:0px 50px;}
+#help li{padding:2px 0px;}
+#help h1{height:25px;line-height:25px;background:#e5ecf9;margin:10px 0px;padding-left:5px;}
+#help h1 a{float:right;padding-right:5px;}
+</style>
+<div id="help">
+<a name="n"></a>
+<h1>$_SC['softname']桌面工具帮助</h1>
+<ol>
+<!--{loop $helps $key $value}-->
+	<li><a href="#n<!--{eval echo $key+1}-->">$value[0]</a></li>
+<!--{/loop}-->
+</ol>
+<br>
+      * 如果您遇到的问题没有在上面列出，请<a href="mailto:shurufahelp@baidu.com">联系我们</a></td>
+<!--{loop $helps $key $value}-->
+<a name="n<!--{eval echo $key+1}-->"></a><br>
+<h1><!--{eval echo $key+1}-->.$value[0]<a href="#n">返回页首</a></h1>
+<p>
+	$value[1]
+</p>
+<!--{/loop}-->
+</div>
+<!--{template footer}-->
+
