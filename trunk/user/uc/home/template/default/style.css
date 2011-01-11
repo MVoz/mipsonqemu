@@ -800,6 +800,8 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 #inhe ol li { height: 50px;list-style: none outside none; margin: 0; position: relative;}
 #inhe ol li p { background: url("image/bg-bullet.png") no-repeat scroll 0 50% transparent; min-height: 40px; padding: 10px 0 0 50px;color:#666;}
 #inhe ol li p span {color: #fff;font-size: 18px; font-weight: bold; left: 17px; position: absolute; top: 11px;}
+
+#inhe ul li {height: 25px;line-height:25px;padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -120px transparent;}
 .third{ width: 320px;float: left; margin-right: 30px;}
 .last{margin-right: 0;padding-right:0;}
 .third h5{font-size:1.2em;margin-bottom:5px;color:#666;}
