@@ -22,20 +22,16 @@
 
 			<h3>
 				<span class="yellow">常见问题......</span>
+				<span class="more" style="float:right;">
+					<a href="space.php?do=help">更多</a>
+				</span>
 			</h3> 
 			<ul>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
-				<li><a href="#">下载安装文件至硬盘驱动器</a></li>
+			<!--{loop $helps $key $value}-->
+				<!--{if $key<=14 }-->
+					<li><a href="space.php?do=help#n<!--{eval echo $key+1}-->">$value[0]</a></li>
+				<!--{/if}-->
+			<!--{/loop}-->
 	        </ul>
 	</div>	
 </div>
