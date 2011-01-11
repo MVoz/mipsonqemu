@@ -7,9 +7,6 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-
-include_once(S_ROOT.'./source/every_highlight.php');
 include_once(S_ROOT.'./source/helps.php');
-
-include_once template("space_soft");
+include_once template("space_help");
 ?>
