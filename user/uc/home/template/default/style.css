@@ -677,7 +677,7 @@ border:1px solid #DDD;}
 			#user_recomm .s_cnts { padding: 5px; line-height: 1.8em; }
 			#user_recomm .s_cnts p{ color:#666; }
 			#user_recomm  .s_cnts p a { display: block; margin: 8px 8px 9px; width: 82px; height: 31px; background: url(image/g.png) no-repeat -100px -270px; text-indent: -9999px; overflow: hidden; }
-				#user_recomm h3 { margin-bottom: 3px; font-weight: 700; }
+				#user_recomm h3 { margin-bottom: 3px; font-weight: 700;height: 25px;line-height: 25px; overflow:hidden;}
 
 
 /**********************linkinfo****************************/
