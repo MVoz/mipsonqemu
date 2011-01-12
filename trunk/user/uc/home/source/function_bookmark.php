@@ -7,7 +7,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-
+include_once(S_ROOT.'./source/function_site.php');
 //添加书签
 function bookmark_post($POST, $olds=array()) {
 	global $_SGLOBAL, $_SC, $space,$_GET;
@@ -442,7 +442,8 @@ function bookmark_link_process($linkid,$arr){
 			$arr['md5url'] = $site['md5url'];	
 			$arr['hashurl'] = $site['hashurl'];	
 			*/
-			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$site['siteid']);		
+			//$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$site['siteid']);	
+			updatesitestorenum($site['siteid'],1);
 		}else{
 			$arr['storenum'] = '1';
 		}
@@ -452,9 +453,10 @@ function bookmark_link_process($linkid,$arr){
     {
         //update 总数
 		if($link['siteid'])//此link在site中
-			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$link['siteid']);
+			updatesitestorenum($link['siteid'],1);
 		else
 			$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum+1 WHERE linkid=".$link['linkid']);
+			
         return $link['linkid'];
     }
 
@@ -468,7 +470,7 @@ function deletebookmark($bmid){
 		return 0;
 	//如果link在site中，只需要更新site即可
 	if($link['siteid'])
-		$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum-1 WHERE id=".$link['siteid']);
+		updatesitestorenum($link['siteid'],0);
 	else
 		$_SGLOBAL['db']->query("UPDATE ".tname('link')." SET storenum=storenum-1 WHERE linkid=".$link['linkid']);
 	//处理tag
