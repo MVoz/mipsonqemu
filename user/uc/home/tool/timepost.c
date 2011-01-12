@@ -12,7 +12,13 @@
 CURL *easy_handle=NULL;
 FILE *fp = NULL;
 unsigned int maxinterval=100;
+unsigned int mininterval=30;
 #define MAX_TIME_INTERVAL 100 
+
+#define MINUTES 60
+#define POST_DIGG_MAX_INTERVAL (10*MINUTES)
+
+unsigned int last_post_time = 0;
 char *httpserver = "http://192.168.115.2/";
 char *robotid = "f69c1725e2a57ec91d1c89d452396c1f";
 char *action[]={
@@ -20,7 +26,8 @@ char *action[]={
 	{"cp.php?ac=site&op=updatesiteupnum&inajax=1&siteid=#"},//2
 	{"cp.php?ac=site&op=updatesiteviewnum&inajax=1&siteid=#"},//4
 	{"cp.php?ac=digg&op=updatediggviewnum&inajax=1&diggid=#"},//5
-	{"cp.php?ac=diggpool&op=publish&inajax=1"}//3
+	{"cp.php?ac=diggpool&op=publish&inajax=1"},//3
+	{"cp.php?ac=site&op=updatesitestoreum&inajax=1&siteid=#"}//4
 };
 
 struct timer_action
@@ -49,7 +56,11 @@ struct timer_action timer_actions[]={
 		
 	{&action[4],{6,23}},
 	{&action[4],{6,23}},
-	{&action[4],{6,23}}	
+	{&action[4],{6,23}},
+
+	{&action[5],{0,24}},
+	{&action[5],{0,24}},
+	{&action[5],{0,24}}	
 
 };
 /**
@@ -85,6 +96,15 @@ int sighandler_timer(int signo)
 //	printf("action_r =%d\n",action_r);
 	srand((int)time(0));
 	int t=(int)(((float)(action_r))*rand()/(RAND_MAX+1.0));
+	
+	if(timer_actions[t].ac == &action[4] ){
+		//保证最小间隔为10分钟发一次digg
+		if(!last_post_time)
+			last_post_time = now;
+		if((now-last_post_time)<POST_DIGG_MAX_INTERVAL)
+			goto NEXT;
+		last_post_time = now;
+	}
 
 	if((nowtime->tm_hour>=timer_actions[t].time[0])&&(nowtime->tm_hour<=timer_actions[t].time[1]))
 	{
@@ -105,10 +125,11 @@ int sighandler_timer(int signo)
 		// 执行数据请求
 		curl_easy_perform(easy_handle);	
 	}
+NEXT:
 	// 释放资源
 	//随机定时
 	srand((int)time(0));
-	t=5+(int)(((float)(maxinterval))*rand()/(RAND_MAX+1.0));
+	t=mininterval+(int)(((float)(maxinterval))*rand()/(RAND_MAX+1.0));
 	alarm(t);
 }
 pid_t pid, sid;
@@ -156,6 +177,7 @@ void PrintUsage(int argc, char *argv[]) {
         printf("  Options:n");
         printf("      -d\tAs a daemon\n");
 		printf("      -m\tSet maxinum interval\n");
+		printf("      -l\tSet minium interval\n");
         printf("      -htShow this help screen\n");
         printf("n");
     }
@@ -164,7 +186,7 @@ int main(int argc, char **argv)
 {
 	int c;
 	int daemonize = 0;
-    while( (c = getopt(argc, argv, "dhm:|help")) != -1) {
+    while( (c = getopt(argc, argv, "dhm:l:|help")) != -1) {
         switch(c){
             case 'h':
                 PrintUsage(argc, argv);
@@ -175,6 +197,9 @@ int main(int argc, char **argv)
                 break;
 			case 'm':
                 maxinterval = (unsigned int)strtol(optarg, NULL, 10);
+                break;
+			case 'l':
+                mininterval = (unsigned int)strtol(optarg, NULL, 10);
                 break;
             default:
                 PrintUsage(argc, argv);
