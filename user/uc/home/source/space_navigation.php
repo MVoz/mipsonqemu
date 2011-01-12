@@ -12,10 +12,6 @@ if(!defined('IN_UCHOME')) {
 if(empty($_SCONFIG['networkpublic'])) {
 	checklogin();//需要登录
 }
-if(!check_cachelock('statichtmlcache')&&($_GET['ac']=='pc'))//producecache
-{
-	deldir(S_ROOT.'./data/htm_cache');	
-}
 include_once(S_ROOT.'./source/every_highlight.php');
 
 //bookmarklist
@@ -109,27 +105,4 @@ $theurl="sitepage";
 //分页
 $bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|');
 include_once template("space_navigation");
-
-if(!check_cachelock('statichtmlcache')&&($_GET['ac']=='pc'))//producecache
-{
-	open_cachelock('statichtmlcache');
-	ob_produce_static_html_cache(ob_get_contents());
-	close_cachelock('statichtmlcache');
-	deldir(S_ROOT.'./data/tpl_cache');	
-}
-function ob_produce_static_html_cache($s)
-{
-	$s = preg_replace("/\<\!\-\-\<static\s+([a-z0-9_\/]+)\>\-\-\>(.+?)\<\!\-\-\<\/static\>\-\-\>/ies", "writestatic('\\1','\\2')", $s);
-}
-function writestatic($name,$original) {
-	global $_SGLOBAL, $_SCONFIG; 	
-	$tplfile = S_ROOT.'./data/htm_cache/'.$name.'.htm';
-	if(file_exists($tplfile))
-		unlink($tplfile);
-	$original=str_replace("\\\"", "\"", $original);	
-	if(!swritefile($tplfile, $original)) {
-		return;
-	}
-	return;	
-}
 ?>
