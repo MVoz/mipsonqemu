@@ -217,7 +217,7 @@ h2.title img { margin: 0 5px 0 0; vertical-align: middle; }
 	.comments_list .magicbar{ float: right; margin: 0 5px 0 0; }
 
 
-.page { padding: 3px; text-align: center;height:20px;clear: both; }
+.page { padding: 5px; text-align: center;height:20px;clear: both; }
     .page * { margin: 0 3px 0 0; padding: 3px 5px; border: 1px solid #EBE6C9; background: #FCF9E6; color: #999; }
     .page em { border-color: #FEE4AB; color: #C30; font-style: normal; }
     .page strong { background: #FEE4AB; color: #C30; }
@@ -281,7 +281,7 @@ a.button { padding: 5px; }
 .facebox { padding: 8px; width: 250px; border: 1px solid #CCC; background: #FFF; z-index: 100000;}
     .facebox ul li { float: left; width: 25px; height: 25px; overflow: hidden; }
 #bottom { height: 10px; clear: both; overflow: hidden; }
-#footer { padding: 10px 0;min-width:990px;position:relative;margin-top:10px; border-top: 1px solid #EBE6C9; color: #333; text-align: center; }
+#footer { padding: 10px 0;min-width:990px;position:relative;margin-top:10px; border-top: 1px solid #F1F1F1; color: #333; text-align: center; }
     #footer a { color: #333; }
     .noimage{ float: left; margin: 0 5px 0 0; }
 	#footer .r_option a{  background: url("image/g.png") no-repeat scroll -952px -181px transparent; width: 18px;display:block;height:18px;margin-left: auto;margin-right: auto;}
@@ -593,7 +593,7 @@ border:1px solid #DDD;}
 	/*
 		digg
 	*/
-		.tlist ul li{float:left;padding:5px 2px 0px 5px;list-style-image:none;width:666px;list-style-type:none;,margin-bottom:5px;border-bottom:dashed 1px #ddd;}
+		.tlist ul li{float:left;padding:5px 2px 5px 5px;list-style-image:none;width:666px;list-style-type:none;,margin-bottom:5px;border-bottom:1px solid #F1F1F1;}
 		.tlist .lf{clear:left;float:left;width:60px;}
 		.tlist .lf .lt{height:50px;}
 		.tlist .lf .lt a{display:block;width:50px;height:50px;}
