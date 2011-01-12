@@ -207,6 +207,22 @@ function site_tag_batch($id,$tags)
 
 		return $tagarr;	
 }
+//update site的保存数目
+//$type---0--减少 1--add
+function updatesitestorenum($siteid,$type)
+{
+	 global $_SGLOBAL,$_SC;
+     if(!$_SGLOBAL['supe_uid'])
+            return;
+	 if($type)
+	 {
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum+1 WHERE id=".$siteid);
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET todaystorenum=todaystorenum+1 WHERE id=".$siteid);
+	 }else{
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET storenum=storenum-1 WHERE id=".$siteid);
+			$_SGLOBAL['db']->query("UPDATE ".tname('site')." SET todaystorenum=todaystorenum-1 WHERE id=".$siteid);
+	 }
+}
 //检查site是否已存在
 function  checksiteexisted($sitearr)
 {
