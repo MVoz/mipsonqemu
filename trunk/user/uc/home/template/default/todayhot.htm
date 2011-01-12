@@ -8,7 +8,7 @@
 					</a>
 			</div>
 			<div class="s_cnts">
-					<h3><a class="id_td_$todayhot[siteid]">$todayhot['short_subject']</a></h3>
+					<h3><a class="id_td_$todayhot[siteid]">$todayhot['subject']</a></h3>
 					<p>
 						推荐指数: 
 						<span class="num_con">
@@ -24,8 +24,12 @@
 			</div>	
 		</div>
 	<p class="rlt_des">
-		<a class="id_td_$todayhot[siteid]" class="aqua">$todayhot['short_subject']</a>:
-					$todayhot['short_description']...
+		<a class="id_td_$todayhot[siteid]" class="aqua">$todayhot['subject']</a>:
+<!--{if empty($todayhot['description'])}-->
+		暂时没有对&nbsp;<a class="id_td_$todayhot[siteid]">$todayhot['subject']</a>&nbsp;的描述，请等待服务器更新 ...
+<!--{else}-->
+					$todayhot['description']...
+<!--{/if}-->
 	</p>
 	<p class="rlt_line">
 			<span class="tag" style="width:220px;">
