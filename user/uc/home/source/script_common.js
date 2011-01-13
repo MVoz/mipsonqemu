@@ -236,7 +236,7 @@ var ajaxtypes = {
 	diggpage: [ ["space.php?do=digg&uid=#&show=#&page=#","diggcontent"] ],
 	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
 	siterelate: [ ["cp.php?ac=site&op=relate&siteid=#","rdsect"] ] ,
-	feedpage: [ ["space.php?do=feed&uid=#&show=#&page=#","bmcontent"] ],
+	feedpage: [ ["space.php?do=feed&uid=#&show=#&page=#","bmcontent"] ]
 };
 function getAjax(type,id)
 {
@@ -1148,18 +1148,19 @@ function bookmarkload(){
 			var ids = this.id.split("|");
 			this.href = "cp.php?ac=bookmark&bmid="+ids[0]+"&groupid="+ids[1]+"&browserid="+ids[2]+"&op=delete&height=95";
 		});	
-		/*
-		$("#bklist .get").each(function(){
-			this.href="cp.php?ac=bookmark&op=get&bmid="+this.id;
-		});
-		*/
 		$("#bklist .url").each(function(){
-			$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
+			//$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				updatestatics('bookmark','updatebookmarkview',this.id);
+			}); 
 		});			
 		$("#bklist a").attr("target","_blank");		
 		$(".id_bm_tag").each(function(){
 			this.href = "javascript:;";
-			$(this).attr("onclick","getAjax('bmtagview','"+this.id+"');").attr("target","_self");
+			$(this).attr("target","_self");
+			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				getAjax('bmtagview',$(this).attr("id"));
+			}); 
 		});	
 		$("#bklist .share").each(function(){
 			$(this).attr({
@@ -1268,7 +1269,12 @@ function navtabload()
 		$(".navtab_x").remove();
 		$(".navtab").addClass("ntitle"); 
 		$(".nav_tab .navc").each(function(){
-				$(this).attr("onclick","getAjax('siteview','"+this.id+"');$('.nav_tab li').removeClass('nav_on');$(this).parent().addClass('nav_on');");
+				//$(this).attr("onclick","getAjax('siteview','"+this.id+"');
+				$(this).unbind('click').removeAttr('onclick').click(function(){ 
+					getAjax('siteview',$(this).attr("id"));
+				}); 
+				$('.nav_tab li').removeClass('nav_on');
+				$(this).parent().addClass('nav_on');
 				$(this).attr("href","javascript:;");
 		});
 }
