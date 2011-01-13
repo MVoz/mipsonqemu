@@ -22,12 +22,12 @@ unsigned int last_post_time = 0;
 char *httpserver = "http://192.168.115.2/";
 char *robotid = "f69c1725e2a57ec91d1c89d452396c1f";
 char *action[]={
-	{"cp.php?ac=digg&op=updatediggupnum&inajax=1&diggid=#"},//3
-	{"cp.php?ac=site&op=updatesiteupnum&inajax=1&siteid=#"},//2
-	{"cp.php?ac=site&op=updatesiteviewnum&inajax=1&siteid=#"},//4
-	{"cp.php?ac=digg&op=updatediggviewnum&inajax=1&diggid=#"},//5
+	{"cp.php?ac=digg&op=up&inajax=1&diggid=#"},//3
+	{"cp.php?ac=site&op=up&inajax=1&siteid=#"},//2
+	{"cp.php?ac=site&op=view&inajax=1&siteid=#"},//4
+	{"cp.php?ac=digg&op=view&inajax=1&diggid=#"},//5
 	{"cp.php?ac=diggpool&op=publish&inajax=1"},//3
-	{"cp.php?ac=site&op=updatesitestoreum&inajax=1&siteid=#"}//4
+	{"cp.php?ac=site&op=store&inajax=1&siteid=#"}//4
 };
 
 struct timer_action
