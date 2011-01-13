@@ -8,7 +8,7 @@
 	<ul class="thumbs noscript">
 	<!--{loop $bookmarklist['son'] $key $value}-->
 	<li class="mgn2">
-		<a href="$value[url]" title="{$value[subject]}" class="thumb" onclick="updatesiteview($value['siteid'])">
+		<a href="$value[url]" title="{$value[subject]}" class="thumb" onclick="updatestatics('site','view',$value['siteid']);">
 		<!--{if empty($value[picflag])}-->
 			<img  src="$value['tmppic']">
 		<!--{else}-->

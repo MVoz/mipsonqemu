@@ -42,7 +42,11 @@
 	</p> 						
 </div>	
 <script language="javascript" type="text/javascript">	
-		$(".id_td_$todayhot[siteid]").attr("href","$todayhot['url']").attr("target","_blank").attr("title","$todayhot['subject']").attr("onclick","updatesiteview($todayhot['siteid']);this.href=this.href+'&title=$todayhot['subject']';");
+		$(".id_td_$todayhot[siteid]").attr("href","$todayhot['url']").attr("target","_blank").attr("title","$todayhot['subject']");
+		//.attr("onclick","updatesiteview($todayhot['siteid']);this.href=this.href+'&title=$todayhot['subject']';");
+		$(".id_td_$todayhot[siteid]").unbind('click').removeAttr('onclick').click(function(){ 
+					updatestatics('site','view',$todayhot['siteid']); 
+		});
 		if($('#recml.rlt_line .tag a').length==0)
 			$('#recml .rlt_line .tag').html("<span class='gray'>什么也没留下...</span>");
 		else{

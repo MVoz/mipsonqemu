@@ -6,7 +6,7 @@
 		</h2>
 		<div class="seio">
 					<div class="sepc">
-						<a target="_target" href="$item['url']" onclick="updatestatics('site','updatesiteviewnum','$item[siteid]');">
+						<a target="_target" href="$item['url']" onclick="updatestatics('site','view','$item[siteid]');">
 								 <!--{if empty($item['picflag'])}-->
 									<img src="template/default/image/b_webloading.gif">
 								 <!--{else}-->
@@ -50,7 +50,7 @@
 								<!--{if empty($_SGLOBAL[supe_uid]) }-->
 									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
 								<!--{else}-->
-									<a target="_self" onclick="updatestatics('site','updatesiteupnum',$item[siteid],'up_num');"  href="javascript:void(0)"></a>
+									<a target="_self" onclick="updatestatics('site','up',$item[siteid],'up_num');"  href="javascript:void(0)"></a>
 								<!--{/if}-->
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
@@ -58,7 +58,7 @@
 								<!--{if empty($_SGLOBAL[supe_uid]) }-->
 									<a target="_self" class="thickbox" href="do.php?ac=$_SCONFIG['login_action']"></a>
 								<!--{else}-->
-									<a  target="_self" onclick="updatestatics('site','updatesitedownnum',$item[siteid],'down_num');" 
+									<a  target="_self" onclick="updatestatics('site','down',$item[siteid],'down_num');" 
 									href="javascript:void(0)"></a>
 								<!--{/if}-->
 								</span>
