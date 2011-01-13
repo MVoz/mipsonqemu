@@ -6,7 +6,7 @@
 if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
-$ops=array('get','edit','delete','updatebookmarkview','checkseccode','updatebookmarkupnum');
+$ops=array('get','edit','delete','view','checkseccode','up');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'get':$_GET['op'];
 
@@ -31,10 +31,10 @@ $bookmark_priority=array(
  'get'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'edit'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
- 'updatebookmarkview'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
+ 'view'=>array('permit'=>1,'owner'=>1,'id'=>1,'item'=>1),
  'checkseccode'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
- 'updatebookmarkupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatebookmarkdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'up'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+// 'down'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
 );
 
 $ret=check_valid($op,$bmid,$item,$item['uid'],'allowbookmark',$bookmark_priority);
@@ -99,12 +99,12 @@ if($_GET['op'] == 'delete') {
 		}
 	}
 	
-} elseif($_GET['op']=='updatebookmarkview'){
+} elseif($_GET['op']=='view'){
 		updatestatistic('bookmark','viewnum',array('updateid'=>$item['bmid'],'feedid'=>$item['linkid'],'siteid'=>$item['siteid']));
 		//showmessage($item['viewnum']+1);
 		return;
 
-}elseif($_GET['op']=='updatebookmarkupnum'){
+}elseif($_GET['op']=='up'){
 		//更新顶数
 		if(updatestatistic('bookmark','up',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid'])))
 			showmessage($item['up']+1);
@@ -114,7 +114,7 @@ if($_GET['op'] == 'delete') {
 
 		}
 
-}elseif($_GET['op']=='updatebookmarkdownnum'){
+}elseif($_GET['op']=='down'){
 		//更新顶数
         if(updatestatistic('bookmark','down',array('updateid'=>$item['linkid'],'feedid'=>$item['bmid'])))
 			showmessage($item['down']+1);

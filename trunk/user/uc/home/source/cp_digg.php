@@ -7,7 +7,7 @@ if(!defined('IN_UCHOME')) {
 	exit('Access Denied');
 }
 include_once(S_ROOT.'./source/function_digg.php');
-$ops=array('add','edit','delete','updatediggupnum','updatediggdownnum','updatediggviewnum');
+$ops=array('add','edit','delete','up','down','view');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $diggid= empty($_GET['diggid'])?0:intval(trim($_GET['diggid']));
@@ -28,9 +28,9 @@ $digg_priority=array(
  'add'=>array('permit'=>0,'owner'=>0,'id'=>0,'item'=>0),
  'edit'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
  'delete'=>array('permit'=>2,'owner'=>2,'id'=>1,'item'=>1),
- 'updatediggupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatediggdownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatediggviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
+ 'up'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'down'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'view'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 $ret=check_valid($op,$diggid,$diggitem,$diggitem['uid'],'managedigg',$digg_priority);
 switch($ret)
@@ -124,7 +124,7 @@ if($_GET['op'] == 'delete') {
 		showmessage('do_success', "space.php?uid=$blog[uid]&do=blog&id=$blog[blogid]", 0);
 	}
 	
-}elseif($_GET['op']=='updatediggupnum'){
+}elseif($_GET['op']=='up'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
         if(updatediggupnum($_GET['diggid']))
@@ -133,7 +133,7 @@ if($_GET['op'] == 'delete') {
 			include_once template("message");
 			return;
 		}
-}elseif($_GET['op']=='updatediggdownnum'){
+}elseif($_GET['op']=='down'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
         if(updatediggdownnum($_GET['diggid']))
@@ -142,7 +142,7 @@ if($_GET['op'] == 'delete') {
 			include_once template("message");
 			return;
 		}
-}elseif($_GET['op']=='updatediggviewnum'){
+}elseif($_GET['op']=='view'){
 		//更新顶数
 		include_once(S_ROOT.'./source/function_digg.php');
         updatediggviewnum($_GET['diggid']);
