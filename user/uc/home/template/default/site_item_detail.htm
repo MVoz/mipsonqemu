@@ -29,9 +29,9 @@
 						</p>
 						<p>
 						<div style="float:left;width:220px;">
-						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$item[link_dateline],1)}--></span></p>
-						<p><strong>收藏人数: </strong><span>$item[storenum]</span></p>
-						<p><strong>浏览次数: </strong><span id="view_num">$item[viewnum]</span></p>
+						<p><strong>收录日期: </strong><span><!--{date('Y-m-d',$item[dateline],1)}--></span></p>
+						<p><strong>收藏人数: </strong><span><!--{eval getsitestorenum($item['siteid'])}--></span></p>
+						<p><strong>浏览次数: </strong><span id="view_num"><!--{eval getsiteviewnum($item['siteid'])}--></span></p>
 						<p>
 						<a class="url">访问</a> 
 						<!--{if $ac=='site' }-->
@@ -67,7 +67,13 @@
 				</div>	
 			</div>
 			<h3>站点简介</h3>
-				<p style="height:60px;padding:10px 0;color:#666;">$item[description]</p>
+				<p style="height:60px;padding:10px 0;color:#666;">
+<!--{if empty($item[description]) }-->
+	&nbsp;&nbsp;暂时没有对&nbsp;<a target="_target" href="$item['url']" onclick="updatestatics('site','view','$item[siteid]');">$item['subject']</a>&nbsp;的描述，请等待服务器更新 ...
+<!--{else}-->
+					$item[description]
+<!--{/if}-->
+				</p>
 				<p>&nbsp;</p>
 
 		<h3>相似站点&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·</h3>

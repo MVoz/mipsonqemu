@@ -42,5 +42,14 @@
 			</div>
 	</div>	
 </div>
+			<ul>
+<!--<static helps>-->
+			<!--{loop $helps $key $value}-->
+				<!--{if $key<=14 }-->
+					<li><a href="space.php?do=help#n<!--{eval echo $key+1}-->">$value[0]</a></li>
+				<!--{/if}-->
+			<!--{/loop}-->
+<!--</static>-->
+	        </ul>
 
 <!--{template footer}-->
