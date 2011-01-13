@@ -344,6 +344,15 @@ function getsitestorenum($siteid)
 	$count = getcount('site',$wherearr,'storenum');
 	echo  $count;
 }
+function getsiteviewnum($siteid)
+{
+	$count = 0;
+	$wherearr = array(
+			'id'=>$siteid
+	);
+	$count = getcount('site',$wherearr,'viewnum');
+	echo  $count;
+}
 //siteid为排除在外
 function getrelatesite($classid,$siteid)
 {

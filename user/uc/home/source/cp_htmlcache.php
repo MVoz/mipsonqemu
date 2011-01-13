@@ -14,7 +14,7 @@ if(!check_cachelock('statichtmlcache'))//producecache
 }
 include_once(S_ROOT.'./source/every_highlight.php');
 
-
+include_once(S_ROOT.'./source/helps.php');
 
 //显示导航
 //获取显示的nav分类	
