@@ -1045,7 +1045,7 @@ function updatestatics(type,op,id,o)
 			  url:'cp.php?ac='+type+'&op='+op+'&inajax=1&'+updatestaticss[type][0][0]+'='+id,
 			  success:function(data){
 					s =	$(data).find('root').text();
-					if((type=='bookmark')&&(op=='updatebookmarkupnum')){
+					if((type=='bookmark')&&(op=='up')){
 						if(s.indexOf('error') == -1)
 						{
 							$('#share_bm_'+id).html('分享成功');
@@ -1057,7 +1057,7 @@ function updatestatics(type,op,id,o)
 						$(this).html('');
 						});
 					}
-					if((type=='site')&&((op=='updatesiteupnum')||(op=='updatesitedownnum'))){
+					if((type=='site')&&((op=='up')||(op=='down'))){
 						if(s.indexOf('error') == -1){
 							 $('#site_ud_'+id).html('(感谢您的参与)');
 							 if($('#'+o)) $('#'+o).html(s);
@@ -1068,7 +1068,7 @@ function updatestatics(type,op,id,o)
 						$(this).html('点击顶踩评价');
 						});
 					}
-					if((type=='digg')&&((op=='updatediggupnum'))){
+					if((type=='digg')&&((op=='up'))){
 						if(s.indexOf('error') == -1){
 							 $('#digg_ud_'+id).html('(感谢您的参与)');
 							 if($('#'+o)) $('#'+o).html(s);
@@ -1149,9 +1149,8 @@ function bookmarkload(){
 			this.href = "cp.php?ac=bookmark&bmid="+ids[0]+"&groupid="+ids[1]+"&browserid="+ids[2]+"&op=delete&height=95";
 		});	
 		$("#bklist .url").each(function(){
-			//$(this).attr("onclick","updatestatics('bookmark','updatebookmarkview',"+this.id+")");
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				updatestatics('bookmark','updatebookmarkview',this.id);
+				updatestatics('bookmark','view',this.id);
 			}); 
 		});			
 		$("#bklist a").attr("target","_blank");		
@@ -1168,7 +1167,7 @@ function bookmarkload(){
 				target:"_self"
 			});
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				updatestatics('bookmark','updatebookmarkupnum',this.id);
+				updatestatics('bookmark','up',this.id);
 			}); 
 
 		});	
@@ -1202,9 +1201,8 @@ function siteload(){
 			this.href="cp.php?ac=site&op=get&siteid="+this.id;
 		});	
 		$("#stlist .url").each(function(){
-			//$(this).attr("onclick","updatestatics('site','updatesiteviewnum',"+this.id+")");
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-					updatestatics('site','updatesiteviewnum',this.id);
+					updatestatics('site','view',this.id);
 			}); 
 		});			
 		$("#stlist a[class!=share]").attr("target","_blank");
@@ -1238,7 +1236,7 @@ function diggload(){
 				href:"javascript:;"
 			});
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				updatestatics('digg','updatediggupnum',this.id);
+				updatestatics('digg','up',this.id);
 			}); 
 		});
 		
@@ -1250,12 +1248,12 @@ function diggload(){
 function diggpoolload(){
 		$(".tlist .delete").each(function(){
 			$(this).addClass("thickbox");
-			$(this).attr("href","cp.php?ac=diggpool&op=delete&height=85&diggpoolid="+this.id);
+			$(this).attr("href","cp.php?ac=diggpool&op=delete&diggpoolid="+this.id);
 		});
 		$(".tlist .publish").each(function(){
 			$(this).addClass("thickbox");
 			$(this).attr({				 				
-				href:"cp.php?ac=diggpool&op=publish&height=85&diggpoolid="+this.id
+				href:"cp.php?ac=diggpool&op=publish&diggpoolid="+this.id
 			});
 		});
 		

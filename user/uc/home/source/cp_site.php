@@ -8,8 +8,7 @@ if(!defined('IN_UCHOME')) {
 }
 //bookmark为"我要收藏"
 //get为浏览
-//$ops=array('checkerror','manage','add','edit','delete','pass','reject','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','toolbar');
-$ops=array('checkerror','add','edit','delete','checkseccode','get','relate','bookmark','updatesiteupnum','updatesitedownnum','updatesiteviewnum','reporterr','updatesitestorenum');
+$ops=array('checkerror','add','edit','delete','checkseccode','get','relate','bookmark','up','down','view','reporterr','store');
 //检查信息
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
 $siteid= empty($_GET['siteid'])?0:intval(trim($_GET['siteid']));
@@ -35,10 +34,10 @@ $link_priority=array(
  'get'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'relate'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'bookmark'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatesiteupnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatesitedownnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatesiteviewnum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
- 'updatesitestorenum'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'up'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'down'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'view'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
+ 'store'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1),
  'reporterr'=>array('permit'=>0,'owner'=>0,'id'=>1,'item'=>1)
 );
 //权限检查
@@ -122,7 +121,7 @@ elseif($_GET['op'] == 'delete') {
 		} else {
 			showmessage('incorrect_code');
 		}
-}elseif($_GET['op']=='updatesiteupnum'){
+}elseif($_GET['op']=='up'){
 		if(updatestatistic('site','up',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid'])))
 			showmessage($item['up']+1);
 		else{
@@ -131,7 +130,7 @@ elseif($_GET['op'] == 'delete') {
 			return;
 		}
 
-}elseif($_GET['op']=='updatesitedownnum'){
+}elseif($_GET['op']=='down'){
         if(updatestatistic('site','down',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid'])))
 			showmessage($item['down']+1);
 		else{
@@ -140,10 +139,10 @@ elseif($_GET['op'] == 'delete') {
 			return;
 		}
 
-}elseif($_GET['op']=='updatesiteviewnum'){
+}elseif($_GET['op']=='view'){
         updatestatistic('site','viewnum',array('updateid'=>$item['siteid'],'feedid'=>$item['siteid']));
 		showmessage($item['viewnum']+1);
-}elseif($_GET['op']=='updatesitestorenum'){
+}elseif($_GET['op']=='store'){
 	  updatesitestorenum($item['siteid'],1);
 	  exit();
 }elseif($_GET['op']=='reporterr'){
