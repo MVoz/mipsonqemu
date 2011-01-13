@@ -18,7 +18,7 @@
 		});	
 		$("#expressnav dd[class!='more'] a").each(function(){
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-					updatesiteview($(this).attr("id"));
+					updatestatics('site','view',$(this).attr("id"));
 			});
 			this.title =$(this).html();			
 		});

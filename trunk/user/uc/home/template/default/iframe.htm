@@ -43,11 +43,11 @@
 	<tr>
 		<td height="26" class="link_td">
 			<img src="image/icon/profile.gif" align="absmiddle"> <a href="space.php?do=all">返回我的空间</a> <span class="pipe">|</span>
-			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="updatestatics('digg','updatediggupnum','$id');">分享</a>
+			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="updatestatics('digg','up','$id');">分享</a>
 			<span class="pipe">|</span>
 			<span id="digg_ud_$id" class="gray"></span>
-			<img src="image/icon/network.gif" align="absmiddle"> <a style="color:#FF6A00" target="$frame" href="link.php?$type=$id" onclick="updatestatics('digg','updatediggviewnum',$id,'digg_view_num_id_$id');">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)<span class="pipe">|</span>
-			<a target="$frame" href="link.php?$type=$id2" onclick="updatestatics('digg','updatediggviewnum',$id2,'digg_view_num_id_$id2');" style="color:#2C629E">下一篇:$title2</a>
+			<img src="image/icon/network.gif" align="absmiddle"> <a style="color:#FF6A00" target="$frame" href="link.php?$type=$id" onclick="updatestatics('digg','view',$id,'digg_view_num_id_$id');">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)<span class="pipe">|</span>
+			<a target="$frame" href="link.php?$type=$id2" onclick="updatestatics('digg','view',$id2,'digg_view_num_id_$id2');" style="color:#2C629E">下一篇:$title2</a>
 		</td>
 	</tr>
 <!--{else}-->

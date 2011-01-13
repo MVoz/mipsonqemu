@@ -5,7 +5,7 @@
 		</h2>
 		<div class="seio">
 					<div class="sepc">
-						<a class="playpic" href="$item['url']" onclick="updatebookmarkview($item[bmid])">
+						<a class="playpic" href="$item['url']" onclick="updatestatics('bookmark','view',$item[bmid]);">
 							<!--{if empty($item[picflag])}-->
 								<img  src="template/default/image/b_webloading.gif">
 							<!--{else}-->
@@ -51,11 +51,11 @@
 							<p><strong>评价</strong> <span>(点击顶踩评价)</span></p>
 							<span>
 								<span class="rateup">
-									<a target="_self" onclick="updatestatics('bookmark','updatebookmarkupnum',$item[bmid],'up_num')"  href="javascript:void(0)"></a>
+									<a target="_self" onclick="updatestatics('bookmark','up',$item[bmid],'up_num')"  href="javascript:void(0)"></a>
 								</span>
 								(<span id="up_num">$item['up']</span>人顶)</span>&nbsp;&nbsp;&nbsp;
 								<span class="ratedown">
-									<a  target="_self"  onclick="updatestatics('bookmark','updatebookmarkdownnum',$item[bmid],'down_num')"  href="javascript:void(0)"></a>
+									<a  target="_self"  onclick="updatestatics('bookmark','down',$item[bmid],'down_num')"  href="javascript:void(0)"></a>
 								</span>
 								(<span id="down_num">$item['down']</span>人踩)
 							</span>	  

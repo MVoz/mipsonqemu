@@ -36,7 +36,7 @@
 			href:"$value[relate][url]",
 			target:"_blank",
 			title:"$value['relate']['subject']",
-			onclick:"updatestatics('site','updatesiteviewnum',$value['id'],'digg_view_num_id_$value['reid']');"
+			onclick:"updatestatics('site','view',$value['id'],'digg_view_num_id_$value['reid']');"
 		});
 		$(".id_st_tag_$value['relate']['siteid']").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;

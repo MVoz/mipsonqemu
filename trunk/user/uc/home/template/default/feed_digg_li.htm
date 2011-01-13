@@ -42,7 +42,7 @@
 			this.href = "link.php?diggid=$value[relate][diggid]";
 			this.target = "diggid_frame";
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				updatestatics('digg','updatediggviewnum',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');
+				updatestatics('digg','view',$value[relate][diggid],'digg_view_num_id_$value[relate][diggid]');
 			});			
 	});	
 </script>
