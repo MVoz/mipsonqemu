@@ -448,7 +448,7 @@ a.c_link {
 .nav_tab{float:left;height:32px;line-height:32px;}
 	.nav_tab li {float:left;padding:10px 5px;}
 	.nav_tab li a{float:left;padding-top:2px;color:#666;text-decoration:none;white-space:nowrap; }
-	.nav_tab .nav_on a,.nav_tab li a:hover{color:#8ABC2B;}
+	.nav_tab .nav_on a,.nav_tab li a:hover{color:#438E0B;}
 
 /**/
 
@@ -490,9 +490,8 @@ border:1px solid #DDD;}
 #hhlt dl{float:left;width:240px;padding-top:8px;overflow:hidden;}
 #hhlt p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
 #hhlt p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
-#hhlt a{display:block;font-size:12px;width:150px;overflow:hidden;height:20px}
-#hhlt .num_con{margin-top:-20px;}
-#hhlt .num_con a{display:inline;color:#2C629E;font-weight:normal;}
+#hhlt .stne{display:block;font-size:12px;width:150px;overflow:hidden;height:20px}
+#hhlt .stcs{margin-top:-20px;color:#2C629E;font-size:12px;float:right;height:20px;width:65px;}
 
 .shaa {height:95px;width:672px;float:right;}
 .shaa,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
@@ -548,8 +547,8 @@ border:1px solid #DDD;}
 .box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
-.box h3 , .boxnb h3{ font-size:15px;color:#8ABC2B;margin-bottom:5px; }
-.box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#8ABC2B; width: 970px; border-bottom: #8ABC2B 2px solid; position: relative; height: 22px}
+.box h3 , .boxnb h3{ font-size:15px;color:#438E0B;margin-bottom:5px; }
+.box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#438E0B; width: 970px; border-bottom: #438E0B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
 	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-2px;line-height:12px; }
@@ -619,7 +618,7 @@ border:1px solid #DDD;}
 		.tlist .rb p{float:left;height:16px;padding:0px 2px 0px 1px;}
 		.tlist .rb a{color:#2C629E;text-decoration: none;}
 		.tlist .rb .tags{max-width:200px;min-width:50px;overflow:hidden;float:left;height:20px;padding-right: 5px;}
-		.tlist .rb .emnum{color:#8ABC2B;font-weight:bold;margin-top:0px !important;margin-top:-2px;}
+		.tlist .rb .emnum{color:#438E0B;font-weight:bold;margin-top:0px !important;margin-top:-2px;}
 
 
 
@@ -734,7 +733,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .nnct{float:left;padding:0 5px;}
 .nnct .nncg dt{clear:both;font-weight:bold;padding:2px 5px;color:#0099BB;font-size:110%;border-bottom:1px solid #DDD;}
 .nnct .nncg a{padding:5px 5px;float:left;white-space:nowrap;}
-.nnct .nncg a:hover{color:#8ABC2B;}
+.nnct .nncg a:hover{color:#438E0B;}
 /*tab*/
 .dgst{background-color:#fff;margin:5px 10px;width:270px;}
 
@@ -747,7 +746,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .tab .lion a b{background: url("./image/tag1.gif") no-repeat scroll right -25px transparent;}
 .tab .lion b em{background: url("./image/tag1.gif") no-repeat scroll 50% -53px transparent;font-style:normal;	}
 
-.num_con {display:inline;float:right;margin-right:5px;}
+.num_con {display:inline;margin:0px;}
 .num_con {color:#EC6022;font-size:11px;font-weight:bold;}
 .num_con cite {font-size:13px;color:#EC6022;font-weight:bold;font-style: normal;}
 .num_con em {color:#919191;font-weight:normal;font-style: normal;}
@@ -758,7 +757,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 
 .soft h1{float:left;clear:both;width:283px; height:175px;}
 .soft img{ float:right; display:block; width:391px; height:175px; padding-top:0px;}
-.soft h1 ul {height:130px;}
+.soft h1 ul {height:100px;}
 .soft h1 ul li{font-weight:normal;font-size:110%;line-height:25px;color:#666; height:25px; background:url("image/g.png") no-repeat scroll -948px -58px transparent; margin-left:5px; padding-left:22px;}
 .soft h1 ul li span{font-weight:bold;}
 .soft p{padding:10px;}
@@ -798,7 +797,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
     padding-left: 15px;
 }
 #inhe ol li { height: 50px;list-style: none outside none; margin: 0; position: relative;}
-#inhe ol li p { background:url("image/g.png") no-repeat scroll -926px -905px transparent; height: 35px; padding: 10px 0 0 50px;color:#666;}
+#inhe ol li p { background:url("image/g.png") no-repeat scroll -926px -905px transparent; height: 32px; padding: 13px 0 0 50px;color:#666;}
 #inhe ol li p span {color: #fff;font-size: 18px; font-weight: bold; left: 17px; position: absolute; top: 11px;}
 
 #inhe ul li {height: 25px;line-height:25px;padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -120px transparent;}
@@ -809,6 +808,9 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .olne {margin:5px 0px;width:100%;float:left;}
 .olne p{padding: 2px 0 2px 0px;color:#666;font-size:110%}
 
+.stdn{background:url("image/g.png") no-repeat scroll 0px -870px transparent;height: 65px;}
+.stdn .stne{padding:18px 0 0 140px;color:#438e0b;font-size:120%;}
+.stdn .stsz{padding:2px 0 0 75px;color:#666;}
 
 
 
