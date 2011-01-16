@@ -11,10 +11,8 @@
 		<!--{loop $_SGLOBAL[$value] $k $v}-->
 			<!--{eval $k=$k+1;}-->
 				<dt class="l$k">
-					<a target="new" title="$v[subject]" href="$v[url]">$v[subject]</a>
-					<div class="num_con">
-						<a target="new" href="space.php?do=navigation&classid=$v['class']">$v[classname]</a>
-					</div>
+					<a target="new" title="$v[subject]" href="$v[url]" class="stne">$v[subject]</a>
+					<a target="new" href="space.php?do=navigation&classid=$v['class']" class="stcs">$v[classname]</a>
 				</dt> 
 		<!--{/loop}-->
 		</dl>
