@@ -496,7 +496,7 @@ border:1px solid #DDD;}
 .shaa {height:95px;width:672px;float:right;}
 .shaa,.prse{background-color:#fff;border:1px solid #ddd;margin-bottom:5px;}
 .shaa p,.prse p{font-weight:bold;margin-top:0px;padding: 0px;color:#2C629E}
-.shaa p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 16px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
+.shaa p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 24px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
 #hhlt p span.currentx,.shaa p span.currentx,.prse p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
 .shaa >li,.prse >li{padding-bottom:3px;margin:5px 0;}
 
