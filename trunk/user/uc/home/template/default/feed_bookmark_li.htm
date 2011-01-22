@@ -31,7 +31,7 @@
 <!--{if !empty($value['picflag'])}-->
 	<div class="d_avatar avatar125">
 		 <a class="id_bm_$value['relate']['bmid']">
-			<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">				
+			<!--{eval echobookmarkimagepath($value[relate],1)}-->
 		 </a>
 	</div>
 <!--{/if}-->
