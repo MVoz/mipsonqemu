@@ -6,12 +6,8 @@
 		</h2>
 		<div class="seio">
 					<div class="sepc">
-						<a target="_target" href="$item['url']" onclick="updatestatics('site','view','$item[siteid]');">
-								 <!--{if empty($item['picflag'])}-->
-									<img src="template/default/image/b_webloading.gif">
-								 <!--{else}-->
-									<img src="$item['pic']/$item['md5url'].$_SC['link_image_suffix']">
-								 <!--{/if}-->							
+						<a target="_target" href="$item['url']" onclick="updatestatics('site','view','$item[siteid]');"> 
+								 <!--{eval echobookmarkimagepath($item,2)}-->
 						</a>
 					</div>
 					<div class="sedl">

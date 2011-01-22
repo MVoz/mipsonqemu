@@ -4,11 +4,7 @@
 <!--{if $key>=3 }-->
 <li>
 	<a href="$value[url]" title="{$value[subject]}" target="_blank" class="thumb">
-			<!--{if empty($value['picflag'])}-->
-				<img src="$value['tmppic']">
-		    <!--{else}-->
-				<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
-			<!--{/if}-->							
+			<!--{eval echobookmarkimagepath($value,0)}-->
 	</a>
 	<p><a href="$value[url]">$value[subject]</a></p>							
 </li>
@@ -22,11 +18,7 @@
 <!--{if $key<3 }-->
 		<div class="big_l">
 				<a href="$value[url]" title="{$value[subject]}" class="bimg">
-					<!--{if empty($value['picflag'])}-->
-						<img src="$value['tmppic']">
-					<!--{else}-->
-						<img src="$value['pic']/$value['md5url'].$_SC['link_image_suffix']">
-					<!--{/if}-->
+					<!--{eval echobookmarkimagepath($value,1)}-->
 				</a>
 				<p style="text-indent: 5px; height: 55px; padding-top:2px; overflow: hidden;color:#777;clear:both;">
 					<a style="color: #74AE00;" href="$value[url]">$value[subject]</a>:

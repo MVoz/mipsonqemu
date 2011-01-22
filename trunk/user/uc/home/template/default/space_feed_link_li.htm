@@ -24,11 +24,7 @@
 <div class="rightx">						
 	<div class="d_avatar avatar125">
 		 <a title=$value[relate][subject] href="$value[relate][url]" target=_blank onclick="updatelinkview($value[relate][linkid])">
-				<!--{if empty($value['picflag'])}-->
-					<img src="$value[relate]['tmppic']">
-				<!--{else}-->
-					<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">
-				<!--{/if}-->
+				<!--{eval echobookmarkimagepath($value[relate],1)}-->
 		 </a>
 	</div>				  
 </div> 
