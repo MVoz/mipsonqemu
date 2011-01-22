@@ -2541,6 +2541,20 @@ function getuserbrowserarray(){
 		}
         return $userbrowser;
 }
+/*
+	0--little
+	1--middle
+	2--big
+*/
+function echobookmarkimagepath($item,$b)
+{
+	global $_SC;
+	if(empty($item['picflag'])){
+		 echo 	'<img src="template/default/image/'.((empty($b)?'l_':(($b==2)?'b_':''))).'webloading.gif">';
+	}
+	else
+	  echo	"<img src=".$item['pic']."/".((empty($b)?'l_':(($b==2)?'b_':''))).$item['md5url'].$_SC['link_image_suffix'].">";
+}
 function setlinkimagepath($link)
 {
 	global $_SC;
