@@ -438,7 +438,6 @@ function bookmark_link_process($linkid,$arr){
 			$arr['link_description'] = $site['remark'];	
 			$arr['picflag'] = $site['picflag'];	
 			$arr['pic'] = $site['pic'];
-			$arr['tmppic'] = $site['tmppic'];	
 			$arr['md5url'] = $site['md5url'];	
 			$arr['hashurl'] = $site['hashurl'];	
 			*/
