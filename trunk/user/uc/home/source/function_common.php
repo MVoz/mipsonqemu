@@ -3127,10 +3127,11 @@ function getsite($siteid)
 	{
 		   $s['siteid'] = $siteid;
 		   //修正award
-		   $value['award'] = calc_link_award($value['initaward'],$value['storenum'],$value['viewnum'],$value['up'],$value['down']);
-		   updatetable('site', array('award'=>$value['award']),array('id'=>$value['siteid']));
+		   $s['award'] = calc_link_award($s['initaward'],$s['storenum'],$s['viewnum'],$s['up'],$s['down']);
+		   updatetable('site', array('award'=>$s['award']),array('id'=>$s['siteid']));
 		   include_once(S_ROOT.'./source/function_site.php');
-		   $value['tag'] = convertsitetag($value['id'],$value['tag']);
+		   
+		   $s['tag'] = convertsitetag($s['id'],$s['tag']);
 		   $s['tag'] = empty($s['tag'])?array():unserialize($s['tag']);	
 		   $s['tags'] = implode(' ',$s['tag']);
 			//去除回车转行制表等特殊字符
