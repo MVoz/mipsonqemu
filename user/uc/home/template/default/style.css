@@ -808,7 +808,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .olne {margin:5px 0px;width:100%;float:left;}
 .olne p{padding: 2px 0 2px 0px;color:#666;font-size:110%}
 
-.stdn{background:url("image/g.png") no-repeat scroll 0px -870px transparent;height: 65px;}
+.stdn{background:url("image/g.png") no-repeat scroll 0px -870px transparent;height: 65px;margin-left:15px;}
 .stdn .stne{padding:18px 0 0 140px;color:#438e0b;font-size:120%;}
 .stdn .stsz{padding:2px 0 0 75px;color:#666;}
 
