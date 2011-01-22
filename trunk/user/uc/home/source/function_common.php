@@ -2553,15 +2553,12 @@ function echobookmarkimagepath($item,$b)
 		 echo 	'<img src="template/default/image/'.((empty($b)?'l_':(($b==2)?'b_':''))).'webloading.gif">';
 	}
 	else
-	  echo	"<img src=".$item['pic']."/".((empty($b)?'l_':(($b==2)?'b_':''))).$item['md5url'].$_SC['link_image_suffix'].">";
+	  echo	"<img src=".$_SC['link_image_path'].$item['pic']."/".((empty($b)?'l_':(($b==2)?'b_':''))).$item['md5url'].$_SC['link_image_suffix'].">";
 }
 function setlinkimagepath($link)
 {
 	global $_SC;
-//	$dirrandom=$_SC['link_image_path'].'random/';
-//	$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
-
-	$link['pic']=$_SC['link_image_path'].(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8);
+	$link['pic']=(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8);
 	return $link;
 }
 /*
