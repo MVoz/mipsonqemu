@@ -1267,12 +1267,11 @@ function navtabload()
 		$(".navtab_x").remove();
 		$(".navtab").addClass("ntitle"); 
 		$(".nav_tab .navc").each(function(){
-				//$(this).attr("onclick","getAjax('siteview','"+this.id+"');
 				$(this).unbind('click').removeAttr('onclick').click(function(){ 
 					getAjax('siteview',$(this).attr("id"));
-				}); 
-				$('.nav_tab li').removeClass('nav_on');
-				$(this).parent().addClass('nav_on');
+					$('.nav_tab li').removeClass('nav_on');
+					$(this).parent().addClass('nav_on');
+				}); 				
 				$(this).attr("href","javascript:;");
 		});
 }
