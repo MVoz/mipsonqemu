@@ -2,7 +2,7 @@
 		<p id="groupname">$classitem['classname']&raquo;</p>
 		<ul class="nav_tab">
 			<!--{loop $child_class $key $value}-->
-					<!--{if $key }--> 			
+					<!--{if $key>0 }--> 			
 							<li><a id="$value[classid]" class="navc">$value[classname]</a></li>			
 					<!--{else}-->
 						<!--{if $isSecClass }-->
