@@ -6,11 +6,7 @@
 		<div class="seio">
 					<div class="sepc">
 						<a class="playpic" href="$item['url']" onclick="updatestatics('bookmark','view',$item[bmid]);">
-							<!--{if empty($item[picflag])}-->
-								<img  src="template/default/image/b_webloading.gif">
-							<!--{else}-->
-								<img  src="$item['pic']/b_$item['md5url'].$_SC['link_image_suffix']">
-							<!--{/if}-->
+							<!--{eval echobookmarkimagepath($value,2)}-->
 						</a>
 					</div>
 					<div class="sedl">

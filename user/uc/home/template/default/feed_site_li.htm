@@ -23,11 +23,7 @@
 <div class="rightx">						
 	<div class="d_avatar avatar125">
 		 <a class="id_st_$value['id']">
-				<!--{if empty($value['picflag'])}-->
-					<img src="template/default/image/webloading.gif">
-				<!--{else}-->
-					<img src="$value[relate]['pic']/$value[relate]['md5url'].$_SC['link_image_suffix']">
-				<!--{/if}-->
+				<!--{eval echobookmarkimagepath($value[relate],1)}-->
 		 </a>
 	</div>				  
 </div>

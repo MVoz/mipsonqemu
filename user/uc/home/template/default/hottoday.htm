@@ -1,11 +1,7 @@
 <!--<static hottoday>--> 
 <div class="headline">
 		<a class="pic" class="id_td_$todayhot[siteid]">
- <!--{if empty($todayhot['picflag'])}-->
-			<img src="template/default/image/b_webloading.gif">
-<!--{else}-->
-			<img src="$todayhot['pic']/b_$todayhot['md5url'].$_SC['link_image_suffix']" alt="$todayhot['subject']" />
-<!--{/if}-->	
+			<!--{eval echobookmarkimagepath($todayhot,2)}-->
 		</a>
 		<div class="desc">
 					<h3>
