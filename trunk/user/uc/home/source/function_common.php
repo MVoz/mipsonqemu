@@ -2544,8 +2544,8 @@ function getuserbrowserarray(){
 function setlinkimagepath($link)
 {
 	global $_SC;
-	$dirrandom=$_SC['link_image_path'].'random/';
-	$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
+//	$dirrandom=$_SC['link_image_path'].'random/';
+//	$link['tmppic']=$dirrandom.rand(1,30).$_SC['link_image_suffix'];
 
 	$link['pic']=$_SC['link_image_path'].(($link['hashurl']>>24)%8).'/'.((($link['hashurl']&0x00ff0000)>>16)%8).'/'.((($link['hashurl']&0x0000ff00)>>8)%8).'/'.(($link['hashurl']&0x00ff)%8);
 	return $link;
