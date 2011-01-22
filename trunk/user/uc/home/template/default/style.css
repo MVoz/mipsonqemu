@@ -19,7 +19,7 @@ a img { border: none; }
 .green{color: #438E0B;}
 	.green a{ color: #438E0B; }
 .aqua{color:#8FC320;}
-.yellow{color:#EF9822;}
+.yellow{color:#FF6600;}
 
 .blocklink a { padding-left: 0.5em; line-height: 2em; display: block; }
   .blocklink a:hover { background: #2C629E; color: #FFF; text-decoration: none; }
@@ -584,8 +584,8 @@ border:1px solid #DDD;}
 		.bklt p.messagenopic { margin: 0 0 5px 0; padding: 0; width: 320px; height: 52px; color: #666; overflow: hidden;text-indent:15px; }
 		.bklt p.tags{background:url("image/g.png") no-repeat scroll -952px -200px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;}
 /*		.bklt p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		*/
-		.bklt .nhot{ float: left; color: #EF9822; }
-		.bklt .nhot a{ color: #EF9822; }
+		.bklt .nhot{ float: left; color: #FF6600; }
+		.bklt .nhot a{ color: #FF6600; }
 
 	.d_avatar{ float: left; margin:0px;}
 	.d_avatar img{ width: 112px; height: 83px; }
