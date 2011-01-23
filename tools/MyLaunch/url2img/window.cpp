@@ -903,14 +903,14 @@ void Window::startFtp(int mode)
 	uint picflag=model->data(model->index(i, LINK_TABLE_PICFLAG)).toUInt();
 	if(picflag){
 			snapLog(tr("startFtp"));
-			QString filepath=model->data(model->index(i, LINK_TABLE_PIC)).toString();
+			QString filepath=QString("snapshot/")+model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			QString filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
 			
 			QString filetotalpathname;
 			QString filetotalname;
 			if(mode == FTP_MODE_LITTLE){
 				 filetotalpathname=QString("%1/l_%2.jpg").arg(filepath).arg(filename);
-				 filetotalname=QString("%1.jpg").arg(filename);
+				 filetotalname=QString("l_%1.jpg").arg(filename);
 			}else if(mode == FTP_MODE_MIDDLE){
 				 filetotalpathname=QString("%1/%2.jpg").arg(filepath).arg(filename);
 				 filetotalname=QString("%1.jpg").arg(filename);
@@ -1186,7 +1186,7 @@ void Window::getUrlDataFromServer(bool status)
 		model->removeColumn(SITE_UP);
 		model->removeColumn(SITE_HASHURL);
 		//model->removeColumn(SITE_MD5URL);
-		model->removeColumn(SITE_TMPIC);
+		//model->removeColumn(SITE_TMPIC);
 		//model->removeColumn(SITE_PICFLAG);
 		//model->removeColumn(SITE_PIC);
 		model->removeColumn(SITE_DATELINE);
@@ -1366,7 +1366,7 @@ void snapThread::run()
 			
 			
 			
-			mu.filepath=model->data(model->index(i, LINK_TABLE_PIC)).toString();
+			mu.filepath=QString("snapshot/")+model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			mu.filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
 			//QDateTime dt=QDateTime::currentDateTime ();
 			//mu.startTime= dt.toTime_t();
