@@ -1385,7 +1385,7 @@ void snapThread::run()
 					 emit snapLogNotify(QString("<span style=\"color:red\">snap <strong>%1</strong> host not found</span>").arg(mu.url));
 					 emit snapFailedNoitfy(mu.index);
 			      }else{
-				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
+				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4 --silent").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
 				emit snapLogNotify(QString("<span>start to snap <strong>%1</strong></span>").arg(mu.url));
 #ifdef WAIT_FOR_SINGLE
 				qDebug()<<"args:"<<runargs;
