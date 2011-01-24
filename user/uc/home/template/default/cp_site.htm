@@ -21,12 +21,12 @@
 <table cellpadding="0" cellspacing="0" class="formtable">
 	<caption>
 		<h2>我要收藏</h2>
-		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+		<p>请完整填写以下书签信息。收藏完成后，您便可以再次方便访问该站点。带<span style="color:red">*</span>为必填项目</p>
 	</caption>
 	<tr>
 		<th width="40">标题</th>
 		<td>
-		<input type="text" id="subject" name="subject" value="$item[subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;
+		<input type="text" id="subject" name="subject" value="$item[subject]" style="width: 396px;" class="t_input"" tabindex="1" />&nbsp;<em>*</em>
 		<p id="subject_tip"></p>
 		</td>
 	</tr>
@@ -34,9 +34,9 @@
 		<th width="40">地址</th>
 		<td>
 		<!--{if empty($item[url])}-->
-		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" />
+		<input type="text" id="address" name="address" value="http://" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='http://';" onblur="javascript:if(''==this.value)this.value='http://'" id="share_link" style="width:98%;" /><em>*</em>
 		<!--{else}-->
-		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" readonly/>
+		<input type="text" id="address" name="address" value="$item[url]" style="width: 396px;" class="t_input" tabindex="2" onfocus="javascript:if('http://'==this.value)this.value='$diggitem[url]';" onblur="javascript:if(''==this.value)this.value='$diggitem[url]'" id="share_link" style="width:98%;" readonly/><em>*</em>
 		<!--{/if}-->
 		<p id="address_tip"></p>
 		<p style="color:gray">请正确填写网页地址(http(s)://)</p>
@@ -100,7 +100,7 @@
 		<th style="vertical-align: top;">验证码</th>
 		<td>
 			<script>seccode();</script>
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input" tabindex="1" autocomplete="off" />&nbsp;<span id="checkseccode">&nbsp;</span><em>*</em>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>
 		</td>
 	</tr>
@@ -237,30 +237,31 @@
 <!--{if !empty($_SGLOBAL['inajax'])}-->
 <div style="padding:1px;" id="innerdiv">
 <h1>编辑站点</h1>
+<p>请正确填写以下站点信息。带<span style="color:red">*</span>为必填项目。</p>
 <div class="popupmenu_inner">
 
 <form method="post" action="cp.php?ac=$ac&op=$op&siteid=$item[siteid]" >
-<table cellspacing="0" cellpadding="3" >
+<table cellspacing="0" cellpadding="3" class="formtable">
 
 <!--{else}-->
  <form method="post" action="cp.php?ac=$ac&op=$op&siteid=$item[siteid]" class="c_form">
 <table cellspacing="0" cellpadding="3" class="formtable">
 <caption>
 		<h2>编辑站点</h2>
-		<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+		<p>请正确填写以下站点信息。带<span style="color:red">*</span>为必填项目。</p>
 </caption>
 <!--{/if}-->
 <tr>
 	<th width="40"><label for="subject">名称：</label></th>
 <td>	
-<input type="text" id="subject" name="subject" value="$item[subject]" onfocus="clearwarning('subject_tip');" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$item[subject]" onfocus="clearwarning('subject_tip');" style="width: 396px;" class="t_input" tabindex="1"  /><em>*</em>
 <p id="subject_tip"></p>
 </td>
 </tr>
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning('address_tip');" style="width: 396px;" class="t_input" tabindex="2" readonly/>
+<input type="text" id="address" name="address" value="$item[url]" onfocus="clearwarning('address_tip');" style="width: 396px;" class="t_input" tabindex="2" readonly/><em>*</em>
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 <p id="address_tip"></p>
 </td>
@@ -268,7 +269,7 @@
 <tr>
 <th><label for="tag">标签：</label></th>
 <td>
-<input type="text" id="tag" name="tag" value="$item[tags]" style="width: 396px;" class="t_input" tabindex="3"  />
+<input type="text" id="tag" name="tag" value="$item[tags]" style="width: 396px;" class="t_input" tabindex="3"  /><em>*</em>
 <p style="color:gray">多个标签请用空格隔开</p>
 </td>
 </tr>
@@ -281,7 +282,7 @@
 </tr>
 <tr>
 <th style="vertical-align: top;"><label for="description">描述：</label></th>
-<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5" >$item['description']</textarea></td>
+<td><textarea id="description" name="description" cols="40" rows="4" style="width: 400px; height: 150px;" onkeydown="ctrlEnter(event, 'pmsubmit_btn');" tabindex="5" >$item['description']</textarea></td><em>*</em>
 </tr>
 	<!--{if $_SCONFIG['seccode_register']}-->
 	<!--{if $_SCONFIG['questionmode']}-->
@@ -298,12 +299,12 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="6" autocomplete="off" />
+			<input type="text" id="seccode" name="seccode" value="" size="4" maxlength="4"  onfocus="clearwarning($('checkseccode'));"  class="t_input"  tabindex="6" autocomplete="off" /><em>*</em>
 			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$item[siteid]" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="6" autocomplete="off" />
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4"  onfocus="clearwarning($('checkseccode'));" class="t_input"  tabindex="6" autocomplete="off" /><em>*</em>
 			<p id="checkseccode"></p>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$item[siteid]')">更换一张</a></p>
 		<!--{/if}-->
