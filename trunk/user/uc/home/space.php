@@ -30,7 +30,7 @@ if($_SCONFIG['allowrewrite'] && isset($_GET['rewrite'])) {
 }
 */
 //ÔÊÐí¶¯×÷
-$dos = array('all','bookmark','navigation','login','digg','diggpool','diggtag','browser','sitetag',
+$dos = array('all','bookmark','navigation','login','digg','diggpool','diggtag','browser','sitetag','linktag',
 'feed', 'soft','help'
 );
 /*
