@@ -14,6 +14,5 @@ if(empty($_SGLOBAL['supe_uid'])) {
 }
 include_once(S_ROOT.'./source/every_highlight.php');
 include_once(S_ROOT.'./source/space_bookmark_show.php');
-
 include_once template("space_bookmark");
 ?>
