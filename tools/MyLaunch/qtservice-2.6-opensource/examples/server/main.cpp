@@ -158,7 +158,7 @@ protected:
         QCoreApplication *app = application();
 
         daemon = new Url2imageDaemon(app);
-
+		daemon->start();
     }
 
     void pause()
