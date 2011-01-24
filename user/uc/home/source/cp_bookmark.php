@@ -58,9 +58,7 @@ if(submitcheck('editsubmit')) {
 	}
 	
 	if($newbmdir = bookmark_post($_POST, $item)) {
-		//$url = 'space.php?do=bookmark&op=browser&groupid='.$item['groupid']."&browserid=".$browserid;		
-		showmessage('do_success', $_SGLOBAL['refer'], 0);
-		//showmessage('do_success');
+		showmessage('do_success', empty($_POST['refer'])?$_SGLOBAL['refer']:$_POST['refer'], 0);
 	} else {
 		showmessage('that_should_at_least_write_things');
 	}
@@ -84,10 +82,8 @@ if($_GET['op'] == 'delete') {
 	$ats=array('lastadd','lastvisit','oftenvisit');
 	$at = (empty($_GET['at']) || !in_array($_GET['at'], $ats))?'browser':$_GET['at'];
 	$url = get_right_refer($at,$groupid,$browserid);
-
 	if(submitcheck('deletesubmit')) {
 		if(deletebookmark($bmid)) {
-			//$url = 'space.php?do=bookmark&op=browser&groupid='.$groupid."&browserid=".$browserid;
 			if(empty($_SGLOBAL['client']))
 			{
 			 	showmessage('do_success', $_SGLOBAL['refer'], 0);
