@@ -28,9 +28,6 @@ function site_post($POST, $olds=array()) {
 	//标题
 	$POST['subject'] = getstr(trim($POST['subject']), 0, 1, 1, 1);
 	if(strlen($POST['subject'])<1) $POST['subject'] = sgmdate('Y-m-d');
-		
-	
-
 	//内容
 	if($_SGLOBAL['mobile']) {
 		$POST['description'] = getstr($POST['description'], 0, 1, 0, 1, 1);
@@ -40,8 +37,8 @@ function site_post($POST, $olds=array()) {
 	$message = $POST['description'];
 	
 	//主表
-	$linkarr = array(
-		'subject' => $POST['subject'],		
+	$sitearr = array(
+		'name' => $POST['subject'],		
 	);
 	/*
 	//没有填写任何东西
@@ -70,18 +67,10 @@ function site_post($POST, $olds=array()) {
 			$POST['tag'] = shtmlspecialchars(trim($POST['tag']));
 			$POST['tag'] = getstr($POST['tag'], 0, 1, 1, 1);	//语词屏蔽
 			
-			//link 表
-		//	$sitearr['postuid'] = $_SGLOBAL['supe_uid'];
-			//$sitearr['username'] =$_SGLOBAL['supe_username'];//ramen.sh@gmail.com
-		//	$sitearr['username'] = $_SGLOBAL['name'];//城市森林
+
 			$sitearr['dateline'] = empty($POST['dateline'])?$_SGLOBAL['timestamp']:$POST['dateline'];
-			$sitearr['link_description'] = $message;
-			$sitearr['origin'] = $_SC['link_origin_link'];
-
-
-            //$sitearr['hashurl']=qhash($sitearr['url']);
-			//$sitearr['md5url']=md5($sitearr['url']);
-
+			$sitearr['remark'] = $message;
+			//$sitearr['origin'] = $_SC['link_origin_link'];
 			
 			if(empty($olds)){
 				//增加一个LINK	

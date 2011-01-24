@@ -1158,6 +1158,7 @@ function bookmarkload(){
 			this.href = "javascript:;";
 			$(this).attr("target","_self");
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
+				alert('xx');
 				getAjax('bmtagview',$(this).attr("id"));
 			}); 
 		});	
@@ -1180,7 +1181,7 @@ function bookmarkload(){
 }
 function siteload(){
 		$(".id_nodes").each(function(){
-			$(this).html("暂时没有对&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的描述，请等待服务器更新 ...");
+			$(this).html("暂时没有对站点&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的详细描述，请耐心等待服务器更新 ...");
 		});
 		$(".id_st_tag").each(function(){
 			this.href = "space.php?do=sitetag&tagid=" + this.id;
