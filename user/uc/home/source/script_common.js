@@ -1158,7 +1158,6 @@ function bookmarkload(){
 			this.href = "javascript:;";
 			$(this).attr("target","_self");
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				alert('xx');
 				getAjax('bmtagview',$(this).attr("id"));
 			}); 
 		});	

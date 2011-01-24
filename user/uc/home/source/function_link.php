@@ -215,54 +215,7 @@ function link_tag_batch($id,$tags)
 
 		return $tagarr;	
 }
-/*
-function link_tag_batch($linkid, $tags) {
-	global $_SGLOBAL;
 
-	$tagarr = array();
-	$tagnames = empty($tags)?array():array_unique(explode(' ', $tags));
-	if(empty($tagnames)) return $tagarr;
-
-	$vtags = array();
-	$query = $_SGLOBAL['db']->query("SELECT tagid, tagname, close FROM ".tname('linktag')." WHERE tagname IN (".simplode($tagnames).")");
-	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-		$value['tagname'] = addslashes($value['tagname']);
-		$vkey = md5($value['tagname']);
-		$vtags[$vkey] = $value;
-	}
-	$updatetagids = array();
-	foreach ($tagnames as $tagname) {
-		if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
-		
-		$vkey = md5($tagname);
-		if(empty($vtags[$vkey])) {
-			$setarr = array(
-				'tagname' => $tagname,
-				'uid' => $_SGLOBAL['supe_uid'],
-				'dateline' => $_SGLOBAL['timestamp'],
-				'totalnum' => 1
-			);
-			$tagid = inserttable('linktag', $setarr, 1);
-			$tagarr[$tagid] = $tagname;
-		} else {
-			if(empty($vtags[$vkey]['close'])) {
-				$tagid = $vtags[$vkey]['tagid'];
-				$updatetagids[] = $tagid;
-				$tagarr[$tagid] = $tagname;
-			}
-		}
-	}
-	if($updatetagids) $_SGLOBAL['db']->query("UPDATE ".tname('linktag')." SET totalnum=totalnum+1 WHERE tagid IN (".simplode($updatetagids).")");
-	$tagids = array_keys($tagarr);
-	$inserts = array();
-	foreach ($tagids as $tagid) {
-		$inserts[] = "('$tagid','$linkid')";
-	}
-	if($inserts) $_SGLOBAL['db']->query("REPLACE INTO ".tname('linktaglink')." (tagid,linkid) VALUES ".implode(',', $inserts));
-
-	return $tagarr;
-}
-*/
 //检查link是否已存在
 function  checklinkexisted($linkarr)
 {
