@@ -23,7 +23,7 @@ $pagestart=get_page_start($perpage);
 $page = $pagestart[0];
 $start =$pagestart[1];
 
-$theurl="space.php?do=$do&tagid=$tagid";
+$theurl="bmtagview";
 $count = getlinktagtotalnum($tagid);
 //获取tag名字
 $tagname="标签:".gettagname($tagid);
@@ -37,7 +37,8 @@ while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 }
 
 //分页
-$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
+//$multi = multi($count, $perpage, $page, $theurl,'','bmcontent');
+$multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$tagid.'|');
 
 $_TPL['css'] = 'network';
 include_once template("space_linktag");

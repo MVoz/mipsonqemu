@@ -229,7 +229,7 @@ jQuery(window).bind("unload", function() {
 var ajaxtypes = {
     bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
 	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
-	bmtagview: [ ["space.php?do=linktag&tagid=#","bmcontent"] ],
+	bmtagview: [ ["space.php?do=linktag&tagid=#&page=#","bmcontent"] ],
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
 	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
@@ -1158,7 +1158,7 @@ function bookmarkload(){
 			this.href = "javascript:;";
 			$(this).attr("target","_self");
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-				getAjax('bmtagview',$(this).attr("id"));
+				getAjax('bmtagview',$(this).attr("id")+"|0");
 			}); 
 		});	
 		$("#bklist .share").each(function(){
