@@ -1,4 +1,4 @@
-TARGET   = httpservice
+TARGET   = url2imgDaemon
 TEMPLATE = app
 CONFIG   += console qt
 QT = core network 
