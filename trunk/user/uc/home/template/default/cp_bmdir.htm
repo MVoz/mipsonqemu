@@ -40,11 +40,11 @@
 	<h1>编辑收藏</h1>
 	<!--{else}-->
 	<h1>增加收藏</h1>
-	<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	<p>请正确填写以下书签信息。带<span style="color:red">*</span>为必填项目。</p>
 	<!--{/if}-->
 <div class="popupmenu_inner">
 <form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid">
-<table cellspacing="0" cellpadding="3">
+<table cellspacing="0" cellpadding="3" class="formtable">
 <!--{else}-->
 
 <form method="post" action="cp.php?ac=bmdir&op=$_GET['op']&bmdirid=$bmdirid&browserid=$browserid" class="c_form">
@@ -55,16 +55,16 @@
 	<!--{else}-->
 	<h2>增加收藏</h2>
 	<!--{/if}-->
-	<p>请完整填写以下信息进行注册。<br>注册完成后，该帐号将作为您在本站的通行帐号，您可以享受本站提供的各种服务。</p>
+	<p>请正确填写以下书签信息。带<span style="color:red">*</span>为必填项目。</p>
 </caption>
 <!--{/if}-->
 <tr>
 <th width="40"><label for="subject">名称：</label></th>
 <td>	
 <!--{if $_GET[op] == 'edit'}-->
-<input type="text" id="subject" name="subject" value="$bmdirname" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="$bmdirname" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  /><em>*</em>
 <!--{else}-->
-<input type="text" id="subject" name="subject" value="" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  />
+<input type="text" id="subject" name="subject" value="" onfocus="clearwarning($('subject_tip'));" style="width: 396px;" class="t_input" tabindex="1"  /><em>*</em>
 <!--{/if}-->
 <p id="subject_tip"></p>
 </td>
@@ -87,7 +87,7 @@
 <tr>
 <th><label for="address">地址：</label></th>
 <td>
-<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="3" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" onfocus="clearwarning($('address_tip'));" />
+<input type="text" id="address" name="address" style="width: 396px;" class="t_input" tabindex="3" onfocus="javascript:if('http://'==this.value)this.value='';" onblur="javascript:if(''==this.value)this.value='http://'" value="http://" onfocus="clearwarning($('address_tip'));" /><em>*</em>
 <p style="color:gray">请正确填写网页地址(http(s)://)</p>
 <p id="address_tip"></p>
 </td> 
@@ -120,11 +120,11 @@
 		<td>
 		<!--{if empty($_SGLOBAL['inajax'])}-->
 			<script>seccode()</script>
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span><em>*</em>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccode()">更换一张</a></p>			
 		<!--{else}-->
 			<img id="img_seccode_$bmdirid" src='' align="absmiddle">
-			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span>
+			<input type="text" id="seccode" name="seccode" value="" maxlength="4" class="t_input"  tabindex="6" autocomplete="off" />&nbsp;<span id="checkseccode"></span><em>*</em>
 			<p>请输入上面的4位字母或数字，看不清可<a href="javascript:updateseccodeex('img_seccode_$bmdirid')">更换一张</a></p>
 		<!--{/if}-->
 		</td>

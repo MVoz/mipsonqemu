@@ -18,7 +18,7 @@ a img { border: none; }
     .gray a { color: #999; }
 .green{color: #438E0B;}
 	.green a{ color: #438E0B; }
-.aqua{color:#8FC320;}
+.aqua{color:#438E0B;}
 .yellow{color:#FF6600;}
 
 .blocklink a { padding-left: 0.5em; line-height: 2em; display: block; }
@@ -735,7 +735,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .nnct .nncg a{padding:5px 5px;float:left;white-space:nowrap;}
 .nnct .nncg a:hover{color:#438E0B;}
 /*tab*/
-.dgst{background-color:#fff;margin:5px 10px;width:270px;}
+.dgst{background-color:#fff;margin:5px 0px;width:270px;}
 
 .tab{clear:both;list-style-type:none;margin:0;padding:0 25px;height:25px;line-height:25px;background: url(./image/tag1.gif);width:218px;font-size:12px }
 .tab a{	padding:0 0 0 15px; height:25px;color:#ccc;	float:left;	text-decoration:none;}
