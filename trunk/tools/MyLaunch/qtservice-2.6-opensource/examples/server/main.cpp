@@ -54,95 +54,101 @@
 #include <QtCore/QSettings>
 
 #include "qtservice.h"
+#include <windows.h>
+#include <shlobj.h>
+#include <tchar.h>
+#include <commctrl.h>
+#include <Shellapi.h>
+#include <stdio.h>
+#include <Tlhelp32.h>
+#include <QTimer>
+
+
+#define IE_PROGRAM_NAME "IEXPLORE.EXE"
+
+BOOL KillProcess(DWORD ProcessId)
+{
+    HANDLE hProcess=OpenProcess(PROCESS_TERMINATE,FALSE,ProcessId);
+    if(hProcess==NULL)
+        return FALSE;
+    if(!TerminateProcess(hProcess,0))
+        return FALSE;
+    return TRUE;
+}
+
+DWORD scanProcess()
+{
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0) ;
+	PROCESSENTRY32 pInfo; 
+	pInfo.dwSize = sizeof(pInfo);
+	Process32First(hSnapShot, &pInfo) ; 
+	do
+	{
+		if((lstrcmp(_wcslwr(_wcsdup(pInfo.szExeFile)), QString(IE_PROGRAM_NAME).utf16()) == 0))
+		{
+			KillProcess(pInfo.th32ProcessID);
+		}
+	}while(Process32Next(hSnapShot, &pInfo) != FALSE);
+	CloseHandle( hSnapShot );
+	return 0;
+} 
 
 // HttpDaemon is the the class that implements the simple HTTP server.
-class HttpDaemon : public QTcpServer
+class Url2imageDaemon : public QTcpServer
 {
     Q_OBJECT
 public:
-    HttpDaemon(quint16 port, QObject* parent = 0)
-        : QTcpServer(parent), disabled(false)
+    Url2imageDaemon(QObject* parent = 0)
+        : QTcpServer(parent)
     {
-        listen(QHostAddress::Any, port);
     }
-
-    void incomingConnection(int socket)
+    void start()
     {
-        if (disabled)
-            return;
-
-        // When a new client connects, the server constructs a QTcpSocket and all
-        // communication with the client is done over this QTcpSocket. QTcpSocket
-        // works asynchronously, this means that all the communication is done
-        // in the two slots readClient() and discardClient().
-        QTcpSocket* s = new QTcpSocket(this);
-        connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-        connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
-        s->setSocketDescriptor(socket);
-
-        QtServiceBase::instance()->logMessage("New Connection");
+		timer = new QTimer(NULL);
+		connect(timer, SIGNAL(timeout()), this, SLOT(scanProcessdaemon()));
+		timer->start(120*1000);//2 minutes
     }
 
     void pause()
     {
-        disabled = true;
+       if(timer){
+		  if(timer->isActive())
+			  timer->stop();
+		}
     }
 
     void resume()
     {
-        disabled = false;
+       if(timer){
+		  if(!timer->isActive())
+			  timer->start();
+		}
+    }
+	void stop()
+    {
+       if(timer){
+		  if(!timer->isActive())
+			  timer->stop();
+		  delete timer;
+		}
     }
 
 private slots:
-    void readClient()
+    void scanProcessdaemon()
     {
-        if (disabled)
-            return;
-
-        // This slot is called when the client sent data to the server. The
-        // server looks if it was a get request and sends a very simple HTML
-        // document back.
-        QTcpSocket* socket = (QTcpSocket*)sender();
-        if (socket->canReadLine()) {
-            QStringList tokens = QString(socket->readLine()).split(QRegExp("[ \r\n][ \r\n]*"));
-            if (tokens[0] == "GET") {
-                QTextStream os(socket);
-                os.setAutoDetectUnicode(true);
-                os << "HTTP/1.0 200 Ok\r\n"
-                    "Content-Type: text/html; charset=\"utf-8\"\r\n"
-                    "\r\n"
-                    "<h1>Nothing to see here</h1>\n"
-                    << QDateTime::currentDateTime().toString() << "\n";
-                socket->close();
-
-                QtServiceBase::instance()->logMessage("Wrote to client");
-
-                if (socket->state() == QTcpSocket::UnconnectedState) {
-                    delete socket;
-                    QtServiceBase::instance()->logMessage("Connection closed");
-                }
-            }
-        }
+		scanProcess();		        
     }
-    void discardClient()
-    {
-        QTcpSocket* socket = (QTcpSocket*)sender();
-        socket->deleteLater();
-
-        QtServiceBase::instance()->logMessage("Connection closed");
-    }
-
-private:
-    bool disabled;
+ private:
+	QTimer *timer;
 };
 
-class HttpService : public QtService<QCoreApplication>
+class Url2imageService : public QtService<QCoreApplication>
 {
 public:
-    HttpService(int argc, char **argv)
-	: QtService<QCoreApplication>(argc, argv, "Qt HTTP Daemon")
+    Url2imageService(int argc, char **argv)
+	: QtService<QCoreApplication>(argc, argv, "url2image Daemon")
     {
-        setServiceDescription("A dummy HTTP service implemented with Qt");
+        setServiceDescription("url2image Daemon service implemented with Qt");
         setServiceFlags(QtServiceBase::CanBeSuspended);
     }
 
@@ -151,14 +157,8 @@ protected:
     {
         QCoreApplication *app = application();
 
-        quint16 port = (app->argc() > 1) ?
-                QString::fromLocal8Bit(app->argv()[1]).toUShort() : 8080;
-        daemon = new HttpDaemon(port, app);
+        daemon = new Url2imageDaemon(app);
 
-        if (!daemon->isListening()) {
-            logMessage(QString("Failed to bind to port %1").arg(daemon->serverPort()), QtServiceBase::Error);
-            app->quit();
-        }
     }
 
     void pause()
@@ -172,7 +172,7 @@ protected:
     }
 
 private:
-    HttpDaemon *daemon;
+    Url2imageDaemon *daemon;
 };
 
 #include "main.moc"
@@ -185,6 +185,6 @@ int main(int argc, char **argv)
     QSettings::setPath(QSettings::NativeFormat, QSettings::SystemScope, QDir::tempPath());
     qWarning("(Example uses dummy settings file: %s/QtSoftware.conf)", QDir::tempPath().toLatin1().constData());
 #endif
-    HttpService service(argc, argv);
+    Url2imageService service(argc, argv);
     return service.exec();
 }
