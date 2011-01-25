@@ -1178,12 +1178,12 @@ function bookmarkload(){
 	//	$("#bklist .get").html("详情");
 		tb_init('#bklist a.thickbox');
 }
-function siteload(){
+function siteload(nopic){
 		$(".id_nodes").each(function(){
 			$(this).html("暂时没有对站点&nbsp;<a class=\"url id_st_"+this.id+"\" id=\""+this.id+"\"></a>&nbsp;的详细描述，请耐心等待服务器更新 ...");
 		});
 		$(".id_st_tag").each(function(){
-			this.href = "space.php?do=sitetag&tagid=" + this.id;
+			this.href = "space.php?do=sitetag&np="+nopic+"&tagid=" + this.id;
 		});	
 		$("#stlist .edit").each(function(){
 			$(this).addClass("thickbox");
