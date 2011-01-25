@@ -104,6 +104,6 @@ if(!file_exists(S_ROOT.'./data/navigation_siteclass.txt'))
 $siteclass = unserialize(sreadfile(S_ROOT.'./data/navigation_siteclass.txt'));
 $theurl="sitepage";
 //分页
-$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|');
+$bookmark_multi = multi($count, $perpage, $page, $theurl,'bmcontent','bmcontent',1,$classid.'|'.$childid.'|'.$nopic.'|');
 include_once template("space_navigation");
 ?>

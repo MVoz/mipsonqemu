@@ -15,6 +15,7 @@ include_once(S_ROOT.'./source/every_todayhotcollect.php');
 include_once(S_ROOT.'./source/every_feed.php');
 include_once(S_ROOT.'./source/every_hotdigg.php');
 
+$nopic = 1;
 //支取hotcollect前4个
 $hotsite = array_slice($todayhotcollect['site'], 0, 4);
 //获取快速导航
