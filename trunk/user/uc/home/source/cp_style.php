@@ -9,16 +9,12 @@ if(!defined('IN_UCHOME')) {
 }
 
 $op = empty($_GET['op'])?'':$_GET['op'];
-
+$style = empty($_POST['ownerstyle'])?0:intval(trim($_POST['ownerstyle']));
+if($style>2||$style<0)
+	$style = 0;
 if(submitcheck('stylesubmit')) {
-	$style = empty($_POST['ownerstyle'])?0:1;
-	updatetable('space', array('style'=>$style), array('uid'=>$_SGLOBAL['supe_uid']));
-	
+	updatetable('space', array('style'=>$style), array('uid'=>$_SGLOBAL['supe_uid']));	
 	showmessage('do_success', 'cp.php', 0);
-
 } 
-
 include_once template("cp_config");
-
-
 ?>
