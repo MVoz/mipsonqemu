@@ -234,7 +234,7 @@ var ajaxtypes = {
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
 	bookmarkpage: [ ["space.php?do=bookmark&op=browser&groupid=#&browserid=#&page=#","bmcontent"] ],
 	diggpage: [ ["space.php?do=digg&uid=#&show=#&page=#","diggcontent"] ],
-	sitepage: [ ["space.php?do=navigation&classid=#&child=#&page=#","bmcontent"] ],
+	sitepage: [ ["space.php?do=navigation&classid=#&child=#&np=#&page=#","bmcontent"] ],
 	siterelate: [ ["cp.php?ac=site&op=relate&siteid=#","rdsect"] ] ,
 	feedpage: [ ["space.php?do=feed&uid=#&show=#&page=#","bmcontent"] ]
 };
