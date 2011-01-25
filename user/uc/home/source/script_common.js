@@ -463,7 +463,7 @@ function check_subject(id, min, max, specialchar)
             warning((id+'_tip'),"标题长度("+min+"~"+max+"字符)不符合要求");
             return false;
         }
-		if(!specialchar&&illegachar_validate($(id).value))//不支持特殊字符
+		if(!specialchar&&illegachar_validate($('#'+id).val()))//不支持特殊字符
 		{
 		   warning((id+'_tip'),"标题不允许含有特殊字符");
 		   return false;
@@ -502,7 +502,7 @@ function check_description(id, min, max)
 function check_url(id, min, max)
 {
 	if ($('#'+id).length>0) {
-		if(!url_validate($('#'+id).val())||!rangelen_validate($obj('address').value,min,max))    	
+		if(!url_validate($('#'+id).val())||!rangelen_validate($('#address').val(),min,max))    	
 			{
 				warning((id+'_tip'),"网址("+min+"~"+max+"字符)不符合要求");
 				return false;
