@@ -4,20 +4,30 @@
 					<h3>
 						<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
 					</h3>
+					<!--{if empty($space['style'])}-->
 						<div class="d_avatar avatar125">
 								<a class="url id_bm_$value['bmid']" id="$value['bmid']">
 									 <!--{eval echobookmarkimagepath($value,0)}-->
 								</a>
-						</div>						
-						<!--{if !empty($value['description'])}-->
+						</div>	
 						<p class="message">
-									$value['description'] ...
+						<!--{if !empty($value['description'])}-->
+								$value['description'] ...
 						<!--{else}-->
-						<p class="message ">
-							<span class="id_nodes" id="$value['bmid']"></span>
+								<span class="id_nodes" id="$value['bmid']"></span>
 						<!--{/if}-->
+								<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+						</p>
+					<!--{else}-->	
+						<p class="messagenopic">
+							<!--{if !empty($value['description'])}-->
+									$value['description'] ...
+							<!--{else}-->
+									<span class="id_nodes" id="$value['bmid']"></span>
+							<!--{/if}-->
 							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-						</p>					
+						</p>
+					<!--{/if}-->
 					<p class="tags"> 
 						<!--{if !empty($value['tag'])}-->
 							<!--{loop $value[tag] $subkey $subvalue}-->
