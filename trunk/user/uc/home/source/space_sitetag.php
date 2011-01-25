@@ -16,6 +16,8 @@ if(empty($_SCONFIG['networkpublic'])) {
 $tagid=empty($_GET['tagid'])?0:intval($_GET['tagid']);
     //获取总条数
 
+$nopic= empty($_GET['np'])?0:intval(trim($_GET['np']));
+
 $perpage=$_SC['bookmark_show_maxnum'];
 $pagestart=get_page_start($perpage);
 
