@@ -2,9 +2,9 @@
 <div id="expressnav">	
 <!--{loop $navlist $key $bookmarklist}-->
 	<dl class="line">
-		<dt><a title="$bookmarklist['classname']" href="space.php?do=navigation&np=$nopic&classid=$bookmarklist['siteclassid']">$bookmarklist['classname']</a></dt>
+		<dt><a title="$bookmarklist['classname']" href="space.php?do=navigation&np=$nopic&classid=$bookmarklist['siteclassid']" >$bookmarklist['classname']</a></dt>
 		<!--{loop $bookmarklist['son'] $key $value}-->
-			<dd>
+			<dd >
 				<a href="{$value[url]}" id="$value['siteid']">$value[subject]</a>
 			</dd>						
 		<!--{/loop}-->

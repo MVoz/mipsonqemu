@@ -782,11 +782,11 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .headline .desc{padding-top:10px;}
 .headline .desc p{ color:#666;line-height:20px;}
 
-#expressnav{width:100%;margin-bottom: 30px;}
+#expressnav{width:100%;margin-bottom: 30px;  font-size: 13px;}
 #expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 25px;line-height: 25px; padding: 0 0 0 10px;overflow:hidden;}
 #expressnav dl dt{ width: 45px;float: left;}
-#expressnav dl dd{ display: inline;  float: left;   font-size: 13px;width: 90px;overflow:hidden;}
-#expressnav dl dd a{ color:#666;}
+#expressnav dl dd{ display: inline;  float: left; width: 90px;overflow:hidden;}
+#expressnav dl dt a{ color:#666;}
 
 
 #inhe ol {
