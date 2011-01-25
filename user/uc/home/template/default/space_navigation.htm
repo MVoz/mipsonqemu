@@ -8,10 +8,16 @@
 <!--{template board}-->
 <!--{if empty($classid)}-->
 <div class="box">
-	<div class="box_l">
-		<h2 class="navtab"></h2>
-		<div id="bmcontent">						
+	<div class="box_l">		
+		<div id="bmcontent">	
+		<!--{if empty($nopic)}-->
 			<!--{template navigation_index}-->
+		<!--{else}-->
+			<h2 class="ntitle">
+				<p id="groupname">快速导航&raquo;</p>
+			</h2>
+			<!--{template expressnav}-->
+		<!--{/if}-->
 		</div>
 	</div>
 	<div class="box_r" >	
