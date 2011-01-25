@@ -17,7 +17,8 @@ include_once(S_ROOT.'./source/every_highlight.php');
 //bookmarklist
 $classid= empty($_GET['classid'])?0:intval(trim($_GET['classid']));
 $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
-$nopic= isset($_GET['np'])?1:0;
+
+$nopic= empty($_GET['np'])?0:intval(trim($_GET['np']));
  //分页获取总条数
 
 $perpage=$_SC['bookmark_show_maxnum'];

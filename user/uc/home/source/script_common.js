@@ -228,7 +228,7 @@ jQuery(window).bind("unload", function() {
 });
 var ajaxtypes = {
     bmview: [ ["space.php?do=bookmark&op=#","bmcontent"] ],
-	siteview: [ ["space.php?do=navigation&classid=#","bmcontent"] ],
+	siteview: [ ["space.php?do=navigation&classid=#&np=#","bmcontent"] ],
 	bmtagview: [ ["space.php?do=linktag&tagid=#&page=#","bmcontent"] ],
 	browserview: [ ["space.php?do=bookmark&op=browser&browserid=#","bmcontent"] ],
 	dirtree: [ ["space.php?do=browser&op=show&browserid=#","browserdirtree"] ],
@@ -1261,14 +1261,14 @@ function diggpoolload(){
 		$(".tlist .delete").html("删除");
 		tb_init('.tlist a.thickbox');
 }
-function navtabload()
+function navtabload(nopic)
 {
 		$(".navtab").html($(".navtab_x").html());
 		$(".navtab_x").remove();
 		$(".navtab").addClass("ntitle"); 
 		$(".nav_tab .navc").each(function(){
 				$(this).unbind('click').removeAttr('onclick').click(function(){ 
-					getAjax('siteview',$(this).attr("id"));
+					getAjax('siteview',$(this).attr("id")+"|"+nopic);
 					$('.nav_tab li').removeClass('nav_on');
 					$(this).parent().addClass('nav_on');
 				}); 				
