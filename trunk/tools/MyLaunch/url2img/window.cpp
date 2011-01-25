@@ -134,14 +134,25 @@ DWORD GetSpecifiedProcessById(DWORD processId)
 	Process32First(hSnapShot, &pInfo) ; 
 	do
 	{
-		if((pInfo.th32ProcessID ==processId)&&(lstrcmp(_wcslwr(_wcsdup(pInfo.szExeFile)), QString(IECAPT_PROGRAM_NAME).utf16()) == 0))
+		if((pInfo.th32ProcessID ==processId)&&(QString::fromUtf16(pInfo.szExeFile)==QString(IECAPT_PROGRAM_NAME)))
 		{
 			id = pInfo.th32ProcessID ;
 			break ;
 		}
 	}while(Process32Next(hSnapShot, &pInfo) != FALSE);
+	
+	CloseHandle( hSnapShot );
 	return id;
 } 
+BOOL KillProcess(DWORD ProcessId)
+{
+    HANDLE hProcess=OpenProcess(PROCESS_TERMINATE,FALSE,ProcessId);
+    if(hProcess==NULL)
+        return FALSE;
+    if(!TerminateProcess(hProcess,0))
+        return FALSE;
+    return TRUE;
+}
 
 /*
 void GetWindowCommandLine(QString& buf,DWORD pid)
@@ -1309,6 +1320,8 @@ void snapThread::monitorSnapFinished()
 	int count=getringurlList.count();
 	QDir dir(".");
 	QString apath=dir.absolutePath();
+	QDateTime dt=QDateTime::currentDateTime ();
+	unsigned int nowSeconds= dt.toTime_t();
 	for(int i=count-1;i>=0;i--)
 	{
 		struct MonitorUrl mu=getringurlList.at(i);
@@ -1328,6 +1341,9 @@ void snapThread::monitorSnapFinished()
 			CloseHandle( mu.pi.hProcess );
 			CloseHandle( mu.pi.hThread );
 			getringurlList.removeAt(i);
+		}else if(nowSeconds-mu.startTime>120){
+			qDebug()<<"timeout to snap "<<mu.url;
+			KillProcess(mu.pi.dwProcessId);
 		}
 		dir.cd(apath);
 	}
@@ -1368,8 +1384,8 @@ void snapThread::run()
 			
 			mu.filepath=QString("snapshot/")+model->data(model->index(i, LINK_TABLE_PIC)).toString();
 			mu.filename=model->data(model->index(i, LINK_TABLE_MD5URL)).toString();
-			//QDateTime dt=QDateTime::currentDateTime ();
-			//mu.startTime= dt.toTime_t();
+			QDateTime dt=QDateTime::currentDateTime ();
+			mu.startTime= dt.toTime_t();
 			
 			//create directory
 		//	qDebug()<<"url="<<mu.url<<" filepath="<<mu.filepath<<" filename="<<mu.filename;
@@ -1388,7 +1404,7 @@ void snapThread::run()
 				QString runargs=QString("--url=%1 --out=%2/%3.jpg --max-wait=%4 --silent").arg(mu.url).arg(mu.filepath).arg(mu.filename).arg(maxWait*1000);
 				emit snapLogNotify(QString("<span>start to snap <strong>%1</strong></span>").arg(mu.url));
 #ifdef WAIT_FOR_SINGLE
-				qDebug()<<"args:"<<runargs;
+				//qDebug()<<"args:"<<runargs;
 				if(runProgram(ieCaptBin,runargs,&mu.si,&mu.pi))
 						getringurlList.push_back(mu);
 #else
