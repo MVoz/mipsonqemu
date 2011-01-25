@@ -8,20 +8,9 @@
 <tr>
 	<th style="width:10em;">您的登录用户名:</th>
 	<td>
-		<!--{eval echo stripslashes($space['username']);}--> (<a onclick="passwdformshow();" href="javascript:;">修改登录密码</a>)
+		<!--{eval echo stripslashes($space['username']);}--> (<a onclick="display('passwdform');" href="javascript:;">修改登录密码</a>)
 	</td>
 
-</tr>
-<tr>
-	<th style="width:10em;">常用邮箱:</th>
-	<td>
-	<input type="text" id="email" class="t_input" name="email" value="" />
-	<br>请准确填写，取回密码、获取通知的时候都会发送到该邮箱。
-	</td>
-</tr>
-<tr>
-	<th style="width:10em;">&nbsp;</th>
-	<td><input type="submit" name="configsubmit" value="保存" class="submit" /></td>
 </tr>
 </table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
@@ -34,11 +23,11 @@
 <h2>我的登录密码</h2>
 <p>修改密码后，您需要重新登陆一次。</p>
 </caption>
-<tbody><tr>
-<th width="100">登录用户名</th>
-<td>admin</td>
-</tr>
+<tbody>
 <tr>
+<th width="100">登录用户名(昵称)</th>
+<td><!--{eval echo stripslashes($space['username']);}-->($space['name'])</td>
+</tr>
 <th width="100">旧密码</th>
 <td><input type="password" class="t_input" value="" name="password" id="password"></td>
 </tr>
@@ -62,13 +51,6 @@
 	function updateavatar() {
 		window.location.reload();
 	}
-	function passwdformshow()
-	{
-		if($('passwdform').style.display=='none')
-			 $('passwdform').style.display='block';
-		else
-			$('passwdform').style.display='none';
-	}
 </script>
 <div class="c_form" id="styleform">
 <form action="cp.php?ac=style" method="post">
@@ -80,23 +62,22 @@
 <tbody>
 <tr>
 <th width="100">网站缩略图:</th>
-<!--{if empty($space[style])}-->
-<td width="100"><input type="radio"  value="0" name="ownerstyle" id="ownerstyle" checked>显示</td>
-<td width="100"><input type="radio" value="1" name="ownerstyle" id="ownerstyle">不显示</td>
-<!--{else}-->
-<td width="100"><input type="radio"  value="0" name="ownerstyle" id="ownerstyle">显示</td>
-<td width="100"><input type="radio" value="1" name="ownerstyle" id="ownerstyle" checked>不显示</td>
-<!--{/if}-->
-<td>&nbsp;</td>
-</tr> 
-<th>&nbsp;</th>
+
+<td width="100"><input type="radio"  value="0" name="ownerstyle" id="ownerstyle">显示大图</td>
+<td width="100"><input type="radio"  value="1" name="ownerstyle" id="ownerstyle">显示小图</td>
+<td width="100"><input type="radio"  value="2" name="ownerstyle" id="ownerstyle">不显示</td>
+
 <td><input type="submit" class="submit" value="修改风格" name="stylesubmit"></td>
-</tr>
+</tr> 
 </tbody></table>
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
 </div>
-
+<script type="text/javascript">	
+	$(function(){
+		$("#styleform input[@type=radio][@value="+$space[style]+"]").attr("checked",true);
+	});
+</script>
 <form method="post" action="cp.php?ac=avatar&ref" class="c_form">
 	<table cellspacing="0" cellpadding="0" class="formtable">
 		<caption>
@@ -105,7 +86,7 @@
 		</caption>
 		<tr>
 			<td>
-				<!--{avatar($space[uid],big)}-->
+				<!--{avatar($space[uid],middle)}-->
 			</td>
 		</tr>
 	</table>
@@ -125,12 +106,14 @@
 <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
 </form>
 <script>
+/*
 function add_tbody() {
 	for(i=0; i<$("oldtbody").rows.length; i++) {
 		newnode = $("oldtbody").rows[i].cloneNode(true);
 		$("newtbody").appendChild(newnode);
 	}
 }
+*/
 </script>
 
 <!--{template footer}-->
