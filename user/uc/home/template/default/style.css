@@ -446,7 +446,7 @@ a.c_link {
 
 /*nav_tab*/
 .nav_tab{float:left;height:32px;line-height:32px;}
-	.nav_tab li {float:left;padding:10px 5px;}
+	.nav_tab li {float:left;padding:9px 5px;}
 	.nav_tab li a{float:left;padding-top:2px;color:#666;text-decoration:none;white-space:nowrap; }
 	.nav_tab .nav_on a,.nav_tab li a:hover{color:#438E0B;}
 
