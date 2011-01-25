@@ -21,7 +21,8 @@ $childid= empty($_GET['childid'])?0:intval(trim($_GET['childid']));
 $nopic= empty($_GET['np'])?0:intval(trim($_GET['np']));
  //分页获取总条数
 
-$perpage=$_SC['bookmark_show_maxnum'];
+$perpage=empty($nopic)?$_SC['bookmark_show_maxnum']:$_SC['bookmark_show_maxnum_nopic'];;
+$perpage=10;
 $pagestart=get_page_start($perpage);
 
 $page = $pagestart[0];

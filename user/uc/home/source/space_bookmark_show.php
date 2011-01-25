@@ -31,7 +31,6 @@ $browserid=gethttpbrowserid();
 if($op=='browser'){	    
 		$groupid = gethttpgroupid($browserid);
 		$groupname = getbookmarkgroupname($browserid,$groupid);		
-		//$theurl="space.php?do=$do&op=$op&groupid=$groupid&browserid=$browserid";
 		$theurl="bookmarkpage";
 }else{
 		$viewstr=array(
@@ -46,12 +45,12 @@ if($op=='browser'){
 		$groupname=	$viewstr[$op]['groupname'];
 		$theurl="space.php?do=$do&op=$op";
 }
-	//分页获取总条数
-		$perpage=$_SC['bookmark_show_maxnum'];
-		$pagestart=get_page_start($perpage);
+//分页获取总条数
+$perpage=($space['style']==2)?$_SC['bookmark_show_maxnum_nopic']:$_SC['bookmark_show_maxnum'];
+$pagestart=get_page_start($perpage);
 
-		$page = $pagestart[0];
-		$start =$pagestart[1];
+$page = $pagestart[0];
+$start =$pagestart[1];
 
 
 if(($op!='browser')){
