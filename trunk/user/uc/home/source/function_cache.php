@@ -703,7 +703,7 @@ function site_cache_3classid($classid)
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 		$linklist[$value['id']]=getsite($value['id']);
-		if(count($linklist)==$_SC['bookmark_show_maxnum'])
+		if(count($linklist)==$_SC['bookmark_show_maxnum_nopic'])
 		{
 			$page++;
 			swritefile($linkfileprefix.'_'.$classid.'_page'.$page.'.txt', serialize($linklist)); 	
@@ -731,7 +731,7 @@ function sitetag_cache($tagid)
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 		$linklist[$value['siteid']]=getsite($value['siteid']);
-		if(count($linklist)==$_SC['bookmark_show_maxnum'])
+		if(count($linklist)==$_SC['bookmark_show_maxnum_nopic'])
 		{
 			$page++;
 			swritefile($fileprefix.'_'.$tagid.'_page'.$page.'.txt', serialize($linklist)); 				
@@ -799,7 +799,7 @@ function navigation_cache()
 	while($value =$_SGLOBAL['db']->fetch_array($query))
 	{
 			//获取此类的link
-			$qry=$_SGLOBAL['db']->query("SELECT main.url FROM ".tname('coolsite')." main where main.class=".$value['classid']." limit 8");
+			$qry=$_SGLOBAL['db']->query("SELECT main.url FROM ".tname('coolsite')." main where main.class=".$value['classid']." limit ".$_SC['bookmark_show_maxnum_nopic']);
 			while($val =$_SGLOBAL['db']->fetch_array($qry))
 			{
 				$val['url']=handleUrlString($val['url']);
