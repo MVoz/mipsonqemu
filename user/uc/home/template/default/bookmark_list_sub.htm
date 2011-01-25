@@ -2,7 +2,7 @@
 			<!--{loop $bookmarklist $key $value}-->
 			<li>
 					<h3>
-						<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
+						<a class="url id_bm_$value['bmid']" id="$value['bmid']""></a>
 					</h3>
 					<!--{if empty($space['style'])}-->
 						<div class="d_avatar avatar125">
@@ -55,11 +55,19 @@
 <script language="javascript" type="text/javascript" charset="$_SC[charset]">	
 		bookmarkload();
 		$(".bklt .delete").each(function(){
-			this.href =this.href+"&at=$at";			
+			this.href =this.href+"&at=$at";	
 		});
 		$(".bklt .edit").each(function(){
-			this.href =this.href+"&at=$at";			
+			this.href =this.href+"&at=$at";	
 		});	
+		
+		$(".bklt a").each(function(){
+			$(this).css("color","#888");		
+		});	
+		$(".bklt h3 a").each(function(){
+			$(this).css("color","#2C629E");		
+		});	
+
 <!--{loop $bookmarklist $key $value}-->	
 		var id_bm_$value['bmid']_title="$value['subject']";
 		$(".id_bm_$value['bmid']").attr("href","$value[url]").attr("title",id_bm_$value['bmid']_title);		
