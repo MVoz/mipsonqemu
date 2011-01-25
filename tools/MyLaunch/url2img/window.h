@@ -175,7 +175,7 @@ struct MonitorUrl{
 	uint index;
 	QString filepath;
 	QString filename;
-	//uint startTime;
+	uint startTime;
 #ifdef WAIT_FOR_SINGLE
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
