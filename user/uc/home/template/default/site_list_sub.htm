@@ -5,19 +5,23 @@
 			<a class="url id_st_$value['siteid']" id="$value['siteid']"></a>
 			<span>(<!--{eval getsitestorenum($value['siteid'])}-->人收)</span>
 		</h3>
+		<!--{if empty($nopic)}-->
 		<div class="d_avatar avatar125">
 				<a class="url id_st_$value['siteid']" id="$value['siteid']">
 						 <!--{eval echobookmarkimagepath($value,1)}-->
 				</a>
-		</div>		
-						<!--{if !empty($value['description'])}-->
+		</div>
 		<p class="message">
-								$value['description'] ...
+		<!--{else}-->
+		<p class="messagenopic">
+		<!--{/if}-->
+		
+						<!--{if !empty($value['description'])}-->
+							$value['description'] ...
 						<!--{else}-->
-		<p class="message ">
-								<span class="id_nodes" id="$value['siteid']"></span>
+							<span class="id_nodes" id="$value['siteid']"></span>
 						<!--{/if}-->
-						<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
+							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
 		</p>
 		<p class="tags"> 
 						<!--{if !empty($value['tag'])}-->

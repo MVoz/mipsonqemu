@@ -18,7 +18,7 @@
 		$(".nncg a").each(function(){
 			this.href ="javascript:;";
 			$(this).unbind('click').removeAttr('onclick').click(function(){ 
-					getAjax('siteview',$(this).attr("id"));
+					getAjax('siteview',$(this).attr("id")+"|$nopic");
 
 			}); 
 		});
