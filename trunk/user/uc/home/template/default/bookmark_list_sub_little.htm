@@ -1,7 +1,6 @@
 <ul class="bklt" id="bklist">
 	<!--{loop $bookmarklist $key $value}-->
 			<li style="width:100%;max-height:75px;">
-<!--{if ($space['style']==1)}-->
 				<div class="lf">
 					<div class="avatar48" style="float: left;">
 						<a class="url id_bm_$value['bmid']" id="$value['bmid']">
@@ -9,11 +8,11 @@
 						</a>
 					</div>						
 				</div>
-<!--{/if}-->	
+
 				<div class="lfx">		
 						 <p style="font-weight:bold;">
 							<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
-						 </p>
+						 <p>
 			
 						<p style="text-indent:15px;max-height:40px;overflow:hidden;color:#666">
 						<!--{if !empty($value['description'])}-->
@@ -55,6 +54,12 @@
 		});
 		$(".bklt .edit").each(function(){
 			this.href =this.href+"&at=$at";			
+		});	
+		$(".bklt a").each(function(){
+			$(this).css("color","#888");		
+		});	
+		$(".bklt p > a").each(function(){
+			$(this).css("color","#2C629E");		
 		});	
 <!--{loop $bookmarklist $key $value}-->	
 		var id_bm_$value['bmid']_title="$value['subject']";
