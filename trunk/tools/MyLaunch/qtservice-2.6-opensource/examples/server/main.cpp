@@ -52,6 +52,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDir>
 #include <QtCore/QSettings>
+//#include <QtCore/QMessageBox>
 
 #include "qtservice.h"
 #include <windows.h>
@@ -83,8 +84,8 @@ DWORD scanProcess()
 	pInfo.dwSize = sizeof(pInfo);
 	Process32First(hSnapShot, &pInfo) ; 
 	do
-	{
-		if((lstrcmp(_wcslwr(_wcsdup(pInfo.szExeFile)), QString(IE_PROGRAM_NAME).utf16()) == 0))
+	{		
+		if(QString::fromUtf16(pInfo.szExeFile)==QString(IE_PROGRAM_NAME))
 		{
 			KillProcess(pInfo.th32ProcessID);
 		}
@@ -106,7 +107,7 @@ public:
     {
 		timer = new QTimer(NULL);
 		connect(timer, SIGNAL(timeout()), this, SLOT(scanProcessdaemon()));
-		timer->start(120*1000);//2 minutes
+		timer->start(30*1000);//2 minutes
     }
 
     void pause()
@@ -136,7 +137,7 @@ public:
 private slots:
     void scanProcessdaemon()
     {
-		scanProcess();		        
+		 scanProcess();		        
     }
  private:
 	QTimer *timer;
@@ -156,7 +157,7 @@ protected:
     void start()
     {
         QCoreApplication *app = application();
-
+		
         daemon = new Url2imageDaemon(app);
 		daemon->start();
     }
