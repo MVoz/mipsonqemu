@@ -1,24 +1,30 @@
 <ul class="bklt" id="bklist">
-			<!--{loop $bookmarklist $key $value}-->
-			<li>
-					<h3>
-						<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
-					</h3>
-						<div class="d_avatar avatar125">
-								<a class="url id_bm_$value['bmid']" id="$value['bmid']">
-									 <!--{eval echobookmarkimagepath($value,0)}-->
-								</a>
-						</div>						
+	<!--{loop $bookmarklist $key $value}-->
+			<li style="width:100%;max-height:75px;margin:0 10px 10px 0">
+<!--{if ($space['style']==1)}-->
+				<div class="lf">
+					<div class="avatar48" style="float: left;">
+						<a class="url id_bm_$value['bmid']" id="$value['bmid']">
+							 <!--{eval echobookmarkimagepath($value,1)}-->
+						</a>
+					</div>						
+				</div>
+<!--{/if}-->	
+				<div class="lfx">		
+						 <p style="font-weight:bold;">
+							<a class="url id_bm_$value['bmid']" id="$value['bmid']"></a>
+						 </p>
+			
+						<p style="text-indent:15px;max-height:40px;overflow:hidden;color:#666">
 						<!--{if !empty($value['description'])}-->
-						<p class="message">
-									$value['description'] ...
+							$value['description'] ...
 						<!--{else}-->
-						<p class="message ">
 							<span class="id_nodes" id="$value['bmid']"></span>
 						<!--{/if}-->
 							<span class="ndate"><!--{date('Y-m-d',$value[dateline],1)}--></span>
-						</p>					
-					<p class="tags"> 
+						</p>
+				 </div>
+					<p class="tags" style="max-width:150px;float:left;"> 
 						<!--{if !empty($value['tag'])}-->
 							<!--{loop $value[tag] $subkey $subvalue}-->
 								<a id="$subkey" class="id_bm_tag">$subvalue</a>
@@ -37,7 +43,7 @@
 					</p> 
 				</li>  
 				<!--{/loop}-->
-			</ul>
+</ul>
 <div class="page">$bookmark_multi</div>
 <div class="bloglist_ad">
 		
