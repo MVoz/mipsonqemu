@@ -340,7 +340,7 @@ function trim(str) {
 }
 
 function display(id) {
-	$('#'+id).css('display',($('#'+id).css('display')=='')?'none' : '');
+	$('#'+id).css('display',($('#'+id).css('display')=='block')?'none' : 'block');
 }
 function setDisplay(a, b){
 	if ($("#"+a).length>0) 
