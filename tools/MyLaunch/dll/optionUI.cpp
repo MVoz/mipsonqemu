@@ -616,8 +616,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 	for (int i = 0; i < dirLists.size(); ++i)
 	{
 		settings->setArrayIndex(i);
-		qDebug("directory path:%s",qPrintable(dirLists.at(i).name));
-		settings->setValue("name", qPrintable(dirLists.at(i).name));
+		settings->setValue("name", dirLists.at(i).name);
 		settings->setValue("types", dirLists.at(i).types);
 		settings->setValue("indexDirs", dirLists.at(i).indexDirs);
 		settings->setValue("depth", dirLists.at(i).depth);
