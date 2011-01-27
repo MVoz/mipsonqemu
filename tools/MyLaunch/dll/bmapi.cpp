@@ -1394,7 +1394,49 @@ int tz::checkSilentUpdateFiles()
 }
 QString tz::getSystemTempDir()
 {
-	TCHAR tmp[_MAX_PATH];
+	TCHAR tmp[_MAX_PATH]={0};
 	GetTempPath(_MAX_PATH,  tmp);
 	return QString::fromUtf16((const ushort *) tmp);
 }
+QString tz::getDefaultBrowser()
+{
+	QString defBrowserPath;
+	 HKEY hkRoot,hSubKey; 
+	 QString htmlValue = QString("htmlfile");
+	 TCHAR defBrowser[MAX_PATH]={0}; 
+	 unsigned long cbValueName=MAX_PATH; 
+	 unsigned long cbDataValue=MAX_PATH; 
+	 DWORD dwType; 
+	 TCHAR ValueName[MAX_PATH]={0};
+
+	 if(RegOpenKey(HKEY_CLASSES_ROOT,(LPCTSTR)QString(".html").utf16(),&hkRoot)==ERROR_SUCCESS) 
+	 {
+	 	TCHAR lpWstr[MAX_PATH]={0};
+		DWORD lpType = REG_SZ;
+		DWORD maxBufSize = MAX_PATH;
+		if(RegQueryValueEx(hkRoot, NULL, NULL, &lpType, (LPBYTE)lpWstr, &maxBufSize) == ERROR_SUCCESS)
+			htmlValue=QString::fromUtf16((const ushort *) lpWstr);
+		RegCloseKey(hkRoot);
+	}
+	 
+	 if(RegOpenKey(HKEY_CLASSES_ROOT,NULL,&hkRoot)==ERROR_SUCCESS)
+	 {
+	 	if(RegOpenKeyEx(hkRoot, htmlValue .append(QString("\\shell\\open\\command")).utf16(), 0, KEY_ALL_ACCESS, &hSubKey)==ERROR_SUCCESS) 
+			{ 
+				RegEnumValue( hSubKey,  0, ValueName, &cbValueName, NULL, &dwType, (LPBYTE)defBrowser, &cbDataValue); 
+				RegCloseKey(hkRoot); 
+			} 
+		RegCloseKey(hkRoot); 
+	}
+ 	defBrowserPath= QString::fromUtf16((const ushort *) defBrowser);
+	defBrowserPath=defBrowserPath.trimmed();
+	if(!defBrowserPath.isEmpty()){
+		QRegExp regex_path("\"([^\"]*)\"", Qt::CaseInsensitive);
+		 int pos = regex_path.indexIn(defBrowserPath);
+		 if (pos > -1) {
+		     defBrowserPath = regex_path.cap(1); 
+		 }
+	}
+	return defBrowserPath;
+}
+

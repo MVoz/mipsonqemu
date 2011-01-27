@@ -254,8 +254,8 @@ void OptionsDlg::loading(const QString & name)
 				break;
 		}		
 		
-		int curMeta = settings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-		int curAction = settings->value("hotkeyAction", Qt::Key_Enter).toInt();
+		int curMeta = settings->value("hotkeyModifier", HOTKEY_PART_0).toInt();
+		int curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 
