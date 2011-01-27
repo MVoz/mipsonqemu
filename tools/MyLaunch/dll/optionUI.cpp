@@ -229,7 +229,7 @@ void OptionsDlg::loading(const QString & name)
 	if (name == "Common")
 	{
 		JS_APPEND_CHECKED("ckStartWithSystem","",false);
-		JS_APPEND_CHECKED("ckShowTray","",false);
+		JS_APPEND_CHECKED("ckShowTray","",true);
 		JS_APPEND_CHECKED("ckShowMainwindow","",false);
 		JS_APPEND_CHECKED("ckAutoUpdate","",false);
 		JS_APPEND_CHECKED("ckScanDir","",false);
@@ -555,10 +555,10 @@ int OptionsDlg::checkListDirExist(const QString& dirname)
 	{
 		qDebug("name=%s dirname=%s\n",qPrintable(dirLists.at(i).name),qPrintable(dirname));
 		if(dirLists.at(i).name==dirname){
-			return 1;
+			return i;
 		}
 	}
-	return 0;
+	return -1;
 }
 int OptionsDlg::checkListDirSpecialchar(const QString& dirname)
 {
@@ -582,7 +582,7 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 	case 0:		//add
 		//check the dir path	  	
 		if(listPath.isEmpty()||checkListDirSpecialchar(listPath)||!dir.exists()) err=-2;
-		if(checkListDirExist(listPath))	err=-1;  
+		if(checkListDirExist(listPath)>=0)	err=-1;  
 		qDebug("err=%d\n",err);
 		if(err<0) goto ERR;
 		dc.index = dirLists.size();
@@ -593,15 +593,19 @@ void OptionsDlg::listApply(const int &type, const QString & listPath, const QStr
 		dirLists << dc;
 		break;
 	case 1:
-		if(listPath.isEmpty()||checkListDirSpecialchar(listPath)||!dir.exists()) err=-2;
-		if(checkListDirExist(listPath))	err=-1;
-		if(err<0) goto ERR;
-		dc.index = index;
-		dc.name = listPath;
-		dc.types = listSuffix.split(";", QString::SkipEmptyParts);
-		dc.indexDirs = isIncludeChildDir;
-		dc.depth = childDeep;
-		dirLists.replace(index, dc);	  
+		{
+			if(listPath.isEmpty()||checkListDirSpecialchar(listPath)||!dir.exists()) err=-2;
+			int existindex = checkListDirExist(listPath);
+			if((existindex>=0)&&(existindex!=index))	
+				err=-1;
+			if(err<0) goto ERR;
+			dc.index = index;
+			dc.name = listPath;
+			dc.types = listSuffix.split(";", QString::SkipEmptyParts);
+			dc.indexDirs = isIncludeChildDir;
+			dc.depth = childDeep;
+			dirLists.replace(index, dc);	  
+		}
 		break;
 	case 2:
 		dirLists.removeAt(index);
