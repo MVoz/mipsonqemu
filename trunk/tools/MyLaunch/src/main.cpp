@@ -65,8 +65,8 @@ void MyWidget::configModify(int type){
 		case HOTKEY:
 		{
 			qDebug()<<"set new hotkey";
-			int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-			int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
+			int curMeta = gSettings->value("hotkeyModifier", HOTKEY_PART_0).toInt();
+			int curAction = gSettings->value("hotkeyAction",HOTKEY_PART_1).toInt();
 			if (!setHotkey(curMeta, curAction))
 			{
 				QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
@@ -157,8 +157,8 @@ void MyWidget::storeConfig(int mode)
 	dst->setValue("skin", src->value("skin", dirs["defSkin"][0]).toString());
 	dst->setValue("ckStartWithSystem",src->value("ckStartWithSystem", true).toBool());
 	dst->setValue("ckShowTray",src->value("ckShowTray", true).toBool());
-	dst->setValue("hotkeyModifier",src->value("hotkeyModifier", Qt::ControlModifier).toInt());
-	dst->setValue("hotkeyAction",src->value("hotkeyAction", Qt::Key_Enter).toInt());
+	dst->setValue("hotkeyModifier",src->value("hotkeyModifier", HOTKEY_PART_0).toInt());
+	dst->setValue("hotkeyAction",src->value("hotkeyAction", HOTKEY_PART_1).toInt());
 
 	//back directory
 	QList<Directory> dirLists;
@@ -222,8 +222,8 @@ void MyWidget::storeConfig(int mode)
 }
 QString MyWidget::getShortkeyString()
 {
-		int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-		int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
+		int curMeta = gSettings->value("hotkeyModifier", HOTKEY_PART_0).toInt();
+		int curAction = gSettings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 		QString keys("");
 		switch(curMeta){
 			//case Qt::AltModifier:
@@ -438,8 +438,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	}
 	*/
 	// Set the hotkey
-	int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-	int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
+	int curMeta = gSettings->value("hotkeyModifier", HOTKEY_PART_0).toInt();
+	int curAction = gSettings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 	if (!setHotkey(curMeta, curAction))
 	{
 		QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
@@ -1235,13 +1235,24 @@ void MyWidget::updateDisplay()
 
 QIcon MyWidget::getIcon(CatItem * item)
 {
-
+	
 	if (item->icon.isEmpty()||item->icon.isNull())
 	{
 		QDir dir(item->fullPath);
 		if (dir.exists())
 			return platform->icons->icon(QFileIconProvider::Folder);
-
+		else{
+			//修正自定义的url
+			if(item->comeFrom==COME_FROM_COMMAND||item->comeFrom==COME_FROM_PREDEFINE){
+				QUrl url(item->fullPath);
+				if(url.isValid()){
+					QString defBrowser = tz::getDefaultBrowser();
+					if(!defBrowser.isEmpty()&&QFile::exists(defBrowser)){
+						return platform->icon(QDir::toNativeSeparators(defBrowser));
+					}
+				}
+			}
+		}
 		return platform->icon(QDir::toNativeSeparators(item->fullPath));
 	} else
 	{
