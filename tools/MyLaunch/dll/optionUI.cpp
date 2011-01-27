@@ -254,13 +254,8 @@ void OptionsDlg::loading(const QString & name)
 				break;
 		}		
 		
-#ifdef Q_WS_WIN
-		int curMeta = settings->value("hotkeyModifier", Qt::AltModifier).toInt();
-#endif
-#ifdef Q_WS_X11
 		int curMeta = settings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-#endif
-		int curAction = settings->value("hotkeyAction", Qt::Key_Space).toInt();
+		int curAction = settings->value("hotkeyAction", Qt::Key_Enter).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 
