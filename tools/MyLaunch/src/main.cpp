@@ -64,14 +64,9 @@ void MyWidget::configModify(int type){
 	switch(type){
 		case HOTKEY:
 		{
-		qDebug()<<"set new hotkey";
-#ifdef Q_WS_WIN
-			int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
-#endif
-#ifdef Q_WS_X11
+			qDebug()<<"set new hotkey";
 			int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-#endif
-			int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
+			int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
 			if (!setHotkey(curMeta, curAction))
 			{
 				QMessageBox::warning(this, tr(APP_NAME), tr("The hotkey you have chosen is already in use. Please select another from "APP_NAME"'s preferences."));
@@ -227,10 +222,8 @@ void MyWidget::storeConfig(int mode)
 }
 QString MyWidget::getShortkeyString()
 {
-#ifdef Q_WS_WIN
-		int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
-#endif
-		int curAction = gSettings->value("hotkeyAction", Qt::Key_Space).toInt();
+		int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
+		int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
 		QString keys("");
 		switch(curMeta){
 			//case Qt::AltModifier:
@@ -445,12 +438,7 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	}
 	*/
 	// Set the hotkey
-#ifdef Q_WS_WIN
-	int curMeta = gSettings->value("hotkeyModifier", Qt::AltModifier).toInt();
-#endif
-#ifdef Q_WS_X11
 	int curMeta = gSettings->value("hotkeyModifier", Qt::ControlModifier).toInt();
-#endif
 	int curAction = gSettings->value("hotkeyAction", Qt::Key_Enter).toInt();
 	if (!setHotkey(curMeta, curAction))
 	{
