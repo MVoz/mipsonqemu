@@ -171,6 +171,7 @@ public :
 	static int checkSilentUpdateSettings( QSettings* , QSettings* ,int);
 	static int checkSilentUpdateFiles();
 	static QString getSystemTempDir();
+	static QString getDefaultBrowser();
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)

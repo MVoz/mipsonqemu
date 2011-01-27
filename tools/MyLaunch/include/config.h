@@ -421,6 +421,9 @@ enum TEST_NET_RESULT{
 #define SYNC_STATUS_PROCESSING  1
 #define SYNC_STATUS_SUCCESS  2
 
+#define HOTKEY_PART_0 Qt::ControlModifier
+#define HOTKEY_PART_1 Qt::Key_Enter
+
 
 #endif
 
