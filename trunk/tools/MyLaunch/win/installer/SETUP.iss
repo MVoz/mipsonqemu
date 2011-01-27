@@ -96,12 +96,11 @@ Source: ..\..\release\data\pinyin.db; DestDir: {app}\data\; Flags: ignoreversion
 
 ;html
 Source: ..\..\release\html\about.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\adv.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\cmd_mg.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\common.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\interface.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\list_mg.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\net_mg.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\advance.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\Common.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\command.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\network.html; DestDir: {app}\html\; Flags: ignoreversion
+Source: ..\..\release\html\Custom.html; DestDir: {app}\html\; Flags: ignoreversion
 Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
 
 ;images
@@ -170,6 +169,8 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
+
 
 
 
