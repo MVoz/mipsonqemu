@@ -23,7 +23,7 @@ function listApply(type)
    dirpath=dirpath.replace(/(^\s*)/g, ""); 
    dirpath=dirpath.replace(/(\s*$)/g, ""); 
    OptionsDlg.listApply(type,dirpath,$('suffix').value,$('isIncludeChildDir').checked,$('childDeep').value,$('cmdIndex').value);
-   OptionsDlg.loading('custom');
+   OptionsDlg.loading('Custom');
 }
 function apply(key)
 {
@@ -148,7 +148,7 @@ function rebuildcatalog()
 						</p>
 						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
 							<div class="btn">
-									<a href="#" onclick="listApply(1)">删除</a>
+									<a href="#" onclick="listApply(2)">删除</a>
 							</div>
 							<div class="btn">
 									<a href="#" onclick="listApply(1)">修改</a>

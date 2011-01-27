@@ -17,19 +17,12 @@ function postItem(name,cmd,args,index)
 }
 function cmdApply(type)
 {
-	switch(type)
-	{
-		case 0://add
-			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
-		break;
-		case 1://modify
-			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
-		break
-		case 2://delete
-			OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);			
-		break;
-	}
-	OptionsDlg.loading('command');
+	OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
+	OptionsDlg.loading('Command');
+}
+function apply(key)
+{
+		OptionsDlg.accept();
 }
 </script>
 </head>    
@@ -88,13 +81,13 @@ function cmdApply(type)
 						</p>
 						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex"></p>
 							<div class="btn">
-									<a href="#" onclick="listApply(1)">删除</a>
+									<a href="#" onclick="cmdApply(2)">删除</a>
 							</div>
 							<div class="btn">
-									<a href="#" onclick="listApply(1)">修改</a>
+									<a href="#" onclick="cmdApply(1)">修改</a>
 							</div>
 							<div class="btn">
-									<a href="#" onclick="listApply(0);">增加</a>
+									<a href="#" onclick="cmdApply(0);">增加</a>
 							</div>
 					</fieldset>
 				</div>
@@ -104,6 +97,6 @@ function cmdApply(type)
 		</div>
     </body>
 <script>
-	OptionsDlg.loading('command');
+	OptionsDlg.loading('Command');
 </script>
 </html>
