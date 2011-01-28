@@ -61,21 +61,15 @@ if($op == 'get'){
 	$item['classname']=getsiteclassname($item['class']);
 	//得到此site的相关site
 	$relatesites = getrelatesite($item['class'],$siteid);
-	if(sizeof($relatesites)==$_SC['related_site_num'])
+	if(sizeof($relatesites)<$_SC['related_site_num'])
 	{
-		$todayhotcollect['site']=array();
-		foreach($relatesites as $k=>$v){
-			$todayhotcollect['site'][]=$v;
-		}
-	}else{
 		$needadd = $_SC['related_site_num']-sizeof($relatesites);
 		for($i=0;$i<$needadd ;$i++){
 			$relatesites[]=$todayhotcollect['site'][$i];
 		}
-		$todayhotcollect['site']=$relatesites;
 	}
 	//支取todayhotcollect前8个
-	$hotsite = array_slice($todayhotcollect['site'], 0, 8);
+	$hotsite = array_slice($relatesites, 0, 8);
 /*
 	$big_nums = 0;
 	foreach($item['relate'] as $key=>$v){

@@ -360,19 +360,19 @@ function getrelatesite($classid,$siteid)
 		$isThirdClass=1;
 	if($isSecClass)
 		return $ret;
-
 	if(!file_exists( S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_page1.txt'))
 	{
 		include_once(S_ROOT.'./source/function_cache.php');
 		site_cache_3classid($classid);		
 	}
 	$count=sreadfile(S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_count.txt');
-	$pages =$count/$_SC['bookmark_show_maxnum']+(($count%$_SC['bookmark_show_maxnum'])?1:0);
-     
+	$pages =ceil($count/$_SC['bookmark_show_maxnum_nopic']);
 	$randsrc = array();
 
 	for($i=1;$i<=$pages;$i++){
 		$tmp = unserialize(sreadfile(S_ROOT.'./data/sitecache/'.$classid.'/site_cache_'.$classid.'_page'.$i.'.txt'));
+		if(empty($tmp))
+				break;
 		$randsrc=array_merge($randsrc,$tmp);
 	}
 	//remove self
