@@ -5,8 +5,7 @@
 		</a>
 		<div class="desc">
 					<h3>
-					<a href="$todayhot['url']">$todayhot['subject']</a>
-					
+						<a href="$todayhot['url']">$todayhot['subject']</a>					
 					</h3>
 					<p>
 <!--{if !empty($todayhot['description'])}-->
@@ -20,10 +19,8 @@
 					<p>
 						分类:&nbsp;&nbsp;<a href="space.php?do=navigation&classid=$todayhot['class']" target="_blank" class="aqua">{$todayhot['classname']}</a>
 					</p>
-										
-					
 					<p>
-						<span style="min-width:100px;float:left;">
+						<span>
 								标签:&nbsp;&nbsp;
 								<!--{loop $todayhot['tag'] $subkey $subvalue}-->
 								<a id="$subkey">$subvalue</a>

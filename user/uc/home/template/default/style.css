@@ -780,7 +780,8 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .headline .pic{ float: left; margin-right: 10px;width:150px;height:120px;padding:5px 10px;}
 .headline .pic img{ width:150px;height:120px;}
 .headline .desc{padding-top:10px;}
-.headline .desc p{ color:#666;line-height:20px;}
+.headline .desc p{ color:#666;line-height:20px;height:20px;overflow:hidden}
+.headline .desc p >span{min-width:100px;max-width:200px;float:left;}
 
 #expressnav{width:100%;margin-bottom: 30px;  font-size: 13px;}
 #expressnav dl{width:100%;border-bottom: 1px solid #F1F1F1; height: 25px;line-height: 25px; padding: 0 0 0 10px;overflow:hidden;}
