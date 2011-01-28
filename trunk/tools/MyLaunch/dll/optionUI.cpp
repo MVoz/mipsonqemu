@@ -408,7 +408,7 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);
 		JS_APPEND_CHECKED("ckCaseSensitive","adv",false);
 		JS_APPEND_CHECKED("ckRebuilderCatalogTimer","adv",false);
-		JS_APPEND_CHECKED("ckSupportIe","adv",false);
+		JS_APPEND_CHECKED("ckSupportIe","adv",true);
 		JS_APPEND_CHECKED("ckSupportFirefox","adv",false);
 		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
 		JS_APPEND_CHECKED("baidu","netfinder",true);
