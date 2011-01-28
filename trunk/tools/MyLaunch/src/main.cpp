@@ -85,6 +85,10 @@ void MyWidget::configModify(int type){
 			qDebug()<<"NETPROXY...";
 			//tz::netProxy(int mode,QSettings * s,QNetworkProxy * * r)
 		break;
+		case DIRLIST:
+			qDebug()<<"scan directory.......................";
+			buildCatalog();
+		break;
 		default:
 		break;
 	}
@@ -1385,60 +1389,6 @@ void MyWidget::catalogBuilt(int type)
 	}else
 		close();
 }
-/*
-void MyWidget::checkForUpdate()
-{
-#if 0
-	http = new QHttp(this);
-	verBuffer = new QBuffer(this);
-	counterBuffer = new QBuffer(this);
-	verBuffer->open(QIODevice::ReadWrite);
-	counterBuffer->open(QIODevice::ReadWrite);
-
-
-	connect(http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
-	http->setHost("www.launchy.net");
-	http->get("http://www.launchy.net/version2.html", verBuffer);
-#endif	
-
-
-	QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
-	header.setValue("Host", "m1.webstats.motigo.com");
-	header.setValue("Referer", "http://www.launchy.net/stats.html");
-	header.setContentType("image/gif, text/plain, text/html, text/htm");
-	http->setHost("m1.webstats.motigo.com");
-	http->request(header, NULL, counterBuffer);
-
-}
-
-void MyWidget::httpGetFinished(bool error)
-{
-	if (!error)
-	{
-		QString str(verBuffer->data());
-		int ver = str.toInt();
-		if (ver > LAUNCHY_VERSION)
-		{
-			QMessageBox box;
-			box.setIcon(QMessageBox::Information);
-			box.setTextFormat(Qt::RichText);
-			box.setWindowTitle(tr("A new version of "APP_NAME" is available"));
-			box.setText(tr("A new version of Launchy is available.\n\nYou can download it at \
-						   <qt><a href=\"http://www.launchy.net/\">http://www.launchy.net</a></qt>"));
-			box.exec();
-		}
-		if (http != NULL)
-			delete http;
-		http = NULL;
-	}
-	verBuffer->close();
-	counterBuffer->close();
-	delete verBuffer;
-	delete counterBuffer;
-}
-
-*/
-
 
 void MyWidget::setSkin(QString dir, QString name)
 {
@@ -1455,69 +1405,6 @@ void MyWidget::setSkin(QString dir, QString name)
 	if (wasShowing)
 		showLaunchy(true);
 }
-/*
-
-void MyWidget::updateVersion(int oldVersion)
-{
-
-	if (oldVersion < 199)
-	{
-		// We've completely changed the database and ini between 1.25 and 2.0
-		// Erase all of the old information
-		QString origFile = gSettings->fileName();
-		delete gSettings;
-
-		QFile oldIniPerm(dirs["config"][0]);
-		oldIniPerm.remove();
-		oldIniPerm.close();
-
-		QFile oldDbPerm(dirs["db"][0]);
-		oldDbPerm.remove();
-		oldDbPerm.close();
-
-		QFile oldDB(dirs["portDB"][0]);
-		oldDB.remove();
-		oldDB.close();
-
-		QFile oldIni(dirs["portConfig"][0]);
-		oldIni.remove();
-		oldIni.close();
-
-		gSettings = new QSettings(origFile, QSettings::IniFormat, this);
-	}
-
-	if (oldVersion < 210)
-	{
-		QString oldSkin = gSettings->value("skin", dirs["defSkin"][0]).toString();
-		QString newSkin = dirs["skins"][0] + "/" + oldSkin;
-		gSettings->setValue("skin", newSkin);
-	}
-
-	if (oldVersion < LAUNCHY_VERSION)
-	{
-		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
-		gSettings->setValue("version", LAUNCHY_VERSION);
-	}
-
-}
-*/
-
-/*
-QPair<double,double> MyWidget::relativePos() {
-QPoint p = pos();
-QPair<double,double> relPos;
-relPos.first = (double) p.x() / (double) qApp->desktop()->width();
-relPos.second = (double) p.y() / (double) qApp->desktop()->height();
-return relPos;
-}
-
-QPoint MyWidget::absolutePos(QPair<double,double> relPos) {
-QPoint absPos;
-absPos.setX(relPos.first * (double) qApp->desktop()->width());
-absPos.setY(relPos.second * (double) qApp->desktop()->height());
-return absPos;
-}
-*/
 
 QPoint MyWidget::loadPosition(int rescue)
 {
@@ -2261,8 +2148,6 @@ void MyWidget::bmSyncFinishedStatus(int status)
 void MyWidget::testAccountFinished(bool err,QString result)
 {
 	qDebug("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
-	//gSyncer->wait();
-	//gSyncer.reset();
 	if (!err&&syncDlg)
 	{
 		if(result==DOSUCCESSS)
@@ -2306,42 +2191,9 @@ void MyWidget::monitorTimerTimeout()
 		}		
 
 	}
-	//clear user directory
-	
-
-	
+	//clear user directory	
 	monitorTimer->start(10);
 }
-/*
-void MyWidget::syncDlgTimeout()
-{
-syncDlg->accept();
-deleteSynDlgTimer();
-}
-void MyWidget::deleteSynDlg()
-{
-qDebug()<<__FUNCTION__;
-//syncDlg.reset();
-DELETE_SHAREOBJ(syncDlg);
-deleteSynDlgTimer();
-}
-void MyWidget::createSynDlgTimer()
-{
-syncDlgTimer=new QTimer();
-connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
-//connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-//connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-
-syncDlgTimer->start(10*1000);
-syncDlgTimer->setSingleShot(true);
-}
-void MyWidget::deleteSynDlgTimer()
-{
-
-
-DELETE_TIMER(syncDlgTimer);
-}
-*/
 void MyWidget::bmSyncerFinished()
 {	
 	//QDEBUG_LINE;
@@ -2369,36 +2221,10 @@ void MyWidget::bmSyncerFinished()
 	}
 }
 
-
-/*
-void MyWidget::bookmark_finished(bool error)
-{
-if (syncDlg)
-{
-if(syncDlg->status!=UPDATE_SUCCESSFUL||syncDlg->status!=HTTP_TEST_ACCOUNT_SUCCESS)
-{
-syncDlgTimer=new QTimer();
-connect(syncDlgTimer, SIGNAL(timeout()), this, SLOT(syncDlgTimeout()), Qt::DirectConnection);
-connect(syncDlg.get(), SIGNAL(accepted()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-connect(syncDlg.get(), SIGNAL(rejected()), this, SLOT(deleteSynDlg()), Qt::DirectConnection);
-
-syncDlgTimer->start(10*1000);
-syncDlgTimer->setSingleShot(true);
-
-}
-//	syncDlg->accept();
-//syncDlg.reset();
-}	
-}
-*/
 void MyWidget::menuOptions()
 {
-	//      dropTimer->stop();
-	//      alternatives->hide();
-
 	if (optionsOpen == true && ops)
 	{
-		//SetWindowPos( hWnd   ,   HWND_TOPMOST   ,     0       ,       0       ,       0       ,       0,       SWP_NOSIZE   );
 		ops->activateWindow();
 		return;
 	}
@@ -2412,42 +2238,10 @@ void MyWidget::menuOptions()
 	ops->setModal(0);
 	ops->setObjectName("options");
 	ops->exec();
-#if 0
-	// Perform the database update
-	if (gBuilder == NULL)
-		buildCatalog();
-
-	input->activateWindow();
-	input->setFocus();
-	optionsOpen = false;
-#endif
 	DELETE_OBJECT(ops);
 	freeOccupyMemeory();
 }
 
-
-/*
-
-void MyWidget::shouldDonate()
-{
-
-	QDateTime time = QDateTime::currentDateTime();
-	QDateTime donateTime = gSettings->value("donateTime", time.addDays(21)).toDateTime();
-	if (donateTime.isNull())
-		return;
-	gSettings->setValue("donateTime", donateTime);
-
-	if (donateTime <= time)
-	{
-#ifdef Q_WS_WIN
-		runProgram("http://www.launchy.net/donate.html", "");
-#endif
-		QDateTime def;
-		gSettings->setValue("donateTime", def);
-	}
-
-}
-*/
 
 void Fader::fadeIn()
 {
