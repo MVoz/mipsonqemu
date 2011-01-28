@@ -332,6 +332,10 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 			//s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
 			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%").arg(info->name);
 			s.append(searchTxt);
+			s.append("%' or shortName LIKE '%");
+			s.append(searchTxt);
+			s.append("%' or realname LIKE '%");
+			s.append(searchTxt);
 			s.append(QString("%'  limit %1").arg(leftnums));
 			
 		}else if(info->id >= COME_FROM_BROWSER){
@@ -393,7 +397,7 @@ RETRY:
 					s=QString("SELECT * FROM %1 WHERE shortCut=0 AND isHasPinyin=1").arg(info->name);
 			}
 		}
-		//qDebug()<<searchTxt<<"  "<<s;
+		qDebug()<<searchTxt<<"  "<<s;
 		if(q.exec(s)){
 			while(q.next()&&(numresults>i)) {	
 				QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
