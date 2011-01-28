@@ -1241,16 +1241,18 @@ QIcon MyWidget::getIcon(CatItem * item)
 		QDir dir(item->fullPath);
 		if (dir.exists())
 			return platform->icons->icon(QFileIconProvider::Folder);
+		else if(QFile::exists(item->fullPath))
+			return platform->icon(QDir::toNativeSeparators(item->fullPath));
 		else{
+			qDebug()<<"Catitem:"<<item->fullPath;
 			//修正自定义的url
-			if(item->comeFrom==COME_FROM_COMMAND||item->comeFrom==COME_FROM_PREDEFINE){
-				QUrl url(item->fullPath);
-				if(url.isValid()){
+			QUrl url(item->fullPath);
+			if(url.isValid()){
+					qDebug()<<item->fullPath<<" is valid url";
 					QString defBrowser = tz::getDefaultBrowser();
 					if(!defBrowser.isEmpty()&&QFile::exists(defBrowser)){
 						return platform->icon(QDir::toNativeSeparators(defBrowser));
 					}
-				}
 			}
 		}
 		return platform->icon(QDir::toNativeSeparators(item->fullPath));
