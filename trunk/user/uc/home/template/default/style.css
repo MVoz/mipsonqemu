@@ -425,7 +425,7 @@ a.c_link {
 .muim{	padding: 1px;width:250px;}
 .muim .menu_list{	width:230px;height:315px;overflow:auto;}
 .muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
-.muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;height:1.5em;overflow:hidden;}
+.muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;overflow:hidden;}
 
 .bmtag {padding-left: 5px; margin: 0px 0px 5px; overflow: hidden; width: 180px; height: 16px;}
 /*link*/
