@@ -27,6 +27,7 @@ struct BMAPI_DLL_CLASSEXPORT dbtableinfo{
 
 struct BMAPI_DLL_CLASSEXPORT browserinfo{
 	QString name;
+	QString fullpath;
 	bool enable; 
 	bool defenable;
 	bool lastupdate; //import lastupdate success?
@@ -46,6 +47,9 @@ BMAPI_DLL_FUNCEXPORT int getDesktop();
 BMAPI_DLL_FUNCEXPORT void SetColor(unsigned short ForeColor,unsigned short BackGroundColor);
 BMAPI_DLL_FUNCEXPORT quint16 getFileChecksum(QFile *f);
 BMAPI_DLL_FUNCEXPORT int getFirefoxPath(QString &path);
+BMAPI_DLL_FUNCEXPORT void getBrowserFullpath(int type,QString& fullpath);
+BMAPI_DLL_FUNCEXPORT void setBrowserFullpath(int type,QString& fullpath);
+
 /*
 BMAPI_DLL_FUNCEXPORT void setMaxGroupId(uint id);
 BMAPI_DLL_FUNCEXPORT uint getMaxGroupId();

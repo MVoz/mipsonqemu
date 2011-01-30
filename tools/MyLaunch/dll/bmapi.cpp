@@ -114,10 +114,11 @@ struct dbtableinfo dbtableInfo[]={
 
 
 struct browserinfo browserInfo[]={
-	{QString("Ie"), true, true, false,false,false, BROWSE_TYPE_IE},
-	{QString("Firefox"), false, false , false,false,false, BROWSE_TYPE_FIREFOX},
-	{QString("Opera") , false , false , false,false,false, BROWSE_TYPE_OPERA},
-	{QString(""),false,false, false,false,false,0}
+	{QString("netcollect"),QString("") ,true, true, false,false,false, BROWSE_TYPE_NETCOLLECT},
+	{QString("Ie"),QString(""), true, true, false,false,false, BROWSE_TYPE_IE},
+	{QString("Firefox"),QString("") , false, false , false,false,false, BROWSE_TYPE_FIREFOX},
+	{QString("Opera") , QString("") ,false , false , false,false,false, BROWSE_TYPE_OPERA},
+	{QString(""),QString("") ,false,false, false,false,false,0}
 };
 void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type)
 {
@@ -127,15 +128,15 @@ void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type)
 		if( browserInfo[i].id == id )
 		{
 			switch(type){
-case BROWSERINFO_OP_LASTUPDATE:
-	browserInfo[i].lastupdate= true;
-	break;
-case BROWSERINFO_OP_FROMSERVER:
-	browserInfo[i].fromserver= true;
-	break;
-case BROWSERINFO_OP_LOCAL:
-	browserInfo[i].local= true;
-	break;
+				case BROWSERINFO_OP_LASTUPDATE:
+					browserInfo[i].lastupdate= true;
+					break;
+				case BROWSERINFO_OP_FROMSERVER:
+					browserInfo[i].fromserver= true;
+					break;
+				case BROWSERINFO_OP_LOCAL:
+					browserInfo[i].local= true;
+					break;
 			}					
 			return;
 		}
@@ -159,6 +160,43 @@ void clearBrowserInfoOpFlag(uint id)
 	}
 	return ;
 }
+void setBrowserFullpath(int type,QString& fullpath){
+	switch(type){
+		case BROWSE_TYPE_NETCOLLECT:
+			break;
+		case BROWSE_TYPE_IE:
+				{
+			QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\IEXPLORE.EXE",QSettings::NativeFormat);
+			fullpath=ff_reg.value(".","").toString();
+			/*
+			QString ff_v= ff_reg.value("CurrentVersion","").toString().trimmed();
+			if(!ff_v.isEmpty())
+			{
+				fullpath=ff_reg.value(ff_v.append("\\main\\PathToExe"),"").toString();
+			}
+			*/
+			}
+			break;
+		case BROWSE_TYPE_FIREFOX:
+			{
+				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\firefox.exe",QSettings::NativeFormat);
+				fullpath=ff_reg.value(".","").toString();
+				/*
+				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
+				QString ff_v= ff_reg.value("CurrentVersion","").toString().trimmed();
+				if(!ff_v.isEmpty())
+				{
+					fullpath=ff_reg.value(ff_v.append("\\main\\PathToExe"),"").toString();
+				}
+				*/
+			}
+			break;
+		case BROWSE_TYPE_OPERA:
+			break;
+		default:
+			break;
+	}
+}
 
 
 bool getBrowserEnable(uint id)
@@ -178,9 +216,17 @@ void setBrowserEnable(QSettings *s)
 	int i = 0;
 	while(!browserInfo[i].name.isEmpty())
 	{
-		browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();		
+		browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();
+		if(browserInfo[i].enable){
+			setBrowserFullpath(browserInfo[i].id,browserInfo[i].fullpath);
+		}
 		i++;
 	}
+}
+
+void getBrowserFullpath(int type,QString& fullpath){
+	fullpath = browserInfo[type].fullpath;
+	return;
 }
 /*
 

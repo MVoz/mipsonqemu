@@ -273,6 +273,8 @@ void bmMerge::handleBmData()
 				//current from kinds of browser type
 				switch( browserid )
 				{
+				case BROWSE_TYPE_NETCOLLECT:
+					break;
 				case BROWSE_TYPE_IE:
 					tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0);
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
@@ -376,6 +378,8 @@ CLEAR:
 		{
 			switch( browserid )
 			{
+			case BROWSE_TYPE_NETCOLLECT:
+				break;
 			case BROWSE_TYPE_IE:
 				break;
 			case BROWSE_TYPE_FIREFOX:
