@@ -991,7 +991,7 @@ void XmlReader::readDirectory(QString directory, QList < bookmark_catagory > *li
 int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark_catagory > *list,QString & excludeid)
 {
 
-	QString queryStr=QString("select * from moz_bookmarks bookmarks left join moz_places places on bookmarks.fk=places.id where bookmarks.parent=%1 and bookmarks.id not in (%2);").arg(id).arg(excludeid);
+	QString queryStr=QString("select * from moz_bookmarks bookmarks left join moz_places places on bookmarks.fk=places.id where bookmarks.position>=0 and bookmarks.parent=%1 and bookmarks.id not in (%2);").arg(id).arg(excludeid);
 	qDebug("%s",qPrintable(queryStr));
 	QSqlQuery   query(queryStr, *db);
 	if(query.exec()){
