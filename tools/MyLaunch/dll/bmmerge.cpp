@@ -280,6 +280,7 @@ void bmMerge::handleBmData()
 				case BROWSE_TYPE_FIREFOX:
 					if(!tz::checkFirefoxDir(ff_path))
 						goto ffout;
+					qDebug()<<"firefox path:"<<ff_path;
 					firefox_version = tz::getFirefoxVersion();
 					if(!firefox_version)
 					{	
