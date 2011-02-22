@@ -58,7 +58,12 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
-	getHtml("./html/common.html");
+	getHtml("./html/Customx.html");
+	/*
+	webView->setHtml(QString("data:text/html,<frameset rows=\"100px,*\">"
+								"<frame src=\"./html/menu.html\">"
+								"<frame src=\"data:text/html,content\"></frameset>"), QUrl());
+	*/
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
 
@@ -200,7 +205,7 @@ void OptionsDlg::loading(const QString & name)
 	QString jsStr;
 	//menu
 	QString menustring;
-	menustring.append("<ul>");
+	//menustring.append("<ul>");
 	QStringList menulsit;
 	menulsit<<"Common"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
@@ -208,9 +213,9 @@ void OptionsDlg::loading(const QString & name)
     		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
 		menustring.append("</li>");
         }
-	menustring.append("</ul>");
+	//menustring.append("</ul>");
 	menustring.replace("\"","\\\"");
-	jsStr.append("$('menu').innerHTML=\""+menustring+"\";");
+	jsStr.append("$('#menu').html(\""+menustring+"\");");
 	//footer
 	QString footerstring;
 	footerstring.append("<div class=\"btn\">");
@@ -224,7 +229,7 @@ void OptionsDlg::loading(const QString & name)
 	footerstring.append("<a  href=\"#\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
 	footerstring.append("</p>");
 	footerstring.replace("\"","\\\"");
-	jsStr.append("$('footer').innerHTML=\""+footerstring+"\";");
+	jsStr.append("$('#footer').html(\""+footerstring+"\");");
 
 	if (name == "Common")
 	{
@@ -238,19 +243,19 @@ void OptionsDlg::loading(const QString & name)
 		//lastsynctime
 		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastsynctime", 0).toUInt());
 		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAIL).toUInt();
-		jsStr.append(QString("$('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
+		jsStr.append(QString("$obj('lastsynctime').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 		switch(lastsyncstatus){
 			case SYNC_STATUS_FAIL:
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').className ='fail';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='fail';"));	
 				break;
 			case SYNC_STATUS_SUCCESS:
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').className ='success';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='success';"));	
 				break;
 			case SYNC_STATUS_PROCESSING:
-				jsStr.append(QString("$('lastsyncstatus').className ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='processing...';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='processing...';"));	
 				break;
 		}		
 		
@@ -328,7 +333,7 @@ void OptionsDlg::loading(const QString & name)
 #ifdef CONFIG_OPTION_NEWUI
 		dirLists.clear();
 		int count = settings->beginReadArray("directories");
-		jsStr.append("$('dirlist').innerHTML='");
+		jsStr.append("$('#dirlist').html('");
 		for (int i = 0; i < count; ++i)
 		{
 			settings->setArrayIndex(i);
@@ -357,7 +362,7 @@ void OptionsDlg::loading(const QString & name)
 			jsStr.append(QString("<td >%1</td>").arg(settings->value("depth", 100).toInt()));
 
 		}
-		jsStr.append("';");
+		jsStr.append("');");
 		settings->endArray();
 #else
 		jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
