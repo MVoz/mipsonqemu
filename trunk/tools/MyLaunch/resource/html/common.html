@@ -1,27 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>    
 <head>
-<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
 <script>
-function $(a){return document.getElementById(a);}
-function getHtml(path){OptionsDlg.getHtml(path);}
-function reject(){OptionsDlg.reject();}
-function tr(a){document.write(OptionsDlg.tr(a));}
-function gohref(url){OptionsDlg.gohref(url);}
 function syncClick(){
 	OptionsDlg.startSync();
 }
 function apply(key)
 {
-	OptionsDlg.apply('ckStartWithSystem',$('ckStartWithSystem').checked);
-	OptionsDlg.apply('ckShowTray',$('ckShowTray').checked);
-	OptionsDlg.apply('ckShowMainwindow',$('ckShowMainwindow').checked);
-	OptionsDlg.apply('ckAutoUpdate',$('ckAutoUpdate').checked);
-	OptionsDlg.apply('ckScanDir',$('ckScanDir').checked);
-	OptionsDlg.apply('hotkeyModifier',$('hotkey_0').value);
-	OptionsDlg.apply('hotkeyAction',$('hotkey_1').value);
-	OptionsDlg.apply('Account/Username',$('Username').value);
-	OptionsDlg.apply('Account/Userpasswd',$('Userpasswd').value);
+	OptionsDlg.apply('ckStartWithSystem',$obj('ckStartWithSystem').checked);
+	OptionsDlg.apply('ckShowTray',$obj('ckShowTray').checked);
+	OptionsDlg.apply('ckShowMainwindow',$obj('ckShowMainwindow').checked);
+	OptionsDlg.apply('ckAutoUpdate',$obj('ckAutoUpdate').checked);
+	OptionsDlg.apply('ckScanDir',$obj'ckScanDir').checked);
+	OptionsDlg.apply('hotkeyModifier',$obj('hotkey_0').value);
+	OptionsDlg.apply('hotkeyAction',$obj('hotkey_1').value);
+	OptionsDlg.apply('Account/Username',$obj('Username').value);
+	OptionsDlg.apply('Account/Userpasswd',$obj('Userpasswd').value);
 	OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
@@ -55,7 +52,7 @@ function checkUsername()
 }
 function accountTestClick()
 {
-	OptionsDlg.accountTestClick($('Username').value,$('Userpasswd').value);
+	OptionsDlg.accountTestClick($obj('Username').value,$obj('Userpasswd').value);
 }
 function getSyncStatus()
 {
@@ -64,24 +61,21 @@ function getSyncStatus()
 setInterval("getSyncStatus()",1000);
 </script>
 </head>    
-    <body>
+<body>
+	<div id="header">
+			<div class="h_logo">
+				<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+			</div>
+			<div class="h_adv">
+			</div>
+	</div>
+	<div id="toolbar">
+			<div class="tb_m">
+				<ul id="menu"></ul>
+			</div>
+	</div>
 		<div id="wrapper">
-			<div id="page">
-				<div id="header">
-					<div>
-						<h1>
-							Tanzhi.com
-						</h1>
-						<p>
-							<a href="http://www.tanzhi.com">
-								Anything is in touch!
-							</a>
-						</p>
-					</div>
-					<div id="menu">
-					</div>
-				</div>
-				<div class="clearfix">
+			<div class="clearfix">
 					<fieldset class="cfgitem">
 					<h2>启动&raquo;</h2>
 					<ul>
@@ -142,7 +136,6 @@ setInterval("getSyncStatus()",1000);
 						</span>
 					</p>
 				</fieldset>
-				</div>
 			</div>
 			 <div id="footer">
 				
@@ -151,6 +144,5 @@ setInterval("getSyncStatus()",1000);
     </body>
 <script>
 	OptionsDlg.loading('Common');
-//	$('lastsyncstatus').className = 'success';
 </script>
 </html>

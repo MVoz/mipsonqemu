@@ -1,12 +1,13 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-     <file>image/bg.png</file>
+     <file>image/g.png</file>
      <file>image/loading.gif</file>
-     <file>image/logo.png</file>
      <file>image/btn.png</file>
      <file>image/success.png</file>
      <file>image/fail.png</file>
      <file>image/btn_g.png</file>
-     <file>jm.css</file>
+     <file>style.css</file>
+	 <file>jquery.js</file>
+	 <file>jm.js</file>
  </qresource>
  </RCC>
