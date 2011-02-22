@@ -1,88 +1,12 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>    
 <head>
 <link rel="stylesheet" rev="stylesheet" href="style.css" type="text/css">
 <script type="text/javascript" src="jquery.js"/> </script>
 <script type="text/javascript" src="jm.js"/> </script>
-<script>
-function postItem(path,suffix,isInclude,deep,index)
-{
-		$('listPath').value=path;
-		$('suffix').value=suffix;
-		$('isIncludeChildDir').checked=(isInclude)?true:false;
-		$('childDeep').value=deep;
-		$('cmdIndex').value=index;
-}
-function listApply(type)
-{
-   var dirpath=$('listPath').value;
-   dirpath=dirpath.replace(/(^\s*)/g, ""); 
-   dirpath=dirpath.replace(/(\s*$)/g, ""); 
-   OptionsDlg.listApply(type,dirpath,$('suffix').value,$('isIncludeChildDir').checked,$('childDeep').value,$('cmdIndex').value);
-   OptionsDlg.loading('Custom');
-}
-function childDeepCheck()
-{
-	 var str=$('childDeep').value;
-	 var   pattern   =   /^\d{1,3}$/;   
-	 str=str.replace(/(^\s*)/g, ""); 
-	 str=str.replace(/(\s*$)/g, ""); 
-     var flag=pattern.test(str);   
-	 if(!flag)
-		alert("请填入一个[0~200]的数字");
-	  else{
-			    if(parseInt(str)<0||parseInt(str)>200)
-						alert("请填入一个[0~200]之间的数字");
-		}
-}
-function rangeButtonClick(type)
-{
-	
-	with(document){
-				var deep=parseInt($('childDeep').value);
-			switch(type)
-			{
-				case  0:
-				  if(deep==0)
-						return;
-					else
-					$('childDeep').value=(deep-1).toString(10);
-					break;
-				case 1:
-					if(deep==200)
-						return;
-					else
-					$('childDeep').value=(deep+1).toString(10);
-					break;
-			}
-	}
-}
-function suffixCheck()
-{
-		with(document){
-				var suffix=$('suffix').value;
-					 suffix=suffix.replace(/(^\s*)/g, ""); 
-				   suffix=suffix.replace(/(\s*$)/g, ""); 
-					 suffix=suffix.replace(/(\s*)/g, "");
-					 var pattern=/^(\*.[0-9a-zA-Z]{1,}[;\*.[0-9a-zA-Z]{1,}]?)$/;
-					 var flag=pattern.test(suffix); 
-					 if(!flag)
-						{
-							alert('请输入正确的扩展名格式');
-							return false;
-						}
-						return true;
-		}
-}
-function rebuildcatalog()
-{
-	OptionsDlg.rebuildcatalog();
-}
-</script>
 </head>    
     <body>
 		<div id="wrapper">
-			<div id="page">
 				<div class="clearfix">
 					<fieldset class="cfgitem">
 						<h2>目录&raquo;</h2>
@@ -136,12 +60,8 @@ function rebuildcatalog()
 							</div>
 					</fieldset>
 				</div>
-			</div>
 			 <div id="footer">				
 			</div>
 		</div>
     </body>
-<script>
-	OptionsDlg.loading('Custom');
-</script>
 </html>
