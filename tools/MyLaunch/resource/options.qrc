@@ -6,8 +6,10 @@
      <file>image/success.png</file>
      <file>image/fail.png</file>
      <file>image/btn_g.png</file>
+	 <file>image/ajax-loader.gif</file>	
      <file>style.css</file>
 	 <file>jquery.js</file>
 	 <file>jm.js</file>
+	 <file>index.html</file>
  </qresource>
  </RCC>

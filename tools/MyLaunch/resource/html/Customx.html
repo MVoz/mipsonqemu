@@ -4,76 +4,6 @@
 <link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
 <script type="text/javascript" src="qrc:jquery.js"/> </script>
 <script type="text/javascript" src="qrc:jm.js"/> </script>
-<script>
-function postItem(path,suffix,isInclude,deep,index)
-{
-		$('#listPath').val(path);
-		$('#suffix').val(suffix);
-		$("#isIncludeChildDir").attr("checked",(isInclude)?true:false);
-		$('#childDeep').val(deep);
-		$('#cmdIndex').val(index);
-}
-function listApply(type)
-{
-   var dirpath=$('#listPath').val();
-   dirpath=dirpath.replace(/(^\s*)/g, ""); 
-   dirpath=dirpath.replace(/(\s*$)/g, ""); 
-   OptionsDlg.listApply(type,dirpath,$('#suffix').val(),$('#isIncludeChildDir').attr('checked')==undefined?false:true,$('#childDeep').val(),$('#cmdIndex').val());
-   OptionsDlg.loading('Custom');
-}
-function childDeepCheck()
-{
-	 var str=$('#childDeep').val();
-	 var   pattern   =   /^\d{1,3}$/;   
-	 str=str.replace(/(^\s*)/g, ""); 
-	 str=str.replace(/(\s*$)/g, ""); 
-     var flag=pattern.test(str);   
-	 if(!flag)
-		alert("请填入一个[0~200]的数字");
-	  else{
-			    if(parseInt(str)<0||parseInt(str)>200)
-						alert("请填入一个[0~200]之间的数字");
-		}
-}
-function rangeButtonClick(type)
-{
-		var deep=parseInt($('#childDeep').val());
-		switch(type)
-		{
-			case  0:
-			  if(deep==0)
-					return;
-				else
-				$('#childDeep').val((deep-1).toString(10));
-				break;
-			case 1:
-				if(deep==200)
-					return;
-				else
-				$('#childDeep').val((deep+1).toString(10));
-				break;
-		}
-}
-function suffixCheck()
-{
-	var suffix=$('#suffix').val();
-	suffix=suffix.replace(/(^\s*)/g, ""); 
-	suffix=suffix.replace(/(\s*$)/g, ""); 
-	suffix=suffix.replace(/(\s*)/g, "");
-	var pattern=/^(\*.[0-9a-zA-Z]{1,}[;\*.[0-9a-zA-Z]{1,}]?)$/;
-	var flag=pattern.test(suffix); 
-	 if(!flag)
-	{
-		alert('请输入正确的扩展名格式');
-		return false;
-	}
-	return true;
-}
-function rebuildcatalog()
-{
-	OptionsDlg.rebuildcatalog();
-}
-</script>
 </head>    
 <body>
 	<div id="header">
@@ -102,6 +32,7 @@ function rebuildcatalog()
 										<th>子目录</th>
 										<th>深度</th>
 									</tr>
+									
 								</thead>
 							</table>
 							</div>	
@@ -109,10 +40,18 @@ function rebuildcatalog()
 						<div id="tableContainer" class="tableContainer">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 							<tbody class="scrollContent" id="dirlist">
+									<tr>
+										<td>选择</td>
+										<td>路径</td>
+										<td>后缀名</td>
+										<td>子目录</td>
+										<td><a class="thickbox" href="qrc:index.html">深度</a></td>
+									</tr>
 							</tbody>
 						</table>
 						</div>	
 					</fieldset>
+					<div id="editdir" style="display:none;">
 					<fieldset class="cfgitem">
 						<h2>&nbsp;&nbsp;编辑&raquo;</h2>
 						<p>
@@ -141,11 +80,12 @@ function rebuildcatalog()
 						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
 						
 					</fieldset>
+					</div>
 				</div>
 		<div id="footer"><div>
 	</div>
 </body>
 <script>
-	OptionsDlg.loading('Custom');
+	tb_init('a.thickbox');
 </script>
 </html>
