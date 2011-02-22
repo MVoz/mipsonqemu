@@ -1217,6 +1217,8 @@ function siteload(nopic){
 		$("#stlist .share").html("分享");
 		$("#stlist .collect").html("收藏");
 		tb_init('#stlist a.thickbox');
+		if(nopic)
+				$("#stlist p a").css("color","#999");
 }
 
 function diggload(){
