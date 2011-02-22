@@ -11,7 +11,7 @@ $(function(){
 function tb_init(domChunk){
 	$(domChunk).click(function(){
 	var t = this.title || this.name || null;
-	var a = this.href || this.alt;
+	var a = this.href;
 	var g = this.rel || false;
 	tb_show(t,a,g);
 	this.blur();
@@ -25,8 +25,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 				$("body").append("<div id='TB_overlay'></div><div id='TB_window'></div>");
 				$("#TB_overlay").click(tb_remove);
 		}
-
-		
+		url = url.substring(4,url.length);
 		if(tb_detectMacXFF()){
 			$("#TB_overlay").addClass("TB_overlayMacFFBGHack");//use png overlay so hide flash
 		}else{
@@ -45,11 +44,9 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 			ajaxContentH = TB_HEIGHT - 45;
 			
 			if(1){// either iframe or ajax window		
-					urlNoQuery = url.split('TB_');
-					$("#TB_iframeContent").remove();
-						alert(urlNoQuery[0]);						
+						$("#TB_iframeContent").remove();				
 						$("#TB_window").append("<div id='TB_title'><div id='TB_ajaxWindowTitle'>"+caption+"</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='Close'>close</a> </div></div><div id='TB_iframeContent' name='TB_iframeContent"+Math.round(Math.random()*1000)+"' style='width:"+(ajaxContentW + 29)+"px;height:"+(ajaxContentH + 17)+"px;' > </div>");
-						$("#TB_iframeContent").html($("#editdir").html());
+						$("#TB_iframeContent").html($("#"+url).html());
 						tb_showIframe();
 			}
 					
