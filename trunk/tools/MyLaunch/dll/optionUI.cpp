@@ -58,7 +58,8 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
-	getHtml("./html/Customx.html");
+	//getHtml("./html/Customx.html");
+	getHtml("./html/common.html");
 	/*
 	webView->setHtml(QString("data:text/html,<frameset rows=\"100px,*\">"
 								"<frame src=\"./html/menu.html\">"
@@ -360,6 +361,12 @@ void OptionsDlg::loading(const QString & name)
 			jsStr.append("<td >"+typesResult+"</td>");
 			jsStr.append(QString("<td >%1</td>").arg(settings->value("indexDirs", false).toBool()));
 			jsStr.append(QString("<td >%1</td>").arg(settings->value("depth", 100).toInt()));
+			jsStr.append(QString("<td > <a class=\"thickbox\" "));
+			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
+			
+			jsStr.append(QString("href=\"qrc:editdir\">edit</a> "));
+			jsStr.append(QString("<a class=\"thickbox\" href=\"qrc:editdir\">del</a>"));
+			jsStr.append(QString("</td >"));
 
 		}
 		jsStr.append("');");
