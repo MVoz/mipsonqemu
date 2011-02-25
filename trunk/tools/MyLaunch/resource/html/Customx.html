@@ -4,6 +4,19 @@
 <link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
 <script type="text/javascript" src="qrc:jquery.js"/> </script>
 <script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function postItem(path,suffix,isInclude,deep,index)
+{
+	
+		$('#listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
+		if(isInclude)
+			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
+		else	
+			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" />包含子目录');
+		$('#suffix_span').html('<input name="suffix" class="itext" type="text" id="suffix" size=40 value="'+suffix+'" onBlur="suffixCheck();"/>');
+		$('#childDeep_span').html('<input name="childDeep" type="text" id="childDeep" size="5" value="'+deep+'" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>');
+}
+</script>
 </head>    
 <body>
 	<div id="header">
@@ -45,7 +58,7 @@
 										<td>路径</td>
 										<td>后缀名</td>
 										<td>子目录</td>
-										<td><a class="thickbox" href="qrc:editdir">深度</a></td>
+										<td><a class="thickbox" onclick="postItem('xx','xx.ss',true,100,1);" href="qrc:editdir">深度</a></td>
 									</tr>
 							</tbody>
 						</table>
@@ -57,20 +70,20 @@
 						<p>
 							<span class="tl">路径:</span>
 							<span class="ip">
-								<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;"/>
+								<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value=""/></span>
 								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 							</span>
-							<span class="ip">
+							<span class="ip" id="isIncludeChildDir_span">
 								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
 							</span>	
 						</p>
 						<p>
 							<span class="tl">后缀:</span>
-							<span class="ip">
+							<span class="ip" id="suffix_span">
 								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
 							</span>
 							<span class="tl">最大深度:</span>
-							<span class="ip">
+							<span class="ip" id="childDeep_span">
 								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
 							</span>	
 							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
