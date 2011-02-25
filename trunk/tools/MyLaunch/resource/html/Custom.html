@@ -108,6 +108,7 @@ function rebuildcatalog()
 										<th>后缀名</th>
 										<th>子目录</th>
 										<th>深度</th>
+										<th>动作</th>
 									</tr>
 									
 								</thead>
@@ -117,13 +118,6 @@ function rebuildcatalog()
 						<div id="tableContainer" class="tableContainer">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 							<tbody class="scrollContent" id="dirlist">
-									<tr>
-										<td>选择</td>
-										<td>路径</td>
-										<td>后缀名</td>
-										<td>子目录</td>
-										<td><a class="thickbox" onclick="postItem('xx','xx.ss',true,100,1);" href="qrc:editdir">深度</a></td>
-									</tr>
 							</tbody>
 						</table>
 						</div>	
@@ -162,7 +156,7 @@ function rebuildcatalog()
 	</div>
     </body>
 <script>
-	tb_init('a.thickbox');
 	OptionsDlg.loading('Custom');
+	tb_init('a.thickbox');
 </script>
 </html>
