@@ -365,7 +365,10 @@ void OptionsDlg::loading(const QString & name)
 			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
 			
 			jsStr.append(QString("href=\"qrc:editdir\">edit</a> "));
-			jsStr.append(QString("<a class=\"thickbox\" href=\"qrc:editdir\">del</a>"));
+			jsStr.append(QString("<a class=\"thickbox\"")); 
+			jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(i));
+				
+			jsStr.append(QString("href=\"qrc:deletedir\">del</a>"));
 			jsStr.append(QString("</td >"));
 
 		}
