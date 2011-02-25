@@ -20,6 +20,11 @@ function postItem(path,suffix,isInclude,deep,index)
 		$('#childDeep_span').html('<input name="childDeep" type="text" id="childDeep" size="5" value="'+deep+'" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>');
 		$('#cmdIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
 }
+function postDelItem(path,index)
+{
+		$('#del_dir_span').html(path);
+		$('#cmdDelIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
+}
 function listApply(type)
 {
    var dirpath=$('#TB_window #listPath').val();
@@ -147,14 +152,33 @@ function rebuildcatalog()
 							<span class="ip" id="childDeep_span">
 								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
 							</span>	
+						</p>
+						<p style="display:none;" id="cmdIndex_span">
+							<input name="cmdIndex" type="text" id="cmdIndex" >
+						</p>						
+						<p>
+							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
+							<span class="btn"><a href="#" onclick="tb_remove();"> 取消</a></span>
+						</p>
+					</fieldset>
+					</div>
+					<div id="deletedir" style="display:none;">
+					<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
+						<p>
+							<span class="tl">您确定删除目录：</span>
+							<span class="ip" id="del_dir_span">
+							</span>							
 							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
 							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
 							<span class="btn"><a href="#" onclick="listApply(0);">增加</a></span>
 						</p>
-						<p style="display:none;" id="cmdIndex_span"><input name="cmdIndex" type="text" id="cmdIndex" ></p>						
+						<p style="display:none;" id="cmdDelIndex_span">
+							<input name="cmdIndex" type="text" id="cmdIndex" >
+						</p>						
 						<p>
-							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
-							<span class="btn"><a href="#" 取消</a></span>
+							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
+							<span class="btn"><a href="#" onclick="tb_remove();"> 取消</a></span>
 						</p>
 					</fieldset>
 					</div>
