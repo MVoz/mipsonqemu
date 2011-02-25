@@ -11,7 +11,6 @@ function apply(key)
 }
 function postItem(path,suffix,isInclude,deep,index)
 {
-	
 		$('#listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
 		if(isInclude)
 			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
@@ -23,11 +22,13 @@ function postItem(path,suffix,isInclude,deep,index)
 }
 function listApply(type)
 {
-   var dirpath=$('listPath').val();
+   var dirpath=$('#TB_window #listPath').val();
    dirpath=dirpath.replace(/(^\s*)/g, ""); 
    dirpath=dirpath.replace(/(\s*$)/g, ""); 
-   OptionsDlg.listApply(type,dirpath,$('suffix').val(),$obj('isIncludeChildDir').checked,$('childDeep').val(),$('cmdIndex').val());
+   OptionsDlg.listApply(type,dirpath,$('#TB_window #suffix').val(),$('#TB_window #isIncludeChildDir').attr("checked"),$('#TB_window #childDeep').val(),$('#TB_window #cmdIndex').val());
+   tb_remove();
    OptionsDlg.loading('Custom');
+   tb_init('a.thickbox');
 }
 function childDeepCheck()
 {
@@ -118,6 +119,8 @@ function rebuildcatalog()
 						<div id="tableContainer" class="tableContainer">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 							<tbody class="scrollContent" id="dirlist">
+									<tr>
+									</tr>
 							</tbody>
 						</table>
 						</div>	
@@ -149,6 +152,10 @@ function rebuildcatalog()
 							<span class="btn"><a href="#" onclick="listApply(0);">增加</a></span>
 						</p>
 						<p style="display:none;" id="cmdIndex_span"><input name="cmdIndex" type="text" id="cmdIndex" ></p>						
+						<p>
+							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
+							<span class="btn"><a href="#" 取消</a></span>
+						</p>
 					</fieldset>
 					</div>
 				</div>
