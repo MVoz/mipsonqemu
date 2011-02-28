@@ -1,24 +1,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>    
 <head>
-<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
 <script>
-function $(a){return document.getElementById(a);}
-function getHtml(path){OptionsDlg.getHtml(path);}
-function reject(){OptionsDlg.reject();}
-function tr(a){document.write(OptionsDlg.tr(a));}
-function gohref(url){OptionsDlg.gohref(url);}
 function postItem(name,cmd,args,index)
 {
-		$('cmdName').value=name;
-		$('cmdCommand').value=cmd;
-		$('cmdParameter').value=args;
-		$('cmdIndex').value=index;
+	
+		$('#editcmd #cmdName_span').html('<input name="cmdName" type="text" id="cmdName" size=20 class="itext" value="'+name+'"/>');
+		$('#editcmd #cmdParameter_span').html('<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext" value="'+args+'"/>');
+		$('#editcmd #cmdCommand_span').html('<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;" value="'+cmd+'"/>');
+		$('#editcmd #cmdIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
+}
+function postDelItem(cmd,index)
+{
+		$('#deletecmd #del_cmd_span').html(cmd);
+		$('#deletecmd #cmdDelIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
 }
 function cmdApply(type)
 {
-	OptionsDlg.cmdApply(type,$('cmdName').value,$('cmdCommand').value,$('cmdParameter').value,$('cmdIndex').value);
-	OptionsDlg.loading('Command');
+	tb_remove();
+   if(type==0||type==1){
+		OptionsDlg.cmdApply(type,$('#TB_window #cmdName').val(),$('#TB_window #cmdCommand').val(),$('#TB_window #cmdParameter').val(),$('#TB_window #cmdIndex').val());
+	}else{
+	    OptionsDlg.cmdApply(type,'','','',$('#TB_window #cmdIndex').val());   
+   }
+   OptionsDlg.loading('Command');
+   tb_init('a.thickbox');
 }
 function apply(key)
 {
@@ -27,69 +36,120 @@ function apply(key)
 </script>
 </head>    
     <body>
+	<div id="header">
+				<div class="h_logo">
+					<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+				</div>
+				<div class="h_adv">
+				</div>
+	</div>
+	<div id="toolbar">
+			<div class="tb_m">
+				<ul id="menu"></ul>
+			</div>
+	</div>
 		<div id="wrapper">
 			<div id="page">
-				<div id="header">
-					<div>
-						<h1>
-							Tanzhi.com
-						</h1>
-						<p>
-							<a href="http://www.tanzhi.com">
-								Anything is in touch!
-							</a>
-						</p>
-					</div>
-					<div id="menu">
-					</div>
-				</div>
 				<div class="clearfix">
 					<fieldset class="cfgitem">
-						<h2>目录&raquo;</h2>
+						<h2>&nbsp;目录&raquo;
+							<p style="display:inline;float:right:padding-right:10px"><a class="thickbox" href="qrc:addcmd">增加</a></p>
+						</h2>
+						<div class="tableContainer">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+								<thead class="clt_h">
+									<tr>
+										<th><a href="#">选择</a></th>
+										<th><a href="#">名字</a></th>
+										<th><a href="#">命令</a></th>
+										<th><a href="#">参数</a></th>
+										<th><a href="#">动作</a></th>
+									</tr>
+								</thead>
+							</table>
+						</div>	
 						<div id="clt" class="clt">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="clt_t">
-							<thead class="clt_h">
-								<tr>
-									<th><a href="#">选择</a></th>
-									<th><a href="#">名字</a></th>
-									<th><a href="#">命令</a></th>
-									<th><a href="#">参数</a></th>
-								</tr>
-							</thead>
 							<tbody class="clt_c" id="cmdlist">
 							</tbody>
 						</table>
 						</div>	
 					</fieldset>
+					<div id="editcmd" style="display:none;">
+						<fieldset class="cfgitem">
+							<h2>编辑&raquo;</h2>
+							<p>
+								<span class="tl">名字:</span>
+								<span class="ip" id="cmdName_span">
+									<input name="cmdName" type="text" id="cmdName" size=20 class="itext"/>
+								</span>	
+								<span class="tl">参数:</span>
+								<span class="ip" id="cmdParameter_span">
+									<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/>
+								</span>	
+							</p>
+							<p>
+								<span class="tl">命令:</span>
+								<span class="ip" id="cmdCommand_span">
+									<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;"/>
+									<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #cmdCommand',1);" />
+								</span>								
+							</p>
+							<p style="display:none;" id="cmdIndex_span">
+								<input name="cmdIndex" type="text" id="cmdIndex">
+							</p>
+							<p>
+								<div class="btn"><a href="#" onclick="cmdApply(1)">修改</a></div>
+								<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+							</p>
+						</fieldset>
+					</div>
+					<div id="addcmd" style="display:none;">
+						<fieldset class="cfgitem">
+							<h2>增加&raquo;</h2>
+							<p>
+								<span class="tl">名字:</span>
+								<span class="ip" id="cmdName_span">
+									<input name="cmdName" type="text" id="cmdName" size=20 class="itext"/>
+								</span>	
+								<span class="tl">参数:</span>
+								<span class="ip" id="cmdParameter_span">
+									<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/>
+								</span>	
+							</p>
+							<p>
+								<span class="tl">命令:</span>
+								<span class="ip" id="cmdCommand_span">
+									<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;"/>
+									<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #cmdCommand',1);" />
+								</span>								
+							</p>
+							<p style="display:none;" id="cmdIndex_span">
+								<input name="cmdIndex" type="text" id="cmdIndex">
+							</p>
+							<p>
+								<div class="btn"><a href="#" onclick="cmdApply(0)">增加</a></div>
+								<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+							</p>
+						</fieldset>
+					</div>
+					<div id="deletecmd" style="display:none;">
 					<fieldset class="cfgitem">
-						<h2>编辑&raquo;</h2>
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
 						<p>
-							<span class="tl">名字:</span>
-							<span class="ip">
-								<input name="cmdName" type="text" id="cmdName" size=20 class="itext"/>
-							</span>	
-							<span class="tl">参数:</span>
-							<span class="ip">
-								<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext"/>
-							</span>	
+							<span class="tl">您确定删除命令：</span>
+							<span class="ip" id="del_cmd_span">
+							</span>							
 						</p>
+						<p style="display:none;" id="cmdDelIndex_span">
+							<input name="cmdIndex" type="text" id="cmdIndex" >
+						</p>						
 						<p>
-							<span class="tl">命令:</span>
-							<span class="ip">
-								<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;"/><input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('cmdCommand',1);" />
-							</span>								
+							<div class="btn"><a href="#" onclick="cmdApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
-						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex"></p>
-							<div class="btn">
-									<a href="#" onclick="cmdApply(2)">删除</a>
-							</div>
-							<div class="btn">
-									<a href="#" onclick="cmdApply(1)">修改</a>
-							</div>
-							<div class="btn">
-									<a href="#" onclick="cmdApply(0);">增加</a>
-							</div>
 					</fieldset>
+					</div>
 				</div>
 			</div>
 			 <div id="footer">				
@@ -98,5 +158,6 @@ function apply(key)
     </body>
 <script>
 	OptionsDlg.loading('Command');
+	tb_init('a.thickbox');
 </script>
 </html>
