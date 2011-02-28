@@ -273,7 +273,7 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
 		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
-		jsStr.append(QString("$('version').innerHTML ='%1';").arg(APP_VERSION));
+		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		jsStr.append(QString("proxyEnableClick();"));
 
 	} else if (name == "Command")
@@ -443,8 +443,8 @@ void OptionsDlg::loading(const QString & name)
 
 		
 	}else if(name=="About"){
-		jsStr.append(QString("$('version').innerHTML='%1';").arg(APP_VERSION));
-		jsStr.append(QString("$('buildtime').innerHTML='%1';").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
+		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
+		jsStr.append(QString("$('#buildtime').html('%1');").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
