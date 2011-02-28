@@ -150,3 +150,43 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 }
 #TB_iframeContent{clear:both;border:none;margin-bottom:-1px;margin-top:1px;	_margin-bottom:1px;}
 
+.box,.boxnb{ margin:6px 0 0; width: 970px; overflow: hidden;float:left;}
+.box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
+.box .gray, .box .gray a { color: #aaa; }
+.box h2 , .boxnb h2 { font-size: 12px; }
+.box h3 , .boxnb h3{ font-size:15px;color:#438E0B;margin-bottom:5px; }
+.box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#438E0B; width: 970px; border-bottom: #438E0B 2px solid; position: relative; height: 22px}
+	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
+		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
+	.ntitle a{ display:block;font-weight: normal; font-size: 12px;padding-top:-2px;line-height:12px; }
+		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
+		.ntr{ float: right;  padding: 0 30px 0 0;  background: transparent url(image/nlr.gif) no-repeat right center;}
+
+	.ntitle em,.ntitle  p{float:left;overflow:hidden;white-space:nowrap;font-size:110%;font-weight: blod;font-style:normal;}
+	.ntitle p {color:#FF6A00;}
+	.ntitle em {color:#438E0B;}
+
+	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:10px;overflow:hidden; }
+	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
+	.ntitle ul .bkad a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -510px transparent;}
+	.ntitle ul .bket a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -477px transparent;}
+	.ntitle ul .bkde a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -493px transparent;}
+	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
+.box_l { float: left; width: 680px;height:100%;overflow: hidden;margin-bottom:5px;}
+	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 -80px transparent;}
+.box_r { padding:0px;float: right; width:289px;height:100%;overflow:hidden;}
+		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px -80px transparent; line-height: 32px; }
+
+	.nelt {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
+	.nelt li{float:left;list-style: none;}
+	.nelt li a{display: block;text-decoration: none;width: 30px;white-space: nowrap;}
+	.nelt #qkmua{background: url("image/g.png") no-repeat scroll -909px -456px transparent;width: 60px;padding: 5px 0px;}
+	.nelt li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
+	.nelt li ul li	{float: none;display: inline}
+	.nelt li ul li a {width: auto;padding: 5px 0px;}
+	.nelt li ul li a:hover {color:#FF6600;}
+	.nelt #qkmut{font-style:normal;}
+.green{color: #438E0B;}
+	.green a{ color: #438E0B; }
+
+#menu { float: left;padding-left:5px; width: 50%; line-height: 180%; text-align: center; }
