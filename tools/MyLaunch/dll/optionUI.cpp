@@ -286,7 +286,7 @@ void OptionsDlg::loading(const QString & name)
 							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
 							 </tr>"));
 		*/
-		jsStr.append("$('cmdlist').innerHTML='");
+		jsStr.append("$('#cmdlist').html('");
 		//cmdLists.clear();
 		QSqlQuery q("",*db);
 		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
@@ -307,6 +307,17 @@ void OptionsDlg::loading(const QString & name)
 				jsStr.append("<td >"+q.value(shortName_Idx).toString().replace("\\", "\\\\")+"</td>");
 				jsStr.append("<td >"+q.value(fullPath_Idx).toString().replace("\\", "\\\\")+"</td>");
 				jsStr.append("<td >"+q.value(args_Idx).toString()+"</td>");
+
+				//action
+				jsStr.append(QString("<td > <a class=\"thickbox\" "));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(args_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+				
+				jsStr.append(QString("href=\"qrc:editcmd\">edit</a> "));
+				jsStr.append(QString("<a class=\"thickbox\"")); 
+				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(id_Idx).toUInt()));
+					
+				jsStr.append(QString("href=\"qrc:deletecmd\">del</a>"));
+				jsStr.append(QString("</td >"));
 				/*				
 				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
 									 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
@@ -327,7 +338,8 @@ void OptionsDlg::loading(const QString & name)
 
 		}
 		q.clear();
-		jsStr.append(QString("</table>';"));
+		jsStr.append("');");
+		//jsStr.append(QString("</table>';"));
 
 	} else if (name == "Custom")
 	{
@@ -667,12 +679,12 @@ void OptionsDlg::getListDirectory(const QString & id,const int& type)
 		dir= QFileDialog::getExistingDirectory(this, tr("Select a directory"), "C:", QFileDialog::ShowDirsOnly);
 	else
 		dir= QFileDialog::getOpenFileName(this, tr("Open File"),"C:", tr("*.*"));
-	//QMessageBox msgBox;
-	//QString str = QString("%1 ").arg(dir.replace("/", "\\\\"));
-	//msgBox.setText(str);
-	//msgBox.exec();
+//	QMessageBox msgBox;
+//	QString str = QString("%1 ").arg(dir.replace("/", "\\\\"));
+//	msgBox.setText(str);
+//	msgBox.exec();
 
-	QString status = QString("$('%1').value= '%2';").arg(id).arg(dir.replace("/", "\\\\"));
+	QString status = QString("$('%1').attr('value', '%2');").arg(id).arg(dir.replace("/", "\\\\"));
 	webView->page()->mainFrame()->evaluateJavaScript(status);
 }
 void OptionsDlg::rebuildcatalog()
