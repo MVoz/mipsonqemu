@@ -11,14 +11,14 @@ function apply(key)
 }
 function postItem(path,suffix,isInclude,deep,index)
 {
-		$('#listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
+		$('#editdir #listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
 		if(isInclude)
-			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
+			$('#editdir #isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
 		else	
-			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" />包含子目录');
-		$('#suffix_span').html('<input name="suffix" class="itext" type="text" id="suffix" size=40 value="'+suffix+'" onBlur="suffixCheck();"/>');
-		$('#childDeep_span').html('<input name="childDeep" type="text" id="childDeep" size="5" value="'+deep+'" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>');
-		$('#cmdIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
+			$('#editdir #isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" />包含子目录');
+		$('#editdir #suffix_span').html('<input name="suffix" class="itext" type="text" id="suffix" size=40 value="'+suffix+'" onBlur="suffixCheck();"/>');
+		$('#editdir #childDeep_span').html('<input name="childDeep" type="text" id="childDeep" size="5" value="'+deep+'" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>');
+		$('#editdir #cmdIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
 }
 function postDelItem(path,index)
 {
@@ -27,11 +27,15 @@ function postDelItem(path,index)
 }
 function listApply(type)
 {
-   var dirpath=$('#TB_window #listPath').val();
-   dirpath=dirpath.replace(/(^\s*)/g, ""); 
-   dirpath=dirpath.replace(/(\s*$)/g, ""); 
-   OptionsDlg.listApply(type,dirpath,$('#TB_window #suffix').val(),$('#TB_window #isIncludeChildDir').attr("checked"),$('#TB_window #childDeep').val(),$('#TB_window #cmdIndex').val());
    tb_remove();
+   if(type==0||type==1){
+	   var dirpath=$('#TB_window #listPath').val();
+	   dirpath=dirpath.replace(/(^\s*)/g, ""); 
+	   dirpath=dirpath.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.listApply(type,dirpath,$('#TB_window #suffix').val(),$('#TB_window #isIncludeChildDir').attr("checked"),$('#TB_window #childDeep').val(),$('#TB_window #cmdIndex').val());
+   }else{
+	   OptionsDlg.listApply(type,'','',false,100,$('#TB_window #cmdIndex').val());   
+   }
    OptionsDlg.loading('Custom');
    tb_init('a.thickbox');
 }
@@ -105,7 +109,10 @@ function rebuildcatalog()
 				<div class="clearfix">
 					<fieldset class="cfgitem">
 						<h2>
-							<div class="tableContainer">
+							&nbsp;&nbsp;目录&raquo;
+							<p style="display:inline;float:right:padding-right:10px"><a class="thickbox" href="qrc:adddir">增加</a></p>
+						</h2>
+						<div class="tableContainer">
 							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 								<thead class="fixedHeader">
 									<tr>
@@ -119,8 +126,7 @@ function rebuildcatalog()
 									
 								</thead>
 							</table>
-							</div>	
-						</h2>
+						</div>	
 						<div id="tableContainer" class="tableContainer">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 							<tbody class="scrollContent" id="dirlist">
@@ -130,6 +136,38 @@ function rebuildcatalog()
 						</table>
 						</div>	
 					</fieldset>
+					<div id="adddir" style="display:none;">
+					<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;增加&raquo;</h2>
+						<p>
+							<span class="tl">路径:</span>
+							<span class="ip">
+								<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value=""/></span>
+								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #listPath',0);"/>
+							</span>
+							<span class="ip" id="isIncludeChildDir_span">
+								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+							</span>	
+						</p>
+						<p>
+							<span class="tl">后缀:</span>
+							<span class="ip" id="suffix_span">
+								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+							</span>
+							<span class="tl">最大深度:</span>
+							<span class="ip" id="childDeep_span">
+								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
+							</span>	
+						</p>
+						<p style="display:none;" id="cmdIndex_span">
+							<input name="cmdIndex" type="text" id="cmdIndex" >
+						</p>						
+						<p>
+							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
+							<div class="btn"><a href="#" onclick="listApply(0)">增加</a></div>							
+						</p>
+					</fieldset>
+					</div>
 					<div id="editdir" style="display:none;">
 					<fieldset class="cfgitem">
 						<h2>&nbsp;&nbsp;编辑&raquo;</h2>
@@ -157,8 +195,8 @@ function rebuildcatalog()
 							<input name="cmdIndex" type="text" id="cmdIndex" >
 						</p>						
 						<p>
-							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
-							<span class="btn"><a href="#" onclick="tb_remove();"> 取消</a></span>
+							<div class="btn"><a href="#" onclick="listApply(1)">修改</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
 					</fieldset>
 					</div>
@@ -169,16 +207,13 @@ function rebuildcatalog()
 							<span class="tl">您确定删除目录：</span>
 							<span class="ip" id="del_dir_span">
 							</span>							
-							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
-							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
-							<span class="btn"><a href="#" onclick="listApply(0);">增加</a></span>
 						</p>
 						<p style="display:none;" id="cmdDelIndex_span">
 							<input name="cmdIndex" type="text" id="cmdIndex" >
 						</p>						
 						<p>
-							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
-							<span class="btn"><a href="#" onclick="tb_remove();"> 取消</a></span>
+							<div class="btn"><a href="#" onclick="listApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
 					</fieldset>
 					</div>
