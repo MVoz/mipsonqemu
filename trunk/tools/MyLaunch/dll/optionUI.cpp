@@ -208,7 +208,7 @@ void OptionsDlg::loading(const QString & name)
 	QString menustring;
 	//menustring.append("<ul>");
 	QStringList menulsit;
-	menulsit<<"Common"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
+	menulsit<<"Common"<<"Mytanzhi"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
     		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
@@ -264,10 +264,8 @@ void OptionsDlg::loading(const QString & name)
 		int curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
-
-
-	} else if (name == "Network")
-	{
+	}else if (name == "Mytanzhi"){
+	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
 		JS_APPEND_VALUE("proxyPort","HttpProxy","");
@@ -276,8 +274,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		jsStr.append(QString("proxyEnableClick();"));
 
-	} else if (name == "Command")
-	{
+	} else if (name == "Command"){
 		/*jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
 							 <tr bgcolor=\"#ffffff\" align=\"center\">\
 							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
