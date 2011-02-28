@@ -2,23 +2,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>index</title>
-<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
 <script>
-function $(a){return document.getElementById(a);}
-function getHtml(path){OptionsDlg.getHtml(path);}
-function reject(){OptionsDlg.reject();}
-function tr(a){document.write(OptionsDlg.tr(a));}
-function gohref(url){OptionsDlg.gohref(url);}
 function apply(key)
 {
-		OptionsDlg.apply('adv/ckFuzzyMatch',$('ckFuzzyMatch').checked);
-		OptionsDlg.apply('adv/ckCaseSensitive',$('ckCaseSensitive').checked);
-		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$('ckRebuilderCatalogTimer').checked);
-		OptionsDlg.apply('adv/ckSupportIe',$('ckSupportIe').checked);
-		OptionsDlg.apply('adv/ckSupportFirefox',$('ckSupportFirefox').checked);
-		OptionsDlg.apply('adv/ckSupportOpera',$('ckSupportOpera').checked);
-		OptionsDlg.apply('netfinder/baidu',$('baidu').checked);
-		OptionsDlg.apply('netfinder/google',$('google').checked);
+		OptionsDlg.apply('adv/ckFuzzyMatch',$$obj('ckFuzzyMatch').checked);
+		OptionsDlg.apply('adv/ckCaseSensitive',$$obj('ckCaseSensitive').checked);
+		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$$obj('ckRebuilderCatalogTimer').checked);
+		OptionsDlg.apply('adv/ckSupportIe',$$obj('ckSupportIe').checked);
+		OptionsDlg.apply('adv/ckSupportFirefox',$$obj('ckSupportFirefox').checked);
+		OptionsDlg.apply('adv/ckSupportOpera',$$obj('ckSupportOpera').checked);
+		OptionsDlg.apply('netfinder/baidu',$$obj('baidu').checked);
+		OptionsDlg.apply('netfinder/google',$$obj('google').checked);
 		OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
@@ -35,22 +32,20 @@ function   set_selected(s_value,id){
 </script>
 </head>
  <body>
+<div id="header">
+		<div class="h_logo">
+			<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+		</div>
+		<div class="h_adv">
+		</div>
+</div>
+<div id="toolbar">
+		<div class="tb_m">
+			<ul id="menu"></ul>
+		</div>
+</div>
 		<div id="wrapper">
 			<div id="page">
-				<div id="header">
-					<div>
-						<h1>
-							Tanzhi.com
-						</h1>
-						<p>
-							<a href="http://www.tanzhi.com">
-								Anything is in touch!
-							</a>
-						</p>
-					</div>
-					<div id="menu">
-					</div>
-				</div>
 				<div class="clearfix">
 					<fieldset class="cfgitem">
 					<h2>高级&raquo;</h2>
