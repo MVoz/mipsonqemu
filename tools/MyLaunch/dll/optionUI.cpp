@@ -265,7 +265,10 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 	}else if (name == "bookmark"){
-	
+		QString   name=settings->value("Account/Username","").toString();
+		QString   password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);	
+		qDebug()<<QString(("$('#netbookmark').attr(\"src\",\"http://"HTTP_SERVER_HOST"/do.php?ac=4e9ded254714e0a04aca9db62e5e8fd9&source=client&username="+name+"&password="+password+"\");"));
+		jsStr.append(QString("$('#netbookmark').attr(\"src\",\"http://"HTTP_SERVER_HOST"/do.php?ac=4e9ded254714e0a04aca9db62e5e8fd9&source=client&username="+name+"&password="+password+"\");"));	
 	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
