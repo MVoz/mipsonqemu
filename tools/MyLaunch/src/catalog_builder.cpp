@@ -256,7 +256,7 @@ ffout:
 		int browserid = browserInfo[i].id;
 		if( browserenable[i]&&browserInfo[i].local)
 		{
-			bmMerge::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_IE,delId);
+			bmMerge::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_BROWSER_START,delId);
 		}
 		i++;
 	}		
