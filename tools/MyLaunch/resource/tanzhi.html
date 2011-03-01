@@ -12,6 +12,11 @@ function postItem(name,url,index)
 		$('#editbm #bmurl_span').html('<input name="bmurl" type="text" id="bmurl" size=40 class="itext" style="width:400px;" value="'+url+'"/>');
 		$('#editbm #bmIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value="'+index+'">');
 }
+function postDelItem(name,index)
+{
+		$('#del_bm_span').html(name);
+		$('#cmdDelIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
+}
 </script>
 </head>
 <body>
@@ -35,9 +40,9 @@ function postItem(name,url,index)
 <p class="message">
 <span id="260" class="id_nodes"><a href="http://www.sohu.com">http://www.sohu.com</a> ...</span>
 <span class="ndate">2011-01-24</span>
-<a id="260|0|0" class="edit thickbox" onclick="postItem('sohu','http://www.sohu.com');" href="qrc:bmedit" style="color: rgb(136, 136, 136);">编辑</a>
+<a id="260|0|0" class="edit thickbox" onclick="postItem('sohu','http://www.sohu.com');" href="qrc:editbm" style="color: rgb(136, 136, 136);">编辑</a>
 <span>|</span>
-<a id="260|0|0" class="delete thickbox" href="" style="color: rgb(136, 136, 136);">删除</a>
+<a id="260|0|0" class="delete thickbox" onclick="postDelItem('sohu',1);" href="qrc:deletebm" style="color: rgb(136, 136, 136);">删除</a>
 </p>
 </li>  
 <li>
@@ -92,6 +97,23 @@ function postItem(name,url,index)
 					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 				</p>
 		</fieldset>
+</div>
+<div id="deletebm" style="display:none;">
+			<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
+						<p>
+							<span class="tl">您确定删除网址：</span>
+							<span class="ip" id="del_bm_span">
+							</span>							
+						</p>
+						<p style="display:none;" id="bmDelIndex_span">
+							<input name="bmIndex" type="text" id="bmIndex" >
+						</p>						
+						<p>
+							<div class="btn"><a href="#" onclick="bmApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+						</p>
+			</fieldset>
 </div>
 <script type="text/javascript" language="javascript">
 tb_init('a.thickbox');
