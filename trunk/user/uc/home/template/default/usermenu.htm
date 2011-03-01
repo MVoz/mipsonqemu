@@ -16,9 +16,12 @@
 		 <ul  class="menu_list menu_list_3" style="display:none">
                 <!--{eval usermenu(3,$groupid,'getbmfromid')}-->
         </ul>
+<!--{if empty($_SGLOBAL['client'])}-->	
 		<div class="feeds" >
 				<!--{template feeds}-->
 		</div>
+<!--{else}-->
+<!--{/if}-->
 </div>
 <script language="javascript"  type="text/javascript">
 	$(function(){

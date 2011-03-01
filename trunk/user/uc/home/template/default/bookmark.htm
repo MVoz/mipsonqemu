@@ -2,11 +2,14 @@
 	<div class="box_l">
 		<!--{template bookmark_title}-->
 		<div id="bmcontent">
-			<!--{template bookmark_list}-->			
+			<!--{template bookmark_list}-->	
+<!--{if empty($_SGLOBAL['client'])}-->			
 			<div id="relatehtm" style="display:none">
 				<!--{template relatedsite_show}-->
 				<!--{template relatedsite}-->
 			</div>
+<!--{else}-->
+<!--{/if}-->
 		</div>		
 	</div>	 
 	<div class="box_r">

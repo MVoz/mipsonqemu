@@ -5,6 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=$_SC[charset]" />
 <meta http-equiv="x-ua-compatible" content="ie=7" />
 <title>
+<!--{if empty($_SGLOBAL['client'])}-->
 <!--{if $_TPL['titles']}-->
 	<!--{loop $_TPL['titles'] $value}-->
 		<!--{if $value}-->
@@ -17,8 +18,10 @@
 	<!--{/if}-->
 	{$_SCONFIG[sitename]}&nbsp;&nbsp;{$_SC['slogan']}
 </title>
+<!--{/if}-->
 <script language="javascript" type="text/javascript" src="/source/jquery-1.2.1.pack.js"></script>
 <script language="javascript" type="text/javascript" src="/source/script_common.js"></script>
+
 <!--
 <script language="javascript" type="text/javascript" src="/source/jquery-1.4.1.min.js "></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
@@ -26,9 +29,12 @@
 <style type="text/css">
 @import url(/template/default/style.css);
 </style>
+<!--{if empty($_SGLOBAL['client'])}-->
 <link rel="shortcut icon" href="image/favicon.ico" />
 <link rel="edituri" type="application/rsd+xml" title="rsd" href="xmlrpc.php?rsd=$space[uid]" />
+<!--{/if}-->
 </head>
+<!--{if empty($_SGLOBAL['client'])}-->
 <body onmousedown="setDisplay('sts', 0);">
 <div id="header">
 			<div class="h_logo">
@@ -83,5 +89,8 @@
 			</ul>
 		</div>
 </div>
+<!--{else}-->
+<body>
+<!--{/if}-->
 <div id="wrap">
 <!--{/if}-->
