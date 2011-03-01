@@ -256,11 +256,12 @@ function getAjax(type,id)
 			  }
 	});
 }
+/*
 //iframe包含
 if (top.location != location) {
 	top.location.href = location.href;
 }
-
+*/
 function $obj(id) {
 	return document.getElementById(id);
 }
