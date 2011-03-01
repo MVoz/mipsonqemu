@@ -79,8 +79,8 @@
 		<option value="1">&nbsp;目录</option>
 </select>
 -->
-<input type="radio" value="0" name="category" onchange="categoryShow(1);" checked>书签
-<input type="radio" value="1" name="category" onchange="categoryShow(0);">目录
+<input type="radio" value="0" name="category" onchange="$('#tb_bookmark').toggle();" checked>书签
+<input type="radio" value="1" name="category" onchange="$('#tb_bookmark').toggle();">目录
 </td>
 </tr>
 <tbody id="tb_bookmark" >
