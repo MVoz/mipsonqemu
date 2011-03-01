@@ -208,7 +208,7 @@ void OptionsDlg::loading(const QString & name)
 	QString menustring;
 	//menustring.append("<ul>");
 	QStringList menulsit;
-	menulsit<<"Common"<<"Mytanzhi"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
+	menulsit<<"Common"<<"bookmark"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
     		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");

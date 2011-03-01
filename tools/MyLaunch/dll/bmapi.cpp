@@ -1271,7 +1271,9 @@ void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 			QSqlQuery q(s,db);
 			q.exec();	
 			s=QString("CREATE TABLE %1 ("
-				"id INTEGER PRIMARY KEY AUTOINCREMENT, "					   
+				"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+				"groupid INTEGER NOT NULL, "
+				"parentid INTEGER NOT NULL, "
 				"shortName VARCHAR(1024) NOT NULL, "
 				"realname VARCHAR(1024) NOT NULL, "
 				"alias2 VARCHAR(1024),"	
