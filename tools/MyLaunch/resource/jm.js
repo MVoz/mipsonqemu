@@ -54,9 +54,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 
 			tb_position();
 			$("#TB_load").remove();
-			$("#TB_window").css({display:"block"});
-
-			
+			$("#TB_window").css({display:"block"});			
 		}
 		
 	} catch(e) {
