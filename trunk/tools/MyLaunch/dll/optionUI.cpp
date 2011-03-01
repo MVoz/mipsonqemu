@@ -216,7 +216,7 @@ void OptionsDlg::loading(const QString & name)
         }
 	//menustring.append("</ul>");
 	menustring.replace("\"","\\\"");
-	jsStr.append("$('#menu').html(\""+menustring+"\");");
+	jsStr.append("$('#tmenu').html(\""+menustring+"\");");
 	//footer
 	QString footerstring;
 	footerstring.append("<div class=\"btn\">");
@@ -264,7 +264,8 @@ void OptionsDlg::loading(const QString & name)
 		int curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
-	}else if (name == "Mytanzhi"){
+	}else if (name == "bookmark"){
+	
 	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
