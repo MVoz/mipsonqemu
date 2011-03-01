@@ -21,6 +21,7 @@ ul li { list-style: none; }
 #wrapper {overflow: hidden;padding:0px;width: 800px;margin: 5px auto;}
 #page{height:370px;}
 
+a:hover, a:link, a:visited{ text-decoration:none; }
 .itext{border:1px solid #ddd;line-height:20px;height:22px;color:#333;width:150px;}
 
 .cfgitem{clear:left;;margin:2px 0px;border:solid 1px #ccc;padding:0px;border-width:0px 0px 1px 0px;}
@@ -150,7 +151,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 }
 #TB_iframeContent{clear:both;border:none;margin-bottom:-1px;margin-top:1px;	_margin-bottom:1px;}
 
-.box,.boxnb{ margin:6px 0 0; width: 970px; overflow: hidden;float:left;}
+.box,.boxnb{ margin:6px 0 0; width: 750px; overflow: hidden;float:left;}
 .box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
@@ -172,9 +173,9 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	.ntitle ul .bket a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -477px transparent;}
 	.ntitle ul .bkde a{padding: 5px 0 5px 16px;background:url("image/g.png") no-repeat scroll -954px -493px transparent;}
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
-.box_l { float: left; width: 680px;height:100%;overflow: hidden;margin-bottom:5px;}
+.box_l { float: left; width: 500px;height:100%;overflow: hidden;margin-bottom:5px;}
 	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 -80px transparent;}
-.box_r { padding:0px;float: right; width:289px;height:100%;overflow:hidden;}
+.box_r { padding:0px;float: right; width:250px;height:100%;overflow:hidden;}
 		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -391px -80px transparent; line-height: 32px; }
 
 	.nelt {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
@@ -188,5 +189,10 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	.nelt #qkmut{font-style:normal;}
 .green{color: #438E0B;}
 	.green a{ color: #438E0B; }
+
+.muim{	padding: 1px;width:250px;}
+.muim .menu_list{	width:230px;height:315px;overflow:auto;}
+.muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
+.muim .menu_list li {padding:0 0 0 10px; background: url("image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;overflow:hidden;}
 
 #menu { float: left;padding-left:5px; width: 50%; line-height: 180%; text-align: center; }
