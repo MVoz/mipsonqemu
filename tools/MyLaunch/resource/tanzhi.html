@@ -84,6 +84,36 @@ function postDelDirItem(name,index)
 </div>
 </div>	
 </div>
+<div id="addbmdir" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;增加&raquo;</h2>
+				<p>
+					<span class="tl">名称:</span>
+					<span class="ip">
+						<span id="bmname_span"><input name="bmname" type="text" id="bmname" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p>
+					<input type="radio" checked onchange="$('#TB_window #addbmdir_url').toggle();" name="category" value="0">
+					<span style="display:block;padding:0 10px;float:left">书签</span>
+					<input type="radio" onchange="$('#TB_window #addbmdir_url').toggle();" name="category" value="1">
+					<span style="display:block;padding:0px 10px;float:left">目录</span>
+				</p>
+				<div id="addbmdir_url">
+					<span class="tl">地址:</span>
+					<span class="ip">
+						<span id="bmurl_span"><input name="bmurl" type="text" id="bmurl" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</div>
+				<p style="display:none;" id="bmIndex_span">
+					<input name="bmIndex" type="text" id="bmIndex">
+				</p>						
+				<p>
+					<div class="btn"><a href="#" onclick="bmDirApply(1)">增加</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
 <div id="editbm" style="display:none;">
 		<fieldset class="cfgitem">
 			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
