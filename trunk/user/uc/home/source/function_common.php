@@ -2843,6 +2843,8 @@ function checkclientauth($arr)
 	$password =$arr['password'];
 	$username = trim($arr['username']);
 	*/
+	if(!isset($arr['authkey']))
+		return;
 	$key=isset($arr['authkey'])?intval($arr['authkey']):-1;
 	if($key>$encrypt_key_index||$key<0)
 	{
@@ -3297,7 +3299,7 @@ function gethttpbrowserid()
 		if(!empty($_SCOOKIE['browser'])&&(in_array(intval($_SCOOKIE['browser']),$_SGLOBAL['browsertype'])))
 			return intval($_SCOOKIE['browser']);
 	}
-	return (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:intval($_GET['browserid']);
+	return (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?0:intval($_GET['browserid']);
 }
 function gethttpgroupid($browserid)
 {
