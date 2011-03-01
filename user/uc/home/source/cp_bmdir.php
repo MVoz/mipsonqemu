@@ -9,9 +9,7 @@ if(!defined('IN_UCHOME')) {
 
 //ºÏ≤È–≈œ¢
 $bmdirid = empty($_GET['bmdirid'])?0:intval($_GET['bmdirid']);
-$browserid = empty($_GET['browserid'])?0:intval($_GET['browserid']);
-if(empty($browserid))
-	$browserid=$_SGLOBAL['browsertype']['ie'];
+$browserid=gethttpbrowserid();
 
 $ops=array('add','edit','delete');
 $op = (empty($_GET['op']) || !in_array($_GET['op'], $ops))?'add':$_GET['op'];
