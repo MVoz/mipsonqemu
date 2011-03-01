@@ -15,7 +15,17 @@ function postItem(name,url,index)
 function postDelItem(name,index)
 {
 		$('#del_bm_span').html(name);
-		$('#cmdDelIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
+		$('#cmdDelIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value='+index+'>');
+}
+function postDirItem(name,index)
+{
+	$('#editbmdir #bmdirname_span').html('<input name="bmdirname" type="text" id="bmdirname" size=40 class="itext" style="width:400px;" value="'+name+'"/>');
+	$('#editbmdir #bmDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value="'+index+'">');
+}
+function postDelDirItem(name,index)
+{
+		$('#del_bmdir_span').html(name);
+		$('#cmdDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
 }
 </script>
 </head>
@@ -25,9 +35,9 @@ function postDelItem(name,index)
 	<h2 class="ntitle">
 		<p id="groupname">体育»</p>
 		<ul class="nelt" id="groupdo">
-			<li class="bkad"><a class="thickbox" id="8027" href="#">增加</a></li>
-			<li class="bket"><a class="thickbox" id="8027" href="#">修改</a></li>
-			<li class="bkde"><a class="thickbox" id="8027" href="#">删除</a></li>
+			<li class="bkad"><a class="thickbox" id="8027" href="qrc:addbmdir">增加</a></li>
+			<li class="bket"><a class="thickbox" id="8027" onclick="postDirItem('体育',123);" href="qrc:editbmdir">修改</a></li>
+			<li class="bkde"><a class="thickbox" id="8027" onclick="postDelDirItem('体育',123);" href="qrc:deletebmdir">删除</a></li>
 		</ul>				
 	</h2> 
 <div id="bmcontent">
@@ -111,6 +121,41 @@ function postDelItem(name,index)
 						</p>						
 						<p>
 							<div class="btn"><a href="#" onclick="bmApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+						</p>
+			</fieldset>
+</div>
+<div id="editbmdir" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
+				<p>
+					<span class="tl">名称:</span>
+					<span class="ip">
+						<span id="bmdirname_span"><input name="bmdirname" type="text" id="bmdirname" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p style="display:none;" id="bmDirIndex_span">
+					<input name="bmDirIndex" type="text" id="bmDirIndex">
+				</p>						
+				<p>
+					<div class="btn"><a href="#" onclick="bmDirApply(1)">修改</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
+<div id="deletebmdir" style="display:none;">
+			<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
+						<p>
+							<span class="tl">您确定删除目录：</span>
+							<span class="ip" id="del_bmdir_span">
+							</span>							
+						</p>
+						<p style="display:none;" id="bmDelDirIndex_span">
+							<input name="bmDirIndex" type="text" id="bmDirIndex" >
+						</p>						
+						<p>
+							<div class="btn"><a href="#" onclick="bmDirApply(2)">删除</a></div>
 							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
 			</fieldset>
