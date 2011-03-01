@@ -121,7 +121,7 @@ if(!empty($_GET['robot'])&&($_GET['robot']==$_SCONFIG['robot_action'])){
 	fixrobotparameter();
 }else{
 	//ÅÐ¶ÏÓÃ»§µÇÂ¼×´Ì¬
-	if(empty($_SGLOBAL['client']))
+	if(empty($_SGLOBAL['client'])||!empty($_SCOOKIE['auth']))
 		checkauth();
 	else
 		checkclientauth($_GET);
