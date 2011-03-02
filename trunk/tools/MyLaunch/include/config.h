@@ -289,7 +289,27 @@
 	(x)->bindValue(":type", (y).type);\
 }while(0);
 
+#define UPDATE_CATITEM_QUERY(x,y) do{\
+	(x)->bindValue(":fullPath", (y).fullPath);\
+	(x)->bindValue(":shortName", (y).shortName);\
+	(x)->bindValue(":lowName", (y).lowName);\
+	(x)->bindValue(":realname", (y).realname);\
+	(x)->bindValue(":icon", (y).icon);\
+	(x)->bindValue(":usage", (y).usage);\
+	(x)->bindValue(":hashId", qHash((y).shortName));\
+	(x)->bindValue(":isHasPinyin", (y).isHasPinyin);\
+	(x)->bindValue(":comeFrom", (y).comeFrom);\
+	(x)->bindValue(":time", (y).time);\
+	(x)->bindValue(":pinyinReg", (y).pinyinReg);\
+	(x)->bindValue(":allchars", (y).allchars);\
+	(x)->bindValue(":alias2", (y).alias2);\
+	(x)->bindValue(":domain", (y).domain);\
+	(x)->bindValue(":shortCut", (y).shortCut);\
+	(x)->bindValue(":delId", (y).delId);\
+	(x)->bindValue(":args", (y).args);\
+}while(0);
 
+	
 #define NOW_SECONDS  (QDateTime::currentDateTime().toTime_t())
 
 
