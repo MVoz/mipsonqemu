@@ -28,8 +28,9 @@ function postDirItem(name,index)
 }
 function postDelDirItem(name,index)
 {
+		alert(name+index);
 		$('#del_bmdir_span').html(name);
-		$('#cmdDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
+		$('#bmDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
 }
 function bmDirApply(action)
 {
@@ -43,9 +44,9 @@ function bmDirApply(action)
 	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
 	   OptionsDlg.bmDirApply(action,bmname,bmurl,$('#TB_window input[name="category"]:checked').val(),$('#TB_window #bmIndex').val());
    }else{
-	   OptionsDlg.bmDirApply(action,'','',1,$('#TB_window #bmIndex').val());
+		alert($('#TB_window #bmDirIndex').val());
+	   OptionsDlg.bmDirApply(action,'','',1,$('#TB_window #bmDirIndex').val());
    }
-   OptionsDlg.loading('bookmark');
    tb_init('a.thickbox');
 }
 function bmApply(action)
@@ -62,7 +63,6 @@ function bmApply(action)
    }else{
 	   OptionsDlg.bmApply(action,'','',$('#TB_window #bmIndex').val());
    }
-   OptionsDlg.loading('bookmark');
    tb_init('a.thickbox');
 }
 </script>
