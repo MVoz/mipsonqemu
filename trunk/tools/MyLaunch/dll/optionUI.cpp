@@ -272,6 +272,7 @@ void OptionsDlg::loading(const QString & name)
 		*/
 		jsStr.append("$('#menu').html('");
 		netbookmarkmenu(COMF_FROM_NETCOLLECT,0,"getbmfromid",jsStr);
+		getbmfromid(0,COMF_FROM_NETCOLLECT,"root",1);
 		jsStr.append("');");
 		//qDebug()<<jsStr;
 	}else if (name == "Network"){
@@ -859,37 +860,138 @@ unsigned int OptionsDlg::getNetBookmarkMaxGroupid()
 	q.clear();
 	return maxgroupid; 
 }
-void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id)
+void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& groupid)
 {
-	qDebug()<<" "<<name<<" "<<url<<" "<<type<<" "<<id;
-	CatItem item(url,name,"",COMF_FROM_NETCOLLECT);
-	
-	
+	qDebug()<<" "<<name<<" "<<url<<" "<<type<<" "<<groupid;
+	unsigned int showgroupId = 0;
 	switch (action)
 	{
 	case 0:		//add
-		item.parentId = id;
-		item.type = type;
-		if(type == 1)//dir
 		{
-			item.groupId=getNetBookmarkMaxGroupid();
+			CatItem item(url,name,"",COMF_FROM_NETCOLLECT);	
+			item.parentId = groupid;
+			item.type = type;
+			if(type == 1)//dir
+			{
+				showgroupId=item.groupId=getNetBookmarkMaxGroupid();
+			}else
+				showgroupId = groupid;
+			addCatitemToDb(item);
 		}
-		addCatitemToDb(item);
 		break;
 	case 1:		//modify
-
+		{
+			CatItem item(url,name,"",COMF_FROM_NETCOLLECT);	
+			unsigned int bmid = getBmidFromGroupId(groupid);
+			if(bmid){
+				item.parentId = getBmParentId(bmid);
+				item.type = type;
+				showgroupId=item.groupId = groupid;
+				modifyCatitemFromDb(item,bmid);
+			}
+		}
 		break;
 	case 2:		//delete
-
+		{
+			unsigned int bmid = getBmidFromGroupId(groupid);
+			if(bmid){
+				showgroupId= getBmParentId(bmid);
+			}
+			deleteNetworkBookmark(groupid);
+		}
 		break;
 	default:
 		break;
 	}
+	loading("bookmark");
+	QString js("");
+	js.append(QString("$(\"#menu #menu_li_%1\").click();").arg(showgroupId));
+	webView->page()->mainFrame()->evaluateJavaScript(js);	
+	
 }
+void OptionsDlg::deleteNetworkBookmark(unsigned int groupid)
+{
+	QSqlQuery q("",*db);
+	if(groupid==0){		
+		QString  s=QString("DELETE  FROM %1 WHERE  comeFrom=%2 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT);
+		q.exec(s);
+		q.clear();
+	}else{
+		QString s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=0 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(groupid);
+		q.exec(s);
+		q.clear();
+		s=QString("SELECT groupid  FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(groupid);		
+		if(q.exec(s))
+		{
+			while(q.next()) {
+				deleteNetworkBookmark(q.value(0).toUInt());
+			}		
+		}
+		q.clear();
+	}
+}
+unsigned int  OptionsDlg::getBmParentId(const int& id)
+{
+	QSqlQuery q("",*db);
+	unsigned int parentid = 0;
+	QString  s=QString("SELECT parentid FROM %1 WHERE  comeFrom=%2 AND id=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(id);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 parentid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return parentid;
+}
+unsigned int  OptionsDlg::getBmidFromGroupId(const int& groupid)
+{
+	QSqlQuery q("",*db);
+	unsigned int bmid = 0;
+	QString  s=QString("SELECT id FROM %1 WHERE  comeFrom=%2 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(groupid);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 bmid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return bmid;
+}
+
+unsigned int  OptionsDlg::getBmGroupId(const int& id)
+{
+	QSqlQuery q("",*db);
+	unsigned int groupid = 0;
+	QString  s=QString("SELECT groupid FROM %1 WHERE  comeFrom=%2 AND id=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(id);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 groupid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return groupid;
+}
+
 void OptionsDlg::bmApply(const int& action,const QString& name,const QString& url,const int& id)
 {
 	qDebug()<<" "<<name<<" "<<url<<" "<<id<<" "<<action;
 	CatItem item(url,name,"",COMF_FROM_NETCOLLECT);	
+	unsigned int parentid = getBmParentId(id);
+	QString parentName;
+	if(parentid!=0){
+		QSqlQuery q("",*db);
+		QString  s=QString("SELECT shortName FROM %1 WHERE type=0 AND comeFrom=%2 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(parentid);
+		if(q.exec(s))
+		{
+			if(q.next()) {
+				 parentName = q.value(0).toString();
+			}		
+		}
+		q.clear();
+	}else
+		parentName="root";
 	
 	switch (action)
 	{
@@ -899,11 +1001,12 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 		modifyCatitemFromDb(item,id);
 		break;
 	case 2:		//delete
-
+		deleteCatitemFromDb(item,id);
 		break;
 	default:
 		break;
 	}
+	getbmfromid(parentid,COMF_FROM_NETCOLLECT,parentName,1);
 }
 
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
@@ -964,8 +1067,8 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 
 		while(q.next()) {
 			//<li><a class=" " value="人才网站" onclick="getbmfromid('8003','1','人才网站',0);" href="javascript:;">人才网站</a></li>
-			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\"> %7</a>").arg(q.value(shortName_Idx).toString())
-			.arg(func).arg(q.value(groupid_Idx).toUInt()).arg(browserid).arg(q.value(shortName_Idx).toString()).arg(0).arg(q.value(shortName_Idx).toString()));
+			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\" id=\"menu_li_%7\"> %8</a>").arg(q.value(shortName_Idx).toString())
+			.arg(func).arg(q.value(groupid_Idx).toUInt()).arg(browserid).arg(q.value(shortName_Idx).toString()).arg(0).arg(q.value(groupid_Idx).toUInt()).arg(q.value(shortName_Idx).toString()));
 			netbookmarkmenu(browserid,q.value(groupid_Idx).toUInt(),func,jsresult);
 			jsresult.append(QString("</li>"));
 		}
