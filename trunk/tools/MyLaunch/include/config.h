@@ -284,6 +284,8 @@
 	(x)->bindValue(":shortCut", (y).shortCut);\
 	(x)->bindValue(":delId", (y).delId);\
 	(x)->bindValue(":args", (y).args);\
+	(x)->bindValue(":groupId", (y).groupId);\
+	(x)->bindValue(":parentId", (y).parentId);\
 }while(0);
 
 
@@ -303,9 +305,9 @@
 
 
 #define PASSWORD_ENCRYPT_KEY 98122130
-#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()+"';");
-#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
-#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
+#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$obj("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()+"';");
+#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
+#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$obj("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
 
 
 #define COMMAND(NAME) { NAME, NAME##_command }
