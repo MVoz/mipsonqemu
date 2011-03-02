@@ -21,9 +21,11 @@ cd /d fmd5
 call :makefunc fmd5
 cd ..
 
+if "%obj%"=="release" (
 cd /d include
 version.exe
 cd ..
+)
 
 cd /d dll
 for %%i in (bmapi bmnet catalog bmxml  bmpost bmmerge bmsync fileget appupdater  optionUI fileget) do call :makefunc %%i 
