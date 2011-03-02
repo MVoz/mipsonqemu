@@ -124,6 +124,10 @@ public slots:
 	void startUpdater();
 	void getSyncStatus();
 	QString tr(const QString & s);
+	void getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot );
+	void netbookmarkmenu(int browserid,int parentid,QString func,QString& jsresult);
+	void bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id);
+	unsigned int getNetBookmarkMaxGroupid();
 signals:
 	void rebuildcatalogSignal();
 	void optionStartSyncNotify();

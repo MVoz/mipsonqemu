@@ -286,6 +286,7 @@
 	(x)->bindValue(":args", (y).args);\
 	(x)->bindValue(":groupId", (y).groupId);\
 	(x)->bindValue(":parentId", (y).parentId);\
+	(x)->bindValue(":type", (y).type);\
 }while(0);
 
 
@@ -428,6 +429,6 @@ enum TEST_NET_RESULT{
 #define HOTKEY_PART_0 Qt::ControlModifier
 #define HOTKEY_PART_1 Qt::Key_Enter
 
-
+#define NET_BOOKMARK_GROUPID_START 8000
 #endif
 

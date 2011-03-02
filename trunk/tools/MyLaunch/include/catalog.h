@@ -54,6 +54,7 @@ enum CATITEM_ITEM{
 	comeFrom=(x).comeFrom;\
 	isHasPinyin=(x).isHasPinyin;\
 	pinyinReg=(x).pinyinReg;\
+	type=(x).type;\
 	allchars=(x).allchars;\
 	alias2=(x).alias2;\
 	domain = (x).domain;\
@@ -101,6 +102,7 @@ public:
 	unsigned char isHasPinyin;
 	unsigned char comeFrom;
 	unsigned char shortCut;
+	unsigned char type;//0--file or url 1--dir
 	//unsigned short hanziNums;
 	/*pinyin depth*/
 	//unsigned int pinyinDepth;
@@ -218,6 +220,7 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.allchars;
 	out << item.alias2;
 	out << item.domain;
+	out << item.type;
 	out << item.groupId;
 	out << item.parentId;
 	out << item.shortCut;
@@ -243,6 +246,7 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.allchars;
 	in >> item.alias2;
 	in >> item.domain;
+	in >> item.type;
 	in >> item.groupId;
 	in >> item.parentId;
 	in >> item.shortCut;
