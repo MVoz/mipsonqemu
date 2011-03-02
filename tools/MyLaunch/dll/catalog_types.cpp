@@ -448,6 +448,7 @@ RETRY:
 				item->allchars=allchars;
 				item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
 				item->domain=q.value(Q_RECORD_INDEX(q,"domain")).toString();
+				item->type=q.value(Q_RECORD_INDEX(q,"type")).toUInt();
 				item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
 				item->pos = pos;
 				//qDebug("%s",qPrintable(item->fullPath));
