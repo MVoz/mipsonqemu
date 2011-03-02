@@ -31,21 +31,38 @@ function postDelDirItem(name,index)
 		$('#del_bmdir_span').html(name);
 		$('#cmdDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
 }
-function bmDirApply(type)
+function bmDirApply(action)
 {
    tb_remove();
-   if(type==0||type==1){
+   if(action==0||action==1){
 	   var bmname=$('#TB_window #bmname').val();
 	   bmname=bmname.replace(/(^\s*)/g, ""); 
 	   bmname=bmname.replace(/(\s*$)/g, ""); 
 	   var bmurl=$('#TB_window #bmurl').val();
 	   bmurl=bmurl.replace(/(^\s*)/g, ""); 
 	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
-	   OptionsDlg.bmDirApply(type,bmname,bmurl,$('#TB_window input[name="category"]:checked').val(),$('#TB_window #bmIndex').val());
+	   OptionsDlg.bmDirApply(action,bmname,bmurl,$('#TB_window input[name="category"]:checked').val(),$('#TB_window #bmIndex').val());
    }else{
-	   OptionsDlg.bmDirApply(type,'','',1,$('#TB_window #bmIndex').val());
+	   OptionsDlg.bmDirApply(action,'','',1,$('#TB_window #bmIndex').val());
    }
-   OptionsDlg.loading('Custom');
+   OptionsDlg.loading('bookmark');
+   tb_init('a.thickbox');
+}
+function bmApply(action)
+{
+	tb_remove();
+   if(action==0||action==1){
+	   var bmname=$('#TB_window #bmname').val();
+	   bmname=bmname.replace(/(^\s*)/g, ""); 
+	   bmname=bmname.replace(/(\s*$)/g, ""); 
+	   var bmurl=$('#TB_window #bmurl').val();
+	   bmurl=bmurl.replace(/(^\s*)/g, ""); 
+	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.bmApply(action,bmname,bmurl,$('#TB_window #bmIndex').val());
+   }else{
+	   OptionsDlg.bmApply(action,'','',$('#TB_window #bmIndex').val());
+   }
+   OptionsDlg.loading('bookmark');
    tb_init('a.thickbox');
 }
 </script>
