@@ -57,6 +57,8 @@ enum CATITEM_ITEM{
 	allchars=(x).allchars;\
 	alias2=(x).alias2;\
 	domain = (x).domain;\
+	groupId = (x).groupId;\
+	parentId = (x).parentId;\
 	shortCut=(x).shortCut;\
 	delId=(x).delId;\
 	args=(x).args;\
@@ -93,8 +95,8 @@ public:
 	uint idInTable;
 	uint pos;//record the postion when isHasPinyin  true
 
-	//   uint groupId;
-	//   uint parentId;
+	uint groupId;
+	uint parentId;
 	/*is has pingyin*/
 	unsigned char isHasPinyin;
 	unsigned char comeFrom;
@@ -216,6 +218,8 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.allchars;
 	out << item.alias2;
 	out << item.domain;
+	out << item.groupId;
+	out << item.parentId;
 	out << item.shortCut;
 	out << item.delId;
 	out << item.args;
@@ -239,6 +243,8 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.allchars;
 	in >> item.alias2;
 	in >> item.domain;
+	in >> item.groupId;
+	in >> item.parentId;
 	in >> item.shortCut;
 	in >> item.delId;
 	in >> item.args;
