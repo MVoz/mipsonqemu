@@ -129,6 +129,10 @@ public slots:
 	void bmApply(const int& action,const QString& name,const QString& url,const int& id);
 	void bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id);
 	unsigned int getNetBookmarkMaxGroupid();
+	unsigned int  getBmParentId(const int& id);
+	unsigned int  getBmGroupId(const int& id);
+	unsigned int  getBmidFromGroupId(const int& groupid);
+	void deleteNetworkBookmark(unsigned int groupid);
 signals:
 	void rebuildcatalogSignal();
 	void optionStartSyncNotify();
