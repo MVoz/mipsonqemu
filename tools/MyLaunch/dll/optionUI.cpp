@@ -273,7 +273,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append("$('#menu').html('");
 		netbookmarkmenu(COMF_FROM_NETCOLLECT,0,"getbmfromid",jsStr);
 		jsStr.append("');");
-		qDebug()<<jsStr;
+		//qDebug()<<jsStr;
 	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
@@ -523,27 +523,33 @@ void OptionsDlg::addCatitemToDb(CatItem& item)
 void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
 {
 	QSqlQuery q("",*db);
+#if 1
 	q.prepare(
 		QString("UPDATE %1 SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
 		"icon=:icon,usage=:usage,hashId=:hashId,"
 		"isHasPinyin=:isHasPinyin,"
 		"comeFrom=:comeFrom,"
-		"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2',shortCut=:shortCut,delId=:delId where id=:id"
+		"realname=:realname,"
+		"time=:time,"
+		"domain=:domain,"
+		"args=:args,"
+		"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2,shortCut=:shortCut,delId=:delId where id=:id"
 		).arg(DBTABLEINFO_NAME(item.comeFrom))
 		);
-	BIND_CATITEM_QUERY(&q,item);
+	UPDATE_CATITEM_QUERY(&q,item);
 	q.bindValue("id", index);
-	/*	
+#else	
 	QString queryStr=QString("update %1 set fullPath='%2', shortName='%3', lowName='%4',"
 	"icon='%5',usage=%6,hashId=%7,"
 	"groupId=%8, parentId=%9, isHasPinyin=%10,"
 	"comeFrom=%11,hanziNums=%12,pinyinDepth=%13,"
-	"pinyinReg='%14',alias1='%15',alias2='%16',shortCut='%17',delId=%18 where id=%19)").arg(DB_TABLE_NAME).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
+	"pinyinReg='%14',alias1='%15',alias2='%16',shortCut='%17',delId=%18 where id=%19)").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
 	.arg(item.icon).arg(item.usage).arg(qHash(item.fullPath))
 	.arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
 	.arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
 	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(index);
-	*/
+	qDebug()<<queryStr;
+#endif
 	q.exec();
 	q.clear();
 }
@@ -880,6 +886,26 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 		break;
 	}
 }
+void OptionsDlg::bmApply(const int& action,const QString& name,const QString& url,const int& id)
+{
+	qDebug()<<" "<<name<<" "<<url<<" "<<id<<" "<<action;
+	CatItem item(url,name,"",COMF_FROM_NETCOLLECT);	
+	
+	switch (action)
+	{
+	case 0:		//add
+		break;
+	case 1:		//modify
+		modifyCatitemFromDb(item,id);
+		break;
+	case 2:		//delete
+
+		break;
+	default:
+		break;
+	}
+}
+
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
 	QSqlQuery q("",*db);
 	QString js("");	
@@ -907,13 +933,13 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 		while(q.next()) {
 			js.append("<li>");
 			js.append("<h3>");
-			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%2</a>").arg(q.value(fullPath_Idx).toString()).arg(q.value(shortName_Idx).toString()).arg(q.value(shortName_Idx).toString()));
+			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(q.value(fullPath_Idx).toString()).arg(q.value(shortName_Idx).toString()).arg(q.value(shortName_Idx).toString()));
 			js.append("</h3>");
 			js.append("<p class=\\\"message\\\">");
 			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(fullPath_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
 			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
-			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2');\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
-			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%1);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(fullPath_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
 			js.append("</p>");
 			js.append("</li>");
 		}	
@@ -921,11 +947,10 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 	q.clear();
 	js.append("\");");
 	js.append("tb_init('a.thickbox');");
-	qDebug()<<js;
+//	qDebug()<<js;
 	webView->page()->mainFrame()->evaluateJavaScript(js);
 }
 void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString& jsresult){
-	qDebug()<<__FUNCTION__;
 	QSqlQuery q("",*db);
 	if(parentid != 0)
 		jsresult.append(QString("<ul id=\"menu%1\" style=\"display: none;\">").arg(parentid));
