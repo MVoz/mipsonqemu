@@ -265,10 +265,15 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 	}else if (name == "bookmark"){
+		/*
 		QString   name=settings->value("Account/Username","").toString();
 		QString   password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);	
-		qDebug()<<QString(("$('#netbookmark').attr(\"src\",\"http://"HTTP_SERVER_HOST"/do.php?ac=4e9ded254714e0a04aca9db62e5e8fd9&source=client&username="+name+"&password="+password+"\");"));
 		jsStr.append(QString("$('#netbookmark').attr(\"src\",\"http://"HTTP_SERVER_HOST"/do.php?ac=4e9ded254714e0a04aca9db62e5e8fd9&source=client&username="+name+"&password="+password+"\");"));	
+		*/
+		jsStr.append("$('#menu').html('");
+		netbookmarkmenu(COMF_FROM_NETCOLLECT,0,"getbmfromid",jsStr);
+		jsStr.append("');");
+		qDebug()<<jsStr;
 	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
 		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
@@ -833,3 +838,116 @@ void synchronizeDlg::reSyncSlot()
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }
+unsigned int OptionsDlg::getNetBookmarkMaxGroupid()
+{
+	QSqlQuery q("",*db);
+	unsigned int maxgroupid = NET_BOOKMARK_GROUPID_START;
+	QString  s=QString("SELECT max(groupid) FROM %1 WHERE comeFrom=%2 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			maxgroupid = q.record().value(0).toUInt();
+			maxgroupid = maxgroupid?(maxgroupid+1):(NET_BOOKMARK_GROUPID_START);
+		}		
+	}
+	q.clear();
+	return maxgroupid; 
+}
+void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id)
+{
+	qDebug()<<" "<<name<<" "<<url<<" "<<type<<" "<<id;
+	CatItem item(url,name,"",COMF_FROM_NETCOLLECT);
+	
+	
+	switch (action)
+	{
+	case 0:		//add
+		item.parentId = id;
+		item.type = type;
+		if(type == 1)//dir
+		{
+			item.groupId=getNetBookmarkMaxGroupid();
+		}
+		addCatitemToDb(item);
+		break;
+	case 1:		//modify
+
+		break;
+	case 2:		//delete
+
+		break;
+	default:
+		break;
+	}
+}
+void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
+	QSqlQuery q("",*db);
+	QString js("");	
+	js.append(QString("$(\"#groupname\").html(\"%1").arg(name));
+	js.append("\");");
+	qDebug()<<__FUNCTION__<<groupid;	
+	js.append(QString("$(\".nelt\").html(\""));
+	js.append(QString("<li class='bkad'><a class='thickbox' onclick='addItem(%1);' href='qrc:addbmdir'>add</a></li>").arg(groupid));
+	if(!isroot){
+		js.append(QString("<li class='bket'><a class='thickbox' id='%1' onclick='postDirItem(\\\"%2\\\",%3);' href='qrc:editbmdir'>mod</a></li>").arg(groupid).arg(name).arg(groupid));
+		js.append(QString("<li class='bkde'><a class='thickbox' id='%1' onclick='postDelDirItem(\\\"%2\\\",%3);' href='qrc:deletebmdir'>del</a></li>").arg(groupid).arg(name).arg(groupid));
+	}
+	js.append("\");");
+		
+	js.append(QString("$(\"#bklist\").html(\""));
+	QString  s=QString("SELECT * FROM %1 WHERE type=0 AND comeFrom=%2 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(browserid).arg(groupid);
+	if(q.exec(s))
+	{
+		QSqlRecord rec = q.record();
+		int id_Idx=rec.indexOf("id");
+		int shortName_Idx = rec.indexOf("shortName"); 
+		int groupid_Idx = rec.indexOf("groupid");
+		int fullPath_Idx = rec.indexOf("fullPath");
+		int i = 0;
+		while(q.next()) {
+			js.append("<li>");
+			js.append("<h3>");
+			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%2</a>").arg(q.value(fullPath_Idx).toString()).arg(q.value(shortName_Idx).toString()).arg(q.value(shortName_Idx).toString()));
+			js.append("</h3>");
+			js.append("<p class=\\\"message\\\">");
+			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(fullPath_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
+			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
+			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2');\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
+			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%1);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+			js.append("</p>");
+			js.append("</li>");
+		}	
+	}
+	q.clear();
+	js.append("\");");
+	js.append("tb_init('a.thickbox');");
+	qDebug()<<js;
+	webView->page()->mainFrame()->evaluateJavaScript(js);
+}
+void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString& jsresult){
+	qDebug()<<__FUNCTION__;
+	QSqlQuery q("",*db);
+	if(parentid != 0)
+		jsresult.append(QString("<ul id=\"menu%1\" style=\"display: none;\">").arg(parentid));
+	QString  s=QString("SELECT * FROM %1 WHERE type=1 AND comeFrom=%2 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(browserid).arg(parentid);
+	if(q.exec(s))
+	{
+		QSqlRecord rec = q.record();
+		int id_Idx=rec.indexOf("id");
+		int shortName_Idx = rec.indexOf("shortName"); 
+		int groupid_Idx = rec.indexOf("groupid");
+
+		while(q.next()) {
+			//<li><a class=" " value="人才网站" onclick="getbmfromid('8003','1','人才网站',0);" href="javascript:;">人才网站</a></li>
+			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\"> %7</a>").arg(q.value(shortName_Idx).toString())
+			.arg(func).arg(q.value(groupid_Idx).toUInt()).arg(browserid).arg(q.value(shortName_Idx).toString()).arg(0).arg(q.value(shortName_Idx).toString()));
+			netbookmarkmenu(browserid,q.value(groupid_Idx).toUInt(),func,jsresult);
+			jsresult.append(QString("</li>"));
+		}
+
+	}
+	q.clear();
+	if(parentid != 0)
+		jsresult.append(QString("</ul>"));
+}
+

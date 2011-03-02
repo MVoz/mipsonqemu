@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	realname="";\
 	groupId = 0;\
 	parentId = 0;\
+	type = 0;\
 	if(IS_FROM_BROWSER(flag)){\
 			if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive)){\
 			QUrl url(fullPath);\
@@ -213,12 +214,12 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 		"fullPath, shortName, lowName,realname,icon,usage,hashId,"
 		"isHasPinyin,comeFrom,time,"
 		"pinyinReg,allchars,alias2,domain,shortCut,delId,args,"
-		"groupid,parentid"
+		"groupid,parentid,type"
 		") VALUES ("
 		":fullPath, :shortName, :lowName,:realname,:icon,:usage,:hashId,"
 		":isHasPinyin,:comeFrom,:time,"
 		":pinyinReg,:allchars,:alias2,:domain,:shortCut,:delId,:args,"
-		":groupId,:parentId"
+		":groupId,:parentId,:type"
 		")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 		);
 	BIND_CATITEM_QUERY(q,item);

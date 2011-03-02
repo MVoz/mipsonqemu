@@ -1274,6 +1274,7 @@ void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
 				"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 				"groupid INTEGER NOT NULL, "
 				"parentid INTEGER NOT NULL, "
+				"type INTEGER NOT NULL, "
 				"shortName VARCHAR(1024) NOT NULL, "
 				"realname VARCHAR(1024) NOT NULL, "
 				"alias2 VARCHAR(1024),"	
