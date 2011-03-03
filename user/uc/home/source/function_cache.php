@@ -343,7 +343,7 @@ function browsertype_cache(){
 
 	$_SGLOBAL['browsertype'] = array();
 	// 从数据库获取
-	$query = $_SGLOBAL['db']->query("SELECT browserid, browsername FROM ".tname('browser'));
+	$query = $_SGLOBAL['db']->query("SELECT browserid, browsername FROM ".tname('browser')." ORDER by browserid");
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
 	    $_SGLOBAL['browsertype'][$value['browsername']] = $value['browserid'];
 	}
@@ -355,7 +355,7 @@ function browser_cache(){
 
 	$_SGLOBAL['browser'] = array();
 	// 从数据库获取
-	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('browser'));
+	$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('browser')." ORDER by browserid");
 	while($value = $_SGLOBAL['db']->fetch_array($query)){
 	    $_SGLOBAL['browser'][$value['browserid']] = $value;
 	}
