@@ -246,4 +246,45 @@ void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
 
 }
 
+void CatItem::modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
+{
+	QSqlQuery q("",*db);
+#if 1
+	q.prepare(
+		QString("UPDATE %1 SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
+		"icon=:icon,usage=:usage,hashId=:hashId,"
+		"isHasPinyin=:isHasPinyin,"
+		"comeFrom=:comeFrom,"
+		"realname=:realname,"
+		"time=:time,"
+		"domain=:domain,"
+		"args=:args,"
+		"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2,shortCut=:shortCut,delId=:delId where id=:id"
+		).arg(DBTABLEINFO_NAME(item.comeFrom))
+		);
+	UPDATE_CATITEM_QUERY(&q,item);
+	q.bindValue("id", index);
+#else	
+	QString queryStr=QString("update %1 set fullPath='%2', shortName='%3', lowName='%4',"
+	"icon='%5',usage=%6,hashId=%7,"
+	"groupId=%8, parentId=%9, isHasPinyin=%10,"
+	"comeFrom=%11,hanziNums=%12,pinyinDepth=%13,"
+	"pinyinReg='%14',alias1='%15',alias2='%16',shortCut='%17',delId=%18 where id=%19)").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
+	.arg(item.icon).arg(item.usage).arg(qHash(item.fullPath))
+	.arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
+	.arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
+	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(index);
+	qDebug()<<queryStr;
+#endif
+	q.exec();
+	q.clear();
+}
+void CatItem::deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
+{
+	QSqlQuery q("",*db);
+	q.prepare(QString("DELETE FROM %1 where id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
+	q.bindValue("id", index);
+	q.exec();
+	q.clear();
+}
 

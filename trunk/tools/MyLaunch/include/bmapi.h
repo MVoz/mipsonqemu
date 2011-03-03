@@ -153,6 +153,7 @@ public :
 	static unsigned int getBmParentId(QSqlDatabase *db,const int& id);
 	static unsigned int getBmidFromGroupId(QSqlDatabase *db,const int& groupid);
 	static unsigned int getBmGroupId(QSqlDatabase *db,const int& id);
+	static void deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid);
 	static void readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,uint groupid);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);

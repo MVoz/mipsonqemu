@@ -505,47 +505,7 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		
 }
 
-void OptionsDlg::modifyCatitemFromDb(CatItem& item,uint index)
-{
-	QSqlQuery q("",*db);
-#if 1
-	q.prepare(
-		QString("UPDATE %1 SET fullPath=:fullpath, shortName=:shortName, lowName=:lowName,"
-		"icon=:icon,usage=:usage,hashId=:hashId,"
-		"isHasPinyin=:isHasPinyin,"
-		"comeFrom=:comeFrom,"
-		"realname=:realname,"
-		"time=:time,"
-		"domain=:domain,"
-		"args=:args,"
-		"pinyinReg=:pinyinReg,allchars=:allchars,alias2=:alias2,shortCut=:shortCut,delId=:delId where id=:id"
-		).arg(DBTABLEINFO_NAME(item.comeFrom))
-		);
-	UPDATE_CATITEM_QUERY(&q,item);
-	q.bindValue("id", index);
-#else	
-	QString queryStr=QString("update %1 set fullPath='%2', shortName='%3', lowName='%4',"
-	"icon='%5',usage=%6,hashId=%7,"
-	"groupId=%8, parentId=%9, isHasPinyin=%10,"
-	"comeFrom=%11,hanziNums=%12,pinyinDepth=%13,"
-	"pinyinReg='%14',alias1='%15',alias2='%16',shortCut='%17',delId=%18 where id=%19)").arg(DBTABLEINFO_NAME(item.comeFrom)).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
-	.arg(item.icon).arg(item.usage).arg(qHash(item.fullPath))
-	.arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
-	.arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
-	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(index);
-	qDebug()<<queryStr;
-#endif
-	q.exec();
-	q.clear();
-}
-void OptionsDlg::deleteCatitemFromDb(CatItem& item,uint index)
-{
-	QSqlQuery q("",*db);
-	q.prepare(QString("DELETE FROM %1 where id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
-	q.bindValue("id", index);
-	q.exec();
-	q.clear();
-}
+
 
 
 void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QString & cmdCommand, const QString & cmdParameter, const QString & cmdIndex)
@@ -560,12 +520,12 @@ void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QStrin
 		CatItem::addCatitemToDb(db,item);
 		break;
 	case 1:		//modify
-		modifyCatitemFromDb(item,cmdIndex.toInt());
+		CatItem::modifyCatitemFromDb(db,item,cmdIndex.toInt());
 		break;
 	case 2:		//delete
 		//qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
 		//  cmdLists.removeAt(cmdIndex.toInt());
-		deleteCatitemFromDb(item,cmdIndex.toInt());
+		CatItem::deleteCatitemFromDb(db,item,cmdIndex.toInt());
 		break;
 	default:
 		break;
@@ -857,7 +817,7 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 				item.parentId = tz::getBmParentId(db,bmid);
 				item.type = type;
 				showgroupId=item.groupId = groupid;
-				modifyCatitemFromDb(item,bmid);
+				CatItem::modifyCatitemFromDb(db,item,bmid);
 			}
 		}
 		break;
@@ -867,7 +827,7 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 			if(bmid){
 				showgroupId= tz::getBmParentId(db,bmid);
 			}
-			deleteNetworkBookmark(groupid);
+			tz::deleteNetworkBookmark(db,groupid);
 		}
 		break;
 	default:
@@ -883,30 +843,7 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 	webView->page()->mainFrame()->evaluateJavaScript(js);	
 	
 }
-void OptionsDlg::deleteNetworkBookmark(unsigned int groupid)
-{
-	QSqlQuery q("",*db);
-	if(groupid==0){		
-		QString  s=QString("DELETE  FROM %1 WHERE  comeFrom=%2 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK);
-		q.exec(s);
-		q.clear();
-	}else{
-		QString s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=0 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
-		q.exec(s);
-		q.clear();
-		s=QString("SELECT groupid  FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);		
-		if(q.exec(s))
-		{
-			while(q.next()) {
-				deleteNetworkBookmark(q.value(0).toUInt());
-			}		
-		}
-		q.clear();
-		s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
-		q.exec(s);
-		q.clear();
-	}
-}
+
 
 void OptionsDlg::bmApply(const int& action,const QString& name,const QString& url,const int& id)
 {
@@ -932,10 +869,10 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 	case 0:		//add
 		break;
 	case 1:		//modify
-		modifyCatitemFromDb(item,id);
+		CatItem::modifyCatitemFromDb(db,item,id);
 		break;
 	case 2:		//delete
-		deleteCatitemFromDb(item,id);
+		CatItem::deleteCatitemFromDb(db,item,id);
 		break;
 	default:
 		break;

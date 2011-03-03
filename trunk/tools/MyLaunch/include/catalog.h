@@ -135,6 +135,8 @@ public:
 	void getPinyinReg(const QString& str);
 	static void prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid=0);
 	static void addCatitemToDb(QSqlDatabase* db,CatItem& item);
+	static void modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
+	static void deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
 	CatItem& operator=( const CatItem &s ) {
 		COPY_CATITEM(s);		
 		return *this;
