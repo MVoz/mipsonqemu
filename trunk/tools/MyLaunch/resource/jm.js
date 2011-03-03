@@ -166,6 +166,3 @@ function initMenuEx() {
         }
     });
 }
-$(function(){
-       		initMenuEx();			
-});
