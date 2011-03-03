@@ -88,7 +88,7 @@ public:
 	void postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType);
 	void downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId);
 	void handleBmData();
-	int bmMergeAction(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType);
+	int bmMergeAction(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType,uint local_parentId);
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);

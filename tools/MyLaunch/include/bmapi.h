@@ -149,6 +149,11 @@ public :
 	static int testFirefoxDbLock(QSqlDatabase* db);
 	static QString getBrowserName(uint id);
 	static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
+	static unsigned int getNetBookmarkMaxGroupid(QSqlDatabase *db);
+	static unsigned int getBmParentId(QSqlDatabase *db,const int& id);
+	static unsigned int getBmidFromGroupId(QSqlDatabase *db,const int& groupid);
+	static unsigned int getBmGroupId(QSqlDatabase *db,const int& id);
+	static void readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,uint groupid);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	static int getFirefoxVersion();

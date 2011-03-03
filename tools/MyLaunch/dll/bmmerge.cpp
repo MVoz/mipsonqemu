@@ -185,7 +185,7 @@ void bmMerge::storeLocalbmData(const QString path,struct browserinfo* b,uint* br
 		while(!b[i].name.isEmpty())
 		{
 			int browserid = b[i].id;
-			bmXml::bmListToXml(((browserid==BROWSE_TYPE_IE)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
+			bmXml::bmListToXml(((browserid==BROWSE_TYPE_NETBOOKMARK)?BM_WRITE_HEADER:((browserid==(BROWSE_TYPE_MAX-1))?BM_WRITE_END:0)), (browserenable[i])?(&result[browserid]):&(lastUpdate[browserid]->bm_list), &os,browserid,1,time,browserenable[i],userid);
 			i++;
 		}		
 		localfile.close();	
@@ -261,9 +261,10 @@ void bmMerge::handleBmData()
 					f.setFileName(filename_fromserver);
 					f.open(QIODevice::ReadOnly);
 					fromServer[i] = new bmXml(&f,settings);
-					fromServer[i]->readStream(BROWSE_TYPE_IE);
+				//	fromServer[i]->readStream(BROWSE_TYPE_IE);
+					fromServer[i]->readStream(browserid);
 
-					//      dumpBcList(&fromServer[i]->bm_list);	
+					 dumpBcList(&fromServer[i]->bm_list);	
 
 					setUpdatetime(fromServer[i]->updateTime);
 					f.close();
@@ -273,7 +274,10 @@ void bmMerge::handleBmData()
 				//current from kinds of browser type
 				switch( browserid )
 				{
-				case BROWSE_TYPE_NETCOLLECT:
+				case BROWSE_TYPE_NETBOOKMARK:
+					tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0);
+					dumpBcList(&current_bc[BROWSE_TYPE_NETBOOKMARK]);
+					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 					break;
 				case BROWSE_TYPE_IE:
 					tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0);
@@ -322,8 +326,11 @@ ffout:
 					else
 					bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
 					*/
-					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid);
-				}					
+					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0);
+				}	
+				qDebug()<<"#########################################";
+				dumpBcList(&result_bc[browserid]);
+				qDebug()<<"#########################################";
 			}
 			i++;
 		}
@@ -341,7 +348,7 @@ ffout:
 			int browserid = browserInfo[i].id;
 			if( browserenable[i])
 			{
-				bmintolaunchdb(&q,&result_bc[browserid],browserid+COME_FROM_IE,delId);
+				bmintolaunchdb(&q,&result_bc[browserid],browserid+COMF_FROM_NETBOOKMARK,delId);
 			}
 			i++;
 		}		
@@ -352,6 +359,7 @@ ffout:
 	}
 #endif
 	//write to lastupdate
+	qDebug()<<__FUNCTION__<<localBmFullPath;
 	if((!QFile::exists(localBmFullPath)||(mergestatus==MERGE_STATUS_SUCCESS_WITH_MODIFY))&&!terminatedFlag){
 		storeLocalbmData(localBmFullPath,browserInfo,browserenable,result_bc,lastUpdate,updateTime);
 	}
@@ -378,7 +386,7 @@ CLEAR:
 		{
 			switch( browserid )
 			{
-			case BROWSE_TYPE_NETCOLLECT:
+			case BROWSE_TYPE_NETBOOKMARK:
 				break;
 			case BROWSE_TYPE_IE:
 				break;
@@ -570,6 +578,8 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 		{
 		case ACTION_ITEM_ADD:
 			switch(browserType){
+		case BROWSE_TYPE_NETBOOKMARK:
+			break;
 		case BROWSE_TYPE_IE:
 			{
 				dirPath = path + "\\" + bc->name;
@@ -650,6 +660,13 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 		{
 		case ACTION_ITEM_ADD:
 			switch(browserType){
+		case BROWSE_TYPE_NETBOOKMARK:
+			{
+				CatItem item(bc->link,bc->name,"",COME_FROM_MYBOOKMARK);	
+				item.parentId = local_parentId;
+				CatItem::addCatitemToDb(db,item);
+			}
+			break;
 		case BROWSE_TYPE_IE:
 			filePath = path + "\\" + bc->name + ".url";
 			hFile = CreateFile(filePath.utf16(),	// open MYFILE.TXT 
@@ -858,16 +875,19 @@ int bmMerge::bmMergeAction(
 						 QList < bookmark_catagory > *resultList,
 						 uint parentId,
 						 QString path,
-						 int browserType
+						 int browserType,
+						 uint local_parentId
 						 )
 {
 	int status = 0;
+	/*
 	uint local_parentId=0;
 	foreach(bookmark_catagory item, *localList)
 	{
 		local_parentId = item.parentId;
 		break;
 	}
+	*/
 	QList < bookmark_catagory > *list=NULL;
 	if(modifiedInServer)
 		list = serverList;
@@ -904,7 +924,8 @@ int bmMerge::bmMergeAction(
 				&(resultList->last().list),
 				(*list)[inServerPosition].groupId,
 				path+ "/"+item.name ,
-				browserType
+				browserType,
+				item.groupId
 				);
 		}
 	}

@@ -1979,7 +1979,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
-	qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
+	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
 		return;
 	//start to all browser is disable ,don't sync
@@ -2127,7 +2127,7 @@ SYNCTIMER:
 	if (time != 0)
 		{
 			syncTimer->start(time * SECONDS);//minutes
-			qDebug()<<"start sync after "<<time<<" seconds";
+			//qDebug()<<"start sync after "<<time<<" seconds";
 		}
 	return;
 	
