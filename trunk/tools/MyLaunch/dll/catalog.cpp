@@ -222,6 +222,7 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 		":groupId,:parentId,:type"
 		")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 		);
+	qDebug()<<(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)));
 	BIND_CATITEM_QUERY(q,item);
 }
 void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
@@ -240,8 +241,9 @@ void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
 	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(item.args);
 	qDebug("queryStr=%s",qPrintable(queryStr));
 	*/
-	CatItem::prepareInsertQuery(&q,item);
+	CatItem::prepareInsertQuery(&q,item,0);
 	q.exec();
+	qDebug()<<q.executedQuery();
 	q.clear();
 
 }

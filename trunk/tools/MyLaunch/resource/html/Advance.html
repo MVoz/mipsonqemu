@@ -8,19 +8,19 @@
 <script>
 function apply(key)
 {
-		OptionsDlg.apply('adv/ckFuzzyMatch',$$obj('ckFuzzyMatch').checked);
-		OptionsDlg.apply('adv/ckCaseSensitive',$$obj('ckCaseSensitive').checked);
-		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$$obj('ckRebuilderCatalogTimer').checked);
-		OptionsDlg.apply('adv/ckSupportIe',$$obj('ckSupportIe').checked);
-		OptionsDlg.apply('adv/ckSupportFirefox',$$obj('ckSupportFirefox').checked);
-		OptionsDlg.apply('adv/ckSupportOpera',$$obj('ckSupportOpera').checked);
-		OptionsDlg.apply('netfinder/baidu',$$obj('baidu').checked);
-		OptionsDlg.apply('netfinder/google',$$obj('google').checked);
+		OptionsDlg.apply('adv/ckFuzzyMatch',$obj('ckFuzzyMatch').checked);
+		OptionsDlg.apply('adv/ckCaseSensitive',$obj('ckCaseSensitive').checked);
+		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$obj('ckRebuilderCatalogTimer').checked);
+		OptionsDlg.apply('adv/ckSupportIe',$obj('ckSupportIe').checked);
+		OptionsDlg.apply('adv/ckSupportFirefox',$obj('ckSupportFirefox').checked);
+		OptionsDlg.apply('adv/ckSupportOpera',$obj('ckSupportOpera').checked);
+		OptionsDlg.apply('netfinder/baidu',$obj('baidu').checked);
+		OptionsDlg.apply('netfinder/google',$obj('google').checked);
 		OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
 	  if(s_value!=""){   
-	  s_obj   =   $(id).options;   
+	  s_obj   =   $obj(id).options;   
 	  len   =   s_obj.length;   
 		  for   (i   =   0;   i   <   len;   i++ ){   
 			  if(s_value   ==   s_obj[i].value){
