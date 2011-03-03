@@ -1610,4 +1610,30 @@ unsigned int  tz::getBmGroupId(QSqlDatabase *db,const int& id)
 	q.clear();
 	return groupid;
 }
+void tz::deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid)
+{
+	QSqlQuery q("",*db);
+	if(groupid==0){		
+		QString  s=QString("DELETE  FROM %1 WHERE  comeFrom=%2 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK);
+		q.exec(s);
+		q.clear();
+	}else{
+		QString s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=0 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+		q.exec(s);
+		q.clear();
+		s=QString("SELECT groupid  FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);		
+		if(q.exec(s))
+		{
+			while(q.next()) {
+				deleteNetworkBookmark(db,q.value(0).toUInt());
+			}		
+		}
+		q.clear();
+		s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+		q.exec(s);
+		q.clear();
+	}
+}
+
+
 
