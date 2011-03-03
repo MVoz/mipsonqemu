@@ -579,6 +579,20 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 		case ACTION_ITEM_ADD:
 			switch(browserType){
 		case BROWSE_TYPE_NETBOOKMARK:
+			{
+				CatItem item("",bc->name,"",COME_FROM_MYBOOKMARK);	
+				item.parentId = local_parentId;
+				item.type = 1;//directory
+				item.groupId=tz::getNetBookmarkMaxGroupid(db);
+				qDebug()<<__FUNCTION__<<bc->name<<" "<<item.groupId;
+				CatItem::addCatitemToDb(db,item);
+				/*
+				foreach(bookmark_catagory bm, bc->list)
+				{
+					downloadToLocal(&bm, action, dirPath,browserType,item.groupId);
+				}
+				*/
+			}
 			break;
 		case BROWSE_TYPE_IE:
 			{
