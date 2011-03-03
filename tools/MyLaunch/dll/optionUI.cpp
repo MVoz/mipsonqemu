@@ -453,6 +453,10 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		jsStr.append(QString("$('#buildtime').html('%1');").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
 	}
+
+	if(name =="bookmark"){
+		jsStr.append("$(function(){initMenuEx();});");
+	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
 
@@ -862,7 +866,7 @@ unsigned int OptionsDlg::getNetBookmarkMaxGroupid()
 }
 void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& groupid)
 {
-	qDebug()<<" "<<name<<" "<<url<<" "<<type<<" "<<groupid;
+	qDebug()<<__FUNCTION__<<" "<<name<<" "<<url<<" "<<type<<" "<<groupid;
 	unsigned int showgroupId = 0;
 	switch (action)
 	{
@@ -905,7 +909,11 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 	}
 	loading("bookmark");
 	QString js("");
-	js.append(QString("$(\"#menu #menu_li_%1\").click();").arg(showgroupId));
+	qDebug()<<showgroupId;
+	if(showgroupId==0)
+		js.append(QString("$(\"#menu #menuroot\").click();"));
+	else
+		js.append(QString("$(\"#menu #menu_li_%1\").click();").arg(showgroupId));
 	webView->page()->mainFrame()->evaluateJavaScript(js);	
 	
 }
@@ -927,6 +935,9 @@ void OptionsDlg::deleteNetworkBookmark(unsigned int groupid)
 				deleteNetworkBookmark(q.value(0).toUInt());
 			}		
 		}
+		q.clear();
+		s = QString("DELETE   FROM %1 WHERE  comeFrom=%2 AND TYPE=1 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(groupid);
+		q.exec(s);
 		q.clear();
 	}
 }
@@ -982,7 +993,7 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 	QString parentName;
 	if(parentid!=0){
 		QSqlQuery q("",*db);
-		QString  s=QString("SELECT shortName FROM %1 WHERE type=0 AND comeFrom=%2 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(parentid);
+		QString  s=QString("SELECT shortName FROM %1 WHERE type=1 AND comeFrom=%2 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER_START)).arg(COMF_FROM_NETCOLLECT).arg(parentid);
 		if(q.exec(s))
 		{
 			if(q.next()) {
@@ -1006,7 +1017,8 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 	default:
 		break;
 	}
-	getbmfromid(parentid,COMF_FROM_NETCOLLECT,parentName,1);
+	qDebug()<<__FUNCTION__<<parentid<<parentName;
+	getbmfromid(parentid,COMF_FROM_NETCOLLECT,parentName,parentid?0:1);
 }
 
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
@@ -1042,7 +1054,7 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(fullPath_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
 			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
 			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(fullPath_Idx).toString()).arg(q.value(id_Idx).toUInt()));
-			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
 			js.append("</p>");
 			js.append("</li>");
 		}	
