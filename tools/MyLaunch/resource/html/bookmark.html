@@ -18,8 +18,8 @@ function postItem(name,url,index)
 }
 function postDelItem(name,index)
 {
-		$('#del_bm_span').html(name);
-		$('#cmdDelIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value='+index+'>');
+		$('#deletebm #del_bm_span').html(name);
+		$('#deletebm #bmDelIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value='+index+'>');
 }
 function postDirItem(name,index)
 {
@@ -28,14 +28,13 @@ function postDirItem(name,index)
 }
 function postDelDirItem(name,index)
 {
-		alert(name+index);
 		$('#del_bmdir_span').html(name);
 		$('#bmDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
 }
 function bmDirApply(action)
 {
    tb_remove();
-   if(action==0||action==1){
+   if(action==0){
 	   var bmname=$('#TB_window #bmname').val();
 	   bmname=bmname.replace(/(^\s*)/g, ""); 
 	   bmname=bmname.replace(/(\s*$)/g, ""); 
@@ -43,8 +42,13 @@ function bmDirApply(action)
 	   bmurl=bmurl.replace(/(^\s*)/g, ""); 
 	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
 	   OptionsDlg.bmDirApply(action,bmname,bmurl,$('#TB_window input[name="category"]:checked').val(),$('#TB_window #bmIndex').val());
+   }else if(action==1){
+	   var bmname=$('#TB_window #bmdirname').val();
+	   bmname=bmname.replace(/(^\s*)/g, ""); 
+	   bmname=bmname.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.bmDirApply(action,bmname,'',1,$('#TB_window #bmDirIndex').val());
+
    }else{
-		alert($('#TB_window #bmDirIndex').val());
 	   OptionsDlg.bmDirApply(action,'','',1,$('#TB_window #bmDirIndex').val());
    }
    tb_init('a.thickbox');
@@ -65,6 +69,10 @@ function bmApply(action)
    }
    tb_init('a.thickbox');
 }
+function apply(key)
+{
+		OptionsDlg.accept();
+}
 </script>
 </head>
 <body>
@@ -80,7 +88,7 @@ function bmApply(action)
 				<ul id="tmenu"></ul>
 			</div>
 	</div>
-<div style="height: 705px;" class="box">
+<div style="height: 305px;" class="box">
 <div class="box_l">
 	<h2 class="ntitle">
 		<p id="groupname">体育»</p>
@@ -242,6 +250,8 @@ function bmApply(action)
 						</p>
 			</fieldset>
 </div>
+			 <div id="footer">				
+			</div>
 <script type="text/javascript" language="javascript">
 OptionsDlg.loading('bookmark');	
 tb_init('a.thickbox');
