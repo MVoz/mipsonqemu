@@ -75,7 +75,7 @@ if(submitcheck('loginsubmit')) {
 
 	//同步获取用户源
 	if(!$passport = getpassport($username, $password)) {
-		if($_SGLOBAL['client']){
+		if($_SGLOBAL['client'])
 			showmessage('login_failure_please_re_login');
 		else
 			showmessage('login_failure_please_re_login', 'do.php?ac='.$_SCONFIG['login_action']);
@@ -170,11 +170,12 @@ if(submitcheck('loginsubmit')) {
 	}
 	
 	realname_get();
+	/*
 	if($_SGLOBAL['client']){
 		header("Location: space.php?do=bookmark&browserid=1&source=client");
 		return;
 	}
-	
+	*/
 	showmessage('login_success', $app?"userapp.php?id=$app":$_POST['refer'], 1, array($ucsynlogin));
 }
 
