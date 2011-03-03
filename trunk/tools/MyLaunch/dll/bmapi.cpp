@@ -108,13 +108,14 @@ struct dbtableinfo dbtableInfo[]={
 	{COME_FROM_PREDEFINE,QString(DB_TABLE_SUFFIX"_predefine"),COME_FROM_PREDEFINE},
 	{COME_FROM_COMMAND,QString(DB_TABLE_SUFFIX"_command"),COME_FROM_COMMAND},
 	{COME_FROM_PROGRAM,QString(DB_TABLE_SUFFIX"_program"),COME_FROM_PROGRAM},
+	{COME_FROM_MYBOOKMARK,QString(DB_TABLE_SUFFIX"_mybookmark"),COME_FROM_MYBOOKMARK},	
 	{COME_FROM_BROWSER_START,QString(DB_TABLE_SUFFIX"_browser"),COME_FROM_BROWSER_START},
 	{0,QString(),0}
 };
 
 
 struct browserinfo browserInfo[]={
-	{QString("netcollect"),QString("") ,true, true, false,false,false, BROWSE_TYPE_NETCOLLECT},
+	{QString("network"),QString("") ,true, true, false,false,false, BROWSE_TYPE_NETBOOKMARK},
 	{QString("Ie"),QString(""), true, true, false,false,false, BROWSE_TYPE_IE},
 	{QString("Firefox"),QString("") , false, false , false,false,false, BROWSE_TYPE_FIREFOX},
 	{QString("Opera") , QString("") ,false , false , false,false,false, BROWSE_TYPE_OPERA},
@@ -162,7 +163,7 @@ void clearBrowserInfoOpFlag(uint id)
 }
 void setBrowserFullpath(int type,QString& fullpath){
 	switch(type){
-		case BROWSE_TYPE_NETCOLLECT:
+		case BROWSE_TYPE_NETBOOKMARK:
 			break;
 		case BROWSE_TYPE_IE:
 				{
@@ -950,7 +951,70 @@ void tz::addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_c
 	}
 }
 //flag 0--file 1--dir
-
+void tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,unsigned int groupid )
+{
+		QSqlQuery q("",*db);
+		//process directory
+		QString  s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=1 AND  parentid=%4 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+		if(q.exec(s))
+		{
+			QSqlRecord rec = q.record();
+			int id_Idx=rec.indexOf("id");
+			int shortName_Idx = rec.indexOf("shortName"); 
+			int groupid_Idx = rec.indexOf("groupid");
+			int parentid_Idx = rec.indexOf("parentid");
+			int fullPath_Idx = rec.indexOf("fullPath");
+			while(q.next()) {
+				struct bookmark_catagory bc;
+				bc.name = q.value(shortName_Idx).toString();
+				// dir_bc.name.trimmed();
+				bc.name_hash=qhashEx(bc.name,bc.name.length());
+				bc.link.clear();
+				bc.link_hash=0;
+				bc.flag = BOOKMARK_CATAGORY_FLAG;
+				bc.level = level;
+				bc.bmid = q.value(id_Idx).toUInt();
+				bc.groupId= q.value(groupid_Idx).toUInt();
+				bc.parentId= q.value(parentid_Idx).toUInt();
+				readMyBookmark(db,&(bc.list), level + 1,q.value(groupid_Idx).toUInt());
+				addItemToSortlist(bc,list);
+			}		
+		}
+		q.clear();
+		//process bookmark
+		s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=0 AND  parentid=%4 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+		if(q.exec(s))
+		{
+			QSqlRecord rec = q.record();
+			int id_Idx=rec.indexOf("id");
+			int shortName_Idx = rec.indexOf("shortName"); 
+			int groupid_Idx = rec.indexOf("groupid");
+			int parentid_Idx = rec.indexOf("parentid");
+			int fullPath_Idx = rec.indexOf("fullPath");
+			while(q.next()) {
+				struct bookmark_catagory bc;
+				bc.name = q.value(shortName_Idx).toString();
+				bc.name.trimmed();
+				bc.name_hash=qhashEx(bc.name,bc.name.length());
+				bc.link = q.value(fullPath_Idx).toString();
+				if( bc.link.isEmpty()) continue;
+				QUrl url(bc.link);
+				if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
+					//qDebug()<<"unvalid http format!";
+					continue;
+				}
+				handleUrlString(bc.link );
+				bc.link_hash=qhashEx(bc.link,bc.link.length());
+				bc.flag = BOOKMARK_ITEM_FLAG;
+				bc.level = level;	
+				bc.bmid = q.value(id_Idx).toUInt();
+				bc.groupId= q.value(groupid_Idx).toUInt();
+				bc.parentId= q.value(parentid_Idx).toUInt();
+				addItemToSortlist(bc,list);
+			}		
+		}
+		q.clear();
+}
 void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int level/*, uint flag*/)
 {
 	//if (level == 0)
@@ -1487,5 +1551,63 @@ QString tz::getDefaultBrowser()
 		 }
 	}
 	return defBrowserPath;
+}
+unsigned int tz::getNetBookmarkMaxGroupid(QSqlDatabase *db)
+{
+	QSqlQuery q("",*db);
+	unsigned int maxgroupid = NET_BOOKMARK_GROUPID_START;
+	QString  s=QString("SELECT max(groupid) FROM %1 WHERE comeFrom=%2 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			maxgroupid = q.record().value(0).toUInt();
+			maxgroupid = maxgroupid?(maxgroupid+1):(NET_BOOKMARK_GROUPID_START);
+		}		
+	}
+	q.clear();
+	return maxgroupid; 
+}
+unsigned int  tz::getBmParentId(QSqlDatabase *db,const int& id)
+{
+	QSqlQuery q("",*db);
+	unsigned int parentid = 0;
+	QString  s=QString("SELECT parentid FROM %1 WHERE  comeFrom=%2 AND id=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(id);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 parentid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return parentid;
+}
+unsigned int  tz::getBmidFromGroupId(QSqlDatabase *db,const int& groupid)
+{
+	QSqlQuery q("",*db);
+	unsigned int bmid = 0;
+	QString  s=QString("SELECT id FROM %1 WHERE  comeFrom=%2 AND groupid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 bmid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return bmid;
+}
+
+unsigned int  tz::getBmGroupId(QSqlDatabase *db,const int& id)
+{
+	QSqlQuery q("",*db);
+	unsigned int groupid = 0;
+	QString  s=QString("SELECT groupid FROM %1 WHERE  comeFrom=%2 AND id=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(id);
+	if(q.exec(s))
+	{
+		if(q.next()) {
+			 groupid = q.value(0).toUInt();
+		}		
+	}
+	q.clear();
+	return groupid;
 }
 

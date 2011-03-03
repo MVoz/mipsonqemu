@@ -224,5 +224,26 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 		);
 	BIND_CATITEM_QUERY(q,item);
 }
+void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
+{
+	QSqlQuery q("",*db);
+	/*
+	QString queryStr=QString("INSERT INTO %1 (fullPath, shortName, lowName,"
+	"icon,usage,hashId,"
+	"groupId, parentId, isHasPinyin,"
+	"comeFrom,hanziNums,pinyinDepth,"
+	"pinyinReg,alias1,alias2,shortCut,delId,args) "
+	"VALUES ('%2','%3','%4','%5',%6,%7,%8,%9,%10,%11,%12,%13,'%14','%15','%16','%17',%18,'%19')").arg(DB_TABLE_NAME).arg(item.fullPath) .arg(item.shortName).arg(item.lowName)
+	.arg(item.icon).arg(item.usage).arg(qHash(item.fullPath))
+	.arg(item.groupId).arg(item.parentId).arg(item.isHasPinyin)
+	.arg(item.comeFrom).arg(item.hanziNums).arg(item.pinyinDepth)
+	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(item.args);
+	qDebug("queryStr=%s",qPrintable(queryStr));
+	*/
+	CatItem::prepareInsertQuery(&q,item);
+	q.exec();
+	q.clear();
+
+}
 
 

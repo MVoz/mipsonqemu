@@ -99,7 +99,6 @@ public:
 public:
 	int checkListDirExist(const QString& dirname);
 	int checkListDirSpecialchar(const QString& dirname);
-	void addCatitemToDb(CatItem& item);
 	void modifyCatitemFromDb(CatItem& item,uint index);
 	void deleteCatitemFromDb(CatItem& item,uint index);
 public slots: 
@@ -128,10 +127,6 @@ public slots:
 	void netbookmarkmenu(int browserid,int parentid,QString func,QString& jsresult);
 	void bmApply(const int& action,const QString& name,const QString& url,const int& id);
 	void bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id);
-	unsigned int getNetBookmarkMaxGroupid();
-	unsigned int  getBmParentId(const int& id);
-	unsigned int  getBmGroupId(const int& id);
-	unsigned int  getBmidFromGroupId(const int& groupid);
 	void deleteNetworkBookmark(unsigned int groupid);
 signals:
 	void rebuildcatalogSignal();
