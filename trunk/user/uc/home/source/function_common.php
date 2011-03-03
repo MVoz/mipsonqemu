@@ -2436,6 +2436,11 @@ function usermenuchild($browserid,$groupid,$func,$value)
 		  echo '</li>';
    }
 }
+function defaultBrowser()
+{
+	global $_SGLOBAL;
+	return $_SGLOBAL['browsertype']['network'];
+}
 function usermenu($browserid,$groupid,$func){
 	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return false;
@@ -2450,7 +2455,7 @@ function usermenu($browserid,$groupid,$func){
 		echo '</ul>';
 	}else{
 		usermenu_cache();
-		$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+		$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?defaultBrowser():$browserid;
 		$query = $_SGLOBAL['db']->query("SELECT * FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$browserid);
 		createChildMenu($query,$func,$browserid,$groupid,"menu");
 	}
@@ -2460,7 +2465,7 @@ function mkbrowsertab($id)
 {
     global $_SGLOBAL;
 	//if(empty($_SGLOBAL['supe_uid'])) echo '';
-	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?defaultBrowser():$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
 		/*
 		echo '<li '.(($browserid==$id)?'class="active"':'').' id="'.$browserid.'"><a onclick="getAjax(\'browserview\',\''.$browserid.'\')" href="javascript:;" ><span>'.$key.'</span></a></li>';
@@ -2472,7 +2477,7 @@ function mkbrowsertab($id)
 function mkbrowsershowtab($id)
 {
     global $_SGLOBAL;
-	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?defaultBrowser():$browserid;
     foreach($_SGLOBAL['browsertype'] as $key=>$browserid){
 	    echo '<li '.(($browserid==$id)?'class="active"':'').'><a onclick="getAjax(\'dirtree\',\''.$browserid.'\');" href="javascript:;"><span>'.$key.'</span></a></li>';
 		/*echo '<li '.(($browserid==$id)?'class="active"':'').'><a href="cp.php?ac=link&op=bookmark&linkid='.$linkid.'&browserid='.$browserid.'">'.$key.'</span></a></li>';*/
@@ -2888,7 +2893,7 @@ function getFirefoxBookmarkMenuGroupid()
 {
 	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return 0;
-	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?defaultBrowser():$browserid;
 	$query =$_SGLOBAL['db']->query("SELECT groupid FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$_SGLOBAL['browsertype']['firefox']." AND subject='书签菜单' limit 1");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		return $value['groupid'];
@@ -2902,7 +2907,7 @@ function getFirefoxBookmarkToolGroupid()
 {
 	global $_SGLOBAL,$_SC;
 	if(empty($_SGLOBAL['supe_uid'])) return 0;
-	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?$_SGLOBAL['browsertype']['ie']:$browserid;
+	$browserid = (empty($browserid) || !in_array($browserid, $_SGLOBAL['browsertype']))?defaultBrowser():$browserid;
 	$query =$_SGLOBAL['db']->query("SELECT groupid FROM ".tname('bookmark')." WHERE uid='$_SGLOBAL[supe_uid]' AND type=".$_SC['bookmark_type_dir']." AND parentid=0".' AND browserid='.$_SGLOBAL['browsertype']['firefox']." AND subject='书签工具栏' limit 1");
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 		return $value['groupid'];
@@ -3299,7 +3304,7 @@ function gethttpbrowserid()
 		if(!empty($_SCOOKIE['browser'])&&(in_array(intval($_SCOOKIE['browser']),$_SGLOBAL['browsertype'])))
 			return intval($_SCOOKIE['browser']);
 	}
-	return (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?0:intval($_GET['browserid']);
+	return (empty($_GET['browserid'])||!in_array(intval($_GET['browserid']),$_SGLOBAL['browsertype']))?defaultBrowser():intval($_GET['browserid']);
 }
 function gethttpgroupid($browserid)
 {
