@@ -71,6 +71,7 @@ function bmApply(action)
 }
 function apply(key)
 {
+		OptionsDlg.apply('netbookmarkbrowser',$('#netbookmarkbrowser').val());
 		OptionsDlg.accept();
 }
 </script>
@@ -88,7 +89,7 @@ function apply(key)
 				<ul id="tmenu"></ul>
 			</div>
 	</div>
-<div style="height: 305px;" class="box">
+<div style="height: 235px;" class="box">
 <div class="box_l">
 	<h2 class="ntitle">
 		<p id="groupname">体育»</p>
@@ -250,7 +251,14 @@ function apply(key)
 						</p>
 			</fieldset>
 </div>
-			 <div id="footer">				
+			<fieldset class="cfgitem">
+				<h2>浏览器设置&raquo;</h2>
+				<p>
+					<span class="tl">网络收藏夹的书签将使用</span>
+					<input name="netbookmarkbrowser" type="text" id="netbookmarkbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netbookmarkbrowser',1);"/>
+				</p>
+			</fieldset>
+			<div id="footer">				
 			</div>
 <script type="text/javascript" language="javascript">
 OptionsDlg.loading('bookmark');	
