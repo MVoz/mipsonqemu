@@ -721,8 +721,13 @@ void MyWidget::launchObject()
 					runProgram(res.fullPath,QString(""));
 
 			}
-		}else
-		{
+		}if(res.comeFrom==COME_FROM_NETBOOKMARK){
+			QString bin=gSettings->value("netbookmarkbrowser","").toString();			
+			if(!bin.isEmpty())
+				runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
+			else
+				runProgram(res.fullPath,QString(""));
+		}else{
 			QString ie_bin;
 			if(getIEBinPath(ie_bin)){
 				qDebug()<<ie_bin;
