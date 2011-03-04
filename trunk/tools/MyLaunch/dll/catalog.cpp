@@ -222,7 +222,7 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 		":groupId,:parentId,:type"
 		")").arg(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)))
 		);
-	qDebug()<<(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)));
+	//qDebug()<<(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)));
 	BIND_CATITEM_QUERY(q,item);
 }
 void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
