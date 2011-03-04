@@ -741,7 +741,7 @@ void bmXml::bmListToXml(int flag, QList < bookmark_catagory > *list, QTextStream
 		case BOOKMARK_ITEM_FLAG:
 			(*os)<<"<item parentId=\""<<bm.parentId<<"\">\n";
 			bmItemToFile(os,bm);
-			(*os)<<"<comeFrom><![CDATA["<<(COME_FROM_IE+(browserType-COMF_FROM_NETBOOKMARK))<<"]]></comeFrom>\n";
+			(*os)<<"<comeFrom><![CDATA["<<(COME_FROM_NETBOOKMARK+(browserType-COME_FROM_NETBOOKMARK))<<"]]></comeFrom>\n";
 			(*os)<<"</item>\n";
 			break;
 		}

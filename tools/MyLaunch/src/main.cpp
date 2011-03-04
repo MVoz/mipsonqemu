@@ -1191,11 +1191,12 @@ void MyWidget::searchOnInput()
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
-#ifdef CONFIG_LOG_ENABLE_1
-	qDebug("gSearchTxt=%s", TOCHAR(gSearchTxt));
+#if 0
+	qDebug()<<"search results:";
 	for (int i = 0; i < searchResults.count(); i++)
 	{
-		qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
+		//qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
+		qDebug()<<" "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom;
 	}
 #endif
 	qSort(searchResults.begin(), searchResults.end(), CatLess);
@@ -1243,6 +1244,7 @@ QIcon MyWidget::getIcon(CatItem * item)
 	if (item->icon.isEmpty()||item->icon.isNull())
 	{
 		QDir dir(item->fullPath);
+		qDebug()<<item->fullPath;
 		if (dir.exists())
 			return platform->icons->icon(QFileIconProvider::Folder);
 		else if(QFile::exists(item->fullPath))
@@ -1262,23 +1264,23 @@ QIcon MyWidget::getIcon(CatItem * item)
 		return platform->icon(QDir::toNativeSeparators(item->fullPath));
 	} else
 	{
-		qDebug()<<item->fullPath<<" "<<item->icon;
+		//qDebug()<<item->fullPath<<" "<<item->icon;
 		//#ifdef Q_WS_X11 // Windows needs this too for .png files
 		if (QFile::exists(item->icon))
 		{
 			if(!IS_FROM_BROWSER(item->comeFrom))
-				return QIcon(item->icon);
+				return platform->icon(QDir::toNativeSeparators(item->icon));
 			else{
 				//maybe the wrong file
 				QImageReader imgread(item->icon);
 				//qDebug("error %s",qPrintable(imgread.errorString()));
 				QString browserfullpath("");
 				getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
-				qDebug()<<browserfullpath;
+				//qDebug()<<browserfullpath;
 				setBrowserFullpath(BROWSE_TYPE_IE,browserfullpath);
-				qDebug()<<browserfullpath;
+				//qDebug()<<browserfullpath;
 				setBrowserFullpath(BROWSE_TYPE_FIREFOX,browserfullpath);
-				qDebug()<<browserfullpath;
+				//qDebug()<<browserfullpath;
 				QIcon in = QIcon(item->icon);
 				//qDebug("itemicon = %s actualSize=%d height=%d",qPrintable(item.icon),in.actualSize().width(),in.actualSize().height());
 				if(imgread.format().isEmpty()){
@@ -1288,8 +1290,9 @@ QIcon MyWidget::getIcon(CatItem * item)
 						return platform->icon(QDir::toNativeSeparators(browserfullpath));
 					//return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
 					}
-				else
-					return in;
+				else{
+					return platform->icon(QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath()).append("\\").append(item->icon)));
+				}
 			}
 		}else if(IS_FROM_BROWSER(item->comeFrom)/*&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()))*/){
 			//return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
@@ -2224,6 +2227,7 @@ void MyWidget::bmSyncerFinished()
 	gSyncer.reset();
 	//qDebug()<<__FUNCTION__<<"release gSemaphore";
 	gSemaphore.release(1);
+	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
 	if(closeflag)
 		close();
@@ -2643,13 +2647,11 @@ void MyWidget::getFavico(const QString& host,const QString& filename)
 void MyWidget::scanDbFavicon()
 {
 	QSqlQuery	q("", db);
-	QString s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER));
+	QString s=QString("SELECT fullPath FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER));
 	if(q.exec(s)){
 		//getFavico("www.sohu.com","favicon.ico");
 		while(q.next()) {
-
 			QString fullPath = q.value(q.record().indexOf("fullPath")).toString();		
-
 			if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
 			{
 				QUrl url(fullPath);									
@@ -2659,7 +2661,6 @@ void MyWidget::scanDbFavicon()
 						getFavico(host,"favicon.ico");
 				}
 			}
-
 		}
 	}	
 	q.clear();
@@ -2734,6 +2735,37 @@ bool CatLessNoPtr(CatItem & a, CatItem & b)
 return CatLess(&a,&b);
 }
 */
+int itempriority(int comefrom)
+{
+	//COME_FROM_SHORTCUT>COME_FROM_COMMAND>COMF_FROM_NETBOOKMARK(COME_FROM_IE,COME_FROM_FIREFOX)>COME_FROM_PREDEFINE>COME_FROM_PROGRAM
+	
+	int priority = 0;
+	switch(comefrom)
+	{
+		case COME_FROM_SHORTCUT:
+			return priority;
+		break;
+		case COME_FROM_COMMAND:
+			return priority+1;
+		break;
+		case COME_FROM_NETBOOKMARK:
+		case COME_FROM_IE:
+		case COME_FROM_FIREFOX:
+		case COME_FROM_OPERA:
+			return priority+2;
+		break;
+		case COME_FROM_PREDEFINE:
+			return priority+3;
+		break;
+		case COME_FROM_PROGRAM:
+			return priority+4;
+		break;
+		default:
+			return priority+5;
+		break;
+	}
+	return priority;
+}
 bool CatLess(CatItem * a, CatItem * b)
 {
 	/*
@@ -2758,6 +2790,10 @@ bool CatLess(CatItem * a, CatItem * b)
 		if(a->pos<b->pos)
 			return true; 
 	}
+	if(itempriority(a->comeFrom)<itempriority(b->comeFrom))
+		return true;
+	if(itempriority(a->comeFrom)>itempriority(b->comeFrom))
+		return false;
 
 	int localFind = a->lowName.indexOf(gSearchTxt);
 	int otherFind = b->lowName.indexOf(gSearchTxt);
@@ -2782,6 +2818,8 @@ bool CatLess(CatItem * a, CatItem * b)
 		return true;
 	if (localLen > otherLen)
 		return false;
+//priority from come from
+//COME_FROM_SHORTCUT>COME_FROM_COMMAND>COMF_FROM_NETBOOKMARK(COME_FROM_IE,COME_FROM_FIREFOX)>COME_FROM_PREDEFINE>COME_FROM_PROGRAM
 
 
 	// Absolute tiebreaker to prevent loops

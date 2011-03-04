@@ -28,7 +28,7 @@ bool bmMerge::checkXmlfileFromServer()
 		QString line = s_file.readLine();
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
-			qDebug("no modification on server!!!");
+			//qDebug("no modification on server!!!");
 			goto good;
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			qDebug("login failed!!!");
@@ -37,7 +37,7 @@ bool bmMerge::checkXmlfileFromServer()
 			goto bad;
 		}
 		else{
-			qDebug("has modification on server!!!");
+			//qDebug("has modification on server!!!");
 			goto good;
 		}
 	}
@@ -348,7 +348,7 @@ ffout:
 			int browserid = browserInfo[i].id;
 			if( browserenable[i])
 			{
-				bmintolaunchdb(&q,&result_bc[browserid],browserid+COMF_FROM_NETBOOKMARK,delId);
+				bmintolaunchdb(&q,&result_bc[browserid],browserid+COME_FROM_NETBOOKMARK,delId);
 			}
 			i++;
 		}		
@@ -758,13 +758,6 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				qDebug()<<"Couldn't remove file "<<path + "/" + bc->name + ".url";
 				return;
 			}
-			/*
-			if (!DeleteFile(filePath.utf16()))
-			{
-			qDebug("Couldn't remove file %s.", qPrintable(filePath));
-			return;
-			}
-			*/
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
