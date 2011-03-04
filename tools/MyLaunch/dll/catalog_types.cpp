@@ -328,6 +328,8 @@ QList < CatItem * >SlowCatalog::search(QString searchTxt)
 		uint shortName_flag = 0;
 		leftnums = numresults - i;
 		QStringList ids;
+		if(info->id ==COME_FROM_MYBOOKMARK )
+			continue;
 		if(info->id == COME_FROM_SHORTCUT){
 			//s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%%2%'  limit %3").arg(info->name).arg(searchTxt).arg(leftnums);
 			s=QString("SELECT * FROM %1  WHERE alias2 LIKE '%").arg(info->name);

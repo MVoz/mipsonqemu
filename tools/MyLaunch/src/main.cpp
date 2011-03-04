@@ -672,7 +672,7 @@ void MyWidget::launchBrowserObject(CatItem& res)
 	if(bin.isEmpty())
 		bin = defBrowser;
 	qDebug()<<bin;
-	if(bin.isEmpty()){
+	if(!bin.isEmpty()){
 		if(bin.endsWith(BROWSER_FIREFOX_BIN_NAME,Qt::CaseInsensitive))
 			runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
 		else
