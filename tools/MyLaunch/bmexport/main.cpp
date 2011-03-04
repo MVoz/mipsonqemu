@@ -115,23 +115,15 @@ int productExcludeIdStr(QSqlDatabase &db)
 		qDebug()<<"xxxxxxxxxxx"<<excludeId<<"\n";
 		return 0;
 }
-uint getIEBinPath(QString& ie_bin)
+uint getIEBinPath(QString& bin)
 {	
-		qDebug("getIEBinPath");
-	//	QSettings ff_reg("HKYE_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion",QSettings::NativeFormat);
-	 QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
-		 ff_reg.beginGroup("IeXPLORE.EXE");		 
-		QStringList keys = ff_reg.allKeys();
-		  for (int i = 0; i < keys.size(); ++i)
-			qDebug("xx%s",qPrintable(keys.at(i)));
-
-				ie_bin=ff_reg.value(".").toString();
-				if(!ie_bin.isEmpty())
-				return 1;
-				else
-				return 0;
-
-		 
+	 QSettings reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
+	 reg.beginGroup("IeXPLORE.EXE");		 
+	 bin=reg.value(".").toString();
+	if(!bin.isEmpty())
+		return 1;
+	else
+		return 0;
 }
 int main(int argc, char* argv[])
 {
