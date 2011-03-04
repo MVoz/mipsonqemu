@@ -165,6 +165,8 @@ void setBrowserFullpath(QSettings *s,int type,QString& fullpath){
 	switch(type){
 		case BROWSE_TYPE_NETBOOKMARK:
 				fullpath = s->value("netbookmarkbrowser","").toString();
+				if(fullpath.isEmpty())
+					fullpath = tz::getDefaultBrowser();
 			break;
 		case BROWSE_TYPE_IE:
 			{
