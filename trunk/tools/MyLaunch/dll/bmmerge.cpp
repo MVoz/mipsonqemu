@@ -264,7 +264,7 @@ void bmMerge::handleBmData()
 				//	fromServer[i]->readStream(BROWSE_TYPE_IE);
 					fromServer[i]->readStream(browserid);
 
-					 dumpBcList(&fromServer[i]->bm_list);	
+					// dumpBcList(&fromServer[i]->bm_list);	
 
 					setUpdatetime(fromServer[i]->updateTime);
 					f.close();
@@ -276,7 +276,7 @@ void bmMerge::handleBmData()
 				{
 				case BROWSE_TYPE_NETBOOKMARK:
 					tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0);
-					dumpBcList(&current_bc[BROWSE_TYPE_NETBOOKMARK]);
+					//dumpBcList(&current_bc[BROWSE_TYPE_NETBOOKMARK]);
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 					break;
 				case BROWSE_TYPE_IE:
@@ -328,9 +328,9 @@ ffout:
 					*/
 					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0);
 				}	
-				qDebug()<<"#########################################";
-				dumpBcList(&result_bc[browserid]);
-				qDebug()<<"#########################################";
+				//qDebug()<<"#########################################";
+				//dumpBcList(&result_bc[browserid]);
+				//qDebug()<<"#########################################";
 			}
 			i++;
 		}
@@ -359,7 +359,6 @@ ffout:
 	}
 #endif
 	//write to lastupdate
-	qDebug()<<__FUNCTION__<<localBmFullPath;
 	if((!QFile::exists(localBmFullPath)||(mergestatus==MERGE_STATUS_SUCCESS_WITH_MODIFY))&&!terminatedFlag){
 		storeLocalbmData(localBmFullPath,browserInfo,browserenable,result_bc,lastUpdate,updateTime);
 	}
@@ -586,12 +585,10 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				item.groupId=tz::getNetBookmarkMaxGroupid(db);
 				qDebug()<<__FUNCTION__<<bc->name<<" "<<item.groupId;
 				CatItem::addCatitemToDb(db,item);
-				/*
 				foreach(bookmark_catagory bm, bc->list)
 				{
 					downloadToLocal(&bm, action, dirPath,browserType,item.groupId);
 				}
-				*/
 			}
 			break;
 		case BROWSE_TYPE_IE:
@@ -636,6 +633,12 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 			break;
 		case ACTION_ITEM_DELETE:
 			switch(browserType){
+		case BROWSE_TYPE_NETBOOKMARK:
+			{
+				qDebug()<<"delete category groupid "<<bc->groupId;
+				tz::deleteNetworkBookmark(db,bc->groupId);
+			}
+			break;
 		case BROWSE_TYPE_IE:
 			dirPath = path + "\\" + bc->name;
 			if (!deleteDirectory(dirPath))
@@ -743,6 +746,12 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 			break;
 		case ACTION_ITEM_DELETE:
 			switch(browserType){
+		case BROWSE_TYPE_NETBOOKMARK:
+			{					
+				CatItem item(bc->link,bc->name,"",COME_FROM_MYBOOKMARK);	
+				CatItem::deleteCatitemFromDb(db,item,bc->bmid);
+			}
+			break;
 		case BROWSE_TYPE_IE:
 			if(!QFile::remove(path + "/" + bc->name + ".url"))
 			{
