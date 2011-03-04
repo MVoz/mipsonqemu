@@ -274,6 +274,8 @@ void OptionsDlg::loading(const QString & name)
 		netbookmarkmenu(COME_FROM_MYBOOKMARK,0,"getbmfromid",jsStr);
 		getbmfromid(0,COME_FROM_MYBOOKMARK,"root",1);
 		jsStr.append("');");
+		
+		JS_APPEND_VALUE("netbookmarkbrowser","","");
 		//qDebug()<<jsStr;
 	}else if (name == "Network"){
 		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
