@@ -161,35 +161,23 @@ void clearBrowserInfoOpFlag(uint id)
 	}
 	return ;
 }
-void setBrowserFullpath(int type,QString& fullpath){
+void setBrowserFullpath(QSettings *s,int type,QString& fullpath){
 	switch(type){
 		case BROWSE_TYPE_NETBOOKMARK:
+				fullpath = s->value("netbookmarkbrowser","").toString();
 			break;
 		case BROWSE_TYPE_IE:
-				{
-			QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\IEXPLORE.EXE",QSettings::NativeFormat);
-			fullpath=ff_reg.value(".","").toString();
-			/*
-			QString ff_v= ff_reg.value("CurrentVersion","").toString().trimmed();
-			if(!ff_v.isEmpty())
 			{
-				fullpath=ff_reg.value(ff_v.append("\\main\\PathToExe"),"").toString();
-			}
-			*/
+				fullpath = s->value("adv/iepath","").toString();
+				if(fullpath.isEmpty())
+					fullpath = tz::getIEBinPath();
 			}
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
-				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\firefox.exe",QSettings::NativeFormat);
-				fullpath=ff_reg.value(".","").toString();
-				/*
-				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
-				QString ff_v= ff_reg.value("CurrentVersion","").toString().trimmed();
-				if(!ff_v.isEmpty())
-				{
-					fullpath=ff_reg.value(ff_v.append("\\main\\PathToExe"),"").toString();
-				}
-				*/
+				fullpath = s->value("adv/firefoxpath","").toString();
+				if(fullpath.isEmpty())
+					fullpath=tz::getFirefoxBinPath();
 			}
 			break;
 		case BROWSE_TYPE_OPERA:
@@ -219,7 +207,8 @@ void setBrowserEnable(QSettings *s)
 	{
 		browserInfo[i].enable = s->value(QString("adv/ckSupport%1").arg(browserInfo[i].name),browserInfo[i].defenable).toBool();
 		if(browserInfo[i].enable){
-			setBrowserFullpath(browserInfo[i].id,browserInfo[i].fullpath);
+			setBrowserFullpath(s,browserInfo[i].id,browserInfo[i].fullpath);
+			qDebug()<<browserInfo[i].id<<browserInfo[i].fullpath;
 		}
 		i++;
 	}
@@ -683,7 +672,7 @@ uint qhashEx(QString str, int len)
 	return h;
 }
 
-uint getFirefoxBinPath(QString& ff_bin)
+QString tz::getFirefoxBinPath()
 {
 	QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
 	qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
@@ -692,23 +681,16 @@ uint getFirefoxBinPath(QString& ff_bin)
 	ff_reg.beginGroup("Main");		 
 	QStringList keys = ff_reg.allKeys();
 	if(keys.contains("PathToExe",Qt::CaseInsensitive)){
-		ff_bin=ff_reg.value("PathToExe").toString();
-		return 1;
+		return ff_reg.value("PathToExe").toString().trimmed();
 	}
-	return 0;
-
+	return "";
 }
 
-uint getIEBinPath(QString& ie_bin)
+QString tz::getIEBinPath()
 {
-	QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
-	ff_reg.beginGroup("IEXPLORE.EXE");		 
-	QStringList keys = ff_reg.allKeys();
-	ie_bin=ff_reg.value(".").toString();
-	if(!ie_bin.isEmpty())
-		return 1;
-	else
-		return 0;
+	 QSettings reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
+	 reg.beginGroup("IeXPLORE.EXE");		 
+	return reg.value(".").toString().trimmed();
 }
 uint setLanguage(int l)
 {

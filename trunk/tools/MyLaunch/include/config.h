@@ -451,5 +451,7 @@ enum TEST_NET_RESULT{
 #define HOTKEY_PART_1 Qt::Key_Enter
 
 #define NET_BOOKMARK_GROUPID_START 8000
+
+#define BROWSER_FIREFOX_BIN_NAME "firefox.exe"
 #endif
 

@@ -243,6 +243,7 @@ public:
 	bool setHotkey(int, int);
 	void showAlternatives(bool show=true);
 	void launchObject();
+	void launchBrowserObject(CatItem& res);
 	void searchFiles(const QString & input, QList<CatItem*>& searchResults);
 	void parseInput(QString text);
 	void resetLaunchy();
@@ -295,6 +296,7 @@ private:
 	QTimer* monitorTimer;
 	OptionsDlg *ops;
 	QString shortkeyString;
+	QString defBrowser;
 public slots:
 		void monitorTimerTimeout();
 		void menuOptions();

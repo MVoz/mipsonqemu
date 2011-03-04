@@ -501,7 +501,7 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		emit configModifyNotify(SHOWTRAY);	
 	else if(name.startsWith("HttpProxy"))
 		emit configModifyNotify(NETPROXY);	
-	else if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"){
+	else if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"||name=="netbookmarkbrowser"){
 		setBrowserEnable(settings);
 	}
 		

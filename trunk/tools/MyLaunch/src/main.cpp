@@ -390,6 +390,10 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
 	GetShellDir(CSIDL_FAVORITES, gIeFavPath);
+	defBrowser = tz::getDefaultBrowser();
+	if(!QFile::exists(defBrowser)){
+		defBrowser.clear();	
+	}	
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -661,6 +665,23 @@ void MyWidget::increaseUsage(CatItem& item,const QString& alias)
 
 	}		
 }
+void MyWidget::launchBrowserObject(CatItem& res)
+{
+	QString bin;
+	getBrowserFullpath(res.comeFrom-COME_FROM_BROWSER_START,bin);	
+	if(bin.isEmpty())
+		bin = defBrowser;
+	qDebug()<<bin;
+	if(bin.isEmpty()){
+		if(bin.endsWith(BROWSER_FIREFOX_BIN_NAME,Qt::CaseInsensitive))
+			runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
+		else
+			runProgram(bin,tr(" %1").arg(res.fullPath));
+	}
+	else
+		runProgram(res.fullPath,QString(""));
+}
+
 void MyWidget::launchObject()
 {
 	CatItem res;
@@ -707,6 +728,8 @@ void MyWidget::launchObject()
 	} else if(IS_FROM_BROWSER(res.comeFrom)){
 		//Weby web(gSettings);
 		//web.launchItem(&inputData, &res);
+		launchBrowserObject(res);
+		/*
 		if(res.comeFrom==COME_FROM_FIREFOX)
 		{
 			QString ff_bin;
@@ -722,13 +745,20 @@ void MyWidget::launchObject()
 
 			}
 		}if(res.comeFrom==COME_FROM_NETBOOKMARK){
-			QString bin=gSettings->value("netbookmarkbrowser","").toString();			
+			//QString bin=gSettings->value("netbookmarkbrowser","").toString();		
+			QString bin;
+			getBrowserFullpath(COME_FROM_NETBOOKMARK-COME_FROM_BROWSER_START,bin);
+			qDebug()<<bin;
 			if(!bin.isEmpty())
 				runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
 			else
 				runProgram(res.fullPath,QString(""));
+
+			
 		}else{
-			QString ie_bin;
+			QString ie_bin=getIEBinPath();
+
+			
 			if(getIEBinPath(ie_bin)){
 				qDebug()<<ie_bin;
 				runProgram(ie_bin,res.fullPath);
@@ -741,6 +771,7 @@ void MyWidget::launchObject()
 
 			}
 		}
+		*/
 
 
 	}
@@ -1260,15 +1291,11 @@ QIcon MyWidget::getIcon(CatItem * item)
 			QUrl url(item->fullPath);
 			if(url.isValid()){
 					qDebug()<<item->fullPath<<" is valid url";
-					QString defBrowser = tz::getDefaultBrowser();
-					if(!defBrowser.isEmpty()&&QFile::exists(defBrowser)){
-						return platform->icon(QDir::toNativeSeparators(defBrowser));
-					}
+					return platform->icon(QDir::toNativeSeparators(defBrowser));
 			}
 		}
 		return platform->icon(QDir::toNativeSeparators(item->fullPath));
-	} else
-	{
+	} else{
 		//qDebug()<<item->fullPath<<" "<<item->icon;
 		//#ifdef Q_WS_X11 // Windows needs this too for .png files
 		if (QFile::exists(item->icon))
@@ -1277,26 +1304,13 @@ QIcon MyWidget::getIcon(CatItem * item)
 				return platform->icon(QDir::toNativeSeparators(item->icon));
 			else{
 				//maybe the wrong file
-				QImageReader imgread(item->icon);
-				//qDebug("error %s",qPrintable(imgread.errorString()));
-				QString browserfullpath("");
-				getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
-				//qDebug()<<browserfullpath;
-				setBrowserFullpath(BROWSE_TYPE_IE,browserfullpath);
-				//qDebug()<<browserfullpath;
-				setBrowserFullpath(BROWSE_TYPE_FIREFOX,browserfullpath);
-				//qDebug()<<browserfullpath;
-				QIcon in = QIcon(item->icon);
-				//qDebug("itemicon = %s actualSize=%d height=%d",qPrintable(item.icon),in.actualSize().width(),in.actualSize().height());
+				QImageReader imgread(item->icon);			
 				if(imgread.format().isEmpty()){
-						//QString browserfullpath("");
-						//getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
-						//qDebug()<<browserfullpath;
+						QString browserfullpath("");
+						getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
 						return platform->icon(QDir::toNativeSeparators(browserfullpath));
-					//return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
-					}
-				else{
-					return platform->icon(QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath()).append("\\").append(item->icon)));
+				}else{
+						return platform->icon(QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath()).append("\\").append(item->icon)));
 				}
 			}
 		}else if(IS_FROM_BROWSER(item->comeFrom)/*&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()))*/){
@@ -1307,7 +1321,6 @@ QIcon MyWidget::getIcon(CatItem * item)
 			return platform->icon(QDir::toNativeSeparators(browserfullpath));
 		}
 		//#endif
-
 		return platform->icon(QDir::toNativeSeparators(item->icon));
 	}
 }

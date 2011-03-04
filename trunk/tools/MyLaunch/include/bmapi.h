@@ -65,8 +65,8 @@ BMAPI_DLL_FUNCEXPORT void getUpdatetime(QString& time);
 BMAPI_DLL_FUNCEXPORT uint qhashEx(QString str, int len);
 //BMAPI_DLL_FUNCEXPORT void setBmId(uint bmid);
 //BMAPI_DLL_FUNCEXPORT uint getBmId();
-BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
-BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
+//BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
+//BMAPI_DLL_FUNCEXPORT uint getIEBinPath(QString& ff_bin);
 BMAPI_DLL_FUNCEXPORT uint setLanguage(int l);
 BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
@@ -182,6 +182,8 @@ public :
 	static int checkSilentUpdateFiles();
 	static QString getSystemTempDir();
 	static QString getDefaultBrowser();
+	static QString getIEBinPath();
+	static QString getFirefoxBinPath();
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
