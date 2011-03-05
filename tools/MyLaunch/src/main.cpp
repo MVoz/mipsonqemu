@@ -998,17 +998,25 @@ void MyWidget::doEnter()
 		launchObject();
 	else{
 		//google or baidu
+
 		if(gSearchTxt!="")
 		{
+			QString netsearchbrowser=gSettings->value("netsearchbrowser","").toString().trimmed();
+			//runProgram(netsearchbrowser,"");
 			//uint   netfinder = gSettings->value("netfinder",qhashEx(QString("google"),QString("google").count())).toUInt();
 			int i = 0;
 			while(netfinders[i].name!=0){				
 				if(gSettings->value(QString("netfinder/").append(netfinders[i].name),true).toBool())
 				{
-					QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));
-					if (!platform->Execute(netfinders[i].fullpath,args))
-					{
-						runProgram(QString(netfinders[i].fullpath).append(args), "");
+					QString args =  QString(netfinders[i].args).append(QUrl::toPercentEncoding(gSearchTxt));					
+					if(!netsearchbrowser.isEmpty()){
+						qDebug()<<netsearchbrowser<<QString(netfinders[i].fullpath).append(args);
+						runProgram(netsearchbrowser,QString(netfinders[i].fullpath).append(args));
+					}else{
+						if (!platform->Execute(netfinders[i].fullpath,args))
+						{
+							runProgram(QString(netfinders[i].fullpath).append(args), "");
+						}
 					}
 				}
 				i++;

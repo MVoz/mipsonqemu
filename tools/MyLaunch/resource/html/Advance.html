@@ -16,6 +16,7 @@ function apply(key)
 		OptionsDlg.apply('adv/ckSupportOpera',$obj('ckSupportOpera').checked);
 		OptionsDlg.apply('netfinder/baidu',$obj('baidu').checked);
 		OptionsDlg.apply('netfinder/google',$obj('google').checked);
+		OptionsDlg.apply('netsearchbrowser',$('#netsearchbrowser').val());
 		OptionsDlg.accept();
 }
 function   set_selected(s_value,id){   
@@ -68,6 +69,10 @@ function   set_selected(s_value,id){
 					<fieldset class="cfgitem">
 						<h2>搜索引擎&raquo;</h2>
 						<p><span>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;</span><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></p>
+						<p>
+							<span>浏览器</span>
+							<input name="netsearchbrowser" type="text" id="netsearchbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netsearchbrowser',1);"/>
+						</p>
 					</fieldset>
 				</div>
 			 <div id="footer">				

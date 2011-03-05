@@ -1619,5 +1619,3 @@ void tz::deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid)
 	}
 }
 
-
-

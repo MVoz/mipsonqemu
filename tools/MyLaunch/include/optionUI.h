@@ -125,6 +125,7 @@ public slots:
 	void netbookmarkmenu(int browserid,int parentid,QString func,QString& jsresult);
 	void bmApply(const int& action,const QString& name,const QString& url,const int& id);
 	void bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id);
+	void bmExport(const int& browserid);
 signals:
 	void rebuildcatalogSignal();
 	void optionStartSyncNotify();

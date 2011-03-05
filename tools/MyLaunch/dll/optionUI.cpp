@@ -449,8 +449,7 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
 		JS_APPEND_CHECKED("baidu","netfinder",true);
 		JS_APPEND_CHECKED("google","netfinder",true);
-
-		
+		JS_APPEND_VALUE("netsearchbrowser","","");		
 	}else if(name=="About"){
 		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		jsStr.append(QString("$('#buildtime').html('%1');").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
@@ -894,6 +893,8 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 	if(!isroot){
 		js.append(QString("<li class='bket'><a class='thickbox' id='%1' onclick='postDirItem(\\\"%2\\\",%3);' href='qrc:editbmdir'>mod</a></li>").arg(groupid).arg(name).arg(groupid));
 		js.append(QString("<li class='bkde'><a class='thickbox' id='%1' onclick='postDelDirItem(\\\"%2\\\",%3);' href='qrc:deletebmdir'>del</a></li>").arg(groupid).arg(name).arg(groupid));
+	}else{
+		js.append(QString("<li class='bkad'><a class='thickbox' href='qrc:exportbm'>export</a></li>"));
 	}
 	js.append("\");");
 		
@@ -951,5 +952,64 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 	q.clear();
 	if(parentid != 0)
 		jsresult.append(QString("</ul>"));
+}
+void OptionsDlg::bmExport(const int& browserid)
+{
+	QDEBUG_LINE;
+	struct browserinfo* browserInfo =tz::getbrowserInfo();
+	QList <bookmark_catagory> bc;
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+	{
+			QDEBUG_LINE;
+		if(browserid != browserInfo[i].id)
+		{
+			i++;
+			continue;
+		}
+		switch( browserid )
+		{
+			case BROWSE_TYPE_NETBOOKMARK:
+				break;
+			case BROWSE_TYPE_IE:
+				tz::readDirectory(tz::getIePath(), &bc, 0);
+				break;
+			case BROWSE_TYPE_FIREFOX:
+				/*
+				{
+					if(!tz::checkFirefoxDir(ff_path))
+						goto ffout;
+					qDebug()<<"firefox path:"<<ff_path;
+					int firefox_version = tz::getFirefoxVersion();
+					if(!firefox_version)
+					{	
+						QDir ffdir(ff_path);
+						if(ffdir.exists("places.sqlite"))
+							firefox_version=FIREFOX_VERSION_3;
+						else if(ffdir.exists("bookmarks.html"))
+							firefox_version=FIREFOX_VERSION_2;
+						else 
+							goto ffout; 								
+					}
+					if(firefox_version==FIREFOX_VERSION_3){
+						if(!tz::openFirefox3Db(ff_db,ff_path))
+							goto ffout; 								
+						if(!bmXml::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+							goto ffout; 							
+					}
+					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+		ffout:
+				}
+			*/
+				break;
+			case BROWSE_TYPE_OPERA:
+				break;
+		}
+		QDEBUG_LINE;
+		tz::deleteNetworkBookmark(db,0);
+		CatItem::importNetworkBookmark(db,&bc,0);
+		return;		
+	}	
+	return;
 }
 
