@@ -137,6 +137,7 @@ public:
 	static void addCatitemToDb(QSqlDatabase* db,CatItem& item);
 	static void modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
 	static void deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
+	static void importNetworkBookmark(QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid);
 	CatItem& operator=( const CatItem &s ) {
 		COPY_CATITEM(s);		
 		return *this;

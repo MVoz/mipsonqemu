@@ -289,4 +289,29 @@ void CatItem::deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
 	q.exec();
 	q.clear();
 }
+void CatItem::importNetworkBookmark(QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid)
+{
+	//QSqlQuery q("",*db);
+	//db->transaction();
+	
+	foreach(bookmark_catagory t, *s)
+	{
+		qDebug()<<"item:name:"<<t.name<<"link:"<<t.link<<"bmid:"<<t.bmid<<"parentid:"<<t.parentId<<"groupid:"<<t.groupId;
+		CatItem item((t.flag==BOOKMARK_CATAGORY_FLAG)?"":t.link,t.name,"",COME_FROM_MYBOOKMARK);	
+		item.parentId = groupid;
+		item.type = ((t.flag==BOOKMARK_CATAGORY_FLAG)?1:0);
+		if(item.type == 1)//dir
+		{
+			item.groupId=tz::getNetBookmarkMaxGroupid(db);
+		}
+		CatItem::addCatitemToDb(db,item);
+		if(t.list.count()){
+			importNetworkBookmark(db,&t.list,item.groupId);
+		}
+	}
+	
+//	db->commit();
+//	q.clear();	
+}
+
 

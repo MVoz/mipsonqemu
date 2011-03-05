@@ -69,6 +69,15 @@ function bmApply(action)
    }
    tb_init('a.thickbox');
 }
+function bmexport()
+{
+	var browserid = $('#TB_window input[name="browsertype"]:checked').val();
+	alert(browserid);
+	 $('#TB_window .cfgitem').html(
+		"<h2>&nbsp;&nbsp;导入&raquo;</h2><p><span class='tl'>正在导入处理中,请耐心等候......</span></p>"
+	 );
+	OptionsDlg.bmExport(browserid);
+}
 function apply(key)
 {
 		OptionsDlg.apply('netbookmarkbrowser',$('#netbookmarkbrowser').val());
@@ -89,7 +98,8 @@ function apply(key)
 				<ul id="tmenu"></ul>
 			</div>
 	</div>
-<div style="height: 235px;" class="box">
+<div id="wrapper">
+<div style="height: 230px;" class="box">
 <div class="box_l">
 	<h2 class="ntitle">
 		<p id="groupname">体育»</p>
@@ -126,7 +136,6 @@ function apply(key)
 </p>
 </li>  
 </ul>
-<div class="page"></div>
 </div>		
 </div>	 
 <div class="box_r">
@@ -144,6 +153,25 @@ function apply(key)
 </ul>
 </div>
 </div>	
+</div>
+</div>
+<div id="exportbm" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;导入&raquo;</h2>
+				<p>
+					<span class="tl">选择从下面浏览器中导入书签:</span>
+					<input type="radio" name="browsertype" value="1" checked>
+					<span style="display:block;padding:0 10px;float:left">IE</span>
+					<input type="radio" name="browsertype" value="2">
+					<span style="display:block;padding:0px 10px;float:left">Firefox</span>
+					<input type="radio" name="browsertype" value="3">
+					<span style="display:block;padding:0px 10px;float:left">Opera</span>
+				</p>				
+				<p>
+					<div class="btn"><a href="#" onclick="bmexport()">确定</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
 </div>
 <div id="addbmdir" style="display:none;">
 		<fieldset class="cfgitem">

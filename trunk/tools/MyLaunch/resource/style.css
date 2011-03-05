@@ -191,7 +191,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	.green a{ color: #438E0B; }
 
 .muim{	padding: 1px;width:250px;}
-.muim .menu_list{	width:230px;height:315px;overflow:auto;}
+.muim .menu_list{	width:230px;height:255px;overflow:auto;}
 .muim .menu_list ul {padding:0 10px 0 0;overflow: hidden; }
 .muim .menu_list li {padding:0 0 0 10px; background: url("qrc:image/g.png") no-repeat scroll -964px -122px transparent; width:160px;text-align:left;overflow:hidden;}
 
