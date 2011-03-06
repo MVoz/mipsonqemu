@@ -342,6 +342,10 @@ public slots:
 		void configModify(int type);
 		void storeConfig(int mode=0);
 		void restoreUserCommand();
+#ifdef CONFIG_ACTION_LIST
+		void importNetBookmarkFinished(int status);
+		void importNetBookmark(catbuildmode mode,uint browserid);
+#endif
 private slots:
 		void setIcon(int type,const QString& tip);
 		void iconActivated(QSystemTrayIcon::ActivationReason reason);

@@ -54,7 +54,64 @@ buildWithStart(fromArchive),buildMode(mode),db(dbs)
 	cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));
 	terminateflag=0;
 }
-
+#ifdef CONFIG_ACTION_LIST
+void CatBuilder::importNetBookmark()
+{
+	qDebug()<<__FUNCTION__<<browserid;
+	struct browserinfo* browserInfo =tz::getbrowserInfo();
+	QList <bookmark_catagory> bc;
+	int i = 0;
+	while(!browserInfo[i].name.isEmpty())
+	{
+		if(browserid != browserInfo[i].id){
+			i++;
+			continue;
+		}
+		switch(browserid)
+			{
+				case BROWSE_TYPE_NETBOOKMARK:
+					break;
+				case BROWSE_TYPE_IE:
+					tz::readDirectory(tz::getIePath(), &bc, 0);
+				break;
+				case BROWSE_TYPE_FIREFOX:
+				/*
+					{
+						if(!tz::checkFirefoxDir(ff_path))
+							goto ffout;
+						qDebug()<<"firefox path:"<<ff_path;
+						int firefox_version = tz::getFirefoxVersion();
+						if(!firefox_version)
+						{	
+							QDir ffdir(ff_path);
+							if(ffdir.exists("places.sqlite"))
+								firefox_version=FIREFOX_VERSION_3;
+							else if(ffdir.exists("bookmarks.html"))
+								firefox_version=FIREFOX_VERSION_2;
+							else 
+								goto ffout; 								
+							}
+						if(firefox_version==FIREFOX_VERSION_3){
+								if(!tz::openFirefox3Db(ff_db,ff_path))
+									goto ffout; 								
+								if(!bmXml::readFirefoxBookmark3(&ff_db,&current_bc[BROWSE_TYPE_FIREFOX]))
+									goto ffout; 							
+							}
+						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+						ffout:
+					}
+				*/
+				break;
+				case BROWSE_TYPE_OPERA:
+				break;
+			}
+			tz::deleteNetworkBookmark(db,0);
+			CatItem::importNetworkBookmark(cat->settings,db,&bc,0);
+			return;		
+	}
+	return;
+}
+#endif
 void CatBuilder::run()
 {
 	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
@@ -71,8 +128,13 @@ void CatBuilder::run()
 	dest +=DB_DATABASE_NAME;
 	*/
 	//getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
-
-
+#ifdef CONFIG_ACTION_LIST
+	if(buildMode == CAT_BUILDMODE_IMPORT_NETBOOKMARK){
+		importNetBookmark();
+		emit importNetBookmarkFinishedSignal(1);
+		return;
+	}
+#endif
 	qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
 	//if buildWithStart is true,rescan all item
 	//else

@@ -500,6 +500,9 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	{
 		trayIcon->show();
 	}
+	if(!gSettings->value("exportbookmark", true).toBool()){
+		tz::deleteNetworkBookmark(&db,0);
+	}
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -1940,6 +1943,31 @@ void MyWidget::contextMenuEvent(QContextMenuEvent * event)
 	menu.exec(event->globalPos());
 	menuOpen = false;
 }
+#ifdef CONFIG_ACTION_LIST
+void MyWidget::importNetBookmarkFinished(int status)
+{
+	QDEBUG_LINE;
+	gBuilder->wait();
+	gBuilder.reset();
+	//emit importNetBookmarkFinishedSignal(status);
+	if(ops)
+		ops->importNetBookmarkFinished(status);
+	gSemaphore.release(1);
+}
+void MyWidget::importNetBookmark(catbuildmode mode,uint browserid)
+{
+	qDebug()<<__FUNCTION__<<gBuilder;
+	if (gBuilder == NULL)
+	{
+		gBuilder.reset(new CatBuilder(true,mode,&db));
+		gBuilder->browserid = browserid;
+		connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), this, SLOT(importNetBookmarkFinished(int)));
+		//if(ops)
+		//	connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), ops, SLOT(importNetBookmarkFinished(int)));
+		gBuilder->start(QThread::IdlePriority);
+	}
+}
+#endif
 void MyWidget::_buildCatalog(catbuildmode mode)
 {
 	if(updateSuccessTimer)
@@ -1958,12 +1986,10 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 	{
 		//just for exception
 		gSettings->setValue("lastscan", 0);
-
 		gBuilder.reset(new CatBuilder(true,mode,&db));
-		//  gBuilder->setPreviousCatalog(catalog);
+		// gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
-
-		//	  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
+		//  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		gBuilder->start(QThread::IdlePriority);
 	}
 }
@@ -2216,6 +2242,26 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 void MyWidget::monitorTimerTimeout()
 {
 	STOP_TIMER(monitorTimer);
+	//processing ........
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	if(getFromActionList(item)){
+		qDebug()<<item.action<<item.fullpath<<item.name<<item.id.browserid;
+		switch(item.action){
+			case ACTION_LIST_CATALOGBUILD:
+				break;
+			case ACTION_LIST_BOOKMARK_SYNC:
+				break;
+			case ACTION_LIST_IMPORT_BOOKMARK:
+				importNetBookmark(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
+				break;
+			case ACTION_LIST_EDIT_NETBOOKMARK:
+				break;
+			default:
+				break;
+		}
+	}
+#endif
 	if(syncDlg){
 		//qDebug()<<__FUNCTION__<<syncDlg;
 		switch(syncDlg->result())
@@ -2561,6 +2607,7 @@ void MyWidget::setIcon(int type,const QString& tip)
 
 void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
+	qDebug()<<__FUNCTION__<<reason;
 	switch (reason)
 	{
 	case QSystemTrayIcon::Trigger:
