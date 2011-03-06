@@ -296,7 +296,7 @@ void CatItem::importNetworkBookmark(QSqlDatabase *db,QList < bookmark_catagory >
 	
 	foreach(bookmark_catagory t, *s)
 	{
-		qDebug()<<"item:name:"<<t.name<<"link:"<<t.link<<"bmid:"<<t.bmid<<"parentid:"<<t.parentId<<"groupid:"<<t.groupId;
+		//qDebug()<<"item:name:"<<t.name<<"link:"<<t.link<<"bmid:"<<t.bmid<<"parentid:"<<t.parentId<<"groupid:"<<t.groupId;
 		CatItem item((t.flag==BOOKMARK_CATAGORY_FLAG)?"":t.link,t.name,"",COME_FROM_MYBOOKMARK);	
 		item.parentId = groupid;
 		item.type = ((t.flag==BOOKMARK_CATAGORY_FLAG)?1:0);

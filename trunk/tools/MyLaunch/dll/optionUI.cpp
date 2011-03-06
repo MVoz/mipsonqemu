@@ -955,13 +955,11 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 }
 void OptionsDlg::bmExport(const int& browserid)
 {
-	QDEBUG_LINE;
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	QList <bookmark_catagory> bc;
 	int i = 0;
 	while(!browserInfo[i].name.isEmpty())
 	{
-			QDEBUG_LINE;
 		if(browserid != browserInfo[i].id)
 		{
 			i++;
@@ -1005,7 +1003,6 @@ void OptionsDlg::bmExport(const int& browserid)
 			case BROWSE_TYPE_OPERA:
 				break;
 		}
-		QDEBUG_LINE;
 		tz::deleteNetworkBookmark(db,0);
 		CatItem::importNetworkBookmark(db,&bc,0);
 		return;		
