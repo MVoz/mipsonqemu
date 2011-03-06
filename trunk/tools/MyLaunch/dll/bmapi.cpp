@@ -220,6 +220,20 @@ void getBrowserFullpath(int type,QString& fullpath){
 	fullpath = browserInfo[type].fullpath;
 	return;
 }
+#ifdef CONFIG_ACTION_LIST
+QList <ACTION_LIST> actionlist;
+int addToActionList( struct ACTION_LIST& item){
+	actionlist.push_back(item);
+	return 0;
+}
+int getFromActionList(struct ACTION_LIST& item){
+	if(actionlist.empty())
+		return 0;
+	item=actionlist.takeFirst();
+	return 1;
+}
+#endif
+
 /*
 
 
