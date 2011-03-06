@@ -27,6 +27,7 @@ enum catbuildmode{
 	CAT_BUILDMODE_DIRECTORY,
 	CAT_BUILDMODE_BOOKMARK,
 	CAT_BUILDMODE_COMMAND,	
+	CAT_BUILDMODE_IMPORT_NETBOOKMARK,
 };
 
 #define STOP_FLAG_CHECK if(terminateflag) goto bad;
@@ -47,6 +48,7 @@ private:
 	catbuildmode buildMode;
 public:
 	bool terminateflag;
+	uint browserid;
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(uint);
@@ -55,6 +57,9 @@ public:
 	void buildCatalog_directory(uint);
 	void buildCatelog_command(uint);
 	void buildCatelog_define(uint);
+#ifdef CONFIG_ACTION_LIST
+	void importNetBookmark();
+#endif
 	void clearShortcut();
 //	void _clearShortcut(int type);
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth,int comeFrom,uint delId);
@@ -79,6 +84,7 @@ public:
 signals:
 	void catalogFinished(int);
 	void catalogIncrement(float);
+	void importNetBookmarkFinishedSignal(int);
 
 };
 
