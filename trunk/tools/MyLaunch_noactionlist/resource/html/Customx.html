@@ -1,0 +1,104 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
+<head>
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function postItem(path,suffix,isInclude,deep,index)
+{
+	
+		$('#listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
+		if(isInclude)
+			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
+		else	
+			$('#isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" />包含子目录');
+		$('#suffix_span').html('<input name="suffix" class="itext" type="text" id="suffix" size=40 value="'+suffix+'" onBlur="suffixCheck();"/>');
+		$('#childDeep_span').html('<input name="childDeep" type="text" id="childDeep" size="5" value="'+deep+'" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>');
+}
+</script>
+</head>    
+<body>
+	<div id="header">
+				<div class="h_logo">
+					<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+				</div>
+				<div class="h_adv">
+				</div>
+	</div>
+	<div id="toolbar">
+			<div class="tb_m">
+				<ul id="menu"></ul>
+			</div>
+	</div>
+	<div id="wrapper">
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+						<h2>
+							<div class="tableContainer">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+								<thead class="fixedHeader">
+									<tr>
+										<th>选择</th>
+										<th>路径</th>
+										<th>后缀名</th>
+										<th>子目录</th>
+										<th>深度</th>
+									</tr>
+									
+								</thead>
+							</table>
+							</div>	
+						</h2>
+						<div id="tableContainer" class="tableContainer">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+							<tbody class="scrollContent" id="dirlist">
+									<tr>
+										<td>选择</td>
+										<td>路径</td>
+										<td>后缀名</td>
+										<td>子目录</td>
+										<td><a class="thickbox" onclick="postItem('xx','xx.ss',true,100,1);" href="qrc:editdir">深度</a></td>
+									</tr>
+							</tbody>
+						</table>
+						</div>	
+					</fieldset>
+					<div id="editdir" style="display:none;">
+					<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;编辑&raquo;</h2>
+						<p>
+							<span class="tl">路径:</span>
+							<span class="ip">
+								<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value=""/></span>
+								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+							</span>
+							<span class="ip" id="isIncludeChildDir_span">
+								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+							</span>	
+						</p>
+						<p>
+							<span class="tl">后缀:</span>
+							<span class="ip" id="suffix_span">
+								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+							</span>
+							<span class="tl">最大深度:</span>
+							<span class="ip" id="childDeep_span">
+								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
+							</span>	
+							<span class="btn"><a href="#" onclick="listApply(2)">删除</a></span>
+							<span class="btn"><a href="#" onclick="listApply(1)">修改</a></span>
+							<span class="btn"><a href="#" onclick="listApply(0);">增加</a></span>
+						</p>
+						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
+						
+					</fieldset>
+					</div>
+				</div>
+		<div id="footer"><div>
+	</div>
+</body>
+<script>
+	tb_init('a.thickbox');
+</script>
+</html>

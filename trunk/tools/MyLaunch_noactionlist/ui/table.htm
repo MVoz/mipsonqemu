@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
+<head>
+<link rel="stylesheet" rev="stylesheet" href="image/ui.css" type="text/css">
+<script>
+function $(a){return document.getElementById(a);}
+function getHtml(path){OptionsDlg.getHtml(path);}
+function reject(){OptionsDlg.reject();}
+function tr(a){document.write(OptionsDlg.tr(a));}
+function gohref(url){OptionsDlg.gohref(url);}
+
+function postItem(path,suffix,isInclude,deep,index)
+{
+		$('listPath').value=path;
+		$('suffix').value=suffix;
+		$('isIncludeChildDir').checked=(isInclude)?true:false;
+		$('childDeep').value=deep;
+		$('cmdIndex').value=index;
+}
+function listApply(type)
+{
+   var dirpath=$('listPath').value;
+   dirpath=dirpath.replace(/(^\s*)/g, ""); 
+   dirpath=dirpath.replace(/(\s*$)/g, ""); 
+   OptionsDlg.listApply(type,dirpath,$('suffix').value,$('isIncludeChildDir').checked,$('childDeep').value,$('cmdIndex').value);
+   OptionsDlg.loading('list_mg');
+}
+function apply(key)
+{
+	OptionsDlg.accept();
+}
+function childDeepCheck()
+{
+	 var str=$('childDeep').value;
+	 var   pattern   =   /^\d{1,3}$/;   
+	 str=str.replace(/(^\s*)/g, ""); 
+	 str=str.replace(/(\s*$)/g, ""); 
+     var flag=pattern.test(str);   
+	 if(!flag)
+		alert("请填入一个[0~200]的数字");
+	  else{
+			    if(parseInt(str)<0||parseInt(str)>200)
+						alert("请填入一个[0~200]之间的数字");
+		}
+}
+function rangeButtonClick(type)
+{
+	
+	with(document){
+				var deep=parseInt($('childDeep').value);
+			switch(type)
+			{
+				case  0:
+				  if(deep==0)
+						return;
+					else
+					$('childDeep').value=(deep-1).toString(10);
+					break;
+				case 1:
+					if(deep==200)
+						return;
+					else
+					$('childDeep').value=(deep+1).toString(10);
+					break;
+			}
+	}
+}
+function suffixCheck()
+{
+		with(document){
+				var suffix=$('suffix').value;
+					 suffix=suffix.replace(/(^\s*)/g, ""); 
+				   suffix=suffix.replace(/(\s*$)/g, ""); 
+					 suffix=suffix.replace(/(\s*)/g, "");
+					 var pattern=/^(\*.[0-9a-zA-Z]{1,}[;\*.[0-9a-zA-Z]{1,}]?)$/;
+					 var flag=pattern.test(suffix); 
+					 if(!flag)
+						{
+							alert('请输入正确的扩展名格式');
+							return false;
+						}
+						return true;
+		}
+}
+function rebuildcatalog()
+{
+	OptionsDlg.rebuildcatalog();
+}
+</script>
+</head>    
+    <body>
+		<div id="wrapper">
+			<div id="page">
+				<div id="header">
+					<div>
+						<h1>
+							Tanzhi.com
+						</h1>
+						<p>
+							<a href="http://www.tanzhi.com">
+								Anything is in touch!
+							</a>
+						</p>
+					</div>
+					<div id="menu">
+					</div>
+				</div>
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+						<h2>目录&raquo;</h2>
+						<div id="tableContainer" class="tableContainer">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+							<thead class="fixedHeader">
+								<tr>
+									<th><a href="#">select</a></th>
+									<th><a href="#">path</a></th>
+									<th><a href="#">suffix</a></th>
+									<th><a href="#">incldue</a></th>
+									<th><a href="#">deep</a></th>
+								</tr>
+							</thead>
+							<tbody class="scrollContent" id="dirlist">
+								<tr class="even">
+									<td>selecxxxxt</td>
+									<td>path</td>
+									<td>suffix</td>
+									<td>incldue</td>
+									<td>deep</td>
+								</tr>
+								<tr class="odd">
+									<td>selecxxxxt</td>
+									<td>path</td>
+									<td>suffix</td>
+									<td>incldue</td>
+									<td>deep</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>	
+					</fieldset>
+					<fieldset class="cfgitem">
+						<h2>目录&raquo;</h2>
+						<div id="clt" class="clt">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="clt_t">
+							<thead class="clt_h">
+								<tr>
+									<th><a href="#">select</a></th>
+									<th><a href="#">name</a></th>
+									<th><a href="#">command</a></th>
+									<th><a href="#">arg</a></th>
+								</tr>
+							</thead>
+							<tbody class="clt_c" id="cmdlist">
+								<tr class="even">
+									<td>selecxxxxt</td>
+									<td>path</td>
+									<td>suffix</td>
+									<td>incldue</td>
+								</tr>
+								<tr class="odd">
+									<td>selecxxxxt</td>
+									<td>path</td>
+									<td>suffix</td>
+									<td>incldue</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>	
+					</fieldset>
+					<fieldset class="cfgitem">
+						<h2>编辑&raquo;</h2>
+						<p>
+							<span class="tl">路径:</span>
+							<span class="ip">
+								<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;"/>
+								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+							</span>
+							<span class="ip">
+								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+							</span>	
+						</p>
+						<p>
+							<span class="tl">后缀:</span>
+							<span class="ip">
+								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+							</span>
+							<span class="tl">最大深度:</span>
+							<span class="ip">
+								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();"/>
+							</span>	
+						</p>
+						<p style="display:none;"><input name="cmdIndex" type="text" id="cmdIndex" ></p>
+							<div class="btn">
+									<a href="#" onclick="listApply(0);">增加</a>
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(1)">修改</a>
+							</div>
+							<div class="btn">
+									<a href="#" onclick="listApply(1)">删除</a>
+				
+					</fieldset>
+				</div>
+			</div>
+			 <div id="footer">
+					<div class="btn">
+							<a href="#" onclick="syncClick();">同步</a>
+					</div>
+					<div class="btn">
+							<a href="#" onclick="syncClick();">同步</a>
+					</div>
+				<p class="cpy">
+					Copyright 2010 
+					<a href="http://www.tanzhi.com" target="_blank">
+						haoting.net
+					</a>
+				</p>				
+			</div>
+		</div>
+    </body>
+<script>
+	OptionsDlg.loading('Custom');
+</script>
+</html>

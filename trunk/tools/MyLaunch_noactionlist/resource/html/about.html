@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>About</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function apply(key)
+{
+	jmjs();
+	OptionsDlg.accept();
+}
+</script>
+</head>
+<body>
+ <div id="header">
+		<div class="h_logo">
+			<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+		</div>
+		<div class="h_adv">
+		</div>
+</div>
+<div id="toolbar">
+		<div class="tb_m">
+			<ul id="tmenu"></ul>
+		</div>
+</div>
+	<div id="wrapper">
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+						<h2>关于&raquo;</h2>
+						 <img src="qrc:image/logo.png">
+						 <p><span>欢迎使用弹指软件touchAny</span></p>
+						 <p><span>当前版本:</span><span id="version"></span></p>
+						 <p><span>Build&nbsp;时间:</span><span id="buildtime"></span></p>
+						 <p><span>版权所有@</span></p>
+						 <p><span>更多信息请访问:</span><a onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a></p>
+					 </fieldset>
+				</div>
+			 <div id="footer">				
+			</div>
+	</div>
+</body>
+<script>
+	OptionsDlg.loading('About');
+</script>
+</html>
