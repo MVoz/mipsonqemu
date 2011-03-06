@@ -72,6 +72,23 @@ BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
 BMAPI_DLL_FUNCEXPORT void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type);
 BMAPI_DLL_FUNCEXPORT void clearBrowserInfoOpFlag(uint id);
+#ifdef CONFIG_ACTION_LIST
+#define ACTION_LIST_CATALOGBUILD 0
+#define ACTION_LIST_BOOKMARK_SYNC 1
+#define ACTION_LIST_IMPORT_BOOKMARK 2
+#define ACTION_LIST_EDIT_NETBOOKMARK 3
+ struct BMAPI_DLL_CLASSEXPORT ACTION_LIST{
+	uint action;
+	QString fullpath;
+	QString name;
+	union{
+		uint groupid;
+		uint browserid;
+	}id;
+};
+BMAPI_DLL_FUNCEXPORT int addToActionList( struct ACTION_LIST& item);
+BMAPI_DLL_FUNCEXPORT int getFromActionList(struct ACTION_LIST& item);
+#endif
 
 
 
@@ -133,6 +150,10 @@ enum BMAPI_DLL_CLASSEXPORT RUNPARAMETER{
 	RUN_PARAMETER_POST_ERROR,
 	RUN_PARAMETER_END	
 };
+
+
+
+
 class BMAPI_DLL_CLASSEXPORT  tz {
 public:
 	tz(){};
