@@ -243,7 +243,7 @@ void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
 	*/
 	CatItem::prepareInsertQuery(&q,item,0);
 	q.exec();
-	qDebug()<<q.executedQuery();
+	//qDebug()<<q.executedQuery();
 	q.clear();
 
 }
@@ -289,11 +289,11 @@ void CatItem::deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
 	q.exec();
 	q.clear();
 }
-void CatItem::importNetworkBookmark(QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid)
+void CatItem::importNetworkBookmark(QSettings *settings,QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid)
 {
 	//QSqlQuery q("",*db);
 	//db->transaction();
-	
+	settings->setValue("exportbookmark",false);
 	foreach(bookmark_catagory t, *s)
 	{
 		//qDebug()<<"item:name:"<<t.name<<"link:"<<t.link<<"bmid:"<<t.bmid<<"parentid:"<<t.parentId<<"groupid:"<<t.groupId;
@@ -306,10 +306,10 @@ void CatItem::importNetworkBookmark(QSqlDatabase *db,QList < bookmark_catagory >
 		}
 		CatItem::addCatitemToDb(db,item);
 		if(t.list.count()){
-			importNetworkBookmark(db,&t.list,item.groupId);
+			importNetworkBookmark(settings,db,&t.list,item.groupId);
 		}
 	}
-	
+	settings->setValue("exportbookmark",true);
 //	db->commit();
 //	q.clear();	
 }

@@ -953,8 +953,25 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 	if(parentid != 0)
 		jsresult.append(QString("</ul>"));
 }
-void OptionsDlg::bmExport(const int& browserid)
+#ifdef CONFIG_ACTION_LIST
+void OptionsDlg::importNetBookmarkFinished(int status)
 {
+	QDEBUG_LINE;
+	QString js;
+	js.append(QString("$('#TB_window .cfgitem').html('<h2>&nbsp;&nbsp;export&raquo;</h2><p><span>%1......</span></p>');" ).arg(status?"success":"failed"));
+	//js.append(QString("$('#TB_window .cfgitem').html(\\\"<h2>&nbsp;&nbsp;µº»Î&raquo;</h2><p><span class='tl'>success......</span></p>\\\");" ));
+	// js.append(QString("$('#TB_window .cfgitem').html('12345');"));
+	 webView->page()->mainFrame()->evaluateJavaScript(js);	
+}
+#endif
+void OptionsDlg::bmExport(const int& browserid)
+{	
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.action = ACTION_LIST_IMPORT_BOOKMARK;
+	item.id.browserid = browserid;
+	addToActionList(item);
+#else
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	QList <bookmark_catagory> bc;
 	int i = 0;
@@ -1004,9 +1021,10 @@ void OptionsDlg::bmExport(const int& browserid)
 				break;
 		}
 		tz::deleteNetworkBookmark(db,0);
-		CatItem::importNetworkBookmark(db,&bc,0);
+		CatItem::importNetworkBookmark(settings,db,&bc,0);
 		return;		
-	}	
+	}
+#endif
 	return;
 }
 
