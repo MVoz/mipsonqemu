@@ -1,0 +1,295 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>index</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function addItem(index)
+{
+	$('#addbmdir #bmIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value="'+index+'">');
+}
+function postItem(name,url,index)
+{
+		$('#editbm #bmname_span').html('<input name="bmname" type="text" id="bmname" size=40 class="itext" style="width:400px;" value="'+name+'"/>');
+		$('#editbm #bmurl_span').html('<input name="bmurl" type="text" id="bmurl" size=40 class="itext" style="width:400px;" value="'+url+'"/>');
+		$('#editbm #bmIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value="'+index+'">');
+}
+function postDelItem(name,index)
+{
+		$('#deletebm #del_bm_span').html(name);
+		$('#deletebm #bmDelIndex_span').html('<input name="bmIndex" type="text" id="bmIndex" value='+index+'>');
+}
+function postDirItem(name,index)
+{
+	$('#editbmdir #bmdirname_span').html('<input name="bmdirname" type="text" id="bmdirname" size=40 class="itext" style="width:400px;" value="'+name+'"/>');
+	$('#editbmdir #bmDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value="'+index+'">');
+}
+function postDelDirItem(name,index)
+{
+		$('#del_bmdir_span').html(name);
+		$('#bmDelDirIndex_span').html('<input name="bmDirIndex" type="text" id="bmDirIndex" value='+index+'>');
+}
+function bmDirApply(action)
+{
+   tb_remove();
+   if(action==0){
+	   var bmname=$('#TB_window #bmname').val();
+	   bmname=bmname.replace(/(^\s*)/g, ""); 
+	   bmname=bmname.replace(/(\s*$)/g, ""); 
+	   var bmurl=$('#TB_window #bmurl').val();
+	   bmurl=bmurl.replace(/(^\s*)/g, ""); 
+	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.bmDirApply(action,bmname,bmurl,$('#TB_window input[name="category"]:checked').val(),$('#TB_window #bmIndex').val());
+   }else if(action==1){
+	   var bmname=$('#TB_window #bmdirname').val();
+	   bmname=bmname.replace(/(^\s*)/g, ""); 
+	   bmname=bmname.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.bmDirApply(action,bmname,'',1,$('#TB_window #bmDirIndex').val());
+
+   }else{
+	   OptionsDlg.bmDirApply(action,'','',1,$('#TB_window #bmDirIndex').val());
+   }
+   tb_init('a.thickbox');
+}
+function bmApply(action)
+{
+	tb_remove();
+   if(action==0||action==1){
+	   var bmname=$('#TB_window #bmname').val();
+	   bmname=bmname.replace(/(^\s*)/g, ""); 
+	   bmname=bmname.replace(/(\s*$)/g, ""); 
+	   var bmurl=$('#TB_window #bmurl').val();
+	   bmurl=bmurl.replace(/(^\s*)/g, ""); 
+	   bmurl=bmurl.replace(/(\s*$)/g, ""); 
+	   OptionsDlg.bmApply(action,bmname,bmurl,$('#TB_window #bmIndex').val());
+   }else{
+	   OptionsDlg.bmApply(action,'','',$('#TB_window #bmIndex').val());
+   }
+   tb_init('a.thickbox');
+}
+function bmexport()
+{
+	var browserid = $('#TB_window input[name="browsertype"]:checked').val();
+	 $('#TB_window .cfgitem').html(
+		"<h2>&nbsp;&nbsp;导入&raquo;</h2><p><span class='tl'>正在导入处理中,请耐心等候......</span></p>"
+	 );
+	OptionsDlg.bmExport(browserid);
+}
+function apply(key)
+{
+		OptionsDlg.apply('netbookmarkbrowser',$('#netbookmarkbrowser').val());
+		OptionsDlg.accept();
+}
+</script>
+</head>
+<body>
+	<div id="header">
+			<div class="h_logo">
+				<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+			</div>
+			<div class="h_adv">
+			</div>
+	</div>
+	<div id="toolbar">
+			<div class="tb_m">
+				<ul id="tmenu"></ul>
+			</div>
+	</div>
+<div id="wrapper">
+<div style="height: 230px;" class="box">
+<div class="box_l">
+	<h2 class="ntitle">
+		<p id="groupname">体育»</p>
+		<ul class="nelt" id="groupdo">
+			<li class="bkad"><a class="thickbox" id="8027" onclick='addItem(123);' href='qrc:addbmdir'>增加</a></li>
+			<li class="bket"><a class="thickbox" id="8027" onclick="postDirItem('体育',123);" href="qrc:editbmdir">修改</a></li>
+			<li class="bkde"><a class="thickbox" id="8027" onclick="postDelDirItem('体育',123);" href="qrc:deletebmdir">删除</a></li>
+		</ul>				
+	</h2> 
+<div id="bmcontent">
+<ul id="bklist" class="bklt">
+<li>
+<h3>
+<a id="260" class="url id_bm_260" target="_blank" style="color: rgb(44, 98, 158);" href="http://www.sohu.com" title="sohu">sohu</a>
+</h3>
+<p class="message">
+<span id="260" class="id_nodes"><a href="http://www.sohu.com">http://www.sohu.com</a> ...</span>
+<span class="ndate">2011-01-24</span>
+<a id="260|0|0" class="edit thickbox" onclick="postItem('sohu','http://www.sohu.com');" href="qrc:editbm" style="color: rgb(136, 136, 136);">编辑</a>
+<span>|</span>
+<a id="260|0|0" class="delete thickbox" onclick="postDelItem('sohu',1);" href="qrc:deletebm" style="color: rgb(136, 136, 136);">删除</a>
+</p>
+</li>  
+<li>
+<h3>
+<a id="258" class="url id_bm_258" target="_blank" style="color: rgb(44, 98, 158);" href="http://www.goalhi.com" title="体育">体育</a>
+</h3>
+<p class="message">
+<span id="258" class="id_nodes">按钮或者等待服务器更新 ...</span>
+<span class="ndate">2011-01-24</span>
+<a id="258|0|0" class="edit thickbox" href="#" target="_blank" style="color: rgb(136, 136, 136);">编辑</a>
+<span>|</span>
+<a id="258|0|0" class="delete thickbox" href="#" target="_blank" style="color: rgb(136, 136, 136);">删除</a>
+</p>
+</li>  
+</ul>
+</div>		
+</div>	 
+<div class="box_r">
+<h2 class="ntitle">	
+<em>菜单»</em>
+</h2>
+<div class="muim">
+<ul class="menu_list menu_list_0" style="display: block;">
+    <li><a value="根目录" onclick="javascript:OptionsDlg.getbmfromid(0,0,'根目录',1);" href="javascript:;" class="green" id="menuroot">根目录</a></li>
+	<ul id="menu">
+		<li><a class=" showit " value="链接" onclick="getbmfromid('8000','1','链接',0);" href="javascript:;">链接</a></li>
+		<li><a class=" showit" value="健康保健" onclick="getbmfromid('8001','1','健康保健',0);" href="javascript:;">健康保健</a></li>
+		<li style="position: static;"><a class=" showit green" value="其他类别" onclick="getbmfromid('8002','1','其他类别',0);" href="javascript:;">其他类别</a>
+		<ul id="menu8002" style="display: none;"><li><a class=" " value="人才网站" onclick="getbmfromid('8003','1','人才网站',0);" href="javascript:;">人才网站</a></li><li><a class=" " value="军事网站" onclick="getbmfromid('8004','1','军事网站',0);" href="javascript:;">军事网站</a></li><li><a class=" " value="手机网站" onclick="getbmfromid('8005','1','手机网站',0);" href="javascript:;">手机网站</a></li></ul></li><li><a class=" showit " value="体育网站" onclick="getbmfromid('8006','1','体育网站',0);" href="javascript:;">体育网站</a></li><li><a class=" showit " value="搜索引擎" onclick="getbmfromid('8007','1','搜索引擎',0);" href="javascript:;">搜索引擎</a></li><li><a class=" showit " value="新闻报纸" onclick="getbmfromid('8008','1','新闻报纸',0);" href="javascript:;">新闻报纸</a></li><li><a class=" showit " value="游戏网游" onclick="getbmfromid('8009','1','游戏网游',0);" href="javascript:;">游戏网游</a></li><li><a class=" showit " value="电脑网络" onclick="getbmfromid('8010','1','电脑网络',0);" href="javascript:;">电脑网络</a><ul id="menu8010" style="display: none;"><li><a class=" " value="博客空间" onclick="getbmfromid('8011','1','博客空间',0);" href="javascript:;">博客空间</a></li><li><a class=" " value="免费邮箱" onclick="getbmfromid('8012','1','免费邮箱',0);" href="javascript:;">免费邮箱</a></li><li><a class=" " value="电脑教程" onclick="getbmfromid('8013','1','电脑教程',0);" href="javascript:;">电脑教程</a></li><li><a class=" " value="电脑硬件" onclick="getbmfromid('8014','1','电脑硬件',0);" href="javascript:;">电脑硬件</a></li></ul></li><li><a class=" showit " value="番茄花园" onclick="getbmfromid('8015','1','番茄花园',0);" href="javascript:;">番茄花园</a></li><li><a class=" showit " value="网上购物" onclick="getbmfromid('8016','1','网上购物',0);" href="javascript:;">网上购物</a></li><li><a class=" showit " value="聊天交友" onclick="getbmfromid('8017','1','聊天交友',0);" href="javascript:;">聊天交友</a></li><li><a class=" showit " value="论坛系列" onclick="getbmfromid('8018','1','论坛系列',0);" href="javascript:;">论坛系列</a></li><li><a class=" showit " value="软件下载" onclick="getbmfromid('8019','1','软件下载',0);" href="javascript:;">软件下载</a><ul id="menu8019" style="display: none;"><li><a class=" " value="程序源码" onclick="getbmfromid('8020','1','程序源码',0);" href="javascript:;">程序源码</a></li><li><a class=" " value="驱动程序" onclick="getbmfromid('8021','1','驱动程序',0);" href="javascript:;">驱动程序</a></li></ul></li><li><a class=" showit " value="财经证券" onclick="getbmfromid('8022','1','财经证券',0);" href="javascript:;">财经证券</a></li><li><a class=" showit " value="门户网站" onclick="getbmfromid('8023','1','门户网站',0);" href="javascript:;">门户网站</a></li><li><a class=" showit " value="音乐网站" onclick="getbmfromid('8024','1','音乐网站',0);" href="javascript:;">音乐网站</a><ul id="menu8024" style="display: none;"><li><a class=" " value="DJ音乐" onclick="getbmfromid('8025','1','DJ音乐',0);" href="javascript:;">DJ音乐</a></li></ul></li><li><a class=" showit " value="银行网站" onclick="getbmfromid('8026','1','银行网站',0);" href="javascript:;">银行网站</a></li></ul>
+</ul>
+</div>
+</div>	
+</div>
+</div>
+<div id="exportbm" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;导入&raquo;</h2>
+				<p>
+					<span class="tl">选择从下面浏览器中导入书签:</span>
+					<input type="radio" name="browsertype" value="1" checked>
+					<span style="display:block;padding:0 10px;float:left">IE</span>
+					<input type="radio" name="browsertype" value="2">
+					<span style="display:block;padding:0px 10px;float:left">Firefox</span>
+					<input type="radio" name="browsertype" value="3">
+					<span style="display:block;padding:0px 10px;float:left">Opera</span>
+				</p>				
+				<p>
+					<div class="btn"><a href="#" onclick="bmexport()">确定</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
+<div id="addbmdir" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;增加&raquo;</h2>
+				<p>
+					<span class="tl">名称:</span>
+					<span class="ip">
+						<span id="bmname_span"><input name="bmname" type="text" id="bmname" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p>
+					<input type="radio" checked onchange="$('#TB_window #addbmdir_url').toggle();" name="category" value="0">
+					<span style="display:block;padding:0 10px;float:left">书签</span>
+					<input type="radio" onchange="$('#TB_window #addbmdir_url').toggle();" name="category" value="1">
+					<span style="display:block;padding:0px 10px;float:left">目录</span>
+				</p>
+				<div id="addbmdir_url">
+					<span class="tl">地址:</span>
+					<span class="ip">
+						<span id="bmurl_span"><input name="bmurl" type="text" id="bmurl" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</div>
+				<p style="display:none;" id="bmIndex_span">
+					<input name="bmIndex" type="text" id="bmIndex">
+				</p>						
+				<p>
+					<div class="btn"><a href="#" onclick="bmDirApply(0)">增加</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
+<div id="editbm" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
+				<p>
+					<span class="tl">名称:</span>
+					<span class="ip">
+						<span id="bmname_span"><input name="bmname" type="text" id="bmname" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p>
+					<span class="tl">地址:</span>
+					<span class="ip">
+						<span id="bmurl_span"><input name="bmurl" type="text" id="bmurl" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p style="display:none;" id="bmIndex_span">
+					<input name="bmIndex" type="text" id="bmIndex">
+				</p>						
+				<p>
+					<div class="btn"><a href="#" onclick="bmApply(1)">修改</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
+<div id="deletebm" style="display:none;">
+			<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
+						<p>
+							<span class="tl">您确定删除网址：</span>
+							<span class="ip" id="del_bm_span">
+							</span>							
+						</p>
+						<p style="display:none;" id="bmDelIndex_span">
+							<input name="bmIndex" type="text" id="bmIndex" >
+						</p>						
+						<p>
+							<div class="btn"><a href="#" onclick="bmApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+						</p>
+			</fieldset>
+</div>
+<div id="editbmdir" style="display:none;">
+		<fieldset class="cfgitem">
+			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
+				<p>
+					<span class="tl">名称:</span>
+					<span class="ip">
+						<span id="bmdirname_span"><input name="bmdirname" type="text" id="bmdirname" size=40 class="itext" style="width:400px;" value=""/></span>
+					</span>
+				</p>
+				<p style="display:none;" id="bmDirIndex_span">
+					<input name="bmDirIndex" type="text" id="bmDirIndex">
+				</p>						
+				<p>
+					<div class="btn"><a href="#" onclick="bmDirApply(1)">修改</a></div>
+					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+				</p>
+		</fieldset>
+</div>
+<div id="deletebmdir" style="display:none;">
+			<fieldset class="cfgitem">
+						<h2>&nbsp;&nbsp;删除&raquo;</h2>
+						<p>
+							<span class="tl">您确定删除目录：</span>
+							<span class="ip" id="del_bmdir_span">
+							</span>							
+						</p>
+						<p style="display:none;" id="bmDelDirIndex_span">
+							<input name="bmDirIndex" type="text" id="bmDirIndex" >
+						</p>						
+						<p>
+							<div class="btn"><a href="#" onclick="bmDirApply(2)">删除</a></div>
+							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
+						</p>
+			</fieldset>
+</div>
+			<fieldset class="cfgitem">
+				<h2>浏览器设置&raquo;</h2>
+				<p>
+					<span class="tl">网络收藏夹的书签将使用</span>
+					<input name="netbookmarkbrowser" type="text" id="netbookmarkbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netbookmarkbrowser',1);"/>
+				</p>
+			</fieldset>
+			<div id="footer">				
+			</div>
+<script type="text/javascript" language="javascript">
+OptionsDlg.loading('bookmark');	
+tb_init('a.thickbox');
+</script>
+</body>
+</html>

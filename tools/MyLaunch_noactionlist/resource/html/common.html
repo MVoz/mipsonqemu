@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>    
+<head>
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function syncClick(){
+	OptionsDlg.startSync();
+}
+function apply(key)
+{
+	OptionsDlg.apply('ckStartWithSystem',$obj('ckStartWithSystem').checked);
+	OptionsDlg.apply('ckShowTray',$obj('ckShowTray').checked);
+	OptionsDlg.apply('ckShowMainwindow',$obj('ckShowMainwindow').checked);
+	OptionsDlg.apply('ckAutoUpdate',$obj('ckAutoUpdate').checked);
+	OptionsDlg.apply('ckScanDir',$obj('ckScanDir').checked);
+	OptionsDlg.apply('hotkeyModifier',$obj('hotkey_0').value);
+	OptionsDlg.apply('hotkeyAction',$obj('hotkey_1').value);
+	OptionsDlg.apply('Account/Username',$obj('Username').value);
+	OptionsDlg.apply('Account/Userpasswd',$obj('Userpasswd').value);
+	OptionsDlg.accept();
+}
+function   set_selected(s_value,id){   
+	  if(s_value!=""){   
+	  s_obj   =  $(id).options;   
+	  len   =   s_obj.length;   
+		  for   (i   =   0;   i   <   len;   i++ ){   
+			  if(s_value   ==   s_obj[i].value){
+				s_obj[i].selected=   true; 
+				}   
+		  }   
+	  }   
+}
+function checkUsername()
+{  
+  var   supported   =   0;     
+  if   (window.RegExp)   {     
+  var   tempStr   =   "a";     
+  var   tempReg   =   new   RegExp(tempStr);     
+  if   (tempReg.test(tempStr))   supported   =   1;     
+  }     
+  if   (!supported)     
+  return   (str.indexOf(".")   >   2)   &&   (str.indexOf("@")   >   0);     
+	str=$('Username').value;
+	var r=new RegExp("^[a-zA-Z0-9]{1}[\.a-zA-Z0-9_-]*[a-zA-Z0-9]{1}@[a-zA-Z0-9]+[-]{0,1}[a-zA-Z0-9]+[\.]{1}[a-zA-Z]+[\.]{0,1}[a-zA-Z]+$");
+	if(!r.test(str))
+	{
+		alert('错误的用户名！请输入一个合法的用户名');
+		$('Username').value='';
+	}
+}
+function accountTestClick()
+{
+	OptionsDlg.accountTestClick($obj('Username').value,$obj('Userpasswd').value);
+}
+function getSyncStatus()
+{
+	OptionsDlg.getSyncStatus();
+}
+setInterval("getSyncStatus()",1000);
+</script>
+</head>    
+<body>
+	<div id="header">
+			<div class="h_logo">
+				<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+			</div>
+			<div class="h_adv">
+			</div>
+	</div>
+	<div id="toolbar">
+			<div class="tb_m">
+				<ul id="tmenu"></ul>
+			</div>
+	</div>
+		<div id="wrapper">
+			<div class="clearfix">
+					<fieldset class="cfgitem">
+					<h2>启动&raquo;</h2>
+					<ul>
+						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
+						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
+						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
+					</ul>
+					<p>
+						<span>快捷键:</span>
+						<span>
+							<select id="hotkey_0" class="select">	
+									<option value="134217728" > Alt</option>
+									<option value="33554432" > Shift</option>
+									<option value="268435456" > Win</option>
+									<option value="67108864"> Ctrl</option>				
+								</select>
+						</span>
+						<span>&nbsp;+&nbsp;</span>
+						<span>
+								<select id="hotkey_1" class="select" >
+										<option value="16777216" > Space</option>
+										<option value="16777217"> Tab</option>
+										<option value="16777219" > Backspace</option>
+										<option value="16777221" > Enter</option>
+								</select>
+						</span>
+					</p>					
+				</fieldset>
+				<fieldset class="cfgitem">
+					<h2>帐号&raquo;</h2>
+					<p>
+						<span class="tl">用户:</span>
+						<span class="ip">
+							<input name="Username" type="text" id="Username" size=20 onblur="checkUsername();" class="itext" />
+						</span>
+					    <span class="tl">密码:</span>
+						<span class="ip">
+							<input name="Userpasswd" type="password" id="Userpasswd" size=20 class="itext" />
+						</span>	
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="accountTestClick();">测试</a>
+						</span>
+					</p>
+					<p>
+
+						<span class="tl">上次状态:</span>
+						<span class="ip" id="lastsyncstatus" style="width:150px;">
+							<div id="lastsyncstatus"></div>
+						</span>
+						<span class="tl">上次同步时间:</span>
+						<span class="ip" id="lastsynctime">
+								&nbsp;
+						</span>
+						<span class="btn" style="float:right;">
+								<a href="#" onclick="syncClick();">同步</a>
+						</span>
+					</p>
+				</fieldset>
+			</div>
+			 <div id="footer">
+				
+			</div>
+		</div>
+    </body>
+<script>
+	OptionsDlg.loading('Common');
+</script>
+</html>

@@ -1,0 +1,1 @@
+.read defines.sql

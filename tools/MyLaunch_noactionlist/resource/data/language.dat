@@ -1,0 +1,289 @@
+[login_failure_please_re_login]
+en=login_fail
+ch=无法登陆 comma 请检查用户名或密码!
+
+[http_test_account_fail]
+en=http_test_account_fail
+ch=无法登陆 comma 请检查用户名或密码!
+
+[http_test_account_success]
+en=http_test_account_success
+ch=测试成功！欢迎使用！
+
+[login_falil]
+en=login_falil
+ch=无法登陆 comma 请检查用户名或密码!
+
+[apply]
+en=apply
+ch=确定
+
+[cancel]
+en=cancel
+ch=取消
+
+[retry]
+en=retry
+ch=重试
+
+[reject]
+en=reject
+ch=中止
+
+[http_timeout]
+en=http_timeout
+ch=操作超时
+
+[bookmark_sync_start]
+en=bookmark_sync_start
+ch=连接服务器成功comma开始进行同步操作......
+
+[update_net_error]
+en=update_net_error
+ch=连接服务器失败comma请检查网络！
+
+[sync_successful]
+en=sync_successful
+ch=同步操作成功！
+
+[http_get_ini_successful]
+en=http_get_ini_successful
+ch=http_get_ini_successful
+
+[http_get_ini_not_existed]
+en=http_get_ini_not_existed
+ch=http_get_ini_not_existed
+
+
+[http_get_ini_failed]
+en=http_get_ini_failed
+ch=http_get_ini_failed
+
+[http_get_file_successful]
+en=http_get_file_successful
+ch=http_get_file_successful
+
+[http_get_file_failed]
+en=http_get_file_failed
+ch=http_get_file_failed
+
+[http_get_file_not_existed]
+en=http_get_file_not_existed
+ch=http_get_file_not_existed
+
+[http_need_retry]
+en=http_need_retry
+ch=http_need_retry
+
+[update_failed]
+en=update_failed
+ch=update_failed
+
+[update_successful]
+en=update_successful
+ch=update_successful
+
+[update_no_need]
+en=update_no_need
+ch=update_no_need
+
+[err_has_exist_item]
+en=the specified item has existed!
+ch=指定项已存在!
+
+[err_no_exist_item]
+en=the specified item doesn't existed!
+ch=指定路径不存在!
+
+[http_connect_server]
+en=the specified item doesn't existed!
+ch=正在连接服务器......!
+
+[html_select]
+en=select
+ch=选择
+
+[html_name]
+en=name
+ch=名字
+
+[html_command]
+en=command
+ch=命令
+
+[html_argument]
+en=arguments
+ch=参数
+
+[html_name]
+en=name
+ch=名字
+
+[html_path]
+en=Path
+ch=路径
+
+[html_suffix]
+en=Suffix
+ch=后缀名
+
+[html_childdir]
+en=Child Directory
+ch=子目录
+
+[html_depth]
+en=Depth
+ch=深度
+
+[proxy_test_success]
+en=代理服务器工作正常！
+ch=代理服务器工作正常！
+
+[myDocuments]
+en=我的文档
+ch=我的文档
+[favorites]
+en=收藏夹
+ch=收藏夹
+[mypictures]
+en=我的图片
+ch=我的图片
+[myvideos]
+en=我的视频
+ch=我的视频
+[mymusic]
+en=我的音乐
+ch=我的音乐
+[controlpanel]
+en=控制面板
+ch=控制面板
+[taskmgr]
+en=任务管理器
+ch=任务管理器
+[common]
+en=common
+ch=常规
+[list_mg]
+en=list_mg
+ch=列表管理
+[cmd_mg]
+en=cmd_mg
+ch=命令管理
+[net_mg]
+en=net_mg
+ch=网络管理
+[adv]
+en=adv
+ch=高级
+[interface]
+en=interface
+ch=界面
+[skin_mg]
+en=skin_mg
+ch=皮肤管理
+[language_mg]
+en=language_mg
+ch=语言管理
+[about]
+en=about
+ch=关于
+
+[output]
+en=output
+ch=输出
+
+[everything_is_in_touch]
+en=everything is in touch
+ch=一切触手可及
+
+[app_is_runing]
+en=touchAny is running comma please click shortkey to show
+ch=touchAny已经处于运行状态comma请按shortkey
+
+[touchAny]
+en=touchAny
+ch=弹指网
+
+
+[shortkey]
+en=shortkey
+ch=快捷键
+
+[bm_sync_success_no_action]
+en=Synchronize bookmarks success
+ch=书签同步成功
+
+[bm_sync_success_with_action]
+en=Synchronize bookmarks success
+ch=书签同步成功
+
+[bm_sync_fail]
+en=Synchronize bookmarks fail
+ch=书签同步失败
+
+[bm_sync_fail_server_net_error]
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
+
+[bm_sync_fail_server_refuse]
+en=Synchronize bookmarks fail comma The server is in Maintenancecommaplease try again after a while.
+ch=书签同步失败comma服务器正在维护中comma暂停此项服务comma请等待一段时间再重试comma谢谢！
+[bm_sync_fail_server_bmxml_fail]
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
+
+[bm_sync_fail_bmxml_timeout]
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
+
+[bm_sync_fail_merge_error]
+en=Synchronize bookmarks fail comma please check net setting.
+ch=书签同步失败comma请检查网络
+
+[bm_sync_fail_proxy_error]
+en=Synchronize bookmarks fail comma Can't connect the proxy server.
+ch=书签同步失败comma无法连接代理服务器
+
+[bm_sync_fail_proxy_auth_error]
+en=Synchronize bookmarks fail comma Can't login into the proxy server.
+ch=书签同步失败comma无法登录代理服务器
+
+[bm_sync_fail_server_testaccount_fail]
+en=Test account fail comma please check account&password in proxy.
+ch=测试帐号失败comma请检查用户名与密码
+
+[bm_sync_fail_server_login]
+en=Login server fail comma please check your account&password.
+ch=登录服务器失败comma请检查用户名与密码
+
+[update_net_error_proxy]
+en=Synchronize bookmarks fail comma Can't connect the proxy server.
+ch=书签同步失败comma无法连接代理服务器
+
+[update_net_error_proxy_auth]
+en=Synchronize bookmarks fail comma Can't login into the proxy server.
+ch=书签同步失败 comma 无法登录代理服务器
+
+[try_connect_server]
+en=try to connect server......
+ch=正在连接服务器......
+
+[common]
+en=General
+ch=通 用
+[Custom]
+en=Custom
+ch=自定义
+[Advance]
+en=Advance
+ch=高 级
+[Network]
+en=Network
+ch=网 络 
+[Command]
+en=Command
+ch=命 令
+[bookmark]
+en=bookmark
+ch=网络收藏夹
+

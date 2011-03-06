@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>index</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:style.css" type="text/css">
+<script type="text/javascript" src="qrc:jquery.js"/> </script>
+<script type="text/javascript" src="qrc:jm.js"/> </script>
+<script>
+function apply(key)
+{
+		OptionsDlg.apply('adv/ckFuzzyMatch',$obj('ckFuzzyMatch').checked);
+		OptionsDlg.apply('adv/ckCaseSensitive',$obj('ckCaseSensitive').checked);
+		OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$obj('ckRebuilderCatalogTimer').checked);
+		OptionsDlg.apply('adv/ckSupportIe',$obj('ckSupportIe').checked);
+		OptionsDlg.apply('adv/ckSupportFirefox',$obj('ckSupportFirefox').checked);
+		OptionsDlg.apply('adv/ckSupportOpera',$obj('ckSupportOpera').checked);
+		OptionsDlg.apply('netfinder/baidu',$obj('baidu').checked);
+		OptionsDlg.apply('netfinder/google',$obj('google').checked);
+		OptionsDlg.apply('netsearchbrowser',$('#netsearchbrowser').val());
+		OptionsDlg.accept();
+}
+function   set_selected(s_value,id){   
+	  if(s_value!=""){   
+	  s_obj   =   $obj(id).options;   
+	  len   =   s_obj.length;   
+		  for   (i   =   0;   i   <   len;   i++ ){   
+			  if(s_value   ==   s_obj[i].value){
+				s_obj[i].selected=   true; 
+				}   
+		  }   
+	  }   
+  }   
+</script>
+</head>
+ <body>
+<div id="header">
+		<div class="h_logo">
+			<a title="弹指网 一切触手可及" onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a>
+		</div>
+		<div class="h_adv">
+		</div>
+</div>
+<div id="toolbar">
+		<div class="tb_m">
+			<ul id="tmenu"></ul>
+		</div>
+</div>
+		<div id="wrapper">
+				<div class="clearfix">
+					<fieldset class="cfgitem">
+					<h2>高级&raquo;</h2>
+					<ul>
+						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
+						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
+						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>
+						<li>
+						<input type="checkbox" name="ckSupportIe" id="ckSupportIe" /><span>&nbsp支持IE</span><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</li>
+						<li>
+						<input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" /><span>&nbsp支持firefox</span>
+						<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</li>
+						<li>
+						<input type="checkbox" name="ckSupportOpera" id="ckSupportOpera" /><span>&nbsp支持Opera</span>
+						<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+						</li>
+					</ul>					
+					</fieldset>
+					<fieldset class="cfgitem">
+						<h2>搜索引擎&raquo;</h2>
+						<p><span>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;</span><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></p>
+						<p>
+							<span>浏览器</span>
+							<input name="netsearchbrowser" type="text" id="netsearchbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netsearchbrowser',1);"/>
+						</p>
+					</fieldset>
+				</div>
+			 <div id="footer">				
+			</div>
+		</div>
+</body>
+<script>
+	OptionsDlg.loading('Advance');
+</script>
+</html>

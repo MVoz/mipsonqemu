@@ -1,0 +1,141 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>index</title>
+<link rel="stylesheet" rev="stylesheet" href="qrc:jm.css" type="text/css">
+<script>
+function getHtml(path)
+{
+	OptionsDlg.getHtml(path);
+}
+function reject()
+{
+	OptionsDlg.reject();
+}
+function apply(key)
+{
+	with(document){
+	OptionsDlg.apply('adv/ckFuzzyMatch',getElementById('ckFuzzyMatch').checked);
+	OptionsDlg.apply('adv/ckCaseSensitive',getElementById('ckCaseSensitive').checked);
+	OptionsDlg.apply('adv/ckRebuilderCatalogTimer',getElementById('ckRebuilderCatalogTimer').checked);
+	OptionsDlg.apply('adv/ckSupportIe',getElementById('ckSupportIe').checked);
+	OptionsDlg.apply('adv/ckSupportFirefox',getElementById('ckSupportFirefox').checked);
+	OptionsDlg.apply('adv/ckSupportOpera',getElementById('ckSupportOpera').checked);
+	OptionsDlg.accept();
+	}
+}
+function   set_selected(s_value,id){   
+	  if(s_value!=""){   
+	  s_obj   =   document.getElementById(id).options;   
+	  len   =   s_obj.length;   
+		  for   (i   =   0;   i   <   len;   i++ ){   
+			  if(s_value   ==   s_obj[i].value){
+				s_obj[i].selected=   true; 
+				}   
+		  }   
+	  }   
+  }   
+function updateClick(type)
+	{
+		OptionsDlg.startUpdater();
+	}
+</script>
+</head>
+<body>
+<div id="wrap">
+	<div id="header"></div>
+	<div class="main">
+	<div id="lm">
+	<ul id="menu">
+		<li>
+			<a href="#" onclick="getHtml('./html/general.html');" >通用</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/list_mg.html');">列表管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/cmd_mg.html');">命令管理</a></li>
+				<li><a href="#" onclick="getHtml('./html/net_mg.html');">网络管理</a></li>
+			</ul>
+		</li>
+		<li>
+		<a href="#" onclick="getHtml('./html/adv.html');" style="font-weight:bold;" >高级</a>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/interface.html');">界面</a>
+			<ul>
+				<li><a href="#" onclick="getHtml('./html/skin_mg.html');">皮肤</a></li>
+				<li><a href="#" onclick="getHtml('./html/language_mg.html');">语言</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" onclick="getHtml('./html/processDlg.html');">关于</a>
+		</li>		
+	</ul>
+
+	</div>
+<div id="rm">
+		<div id="taitou">高级</div>
+	<div id="area">
+		<table width="600" border=0>
+		 <tr>
+			<td width="30%"><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</td>
+			<td width="70%" align="right" cellspacing="0"></td>
+		</tr>
+		<tr>
+			<td width="30%"><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</td>
+			<td width="70%" align="right" cellspacing="0"></td>
+		</tr>
+		 <tr>
+			<td width="30%"><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</td>
+			<td width="70%" align="right" cellspacing="0"></td>
+		</tr>
+		 <tr>
+			<td width="30%"><input type="checkbox" name="ckSupportIe" id="ckSupportIe" />&nbsp支持IE</td>
+			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+		</tr>
+		 <tr>
+			<td width="30%"><input type="checkbox" name="ckSupportFirefox" id="ckSupportFirefox" />&nbsp支持firefox</td>
+			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+		</tr>
+		 <tr>
+			<td width="30%"><input type="checkbox" name="ckSupportOpera" id="ckSupportOpera" />&nbsp支持opera</td>
+			<td width="70%" align="margin-left:20px;"><input name="listPath" type="text" id="listPath" size=40/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+		</tr>
+	</table>
+	</div>
+	<div id="taitou">软件更新</div>
+<div id="area">
+	<table width="600" >
+		<tr>
+			<td width="15%">当前版本:</td>
+			<td width="20%" align=left>1.0.0</td>
+			<td width="25%" ></td>
+			<td width="50%" >
+					<div class="btn">
+					<a href="#" style="width:113px;" onclick="updateClick();"><label style="width:113px;height:25px;">立即更新</label></a>
+					</div>
+			</td>
+		</tr>					
+	</table>
+</div>
+</div>
+	<div id="applybtn">
+			<table width="100%">
+				<tr>
+					<td width="50%">&nbsp</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="apply('adv_html');" >应用</a>
+								</div>
+					</td>
+					<td width="25%">
+								<div class="btn">
+								<a href="#"  onclick="reject();" >取消</a>
+								</div>
+					</td>
+				</tr>
+			</table>
+	</div>
+</body>
+<script>
+	OptionsDlg.loading('adv_html');
+</script>
+</html>
