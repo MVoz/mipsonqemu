@@ -453,5 +453,7 @@ enum TEST_NET_RESULT{
 #define NET_BOOKMARK_GROUPID_START 8000
 
 #define BROWSER_FIREFOX_BIN_NAME "firefox.exe"
+
+#define CONFIG_ACTION_LIST
 #endif
 

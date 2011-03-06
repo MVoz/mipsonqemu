@@ -126,6 +126,9 @@ public slots:
 	void bmApply(const int& action,const QString& name,const QString& url,const int& id);
 	void bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& id);
 	void bmExport(const int& browserid);
+#ifdef CONFIG_ACTION_LIST
+	void importNetBookmarkFinished(int status);
+#endif
 signals:
 	void rebuildcatalogSignal();
 	void optionStartSyncNotify();
