@@ -92,6 +92,7 @@ public:
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
 	void deleteIdFromDb(uint id);
+	void keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId);
 	void productFFId(QString & randString,int length);
 	void setTerminated(uint flag){	terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
