@@ -217,7 +217,7 @@ void CatBuilder::clearDb(uint delId)
 		break;
 	case CAT_BUILDMODE_COMMAND:
 		s=QString("DELETE  FROM %1 WHERE  delId!=%2").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND)).arg(delId);
-		break;
+		break;	
 	}
 
 	//qDebug("s=%s",qPrintable(s));
@@ -277,6 +277,10 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 		{
 			switch( browserid )
 			{
+			case BROWSE_TYPE_NETBOOKMARK:
+				tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0);
+				setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+				break;
 			case BROWSE_TYPE_IE:						
 				tz::readDirectory(tz::getIePath(), &current_bc[BROWSE_TYPE_IE], 0);	
 				setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
@@ -316,9 +320,14 @@ ffout:
 	while(!browserInfo[i].name.isEmpty())
 	{
 		int browserid = browserInfo[i].id;
-		if( browserenable[i]&&browserInfo[i].local)
+		if( browserenable[i])
 		{
-			bmMerge::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_BROWSER_START,delId);
+			if(browserInfo[i].local)
+				bmMerge::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_BROWSER_START,delId);
+			else{
+				//20110207 need let as it is
+				bmMerge::keeplaunchdb(&q,browserid+COME_FROM_BROWSER_START,delId);
+			}
 		}
 		i++;
 	}		
@@ -333,6 +342,8 @@ ffout:
 		{
 			switch( browserid )
 			{
+			case BROWSE_TYPE_NETBOOKMARK:
+				break;
 			case BROWSE_TYPE_IE:
 				break;
 			case BROWSE_TYPE_FIREFOX:
