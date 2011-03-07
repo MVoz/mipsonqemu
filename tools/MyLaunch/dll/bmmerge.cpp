@@ -348,7 +348,13 @@ ffout:
 			int browserid = browserInfo[i].id;
 			if( browserenable[i])
 			{
-				bmintolaunchdb(&q,&result_bc[browserid],browserid+COME_FROM_NETBOOKMARK,delId);
+				if(browserInfo[i].local)
+					bmintolaunchdb(&q,&result_bc[browserid],browserid+COME_FROM_BROWSER,delId);
+				else{
+					//keep the same
+					keeplaunchdb(&q,browserid+COME_FROM_BROWSER,delId);
+				}
+					
 			}
 			i++;
 		}		
@@ -1128,7 +1134,12 @@ uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fu
 }
 
 #endif 
-
+void bmMerge::keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId)
+{
+	q->prepare(QString("UPDATE %1 SET delId=:delId WHERE comefrom=:comefrom").arg(DBTABLEINFO_NAME(frombrowsertype)));
+	q->bindValue(":delId", delId);
+	q->bindValue(":comefrom", frombrowsertype);
+}
 
 void bmMerge::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
 {
