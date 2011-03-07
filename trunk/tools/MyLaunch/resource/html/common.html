@@ -21,6 +21,7 @@ function apply(key)
 	OptionsDlg.apply('Account/Userpasswd',$obj('Userpasswd').value);
 	OptionsDlg.accept();
 }
+/*
 function   set_selected(s_value,id){   
 	  if(s_value!=""){   
 	  s_obj   =  $(id).options;   
@@ -32,6 +33,7 @@ function   set_selected(s_value,id){
 		  }   
 	  }   
 }
+*/
 function checkUsername()
 {  
   var   supported   =   0;     
@@ -42,12 +44,12 @@ function checkUsername()
   }     
   if   (!supported)     
   return   (str.indexOf(".")   >   2)   &&   (str.indexOf("@")   >   0);     
-	str=$('Username').value;
+	str=$('#Username').val();
 	var r=new RegExp("^[a-zA-Z0-9]{1}[\.a-zA-Z0-9_-]*[a-zA-Z0-9]{1}@[a-zA-Z0-9]+[-]{0,1}[a-zA-Z0-9]+[\.]{1}[a-zA-Z]+[\.]{0,1}[a-zA-Z]+$");
 	if(!r.test(str))
 	{
 		alert('错误的用户名！请输入一个合法的用户名');
-		$('Username').value='';
+		$('#Username').val('');
 	}
 }
 function accountTestClick()
@@ -137,8 +139,7 @@ setInterval("getSyncStatus()",1000);
 					</p>
 				</fieldset>
 			</div>
-			 <div id="footer">
-				
+			 <div id="footer">				
 			</div>
 		</div>
     </body>
