@@ -223,6 +223,25 @@ void getBrowserFullpath(int type,QString& fullpath){
 #ifdef CONFIG_ACTION_LIST
 QList <ACTION_LIST> actionlist;
 int addToActionList( struct ACTION_LIST& item){
+	for (int i = 0; i < actionlist.size(); ++i) {
+	   if((actionlist[i].fullpath!=item.fullpath))
+	   	continue;
+	     if((actionlist[i].name!=item.name))
+	   	continue;	   	
+	   if((actionlist[i].action!=item.action))
+	   	continue;
+	   if((actionlist[i].id.groupid!=item.id.groupid)){
+	   	if((item.action == ACTION_LIST_BOOKMARK_SYNC)||(item.action == ACTION_LIST_TEST_ACCOUNT))
+	   		{
+	   			if((item.id.groupid==SYN_MODE_NOSILENCE)||(actionlist[i].id.groupid==SYN_MODE_NOSILENCE)){
+					actionlist[i].id.groupid==SYN_MODE_NOSILENCE;
+					return 0;
+	   			}
+	   		}
+	   }
+	   
+	   	return 0;
+ 	} 
 	actionlist.push_back(item);
 	return 0;
 }

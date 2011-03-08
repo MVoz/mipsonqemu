@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <catalog_types.h>
 //#include "plugin_handler.h"
 
-enum catbuildmode{
+enum CATBUILDMODE{
 	CAT_BUILDMODE_ALL=0,
 	CAT_BUILDMODE_DIRECTORY,
 	CAT_BUILDMODE_BOOKMARK,
@@ -45,7 +45,7 @@ private:
 	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
 	QSqlDatabase *db;
-	catbuildmode buildMode;
+	CATBUILDMODE buildMode;
 public:
 	bool terminateflag;
 	uint browserid;
@@ -72,7 +72,7 @@ public:
 
 
 	shared_ptr<Catalog> getCatalog() { return cat; }
-	CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs);
+	CatBuilder(bool fromArchive,CATBUILDMODE mode,QSqlDatabase *dbs);
 	//CatBuilder(shared_ptr<Catalog> catalog,QSqlDatabase *dbs) :  buildWithStart(false),db(dbs),cat(catalog){}
 	~CatBuilder(){
 		cat.reset();

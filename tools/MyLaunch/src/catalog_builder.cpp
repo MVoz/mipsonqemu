@@ -48,7 +48,7 @@ struct predefinedonsystem{
 } ;
 
 
-CatBuilder::CatBuilder(bool fromArchive,catbuildmode mode,QSqlDatabase *dbs):
+CatBuilder::CatBuilder(bool fromArchive,CATBUILDMODE mode,QSqlDatabase *dbs):
 buildWithStart(fromArchive),buildMode(mode),db(dbs)
 {
 	cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));

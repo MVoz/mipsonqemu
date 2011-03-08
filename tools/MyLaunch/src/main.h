@@ -324,7 +324,7 @@ public slots:
 		void finishedFade(double d);
 		void menuEvent(QContextMenuEvent*);
 		void buildCatalog();
-		void _buildCatalog(catbuildmode);
+		void _buildCatalog(CATBUILDMODE);
 		void updateSuccess();
 		void startSync();
 		void _startSync(int mode,int silence);
@@ -344,7 +344,7 @@ public slots:
 		void restoreUserCommand();
 #ifdef CONFIG_ACTION_LIST
 		void importNetBookmarkFinished(int status);
-		void importNetBookmark(catbuildmode mode,uint browserid);
+		void importNetBookmark(CATBUILDMODE mode,uint browserid);
 #endif
 private slots:
 		void setIcon(int type,const QString& tip);

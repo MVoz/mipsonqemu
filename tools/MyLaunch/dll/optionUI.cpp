@@ -794,11 +794,21 @@ void synchronizeDlg::reSyncSlot()
 void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString& url,const int& type,const int& groupid)
 {
 	qDebug()<<__FUNCTION__<<" "<<name<<" "<<url<<" "<<type<<" "<<groupid;
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.fullpath = url;
+	item.name = name;
+#else
 	unsigned int showgroupId = 0;
+#endif
 	switch (action)
 	{
 	case 0:		//add
 		{
+#ifdef CONFIG_ACTION_LIST			
+			item.action = (type)?(ACTION_LIST_ADD_NETBOOKMARK_DIR):(ACTION_LIST_ADD_NETBOOKMARK_ITEM);
+			item.id.groupid = (type)?(tz::getNetBookmarkMaxGroupid(db)):(groupid);
+#else
 			CatItem item(url,name,"",COME_FROM_MYBOOKMARK);	
 			item.parentId = groupid;
 			item.type = type;
@@ -808,10 +818,15 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 			}else
 				showgroupId = groupid;
 			CatItem::addCatitemToDb(db,item);
+#endif
 		}
 		break;
 	case 1:		//modify
 		{
+#ifdef CONFIG_ACTION_LIST			
+			item.action = ACTION_LIST_MODIFY_NETBOOKMARK_DIR;
+			item.id.groupid = groupid;
+#else
 			CatItem item(url,name,"",COME_FROM_MYBOOKMARK);	
 			unsigned int bmid = tz::getBmidFromGroupId(db,groupid);
 			if(bmid){
@@ -820,20 +835,29 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 				showgroupId=item.groupId = groupid;
 				CatItem::modifyCatitemFromDb(db,item,bmid);
 			}
+#endif
 		}
 		break;
 	case 2:		//delete
 		{
+#ifdef CONFIG_ACTION_LIST			
+			item.action = ACTION_LIST_DELETE_NETBOOKMARK_DIR;
+			item.id.groupid = groupid;
+#else
 			unsigned int bmid = tz::getBmidFromGroupId(db,groupid);
 			if(bmid){
 				showgroupId= tz::getBmParentId(db,bmid);
 			}
 			tz::deleteNetworkBookmark(db,groupid);
+#endif
 		}
 		break;
 	default:
 		break;
 	}
+#ifdef CONFIG_ACTION_LIST
+	addToActionList(item);
+#else
 	loading("bookmark");
 	QString js("");
 	qDebug()<<showgroupId;
@@ -842,6 +866,7 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 	else
 		js.append(QString("$(\"#menu #menu_li_%1\").click();").arg(showgroupId));
 	webView->page()->mainFrame()->evaluateJavaScript(js);	
+#endif
 	
 }
 
@@ -849,6 +874,11 @@ void OptionsDlg::bmDirApply(const int& action,const QString& name,const QString&
 void OptionsDlg::bmApply(const int& action,const QString& name,const QString& url,const int& id)
 {
 	qDebug()<<" "<<name<<" "<<url<<" "<<id<<" "<<action;
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.fullpath = url;
+	item.name = name;
+#else
 	CatItem item(url,name,"",COME_FROM_MYBOOKMARK);	
 	unsigned int parentid = tz::getBmParentId(db,id);
 	QString parentName;
@@ -864,22 +894,37 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 		q.clear();
 	}else
 		parentName="root";
+#endif
 	
 	switch (action)
 	{
 	case 0:		//add
 		break;
 	case 1:		//modify
+#ifdef CONFIG_ACTION_LIST
+		item.action = ACTION_LIST_MODIFY_NETBOOKMARK_ITEM;
+		item.id.bmid = id;
+#else
 		CatItem::modifyCatitemFromDb(db,item,id);
+#endif
 		break;
 	case 2:		//delete
+#ifdef CONFIG_ACTION_LIST
+		item.action = ACTION_LIST_DELETE_NETBOOKMARK_ITEM;
+		item.id.bmid = id;
+#else
 		CatItem::deleteCatitemFromDb(db,item,id);
+#endif
 		break;
 	default:
 		break;
 	}
+#ifdef CONFIG_ACTION_LIST
+		addToActionList(item);
+#else
 	qDebug()<<__FUNCTION__<<parentid<<parentName;
 	getbmfromid(parentid,COME_FROM_MYBOOKMARK,parentName,parentid?0:1);
+#endif
 }
 
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){

@@ -75,15 +75,25 @@ BMAPI_DLL_FUNCEXPORT void clearBrowserInfoOpFlag(uint id);
 #ifdef CONFIG_ACTION_LIST
 #define ACTION_LIST_CATALOGBUILD 0
 #define ACTION_LIST_BOOKMARK_SYNC 1
-#define ACTION_LIST_IMPORT_BOOKMARK 2
-#define ACTION_LIST_EDIT_NETBOOKMARK 3
+#define ACTION_LIST_TEST_ACCOUNT 2
+#define ACTION_LIST_IMPORT_BOOKMARK 3
+#define ACTION_LIST_ADD_NETBOOKMARK_DIR 4
+#define ACTION_LIST_MODIFY_NETBOOKMARK_DIR 5
+#define ACTION_LIST_DELETE_NETBOOKMARK_DIR 6
+#define ACTION_LIST_ADD_NETBOOKMARK_ITEM 7
+#define ACTION_LIST_MODIFY_NETBOOKMARK_ITEM 8
+#define ACTION_LIST_DELETE_NETBOOKMARK_ITEM 9
+
+
  struct BMAPI_DLL_CLASSEXPORT ACTION_LIST{
 	uint action;
-	QString fullpath;
-	QString name;
+	QString fullpath;//for operate net bookmark
+	QString name;//for operate net bookmark
 	union{
-		uint groupid;
-		uint browserid;
+		uint bmid;//for opeate net bookmark item
+		uint groupid;//for operate net bookmark dir
+		uint browserid;//for import browser bookmark
+		uint mode;//for cat builder mode or booksync silent
 	}id;
 };
 BMAPI_DLL_FUNCEXPORT int addToActionList( struct ACTION_LIST& item);
