@@ -327,9 +327,13 @@ ffout:
 					bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
 					*/
 					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0);
-				}	
+				}else{
+					//keep it
+					result_bc[i] = (lastUpdate[i]->bm_list);
+				}
 				//qDebug()<<"#########################################";
-				//dumpBcList(&result_bc[browserid]);
+				//QList < bookmark_catagory > l = result_bc[browserid];
+				//dumpBcList(&l);
 				//qDebug()<<"#########################################";
 			}
 			i++;

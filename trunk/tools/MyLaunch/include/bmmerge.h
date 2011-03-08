@@ -91,8 +91,7 @@ public:
 	int bmMergeAction(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType,uint local_parentId);
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
-	void deleteIdFromDb(uint id);
-	void keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId);
+	void deleteIdFromDb(uint id);	
 	void productFFId(QString & randString,int length);
 	void setTerminated(uint flag){	terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
@@ -127,6 +126,7 @@ public:
 public:
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
 	static void dumpBcList(QList<bookmark_catagory>* s);
+	static void keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId);;
 };
 
 #endif
