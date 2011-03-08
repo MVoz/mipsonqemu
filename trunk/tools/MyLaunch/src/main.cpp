@@ -1491,9 +1491,14 @@ void MyWidget::syncTimeout()
 {
 	// one hour
 	STOP_TIMER(syncTimer);
-	
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.action = ACTION_LIST_BOOKMARK_SYNC;
+	item.id.mode = SYN_MODE_SILENCE;
+	addToActionList(item);
+#else	
 	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_SILENCE);	
-	
+#endif	
 }
 
 void MyWidget::silentupdateTimeout()
@@ -1954,7 +1959,7 @@ void MyWidget::importNetBookmarkFinished(int status)
 		ops->importNetBookmarkFinished(status);
 	gSemaphore.release(1);
 }
-void MyWidget::importNetBookmark(catbuildmode mode,uint browserid)
+void MyWidget::importNetBookmark(CATBUILDMODE mode,uint browserid)
 {
 	qDebug()<<__FUNCTION__<<gBuilder;
 	if (gBuilder == NULL)
@@ -1968,7 +1973,7 @@ void MyWidget::importNetBookmark(catbuildmode mode,uint browserid)
 	}
 }
 #endif
-void MyWidget::_buildCatalog(catbuildmode mode)
+void MyWidget::_buildCatalog(CATBUILDMODE mode)
 {
 	if(updateSuccessTimer)
 		return;
@@ -1995,7 +2000,14 @@ void MyWidget::_buildCatalog(catbuildmode mode)
 }
 void MyWidget::buildCatalog()
 {
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.action = ACTION_LIST_CATALOGBUILD;
+	item.id.mode = CAT_BUILDMODE_ALL;
+	addToActionList(item);
+#else
 	_buildCatalog(CAT_BUILDMODE_ALL);
+#endif
 }
 
 void MyWidget::stopSync()
@@ -2008,8 +2020,24 @@ void MyWidget::stopSync()
 }
 void MyWidget::reSync()
 {
-	int mode;
+
+#ifdef CONFIG_ACTION_LIST
 //	qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
+	struct ACTION_LIST item;
+	switch(syncMode)
+	{
+	case SYNC_MODE_BOOKMARK:
+	case SYNC_MODE_REBOOKMARK:
+		item.action =ACTION_LIST_BOOKMARK_SYNC;
+		break;
+	case SYNC_MODE_TESTACCOUNT:
+		item.action =ACTION_LIST_TEST_ACCOUNT;			
+		break;
+	}
+	item.id.mode = SYN_MODE_NOSILENCE;
+	addToActionList(item);
+#else
+	int mode;
 	switch(syncMode)
 	{
 	case SYNC_MODE_BOOKMARK:
@@ -2021,10 +2049,18 @@ void MyWidget::reSync()
 		break;
 	}
 	_startSync(mode,SYN_MODE_NOSILENCE);		
+#endif
 }
 void MyWidget::startSync()
 {
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.action = ACTION_LIST_BOOKMARK_SYNC;
+	item.id.mode = SYN_MODE_NOSILENCE;
+	addToActionList(item);
+#else
 	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_NOSILENCE);
+#endif
 }
 
 void MyWidget::_startSync(int mode,int silence)      
@@ -2236,7 +2272,14 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 {
 	testAccountName=name;
 	testAccountPassword=password;
+#ifdef CONFIG_ACTION_LIST
+	struct ACTION_LIST item;
+	item.action = ACTION_LIST_TEST_ACCOUNT;
+	item.id.mode = SYN_MODE_NOSILENCE;
+	addToActionList(item);
+#else
 	_startSync(SYNC_MODE_TESTACCOUNT,SYN_MODE_NOSILENCE);
+#endif
 	return;
 }
 void MyWidget::monitorTimerTimeout()
@@ -2245,17 +2288,78 @@ void MyWidget::monitorTimerTimeout()
 	//processing ........
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
-	if(getFromActionList(item)){
+	if(!closeflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
 		qDebug()<<item.action<<item.fullpath<<item.name<<item.id.browserid;
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
+				_buildCatalog((CATBUILDMODE)item.id.mode);
 				break;
 			case ACTION_LIST_BOOKMARK_SYNC:
+				_startSync(SYNC_MODE_BOOKMARK,item.id.mode);
+				break;
+			case ACTION_LIST_TEST_ACCOUNT:
+				_startSync(SYNC_MODE_TESTACCOUNT,item.id.mode);
 				break;
 			case ACTION_LIST_IMPORT_BOOKMARK:
 				importNetBookmark(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
 				break;
-			case ACTION_LIST_EDIT_NETBOOKMARK:
+			case ACTION_LIST_ADD_NETBOOKMARK_DIR:
+				{
+					uint showgroupId = 0;
+					CatItem t("",item.name,"",COME_FROM_MYBOOKMARK);	
+					t.parentId = item.id.groupid;
+					t.type = 1;
+					showgroupId=t.groupId=tz::getNetBookmarkMaxGroupid(&db);			
+					CatItem::addCatitemToDb(&db,t);
+				}
+				break;
+			case ACTION_LIST_MODIFY_NETBOOKMARK_DIR:
+				{
+					uint showgroupId = 0;
+					CatItem t("",item.name,"",COME_FROM_MYBOOKMARK);		
+					unsigned int bmid = tz::getBmidFromGroupId(&db, item.id.groupid);
+					if(bmid){
+						t.parentId = tz::getBmParentId(&db,bmid);
+						t.type = 1;
+						showgroupId=t.groupId =  item.id.groupid;;
+						CatItem::modifyCatitemFromDb(&db,t,bmid);
+					}
+				}
+				break;
+			case ACTION_LIST_DELETE_NETBOOKMARK_DIR:
+				{
+					uint showgroupId = 0;
+					uint bmid = tz::getBmidFromGroupId(&db,item.id.groupid);
+					if(bmid){
+						showgroupId= tz::getBmParentId(&db,bmid);
+					}
+					tz::deleteNetworkBookmark(&db,item.id.groupid);
+				}
+				break;
+			case ACTION_LIST_ADD_NETBOOKMARK_ITEM:
+				{
+					uint showgroupId = 0;
+					CatItem t(item.fullpath,item.name,"",COME_FROM_MYBOOKMARK);	
+					showgroupId=t.parentId = item.id.groupid;
+					t.type = 0;	
+					CatItem::addCatitemToDb(&db,t);
+				}
+				break;
+			case ACTION_LIST_MODIFY_NETBOOKMARK_ITEM:
+				{
+					uint showgroupId = 0;
+					CatItem t(item.fullpath,item.name,"",COME_FROM_MYBOOKMARK);	
+					showgroupId = tz::getBmParentId(&db,item.id.bmid);
+					CatItem::modifyCatitemFromDb(&db,t,item.id.bmid);
+				}
+				break;
+			case ACTION_LIST_DELETE_NETBOOKMARK_ITEM:
+				{
+					uint showgroupId = 0;
+					CatItem t(item.fullpath,item.name,"",COME_FROM_MYBOOKMARK);	
+					showgroupId = tz::getBmParentId(&db,item.id.bmid);
+					CatItem::deleteCatitemFromDb(&db,t,item.id.bmid);
+				}
 				break;
 			default:
 				break;
