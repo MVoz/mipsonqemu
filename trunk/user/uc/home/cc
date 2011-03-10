@@ -17,7 +17,7 @@ do
 		echo 'rm -fr '$sqlfile'.zip' $sqlfile
 		rm -fr $sqlfile.zip  $sqlfile
 		echo 'backup mysql database'
-		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
+		mysqldump --quick --databases $DBNAME --flush-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
 		echo 'make zip package '$sqlfile'.zip'
 		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile config.sh  
 		rm -f $sqlfile 
@@ -32,7 +32,7 @@ do
 		echo 'rm -fr '$sqlfile'.zip' $sqlfile
 		rm -fr $sqlfile.zip $sqlfile
 		echo 'backup mysql database'
-		mysqldump --quick --databases $DBNAME --flush-logs --delete-master-logs --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
+		mysqldump --quick --databases $DBNAME --flush-logs  --lock-all-tables --default-character-set=utf8 -u $DB_USER -p$mysql_passwd > $sqlfile
 		echo 'make zip package '$sqlfile'.zip'
 		zip  -u -P $rar_passwd $sqlfile.zip $sqlfile config.sh   
 		rm -f $sqlfile 
