@@ -2,7 +2,7 @@
 if(!defined('IN_UCHOME')) exit('Access Denied');
 $_SCONFIG=Array
 	(
-	'sitename' => '我的空间',
+	'sitename' => '弹指网',
 	'template' => 'default',
 	'adminemail' => 'webmaster@192.168.115.2',
 	'onlinehold' => 1800,
@@ -100,7 +100,7 @@ $_SCONFIG=Array
 			'click' => 1
 			)
 		),
-	'cronnextrun' => 1292895000,
+	'cronnextrun' => 1299178500,
 	'my_status' => '0',
 	'uniqueemail' => 1,
 	'updatestat' => 1,
