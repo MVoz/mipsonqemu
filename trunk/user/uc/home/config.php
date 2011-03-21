@@ -98,7 +98,7 @@ $_SC['link_award_min']=5;
 
 //应用的UCenter配置信息(可以到UCenter后台->应用管理->查看本应用->复制里面对应的配置信息进行替换)
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
-define('UC_DBHOST', '192.168.115.2'); // UCenter 数据库主机
+define('UC_DBHOST', '127.0.0.1'); // UCenter 数据库主机
 define('UC_DBUSER', 'root'); // UCenter 数据库用户名
 define('UC_DBPW', '981221'); // UCenter 数据库密码
 define('UC_DBNAME', 'uc_db'); // UCenter 数据库名称
@@ -106,7 +106,7 @@ define('UC_DBCHARSET', 'utf8'); // UCenter 数据库字符集
 define('UC_DBTABLEPRE', '`uc_db`.uc_'); // UCenter 数据库表前缀
 define('UC_DBCONNECT', '0'); // UCenter 数据库持久连接 0=关闭, 1=打开
 define('UC_KEY', 'ofI06ezfwfb2GfbbYfecUatdJ6qbP2j2Z7DdIco1O5O6d0B4mcec7cf9bez4P0W1'); // 与 UCenter 的通信密钥, 要与 UCenter 保持一致
-define('UC_API', 'http://192.168.115.2/ucenter'); // UCenter 的 URL 地址, 在调用头像时依赖此常量
+define('UC_API', 'http://127.0.0.1/ucenter'); // UCenter 的 URL 地址, 在调用头像时依赖此常量
 define('UC_CHARSET', 'utf8'); // UCenter 的字符集
 define('UC_IP', '127.0.0.1'); // UCenter 的 IP, 当 UC_CONNECT 为非 mysql 方式时, 并且当前应用服务器解析域名有问题时, 请设置此值
 define('UC_APPID', '1'); // 当前应用的 ID
