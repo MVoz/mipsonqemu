@@ -488,7 +488,7 @@ a.c_link {
 #hhlt {padding-left:8px;float:right;width:270px;height:252px;overflow:hidden;background:#fff;
 border:1px solid #DDD;}
 #hhlt dl{float:left;width:240px;padding-top:8px;overflow:hidden;}
-#hhlt p {float:right;width:20px;font-size:12px;font-weight:bold;line-height:12px;}
+#hhlt p {float:right;width:20px;font-size:12px;line-height:12px;}
 #hhlt p span {display:block;padding:7px 2px;background-color:#EEE;border:1px solid #ddd;border-width:0px 1px 1px 1px;}
 #hhlt .stne{display:block;font-size:12px;width:150px;overflow:hidden;height:20px}
 #hhlt .stcs{margin-top:-20px;color:#2C629E;font-size:12px;float:right;height:20px;width:65px;}
@@ -547,7 +547,7 @@ border:1px solid #DDD;}
 .box{background:url("image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
-.box h3 , .boxnb h3{ font-size:15px;color:#438E0B;margin-bottom:5px; }
+.box h3 , .boxnb h3{ font-size:15px;color:#438E0B;margin-bottom:5px; font-weight:normal;}
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#438E0B; width: 970px; border-bottom: #438E0B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
@@ -555,8 +555,8 @@ border:1px solid #DDD;}
 		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
 		.ntr{ float: right;  padding: 0 30px 0 0;  background: transparent url(image/nlr.gif) no-repeat right center;}
 
-	.ntitle em,.ntitle  p{float:left;overflow:hidden;white-space:nowrap;font-size:110%;font-weight: blod;font-style:normal;}
-	.ntitle p {color:#FF6A00;}
+	.ntitle em,.ntitle  p{float:left;overflow:hidden;white-space:nowrap;font-size:115%;font-weight: blod;font-style:normal;}
+	.ntitle p {color:#2C629E;}
 	.ntitle em {color:#438E0B;}
 
 	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:10px;overflow:hidden; }
@@ -636,7 +636,8 @@ border:1px solid #DDD;}
 	.nelt #qkmut{font-style:normal;}
 
 #board {clear:both;float:left;margin:5px 0 0 0;width:970px;}
-	#board .shio{background:url("image/g.png") no-repeat scroll -961px -620px #E9EEF2;color:#666;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
+	#board .shio{background:url("image/g.png") no-repeat scroll -961px -620px #E9EEF2;color:#fff;float:left;font-size:14px;height:261px;line-height:1.6;position:relative;width:954px;overflow:hidden;padding:8px 0 0 8px;}
+	#board .shio .currentx{color:#666;}
 	#board .shio .searchinfo_1{ float:left;margin:0px;padding:1px;width:672px;overflow:hidden;}
 	#board .dcio{background:url("image/g.png") no-repeat scroll -949px -620px #E9EEF2;float:right;font-size:14px;height:269px;width:8px;}
 
@@ -774,7 +775,7 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .div_table_radio_question ul li {color:#666;}
 #stlist h3 a{float: left; max-width: 250px; overflow: hidden;}
 #stlist h3 span{color:#999;font-weight:normal;}
-#bklist h3 a{float: left; max-width: 300px; overflow: hidden;}
+#bklist h3 a{float: left; max-width: 300px; overflow: hidden; font-size: 13px;}
 
 .headline{width:100%;margin-bottom: 12px;height:125px;}
 .headline .pic{ float: left; margin-right: 10px;width:150px;height:120px;padding:5px 10px;}
