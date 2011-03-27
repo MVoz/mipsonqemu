@@ -28,6 +28,7 @@ enum CATBUILDMODE{
 	CAT_BUILDMODE_BOOKMARK,
 	CAT_BUILDMODE_COMMAND,	
 	CAT_BUILDMODE_IMPORT_NETBOOKMARK,
+	CAT_BUILDMODE_LEARN_PROCESS
 };
 
 #define STOP_FLAG_CHECK if(terminateflag) goto bad;
@@ -49,6 +50,9 @@ private:
 public:
 	bool terminateflag;
 	uint browserid;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	bool clean;
+#endif
 public:
 	//bool loadCatalog(QString);
 	void storeCatalog(uint);
@@ -59,6 +63,10 @@ public:
 	void buildCatelog_define(uint);
 #ifdef CONFIG_ACTION_LIST
 	void importNetBookmark();
+#endif
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	void buildCatalog_learnProcess(uint delId);
+	void removeGarbageFromLearnProcessTable();
 #endif
 	void clearShortcut();
 //	void _clearShortcut(int type);

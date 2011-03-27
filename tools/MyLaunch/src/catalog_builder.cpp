@@ -24,6 +24,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <globals.h>
 #include "main.h"
 #include <optionUI.h>
+#include <Tlhelp32.h>
+
+//#include "window.h"
+#include <windows.h>
+
+#include <shlobj.h>
+
 //#include <QDebug>
 
 //#include <QFile>
@@ -128,6 +135,7 @@ void CatBuilder::run()
 	dest +=DB_DATABASE_NAME;
 	*/
 	//getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
+	uint delId=NOW_SECONDS;
 #ifdef CONFIG_ACTION_LIST
 	if(buildMode == CAT_BUILDMODE_IMPORT_NETBOOKMARK){
 		importNetBookmark();
@@ -135,13 +143,19 @@ void CatBuilder::run()
 		return;
 	}
 #endif
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	if(buildMode == CAT_BUILDMODE_LEARN_PROCESS){
+		buildCatalog_learnProcess(delId);
+		return;
+	}
+#endif
+
 	qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
 	//if buildWithStart is true,rescan all item
 	//else
 	//includedir true--include dir
 	if (buildWithStart)
 	{
-		uint delId=NOW_SECONDS;
 		buildCatalog(delId);
 		STOP_FLAG_CHECK;
 		storeCatalog(delId);
@@ -414,7 +428,75 @@ bad:
 void CatBuilder::buildCatelog_command(uint delId)
 {
 }
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+void CatBuilder::removeGarbageFromLearnProcessTable()
+{
+		QSqlQuery q("", *db);
+		q.prepare(QString("SELECT * FROM %1").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
+		if(q.exec()){
+			QSqlQuery qq("", *db);
+			while(q.next()){
+				if(!QFile::exists(q.value(Q_RECORD_INDEX(q,"fullPath")).toString())){
+					qDebug()<<__FUNCTION__<<__LINE__<<" collect the garbage:"<<(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+					qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
+					qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+					if(qq.exec())
+						qq.clear();			
+				}				
+			}
+			q.clear();
+		}
+}
+void CatBuilder::buildCatalog_learnProcess(uint delId)
+{
+	DWORD id=0;
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0) ;
+	PROCESSENTRY32 pInfo; 
+	pInfo.dwSize = sizeof(pInfo);
+	Process32First(hSnapShot, &pInfo) ; 
+	do{
+		CatItem	item(QString::fromUtf16(pInfo.szExeFile),COME_FROM_LEARNPROCESS);			
+		cat->addItem(item,COME_FROM_LEARNPROCESS,delId);		
+	}while(Process32Next(hSnapShot, &pInfo) != FALSE);		
+	CloseHandle( hSnapShot );
+//remove the garbarge from learnprocess table
+	if(clean)
+		removeGarbageFromLearnProcessTable();
 
+	if(this->cat->count())
+	{
+		QSqlQuery	q("", *db);
+		db->transaction();
+		for (int i = 0; i < this->cat->count(); i++)
+		{
+			STOP_FLAG_CHECK;
+			CatItem item = cat->getItem(i);
+			
+			uint id=tz::isExistInDb(&q,item.shortName,item.fullPath,item.comeFrom);
+			if(id){
+				/*
+				q.prepare(QString("UPDATE %1 SET delId=:delId WHERE id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
+				q.bindValue(":delId", delId);
+				q.bindValue(":id", id);
+				*/
+			}else
+			{
+				CatItem::prepareInsertQuery(&q,item);
+			}
+			q.exec();
+		}
+		db->commit();
+		q.clear();
+		this->cat->clearItem();
+		indexed.clear();
+	}
+	return;
+bad:
+	this->cat->clearItem();
+	indexed.clear();
+	return;
+}
+#endif
 void CatBuilder::buildCatelog_define(uint delId)
 {
 	MyWidget *main = qobject_cast < MyWidget * >(gMainWidget);
@@ -548,6 +630,11 @@ void CatBuilder::buildCatalog(uint delId)
 	case CAT_BUILDMODE_COMMAND:
 		buildCatelog_command(delId);
 		break;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	//case CAT_BUILDMODE_LEARN_PROCESS:
+	//	buildCatalog_learnProcess(delId);
+	//	break;
+#endif
 	}
 
 	emit(catalogIncrement(0.0));
