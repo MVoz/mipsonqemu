@@ -464,11 +464,19 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	NEW_TIMER(syncTimer);
 	//dropTimer = new QTimer(this);
 	NEW_TIMER(dropTimer);
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	NEW_TIMER(autoLearnProcessTimer);
+	learnProcessTimes = 0;
+#endif
 	dropTimer->setSingleShot(true);
 	connect(catalogBuilderTimer, SIGNAL(timeout()), this, SLOT(catalogBuilderTimeout()));
 	connect(silentupdateTimer, SIGNAL(timeout()), this, SLOT(silentupdateTimeout()));
 	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	connect(autoLearnProcessTimer, SIGNAL(timeout()), this, SLOT(autoLearnProcessTimeout()));
+	autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL);//1m
+#endif
 	if (gSettings->value("catalogBuilderTimer", 10).toInt() != 0)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
@@ -1549,7 +1557,17 @@ void MyWidget::dropTimeout()
 	if (input->text() != ""||(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN)))
 		showAlternatives();
 }
-
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+void MyWidget::autoLearnProcessTimeout()
+{
+#ifdef CONFIG_ACTION_LIST
+		struct ACTION_LIST item;
+		item.action = ACTION_LIST_CATALOGBUILD;
+		item.id.mode = CAT_BUILDMODE_LEARN_PROCESS;
+		addToActionList(item);
+#endif
+}
+#endif
 void MyWidget::onHotKey()
 {
 
@@ -1993,6 +2011,12 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode)
 		gSettings->setValue("lastscan", 0);
 		gBuilder.reset(new CatBuilder(true,mode,&db));
 		// gBuilder->setPreviousCatalog(catalog);
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+		if(mode == CAT_BUILDMODE_LEARN_PROCESS)
+		{
+			gBuilder->clean = (!((learnProcessTimes++)&0x0f));
+		}
+#endif
 		connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
 		//  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		gBuilder->start(QThread::IdlePriority);

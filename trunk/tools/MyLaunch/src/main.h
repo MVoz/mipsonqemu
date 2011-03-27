@@ -196,6 +196,9 @@ public:
 	QTimer* catalogBuilderTimer;
 	QTimer* dropTimer;
 	QTimer* syncTimer;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	QTimer* autoLearnProcessTimer;
+#endif
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
@@ -297,6 +300,10 @@ private:
 	OptionsDlg *ops;
 	QString shortkeyString;
 	QString defBrowser;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	uint learnProcessTimes;
+#endif
+
 public slots:
 		void monitorTimerTimeout();
 		void menuOptions();
@@ -306,6 +313,9 @@ public slots:
 		void updateSuccessTimeout();
 		void syncTimeout();
 		void dropTimeout();
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+		void autoLearnProcessTimeout();
+#endif
 		void setAlwaysShow(bool);
 		void setAlwaysTop(bool);
 		void setPortable(bool);
