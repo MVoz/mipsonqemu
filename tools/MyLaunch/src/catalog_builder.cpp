@@ -24,12 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <globals.h>
 #include "main.h"
 #include <optionUI.h>
-#include <Tlhelp32.h>
-
-//#include "window.h"
-#include <windows.h>
-
-#include <shlobj.h>
 
 //#include <QDebug>
 
@@ -455,8 +449,11 @@ void CatBuilder::buildCatalog_learnProcess(uint delId)
 	pInfo.dwSize = sizeof(pInfo);
 	Process32First(hSnapShot, &pInfo) ; 
 	do{
-		CatItem	item(QString::fromUtf16(pInfo.szExeFile),COME_FROM_LEARNPROCESS);			
-		cat->addItem(item,COME_FROM_LEARNPROCESS,delId);		
+		QString exefilepath = tz::getProcessExeFullpath(pInfo.th32ProcessID);
+		if(!exefilepath.isEmpty()){
+			CatItem	item(exefilepath,QString::fromUtf16(pInfo.szExeFile),COME_FROM_LEARNPROCESS);			
+			cat->addItem(item,COME_FROM_LEARNPROCESS,delId);		
+		}
 	}while(Process32Next(hSnapShot, &pInfo) != FALSE);		
 	CloseHandle( hSnapShot );
 //remove the garbarge from learnprocess table
