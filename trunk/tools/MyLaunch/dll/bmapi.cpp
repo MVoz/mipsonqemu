@@ -1652,4 +1652,47 @@ void tz::deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid)
 		q.clear();
 	}
 }
-
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+QString tz::getProcessExeFullpath(uint dwPID)
+{	
+	QString ret="";
+	HANDLE hModuleSnap = INVALID_HANDLE_VALUE;
+	MODULEENTRY32 me32;
+	
+	// Take a snapshot of all modules in the specified process.
+	hModuleSnap = CreateToolhelp32Snapshot( TH32CS_SNAPMODULE, dwPID );
+	if( hModuleSnap == INVALID_HANDLE_VALUE )
+	{
+		  return ret;
+	}
+	
+	// Set the size of the structure before using it.
+	me32.dwSize = sizeof( MODULEENTRY32 );
+	
+	// Retrieve information about the first module,
+	// and exit if unsuccessful
+	if( !Module32First( hModuleSnap, &me32 ) )
+	{
+	   CloseHandle( hModuleSnap );			// clean the snapshot object
+	    return ret;
+	}
+	/*
+	// Now walk the module list of the process,
+	// and display information about each module
+	do
+	{
+	  _tprintf( TEXT("\n\n	   MODULE NAME: 	%s"),	me32.szModule );
+	  _tprintf( TEXT("\n	 Executable 	= %s"), 	me32.szExePath );
+	  _tprintf( TEXT("\n	 Process ID 	= 0x%08X"), 		me32.th32ProcessID );
+	  _tprintf( TEXT("\n	 Ref count (g)	= 0x%04X"), 	me32.GlblcntUsage );
+	  _tprintf( TEXT("\n	 Ref count (p)	= 0x%04X"), 	me32.ProccntUsage );
+	  _tprintf( TEXT("\n	 Base address	= 0x%08X"), (DWORD) me32.modBaseAddr );
+	  _tprintf( TEXT("\n	 Base size		= %d"), 			me32.modBaseSize );
+	
+	} while( Module32Next( hModuleSnap, &me32 ) );
+	*/
+	ret = QString::fromUtf16(me32.szExePath);
+	CloseHandle( hModuleSnap );
+	return ret;
+}
+#endif
