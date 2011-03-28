@@ -199,6 +199,9 @@ public:
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	QTimer* autoLearnProcessTimer;
 #endif
+#ifdef CONFIG_DIGG_XML
+	QTimer* diggXmlTimer;
+#endif
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
@@ -315,6 +318,9 @@ public slots:
 		void dropTimeout();
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		void autoLearnProcessTimeout();
+#endif
+#ifdef CONFIG_DIGG_XML
+		void diggXmlTimeout();
 #endif
 		void setAlwaysShow(bool);
 		void setAlwaysTop(bool);

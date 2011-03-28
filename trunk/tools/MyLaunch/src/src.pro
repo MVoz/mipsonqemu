@@ -84,6 +84,7 @@ win32 {
       LIBS +=   ../debug/appupdater.lib
       LIBS +=   ../debug/fileget.lib
       LIBS +=   ../debug/bmnet.lib
+	  LIBS +=   ../debug/diggxml.lib
    }
    CONFIG(release, debug|release) {
       DESTDIR =    ../release/	
@@ -97,7 +98,7 @@ win32 {
       LIBS +=   ../release/appupdater.lib
       LIBS +=   ../release/fileget.lib
       LIBS +=   ../release/bmnet.lib
-      
+	  LIBS +=   ../release/diggxml.lib      
   }
 }
 }
