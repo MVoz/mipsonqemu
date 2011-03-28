@@ -2007,16 +2007,17 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode)
 
 	if (gBuilder == NULL)
 	{
-		//just for exception
-		gSettings->setValue("lastscan", 0);
+
 		gBuilder.reset(new CatBuilder(true,mode,&db));
 		// gBuilder->setPreviousCatalog(catalog);
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		if(mode == CAT_BUILDMODE_LEARN_PROCESS)
 		{
-			gBuilder->clean = (!((learnProcessTimes++)&0x0f));
-		}
-#endif
+			gBuilder->clean =gSettings->value("ckAutoLearnProcess",true).toBool()?( ((learnProcessTimes++)&0x0f)?1:2):(0);
+		}else
+#endif			
+		gSettings->setValue("lastscan", 0);//just for exception
+		
 		connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
 		//  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		gBuilder->start(QThread::IdlePriority);

@@ -45,7 +45,7 @@ class CMain;
 class CEventSink;
 BOOL isFinish = FALSE;
 #pragma comment(lib, "atl.lib") 
-#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
+//#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
 //////////////////////////////////////////////////////////////////
 // CEventSink
 //////////////////////////////////////////////////////////////////
@@ -248,13 +248,14 @@ CMain::OnTimer(UINT nMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	if (wParam != ID_DELAYTIMER &&
 		wParam != ID_TIMEOUTTIMER)
 		return 0;
-
+	
 	// TODO: should this also clear the other timer?
 	KillTimer(wParam);
 	if( timerid == ID_DELAYTIMER)
 		 SaveSnapshot();
-	PostQuitMessage(0);
+	
 	isFinish = TRUE;
+	PostQuitMessage(0);
 	printf("%s %d\n",__FUNCTION__,__LINE__);
 	return 0;
 }
@@ -810,9 +811,10 @@ int main (int argc, _TCHAR* argv[])
 
 	MSG msg;
 	
-	while (GetMessage(&msg, NULL, 0, 0)) {
+	while (GetMessage(&msg, NULL, 0, 0)) 
+	{
 		if (isFinish)       
-				   break ;    
+				   break ;    		
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
