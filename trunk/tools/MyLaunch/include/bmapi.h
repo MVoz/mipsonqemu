@@ -215,6 +215,7 @@ public :
 	static QString getDefaultBrowser();
 	static QString getIEBinPath();
 	static QString getFirefoxBinPath();
+	static QString getProcessExeFullpath(uint);
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)
