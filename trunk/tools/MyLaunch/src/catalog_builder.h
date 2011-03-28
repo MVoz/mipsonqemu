@@ -51,7 +51,7 @@ public:
 	bool terminateflag;
 	uint browserid;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
-	bool clean;
+	uint clean;//0--delete all 1--auto learn  2--remove the garbage
 #endif
 public:
 	//bool loadCatalog(QString);
@@ -66,7 +66,7 @@ public:
 #endif
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	void buildCatalog_learnProcess(uint delId);
-	void removeGarbageFromLearnProcessTable();
+	void removeGarbageFromLearnProcessTable(uint);
 #endif
 	void clearShortcut();
 //	void _clearShortcut(int type);

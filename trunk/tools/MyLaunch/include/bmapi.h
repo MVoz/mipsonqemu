@@ -216,6 +216,7 @@ public :
 	static QString getIEBinPath();
 	static QString getFirefoxBinPath();
 	static QString getProcessExeFullpath(uint);
+	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };
 
 #define DBTABLEINFO_NAME(x)  (tz::dbTableInfo((x))->name)

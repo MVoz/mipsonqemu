@@ -202,6 +202,11 @@ void CatBuilder::clearShortcut()
 	case CAT_BUILDMODE_COMMAND:
 		tz::_clearShortcut(db,COME_FROM_PREDEFINE);
 		break;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	case CAT_BUILDMODE_LEARN_PROCESS:
+		tz::_clearShortcut(db,COME_FROM_LEARNPROCESS);
+		break;
+#endif
 	}		
 }
 void CatBuilder::clearDb(uint delId)
@@ -423,23 +428,48 @@ void CatBuilder::buildCatelog_command(uint delId)
 {
 }
 #ifdef CONFIG_AUTO_LEARN_PROCESS
-void CatBuilder::removeGarbageFromLearnProcessTable()
+//remove the garbarge from learnprocess table
+void CatBuilder::removeGarbageFromLearnProcessTable(uint clean)
 {
-		QSqlQuery q("", *db);
-		q.prepare(QString("SELECT * FROM %1").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
-		if(q.exec()){
-			QSqlQuery qq("", *db);
-			while(q.next()){
-				if(!QFile::exists(q.value(Q_RECORD_INDEX(q,"fullPath")).toString())){
-					qDebug()<<__FUNCTION__<<__LINE__<<" collect the garbage:"<<(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
-					qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
-					qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
-					if(qq.exec())
-						qq.clear();			
-				}				
-			}
-			q.clear();
+		
+		switch (clean){
+			case 0://delete all
+				{
+					QSqlQuery q("", *db);
+					q.prepare(QString("DELETE  FROM %1").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
+					q.exec();
+					q.clear();
+					q.prepare(QString("DELETE  FROM %1 where comeFrom=%2").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)).arg(COME_FROM_LEARNPROCESS));
+					q.exec();
+					q.clear();
+				}
+			break;
+			case 1://auto learn				
+			break;
+			case 2://remove the garbage
+				{
+					QSqlQuery q("", *db);
+					q.prepare(QString("SELECT * FROM %1").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
+					if(q.exec()){
+						QSqlQuery qq("", *db);
+						while(q.next()){
+							if(!QFile::exists(q.value(Q_RECORD_INDEX(q,"fullPath")).toString())){
+								qDebug()<<__FUNCTION__<<__LINE__<<" collect the garbage:"<<(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+								//delete related in shortcut
+								//tz::deleteRelatedFromShortCut(db,q.value(Q_RECORD_INDEX(q,"shortName")).toString(),q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),COME_FROM_LEARNPROCESS);
+								qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
+								qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+								if(qq.exec())
+									qq.clear();			
+							}				
+						}
+						q.clear();
+					}
+					clearShortcut();
+				}
+			break;
 		}
+		
 }
 void CatBuilder::buildCatalog_learnProcess(uint delId)
 {
@@ -451,14 +481,17 @@ void CatBuilder::buildCatalog_learnProcess(uint delId)
 	do{
 		QString exefilepath = tz::getProcessExeFullpath(pInfo.th32ProcessID);
 		if(!exefilepath.isEmpty()){
-			CatItem	item(exefilepath,QString::fromUtf16(pInfo.szExeFile),COME_FROM_LEARNPROCESS);			
-			cat->addItem(item,COME_FROM_LEARNPROCESS,delId);		
+			QFileInfo finfo(exefilepath);
+			//qDebug()<<exefilepath;
+			exefilepath =finfo.absolutePath()+"/"+finfo.fileName();
+			CatItem item(exefilepath,COME_FROM_LEARNPROCESS);
+			//main->platform->alterItem(&item);
+			cat->addItem(item,COME_FROM_LEARNPROCESS,delId);
 		}
 	}while(Process32Next(hSnapShot, &pInfo) != FALSE);		
 	CloseHandle( hSnapShot );
-//remove the garbarge from learnprocess table
-	if(clean)
-		removeGarbageFromLearnProcessTable();
+
+	removeGarbageFromLearnProcessTable(clean);
 
 	if(this->cat->count())
 	{
@@ -469,17 +502,15 @@ void CatBuilder::buildCatalog_learnProcess(uint delId)
 			STOP_FLAG_CHECK;
 			CatItem item = cat->getItem(i);
 			
-			uint id=tz::isExistInDb(&q,item.shortName,item.fullPath,item.comeFrom);
-			if(id){
-				/*
-				q.prepare(QString("UPDATE %1 SET delId=:delId WHERE id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
-				q.bindValue(":delId", delId);
-				q.bindValue(":id", id);
-				*/
-			}else
-			{
-				CatItem::prepareInsertQuery(&q,item);
-			}
+			if(tz::isExistInDb(&q,item.shortName,item.fullPath,item.comeFrom))
+				continue;
+			if(tz::isExistInDb(&q,item.shortName,item.fullPath,COME_FROM_PROGRAM))
+				continue;
+			if(tz::isExistInDb(&q,item.shortName,item.fullPath,COME_FROM_COMMAND))
+				continue;					
+
+			CatItem::prepareInsertQuery(&q,item);
+
 			q.exec();
 		}
 		db->commit();
