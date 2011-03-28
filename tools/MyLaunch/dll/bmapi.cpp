@@ -1652,6 +1652,19 @@ void tz::deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid)
 		q.clear();
 	}
 }
+/*
+void tz::deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom)
+{
+	QSqlQuery q("",*db);
+	q.prepare(QString("DELETE FROM %1 WHERE comeFrom =:comeFrom AND hashId=:hashId AND shortName =:shortName AND fullPath=:fullPath").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)));
+	q.bindValue(":comeFrom", comeFrom);
+	q.bindValue(":hashId", qHash(name));
+	q.bindValue(":shortName", name);
+	q.bindValue(":fullPath", fullpath);
+	q.exec();
+	q.clear();
+}
+*/
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 QString tz::getProcessExeFullpath(uint dwPID)
 {	
