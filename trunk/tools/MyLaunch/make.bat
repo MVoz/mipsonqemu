@@ -28,7 +28,7 @@ cd ..
 )
 
 cd /d dll
-for %%i in (bmapi bmnet catalog bmxml  bmpost bmmerge bmsync fileget appupdater  optionUI fileget) do call :makefunc %%i 
+for %%i in (bmapi bmnet catalog bmxml  bmpost bmmerge bmsync diggxml fileget appupdater  optionUI fileget) do call :makefunc %%i 
 cd ..
 
 cd /d src
