@@ -477,6 +477,13 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	connect(autoLearnProcessTimer, SIGNAL(timeout()), this, SLOT(autoLearnProcessTimeout()));
 	autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL);//1m
 #endif
+#ifdef CONFIG_AUTO_LEARN_PROCESS	
+	NEW_TIMER(diggXmlTimer);
+	connect(autoLearnProcessTimer, SIGNAL(timeout()), this, SLOT(diggXmlTimeout()));
+	autoLearnProcessTimer->start(DIGG_XML_INTERVAL);//60m
+#endif
+
+
 	if (gSettings->value("catalogBuilderTimer", 10).toInt() != 0)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
@@ -1568,6 +1575,17 @@ void MyWidget::autoLearnProcessTimeout()
 #endif
 }
 #endif
+
+#ifdef  CONFIG_DIGG_XML
+void MyWidget::diggXmlTimeout()
+{
+#ifdef CONFIG_ACTION_LIST
+		struct ACTION_LIST item;
+		item.action = ACTION_LIST_GET_DIGG_XML;
+		addToActionList(item);
+#endif
+}
+#endif
 void MyWidget::onHotKey()
 {
 
@@ -1679,6 +1697,12 @@ void MyWidget::updateSuccess()
 	//if(syncTimer&&syncTimer->isActive())
 	//	syncTimer->stop();
 	STOP_TIMER(syncTimer);
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	STOP_TIMER(autoLearnProcessTimer);
+#endif
+#ifdef CONFIG_DIGG_XML
+	STOP_TIMER(diggXmlTimer);
+#endif
 	//updateSuccessTimer = new QTimer(this);
 	NEW_TIMER(updateSuccessTimer);
 	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));
@@ -1689,8 +1713,10 @@ void MyWidget::updateSuccess()
 MyWidget::~MyWidget()
 {
 
-	delete catalogBuilderTimer;
-	delete dropTimer;
+	//delete catalogBuilderTimer;
+	DELETE_TIMER(catalogBuilderTimer);
+	//delete dropTimer;
+	DELETE_TIMER(dropTimer);
 	/*
 	if (platform)
 	delete platform;
@@ -1705,6 +1731,14 @@ MyWidget::~MyWidget()
 	*/
 	DELETE_TIMER(monitorTimer);
 	DELETE_TIMER(updateSuccessTimer);
+	DELETE_TIMER(silentupdateTimer);
+	DELETE_TIMER(syncTimer);
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	DELETE_TIMER(autoLearnProcessTimer);
+#endif
+#ifdef CONFIG_DIGG_XML
+	DELETE_TIMER(diggXmlTimer);
+#endif
 	if(catalog)
 		catalog.reset();
 	platform.reset();
@@ -2386,6 +2420,13 @@ void MyWidget::monitorTimerTimeout()
 					CatItem::deleteCatitemFromDb(&db,t,item.id.bmid);
 				}
 				break;
+#ifdef CONFIG_DIGG_XML
+			case ACTION_LIST_GET_DIGG_XML:
+				{
+					
+				}
+				break;
+#endif
 			default:
 				break;
 		}

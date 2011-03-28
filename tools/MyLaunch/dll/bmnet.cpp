@@ -50,6 +50,14 @@ void testNet::testServerFinished(QNetworkReply* reply)
 					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
 				}
 			break;
+#ifdef CONFIG_DIGG_XML
+			case TEST_SERVER_DIGG_XML:
+				if(replybuf.startsWith(QString("1")))
+				{
+					SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,TEST_NET_SUCCESS);
+				}
+			break;
+#endif
 			case TEST_SERVER_VERSION:
 				{
 					qDebug()<<replybuf;
@@ -69,6 +77,7 @@ void testNet::testServerFinished(QNetworkReply* reply)
 					}
 				}
 			break;
+
 		}		
 	}else{
 		if(mode == TEST_SERVER_NET){
@@ -114,28 +123,37 @@ void testNet::clearObject()
 void testNet::run()
 {
 	THREAD_MONITOR_POINT;
+	QString url ="";
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);	
 	if(mode==TEST_SERVER_NET)
 	{
 		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+		url =TEST_NET_URL;
 	}else if(mode==TEST_SERVER_VERSION){
 		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,0);
+		url =TOUCHANY_VERSION_URL;
 	}
+#ifdef CONFIG_DIGG_XML
+	else if(mode ==  TEST_SERVER_DIGG_XML){
+		SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,0);
+		url =TEST_DIGGXML_URL;
+	}
+#endif
 	manager=new QNetworkAccessManager();
 	manager->moveToThread(this);	
 	SET_NET_PROXY(manager,settings);	
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);
+	
 #ifdef CONFIG_SERVER_IP_SETTING
 	do{
-		QString url = ((mode==TEST_SERVER_NET)?(TEST_NET_URL):(TOUCHANY_VERSION_URL));
 		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
 		if( !serverIp.isEmpty())
 			url.replace(BM_SERVER_ADDRESS, serverIp);	
 		reply=manager->get(QNetworkRequest(QUrl(url)));
 	}while(0);
 #else
-	reply=manager->get(QNetworkRequest(QUrl(((mode==TEST_SERVER_NET)?(TEST_NET_URL):(TOUCHANY_VERSION_URL)))));
+	reply=manager->get(QNetworkRequest(QUrl(url)));
 #endif
 	
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
