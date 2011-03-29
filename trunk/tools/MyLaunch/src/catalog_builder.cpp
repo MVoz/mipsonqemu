@@ -133,13 +133,15 @@ void CatBuilder::run()
 #ifdef CONFIG_ACTION_LIST
 	if(buildMode == CAT_BUILDMODE_IMPORT_NETBOOKMARK){
 		importNetBookmark();
-		emit importNetBookmarkFinishedSignal(1);
+		//emit importNetBookmarkFinishedSignal(1);
+		emit catalogFinished(CAT_BUILDMODE_IMPORT_NETBOOKMARK,1);
 		return;
 	}
 #endif
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	if(buildMode == CAT_BUILDMODE_LEARN_PROCESS){
 		buildCatalog_learnProcess(delId);
+		emit catalogFinished(CAT_BUILDMODE_LEARN_PROCESS,1);
 		return;
 	}
 #endif
@@ -155,12 +157,12 @@ void CatBuilder::run()
 		storeCatalog(delId);
 		STOP_FLAG_CHECK;
 	}
-	emit catalogFinished(1);
+	emit catalogFinished(CAT_BUILDMODE_ALL,1);
 	return;
 bad:
 	this->cat->clearItem();
 	indexed.clear();
-	emit catalogFinished(0);
+	emit catalogFinished(CAT_BUILDMODE_ALL,0);
 }
 /*
 void CatBuilder::_clearShortcut(int type)
