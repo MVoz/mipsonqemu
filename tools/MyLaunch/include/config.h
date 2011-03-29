@@ -359,6 +359,12 @@
 	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
 	(x)->start(time);
 
+#define SAVE_TIMER_ACTION(type,name) \
+	timer_actionlist[type].lastActionSeconds = NOW_SECONDS;\
+	gSettings->setValue(name, timer_actionlist[type].lastActionSeconds);\
+	timer_actionlist[type].enable &=(~(0x02));\
+	rebuildAll&=~(1<<type);
+
 
 #define THREAD_IS_RUNNING(x) ((x)&&(x)->isRunning())
 #define THREAD_IS_FINISHED(x) ((x)&&(x)->isFinished())
@@ -476,14 +482,22 @@ enum TEST_NET_RESULT{
 
 #ifdef  CONFIG_AUTO_LEARN_PROCESS
 #ifdef QT_NO_DEBUG
-#define AUTO_LEARN_PROCESS_INTERVAL (5*MINUTES)
+#define AUTO_LEARN_PROCESS_INTERVAL 5
+#define AUTO_LEARN_PROCESS_INTERVAL_UNIT MINUTES
 #else
-#define AUTO_LEARN_PROCESS_INTERVAL (10*SECONDS)
+#define AUTO_LEARN_PROCESS_INTERVAL (10)
+#define AUTO_LEARN_PROCESS_INTERVAL_UNIT SECONDS
 #endif
 #endif
 
 #ifdef CONFIG_DIGG_XML
-#define DIGG_XML_INTERVAL (60*MINUTES)
+#ifdef QT_NO_DEBUG
+#define DIGG_XML_INTERVAL 60
+#define DIGG_XML_INTERVAL_UNIT MINUTES
+#else
+#define DIGG_XML_INTERVAL (10)
+#define DIGG_XML_INTERVAL_UNIT SECONDS
+#endif
 #endif
 
 #ifdef QT_NO_DEBUG
