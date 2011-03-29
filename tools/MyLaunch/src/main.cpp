@@ -479,8 +479,8 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 #endif
 #ifdef CONFIG_AUTO_LEARN_PROCESS	
 	NEW_TIMER(diggXmlTimer);
-	connect(autoLearnProcessTimer, SIGNAL(timeout()), this, SLOT(diggXmlTimeout()));
-	autoLearnProcessTimer->start(DIGG_XML_INTERVAL);//60m
+	connect(diggXmlTimer, SIGNAL(timeout()), this, SLOT(diggXmlTimeout()));
+	diggXmlTimer->start(DIGG_XML_INTERVAL);//60m
 #endif
 
 
@@ -488,13 +488,13 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
 		silentupdateTimer->start(1*SECONDS);//1m
-	if (gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt() != 0)
-		syncTimer->start(SILENT_SYNC_TIMER*SECONDS);//5m
+	if (gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt() != 0)
+		syncTimer->start(SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT);//5m
 
 	//monitorTimer=new QTimer(this);
 	NEW_TIMER(monitorTimer);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
-	monitorTimer->start(10);
+	monitorTimer->start(MONITER_TIME_INTERVAL);
 
 	// Load the catalog
 	updateTimes=0;
@@ -1605,6 +1605,7 @@ void MyWidget::dropTimeout()
 void MyWidget::autoLearnProcessTimeout()
 {
 #ifdef CONFIG_ACTION_LIST
+		QDEBUG_LINE;
 		STOP_TIMER(autoLearnProcessTimer);
 		struct ACTION_LIST item;
 		item.action = ACTION_LIST_CATALOGBUILD;
@@ -2323,20 +2324,15 @@ void MyWidget::_startSync(int mode,int silence)
 	SET_SERVER_IP(gSettings,url);
 #endif
 	gSyncer->setUrl(url);
-	gSyncer->start();
+	gSyncer->start(QThread::IdlePriority);
 	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
 	gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
 	return;
 SYNCTIMER:
-	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 	if (time != 0)
-		{
-			//syncTimer->start(time * SECONDS);//minutes
-			syncTimer->start(time * MINUTES);
-			//syncTimer->start(5 * MINUTES);
-			//qDebug()<<"start sync after "<<time<<" seconds";
-		}
+		syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);
 	return;
 	
 }
@@ -2513,7 +2509,7 @@ void MyWidget::monitorTimerTimeout()
 
 	}
 	//clear user directory	
-	monitorTimer->start(10);
+	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
 void MyWidget::bmSyncerFinished()
 {	
@@ -2534,12 +2530,9 @@ void MyWidget::bmSyncerFinished()
 	if(closeflag)
 		close();
 	else{
-		int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
+		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 		if (time != 0)
-			{
-				syncTimer->start(time * SECONDS);//minutes
-			}
-			
+			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
 	}
 }
 

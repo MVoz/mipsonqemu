@@ -478,7 +478,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			posthp->bmid =  bc->groupId;
 		}
 		posthp->postString = postString;
-		posthp->start();
+		posthp->start(QThread::IdlePriority);
 		posthp->wait();
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
@@ -534,7 +534,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		posthp->bmid =  bc->bmid;
 		posthp->postString = postString;
 		qDebug()<<"post string:"<<postString;
-		posthp->start();
+		posthp->start(QThread::IdlePriority);
 		posthp->wait();
 		bc->groupId= 0;
 		//bc->bmid= getBmId();

@@ -25,8 +25,6 @@
 
 #define CONFIG_AUTH_ENCRYPTION
 
-#define SILENT_SYNC_TIMER 2
-
 #define APP_NAME "touchAny"
 #define APP_SLOGAN "everything_is_in_touch"
 
@@ -76,7 +74,7 @@
 
 
 #define LOG_RUN_LINE qDebug("Call function %s()  %d in the file %s",__FUNCTION__,__LINE__,__FILE__);
-#define QDEBUG_LINE   qDebug("%s %d\n",__FUNCTION__,__LINE__);
+#define QDEBUG_LINE   qDebug("%s %d",__FUNCTION__,__LINE__);
 #define SHAREPTRPRINT(X) (X?X.get():0)
 
 #define BM_EQUAL 1
@@ -459,13 +457,44 @@ enum TEST_NET_RESULT{
 #define CONFIG_ACTION_LIST
 
 #define CONFIG_AUTO_LEARN_PROCESS
-#ifdef  CONFIG_AUTO_LEARN_PROCESS
-#define AUTO_LEARN_PROCESS_INTERVAL (1*MINUTES)
-#endif
+
 
 #define CONFIG_DIGG_XML
+
+//timer
+//base unit hour
+
+
+#ifdef QT_NO_DEBUG
+#define CATALOG_BUILDER_INTERVAL (12)
+#define CATALOG_BUILDER_INTERVAL_UNIT HOURS
+#else
+#define CATALOG_BUILDER_INTERVAL (12)
+#define CATALOG_BUILDER_INTERVAL_UNIT MINUTES
+#endif
+
+
+#ifdef  CONFIG_AUTO_LEARN_PROCESS
+#ifdef QT_NO_DEBUG
+#define AUTO_LEARN_PROCESS_INTERVAL (5*MINUTES)
+#else
+#define AUTO_LEARN_PROCESS_INTERVAL (10*SECONDS)
+#endif
+#endif
+
 #ifdef CONFIG_DIGG_XML
 #define DIGG_XML_INTERVAL (60*MINUTES)
 #endif
+
+#ifdef QT_NO_DEBUG
+#define SILENT_SYNC_INTERVAL (5)
+#define SILENT_SYNC_INTERVAL_UNIT MINUTES
+#else
+#define SILENT_SYNC_INTERVAL (10)
+#define SILENT_SYNC_INTERVAL_UNIT SECONDS
+#endif
+
+#define MONITER_TIME_INTERVAL (10)
+
 #endif
 

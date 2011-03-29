@@ -138,7 +138,7 @@ void bmSync::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(10);
+	monitorTimer->start(MONITER_TIME_INTERVAL);
 
 }
 void bmSync::clearobject()
@@ -232,7 +232,7 @@ void bmSync::bmxmlGetFinished(bool error)
 			mgthread = new bmMerge(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
 			connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
-			mgthread->start();
+			mgthread->start(QThread::IdlePriority);
 			return;
 		}
 	}

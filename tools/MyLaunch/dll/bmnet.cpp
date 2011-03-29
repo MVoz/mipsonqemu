@@ -21,11 +21,11 @@ void MyThread::monitorTimeout(){
 		terminateThread();
 	else
 	{
-		monitorTimer->start(10);
+		monitorTimer->start(MONITER_TIME_INTERVAL);
 	}
 }
 void MyThread::run(){
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,MONITER_TIME_INTERVAL,monitorTimeout);
 }
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
