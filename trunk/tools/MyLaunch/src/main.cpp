@@ -2285,7 +2285,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QString name,password;
 	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
-		goto OUT;
+		goto SYNCOUT;
 	//start to all browser is disable ,don't sync
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	int i = 0,browsers_enable=0;
@@ -2296,12 +2296,12 @@ void MyWidget::_startSync(int mode,int silence)
 	}
 	if(!browsers_enable)
 	{
-		goto	OUT;
+		goto	SYNCOUT;
 	}
 	//end to all browser is disable ,don't sync
 	if((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 	{
-		goto	OUT;
+		goto	SYNCOUT;
 	}
 	
 	syncMode = mode;
@@ -2321,7 +2321,7 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 	if(name.isEmpty()||password.isEmpty())
-		goto	OUT;
+		goto	SYNCOUT;
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE)&&syncDlg)
 		{
@@ -2426,7 +2426,7 @@ void MyWidget::_startSync(int mode,int silence)
 	//gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
 	return;
-OUT:
+SYNCOUT:
 	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"lastbmsync");
 #if 0	
 	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
