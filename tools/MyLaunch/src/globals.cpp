@@ -20,6 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <globals.h>
 
 #include <bmsync.h>
+#ifdef CONFIG_DIGG_XML
+#include <diggxml.h>
+#endif
 #include <catalog.h>
 
 #include "../src/catalog_builder.h"
@@ -33,6 +36,9 @@ QSettings *gSettings;
 QString gSearchTxt;
 shared_ptr < CatBuilder > gBuilder;
 shared_ptr < bmSync> gSyncer;
+#ifdef CONFIG_DIGG_XML
+shared_ptr < diggXml> gDiggXmler;
+#endif
 /*
 	use gSemaphore to separate syner from catabuilder
 */

@@ -41,6 +41,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <config.h>
 #include <optionUI.h>
 #include <bmsync.h>
+#ifdef CONFIG_DIGG_XML
+#include <diggxml.h>
+#endif
 #include <QProcess>
 //#include <weby>
 
@@ -388,6 +391,10 @@ public slots:
 		void configModify(int type);
 		void storeConfig(int mode=0);
 		void restoreUserCommand();
+#ifdef CONFIG_DIGG_XML
+		void diggXmlFinished(int status);
+		void startDiggXml();
+#endif
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);
 		//void importNetBookmark(CATBUILDMODE mode,uint browserid);

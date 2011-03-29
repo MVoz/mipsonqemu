@@ -48,7 +48,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern shared_ptr<CatBuilder> gBuilder;
 extern CatItem* gSearchResult;
-extern shared_ptr < bmSync> gSyncer;
+extern shared_ptr <bmSync> gSyncer;
+#ifdef CONFIG_DIGG_XML
+extern shared_ptr<diggXml> gDiggXmler;
+#endif
 
 struct {
 	QString name;
@@ -2510,9 +2513,7 @@ void MyWidget::monitorTimerTimeout()
 				continue;
 			if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
 				continue;
-				QDEBUG_LINE;
 		}
-		QDEBUG_LINE;
 		timer_actionlist[i].enable|=0x02 ;//in queue
 		switch(i){
 			case TIMER_ACTION_BMSYNC:
@@ -2535,6 +2536,11 @@ void MyWidget::monitorTimerTimeout()
 				}
 			break;
 			case TIMER_ACTION_DIGGXML:
+				{
+					struct ACTION_LIST item;
+					item.action = ACTION_LIST_GET_DIGG_XML;
+					addToActionList(item);
+				}
 			break;
 			case TIMER_ACTION_SILENTUPDATER:
 				startSilentUpdate();
@@ -2625,7 +2631,7 @@ void MyWidget::monitorTimerTimeout()
 #ifdef CONFIG_DIGG_XML
 			case ACTION_LIST_GET_DIGG_XML:
 				{
-					
+					startDiggXml();
 				}
 				break;
 #endif
@@ -2658,6 +2664,34 @@ void MyWidget::monitorTimerTimeout()
 	//clear user directory	
 	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
+#ifdef CONFIG_DIGG_XML
+void MyWidget::diggXmlFinished(int status)
+{
+	gDiggXmler->wait();								
+	gDiggXmler.reset();
+	 SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"lastdiggxml");
+}
+void MyWidget::startDiggXml()
+{
+	if(gDiggXmler)
+		return;
+	gDiggXmler.reset(new diggXml(this,gSettings));
+#ifdef CONFIG_SERVER_IP_SETTING
+	SET_HOST_IP(gSettings,gDiggXmler);
+#else
+	gDiggXmler->setHost(BM_SERVER_ADDRESS);
+#endif
+	connect(gDiggXmler.get(), SIGNAL(diggXmlFinishedStatusNotify(int)), this, SLOT(diggXmlFinished(int)));
+	QString url=QString(BM_SERVER_GET_DIGGXML_URL);
+
+#ifdef CONFIG_SERVER_IP_SETTING
+	SET_SERVER_IP(gSettings,url);
+#endif
+	gDiggXmler->setUrl(url);
+	gDiggXmler->start(QThread::IdlePriority);
+
+}
+#endif
 void MyWidget::bmSyncerFinished()
 {	
 	//QDEBUG_LINE;
