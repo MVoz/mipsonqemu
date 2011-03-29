@@ -329,7 +329,7 @@ public slots:
 		void mouseMoveEvent(QMouseEvent *e);
 		void setSkin(QString, QString);
 //		void httpGetFinished(bool result);
-		void catalogBuilt(int);
+		void catalogBuilt(int,int);
 		void inputMethodEvent(QInputMethodEvent* e);
 		void keyPressEvent(QKeyEvent*);
 		void inputKeyPressEvent(QKeyEvent* key);
@@ -340,7 +340,7 @@ public slots:
 		void finishedFade(double d);
 		void menuEvent(QContextMenuEvent*);
 		void buildCatalog();
-		void _buildCatalog(CATBUILDMODE);
+		void _buildCatalog(CATBUILDMODE,uint);
 		void updateSuccess();
 		void startSync();
 		void _startSync(int mode,int silence);
@@ -359,8 +359,8 @@ public slots:
 		void storeConfig(int mode=0);
 		void restoreUserCommand();
 #ifdef CONFIG_ACTION_LIST
-		void importNetBookmarkFinished(int status);
-		void importNetBookmark(CATBUILDMODE mode,uint browserid);
+		//void importNetBookmarkFinished(int status);
+		//void importNetBookmark(CATBUILDMODE mode,uint browserid);
 #endif
 private slots:
 		void setIcon(int type,const QString& tip);

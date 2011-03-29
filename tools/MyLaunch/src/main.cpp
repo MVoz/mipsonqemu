@@ -1422,14 +1422,14 @@ void MyWidget::searchFiles(const QString & input, QList < CatItem* > &searchResu
 }
 
 
-void MyWidget::catalogBuilt(int type)
+void MyWidget::catalogBuilt(int type,int status)
 {
 	//catalog.reset();
 	//catalog = gBuilder->getCatalog();
-	qDebug()<<__FUNCTION__<<gBuilder<<type;
+	//qDebug()<<__FUNCTION__<<gBuilder<<type;
 	gBuilder->wait();
 	gBuilder.reset();
-	qDebug()<<__FUNCTION__<<"release gSemaphore";
+	//qDebug()<<__FUNCTION__<<"release gSemaphore";
 	gSemaphore.release(1);
 	//QDEBUG("%s gBuilder=0x%08x\n",__FUNCTION__,gBuilder);
 	/*
@@ -1438,6 +1438,42 @@ void MyWidget::catalogBuilt(int type)
 	*/
 	//      qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
 	// Do a search here of the current input text
+#if 1
+	searchOnInput();
+	updateDisplay();
+	switch(type){
+		case CAT_BUILDMODE_ALL:
+			{
+				if(status){
+					scanDbFavicon();
+					gSettings->setValue("lastscan", NOW_SECONDS);
+					rebuildAll&=~(1<<REBUILD_CATALOG);
+
+					int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
+					if (time != 0)
+						catalogBuilderTimer->start(time * CATALOG_BUILDER_INTERVAL_UNIT);//minutes
+				}else
+					close();
+			}
+		break;
+		case CAT_BUILDMODE_BOOKMARK:
+			//scanDbFavicon();
+		break;
+		case CAT_BUILDMODE_COMMAND:
+		break;
+		case CAT_BUILDMODE_IMPORT_NETBOOKMARK:
+		if(ops)
+			ops->importNetBookmarkFinished(status);
+		break;
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+		case CAT_BUILDMODE_LEARN_PROCESS:
+			autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL);//1m
+		break;
+#endif
+		default:
+		break;
+	}
+#else
 	if(type){//successful
 		searchOnInput();
 		updateDisplay();
@@ -1451,6 +1487,7 @@ void MyWidget::catalogBuilt(int type)
 			catalogBuilderTimer->start(time * MINUTES);//minutes
 	}else
 		close();
+#endif
 }
 
 void MyWidget::setSkin(QString dir, QString name)
@@ -1568,6 +1605,7 @@ void MyWidget::dropTimeout()
 void MyWidget::autoLearnProcessTimeout()
 {
 #ifdef CONFIG_ACTION_LIST
+		STOP_TIMER(autoLearnProcessTimer);
 		struct ACTION_LIST item;
 		item.action = ACTION_LIST_CATALOGBUILD;
 		item.id.mode = CAT_BUILDMODE_LEARN_PROCESS;
@@ -1580,6 +1618,7 @@ void MyWidget::autoLearnProcessTimeout()
 void MyWidget::diggXmlTimeout()
 {
 #ifdef CONFIG_ACTION_LIST
+		STOP_TIMER(diggXmlTimer);
 		struct ACTION_LIST item;
 		item.action = ACTION_LIST_GET_DIGG_XML;
 		addToActionList(item);
@@ -2001,6 +2040,7 @@ void MyWidget::contextMenuEvent(QContextMenuEvent * event)
 	menuOpen = false;
 }
 #ifdef CONFIG_ACTION_LIST
+/*
 void MyWidget::importNetBookmarkFinished(int status)
 {
 	QDEBUG_LINE;
@@ -2011,6 +2051,7 @@ void MyWidget::importNetBookmarkFinished(int status)
 		ops->importNetBookmarkFinished(status);
 	gSemaphore.release(1);
 }
+
 void MyWidget::importNetBookmark(CATBUILDMODE mode,uint browserid)
 {
 	qDebug()<<__FUNCTION__<<gBuilder;
@@ -2024,18 +2065,20 @@ void MyWidget::importNetBookmark(CATBUILDMODE mode,uint browserid)
 		gBuilder->start(QThread::IdlePriority);
 	}
 }
+*/
+
 #endif
-void MyWidget::_buildCatalog(CATBUILDMODE mode)
+void MyWidget::_buildCatalog(CATBUILDMODE mode,uint browserid)
 {
 	if(updateSuccessTimer)
 		return;
 
 	qDebug("Current cpu usage:%d",tz::GetCpuUsage());
-	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
+	if(mode==CAT_BUILDMODE_ALL&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 	{
-		int time = gSettings->value("catalogBuilderTimer", 10).toInt();
+		int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
 		if (time != 0)
-			catalogBuilderTimer->start(time * MINUTES);//minutes
+			catalogBuilderTimer->start(time * CATALOG_BUILDER_INTERVAL_UNIT);//minutes
 			return;
 	}
 
@@ -2044,15 +2087,28 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode)
 
 		gBuilder.reset(new CatBuilder(true,mode,&db));
 		// gBuilder->setPreviousCatalog(catalog);
+		switch(mode){
+			case CAT_BUILDMODE_ALL:
+				gSettings->setValue("lastscan", 0);//just for exception
+			break;
+			case CAT_BUILDMODE_DIRECTORY:
+			break;
+			case CAT_BUILDMODE_BOOKMARK:
+			break;
+			case CAT_BUILDMODE_COMMAND:
+			break;
+			case CAT_BUILDMODE_IMPORT_NETBOOKMARK:
+				gBuilder->browserid = browserid;
+	//		connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), this, SLOT(importNetBookmarkFinished(int)));
+			break;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
-		if(mode == CAT_BUILDMODE_LEARN_PROCESS)
-		{
-			gBuilder->clean =gSettings->value("ckAutoLearnProcess",true).toBool()?( ((learnProcessTimes++)&0x0f)?1:2):(0);
-		}else
+			case CAT_BUILDMODE_LEARN_PROCESS:
+				gBuilder->clean =gSettings->value("ckAutoLearnProcess",true).toBool()?( ((learnProcessTimes++)&0x0f)?1:2):(0);
+			break;
 #endif			
-		gSettings->setValue("lastscan", 0);//just for exception
 		
-		connect(gBuilder.get(), SIGNAL(catalogFinished(int)), this, SLOT(catalogBuilt(int)));
+		}
+		connect(gBuilder.get(), SIGNAL(catalogFinished(int,int)), this, SLOT(catalogBuilt(int,int)));
 		//  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		gBuilder->start(QThread::IdlePriority);
 	}
@@ -2276,7 +2332,9 @@ SYNCTIMER:
 	int time = gSettings->value("synctimer", SILENT_SYNC_TIMER).toInt();
 	if (time != 0)
 		{
-			syncTimer->start(time * SECONDS);//minutes
+			//syncTimer->start(time * SECONDS);//minutes
+			syncTimer->start(time * MINUTES);
+			//syncTimer->start(5 * MINUTES);
 			//qDebug()<<"start sync after "<<time<<" seconds";
 		}
 	return;
@@ -2351,7 +2409,7 @@ void MyWidget::monitorTimerTimeout()
 		qDebug()<<item.action<<item.fullpath<<item.name<<item.id.browserid;
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
-				_buildCatalog((CATBUILDMODE)item.id.mode);
+				_buildCatalog((CATBUILDMODE)item.id.mode,0);
 				break;
 			case ACTION_LIST_BOOKMARK_SYNC:
 				_startSync(SYNC_MODE_BOOKMARK,item.id.mode);
@@ -2360,7 +2418,8 @@ void MyWidget::monitorTimerTimeout()
 				_startSync(SYNC_MODE_TESTACCOUNT,item.id.mode);
 				break;
 			case ACTION_LIST_IMPORT_BOOKMARK:
-				importNetBookmark(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
+				//importNetBookmark(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
+				_buildCatalog(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
 				break;
 			case ACTION_LIST_ADD_NETBOOKMARK_DIR:
 				{
@@ -2430,6 +2489,7 @@ void MyWidget::monitorTimerTimeout()
 			default:
 				break;
 		}
+
 	}
 #endif
 	if(syncDlg){
@@ -3084,8 +3144,8 @@ int main(int argc, char *argv[])
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
 
-	HANDLE hProcessThis=GetCurrentProcess();
-	SetPriorityClass(hProcessThis,HIGH_PRIORITY_CLASS); 
+	//HANDLE hProcessThis=GetCurrentProcess();
+	//SetPriorityClass(hProcessThis,HIGH_PRIORITY_CLASS); 
 
 	bool rescue = false;
 

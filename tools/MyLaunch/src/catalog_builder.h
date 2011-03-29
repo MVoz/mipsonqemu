@@ -90,9 +90,9 @@ public:
 	//uint isExistInDb(CatItem &item);
 
 signals:
-	void catalogFinished(int);
+	void catalogFinished(int,int);
 	void catalogIncrement(float);
-	void importNetBookmarkFinishedSignal(int);
+	//void importNetBookmarkFinishedSignal(int);
 
 };
 
