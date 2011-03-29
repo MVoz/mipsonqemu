@@ -271,7 +271,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
+//platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
+platform(plat),  dropTimer(NULL), alternatives(NULL)
 {
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
@@ -455,46 +456,94 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	}
 	// Set the timers
 	updateSuccessTimer = NULL;
-	//catalogBuilderTimer = new QTimer(this);
-	NEW_TIMER(catalogBuilderTimer);
+	
+	timer_actionlist = new TIMER_ACTION_LIST[TIMER_ACTION_MAX];
+	timer_actionlist[TIMER_ACTION_BMSYNC].actionType= TIMER_ACTION_BMSYNC;
+	timer_actionlist[TIMER_ACTION_BMSYNC].enable =  (gSettings->value("ckbmsync", true).toBool())?1:0;
+#ifdef QT_NO_DEBUG
+	timer_actionlist[TIMER_ACTION_BMSYNC].startAfterRun =  (short)(30);
+#else
+	timer_actionlist[TIMER_ACTION_BMSYNC].startAfterRun =  (short)(5);
+#endif
+	timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = (gSettings->value("lastbmsync", 0).toUInt());
+	timer_actionlist[TIMER_ACTION_BMSYNC].interval= SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT;
+
+	timer_actionlist[TIMER_ACTION_CATBUILDER].actionType= TIMER_ACTION_CATBUILDER;
+	timer_actionlist[TIMER_ACTION_CATBUILDER].enable =  (gSettings->value("ckcatbuilder", true).toBool())?1:0;
+#ifdef QT_NO_DEBUG
+	timer_actionlist[TIMER_ACTION_CATBUILDER].startAfterRun =  (short)(60);
+#else
+	timer_actionlist[TIMER_ACTION_CATBUILDER].startAfterRun = (short)(10);
+#endif
+	timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds = (gSettings->value("lastcatbuilder", 0).toUInt());
+	timer_actionlist[TIMER_ACTION_CATBUILDER].interval= CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT;
+
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].actionType= TIMER_ACTION_AUTOLEARNPROCESS;
+	//timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable =  (gSettings->value("ckautolearnprocess", true).toBool())?1:0;
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
+#ifdef QT_NO_DEBUG
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].startAfterRun =  (short)(90);
+#else
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].startAfterRun =  (short)(15);
+#endif
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds = (gSettings->value("lastautolearnprocess", 0).toUInt());
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].interval= AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT;
+
+	timer_actionlist[TIMER_ACTION_DIGGXML].actionType= TIMER_ACTION_DIGGXML;		
+	timer_actionlist[TIMER_ACTION_DIGGXML].enable =  (gSettings->value("ckdiggxml", true).toBool())?1:0;
+#ifdef QT_NO_DEBUG
+	timer_actionlist[TIMER_ACTION_DIGGXML].startAfterRun =  (short)(120);
+#else
+	timer_actionlist[TIMER_ACTION_DIGGXML].startAfterRun =  (short)(20);
+#endif
+	timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds = (gSettings->value("lastdiggxml", 0).toUInt());
+	timer_actionlist[TIMER_ACTION_DIGGXML].interval= DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT;
+
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].actionType= TIMER_ACTION_SILENTUPDATER;		
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].enable =  1;
+#ifdef QT_NO_DEBUG
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].startAfterRun =  (short)(150);
+#else
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].startAfterRun =  (short)(25);
+#endif
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds = (gSettings->value("lastsilentupdate", 0).toUInt());
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].interval= 0xffffffff;
+	
+	
 	slientUpdate =NULL;
-	//silentupdateTimer = new QTimer(this);
-	NEW_TIMER(silentupdateTimer);
-	//syncTimer = new QTimer(this);
-	NEW_TIMER(syncTimer);
-	//dropTimer = new QTimer(this);
-	NEW_TIMER(dropTimer);
 #ifdef CONFIG_AUTO_LEARN_PROCESS
-	NEW_TIMER(autoLearnProcessTimer);
 	learnProcessTimes = 0;
 #endif
-	dropTimer->setSingleShot(true);
+#if 0	
+	NEW_TIMER(catalogBuilderTimer);
+	NEW_TIMER(silentupdateTimer);
+	NEW_TIMER(syncTimer);
 	connect(catalogBuilderTimer, SIGNAL(timeout()), this, SLOT(catalogBuilderTimeout()));
 	connect(silentupdateTimer, SIGNAL(timeout()), this, SLOT(silentupdateTimeout()));
 	connect(syncTimer, SIGNAL(timeout()), this, SLOT(syncTimeout()));
-	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
 #ifdef CONFIG_AUTO_LEARN_PROCESS
+	NEW_TIMER(autoLearnProcessTimer);
+	
 	connect(autoLearnProcessTimer, SIGNAL(timeout()), this, SLOT(autoLearnProcessTimeout()));
-	autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL);//1m
+	autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT);
 #endif
-#ifdef CONFIG_AUTO_LEARN_PROCESS	
-	NEW_TIMER(diggXmlTimer);
-	connect(diggXmlTimer, SIGNAL(timeout()), this, SLOT(diggXmlTimeout()));
-	diggXmlTimer->start(DIGG_XML_INTERVAL);//60m
+#ifdef CONFIG_DIGG_XML
+		NEW_TIMER(diggXmlTimer);
+		connect(diggXmlTimer, SIGNAL(timeout()), this, SLOT(diggXmlTimeout()));
+		diggXmlTimer->start(DIGG_XML_INTERVAL);//60m
 #endif
-
-
 	if (gSettings->value("catalogBuilderTimer", 10).toInt() != 0)
 		catalogBuilderTimer->start(1*SECONDS);//1m
 	if (gSettings->value("silentUpdateTimer", 10).toInt() != 0)
 		silentupdateTimer->start(1*SECONDS);//1m
 	if (gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt() != 0)
 		syncTimer->start(SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT);//5m
+#endif
 
-	//monitorTimer=new QTimer(this);
-	NEW_TIMER(monitorTimer);
-	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
-	monitorTimer->start(MONITER_TIME_INTERVAL);
+
+	NEW_TIMER(dropTimer);
+	dropTimer->setSingleShot(true);
+	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
 
 	// Load the catalog
 	updateTimes=0;
@@ -518,6 +567,11 @@ platform(plat), catalogBuilderTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if(!gSettings->value("exportbookmark", true).toBool()){
 		tz::deleteNetworkBookmark(&db,0);
 	}
+	
+	NEW_TIMER(monitorTimer);
+	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
+	monitorTimer->start(MONITER_TIME_INTERVAL);
+	runseconds = NOW_SECONDS;
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -1446,12 +1500,13 @@ void MyWidget::catalogBuilt(int type,int status)
 			{
 				if(status){
 					scanDbFavicon();
-					gSettings->setValue("lastscan", NOW_SECONDS);
+					gSettings->setValue("lastcatbuilder", NOW_SECONDS);
 					rebuildAll&=~(1<<REBUILD_CATALOG);
-
+					/*
 					int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
 					if (time != 0)
 						catalogBuilderTimer->start(time * CATALOG_BUILDER_INTERVAL_UNIT);//minutes
+					*/
 				}else
 					close();
 			}
@@ -1467,7 +1522,7 @@ void MyWidget::catalogBuilt(int type,int status)
 		break;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		case CAT_BUILDMODE_LEARN_PROCESS:
-			autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL);//1m
+			//autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT);//1m
 		break;
 #endif
 		default:
@@ -1538,6 +1593,7 @@ gSettings->setValue("Display/rposX", rpos.first);
 gSettings->setValue("Display/rposY", rpos.second);
 }
 */
+#if 0
 
 void MyWidget::syncTimeout()
 {
@@ -1595,12 +1651,6 @@ void MyWidget::catalogBuilderTimeout()
 		buildCatalog();
 
 }
-
-void MyWidget::dropTimeout()
-{
-	if (input->text() != ""||(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN)))
-		showAlternatives();
-}
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 void MyWidget::autoLearnProcessTimeout()
 {
@@ -1626,6 +1676,14 @@ void MyWidget::diggXmlTimeout()
 #endif
 }
 #endif
+
+#endif
+void MyWidget::dropTimeout()
+{
+	if (input->text() != ""||(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN)))
+		showAlternatives();
+}
+
 void MyWidget::onHotKey()
 {
 
@@ -1650,10 +1708,11 @@ void MyWidget::onHotKey()
 void MyWidget::closeEvent(QCloseEvent * event)
 {
 	closeflag = 1;
+#if 0
 	STOP_TIMER(catalogBuilderTimer);
 	STOP_TIMER(silentupdateTimer);
 	STOP_TIMER(syncTimer);
-
+#endif
 	qDebug()<<"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer;
 	if(gBuilder&&gBuilder->isRunning())
 	{
@@ -1730,6 +1789,7 @@ void MyWidget::updateSuccess()
 	*/
 	//if(catalogBuilderTimer&&catalogBuilderTimer->isActive())
 	//	catalogBuilderTimer->stop();
+#if 0
 	STOP_TIMER(catalogBuilderTimer);
 	//if(silentupdateTimer&&silentupdateTimer->isActive())
 	//	silentupdateTimer->stop();
@@ -1743,7 +1803,8 @@ void MyWidget::updateSuccess()
 #ifdef CONFIG_DIGG_XML
 	STOP_TIMER(diggXmlTimer);
 #endif
-	//updateSuccessTimer = new QTimer(this);
+#endif
+
 	NEW_TIMER(updateSuccessTimer);
 	connect(updateSuccessTimer, SIGNAL(timeout()), this, SLOT(updateSuccessTimeout()));
 	updateSuccessTimer->start(1*SECONDS);
@@ -1754,7 +1815,17 @@ MyWidget::~MyWidget()
 {
 
 	//delete catalogBuilderTimer;
+#if 0
 	DELETE_TIMER(catalogBuilderTimer);
+	DELETE_TIMER(silentupdateTimer);
+	DELETE_TIMER(syncTimer);
+#ifdef CONFIG_AUTO_LEARN_PROCESS
+	DELETE_TIMER(autoLearnProcessTimer);
+#endif
+#ifdef CONFIG_DIGG_XML
+	DELETE_TIMER(diggXmlTimer);
+#endif
+#endif
 	//delete dropTimer;
 	DELETE_TIMER(dropTimer);
 	/*
@@ -1770,15 +1841,8 @@ MyWidget::~MyWidget()
 	}
 	*/
 	DELETE_TIMER(monitorTimer);
+	delete[] timer_actionlist;
 	DELETE_TIMER(updateSuccessTimer);
-	DELETE_TIMER(silentupdateTimer);
-	DELETE_TIMER(syncTimer);
-#ifdef CONFIG_AUTO_LEARN_PROCESS
-	DELETE_TIMER(autoLearnProcessTimer);
-#endif
-#ifdef CONFIG_DIGG_XML
-	DELETE_TIMER(diggXmlTimer);
-#endif
 	if(catalog)
 		catalog.reset();
 	platform.reset();
@@ -2077,9 +2141,11 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode,uint browserid)
 	qDebug("Current cpu usage:%d",tz::GetCpuUsage());
 	if(mode==CAT_BUILDMODE_ALL&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 	{
+	/*
 		int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
 		if (time != 0)
 			catalogBuilderTimer->start(time * CATALOG_BUILDER_INTERVAL_UNIT);//minutes
+	*/
 			return;
 	}
 
@@ -2330,9 +2396,11 @@ void MyWidget::_startSync(int mode,int silence)
 	gSettings->sync();
 	return;
 SYNCTIMER:
+#if 0	
 	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 	if (time != 0)
 		syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);
+#endif
 	return;
 	
 }
@@ -2396,7 +2464,44 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 	return;
 }
 void MyWidget::monitorTimerTimeout()
-{
+{	
+	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
+		if(!timer_actionlist[i].enable)
+			continue;
+		if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
+			continue;
+		if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
+			continue;
+		switch(i){
+			case TIMER_ACTION_BMSYNC:
+				{
+					struct ACTION_LIST item;
+					item.action = ACTION_LIST_BOOKMARK_SYNC;
+					item.id.mode = SYN_MODE_SILENCE;
+					addToActionList(item);
+				}
+			break;
+			case TIMER_ACTION_CATBUILDER:
+				buildCatalog();
+			break;
+			case TIMER_ACTION_AUTOLEARNPROCESS:
+				{
+					struct ACTION_LIST item;
+					item.action = ACTION_LIST_CATALOGBUILD;
+					item.id.mode = CAT_BUILDMODE_LEARN_PROCESS;
+					addToActionList(item);
+				}
+			break;
+			case TIMER_ACTION_DIGGXML:
+			break;
+			case TIMER_ACTION_SILENTUPDATER:
+				startSilentUpdate();
+			break;
+		}
+
+		
+	}
+	
 	STOP_TIMER(monitorTimer);
 	//processing ........
 #ifdef CONFIG_ACTION_LIST
@@ -2530,9 +2635,11 @@ void MyWidget::bmSyncerFinished()
 	if(closeflag)
 		close();
 	else{
+#if 0		
 		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 		if (time != 0)
 			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
+#endif
 	}
 }
 
@@ -2878,7 +2985,7 @@ void MyWidget::silentUpdateFinished()
 #ifdef QT_NO_DEBUG
 			
 #else		
-		silentupdateTimer->start(100*SECONDS);	
+		//silentupdateTimer->start(100*SECONDS);	
 #endif	
 	}
 }

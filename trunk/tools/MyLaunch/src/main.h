@@ -177,6 +177,24 @@ enum{
 	REBUILD_SILENT_UPDATER,
 	REBUILD_DATABASE
 };
+
+enum{
+	TIMER_ACTION_BMSYNC=0,
+	TIMER_ACTION_CATBUILDER,
+	TIMER_ACTION_AUTOLEARNPROCESS,
+	TIMER_ACTION_DIGGXML,
+	TIMER_ACTION_SILENTUPDATER,
+	TIMER_ACTION_MAX
+};
+
+struct  TIMER_ACTION_LIST{
+	char actionType;
+	char enable;
+	short startAfterRun;
+	uint lastActionSeconds;//seconds for units
+	uint interval;//seconds for units
+};
+
 class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
@@ -192,16 +210,24 @@ public:
 	QLabel* label;
 	QLineEditMenu *output;
 	QCharLineEdit *input;
+
+#if 1
+	struct  TIMER_ACTION_LIST* timer_actionlist;
+	uint runseconds;	
+#else
+	QTimer* syncTimer;
 	QTimer* silentupdateTimer;
 	QTimer* catalogBuilderTimer;
-	QTimer* dropTimer;
-	QTimer* syncTimer;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	QTimer* autoLearnProcessTimer;
+	uint learnProcessTimes;
 #endif
 #ifdef CONFIG_DIGG_XML
 	QTimer* diggXmlTimer;
 #endif
+#endif
+
+	QTimer* dropTimer;	
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
@@ -306,22 +332,25 @@ private:
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
 #endif
-
 public slots:
 		void monitorTimerTimeout();
+		void updateSuccessTimeout();
 		void menuOptions();
-		void onHotKey();
+		void onHotKey();		
+#if 0
 		void catalogBuilderTimeout();
 		void silentupdateTimeout();
-		void updateSuccessTimeout();
+		
 		void syncTimeout();
-		void dropTimeout();
+		
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		void autoLearnProcessTimeout();
 #endif
 #ifdef CONFIG_DIGG_XML
 		void diggXmlTimeout();
 #endif
+#endif
+		void dropTimeout();
 		void setAlwaysShow(bool);
 		void setAlwaysTop(bool);
 		void setPortable(bool);
