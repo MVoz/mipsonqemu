@@ -189,7 +189,7 @@ enum{
 
 struct  TIMER_ACTION_LIST{
 	char actionType;
-	char enable;
+	char enable;//0x01--enable  0x02--in queue
 	short startAfterRun;
 	uint lastActionSeconds;//seconds for units
 	uint interval;//seconds for units
