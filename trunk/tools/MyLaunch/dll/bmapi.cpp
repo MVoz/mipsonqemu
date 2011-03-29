@@ -1340,7 +1340,7 @@ int tz::GetCpuUsage()
 
 	return (int)dbIdleTime;
 }
-void  tz::initDbTables(QSqlDatabase& db,QSettings *s,int flag)
+void  tz::initDbTables(QSqlDatabase& db,QSettings *s,bool flag)
 {
 	int i = 0;	
 	while(dbtableInfo[i].id){

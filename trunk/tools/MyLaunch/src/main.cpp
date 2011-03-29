@@ -371,8 +371,10 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	db = QSqlDatabase::addDatabase("QSQLITE", "dbManage");
 	QString dest ;
 	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
+	bool rebuilddatabase = FALSE;
 	if(!QFile::exists(dest)){
-		rebuildAll|=(1<<REBUILD_CATALOG)|(1<<REBUILD_SILENT_UPDATER)|(1<<REBUILD_DATABASE);		
+		rebuildAll|=(1<<TIMER_ACTION_BMSYNC)|(1<<TIMER_ACTION_CATBUILDER);
+		rebuilddatabase = TRUE;
 	}
 	db.setDatabaseName(dest);		
 	if ( !db.open())	 
@@ -381,12 +383,10 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 		exit(1);
 	} 
 	else{
-
 		//   qDebug("connect database %s successfully!\n",qPrintable(dest));  
-		tz::initDbTables(db,gSettings,rebuildAll&(1<<REBUILD_DATABASE));
-		if(rebuildAll&(1<<REBUILD_DATABASE))
+		tz::initDbTables(db,gSettings,rebuilddatabase);
+		if(rebuilddatabase)
 			restoreUserCommand();
-		rebuildAll&=~(1<<REBUILD_DATABASE);
 		//createDbFile();
 	}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
@@ -456,6 +456,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	}
 	// Set the timers
 	updateSuccessTimer = NULL;
+	runseconds = NOW_SECONDS;
 	
 	timer_actionlist = new TIMER_ACTION_LIST[TIMER_ACTION_MAX];
 	timer_actionlist[TIMER_ACTION_BMSYNC].actionType= TIMER_ACTION_BMSYNC;
@@ -466,7 +467,11 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_BMSYNC].startAfterRun =  (short)(5);
 #endif
 	timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = (gSettings->value("lastbmsync", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_BMSYNC].interval= SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT;
+	if(timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds>runseconds){
+		timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds=0;
+	}
+	timer_actionlist[TIMER_ACTION_BMSYNC].interval= (SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT)/(SECONDS);
+
 
 	timer_actionlist[TIMER_ACTION_CATBUILDER].actionType= TIMER_ACTION_CATBUILDER;
 	timer_actionlist[TIMER_ACTION_CATBUILDER].enable =  (gSettings->value("ckcatbuilder", true).toBool())?1:0;
@@ -476,7 +481,12 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_CATBUILDER].startAfterRun = (short)(10);
 #endif
 	timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds = (gSettings->value("lastcatbuilder", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_CATBUILDER].interval= CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT;
+	if(timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds>runseconds){
+			timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds=0;
+	}
+	timer_actionlist[TIMER_ACTION_CATBUILDER].interval=(CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT)/(SECONDS);
+
+	
 
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].actionType= TIMER_ACTION_AUTOLEARNPROCESS;
 	//timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable =  (gSettings->value("ckautolearnprocess", true).toBool())?1:0;
@@ -487,7 +497,13 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].startAfterRun =  (short)(15);
 #endif
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds = (gSettings->value("lastautolearnprocess", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].interval= AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT;
+	if(timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds>runseconds){
+			timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds=0;
+	}
+
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].interval=(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS);
+
+	
 
 	timer_actionlist[TIMER_ACTION_DIGGXML].actionType= TIMER_ACTION_DIGGXML;		
 	timer_actionlist[TIMER_ACTION_DIGGXML].enable =  (gSettings->value("ckdiggxml", true).toBool())?1:0;
@@ -497,7 +513,13 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_DIGGXML].startAfterRun =  (short)(20);
 #endif
 	timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds = (gSettings->value("lastdiggxml", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_DIGGXML].interval= DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT;
+	if(timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds>runseconds){
+				timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds=0;
+	}
+	timer_actionlist[TIMER_ACTION_DIGGXML].interval= (DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS);
+
+
+	
 
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].actionType= TIMER_ACTION_SILENTUPDATER;		
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].enable =  1;
@@ -507,7 +529,10 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].startAfterRun =  (short)(25);
 #endif
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds = (gSettings->value("lastsilentupdate", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_SILENTUPDATER].interval= (24*HOURS);
+	if(timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds>runseconds){
+			timer_actionlist[TIMER_ACTION_DIGGXML].lastActionSeconds=0;
+	}
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].interval= (24*HOURS)/(SECONDS);
 	
 	
 	slientUpdate =NULL;
@@ -570,8 +595,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	
 	NEW_TIMER(monitorTimer);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
-	monitorTimer->start(MONITER_TIME_INTERVAL);
-	runseconds = NOW_SECONDS;
+	monitorTimer->start(MONITER_TIME_INTERVAL);	
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -1498,13 +1522,14 @@ void MyWidget::catalogBuilt(int type,int status)
 	switch(type){
 		case CAT_BUILDMODE_ALL:
 			{
+				 SAVE_TIMER_ACTION(TIMER_ACTION_CATBUILDER,"lastcatbuilder");
 				if(status){
 					scanDbFavicon();
 					//gSettings->setValue("lastcatbuilder", NOW_SECONDS);
-					rebuildAll&=~(1<<REBUILD_CATALOG);
+					//rebuildAll&=~(1<<TIMER_ACTION_CATBUILDER);
 					//timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds = NOW_SECONDS;
 					 //gSettings->setValue("lastcatbuilder", timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds);
-					 SAVE_TIMER_ACTION(TIMER_ACTION_CATBUILDER,"lastcatbuilder");
+					
 					/*
 					int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
 					if (time != 0)
@@ -2260,7 +2285,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QString name,password;
 	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
 	if(updateSuccessTimer)
-		return;
+		goto OUT;
 	//start to all browser is disable ,don't sync
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	int i = 0,browsers_enable=0;
@@ -2271,12 +2296,12 @@ void MyWidget::_startSync(int mode,int silence)
 	}
 	if(!browsers_enable)
 	{
-		goto	SYNCTIMER;
+		goto	OUT;
 	}
 	//end to all browser is disable ,don't sync
 	if((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 	{
-		goto	SYNCTIMER;
+		goto	OUT;
 	}
 	
 	syncMode = mode;
@@ -2296,7 +2321,7 @@ void MyWidget::_startSync(int mode,int silence)
 		break;
 	}
 	if(name.isEmpty()||password.isEmpty())
-		goto	SYNCTIMER;
+		goto	OUT;
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE)&&syncDlg)
 		{
@@ -2398,10 +2423,11 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setUrl(url);
 	gSyncer->start(QThread::IdlePriority);
 	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
-	gSettings->setValue("lastsynctime", NOW_SECONDS);
+	//gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
 	return;
-SYNCTIMER:
+OUT:
+	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"lastbmsync");
 #if 0	
 	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 	if (time != 0)
@@ -2474,12 +2500,19 @@ void MyWidget::monitorTimerTimeout()
 	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
 		if(!(timer_actionlist[i].enable&0x01))//enable ?
 			continue;
-		if((((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) <(2*timer_actionlist[i].interval))&&(timer_actionlist[i].enable&0x02))//in queue?
+		//if((((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) <(2*timer_actionlist[i].interval))&&(timer_actionlist[i].enable&0x02))//in queue?
+		if((timer_actionlist[i].enable&0x02))//in queue?			
 			continue;
-		if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
-			continue;
-		if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
-			continue;
+	
+		if(!(rebuildAll&(1<<i))){
+			
+			if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
+				continue;
+			if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
+				continue;
+				QDEBUG_LINE;
+		}
+		QDEBUG_LINE;
 		timer_actionlist[i].enable|=0x02 ;//in queue
 		switch(i){
 			case TIMER_ACTION_BMSYNC:
@@ -2648,6 +2681,7 @@ void MyWidget::bmSyncerFinished()
 		// gSettings->setValue("lastbmsync", timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds);
 		// timer_actionlist.enable &=(~(0x02)); 
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"lastbmsync");
+		// rebuildAll&=~(1<<TIMER_ACTION_BMSYNC);		
 #if 0		
 		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 		if (time != 0)
@@ -2986,17 +3020,22 @@ void MyWidget::silentUpdateFinished()
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	//qDebug("silent update finished!!!!!");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
+	SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"lastsilentupdate");
+	DELETE_OBJECT(slientUpdate);
+	/*
 	if(slientUpdate)
 	{
+	
 		if(slientUpdate->error==0)///no error
 			{
 				 //timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds = NOW_SECONDS;
 				 //gSettings->setValue("lastsilentupdate", timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds);
-				  SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"lastsilentupdate");
+				 
 			}
 			
 		DELETE_OBJECT(slientUpdate);	
 	}
+	*/
 	if(closeflag)
 		close();
 	else{
