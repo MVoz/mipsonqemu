@@ -1,5 +1,5 @@
-#ifndef BOOKMARK_SYNC_H
-#define BOOKMARK_SYNC_H
+#ifndef DIGG_XML_H
+#define DIGG_XML_H
 
 #include <config.h>
 #include <globals.h>

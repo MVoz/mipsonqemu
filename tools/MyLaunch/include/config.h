@@ -46,6 +46,8 @@
 
 #define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
 
+#define BM_SERVER_GET_DIGGXML_URL HTTP_SERVER_URL"do.php?ac=diggxml&source=client"
+
 
 #define BM_XML_FROM_FIREFOX  "firefox.xml"
 
