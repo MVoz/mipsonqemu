@@ -197,6 +197,7 @@ struct  TIMER_ACTION_LIST{
 	short startAfterRun;
 	uint lastActionSeconds;//seconds for units
 	uint interval;//seconds for units
+	uint faileds;//record continous fail nums 
 };
 
 class MyWidget : public QWidget
