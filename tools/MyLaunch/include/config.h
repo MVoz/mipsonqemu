@@ -361,11 +361,6 @@
 	connect((x), SIGNAL(timeout()), this, SLOT(func##()), Qt::DirectConnection);\
 	(x)->start(time);
 
-#define SAVE_TIMER_ACTION(type,name) \
-	timer_actionlist[type].lastActionSeconds = NOW_SECONDS;\
-	gSettings->setValue(name, timer_actionlist[type].lastActionSeconds);\
-	timer_actionlist[type].enable &=(~(0x02));\
-	rebuildAll&=~(1<<type);
 
 
 #define THREAD_IS_RUNNING(x) ((x)&&(x)->isRunning())
@@ -511,6 +506,25 @@ enum TEST_NET_RESULT{
 #endif
 
 #define MONITER_TIME_INTERVAL (10)
+
+
+#define INIT_TIMER_ACTION_LIST(type,name,start,val)\
+	timer_actionlist[type].actionType= type;\
+	timer_actionlist[type].enable =  (gSettings->value("ck"##name, true).toBool())?1:0;\
+	timer_actionlist[type].startAfterRun =  (short)(start);\
+	timer_actionlist[type].lastActionSeconds =gSettings->value("last"##name, 0).toUInt();\
+	if(timer_actionlist[type].lastActionSeconds>runseconds)\
+		timer_actionlist[type].lastActionSeconds=0;\
+	timer_actionlist[type].faileds= 0 ;\
+	timer_actionlist[type].interval= val;
+
+#define SAVE_TIMER_ACTION(type,name) \
+	timer_actionlist[type].lastActionSeconds = NOW_SECONDS;\
+	gSettings->setValue("last"##name, timer_actionlist[type].lastActionSeconds);\
+	timer_actionlist[type].enable &=(~(0x02));\
+	rebuildAll&=~(1<<type);
+
+
 
 #endif
 
