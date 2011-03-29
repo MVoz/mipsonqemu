@@ -507,7 +507,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].startAfterRun =  (short)(25);
 #endif
 	timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds = (gSettings->value("lastsilentupdate", 0).toUInt());
-	timer_actionlist[TIMER_ACTION_SILENTUPDATER].interval= 0xffffffff;
+	timer_actionlist[TIMER_ACTION_SILENTUPDATER].interval= (24*HOURS);
 	
 	
 	slientUpdate =NULL;
@@ -1500,8 +1500,11 @@ void MyWidget::catalogBuilt(int type,int status)
 			{
 				if(status){
 					scanDbFavicon();
-					gSettings->setValue("lastcatbuilder", NOW_SECONDS);
+					//gSettings->setValue("lastcatbuilder", NOW_SECONDS);
 					rebuildAll&=~(1<<REBUILD_CATALOG);
+					//timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds = NOW_SECONDS;
+					 //gSettings->setValue("lastcatbuilder", timer_actionlist[TIMER_ACTION_CATBUILDER].lastActionSeconds);
+					 SAVE_TIMER_ACTION(TIMER_ACTION_CATBUILDER,"lastcatbuilder");
 					/*
 					int time = gSettings->value("catalogBuilderTimer", CATALOG_BUILDER_INTERVAL).toInt();
 					if (time != 0)
@@ -1522,6 +1525,9 @@ void MyWidget::catalogBuilt(int type,int status)
 		break;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		case CAT_BUILDMODE_LEARN_PROCESS:
+			//timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds = NOW_SECONDS;
+			// gSettings->setValue("lastautolearnprocess", timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds);
+			 SAVE_TIMER_ACTION(TIMER_ACTION_AUTOLEARNPROCESS,"lastautolearnprocess");
 			//autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT);//1m
 		break;
 #endif
@@ -2466,12 +2472,15 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 void MyWidget::monitorTimerTimeout()
 {	
 	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
-		if(!timer_actionlist[i].enable)
+		if(!(timer_actionlist[i].enable&0x01))//enable ?
+			continue;
+		if((((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) <(2*timer_actionlist[i].interval))&&(timer_actionlist[i].enable&0x02))//in queue?
 			continue;
 		if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
 			continue;
 		if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
 			continue;
+		timer_actionlist[i].enable|=0x02 ;//in queue
 		switch(i){
 			case TIMER_ACTION_BMSYNC:
 				{
@@ -2482,7 +2491,7 @@ void MyWidget::monitorTimerTimeout()
 				}
 			break;
 			case TIMER_ACTION_CATBUILDER:
-				buildCatalog();
+				buildCatalog();				
 			break;
 			case TIMER_ACTION_AUTOLEARNPROCESS:
 				{
@@ -2635,12 +2644,17 @@ void MyWidget::bmSyncerFinished()
 	if(closeflag)
 		close();
 	else{
+		// timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = NOW_SECONDS;
+		// gSettings->setValue("lastbmsync", timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds);
+		// timer_actionlist.enable &=(~(0x02)); 
+		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"lastbmsync");
 #if 0		
 		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 		if (time != 0)
 			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
 #endif
 	}
+	
 }
 
 void MyWidget::menuOptions()
@@ -2975,8 +2989,12 @@ void MyWidget::silentUpdateFinished()
 	if(slientUpdate)
 	{
 		if(slientUpdate->error==0)///no error
-			gSettings->setValue("lastSilentUpdate", NOW_SECONDS);
-		rebuildAll&=~(1<<REBUILD_SILENT_UPDATER);		
+			{
+				 //timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds = NOW_SECONDS;
+				 //gSettings->setValue("lastsilentupdate", timer_actionlist[TIMER_ACTION_SILENTUPDATER].lastActionSeconds);
+				  SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"lastsilentupdate");
+			}
+			
 		DELETE_OBJECT(slientUpdate);	
 	}
 	if(closeflag)
@@ -2995,19 +3013,9 @@ void MyWidget::startSilentUpdate()
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 		return;
-	if(gSettings->value("lastSilentUpdate", 0).toUInt()==0)
-		rebuildAll|=(1<<REBUILD_SILENT_UPDATER);
-#ifdef QT_NO_DEBUG
-	uint interval=NOW_SECONDS-gSettings->value("lastSilentUpdate", 0).toUInt();
 
-	if((!(rebuildAll&(1<<REBUILD_SILENT_UPDATER)))&&interval < DAYS)
-		return;
-#else
-	
-#endif
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
-		gSettings->setValue("lastSilentUpdate", 0);
 		slientUpdate=new appUpdater(this,gSettings,UPDATE_SILENT_MODE); 
 		connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));		
 		//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
