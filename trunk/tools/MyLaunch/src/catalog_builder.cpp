@@ -475,6 +475,9 @@ void CatBuilder::removeGarbageFromLearnProcessTable(uint clean)
 }
 void CatBuilder::buildCatalog_learnProcess(uint delId)
 {
+	removeGarbageFromLearnProcessTable(clean);
+	if(clean==0)//disable  the auto learn
+		return;
 	DWORD id=0;
 	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0) ;
 	PROCESSENTRY32 pInfo; 
@@ -492,8 +495,6 @@ void CatBuilder::buildCatalog_learnProcess(uint delId)
 		}
 	}while(Process32Next(hSnapShot, &pInfo) != FALSE);		
 	CloseHandle( hSnapShot );
-
-	removeGarbageFromLearnProcessTable(clean);
 
 	if(this->cat->count())
 	{
