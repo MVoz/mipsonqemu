@@ -103,7 +103,7 @@ void appUpdater::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(10);	
+	monitorTimer->start(MONITER_TIME_INTERVAL);	
 }
 
 void appUpdater::run()

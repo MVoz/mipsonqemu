@@ -115,9 +115,9 @@ void CatBuilder::importNetBookmark()
 #endif
 void CatBuilder::run()
 {
-	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
+	//qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	gSemaphore.acquire(1);
-	qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
+	//qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	QString dest;
 	/*
 	QString dest = gSettings->fileName();
@@ -146,7 +146,7 @@ void CatBuilder::run()
 	}
 #endif
 
-	qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
+	//qDebug("%s buildWithStart=%d",__FUNCTION__,buildWithStart);
 	//if buildWithStart is true,rescan all item
 	//else
 	//includedir true--include dir
