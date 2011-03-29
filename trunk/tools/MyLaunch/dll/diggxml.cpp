@@ -7,7 +7,7 @@ void diggXml::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 	if(resp.statusCode() == HTTP_OK)
 		STOP_TIMER(httpTimer); 
 }
-diggXml::diggXml(QObject* parent,QSettings* s)
+diggXml::diggXml(QObject* parent,QSettings* s):MyThread(parent,s)
 {
 	http_finish=0;
 	http_timerover=0;
@@ -81,7 +81,7 @@ void diggXml::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(10);
+	monitorTimer->start(MONITER_TIME_INTERVAL);
 
 }
 void diggXml::clearobject()
@@ -97,12 +97,11 @@ void diggXml::run()
 {
 	THREAD_MONITOR_POINT;
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,MONITER_TIME_INTERVAL,monitorTimeout);
 	
 	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML);
 	testThread->moveToThread(this);
 	testThread->start(QThread::IdlePriority);
-
 	exec();
 	if(testDiggXmlResult==1){
 		STOP_TIMER(httpTimer);
@@ -127,4 +126,5 @@ void diggXml::diggXmlGetFinished(bool error)
 		}
 	}
 	status = 0;
+	exit(status);
 }
