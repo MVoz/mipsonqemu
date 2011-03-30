@@ -518,13 +518,14 @@ enum TEST_NET_RESULT{
 	timer_actionlist[type].faileds= 0 ;\
 	timer_actionlist[type].interval= val;
 
-#define SAVE_TIMER_ACTION(type,name) \
+#define SAVE_TIMER_ACTION(type,name,flag)\
+	timer_actionlist[type].enable &=(~(0x02));\
+	rebuildAll&=~(1<<type);\
 	timer_actionlist[type].lastActionSeconds = NOW_SECONDS;\
 	gSettings->setValue("last"##name, timer_actionlist[type].lastActionSeconds);\
-	timer_actionlist[type].enable &=(~(0x02));\
-	rebuildAll&=~(1<<type);
-
-
-
+	if(flag){\
+		timer_actionlist[type].faileds=0;\
+	}else\
+		timer_actionlist[type].faileds++;
 #endif
 
