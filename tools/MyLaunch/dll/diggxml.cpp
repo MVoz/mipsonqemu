@@ -122,9 +122,11 @@ void diggXml::diggXmlGetFinished(bool error)
 	{
 		if(md5key==tz::fileMd5(diggxml_fromserver)){
 			status = 1;
+			exit(status);
 			return;
 		}
 	}
 	status = 0;
 	exit(status);
+	return;
 }
