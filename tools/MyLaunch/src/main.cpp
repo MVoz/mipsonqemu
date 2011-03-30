@@ -481,16 +481,16 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_BMSYNC,"bmsync",30,(SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_CATBUILDER,"catbuilder",60,(CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",90,(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS));
-		timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"bmsync",120,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"bmsync",150,(24*HOURS)/(SECONDS));
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",120,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",150,(24*HOURS)/(SECONDS));
 #else
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_BMSYNC,"bmsync",5,(SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_CATBUILDER,"catbuilder",10,(CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",15,(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS));
-		timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"bmsync",20,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"bmsync",25,(24*HOURS)/(SECONDS));
+	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",20,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",25,(24*HOURS)/(SECONDS));
 #endif
 	
 	slientUpdate =NULL;
@@ -1480,7 +1480,7 @@ void MyWidget::catalogBuilt(int type,int status)
 	switch(type){
 		case CAT_BUILDMODE_ALL:
 			{
-				 SAVE_TIMER_ACTION(TIMER_ACTION_CATBUILDER,"catbuilder");
+				 SAVE_TIMER_ACTION(TIMER_ACTION_CATBUILDER,"catbuilder",TRUE);
 				if(status){
 					scanDbFavicon();
 					//gSettings->setValue("lastcatbuilder", NOW_SECONDS);
@@ -1510,7 +1510,7 @@ void MyWidget::catalogBuilt(int type,int status)
 		case CAT_BUILDMODE_LEARN_PROCESS:
 			//timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds = NOW_SECONDS;
 			// gSettings->setValue("lastautolearnprocess", timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].lastActionSeconds);
-			 SAVE_TIMER_ACTION(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess");
+			 SAVE_TIMER_ACTION(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",TRUE);
 			//autoLearnProcessTimer->start(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT);//1m
 		break;
 #endif
@@ -2385,7 +2385,7 @@ void MyWidget::_startSync(int mode,int silence)
 	gSettings->sync();
 	return;
 SYNCOUT:
-	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync");
+	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",FALSE);
 #if 0	
 	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
 	if (time != 0)
@@ -2466,7 +2466,7 @@ void MyWidget::monitorTimerTimeout()
 			
 			if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
 				continue;
-			if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < timer_actionlist[i].interval)
+			if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < (((timer_actionlist[i].faileds>=10)?(10+2):(timer_actionlist[i].faileds+2))*(timer_actionlist[i].interval)/2))
 				continue;
 		}
 		timer_actionlist[i].enable|=0x02 ;//in queue
@@ -2624,7 +2624,7 @@ void MyWidget::diggXmlFinished(int status)
 {
 	gDiggXmler->wait();								
 	gDiggXmler.reset();
-	 SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml");
+	SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",status);
 }
 void MyWidget::startDiggXml()
 {
@@ -2669,7 +2669,7 @@ void MyWidget::bmSyncerFinished()
 		// timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = NOW_SECONDS;
 		// gSettings->setValue("lastbmsync", timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds);
 		// timer_actionlist.enable &=(~(0x02)); 
-		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync");
+		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 		// rebuildAll&=~(1<<TIMER_ACTION_BMSYNC);		
 #if 0		
 		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
@@ -3012,7 +3012,7 @@ void MyWidget::silentUpdateFinished()
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	//qDebug("silent update finished!!!!!");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
-	SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"silentupdate");
+	SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"silentupdate",TRUE);
 	DELETE_OBJECT(slientUpdate);
 	/*
 	if(slientUpdate)
