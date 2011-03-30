@@ -2986,6 +2986,9 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 		break;
 	case QSystemTrayIcon::MiddleClick:
 		break;
+	case QSystemTrayIcon::Context:
+		this->trayIcon->contextMenu();
+		break;
 	default:
 		;
 	}
