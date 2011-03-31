@@ -33,12 +33,14 @@ public:
 	
 	testNet *testThread;
 	QHttp * http;
+	uint diggid;
 	
 public:
 	diggXml(QObject * parent = 0,QSettings* s=0);
 	~diggXml(){};
 	void setHost(const QString& s){host = s;}
 	void setUrl(const QString& s){url = s;}
+	void setDiggId(uint id){diggid = id;}	
 	void run();
 public slots: 
 	void diggXmlGetFinished(bool error);

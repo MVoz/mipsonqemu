@@ -56,13 +56,18 @@ public:
 #define BM_WRITE_HEADER 1
 #define BM_WRITE_END 2
 #define BM_WRITE_MASK 0x3
+
+enum {
+	XML_READER_BOOKMARK =0,
+	XML_READER_DIGG
+};
 class XMLREADER_DLL_CLASSEXPORT  bmXml:public QXmlStreamReader
 {
 public:
 	bmXml(QIODevice * device,QSettings* setting):QXmlStreamReader(device),settings(setting){
 		setDevice(device);
 		browserenable=0;
-		flag=0;
+		mode=XML_READER_BOOKMARK;
 		userId=0;
 	}
 	bmXml();
@@ -106,6 +111,9 @@ public:
 	void outToFile(QTextStream& os);
 	void item_end(QTextStream& os,int type,int& finish);
 	void getUserId();
+	#ifdef CONFIG_DIGG_XML
+	void readDiggElement();
+	#endif
 	//  void    importID(struct bookmark_catagory*bc);
 	//   void    importbmid(struct bookmark_catagory*bc);
 	//  void   importFeedurl(struct bookmark_catagory*bc);
@@ -122,11 +130,12 @@ public:
 	//	uint maxGroupId;
 	uint browserenable;
 	uint userId;
-	uint flag;	
+	uint mode;	
 	//QString ff_excludeId;
 	QSqlDatabase* ff_db;
 	QList<Firefox_BM> ff_bm;
 	QString updateTime;
+	
 public:
 	/*for ie*/
 	//   static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
