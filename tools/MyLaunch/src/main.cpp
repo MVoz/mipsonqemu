@@ -1293,7 +1293,6 @@ void MyWidget::searchOnInput()
 	qDebug()<<"search results:";
 	for (int i = 0; i < searchResults.count(); i++)
 	{
-		//qDebug("%d fullpath=%s iconpath=%s useage=%d", i, qPrintable(searchResults[i].fullPath), qPrintable(searchResults[i].icon), searchResults[i].usage);
 		qDebug()<<" "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom;
 	}
 #endif
@@ -1342,13 +1341,13 @@ QIcon MyWidget::getIcon(CatItem * item)
 	if (item->icon.isEmpty()||item->icon.isNull())
 	{
 		QDir dir(item->fullPath);
-		qDebug()<<item->fullPath;
+		//qDebug()<<item->fullPath;
 		if (dir.exists())
 			return platform->icons->icon(QFileIconProvider::Folder);
 		else if(QFile::exists(item->fullPath))
 			return platform->icon(QDir::toNativeSeparators(item->fullPath));
 		else{
-			qDebug()<<"Catitem:"<<item->fullPath;
+			//qDebug()<<"Catitem:"<<item->fullPath;
 			//修正自定义的url
 			QUrl url(item->fullPath);
 			if(url.isValid()){
@@ -3202,6 +3201,7 @@ int itempriority(int comefrom)
 		case COME_FROM_PROGRAM:
 			return priority+4;
 		break;
+		case COME_FROM_LEARNPROCESS:
 		default:
 			return priority+5;
 		break;
@@ -3232,10 +3232,7 @@ bool CatLess(CatItem * a, CatItem * b)
 		if(a->pos<b->pos)
 			return true; 
 	}
-	if(itempriority(a->comeFrom)<itempriority(b->comeFrom))
-		return true;
-	if(itempriority(a->comeFrom)>itempriority(b->comeFrom))
-		return false;
+
 
 	int localFind = a->lowName.indexOf(gSearchTxt);
 	int otherFind = b->lowName.indexOf(gSearchTxt);
@@ -3263,7 +3260,10 @@ bool CatLess(CatItem * a, CatItem * b)
 //priority from come from
 //COME_FROM_SHORTCUT>COME_FROM_COMMAND>COMF_FROM_NETBOOKMARK(COME_FROM_IE,COME_FROM_FIREFOX)>COME_FROM_PREDEFINE>COME_FROM_PROGRAM
 
-
+	if(itempriority(a->comeFrom)<itempriority(b->comeFrom))
+		return true;
+	if(itempriority(a->comeFrom)>itempriority(b->comeFrom))
+		return false;
 	// Absolute tiebreaker to prevent loops
 	if (a->fullPath < b->fullPath)
 		return true;
