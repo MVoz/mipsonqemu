@@ -111,6 +111,28 @@ void bmXml::getBookmarkCatalog(QList<CatItem>* items)
 		}
 	}
 }
+#ifdef CONFIG_DIGG_XML
+void bmXml::readDiggElement()
+{
+	while (!atEnd())
+		{
+			readNext();
+			if (isStartElement())
+			{
+				if (name() == "item"){
+					CreateItem(0, &bm_list, 0);
+				}
+			} else if (isCharacters() && !isWhitespace())
+			{
+				//		 logToFile("%s %s",__FUNCTION__,qPrintable(text().toString())); 					  
+			} else if (isEndElement())
+			{
+
+			}
+		}
+
+}
+#endif
 void bmXml::readBrowserType(int browserType)
 {
 	int readFlag=0;
@@ -123,9 +145,7 @@ void bmXml::readBrowserType(int browserType)
 			{
 				browserenable=attributes().value("browserenable").toString().toUInt();
 				readFlag=1;
-				readBookmarkElement();
-
-				
+				readBookmarkElement();				
 			} 
 		} else if (isCharacters() && !isWhitespace())
 		{
@@ -177,6 +197,12 @@ void bmXml::readStream(int browserType)
 				userId = attributes().value("userId").toString().toUInt();
 				readBrowserType(browserType);
 			}
+#ifdef CONFIG_DIGG_XML
+			else if (name() == "digg" && attributes().value("version") == "1.0"){
+				mode = XML_READER_DIGG;
+				readDiggElement();
+			}
+#endif
 		} else if (isStartDocument())
 		{
 			//  logToFile("%s %s %s", __FUNCTION__, qPrintable(documentVersion().toString()), qPrintable(documentEncoding().toString()));
@@ -616,7 +642,10 @@ void bmXml::CreateItem(int level, QList < bookmark_catagory > *list, uint parent
 			if (name() == "item")
 			{
 				// list->push_back(bc);
-				tz::addItemToSortlist(bc,list);  
+				if(mode == XML_READER_DIGG)
+					list->push_back(bc);
+				else
+					tz::addItemToSortlist(bc,list);  
 				break;
 			}
 		}

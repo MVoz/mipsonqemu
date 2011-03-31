@@ -19,6 +19,7 @@ diggXml::diggXml(QObject* parent,QSettings* s):MyThread(parent,s)
 	http =NULL;
 	httpTimer = NULL;
 	needwatchchild = false;
+	diggid = 0;
 }
 void diggXml::httpTimeout()
 {
@@ -44,7 +45,7 @@ void diggXml::testNetFinished()
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
 			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 			diggxml_fromserver.clear();
-			diggxml_fromserver=QString("./data/digg.xml");
+			diggxml_fromserver=QString(DIGG_XML_LOCAL_FILE);
 			file = new QFile(diggxml_fromserver);
 			if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 				SetFileAttributes(diggxml_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
@@ -52,6 +53,10 @@ void diggXml::testNetFinished()
 				http->get(url, file);
 			}
 		}
+		break;
+	case TEST_NET_UNNEED:
+		status=TEST_NET_UNNEED;
+		exit(0);
 		break;
 	default:
 		exit(0);
@@ -99,7 +104,7 @@ void diggXml::run()
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	START_TIMER_INSIDE(monitorTimer,false,MONITER_TIME_INTERVAL,monitorTimeout);
 	
-	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML);
+	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML,diggid);
 	testThread->moveToThread(this);
 	testThread->start(QThread::IdlePriority);
 	exec();
