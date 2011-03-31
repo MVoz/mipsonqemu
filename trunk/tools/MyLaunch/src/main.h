@@ -337,6 +337,9 @@ private:
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
 #endif
+#ifdef CONFIG_DIGG_XML
+	QList<bookmark_catagory> diggXmllist;
+#endif
 public slots:
 		void monitorTimerTimeout();
 		void updateSuccessTimeout();
@@ -395,6 +398,7 @@ public slots:
 #ifdef CONFIG_DIGG_XML
 		void diggXmlFinished(int status);
 		void startDiggXml();
+		void loadDiggXml();
 #endif
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);
