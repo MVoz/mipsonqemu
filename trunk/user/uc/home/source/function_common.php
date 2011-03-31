@@ -2655,6 +2655,32 @@ function createCategory($arr)
 	   	}
 	   	printf("</category >\n");
 }
+function producediggxml($diggid)
+{
+	global $_SGLOBAL,$_SC;
+	if($diggid > 0){
+		$hasnew=$_SGLOBAL['db']->result($_SGLOBAL['db']->query("SELECT COUNT(diggid) FROM ".tname('digg')." WHERE diggid>".$diggid));
+		if(!$hasnew)
+		{
+			//do nothing
+			header('md5key:'.md5('do_nothing')); 
+			exitwithtip('do_nothing');
+		}
+	}
+	$xmlfile = S_ROOT.'./data/diggcache/diggxml.xml';
+	if(!file_exists($xmlfile)){
+		diggxml_cache();
+	}
+	header('md5key:'.md5_file($xmlfile)); 
+	if($fp=fopen($xmlfile,'rb'))
+	{
+		while (!feof($fp)) {
+			$buffer = fread($fp, 1024); 
+			echo $buffer; 
+		}
+		fclose($fp);
+	}
+}
 function producebmxml($uid,$arr)
 {
 	global $_SGLOBAL,$_SC;
