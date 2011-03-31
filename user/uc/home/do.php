@@ -22,7 +22,7 @@ if($ac == $_SCONFIG['register_action']) {
 }
 
 //允许的方法
-$acs = array('bmxml','diggxml','ajax', 'seccode','testaccount','login', 'register', 'lostpasswd',
+$acs = array('bmxml','testdiggxml','diggxml','ajax', 'seccode','testaccount','login', 'register', 'lostpasswd',
 	 'sendmail', 'emailcheck', 'inputpwd'/*,'swfupload', 'stat'*/,'search');
 if(empty($ac) || !in_array($ac, $acs)) {
 	showmessage('enter_the_space', 'index.php', 0);
