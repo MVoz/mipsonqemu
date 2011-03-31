@@ -376,6 +376,31 @@ function hotdigg_cache()
 	}
 	swritefile(S_ROOT.'./data/data_hotdigg.txt', serialize($hotdigg));
 }
+//digg xml
+function diggxml_cache()
+{
+	global $_SGLOBAL,$_SC;
+	$xmlfile = S_ROOT.'./data/diggcache/diggxml.xml';
+	if (!($fp = fopen($xmlfile, 'w')))
+		return;
+	flock($fp, 2);
+	fprintf($fp,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+	fprintf($fp,"<digg version=\"1.0\">\n");
+	$wherearr='';
+	$orderarr='';
+	$orderarr=$orderarr." ORDER by diggid DESC LIMIT 10 ";
+
+	$query = $_SGLOBAL['db']->query("SELECT diggid,subject,url FROM ".tname('digg').$wherearr.$orderarr);
+	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
+			fprintf($fp,"<item>\n");
+			fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
+			fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
+			fprintf($fp,"<diggid><![CDATA[%d]]></diggid>\n",$value['diggid']);
+			fprintf($fp,"</item>\n");
+	}
+   fprintf($fp,"</digg>\n");
+   fclose($fp);
+}
 //linktoolbartype
 function popularbar_cache()
 {
@@ -528,7 +553,7 @@ function bmxml_cache()
 
 		$orderarr=$orderarr." ORDER by main.lastvisit DESC ";
 
-		$query = $_SGLOBAL['db']->query("SELECT main.* FROM ".tname('bookmark')." main	".$wherearr.$orderarr);
+		$query = $_SGLOBAL['db']->query("SELECT main.bmid FROM ".tname('bookmark')." main	".$wherearr.$orderarr);
 		while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 			$value = getbookmark($value['bmid']);
 			switch($value['type'])
