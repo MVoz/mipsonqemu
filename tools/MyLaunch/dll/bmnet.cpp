@@ -30,7 +30,7 @@ void MyThread::run(){
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-testNet::testNet(QObject * parent ,QSettings* s,int m):MyThread(parent,s),mode(m)
+testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),mode(m),id(d)
 {
 	manager = NULL;
 	reply = NULL;
@@ -55,6 +55,8 @@ void testNet::testServerFinished(QNetworkReply* reply)
 				if(replybuf.startsWith(QString("1")))
 				{
 					SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,TEST_NET_SUCCESS);
+				}else if(replybuf.startsWith(QString("0"))){
+					SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,TEST_NET_UNNEED);
 				}
 			break;
 #endif
@@ -136,7 +138,7 @@ void testNet::run()
 #ifdef CONFIG_DIGG_XML
 	else if(mode ==  TEST_SERVER_DIGG_XML){
 		SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,0);
-		url =TEST_DIGGXML_URL;
+		url =QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(id));
 	}
 #endif
 	manager=new QNetworkAccessManager();
