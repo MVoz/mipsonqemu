@@ -208,7 +208,7 @@
 
 #define TEST_NET_URL HTTP_SERVER_URL"testnet.php"
 #define TOUCHANY_VERSION_URL HTTP_SERVER_URL"download/index.php"
-#define TEST_DIGGXML_URL  HTTP_SERVER_URL"testdiggxml.php"
+#define TEST_DIGGXML_URL  HTTP_SERVER_URL"do.php?ac=testdiggxml"
 
 #define UPDATE_DIRECTORY "temp"
 #define UPDATE_DIRECTORY_SUFFIX UPDATE_DIRECTORY"/"
@@ -430,7 +430,8 @@ enum TEST_NET_RESULT{
 	TEST_NET_SUCCESS,
 	TEST_NET_ERROR_PROXY,
 	TEST_NET_ERROR_PROXY_AUTH,
-	TEST_NET_ERROR_SERVER	
+	TEST_NET_ERROR_SERVER,
+	TEST_NET_UNNEED
 };
 
 
@@ -527,5 +528,8 @@ enum TEST_NET_RESULT{
 		timer_actionlist[type].faileds=0;\
 	}else\
 		timer_actionlist[type].faileds++;
+
+#define DIGG_XML_LOCAL_FILE "./data/digg.xml"
+	
 #endif
 

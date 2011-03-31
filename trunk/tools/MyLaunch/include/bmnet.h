@@ -42,8 +42,9 @@ public:
 	QNetworkReply *reply;
 	QTimer* testNetTimer;
 	int mode;
+	uint id;
 public:
-	testNet(QObject * parent = 0,QSettings* s=0,int m=TEST_SERVER_NET);
+	testNet(QObject * parent = 0,QSettings* s=0,int m=TEST_SERVER_NET,int d=0);
 	~testNet(){};
 	void run();
 	void clearObject();
