@@ -392,10 +392,10 @@ function diggxml_cache()
 
 	$query = $_SGLOBAL['db']->query("SELECT diggid,subject,url FROM ".tname('digg').$wherearr.$orderarr);
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
-			fprintf($fp,"<item>\n");
+			fprintf($fp,"<item parentId=\"0\">\n");
 			fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
 			fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
-			fprintf($fp,"<diggid><![CDATA[%d]]></diggid>\n",$value['diggid']);
+			fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['diggid']);
 			fprintf($fp,"</item>\n");
 	}
    fprintf($fp,"</digg>\n");

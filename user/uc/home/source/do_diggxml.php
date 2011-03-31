@@ -9,7 +9,6 @@ if(!defined('IN_UCHOME')) {
 }
 
 include_once(S_ROOT.'./source/function_cp.php');
-$diggid=isset($_GET['id'])?intval($_GET['id']):0;
-producediggxml($diggid);
+producediggxml();
 exit();
 ?>
