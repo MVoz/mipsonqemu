@@ -554,6 +554,9 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	NEW_TIMER(monitorTimer);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
 	monitorTimer->start(MONITER_TIME_INTERVAL);	
+#ifdef CONFIG_DIGG_XML
+	loadDiggXml();
+#endif
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -2509,7 +2512,7 @@ void MyWidget::monitorTimerTimeout()
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
 	if(!closeflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
-		qDebug()<<item.action<<item.fullpath<<item.name<<item.id.browserid;
+		qDebug()<<(NOW_SECONDS-runseconds)<<":"<<item.action<<item.fullpath<<item.name<<item.id.browserid;
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
 				_buildCatalog((CATBUILDMODE)item.id.mode,0);
@@ -2619,11 +2622,30 @@ void MyWidget::monitorTimerTimeout()
 	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
 #ifdef CONFIG_DIGG_XML
+void MyWidget::loadDiggXml()
+{
+	QFile f(DIGG_XML_LOCAL_FILE);
+	if(f.open(QIODevice::ReadOnly)){
+		bmXml r(&f,gSettings);			
+		bmXml diggXmlReader(&f,gSettings);
+		diggXmlReader.readStream(0);
+		diggXmllist.clear();
+		diggXmllist = diggXmlReader.bm_list;
+		foreach(bookmark_catagory diggitem, diggXmllist)
+		{
+			qDebug()<<diggitem.bmid<<diggitem.name<<diggitem.link;
+		}
+		f.close();
+	}
+}
 void MyWidget::diggXmlFinished(int status)
 {
 	gDiggXmler->wait();								
 	gDiggXmler.reset();
-	SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",status);
+	SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
+	if(status == 1){
+		loadDiggXml();
+	}
 }
 void MyWidget::startDiggXml()
 {
@@ -2642,6 +2664,13 @@ void MyWidget::startDiggXml()
 	SET_SERVER_IP(gSettings,url);
 #endif
 	gDiggXmler->setUrl(url);
+	qDebug()<<__FUNCTION__<<__LINE__<<diggXmllist.size();
+	if(diggXmllist.size())
+	{
+		bookmark_catagory bc = diggXmllist.at(0);
+		gDiggXmler->setDiggId(bc.bmid);
+	}
+
 	gDiggXmler->start(QThread::IdlePriority);
 
 }
