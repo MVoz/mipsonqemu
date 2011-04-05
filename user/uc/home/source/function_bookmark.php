@@ -213,8 +213,17 @@ function bookmark_tag_batch($id,$tags)
 		global $_SGLOBAL;
 		$uid = $_SGLOBAL['supe_uid'];
 		$tagarr = array();
-		$now_tag = empty($tags)?array():array_unique(explode(' ', $tags));
+		$now_tag =array();
+		$now_tag_1 = empty($tags)?array():array_unique(explode(' ', $tags));
 		
+		//去除tag中特殊字符,如'
+		foreach ($now_tag_1 as $tagname) {
+			if(!preg_match('/^([\x7f-\xff_-]|\w){3,20}$/', $tagname)) continue;
+			$pos = strpos($tagname, '\'');
+			if($pos===false){
+			}else
+				$now_tag[] = $tagname;
+		}
 		//if(empty($now_tag)) return $tagarr;
 		//获取原来的tags
 		$query=$_SGLOBAL['db']->query("SELECT main.* FROM ".tname('bookmark')." main WHERE main.bmid=".$id." AND main.uid=".$_SGLOBAL['supe_uid']);
