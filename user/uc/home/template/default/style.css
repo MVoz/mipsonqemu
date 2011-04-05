@@ -499,7 +499,7 @@ border:1px solid #DDD;}
 .shaa p span,.prse p span{float:left;background-color:#eee;border:1px solid #ddd;cursor:pointer;margin-top:-1px;padding:0px 24px;line-height:25px;overflow:hidden;border-width:1px 1px 1px 0;}
 #hhlt p span.currentx,.shaa p span.currentx,.prse p span.currentx{background-color:#fff;border-bottom-color:#fff;border-width:1px 1px 1px 0;}
 .shaa >li,.prse >li{padding-bottom:3px;margin:5px 0;}
-
+.shaa .web span{color:#000}
  .prse {height:150px;width:672px;float:right;}
 .allhot_1 li,.mhot_1 li,.related_post_1  li {height:16px;line-height:16px;padding:2px;}
 
