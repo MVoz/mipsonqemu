@@ -1806,18 +1806,38 @@ void tz::clearBmlist(QList<bookmark_catagory> *l){
 		l->clear();
 }
 bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
+#ifndef QT_NO_DEBUG
+	static int lev = 0;
+	static int count = 0;
+	if(!level){
+		lev = 0;
+		count = 0;
+	}
+		if(l->size() >  count)
+			count = l->size();
+		if(level >  lev)
+			lev = level;
+#endif
 		if(l->size()>browserInfo[browserid].maxchild)
-			return false;
+			goto bad;
 		if(level>browserInfo[browserid].maxlev)
-			return false;
+			goto bad;
 		for (int i = 0; i < l->size(); i++)
 		{
 			if((*l)[i].list.size()){
 				if(!checkValidBmlist(&((*l)[i].list),level+1,browserid))
-					return false;
+					goto bad;
 			}			
 		}
+#ifndef QT_NO_DEBUG
+		qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+#endif
 		return true;
+bad:
+#ifndef QT_NO_DEBUG
+		qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+#endif
+		return false;
 }
 
 #ifdef CONFIG_AUTO_LEARN_PROCESS
