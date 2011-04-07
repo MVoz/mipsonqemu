@@ -542,6 +542,7 @@ enum{
 	DOWN_LOCAL_ACTION_DELETE_DIR
 };
 
-	
+#define POST_DOWN_AFTER_MERGE 
+
 #endif
 
