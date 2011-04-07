@@ -73,7 +73,7 @@ void CatBuilder::importNetBookmark()
 				case BROWSE_TYPE_NETBOOKMARK:
 					break;
 				case BROWSE_TYPE_IE:
-					tz::readDirectory(tz::getIePath(), &bc, 0);
+					tz::readDirectory(tz::getIePath(), &bc, 0,BROWSE_TYPE_IE,0);
 				break;
 				case BROWSE_TYPE_FIREFOX:
 				/*
@@ -280,6 +280,7 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 	while(!browserInfo[i].name.isEmpty())
 	{
 		browserenable[i] =browserInfo[i].enable;
+		clearBrowserInfoOpFlag(i);
 		qDebug()<<"browser:"<<browserInfo[i].name<<" enable:"<<browserInfo[i].enable;
 		i++;
 	}
@@ -293,12 +294,12 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 			switch( browserid )
 			{
 			case BROWSE_TYPE_NETBOOKMARK:
-				tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0);
-				setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+				if(tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0,BROWSE_TYPE_NETBOOKMARK,0))
+					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 				break;
 			case BROWSE_TYPE_IE:						
-				tz::readDirectory(tz::getIePath(), &current_bc[BROWSE_TYPE_IE], 0);	
-				setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+				if(tz::readDirectory(tz::getIePath(), &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,0))
+					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 				break;
 			case BROWSE_TYPE_FIREFOX:
 				if(!tz::checkFirefoxDir(ff_path))

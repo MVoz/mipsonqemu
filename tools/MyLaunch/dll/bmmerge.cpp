@@ -235,6 +235,7 @@ void bmMerge::handleBmData()
 	//set to value to avoid crash
 	settings->setValue("localbmkey",0);
 	settings->sync();
+	
 
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	//get browser enable
@@ -243,6 +244,7 @@ void bmMerge::handleBmData()
 	{
 		//20101114 get the enable value to avoid modified
 		browserenable[i] =browserInfo[i].enable?1:0;
+		clearBrowserInfoOpFlag(i);
 		i++;
 	}
 	if(!loadLastupdateData(browserInfo,modifiedInServer,lastUpdate,localBmFullPath,browserenable))
@@ -275,13 +277,14 @@ void bmMerge::handleBmData()
 				switch( browserid )
 				{
 				case BROWSE_TYPE_NETBOOKMARK:
-					tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0);
+					if(tz::readMyBookmark(db, &current_bc[BROWSE_TYPE_NETBOOKMARK],0,0,BROWSE_TYPE_NETBOOKMARK,1))
+						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 					//dumpBcList(&current_bc[BROWSE_TYPE_NETBOOKMARK]);
-					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+				
 					break;
 				case BROWSE_TYPE_IE:
-					tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0);
-					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
+					if(tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,1))
+						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 					break;
 				case BROWSE_TYPE_FIREFOX:
 					if(!tz::checkFirefoxDir(ff_path))
@@ -405,10 +408,10 @@ CLEAR:
 			case BROWSE_TYPE_OPERA:
 				break;
 			}			
-			DELETE_OBJECT(fromServer[browserid])
+			DELETE_OBJECT(fromServer[browserid]);
 		}
-		DELETE_OBJECT(lastUpdate[browserid])
-			result_bc[browserid].clear();
+		DELETE_OBJECT(lastUpdate[browserid]);
+		result_bc[browserid].clear();
 		current_bc[browserid].clear();
 		clearBrowserInfoOpFlag(browserid);
 		i++;

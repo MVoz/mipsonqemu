@@ -114,14 +114,105 @@ struct dbtableinfo dbtableInfo[]={
 	{0,QString(),0}
 };
 
+/*
+$_SGLOBAL['browser']=Array
+	(
+	0 => Array
+		(
+		'browserid' => '0',
+		'browsername' => 'network',
+		'maxlev' => 5,
+		'maxchild' => 128,
+		'titlelen' => 512,
+		'dirlen' => 256,
+		'urllen' => 512,
+		'taglen' => 128,
+		'deslen' => 512,
+		'speicalchar' => 1
+		),
+	1 => Array
+		(
+		'browserid' => 1,
+		'browsername' => 'ie',
+		'maxlev' => 5,
+		'maxchild' => 128,
+		'titlelen' => 210,
+		'dirlen' => 202,
+		'urllen' => 512,
+		'taglen' => 128,
+		'deslen' => 512,
+		'speicalchar' => '0'
+		),
+	2 => Array
+		(
+		'browserid' => 2,
+		'browsername' => 'firefox',
+		'maxlev' => 6,
+		'maxchild' => 128,
+		'titlelen' => 512,
+		'dirlen' => 256,
+		'urllen' => 512,
+		'taglen' => 128,
+		'deslen' => 512,
+		'speicalchar' => 1
+		),
+	3 => Array
+		(
+		'browserid' => 3,
+		'browsername' => 'opera',
+		'maxlev' => 5,
+		'maxchild' => 128,
+		'titlelen' => 512,
+		'dirlen' => 256,
+		'urllen' => 512,
+		'taglen' => 128,
+		'deslen' => 512,
+		'speicalchar' => 1
+		)
+	)
 
+*/
 struct browserinfo browserInfo[]={
-	{QString("network"),QString("") ,true, true, false,false,false, BROWSE_TYPE_NETBOOKMARK},
-	{QString("Ie"),QString(""), true, true, false,false,false, BROWSE_TYPE_IE},
-	{QString("Firefox"),QString("") , false, false , false,false,false, BROWSE_TYPE_FIREFOX},
-	{QString("Opera") , QString("") ,false , false , false,false,false, BROWSE_TYPE_OPERA},
+	{QString("network"),QString("") ,true, true, false,false,false, BROWSE_TYPE_NETBOOKMARK,5,128,512,256,512,128,512,1},
+	{QString("Ie"),QString(""), true, true, false,false,false, BROWSE_TYPE_IE,5,128,210,202,512,128,512,0},
+	{QString("Firefox"),QString("") , false, false , false,false,false, BROWSE_TYPE_FIREFOX,6,128,512,256,512,128,512,1},
+	{QString("Opera") , QString("") ,false , false , false,false,false, BROWSE_TYPE_OPERA,5,128,512,256,512,128,512,1},
 	{QString(""),QString("") ,false,false, false,false,false,0}
 };
+uint  getBrowserInfoParameter(int browserid,int type)
+{
+	uint ret = 0;
+	switch(type){
+		case BROWSER_INFO_ID:
+			ret = browserInfo[browserid].id;
+			break;
+		case BROWSER_INFO_MAXLEV:
+			ret = browserInfo[browserid].maxlev;
+			break;
+		case BROWSER_INFO_MAXCHILD:
+			ret = browserInfo[browserid].maxchild;
+			break;
+		case BROWSER_INFO_TITLELEN:
+			ret = browserInfo[browserid].titlelen;
+			break;
+		case BROWSER_INFO_DIRLEN:
+			ret = browserInfo[browserid].dirlen;
+			break;
+		case BROWSER_INFO_URLLEN:
+			ret = browserInfo[browserid].urllen;
+			break;
+		case BROWSER_INFO_TAGLEN:
+			ret = browserInfo[browserid].taglen;
+			break;
+		case BROWSER_INFO_DESLEN:
+			ret = browserInfo[browserid].deslen;
+			break;
+		case BROWSER_INFO_SPEICALCHAR:
+			ret = browserInfo[browserid].speicalchar;
+			break;
+	}
+	return ret;
+}
 void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type)
 {
 	int i = 0;
@@ -250,7 +341,7 @@ int addToActionList( struct ACTION_LIST& item){
 	   	if((item.action == ACTION_LIST_BOOKMARK_SYNC)||(item.action == ACTION_LIST_TEST_ACCOUNT))
 	   		{
 	   			if((item.id.groupid==SYN_MODE_NOSILENCE)||(actionlist[i].id.groupid==SYN_MODE_NOSILENCE)){
-					actionlist[i].id.groupid==SYN_MODE_NOSILENCE;
+					actionlist[i].id.groupid=SYN_MODE_NOSILENCE;
 					return 0;
 	   			}
 	   		}
@@ -983,12 +1074,26 @@ void tz::addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_c
 		list->push_back(bc);
 	}
 }
-//flag 0--file 1--dir
-void tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,unsigned int groupid )
+//flag --0--don't check  1---must check
+bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint level,unsigned int groupid,uint browserid,uint flag=0 )
 {
 		QSqlQuery q("",*db);
+		if(flag&& level>browserInfo[browserid].maxlev)
+			return false;
+	
+		if(flag){
+			QString  s=QString("SELECT COUNT(*) as total FROM %1 WHERE  comeFrom=%2 AND  parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+			if(q.exec(s)){
+				if(q.next()) {
+					if(q.value( q.record().indexOf("total")).toUInt()>browserInfo[browserid].maxchild)
+						return false;
+				}
+			}else
+				return false;
+		}
+		
 		//process directory
-		QString  s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=1 AND  parentid=%4 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
+		QString  s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=1 AND  parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 		if(q.exec(s))
 		{
 			QSqlRecord rec = q.record();
@@ -1009,10 +1114,11 @@ void tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int 
 				bc.bmid = q.value(id_Idx).toUInt();
 				bc.groupId= q.value(groupid_Idx).toUInt();
 				bc.parentId= q.value(parentid_Idx).toUInt();
-				readMyBookmark(db,&(bc.list), level + 1,q.value(groupid_Idx).toUInt());
+				readMyBookmark(db,&(bc.list), level + 1,q.value(groupid_Idx).toUInt(),browserid,flag);
 				addItemToSortlist(bc,list);
 			}		
-		}
+		}else
+		return false;
 		q.clear();
 		//process bookmark
 		s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=0 AND  parentid=%4 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
@@ -1045,20 +1151,26 @@ void tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int 
 				bc.parentId= q.value(parentid_Idx).toUInt();
 				addItemToSortlist(bc,list);
 			}		
-		}
+		}else
+		return false;
 		q.clear();
+		return true;
 }
-void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int level/*, uint flag*/)
+/*
+	flag --0--don't check  1---must check
+	
+*/
+bool tz::readDirectory(QString directory, QList < bookmark_catagory > *list, uint level,uint browserid,uint flag)
 {
-	//if (level == 0)
-	//	this->flag = flag;
-//	qDebug()<<directory;
-	//QString createTime, lastAccessTime, lastWriteTime;
 	QDir qd(directory);
 	QString dir = qd.absolutePath();
 	QStringList dirs = qd.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-
-
+	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
+	if(flag&& level>browserInfo[browserid].maxlev)
+		return false;
+	if(flag&&((dirs.count()+files.count())>browserInfo[browserid].maxchild))
+		return false;
+	
 	for (int i = 0; i < dirs.count(); ++i)
 	{
 		QString cur = dirs[i];
@@ -1072,10 +1184,10 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 		dir_bc.link_hash=0;
 		dir_bc.flag = BOOKMARK_CATAGORY_FLAG;
 		dir_bc.level = level;
-		readDirectory(dir + "/" + dirs[i], &(dir_bc.list), level + 1/*,  flag*/);
+		readDirectory(dir + "/" + dirs[i], &(dir_bc.list), level + 1,browserid,flag);
 		addItemToSortlist(dir_bc,list);
 	}
-	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
+	
 	for (int i = 0; i < files.count(); ++i)
 	{
 		struct bookmark_catagory bc;
@@ -1099,6 +1211,7 @@ void tz::readDirectory(QString directory, QList < bookmark_catagory > *list, int
 		bc.level = level;			
 		addItemToSortlist(bc,list);
 	}
+	return true;
 }
 int tz::getFirefoxVersion()
 {
