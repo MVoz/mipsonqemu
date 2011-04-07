@@ -483,8 +483,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
 			qDebug("post error happen!");
-			mergestatus = MERGE_STATUS_FAIL;
-			terminatedFlag = 1;
+			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_DIR):(DOWN_LOCAL_ACTION_DELETE_DIR));
 			return;
 		}
 		if(action)//add
@@ -495,10 +494,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			//mustn't be zero
 			if(bc->groupId==0)
 				{
-					SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,1);
-					qDebug("post error happen!");
-					mergestatus = MERGE_STATUS_FAIL;
-					terminatedFlag = 1;
+					setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_DIR):(DOWN_LOCAL_ACTION_DELETE_DIR));
 					return;
 				}
 			//bc->bmid= getBmId();
@@ -541,9 +537,13 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		bc->bmid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID);
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
+			/*
 			qDebug("post error happen!");
+			setHandleItemInfo(bc->name,bc->link,posthp->browserid,posthp->action);
 			mergestatus = MERGE_STATUS_FAIL;
 			terminatedFlag  = 1;
+			*/
+			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_ITEM):(DOWN_LOCAL_ACTION_DELETE_ITEM));
 			return;
 		}
 		break;
@@ -551,24 +551,34 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 
 
 }
-void bmMerge::deleteIdFromDb(uint id)
+bool bmMerge::deleteIdFromFirefoxDb(uint id)
 {
+	bool ret = false;
 	QSqlQuery q("",ff_db);
 	QString s;
 	s=QString("SELECT id FROM moz_bookmarks WHERE parent=%1").arg(id);
 	uint delId=0;
-	if(q.exec(s)){					
+	if(ret = q.exec(s)){					
 		while(q.next()) { 
 			delId=q.value(0).toUInt();
-			deleteIdFromDb(delId);
+			deleteIdFromFirefoxDb(delId);
 		}
-	}	
-	s=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE id=%1)").arg(id);
-	q.exec(s);
-	s=QString("DELETE FROM  moz_bookmarks WHERE id=%1").arg(id);
-	q.exec(s);
+		s=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE id=%1)").arg(id);
+		if(ret = q.exec(s)){
+			s=QString("DELETE FROM  moz_bookmarks WHERE id=%1").arg(id);
+			ret = q.exec(s);
+		}
+	}
+	q.clear();
+	return ret ;	
 }
-
+void bmMerge::setMergeFailedStatus(QString& n,QString& f,uint i,uint a)
+{
+	//SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,1);
+	setHandleItemInfo(n,f,i,a);
+	mergestatus = MERGE_STATUS_FAIL;
+	terminatedFlag = 1;
+}
 void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,int browserType,uint local_parentId)
 {
 	QString dirPath;
@@ -594,7 +604,10 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				item.type = 1;//directory
 				item.groupId=tz::getNetBookmarkMaxGroupid(db);
 				qDebug()<<__FUNCTION__<<bc->name<<" "<<item.groupId;
-				CatItem::addCatitemToDb(db,item);
+				if(!CatItem::addCatitemToDb(db,item)){
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_DIR);
+					return;
+				}
 				foreach(bookmark_catagory bm, bc->list)
 				{
 					downloadToLocal(&bm, action, dirPath,browserType,item.groupId);
@@ -606,6 +619,7 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				dirPath = path + "\\" + bc->name;
 				if (!CreateDirectory(dirPath.utf16(), NULL))
 				{
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_DIR);
 					qDebug("Couldn't create new directory %s.", qPrintable(dirPath));
 					return;
 				}
@@ -621,7 +635,10 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				QSqlQuery q("",ff_db);			
 				//2---directory
 				s=QString("INSERT INTO moz_bookmarks(type,parent,title) VALUES(2,%1,'%2');").arg(local_parentId).arg(bc->name);
-				q.exec(s);
+				if(!q.exec(s)){
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_DIR);
+					return;
+				}
 				s=QString("select id from moz_bookmarks where title='%1' and parent=%2 and type=2 order by id desc").arg(bc->name);
 				uint ownerId=0;
 				if(q.exec(s)){					
@@ -629,6 +646,9 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 						ownerId=q.value(0).toUInt();
 						break;
 					}
+				}else{
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_DIR);
+					return;
 				}
 				foreach(bookmark_catagory bm, bc->list)
 				{
@@ -646,13 +666,17 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 		case BROWSE_TYPE_NETBOOKMARK:
 			{
 				qDebug()<<"delete category groupid "<<bc->groupId;
-				tz::deleteNetworkBookmark(db,bc->groupId);
+				if(!tz::deleteNetworkBookmark(db,bc->groupId)){
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_DIR);
+					return;
+				}
 			}
 			break;
 		case BROWSE_TYPE_IE:
 			dirPath = path + "\\" + bc->name;
 			if (!deleteDirectory(dirPath))
 			{
+				setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_DIR);
 				qDebug("Couldn't remove new directory %s error=%d.", qPrintable(dirPath),GetLastError());
 				return;
 			}
@@ -670,8 +694,11 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 						id=q.value(0).toUInt();
 						break;
 					}
+				}else{
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_DIR);
+					return;
 				}
-				deleteIdFromDb(id);
+				deleteIdFromFirefoxDb(id);
 				return;
 			}
 			break;
@@ -691,7 +718,10 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 			{
 				CatItem item(bc->link,bc->name,"",COME_FROM_MYBOOKMARK);	
 				item.parentId = local_parentId;
-				CatItem::addCatitemToDb(db,item);
+				if(!CatItem::addCatitemToDb(db,item)){
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_ITEM);
+					return;
+				}
 			}
 			break;
 		case BROWSE_TYPE_IE:
@@ -706,6 +736,7 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 
 			if (hFile == INVALID_HANDLE_VALUE)
 			{
+				setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_ITEM);
 				qDebug("Could not create file %s.", qPrintable(filePath));	// process error 
 				return;
 			}
@@ -729,24 +760,28 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				q.prepare("SELECT id FROM moz_places WHERE url=':url' ORDER BY id DESC");
 				q.bindValue(":url",bc->link);
 				//s=QString("SELECT id FROM moz_places WHERE url='")+bc->link+("' ORDER BY id DESC");
-				success=q.exec();
-				//qDebug()<<"query:"<<s<<" result:"<<success;
+						//qDebug()<<"query:"<<s<<" result:"<<success;
 				uint fk_id=0;
-				if(success){		
+				if(q.exec()){		
 					while(q.next()) { 
 						fk_id=q.value(0).toUInt();
 						break;
+					}				
+					if(fk_id){
+						//s=QString("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,%1,%2,'%3');").arg(fk_id).arg(local_parentId).arg(bc->name);
+						q.prepare("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,:type,:fk,':title');");
+						q.bindValue(":type",fk_id);
+						q.bindValue(":fk",local_parentId);
+						q.bindValue(":title",bc->name);
+						if(!q.exec()){
+							setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_ADD_ITEM);
+							return;
+						}
 					}
-				}
-				if(fk_id){
-					//s=QString("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,%1,%2,'%3');").arg(fk_id).arg(local_parentId).arg(bc->name);
-					q.prepare("INSERT INTO moz_bookmarks(type,fk,parent,title) VALUES(1,:type,:fk,':title');");
-					q.bindValue(":type",fk_id);
-					q.bindValue(":fk",local_parentId);
-					q.bindValue(":title",bc->name);
-					success=q.exec();
-					//qDebug()<<"query:"<<s<<" result:"<<success;
-				}
+				}else{
+					setMergeFailedStatus(bc->name,bc->link,browserType,action);
+					return;
+				}					
 				return;
 			}
 			break;
@@ -759,12 +794,16 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 		case BROWSE_TYPE_NETBOOKMARK:
 			{					
 				CatItem item(bc->link,bc->name,"",COME_FROM_MYBOOKMARK);	
-				CatItem::deleteCatitemFromDb(db,item,bc->bmid);
+				if(!CatItem::deleteCatitemFromDb(db,item,bc->bmid)){
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_ITEM);
+					return;
+				}
 			}
 			break;
 		case BROWSE_TYPE_IE:
 			if(!QFile::remove(path + "/" + bc->name + ".url"))
 			{
+				setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_ITEM);
 				qDebug()<<"Couldn't remove file "<<path + "/" + bc->name + ".url";
 				return;
 			}
@@ -776,11 +815,18 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 				//delete from moz_places where id=(select fk from moz_bookmarks where title='sohu');
 				//delete from moz_bookmarks where parent
 				s=QString("DELETE FROM moz_places WHERE id=(SELECT fk FROM moz_bookmarks WHERE parent=%1 AND title='%2')").arg(local_parentId).arg(bc->name);
-				bool success=q.exec(s);
-				qDebug()<<"query:"<<s<<" result:"<<success;
-				q=QString("DELETE FROM moz_bookmarks WHERE parent=%1 AND title='%2' AND type=1").arg(local_parentId).arg(bc->name);
-				success=q.exec(s);
-				qDebug()<<"query:"<<s<<" result:"<<success;
+				if(q.exec(s)){
+					//qDebug()<<"query:"<<s<<" result:"<<success;
+					q=QString("DELETE FROM moz_bookmarks WHERE parent=%1 AND title='%2' AND type=1").arg(local_parentId).arg(bc->name);
+					if(!q.exec(s)){
+						setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_ITEM);
+						return;
+					}
+					//qDebug()<<"query:"<<s<<" result:"<<success;
+				}else{
+					setMergeFailedStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_ITEM);
+					return;
+				}
 				return;
 			}
 			break;

@@ -134,9 +134,9 @@ public:
 	CatItem(const CatItem &s);
 	void getPinyinReg(const QString& str);
 	static void prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid=0);
-	static void addCatitemToDb(QSqlDatabase* db,CatItem& item);
-	static void modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
-	static void deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
+	static bool addCatitemToDb(QSqlDatabase* db,CatItem& item);
+	static bool modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
+	static bool deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index);
 	static void importNetworkBookmark(QSettings *settings,QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid);
 	CatItem& operator=( const CatItem &s ) {
 		COPY_CATITEM(s);		

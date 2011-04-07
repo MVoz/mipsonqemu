@@ -91,13 +91,13 @@ public:
 	int bmMergeAction(QList < bookmark_catagory > *localList, QList < bookmark_catagory > *lastupdateList, QList < bookmark_catagory > *serverList, QList < bookmark_catagory > *resultList, uint parentId,QString iePath,int browserType,uint local_parentId);
 	int bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > *list);
 	void handleItem(bookmark_catagory * item, QList < bookmark_catagory > *list,QString &path, int status, uint parentId,int browserType,int local_parentId,int localOrServer);
-	void deleteIdFromDb(uint id);	
+	bool deleteIdFromFirefoxDb(uint id);	
 	void productFFId(QString & randString,int length);
 	void setTerminated(uint flag){	terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
 	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,bmXml **lastUpdate,const QString filepath,uint *browserenable);		
 	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,bmXml **lastUpdate,const QString time);
-
+	void setMergeFailedStatus(QString& n,QString& f,uint i,uint a);
 signals:
 	void done(bool error);
 	void mgUpdateStatusNotify(int flag,int status);
