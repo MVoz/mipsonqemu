@@ -1796,6 +1796,30 @@ void tz::deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpat
 	q.clear();
 }
 */
+void tz::clearBmlist(QList<bookmark_catagory> *l){
+		for (int i = 0; i < l->size(); i++)
+		{
+			if((*l)[i].list.size()){
+				clearBmlist(&((*l)[i].list));				
+			}			
+		}
+		l->clear();
+}
+bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
+		if(l->size()>browserInfo[browserid].maxchild)
+			return false;
+		if(level>browserInfo[browserid].maxlev)
+			return false;
+		for (int i = 0; i < l->size(); i++)
+		{
+			if((*l)[i].list.size()){
+				if(!checkValidBmlist(&((*l)[i].list),level+1,browserid))
+					return false;
+			}			
+		}
+		return true;
+}
+
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 QString tz::getProcessExeFullpath(uint dwPID)
 {	

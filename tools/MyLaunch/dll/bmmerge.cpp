@@ -321,6 +321,8 @@ ffout:
 				}
 				*/		
 				//start merge
+#ifdef POST_DOWN_AFTER_MERGE
+#else
 				if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
 				{
 					/*
@@ -334,6 +336,7 @@ ffout:
 					//keep it
 					result_bc[i] = (lastUpdate[i]->bm_list);
 				}
+#endif
 				//qDebug()<<"#########################################";
 				//QList < bookmark_catagory > l = result_bc[browserid];
 				//dumpBcList(&l);
@@ -342,6 +345,42 @@ ffout:
 			i++;
 		}
 	}
+#ifdef POST_DOWN_AFTER_MERGE
+	
+	int doit = 0;
+REDO:	
+	i = 0;
+	if(doit){
+		//clear the result 
+		while(!browserInfo[i].name.isEmpty()){
+			tz::clearBmlist(&result_bc[i]);
+			i++;
+		}
+	}		
+
+	i = 0;
+	
+	while(!browserInfo[i].name.isEmpty()){
+		int browserid = browserInfo[i].id;
+		if( browserenable[i] ){
+			if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
+			{
+				bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0,doit);
+			}else{
+				//keep it
+				result_bc[i] = (lastUpdate[i]->bm_list);
+			}
+			//check the result
+			if(!tz::checkValidBmlist(&result_bc[i],0,browserid))
+				goto CLEAR;
+		}
+		i++;
+	}
+	if(!doit){
+		doit  = 1;
+		goto REDO;
+	}
+#endif
 
 #ifdef CONFIG_BOOKMARK_TODB
 	if(!terminatedFlag)
@@ -856,6 +895,9 @@ void bmMerge::handleItem(
 							 int browserType,
 							 int local_parentId,
 							 int localOrServer
+#ifdef POST_DOWN_AFTER_MERGE
+							,uint doit
+#endif
 							 )
 {
 	mergestatus=MERGE_STATUS_SUCCESS_WITH_MODIFY;
@@ -871,18 +913,27 @@ void bmMerge::handleItem(
 			productFFId(item->id,6);
 		}	  	 
 		qDebug()<<"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId;
-		downloadToLocal(item, ACTION_ITEM_ADD, path ,browserType,local_parentId);
+#ifdef POST_DOWN_AFTER_MERGE
+		if(doit)
+#endif
+			downloadToLocal(item, ACTION_ITEM_ADD, path ,browserType,local_parentId);
 		list->push_back(*item);
 		break;
 	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_0:		//only exist in lastupdate,do nothing
 		break;
 	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_1:		//exist in server&lastupdate,need to delete from server
 		qDebug()<<"Post to Server[delete]:name:"<<item->name;
-		postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
+#ifdef POST_DOWN_AFTER_MERGE
+		if(doit)
+#endif
+			postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_0_SERVER_0:		//only exist in local,need post to server
-		qDebug()<<"Post to Server[add]:name="<<item->name<<" parentid:"<<parentId<<" hr:"<<item->hr;		  
-		postItemToHttpServer(item, ACTION_ITEM_ADD, parentId,browserType);
+		qDebug()<<"Post to Server[add]:name="<<item->name<<" parentid:"<<parentId<<" hr:"<<item->hr;	
+#ifdef POST_DOWN_AFTER_MERGE
+		if(doit)
+#endif
+			postItemToHttpServer(item, ACTION_ITEM_ADD, parentId,browserType);
 		list->push_back(*item);
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1:		//exist in server&local,shouldn't  appear
@@ -892,7 +943,10 @@ void bmMerge::handleItem(
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_1_SERVER_0:		//exist in local&lastupdate,need delete from local
 		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<path ;
-		downloadToLocal(item, ACTION_ITEM_DELETE,path,browserType,local_parentId);
+#ifdef POST_DOWN_AFTER_MERGE
+		if(doit)
+#endif
+			downloadToLocal(item, ACTION_ITEM_DELETE,path,browserType,local_parentId);
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1:		//exist in local,lastupdate&server,do nothing
 		break;
@@ -942,6 +996,8 @@ int bmMerge::bmItemInList(bookmark_catagory * item, QList < bookmark_catagory > 
 }
 /*
 server item's parentid
+
+do---0---check 1---do it
 */
 int bmMerge::bmMergeAction(
 						 QList < bookmark_catagory > *localList, 
@@ -952,6 +1008,9 @@ int bmMerge::bmMergeAction(
 						 QString path,
 						 int browserType,
 						 uint local_parentId
+#ifdef POST_DOWN_AFTER_MERGE
+						,uint doit
+#endif
 						 )
 {
 	int status = 0;
@@ -984,7 +1043,11 @@ int bmMerge::bmMergeAction(
 		//qDebug()<<__FUNCTION__<<" status="<<status<<" name:"<<item.name;
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1&&status!=MERGE_STATUS_LOCAL_1_LAST_0_SERVER_1)
 		{
-			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL);
+			handleItem(&item, resultList,path, status, parentId,browserType,local_parentId,HANDLE_ITEM_LOCAL
+#ifdef POST_DOWN_AFTER_MERGE
+			,doit
+#endif
+			);
 		}
 		else		//exist in local,lastupdate&server,merge child
 		{
@@ -1001,6 +1064,9 @@ int bmMerge::bmMergeAction(
 				path+ "/"+item.name ,
 				browserType,
 				item.groupId
+#ifdef POST_DOWN_AFTER_MERGE
+				,doit
+#endif
 				);
 		}
 	}
@@ -1022,7 +1088,11 @@ int bmMerge::bmMergeAction(
 
 		status = BM_ITEM_MERGE_STATUS(inLocalPosition,inLastupdatePosition,1);
 		if (status != MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1)
-			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER);
+			handleItem(&item, resultList,path, status,  parentId,browserType,local_parentId,HANDLE_ITEM_SERVER
+#ifdef POST_DOWN_AFTER_MERGE
+			,doit
+#endif
+			);
 	}
 	return 1;
 }

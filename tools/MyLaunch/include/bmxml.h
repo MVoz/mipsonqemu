@@ -72,12 +72,11 @@ public:
 	}
 	bmXml();
 	~bmXml(){
-		//QDEBUG_LINE;
-		bm_list.clear();
+		//bm_list.clear();
+		tz::clearBmlist(&bm_list);
 	}
 	
 public:
-
 	// void readStream(uint flag);
 	void readStream(int browserType);
 	void readCategoryElement();

@@ -251,6 +251,8 @@ public :
 	static QString getIEBinPath();
 	static QString getFirefoxBinPath();
 	static QString getProcessExeFullpath(uint);
+	static void clearBmlist(QList<bookmark_catagory> *l);
+	static bool checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid);
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };
 
