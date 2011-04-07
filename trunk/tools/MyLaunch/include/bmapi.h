@@ -36,6 +36,13 @@ struct BMAPI_DLL_CLASSEXPORT browserinfo{
 	int id;
 };
 
+struct BMAPI_DLL_CLASSEXPORT handleItemInfo{
+	QString name;
+	QString fullpath;
+	uint browerid;
+	uint action;	
+};
+
 //BMAPI_DLL_FUNCEXPORT struct browserinfo* getbrowserInfo();
 
 #define DESKTOP_WINDOWS 0
@@ -72,6 +79,10 @@ BMAPI_DLL_FUNCEXPORT bool getBrowserEnable(uint id);
 BMAPI_DLL_FUNCEXPORT void setBrowserEnable(QSettings *s);
 BMAPI_DLL_FUNCEXPORT void setBrowserInfoOpFlag(uint id,enum BROWSERINFO_OP type);
 BMAPI_DLL_FUNCEXPORT void clearBrowserInfoOpFlag(uint id);
+
+BMAPI_DLL_FUNCEXPORT void setHandleItemInfo(QString& n,QString& f,uint i,uint a);
+BMAPI_DLL_FUNCEXPORT struct handleItemInfo* getHandleItemInfo();
+
 #ifdef CONFIG_ACTION_LIST
 #define ACTION_LIST_CATALOGBUILD 0
 #define ACTION_LIST_BOOKMARK_SYNC 1
@@ -186,7 +197,7 @@ public :
 	static unsigned int getBmParentId(QSqlDatabase *db,const int& id);
 	static unsigned int getBmidFromGroupId(QSqlDatabase *db,const int& groupid);
 	static unsigned int getBmGroupId(QSqlDatabase *db,const int& id);
-	static void deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid);
+	static bool deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid);
 	static void readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,uint groupid);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);

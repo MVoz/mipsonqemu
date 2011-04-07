@@ -225,7 +225,7 @@ void CatItem::prepareInsertQuery(QSqlQuery* q,const CatItem& item,int tableid)
 	//qDebug()<<(tableid?(DBTABLEINFO_NAME(tableid)):(DBTABLEINFO_NAME(item.comeFrom)));
 	BIND_CATITEM_QUERY(q,item);
 }
-void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
+bool CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
 {
 	QSqlQuery q("",*db);
 	/*
@@ -242,13 +242,13 @@ void CatItem::addCatitemToDb(QSqlDatabase* db,CatItem& item)
 	qDebug("queryStr=%s",qPrintable(queryStr));
 	*/
 	CatItem::prepareInsertQuery(&q,item,0);
-	q.exec();
+	bool ret = q.exec();
 	//qDebug()<<q.executedQuery();
 	q.clear();
-
+	return ret;
 }
 
-void CatItem::modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
+bool CatItem::modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
 {
 	QSqlQuery q("",*db);
 #if 1
@@ -278,16 +278,18 @@ void CatItem::modifyCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
 	.arg(item.pinyinReg).arg(item.alias1).arg(item.alias2).arg(item.shortCut).arg(item.delId).arg(index);
 	qDebug()<<queryStr;
 #endif
-	q.exec();
+	bool ret = q.exec();
 	q.clear();
+	return ret;
 }
-void CatItem::deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
+bool CatItem::deleteCatitemFromDb(QSqlDatabase *db,CatItem& item,uint index)
 {
 	QSqlQuery q("",*db);
 	q.prepare(QString("DELETE FROM %1 where id=:id").arg(DBTABLEINFO_NAME(item.comeFrom)));
 	q.bindValue("id", index);
-	q.exec();
+	bool ret = q.exec();
 	q.clear();
+	return ret;
 }
 void CatItem::importNetworkBookmark(QSettings *settings,QSqlDatabase *db,QList < bookmark_catagory > *s,int groupid)
 {

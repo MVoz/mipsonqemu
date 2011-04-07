@@ -49,13 +49,6 @@
 #define POST_HTTP_CLASS_EXPORT __declspec(dllimport)
 #endif
 
-#define POST_HTTP_ACTION_DELETE_URL 0
-#define POST_HTTP_ACTION_DELETE_DIR  1
-
-#define POST_HTTP_ACTION_ADD_URL 2
-#define POST_HTTP_ACTION_ADD_DIR 3
-
-
 class  POST_HTTP_CLASS_EXPORT bmPost:public MyThread
 {
 	Q_OBJECT;
