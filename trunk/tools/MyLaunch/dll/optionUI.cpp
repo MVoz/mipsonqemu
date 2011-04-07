@@ -1032,7 +1032,10 @@ void OptionsDlg::bmExport(const int& browserid)
 			case BROWSE_TYPE_NETBOOKMARK:
 				break;
 			case BROWSE_TYPE_IE:
-				tz::readDirectory(tz::getIePath(), &bc, 0);
+				if(!tz::readDirectory(tz::getIePath(), &bc, 0,BROWSE_TYPE_IE,1))
+					{
+						return;
+					}
 				break;
 			case BROWSE_TYPE_FIREFOX:
 				/*

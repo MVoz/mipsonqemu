@@ -25,6 +25,18 @@ struct BMAPI_DLL_CLASSEXPORT dbtableinfo{
 	unsigned char priority;//more less more priority
 };
 
+enum{
+	BROWSER_INFO_ID=0,
+	BROWSER_INFO_MAXLEV,
+	BROWSER_INFO_MAXCHILD,
+	BROWSER_INFO_TITLELEN,
+	BROWSER_INFO_DIRLEN,
+	BROWSER_INFO_URLLEN,
+	BROWSER_INFO_TAGLEN,
+	BROWSER_INFO_DESLEN,
+	BROWSER_INFO_SPEICALCHAR
+};
+
 struct BMAPI_DLL_CLASSEXPORT browserinfo{
 	QString name;
 	QString fullpath;
@@ -33,8 +45,18 @@ struct BMAPI_DLL_CLASSEXPORT browserinfo{
 	bool lastupdate; //import lastupdate success?
 	bool fromserver;//import fromserver success?
 	bool local;//import local success
-	int id;
+	uint id;
+	uint maxlev;
+	uint maxchild;
+	uint titlelen;
+	uint dirlen;
+	uint urllen;
+	uint taglen;
+	uint deslen;
+	uint speicalchar;
 };
+
+
 
 struct BMAPI_DLL_CLASSEXPORT handleItemInfo{
 	QString name;
@@ -192,13 +214,13 @@ public :
 	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
 	static int testFirefoxDbLock(QSqlDatabase* db);
 	static QString getBrowserName(uint id);
-	static void readDirectory(QString directory,QList<bookmark_catagory>* list,int level/*,uint flag*/);
+	static bool readDirectory(QString directory,QList<bookmark_catagory>* list,uint level,uint browserid,uint flag);
 	static unsigned int getNetBookmarkMaxGroupid(QSqlDatabase *db);
 	static unsigned int getBmParentId(QSqlDatabase *db,const int& id);
 	static unsigned int getBmidFromGroupId(QSqlDatabase *db,const int& groupid);
 	static unsigned int getBmGroupId(QSqlDatabase *db,const int& id);
 	static bool deleteNetworkBookmark(QSqlDatabase *db,unsigned int groupid);
-	static void readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,int level,uint groupid);
+	static bool readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint level,uint groupid,uint browerid,uint flag);
 	//   static void productFirefox2BM(int level,QList < bookmark_catagory > *list, QTextStream* os);
 	static void addItemToSortlist(const struct bookmark_catagory &bc,QList < bookmark_catagory > *list);
 	static int getFirefoxVersion();
