@@ -303,22 +303,22 @@ void OptionsDlg::loading(const QString & name)
 		if(q.exec(s))
 		{
 			while(q.next()) {
-				qDebug()<<q.value(Q_RECORD_INDEX(q,"shortName")).toString()<<":"<<q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
+				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
 				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
 				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"args")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(Q_VALUE_STRING_HTML(q,"shortName")).arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
 				jsStr.append("</td>");
-				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\")+"</td>");
-				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\")+"</td>");
-				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"args")).toString()+"</td>");
+				jsStr.append("<td >"+Q_VALUE_STRING(q,"shortName").replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+Q_VALUE_STRING(q,"fullPath").replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+Q_VALUE_STRING(q,"args")+"</td>");
 
 				//action
 				jsStr.append(QString("<td > <a class=\"thickbox\" "));
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"args")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML(q,"shortName")).arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
 				
 				jsStr.append(QString("href=\"qrc:editcmd\">edit</a> "));
 				jsStr.append(QString("<a class=\"thickbox\"")); 
-				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
+				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
 					
 				jsStr.append(QString("href=\"qrc:deletecmd\">del</a>"));
 				jsStr.append(QString("</td >"));
@@ -946,13 +946,13 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 		while(q.next()) {
 			js.append("<li>");
 			js.append("<h3>");
-			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()));
+			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"shortName")));
 			js.append("</h3>");
 			js.append("<p class=\\\"message\\\">");
-			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()));
+			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"fullPath")));
 			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
-			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
-			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
+			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
+			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_UINT(q,"id")));
 			js.append("</p>");
 			js.append("</li>");
 		}	
@@ -972,9 +972,9 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 	{
 		while(q.next()) {
 			//<li><a class=" " value="人才网站" onclick="getbmfromid('8003','1','人才网站',0);" href="javascript:;">人才网站</a></li>
-			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\" id=\"menu_li_%7\"> %8</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString())
-			.arg(func).arg(q.value(Q_RECORD_INDEX(q,"groupid")).toUInt()).arg(browserid).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(0).arg(q.value(Q_RECORD_INDEX(q,"groupid")).toUInt()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()));
-			netbookmarkmenu(browserid,q.value(Q_RECORD_INDEX(q,"groupid")).toUInt(),func,jsresult);
+			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\" id=\"menu_li_%7\"> %8</a>").arg(Q_VALUE_STRING(q,"shortName"))
+			.arg(func).arg(Q_VALUE_UINT(q,"groupid")).arg(browserid).arg(Q_VALUE_STRING(q,"shortName")).arg(0).arg(Q_VALUE_UINT(q,"groupid")).arg(Q_VALUE_STRING(q,"shortName")));
+			netbookmarkmenu(browserid,Q_VALUE_UINT(q,"groupid"),func,jsresult);
 			jsresult.append(QString("</li>"));
 		}
 

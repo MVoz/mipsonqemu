@@ -941,27 +941,27 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 		// os<<"##################################################\n";
 
 		while(q.next()) { 
-			if(q.value(Q_RECORD_INDEX(q,"url")).toString().startsWith("place:")/*&&query.value(titleIndex).toString().isEmpty()*/)
+			if(Q_VALUE_STRING(q,"url").startsWith("place:")/*&&query.value(titleIndex).toString().isEmpty()*/)
 				continue;
 			/*
 			for(int j=0;j<rec.count();j++){
 			(os)<<"|"<<query.value(j).toString();									
 			}
 			*/
-			if(q.value(Q_RECORD_INDEX(q,"type")).toInt()!=2){
-				if(!q.value(Q_RECORD_INDEX(q,"title")).toString().isNull())
+			if(Q_VALUE_UINT(q,"type")!=2){
+				if(!Q_VALUE_STRING(q,"title").isNull())
 				{
 					//os<<"<item itemId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
 #ifdef CONFIG_LOG_ENABLE
-					os<<"<item  parentId=\""<<q.value(Q_RECORD_INDEX(q,"parent")).toString()<<"\">"<<"\n";
-					os<<"<name><![CDATA["<<q.value(Q_RECORD_INDEX(q,"title")).toString()<<"]]></name>"<<"\n";
-					os<<"<link><![CDATA["<<q.value(Q_RECORD_INDEX(q,"url")).toString()<<"]]></link>"<<"\n";
+					os<<"<item  parentId=\""<<Q_VALUE_STRING(q,"parent")<<"\">"<<"\n";
+					os<<"<name><![CDATA["<<Q_VALUE_STRING(q,"title")<<"]]></name>"<<"\n";
+					os<<"<link><![CDATA["<<Q_VALUE_STRING(q,"url")<<"]]></link>"<<"\n";
 					os<<"</item>"<<"\n";
 #endif
 					struct bookmark_catagory ff_bc;
-					ff_bc.name =q.value(Q_RECORD_INDEX(q,"title")).toString();									   
+					ff_bc.name =Q_VALUE_STRING(q,"title");									   
 					ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());									   
-					ff_bc.link =q.value(Q_RECORD_INDEX(q,"url")).toString();
+					ff_bc.link =Q_VALUE_STRING(q,"url");
 					handleUrlString(ff_bc.link);
 					QUrl url(ff_bc.link);
 					if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
@@ -969,33 +969,33 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						goto out;
 					}
 					ff_bc.link_hash=qhashEx(ff_bc.link,ff_bc.link.length());				
-					ff_bc.parentId=q.value(Q_RECORD_INDEX(q,"parent")).toString().toUInt();
+					ff_bc.parentId=Q_VALUE_UINT(q,"parent");
 					ff_bc.flag = BOOKMARK_ITEM_FLAG;
 					//  list->push_back(ff_bc);
 					tz::addItemToSortlist(ff_bc,list);
 				}
 			}
 			//(os)<<"\n";
-			if(q.value(Q_RECORD_INDEX(q,"type")).toInt()==2)
+			if(Q_VALUE_UINT(q,"type")==2)
 			{
 				//abbreviate the root direcory
-				if(q.value(Q_RECORD_INDEX(q,"id")).toString().toUInt()!=FIREFORX3_ROOT_ID)
+				if(Q_VALUE_UINT(q,"id")!=FIREFORX3_ROOT_ID)
 				{
-					if(!q.value(Q_RECORD_INDEX(q,"title")).toString().isEmpty())
+					if(!Q_VALUE_STRING(q,"title").isEmpty())
 					{
 						struct bookmark_catagory ff_bc;
-						ff_bc.name =q.value(Q_RECORD_INDEX(q,"title")).toString();	
+						ff_bc.name =Q_VALUE_STRING(q,"title");	
 						ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());		
-						ff_bc.groupId=q.value(Q_RECORD_INDEX(q,"id")).toString().toUInt();
-						ff_bc.parentId=q.value(Q_RECORD_INDEX(q,"parent")).toString().toUInt();
+						ff_bc.groupId=Q_VALUE_UINT(q,"id");
+						ff_bc.parentId=Q_VALUE_UINT(q,"parent");
 						ff_bc.flag = BOOKMARK_CATAGORY_FLAG;
 #ifdef CONFIG_LOG_ENABLE
-						os<<"<category groupId=\""<<q.value(Q_RECORD_INDEX(q,"id")).toString()<<"\" parentId=\""<<q.value(Q_RECORD_INDEX(q,"parent")).toString()<<"\">"<<"\n";
-						os<<"<name><![CDATA["<<q.value(Q_RECORD_INDEX(q,"title")).toString()<<"]]></name>"<<"\n";
-						os<<"<link><![CDATA["<<q.value(Q_RECORD_INDEX(q,"url")).toString()<<"]]></link>"<<"\n";
+						os<<"<category groupId=\""<<Q_VALUE_STRING(q,"id")<<"\" parentId=\""<<Q_VALUE_STRING(q,"parent")<<"\">"<<"\n";
+						os<<"<name><![CDATA["<<Q_VALUE_STRING(q,"title")<<"]]></name>"<<"\n";
+						os<<"<link><![CDATA["<<Q_VALUE_STRING(q,"url")<<"]]></link>"<<"\n";
 #endif
 						ff_bc.link_hash=0;
-						outChildItem(q.value(Q_RECORD_INDEX(q,"id")).toInt(),db,os,&(ff_bc.list),excludeid);
+						outChildItem(Q_VALUE_UINT(q,"id"),db,os,&(ff_bc.list),excludeid);
 #ifdef CONFIG_LOG_ENABLE
 						os<<"</category>"<<"\n";
 #endif
@@ -1003,7 +1003,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						tz::addItemToSortlist(ff_bc,list);
 					}
 				}else{
-					outChildItem(q.value(Q_RECORD_INDEX(q,"id")).toInt(),db,os,list,excludeid);
+					outChildItem(Q_VALUE_UINT(q,"id"),db,os,list,excludeid);
 				}
 
 
