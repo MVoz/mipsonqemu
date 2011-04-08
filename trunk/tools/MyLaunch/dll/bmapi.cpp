@@ -1820,12 +1820,14 @@ bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid)
 			}			
 		}
 #ifndef QT_NO_DEBUG
-		qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+		if(!level)
+			qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
 #endif
 		return true;
 bad:
 #ifndef QT_NO_DEBUG
-		qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+		if(!level)
+			qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
 #endif
 		return false;
 }
