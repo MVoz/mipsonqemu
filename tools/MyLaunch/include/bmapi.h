@@ -211,7 +211,7 @@ public :
 	static struct browserinfo* getbrowserInfo();
 	static char* getstatusstring(int i);
 	static void clearbmgarbarge(QSqlQuery* q,uint delId);
-	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype);
+	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int comefrom);
 	static int testFirefoxDbLock(QSqlDatabase* db);
 	static QString getBrowserName(uint id);
 	static bool readDirectory(QString directory,QList<bookmark_catagory>* list,uint level,uint browserid,uint flag);

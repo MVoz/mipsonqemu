@@ -132,9 +132,9 @@ public:
 	void clearObject();
 
 public:
-	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId);
+	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int comefrom,uint delId);
 	static void dumpBcList(QList<bookmark_catagory>* s);
-	static void keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId);;
+	static void keeplaunchdb(QSqlQuery* q,int comefrom,uint delId);;
 };
 
 #endif

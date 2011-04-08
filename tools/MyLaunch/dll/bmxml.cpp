@@ -936,38 +936,32 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 
 	QString queryStr=QString("select * from moz_bookmarks bookmarks left join moz_places places on bookmarks.fk=places.id where bookmarks.position>=0 and bookmarks.parent=%1 and bookmarks.id not in (%2);").arg(id).arg(excludeid);
 	qDebug("%s",qPrintable(queryStr));
-	QSqlQuery   query(queryStr, *db);
-	if(query.exec()){
+	QSqlQuery   q(queryStr, *db);
+	if(q.exec()){
 		// os<<"##################################################\n";
 
-		QSqlRecord rec = query.record();
-		int idIndex = rec.indexOf("id"); // index of the field "name"
-		int typeIndex=rec.indexOf("type");
-		int urlIndex=rec.indexOf("url");
-		int titleIndex=rec.indexOf("title");
-		int parentIndex=rec.indexOf("parent");
-		while(query.next()) { 
-			if(query.value(urlIndex).toString().startsWith("place:")/*&&query.value(titleIndex).toString().isEmpty()*/)
+		while(q.next()) { 
+			if(q.value(Q_RECORD_INDEX(q,"url")).toString().startsWith("place:")/*&&query.value(titleIndex).toString().isEmpty()*/)
 				continue;
 			/*
 			for(int j=0;j<rec.count();j++){
 			(os)<<"|"<<query.value(j).toString();									
 			}
 			*/
-			if(query.value(typeIndex).toInt()!=2){
-				if(!query.value(titleIndex).toString().isNull())
+			if(q.value(Q_RECORD_INDEX(q,"type")).toInt()!=2){
+				if(!q.value(Q_RECORD_INDEX(q,"title")).toString().isNull())
 				{
 					//os<<"<item itemId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
 #ifdef CONFIG_LOG_ENABLE
-					os<<"<item  parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
-					os<<"<name><![CDATA["<<query.value(titleIndex).toString()<<"]]></name>"<<"\n";
-					os<<"<link><![CDATA["<<query.value(urlIndex).toString()<<"]]></link>"<<"\n";
+					os<<"<item  parentId=\""<<q.value(Q_RECORD_INDEX(q,"parent")).toString()<<"\">"<<"\n";
+					os<<"<name><![CDATA["<<q.value(Q_RECORD_INDEX(q,"title")).toString()<<"]]></name>"<<"\n";
+					os<<"<link><![CDATA["<<q.value(Q_RECORD_INDEX(q,"url")).toString()<<"]]></link>"<<"\n";
 					os<<"</item>"<<"\n";
 #endif
 					struct bookmark_catagory ff_bc;
-					ff_bc.name =query.value(titleIndex).toString();									   
+					ff_bc.name =q.value(Q_RECORD_INDEX(q,"title")).toString();									   
 					ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());									   
-					ff_bc.link =query.value(urlIndex).toString();
+					ff_bc.link =q.value(Q_RECORD_INDEX(q,"url")).toString();
 					handleUrlString(ff_bc.link);
 					QUrl url(ff_bc.link);
 					if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
@@ -975,33 +969,33 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						goto out;
 					}
 					ff_bc.link_hash=qhashEx(ff_bc.link,ff_bc.link.length());				
-					ff_bc.parentId=query.value(parentIndex).toString().toUInt();
+					ff_bc.parentId=q.value(Q_RECORD_INDEX(q,"parent")).toString().toUInt();
 					ff_bc.flag = BOOKMARK_ITEM_FLAG;
 					//  list->push_back(ff_bc);
 					tz::addItemToSortlist(ff_bc,list);
 				}
 			}
 			//(os)<<"\n";
-			if(query.value(typeIndex).toInt()==2)
+			if(q.value(Q_RECORD_INDEX(q,"type")).toInt()==2)
 			{
 				//abbreviate the root direcory
-				if(query.value(idIndex).toString().toUInt()!=FIREFORX3_ROOT_ID)
+				if(q.value(Q_RECORD_INDEX(q,"id")).toString().toUInt()!=FIREFORX3_ROOT_ID)
 				{
-					if(!query.value(titleIndex).toString().isEmpty())
+					if(!q.value(Q_RECORD_INDEX(q,"title")).toString().isEmpty())
 					{
 						struct bookmark_catagory ff_bc;
-						ff_bc.name =query.value(titleIndex).toString();	
+						ff_bc.name =q.value(Q_RECORD_INDEX(q,"title")).toString();	
 						ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());		
-						ff_bc.groupId=query.value(idIndex).toString().toUInt();
-						ff_bc.parentId=query.value(parentIndex).toString().toUInt();
+						ff_bc.groupId=q.value(Q_RECORD_INDEX(q,"id")).toString().toUInt();
+						ff_bc.parentId=q.value(Q_RECORD_INDEX(q,"parent")).toString().toUInt();
 						ff_bc.flag = BOOKMARK_CATAGORY_FLAG;
 #ifdef CONFIG_LOG_ENABLE
-						os<<"<category groupId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
-						os<<"<name><![CDATA["<<query.value(titleIndex).toString()<<"]]></name>"<<"\n";
-						os<<"<link><![CDATA["<<query.value(urlIndex).toString()<<"]]></link>"<<"\n";
+						os<<"<category groupId=\""<<q.value(Q_RECORD_INDEX(q,"id")).toString()<<"\" parentId=\""<<q.value(Q_RECORD_INDEX(q,"parent")).toString()<<"\">"<<"\n";
+						os<<"<name><![CDATA["<<q.value(Q_RECORD_INDEX(q,"title")).toString()<<"]]></name>"<<"\n";
+						os<<"<link><![CDATA["<<q.value(Q_RECORD_INDEX(q,"url")).toString()<<"]]></link>"<<"\n";
 #endif
 						ff_bc.link_hash=0;
-						outChildItem(query.value(idIndex).toInt(),db,os,&(ff_bc.list),excludeid);
+						outChildItem(q.value(Q_RECORD_INDEX(q,"id")).toInt(),db,os,&(ff_bc.list),excludeid);
 #ifdef CONFIG_LOG_ENABLE
 						os<<"</category>"<<"\n";
 #endif
@@ -1009,7 +1003,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						tz::addItemToSortlist(ff_bc,list);
 					}
 				}else{
-					outChildItem(query.value(idIndex).toInt(),db,os,list,excludeid);
+					outChildItem(q.value(Q_RECORD_INDEX(q,"id")).toInt(),db,os,list,excludeid);
 				}
 
 
@@ -1033,12 +1027,12 @@ QString bmXml::productExcludeIdStr(QSqlDatabase *db)
 
 		QString queryStr=QString("select folder_id from moz_bookmarks_roots where root_name='%1';").arg(excludeStr.at(i));
 		qDebug("%s",qPrintable(queryStr));
-		QSqlQuery   query(queryStr, *db);
-		if(query.exec()){					
-			while(query.next()) { 
+		QSqlQuery   q(queryStr, *db);
+		if(q.exec()){					
+			while(q.next()) { 
 				if(!ff_excludeId.isEmpty()) 
 					ff_excludeId.append(",");
-				ff_excludeId.append(query.value(0).toString());
+				ff_excludeId.append(q.value(0).toString());
 			}
 		}
 		else{
@@ -1056,12 +1050,12 @@ QString bmXml::productExcludeIdStr(QSqlDatabase *db)
 
 		QString queryStr=QString("select id from moz_anno_attributes where name='%1';").arg(exclude_moz_anno_attributes_id_str.at(i));
 		qDebug("%s",qPrintable(queryStr));
-		QSqlQuery   query(queryStr, *db);
-		if(query.exec()){					
-			while(query.next()) { 
+		QSqlQuery   q(queryStr, *db);
+		if(q.exec()){					
+			while(q.next()) { 
 				if(!exclude_moz_anno_attributes_id.isEmpty()) 
 					exclude_moz_anno_attributes_id.append(",");
-				exclude_moz_anno_attributes_id.append(query.value(0).toString());
+				exclude_moz_anno_attributes_id.append(q.value(0).toString());
 			}
 		}
 	}
@@ -1069,12 +1063,12 @@ QString bmXml::productExcludeIdStr(QSqlDatabase *db)
 
 	QString queryStr=QString("select distinct item_id from moz_items_annos where anno_attribute_id in (%1);").arg(exclude_moz_anno_attributes_id);
 	qDebug("%s",qPrintable(queryStr));
-	QSqlQuery   query(queryStr, *db);
-	if(query.exec()){				
-		while(query.next()) { 
+	QSqlQuery   q(queryStr, *db);
+	if(q.exec()){				
+		while(q.next()) { 
 			if(!ff_excludeId.isEmpty()) 
 				ff_excludeId.append(",");
-			ff_excludeId.append(query.value(0).toString());
+			ff_excludeId.append(q.value(0).toString());
 		}
 	}
 	qDebug("ff_excludeId=%s",qPrintable(ff_excludeId));

@@ -1257,26 +1257,26 @@ uint mergeThread::isExistInDb(QSqlQuery* q,const QString& name,const QString& fu
 }
 
 #endif 
-void bmMerge::keeplaunchdb(QSqlQuery* q,int frombrowsertype,uint delId)
+void bmMerge::keeplaunchdb(QSqlQuery* q,int comefrom,uint delId)
 {
-	q->prepare(QString("UPDATE %1 SET delId=:delId WHERE comefrom=:comefrom").arg(DBTABLEINFO_NAME(frombrowsertype)));
+	q->prepare(QString("UPDATE %1 SET delId=:delId WHERE comefrom=:comefrom").arg(DBTABLEINFO_NAME(comefrom)));
 	q->bindValue(":delId", delId);
-	q->bindValue(":comefrom", frombrowsertype);
+	q->bindValue(":comefrom", comefrom);
 }
 
-void bmMerge::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int frombrowsertype,uint delId)
+void bmMerge::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int comefrom,uint delId)
 {
 
 	foreach(bookmark_catagory item, *bc)
 	{
 		if (item.flag == BOOKMARK_CATAGORY_FLAG)
 		{
-			bmintolaunchdb(q,&(item.list),frombrowsertype,delId);
+			bmintolaunchdb(q,&(item.list),comefrom,delId);
 
 		}else{
 			QString queryStr="";
 			uint id=0;
-			if(id=tz::isExistInDb(q,item.name,item.link,frombrowsertype)){
+			if(id=tz::isExistInDb(q,item.name,item.link,comefrom)){
 				//queryStr=QString("update  %1 set delId=%2 where id=%3").arg(DB_TABLE_NAME).arg(delId).arg(id);
 
 				q->prepare(QString("UPDATE %1 SET delId=:delId WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)));
@@ -1287,7 +1287,7 @@ void bmMerge::bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int fr
 			}				
 			else
 			{
-				CatItem citem(item.link,item.name,frombrowsertype);
+				CatItem citem(item.link,item.name,comefrom);
 				citem.delId = delId;
 #if 1
 				CatItem::prepareInsertQuery(q,citem);
