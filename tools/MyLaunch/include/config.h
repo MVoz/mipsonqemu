@@ -508,9 +508,17 @@ enum TEST_NET_RESULT{
 #define MONITER_TIME_INTERVAL (10)
 
 
-
-#ifdef TOUCH_ANY_DEBUG
-#endif
+enum{
+	DEBUG_LEVEL_NORMAL=0,
+	DEBUG_LEVEL_ACTION,
+	DEBUG_LEVEL_CATABUILDER,
+	DEBUG_LEVEL_BMSYNC,
+	DEBUG_LEVEL_DIGGXML,
+	DEBUG_LEVEL_POSTHTTP,
+	DEBUG_LEVEL_DOWNLOCAL,
+	DEBUG_LEVEL_TESTACCOUNT	
+};
+#define touchAnyDebug(level) qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"
 
 
 #endif
