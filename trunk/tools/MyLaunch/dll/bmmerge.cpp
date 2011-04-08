@@ -525,7 +525,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
 			qDebug("post error happen!");
-			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_DIR):(DOWN_LOCAL_ACTION_DELETE_DIR));
+			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR));
 			return;
 		}
 		if(action)//add
@@ -536,7 +536,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			//mustn't be zero
 			if(bc->groupId==0)
 				{
-					setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_DIR):(DOWN_LOCAL_ACTION_DELETE_DIR));
+					setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR));
 					return;
 				}
 			//bc->bmid= getBmId();
@@ -561,12 +561,12 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			postString.append("&subject=");
 			postString.append(QString(QUrl::toPercentEncoding(bc->name)));
 			postString.append("&addsubmit=true&category=0&source=client");
-			posthp->action = POST_HTTP_ACTION_ADD_URL;
+			posthp->action = POST_HTTP_ACTION_ADD_ITEM;
 		}else
 		{
 			//delete
 			postString = QString("deletesubmit=true&source=client");
-			posthp->action = POST_HTTP_ACTION_DELETE_URL;
+			posthp->action = POST_HTTP_ACTION_DELETE_ITEM;
 		}
 
 		posthp->bmid =  bc->bmid;
@@ -585,7 +585,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			mergestatus = MERGE_STATUS_FAIL;
 			terminatedFlag  = 1;
 			*/
-			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(DOWN_LOCAL_ACTION_ADD_ITEM):(DOWN_LOCAL_ACTION_DELETE_ITEM));
+			setMergeFailedStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_ITEM):(POST_HTTP_ACTION_ADD_DIR));
 			return;
 		}
 		break;

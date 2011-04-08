@@ -339,10 +339,10 @@ ffout:
 		if( browserenable[i])
 		{
 			if(browserInfo[i].local)
-				bmMerge::bmintolaunchdb(&q,&current_bc[browserid],browserid+COME_FROM_BROWSER_START,delId);
+				bmMerge::bmintolaunchdb(&q,&current_bc[browserid],BROWSER_ID_TO_COMEFROM(browserid),delId);
 			else{
 				//20110207 need let as it is
-				bmMerge::keeplaunchdb(&q,browserid+COME_FROM_BROWSER_START,delId);
+				bmMerge::keeplaunchdb(&q,BROWSER_ID_TO_COMEFROM(browserid),delId);
 			}
 		}
 		i++;

@@ -725,7 +725,7 @@ void MyWidget::increaseUsage(CatItem& item,const QString& alias)
 void MyWidget::launchBrowserObject(CatItem& res)
 {
 	QString bin;
-	getBrowserFullpath(res.comeFrom-COME_FROM_BROWSER_START,bin);	
+	getBrowserFullpath(COMEFROM_TO_BROWSER_ID(res.comeFrom),bin);	
 	if(bin.isEmpty())
 		bin = defBrowser;
 	qDebug()<<bin;
@@ -1371,7 +1371,7 @@ QIcon MyWidget::getIcon(CatItem * item)
 				QImageReader imgread(item->icon);			
 				if(imgread.format().isEmpty()){
 						QString browserfullpath("");
-						getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
+						getBrowserFullpath(COMEFROM_TO_BROWSER_ID(item->comeFrom),browserfullpath);
 						return platform->icon(QDir::toNativeSeparators(browserfullpath));
 				}else{
 						return platform->icon(QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath()).append("\\").append(item->icon)));
@@ -1380,7 +1380,7 @@ QIcon MyWidget::getIcon(CatItem * item)
 		}else if(IS_FROM_BROWSER(item->comeFrom)/*&&QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()))*/){
 			//return QIcon(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::getBrowserName(item->comeFrom-COME_FROM_BROWSER_START).toLower()));
 			QString browserfullpath("");
-			getBrowserFullpath(item->comeFrom-COME_FROM_BROWSER_START,browserfullpath);
+			getBrowserFullpath(COMEFROM_TO_BROWSER_ID(item->comeFrom),browserfullpath);
 			qDebug()<<browserfullpath;
 			return platform->icon(QDir::toNativeSeparators(browserfullpath));
 		}
