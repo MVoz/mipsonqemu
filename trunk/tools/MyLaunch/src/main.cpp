@@ -2512,7 +2512,7 @@ void MyWidget::monitorTimerTimeout()
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
 	if(!closeflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
-		touchAnyDebug(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
 				_buildCatalog((CATBUILDMODE)item.id.mode,0);

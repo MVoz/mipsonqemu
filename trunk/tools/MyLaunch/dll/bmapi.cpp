@@ -1821,13 +1821,13 @@ bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid)
 		}
 #ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			touchAnyDebug(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
+			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return true;
 bad:
 #ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			touchAnyDebug(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
+			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return false;
 }
