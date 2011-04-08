@@ -371,7 +371,7 @@ REDO:
 				result_bc[i] = (lastUpdate[i]->bm_list);
 			}
 			//check the result
-			if(!tz::checkValidBmlist(&result_bc[i],0,browserid))
+			if(!doit&&!tz::checkValidBmlist(&result_bc[i],0,browserid))
 				goto CLEAR;
 		}
 		i++;
