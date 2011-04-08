@@ -969,10 +969,10 @@ void tz::_clearShortcut(QSqlDatabase *db,int type)
 		if(q.exec()){
 			QSqlQuery qq("", *db);
 			while(q.next()){
-				if(!tz::isExistInDb(&qq,q.value(Q_RECORD_INDEX(q,"shortName")).toString(),q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),i))
+				if(!tz::isExistInDb(&qq,Q_VALUE_STRING(q,"shortName"),Q_VALUE_STRING(q,"fullPath"),i))
 				{
 					qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_SHORTCUT)));
-					qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+					qq.bindValue(":id",Q_VALUE_UINT(q,"id"));
 					if(qq.exec())
 						qq.clear();					
 				}
@@ -997,7 +997,8 @@ uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,in
 		if(q->next())
 		{
 			//id=q->value(q->record().indexOf("id")).toUInt();
-			id=q->value(Q_PTR_RECORD_INDEX(q,"id")).toUInt();
+			//id=q->value(Q_PTR_RECORD_INDEX(q,"id")).toUInt();
+			id=Q_PTR_VALUE_UINT(q,"id");
 		}
 		q->clear();
 
@@ -1086,7 +1087,7 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 			QString  s=QString("SELECT COUNT(*) as total FROM %1 WHERE  comeFrom=%2 AND  parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 			if(q.exec(s)){
 				if(q.next()) {
-					if(q.value(Q_RECORD_INDEX(q,"total")).toUInt()>browserInfo[browserid].maxchild)
+					if(Q_VALUE_UINT(q,"total")>browserInfo[browserid].maxchild)
 						return false;
 				}
 			}else
@@ -1099,17 +1100,17 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 		{
 			while(q.next()) {
 				struct bookmark_catagory bc;
-				bc.name = q.value(Q_RECORD_INDEX(q,"shortName")).toString();
+				bc.name =Q_VALUE_STRING(q,"shortName");
 				// dir_bc.name.trimmed();
 				bc.name_hash=qhashEx(bc.name,bc.name.length());
 				bc.link.clear();
 				bc.link_hash=0;
 				bc.flag = BOOKMARK_CATAGORY_FLAG;
 				bc.level = level;
-				bc.bmid = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
-				bc.groupId= q.value(Q_RECORD_INDEX(q,"groupid")).toUInt();
-				bc.parentId= q.value(Q_RECORD_INDEX(q,"parentid")).toUInt();
-				readMyBookmark(db,&(bc.list), level + 1,q.value(Q_RECORD_INDEX(q,"groupid")).toUInt(),browserid,flag);
+				bc.bmid = Q_VALUE_UINT(q,"id");
+				bc.groupId= Q_VALUE_UINT(q,"groupid");
+				bc.parentId= Q_VALUE_UINT(q,"parentid");
+				readMyBookmark(db,&(bc.list), level + 1,Q_VALUE_UINT(q,"groupid"),browserid,flag);
 				addItemToSortlist(bc,list);
 			}		
 		}else
@@ -1121,10 +1122,10 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 		{
 			while(q.next()) {
 				struct bookmark_catagory bc;
-				bc.name = q.value(Q_RECORD_INDEX(q,"shortName")).toString();
+				bc.name =Q_VALUE_STRING(q,"shortName");
 				bc.name.trimmed();
 				bc.name_hash=qhashEx(bc.name,bc.name.length());
-				bc.link = q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
+				bc.link = Q_VALUE_STRING(q,"fullPath");
 				if( bc.link.isEmpty()) continue;
 				QUrl url(bc.link);
 				if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
@@ -1135,9 +1136,9 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 				bc.link_hash=qhashEx(bc.link,bc.link.length());
 				bc.flag = BOOKMARK_ITEM_FLAG;
 				bc.level = level;	
-				bc.bmid = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
-				bc.groupId= q.value(Q_RECORD_INDEX(q,"groupid")).toUInt();
-				bc.parentId= q.value(Q_RECORD_INDEX(q,"parentid")).toUInt();
+				bc.bmid = Q_VALUE_UINT(q,"id");
+				bc.groupId= Q_VALUE_UINT(q,"groupid");
+				bc.parentId= Q_VALUE_UINT(q,"parentid");
 				addItemToSortlist(bc,list);
 			}		
 		}else

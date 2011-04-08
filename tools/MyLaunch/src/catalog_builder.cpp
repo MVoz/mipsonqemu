@@ -456,12 +456,12 @@ void CatBuilder::removeGarbageFromLearnProcessTable(uint clean)
 					if(q.exec()){
 						QSqlQuery qq("", *db);
 						while(q.next()){
-							if(!QFile::exists(q.value(Q_RECORD_INDEX(q,"fullPath")).toString())){
-								qDebug()<<__FUNCTION__<<__LINE__<<" collect the garbage:"<<(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+							if(!QFile::exists(Q_VALUE_STRING(q,"fullPath"))){
+								qDebug()<<__FUNCTION__<<__LINE__<<" collect the garbage:"<<(Q_VALUE_STRING(q,"fullPath"));
 								//delete related in shortcut
 								//tz::deleteRelatedFromShortCut(db,q.value(Q_RECORD_INDEX(q,"shortName")).toString(),q.value(Q_RECORD_INDEX(q,"fullPath")).toString(),COME_FROM_LEARNPROCESS);
 								qq.prepare(QString("DELETE FROM %1 WHERE id=:id").arg(DBTABLEINFO_NAME(COME_FROM_LEARNPROCESS)));
-								qq.bindValue(":id",q.value(Q_RECORD_INDEX(q,"id")).toUInt());
+								qq.bindValue(":id",Q_VALUE_UINT(q,"id"));
 								if(qq.exec())
 									qq.clear();			
 							}				
@@ -554,11 +554,11 @@ void CatBuilder::buildCatelog_define(uint delId)
 				if(q.exec("SELECT * FROM defines")){
 					while(q.next()) { 
 						//uint comeFrom=q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt();
-						QString fullpath = main->platform->expandEnvironmentVars(q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
+						QString fullpath = main->platform->expandEnvironmentVars(Q_VALUE_STRING(q,"fullPath"));
 						CatItem item(
 							fullpath,
-							q.value(Q_RECORD_INDEX(q,"shortName")).toString(),
-							q.value(Q_RECORD_INDEX(q,"args")).toString(),
+							Q_VALUE_STRING(q,"shortName"),
+							Q_VALUE_STRING(q,"args"),
 							COME_FROM_PREDEFINE											
 							);									
 						cat->addItem(item,COME_FROM_PREDEFINE,delId);

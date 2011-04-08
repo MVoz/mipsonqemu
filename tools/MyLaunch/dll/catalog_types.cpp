@@ -254,17 +254,17 @@ void Catalog::getHistory(QList < CatItem *> &out)
 	if(q.exec(s)){
 		while(q.next()){
 			CatItem* item=&searchResults[i++];
-			item->idInTable = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
-			item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
-			item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
-			item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
-			item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
-			item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
-			item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
-			item->shortCut=(unsigned char )(q.value(Q_RECORD_INDEX(q,"shortCut")).toUInt());
-			item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
-			item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
-			item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
+			item->idInTable = Q_VALUE_UINT(q,"id");
+			item->fullPath=Q_VALUE_STRING(q,"fullPath");
+			item->shortName=Q_VALUE_STRING(q,"shortName");
+			item->lowName=Q_VALUE_STRING(q,"lowName");								
+			item->usage=Q_VALUE_UINT(q,"usage");
+			item->isHasPinyin=(unsigned char )(Q_VALUE_UINT(q,"isHasPinyin"));
+			item->comeFrom=(unsigned char )(Q_VALUE_UINT(q,"comeFrom"));
+			item->shortCut=(unsigned char )(Q_VALUE_UINT(q,"shortCut"));
+			item->icon=Q_VALUE_STRING(q,"icon");
+			item->alias2=Q_VALUE_STRING(q,"alias2");
+			item->args=Q_VALUE_STRING(q,"args");
 			out.push_back(item);
 		}
 		q.clear();
@@ -402,8 +402,8 @@ RETRY:
 		//qDebug()<<searchTxt<<"  "<<s;
 		if(q.exec(s)){
 			while(q.next()&&(numresults>i)) {	
-				QString pinyinReg=q.value(Q_RECORD_INDEX(q,"pinyinReg")).toString();
-				QString allchars=q.value(Q_RECORD_INDEX(q,"allchars")).toString();
+				QString pinyinReg=Q_VALUE_STRING(q,"pinyinReg");
+				QString allchars=Q_VALUE_STRING(q,"allchars");
 				uint pos = 0;
 				if(hanzi_flag){
 					QString searchs;
@@ -434,24 +434,24 @@ RETRY:
 				}
 
 				CatItem* item=&searchResults[i++];
-				item->idInTable = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
+				item->idInTable = Q_VALUE_UINT(q,"id");
 				ids<<QString(item->idInTable);
-				item->fullPath=q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
-				item->shortName=q.value(Q_RECORD_INDEX(q,"shortName")).toString();
-				item->realname=q.value(Q_RECORD_INDEX(q,"realname")).toString();
-				item->lowName=q.value(Q_RECORD_INDEX(q,"lowName")).toString();								
-				item->usage=q.value(Q_RECORD_INDEX(q,"usage")).toUInt();
-				item->isHasPinyin=(unsigned char )(q.value(Q_RECORD_INDEX(q,"isHasPinyin")).toUInt());
-				item->comeFrom=(unsigned char )(q.value(Q_RECORD_INDEX(q,"comeFrom")).toUInt());
-				item->shortCut=(unsigned char )(q.value(Q_RECORD_INDEX(q,"shortCut")).toUInt());
+				item->fullPath=Q_VALUE_STRING(q,"fullPath");
+				item->shortName=Q_VALUE_STRING(q,"shortName");
+				item->realname=Q_VALUE_STRING(q,"realname");
+				item->lowName=Q_VALUE_STRING(q,"lowName");								
+				item->usage=Q_VALUE_UINT(q,"usage");
+				item->isHasPinyin=(unsigned char )(Q_VALUE_UINT(q,"isHasPinyin"));
+				item->comeFrom=(unsigned char )(Q_VALUE_UINT(q,"comeFrom"));
+				item->shortCut=(unsigned char )(Q_VALUE_UINT(q,"shortCut"));
 				//item->comeFrom = info->id;
-				item->icon=q.value(Q_RECORD_INDEX(q,"icon")).toString();
+				item->icon=Q_VALUE_STRING(q,"icon");
 				item->pinyinReg=pinyinReg;
 				item->allchars=allchars;
-				item->alias2=q.value(Q_RECORD_INDEX(q,"alias2")).toString();
-				item->domain=q.value(Q_RECORD_INDEX(q,"domain")).toString();
-				item->type=q.value(Q_RECORD_INDEX(q,"type")).toUInt();
-				item->args=q.value(Q_RECORD_INDEX(q,"args")).toString();
+				item->alias2=Q_VALUE_STRING(q,"alias2");
+				item->domain=Q_VALUE_STRING(q,"domain");
+				item->type=Q_VALUE_UINT(q,"type");
+				item->args=Q_VALUE_STRING(q,"args");
 				item->pos = pos;
 				//qDebug("%s",qPrintable(item->fullPath));
 				ret.push_back(item);

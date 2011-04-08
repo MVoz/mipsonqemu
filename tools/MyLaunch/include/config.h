@@ -281,7 +281,16 @@ enum{
 #endif
 
 #define Q_RECORD_INDEX(x,y) (x).record().indexOf(y)
+#define Q_VALUE_STRING(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString()
+#define Q_VALUE_STRING_HTML(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString().replace("\\", "\\\\\\\\")
+
+#define Q_VALUE_UINT(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toUInt()
+
+
 #define Q_PTR_RECORD_INDEX(x,y) (x)->record().indexOf(y)
+#define Q_PTR_VALUE_STRING(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toString()
+#define Q_PTR_VALUE_UINT(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toUInt()
+
 
 
 #define NO_PINYIN_FLAG 0

@@ -203,9 +203,9 @@ void MyWidget::storeConfig(int mode)
 				int i = 0;
 				while(q.next()) {
 					dst->setArrayIndex(i);
-					dst->setValue("shortName", q.value(Q_RECORD_INDEX(q,"shortName")).toString());
-					dst->setValue("fullPath", q.value(Q_RECORD_INDEX(q,"fullPath")).toString());
-					dst->setValue("args", q.value(Q_RECORD_INDEX(q,"args")).toString());
+					dst->setValue("shortName", Q_VALUE_STRING(q,"shortName"));
+					dst->setValue("fullPath",Q_VALUE_STRING(q,"fullPath"));
+					dst->setValue("args", Q_VALUE_STRING(q,"args"));
 					i++;
 				}
 				q.clear();
@@ -3121,7 +3121,7 @@ void MyWidget::scanDbFavicon()
 	if(q.exec(s)){
 		//getFavico("www.sohu.com","favicon.ico");
 		while(q.next()) {
-			QString fullPath = q.value(Q_RECORD_INDEX(q,"fullpath")).toString();		
+			QString fullPath = Q_VALUE_STRING(q,"fullpath");		
 			if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
 			{
 				QUrl url(fullPath);									
