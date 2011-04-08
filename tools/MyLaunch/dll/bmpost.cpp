@@ -49,11 +49,11 @@ void bmPost::gorun()
 			qsrand((unsigned) NOW_SECONDS);
 			uint key=qrand()%(getkeylength());
 			QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(username).arg(password),key);			
-			if(action==POST_HTTP_ACTION_ADD_URL||action==POST_HTTP_ACTION_ADD_DIR)
+			if(action==POST_HTTP_ACTION_ADD_ITEM||action==POST_HTTP_ACTION_ADD_DIR)
 			{
 				bm_handle_url=QString(BM_SERVER_ADD_URL).arg(parentid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
-			else if(action==POST_HTTP_ACTION_DELETE_URL)
+			else if(action==POST_HTTP_ACTION_DELETE_ITEM)
 			{
 				bm_handle_url=QString(BM_SERVER_DELETE_URL).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
@@ -129,11 +129,11 @@ void bmPost::httpDone(bool error)
 		}else
 			error = QHttp::UnknownError;
 		switch(action){
-			case POST_HTTP_ACTION_DELETE_URL:					
+			case POST_HTTP_ACTION_DELETE_ITEM:					
 				break;
 			case POST_HTTP_ACTION_DELETE_DIR:
 				break;
-			case POST_HTTP_ACTION_ADD_URL:
+			case POST_HTTP_ACTION_ADD_ITEM:
 				if(bmid){
 					SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);
 				}else

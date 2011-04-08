@@ -110,7 +110,7 @@ struct dbtableinfo dbtableInfo[]={
 	{COME_FROM_PROGRAM,QString(DB_TABLE_SUFFIX"_program"),COME_FROM_PROGRAM},
 	{COME_FROM_LEARNPROCESS,QString(DB_TABLE_SUFFIX"_learnprocess"),COME_FROM_LEARNPROCESS},	
 	{COME_FROM_MYBOOKMARK,QString(DB_TABLE_SUFFIX"_mybookmark"),COME_FROM_MYBOOKMARK},	
-	{COME_FROM_BROWSER_START,QString(DB_TABLE_SUFFIX"_browser"),COME_FROM_BROWSER_START},
+	{COME_FROM_BROWSER,QString(DB_TABLE_SUFFIX"_browser"),COME_FROM_BROWSER},
 	{0,QString(),0}
 };
 
@@ -950,7 +950,7 @@ void tz::clearbmgarbarge(QSqlQuery* q,uint delId)
 	while(!browserInfo[i].name.isEmpty())
 	{
 		s.clear();
-		s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(browserInfo[i].id+COME_FROM_BROWSER_START).arg(delId);
+		s=QString("DELETE FROM %1 WHERE comeFrom=%2 and delId!=%3").arg(DBTABLEINFO_NAME(COME_FROM_BROWSER)).arg(BROWSER_ID_TO_COMEFROM(browserInfo[i].id)).arg(delId);
 		//qDebug()<<__FUNCTION__<<s;
 		q->exec(s);		
 		i++;
