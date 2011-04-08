@@ -557,7 +557,6 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 #ifdef CONFIG_DIGG_XML
 	loadDiggXml();
 #endif
-	touchAnyDebug(DEBUG_LEVEL_NORMAL)<<"touchAny start";
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -2513,7 +2512,7 @@ void MyWidget::monitorTimerTimeout()
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
 	if(!closeflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
-		qDebug()<<(NOW_SECONDS-runseconds)<<":"<<item.action<<item.fullpath<<item.name<<item.id.browserid;
+		touchAnyDebug(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
 				_buildCatalog((CATBUILDMODE)item.id.mode,0);

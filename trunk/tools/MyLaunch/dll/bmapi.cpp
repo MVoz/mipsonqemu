@@ -1796,7 +1796,7 @@ void tz::clearBmlist(QList<bookmark_catagory> *l){
 		l->clear();
 }
 bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
-#ifndef QT_NO_DEBUG
+#ifdef TOUCH_ANY_DEBUG
 	static int lev = 0;
 	static int count = 0;
 	if(!level){
@@ -1819,18 +1819,50 @@ bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid)
 					goto bad;
 			}			
 		}
-#ifndef QT_NO_DEBUG
+#ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+			touchAnyDebug(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return true;
 bad:
-#ifndef QT_NO_DEBUG
+#ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			qDebug()<<" level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild;
+			touchAnyDebug(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return false;
 }
+#ifdef TOUCH_ANY_DEBUG
+/*
+ACTION_LIST_CATALOGBUILD=0,
+ACTION_LIST_BOOKMARK_SYNC,
+ACTION_LIST_TEST_ACCOUNT,
+ACTION_LIST_IMPORT_BOOKMARK,
+ACTION_LIST_ADD_NETBOOKMARK_DIR,
+ACTION_LIST_MODIFY_NETBOOKMARK_DIR,
+ACTION_LIST_DELETE_NETBOOKMARK_DIR,
+ACTION_LIST_ADD_NETBOOKMARK_ITEM,
+ACTION_LIST_MODIFY_NETBOOKMARK_ITEM,
+ACTION_LIST_DELETE_NETBOOKMARK_ITEM,
+ACTION_LIST_GET_DIGG_XML
+*/
+QString actionListName[]={
+	QString("build catalog"),
+	QString("sync bookmark"),
+	QString("test account"),
+	QString("import bookmark"),
+	QString("add directory to netbookmark"),
+	QString("modify directory to netbookmark"),
+	QString("delete directory to netbookmark"),
+	QString("add item to netbookmark"),
+	QString("modify item to netbookmark"),
+	QString("delete item to netbookmark"),
+	QString("get digg xml from server"),
+};
+QString tz::getActionListName(int type){
+	return actionListName[type];
+}
+#endif
+
 
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 QString tz::getProcessExeFullpath(uint dwPID)

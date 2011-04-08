@@ -106,18 +106,6 @@ BMAPI_DLL_FUNCEXPORT void setHandleItemInfo(QString& n,QString& f,uint i,uint a)
 BMAPI_DLL_FUNCEXPORT struct handleItemInfo* getHandleItemInfo();
 
 #ifdef CONFIG_ACTION_LIST
-#define ACTION_LIST_CATALOGBUILD 0
-#define ACTION_LIST_BOOKMARK_SYNC 1
-#define ACTION_LIST_TEST_ACCOUNT 2
-#define ACTION_LIST_IMPORT_BOOKMARK 3
-#define ACTION_LIST_ADD_NETBOOKMARK_DIR 4
-#define ACTION_LIST_MODIFY_NETBOOKMARK_DIR 5
-#define ACTION_LIST_DELETE_NETBOOKMARK_DIR 6
-#define ACTION_LIST_ADD_NETBOOKMARK_ITEM 7
-#define ACTION_LIST_MODIFY_NETBOOKMARK_ITEM 8
-#define ACTION_LIST_DELETE_NETBOOKMARK_ITEM 9
-#define ACTION_LIST_GET_DIGG_XML 10
-
 
  struct BMAPI_DLL_CLASSEXPORT ACTION_LIST{
 	uint action;
@@ -253,6 +241,10 @@ public :
 	static QString getProcessExeFullpath(uint);
 	static void clearBmlist(QList<bookmark_catagory> *l);
 	static bool checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid);
+#ifdef TOUCH_ANY_DEBUG
+	static QString getActionListName(int type);
+#endif
+
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };
 
