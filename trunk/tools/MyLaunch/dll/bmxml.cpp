@@ -952,7 +952,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 				if(!Q_VALUE_STRING(q,"title").isNull())
 				{
 					//os<<"<item itemId=\""<<query.value(idIndex).toString()<<"\" parentId=\""<<query.value(parentIndex).toString()<<"\">"<<"\n";
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 					os<<"<item  parentId=\""<<Q_VALUE_STRING(q,"parent")<<"\">"<<"\n";
 					os<<"<name><![CDATA["<<Q_VALUE_STRING(q,"title")<<"]]></name>"<<"\n";
 					os<<"<link><![CDATA["<<Q_VALUE_STRING(q,"url")<<"]]></link>"<<"\n";
@@ -989,14 +989,14 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						ff_bc.groupId=Q_VALUE_UINT(q,"id");
 						ff_bc.parentId=Q_VALUE_UINT(q,"parent");
 						ff_bc.flag = BOOKMARK_CATAGORY_FLAG;
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 						os<<"<category groupId=\""<<Q_VALUE_STRING(q,"id")<<"\" parentId=\""<<Q_VALUE_STRING(q,"parent")<<"\">"<<"\n";
 						os<<"<name><![CDATA["<<Q_VALUE_STRING(q,"title")<<"]]></name>"<<"\n";
 						os<<"<link><![CDATA["<<Q_VALUE_STRING(q,"url")<<"]]></link>"<<"\n";
 #endif
 						ff_bc.link_hash=0;
 						outChildItem(Q_VALUE_UINT(q,"id"),db,os,&(ff_bc.list),excludeid);
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 						os<<"</category>"<<"\n";
 #endif
 
@@ -1077,7 +1077,6 @@ QString bmXml::productExcludeIdStr(QSqlDatabase *db)
 
 int bmXml::readFirefoxBookmark3(QSqlDatabase* db,QList < bookmark_catagory > *list)
 {
-#ifdef CONFIG_LOG_ENABLE
 	QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
 	qDebug("firefox's version is %s",qPrintable(ff_reg.value("CurrentVersion","").toString()));
 	//	 ff_excludeId.clear();
@@ -1091,18 +1090,12 @@ int bmXml::readFirefoxBookmark3(QSqlDatabase* db,QList < bookmark_catagory > *li
 	os<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<"\n";
 	os<<"<bookmark version=\"1.0\" updateTime=\"2009-11-22 21:36:20\">"<<"\n";
 	os<<"<browserType name=\"firefox\">"<<"\n";
-#endif
+
 	QString excludeid =  productExcludeIdStr(db);
-#ifdef CONFIG_LOG_ENABLE
 	outChildItem(0,db,os,list,excludeid);
-#else
-	outChildItem(0,db,NULL,list,excludeid);
-#endif
-#ifdef CONFIG_LOG_ENABLE
 	os<<"</browserType>"<<"\n";
 	os<<"</bookmark>"<<"\n";
 	file.close();
-#endif
 	return 1;
 }
 void bmXml::setFirefoxDb(QSqlDatabase* db)
