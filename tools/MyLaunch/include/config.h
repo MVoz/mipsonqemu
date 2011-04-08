@@ -534,9 +534,9 @@ enum{
 	DEBUG_LEVEL_TESTACCOUNT	
 };
 #ifdef TOUCH_ANY_DEBUG
-#define touchAnyDebug(level,y) do{qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;}while(0);
+#define TOUCHANYDEBUG(level,y) do{qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;}while(0);
 #else
-#define touchAnyDebug(level,y) do{}while(0);
+#define TOUCHANYDEBUG(level,y) do{}while(0);
 #endif
 #endif
 

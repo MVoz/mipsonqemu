@@ -43,7 +43,6 @@ void bmSync::httpTimeout()
 void bmSync::testNetFinished()
 {
 	THREAD_MONITOR_POINT;
-	//testServerResult = tz::runParameter(GET_MODE,RUN_PARAMETER_TESTNET_RESULT,0);
 	testServerResult=GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT);
 	DELETE_OBJECT(testThread);
 	switch(testServerResult)
@@ -231,7 +230,7 @@ void bmSync::bmxmlGetFinished(bool error)
 		if(md5key==tz::fileMd5(filename_fromserver)){
 			mgthread = new bmMerge(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
-			connect(mgthread, SIGNAL(mgUpdateStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
+			connect(mgthread, SIGNAL(mergeStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
 			mgthread->start(QThread::IdlePriority);
 			return;
 		}
