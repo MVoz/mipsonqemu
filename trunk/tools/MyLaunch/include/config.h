@@ -281,6 +281,7 @@ enum{
 #endif
 
 #define Q_RECORD_INDEX(x,y) (x).record().indexOf(y)
+#define Q_PTR_RECORD_INDEX(x,y) (x)->record().indexOf(y)
 
 
 #define NO_PINYIN_FLAG 0

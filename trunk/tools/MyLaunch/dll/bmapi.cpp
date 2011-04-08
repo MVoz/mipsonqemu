@@ -982,21 +982,22 @@ void tz::_clearShortcut(QSqlDatabase *db,int type)
 	}
 }
 
-uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int frombrowsertype)
+uint tz::isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int comefrom)
 {
 	{
 		QString queryStr;
 		uint id=0;
 #if 1
-		q->prepare(QString("SELECT id FROM %1 WHERE comeFrom =:comeFrom AND hashId=:hashId AND shortName =:shortName AND fullPath=:fullPath LIMIT 1").arg(DBTABLEINFO_NAME(frombrowsertype)));
-		q->bindValue(":comeFrom", frombrowsertype);
+		q->prepare(QString("SELECT id FROM %1 WHERE comeFrom =:comeFrom AND hashId=:hashId AND shortName =:shortName AND fullPath=:fullPath LIMIT 1").arg(DBTABLEINFO_NAME(comefrom)));
+		q->bindValue(":comeFrom", comefrom);
 		q->bindValue(":hashId", qHash(name));
 		q->bindValue(":shortName", name);
 		q->bindValue(":fullPath", fullpath);
 		q->exec();
 		if(q->next())
 		{
-			id=q->value(q->record().indexOf("id")).toUInt();
+			//id=q->value(q->record().indexOf("id")).toUInt();
+			id=q->value(Q_PTR_RECORD_INDEX(q,"id")).toUInt();
 		}
 		q->clear();
 
@@ -1085,7 +1086,7 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 			QString  s=QString("SELECT COUNT(*) as total FROM %1 WHERE  comeFrom=%2 AND  parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 			if(q.exec(s)){
 				if(q.next()) {
-					if(q.value( q.record().indexOf("total")).toUInt()>browserInfo[browserid].maxchild)
+					if(q.value(Q_RECORD_INDEX(q,"total")).toUInt()>browserInfo[browserid].maxchild)
 						return false;
 				}
 			}else
@@ -1096,25 +1097,19 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 		QString  s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=1 AND  parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 		if(q.exec(s))
 		{
-			QSqlRecord rec = q.record();
-			int id_Idx=rec.indexOf("id");
-			int shortName_Idx = rec.indexOf("shortName"); 
-			int groupid_Idx = rec.indexOf("groupid");
-			int parentid_Idx = rec.indexOf("parentid");
-			int fullPath_Idx = rec.indexOf("fullPath");
 			while(q.next()) {
 				struct bookmark_catagory bc;
-				bc.name = q.value(shortName_Idx).toString();
+				bc.name = q.value(Q_RECORD_INDEX(q,"shortName")).toString();
 				// dir_bc.name.trimmed();
 				bc.name_hash=qhashEx(bc.name,bc.name.length());
 				bc.link.clear();
 				bc.link_hash=0;
 				bc.flag = BOOKMARK_CATAGORY_FLAG;
 				bc.level = level;
-				bc.bmid = q.value(id_Idx).toUInt();
-				bc.groupId= q.value(groupid_Idx).toUInt();
-				bc.parentId= q.value(parentid_Idx).toUInt();
-				readMyBookmark(db,&(bc.list), level + 1,q.value(groupid_Idx).toUInt(),browserid,flag);
+				bc.bmid = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
+				bc.groupId= q.value(Q_RECORD_INDEX(q,"groupid")).toUInt();
+				bc.parentId= q.value(Q_RECORD_INDEX(q,"parentid")).toUInt();
+				readMyBookmark(db,&(bc.list), level + 1,q.value(Q_RECORD_INDEX(q,"groupid")).toUInt(),browserid,flag);
 				addItemToSortlist(bc,list);
 			}		
 		}else
@@ -1124,31 +1119,25 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 		s=QString("SELECT * FROM %1 WHERE  comeFrom=%2 AND type=0 AND  parentid=%4 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 		if(q.exec(s))
 		{
-			QSqlRecord rec = q.record();
-			int id_Idx=rec.indexOf("id");
-			int shortName_Idx = rec.indexOf("shortName"); 
-			int groupid_Idx = rec.indexOf("groupid");
-			int parentid_Idx = rec.indexOf("parentid");
-			int fullPath_Idx = rec.indexOf("fullPath");
 			while(q.next()) {
 				struct bookmark_catagory bc;
-				bc.name = q.value(shortName_Idx).toString();
+				bc.name = q.value(Q_RECORD_INDEX(q,"shortName")).toString();
 				bc.name.trimmed();
 				bc.name_hash=qhashEx(bc.name,bc.name.length());
-				bc.link = q.value(fullPath_Idx).toString();
+				bc.link = q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
 				if( bc.link.isEmpty()) continue;
 				QUrl url(bc.link);
 				if (!url.isValid() || ((url.scheme().toLower() != QLatin1String("http"))&&(url.scheme().toLower() != QLatin1String("https")))) {
 					//qDebug()<<"unvalid http format!";
 					continue;
 				}
-				handleUrlString(bc.link );
+				handleUrlString(bc.link);
 				bc.link_hash=qhashEx(bc.link,bc.link.length());
 				bc.flag = BOOKMARK_ITEM_FLAG;
 				bc.level = level;	
-				bc.bmid = q.value(id_Idx).toUInt();
-				bc.groupId= q.value(groupid_Idx).toUInt();
-				bc.parentId= q.value(parentid_Idx).toUInt();
+				bc.bmid = q.value(Q_RECORD_INDEX(q,"id")).toUInt();
+				bc.groupId= q.value(Q_RECORD_INDEX(q,"groupid")).toUInt();
+				bc.parentId= q.value(Q_RECORD_INDEX(q,"parentid")).toUInt();
 				addItemToSortlist(bc,list);
 			}		
 		}else

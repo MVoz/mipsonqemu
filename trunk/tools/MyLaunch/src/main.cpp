@@ -3121,7 +3121,7 @@ void MyWidget::scanDbFavicon()
 	if(q.exec(s)){
 		//getFavico("www.sohu.com","favicon.ico");
 		while(q.next()) {
-			QString fullPath = q.value(q.record().indexOf("fullPath")).toString();		
+			QString fullPath = q.value(Q_RECORD_INDEX(q,"fullpath")).toString();		
 			if(fullPath.startsWith("http",Qt::CaseInsensitive)||fullPath.startsWith("https",Qt::CaseInsensitive))
 			{
 				QUrl url(fullPath);									

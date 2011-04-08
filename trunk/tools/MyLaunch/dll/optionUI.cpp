@@ -299,31 +299,26 @@ void OptionsDlg::loading(const QString & name)
 		//cmdLists.clear();
 		QSqlQuery q("",*db);
 		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
+		int i = 0;
 		if(q.exec(s))
 		{
-			QSqlRecord rec = q.record();
-			int id_Idx=rec.indexOf("id");
-			int fullPath_Idx = rec.indexOf("fullPath"); // index of the field "name"
-			int shortName_Idx = rec.indexOf("shortName"); // index of the field "name"
-			int args_Idx = rec.indexOf("args"); // index of the field "name" 
-			int i = 0;
 			while(q.next()) {
-				qDebug()<<q.value(shortName_Idx).toString()<<":"<<q.value(fullPath_Idx).toString();
+				qDebug()<<q.value(Q_RECORD_INDEX(q,"shortName")).toString()<<":"<<q.value(Q_RECORD_INDEX(q,"fullPath")).toString();
 				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
 				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(args_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"args")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
 				jsStr.append("</td>");
-				jsStr.append("<td >"+q.value(shortName_Idx).toString().replace("\\", "\\\\")+"</td>");
-				jsStr.append("<td >"+q.value(fullPath_Idx).toString().replace("\\", "\\\\")+"</td>");
-				jsStr.append("<td >"+q.value(args_Idx).toString()+"</td>");
+				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+q.value(Q_RECORD_INDEX(q,"args")).toString()+"</td>");
 
 				//action
 				jsStr.append(QString("<td > <a class=\"thickbox\" "));
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(args_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"args")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
 				
 				jsStr.append(QString("href=\"qrc:editcmd\">edit</a> "));
 				jsStr.append(QString("<a class=\"thickbox\"")); 
-				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\")).arg(q.value(id_Idx).toUInt()));
+				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString().replace("\\", "\\\\\\\\")).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
 					
 				jsStr.append(QString("href=\"qrc:deletecmd\">del</a>"));
 				jsStr.append(QString("</td >"));
@@ -947,22 +942,17 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 	QString  s=QString("SELECT * FROM %1 WHERE type=0 AND comeFrom=%2 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(COME_FROM_MYBOOKMARK).arg(groupid);
 	if(q.exec(s))
 	{
-		QSqlRecord rec = q.record();
-		int id_Idx=rec.indexOf("id");
-		int shortName_Idx = rec.indexOf("shortName"); 
-		int groupid_Idx = rec.indexOf("groupid");
-		int fullPath_Idx = rec.indexOf("fullPath");
 		int i = 0;
 		while(q.next()) {
 			js.append("<li>");
 			js.append("<h3>");
-			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(q.value(fullPath_Idx).toString()).arg(q.value(shortName_Idx).toString()).arg(q.value(shortName_Idx).toString()));
+			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()));
 			js.append("</h3>");
 			js.append("<p class=\\\"message\\\">");
-			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(fullPath_Idx).toString()).arg(q.value(fullPath_Idx).toString()));
+			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()));
 			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
-			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(fullPath_Idx).toString()).arg(q.value(id_Idx).toUInt()));
-			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(shortName_Idx).toString()).arg(q.value(id_Idx).toUInt()));
+			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"fullPath")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
+			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(q.value(Q_RECORD_INDEX(q,"id")).toUInt()));
 			js.append("</p>");
 			js.append("</li>");
 		}	
@@ -980,16 +970,11 @@ void OptionsDlg::netbookmarkmenu(int browserid,int parentid,QString func,QString
 	QString  s=QString("SELECT * FROM %1 WHERE type=1 AND comeFrom=%2 AND parentid=%3 ").arg(DBTABLEINFO_NAME(COME_FROM_MYBOOKMARK)).arg(browserid).arg(parentid);
 	if(q.exec(s))
 	{
-		QSqlRecord rec = q.record();
-		int id_Idx=rec.indexOf("id");
-		int shortName_Idx = rec.indexOf("shortName"); 
-		int groupid_Idx = rec.indexOf("groupid");
-
 		while(q.next()) {
 			//<li><a class=" " value="人才网站" onclick="getbmfromid('8003','1','人才网站',0);" href="javascript:;">人才网站</a></li>
-			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\" id=\"menu_li_%7\"> %8</a>").arg(q.value(shortName_Idx).toString())
-			.arg(func).arg(q.value(groupid_Idx).toUInt()).arg(browserid).arg(q.value(shortName_Idx).toString()).arg(0).arg(q.value(groupid_Idx).toUInt()).arg(q.value(shortName_Idx).toString()));
-			netbookmarkmenu(browserid,q.value(groupid_Idx).toUInt(),func,jsresult);
+			jsresult.append(QString("<li><a alt=\"%1\" onclick=\"javascript:OptionsDlg.%2(%3,%4,\\'%5\\',%6);\" href=\"javascript:;\" id=\"menu_li_%7\"> %8</a>").arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString())
+			.arg(func).arg(q.value(Q_RECORD_INDEX(q,"groupid")).toUInt()).arg(browserid).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()).arg(0).arg(q.value(Q_RECORD_INDEX(q,"groupid")).toUInt()).arg(q.value(Q_RECORD_INDEX(q,"shortName")).toString()));
+			netbookmarkmenu(browserid,q.value(Q_RECORD_INDEX(q,"groupid")).toUInt(),func,jsresult);
 			jsresult.append(QString("</li>"));
 		}
 
