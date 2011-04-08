@@ -557,6 +557,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 #ifdef CONFIG_DIGG_XML
 	loadDiggXml();
 #endif
+	touchAnyDebug(DEBUG_LEVEL_NORMAL)<<"touchAny start";
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -3157,9 +3158,19 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 		 {
 			 if(gSettings){
 				 gSettings->sync();
-				 if((gSettings->value("debug",0).toUInt())&0x01)			
-					 fprintf(stderr, "Debug: %s\n", msg);
-
+				 uint debuglevel = gSettings->value("debug",1).toUInt();
+				 if(1){		
+				 	 QString debugmsg(msg);
+					 int index = debugmsg.indexOf(QString(" :"));
+					 if(index ==-1)
+					 	return;
+					 uint level = debugmsg.left(index).trimmed().toUInt();
+					 if((1<<level)&debuglevel){
+						 fprintf(stderr, "%s\n",TOCHAR(debugmsg.remove(0,index+QString(" :").size())));
+					 }				 
+					
+				 }
+				 /*
 				 if((gSettings->value("debug",0).toUInt())&0x02)
 				 {
 					 QFile debugfile("log.txt");
@@ -3172,6 +3183,7 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 					 debugos << "] " << msgstr << "\n";
 					 debugfile.close();
 				 }
+				 */
 			 }
 		 }
 		 break;
