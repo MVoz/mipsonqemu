@@ -301,7 +301,7 @@ public:
 	void processKey();
 	//bool createDbFile();
 	void	increaseUsage(CatItem& item,const QString& alias);
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 	void dumpBuffer(char* addr,int length);
 #endif
 	void createTrayIcon();

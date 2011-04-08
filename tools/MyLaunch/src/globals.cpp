@@ -59,7 +59,7 @@ os << QDateTime::currentDateTime().toString("hh:mm:ss");
 os << "] " << str << "\n";
 }
 */
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 #pragma warning(disable:4996)
 
 

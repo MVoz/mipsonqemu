@@ -3137,7 +3137,7 @@ void MyWidget::scanDbFavicon()
 }
 
 
-#ifdef CONFIG_LOG_ENABLE
+#ifdef TOUCH_ANY_DEBUG
 void MyWidget::dumpBuffer(char* addr,int length)
 {
 	int i=0;
@@ -3150,10 +3150,7 @@ void MyWidget::dumpBuffer(char* addr,int length)
 	qDebug("\n");
 }
 
-#endif
-
-#ifdef CONFIG_LOG_ENABLE
-void myMessageOutput(QtMsgType type, const char *msg)
+void touchAnyDebugOutput(QtMsgType type, const char *msg)
 {
 	switch (type) {
 	 case QtDebugMsg:
@@ -3312,6 +3309,9 @@ int main(int argc, char *argv[])
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
 
+ #ifdef TOUCH_ANY_DEBUG
+	qInstallMsgHandler(touchAnyDebugOutput);
+ #endif
 	//HANDLE hProcessThis=GetCurrentProcess();
 	//SetPriorityClass(hProcessThis,HIGH_PRIORITY_CLASS); 
 

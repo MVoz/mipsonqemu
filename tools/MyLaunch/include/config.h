@@ -1,83 +1,74 @@
 #ifndef CONFIG_H_
-#include "version.h"
 #define CONFIG_H_
-#define LAUNCHY_VERSION 220
-#define LAUNCHY_VERSION_STRING "2.2.0"
-#define VERSION_FILE "version.h"
-#define SERVER_VERSION_FILE_PHP "index.php"
 
-#define HASH_LAUNCHY 0
+#ifdef QT_NO_DEBUG
+#undef TOUCH_ANY_DEBUG
+#else
+#define TOUCH_ANY_DEBUG
+#endif
 
-#define LABEL_FILE 0
-#define CONFIG_LOG_ENABLE	1
+#include "version.h"
+
+
+
+/******feature*******/
 
 #define CONFIG_NEW_UI
 #define CONFIG_UI_WEBKIT 
 #define CONFIG_RAMEN_CODE
 #define CONFIG_HTTP_TIMEOUT
 #define CONFIG_SYNC_THREAD
-
 #define CONFIG_BOOKMARK_TODB
-
-#ifdef CONFIG_HTTP_TIMEOUT
-#define DEFAULT_HTTP_TIMEOUT 30 //30 seconds
-#endif
-
+#define POST_DOWN_AFTER_MERGE
 #define CONFIG_AUTH_ENCRYPTION
-
-#define APP_NAME "touchAny"
-#define APP_SLOGAN "everything_is_in_touch"
-
-
-#define HTTP_SERVER_HOST "192.168.115.2"
-
-#define HTTP_SERVER_URL "http://"HTTP_SERVER_HOST"/"
-
-//#define BM_SERVER_ADDRESS "www.tanzhi.com"
-#define BM_SERVER_ADDRESS HTTP_SERVER_HOST
-
-#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
-#define BM_SERVER_TESTACCOUNT_URL HTTP_SERVER_URL"do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
-#define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
-#define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
-#define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
-#define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
-
-
-#define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
-
-#define BM_SERVER_GET_DIGGXML_URL HTTP_SERVER_URL"do.php?ac=diggxml&source=client"
-
-
-#define BM_XML_FROM_FIREFOX  "firefox.xml"
-
-#define DOSUCCESSS  "do_success"
-
-#define DEFAULT_LANGUAGE 0 //chinese
-
-#define DO_NOTHING   "do_nothing"
-
-
 #undef LOCALBM_COMPRESS_ENABLE 
+#define CONFIG_SERVER_IP_SETTING
+#define CONFIG_OPTION_NEWUI
+#define BROWSER_FIREFOX_BIN_NAME "firefox.exe"
+#define CONFIG_ACTION_LIST
+#define CONFIG_AUTO_LEARN_PROCESS
+#define CONFIG_DIGG_XML
+
+/***********defines*****************/
+enum{
+	POST_HTTP_ACTION_DELETE_ITEM=0,
+	POST_HTTP_ACTION_DELETE_DIR,
+	POST_HTTP_ACTION_ADD_ITEM,
+	POST_HTTP_ACTION_ADD_DIR,	
+	DOWN_LOCAL_ACTION_ADD_ITEM,
+	DOWN_LOCAL_ACTION_ADD_DIR,
+	DOWN_LOCAL_ACTION_DELETE_ITEM,
+	DOWN_LOCAL_ACTION_DELETE_DIR
+};
+
+enum{
+	COME_FROM_SHORTCUT=1,
+	COME_FROM_PREDEFINE,
+	COME_FROM_COMMAND,
+	COME_FROM_PROGRAM,
+	COME_FROM_LEARNPROCESS,
+	COME_FROM_MYBOOKMARK,
+	COME_FROM_NETBOOKMARK,
+	COME_FROM_IE,
+	COME_FROM_FIREFOX,
+	COME_FROM_OPERA,
+	COME_FROM_MAX
+};
+#define COME_FROM_BROWSER COME_FROM_NETBOOKMARK
+#define IS_FROM_BROWSER(x) (((x)>=COME_FROM_BROWSER)&&((x)<COME_FROM_MAX))
+#define COMEFROM_TO_BROWSER_ID(x) ((x)-COME_FROM_BROWSER)
+#define BROWSER_ID_TO_COMEFROM(x) ((x)+COME_FROM_BROWSER)
 
 
-#define IS_NULL(x) (((x)==NULL)||((x)==(void*)0xcdcdcdcd)) 
-
-#define TIME_FORMAT "yyyy-MM-dd hh:mm:ss"
-
-#define TIME_INIT_STR "1970-01-01 00:00:00"
-
-#define LOCAL_BM_SETTING_FILE_NAME "localbm.dat"
-#define LOCAL_BM_TMP_FOR_BUILD "bmtmp.dat"
-#define IE_BM_XML_FILE_NAME "iefav.xml"
-#define LOCAL_BM_SETTING_INTERVAL "@@$$=$$@@"
-#define TOCHAR(str) ((str).toLatin1().data())
+#define BROWSE_TYPE_NETBOOKMARK		(COME_FROM_NETBOOKMARK-COME_FROM_BROWSER)
+#define BROWSE_TYPE_IE 		(COME_FROM_IE-COME_FROM_BROWSER)
+#define BROWSE_TYPE_FIREFOX 	(COME_FROM_FIREFOX-COME_FROM_BROWSER)
+#define BROWSE_TYPE_OPERA		(COME_FROM_OPERA-COME_FROM_BROWSER)
+#define BROWSE_TYPE_MAX 		(COME_FROM_MAX-COME_FROM_BROWSER)
 
 
-
-#define LOG_RUN_LINE qDebug("Call function %s()  %d in the file %s",__FUNCTION__,__LINE__,__FILE__);
-#define QDEBUG_LINE   qDebug("%s %d",__FUNCTION__,__LINE__);
-#define SHAREPTRPRINT(X) (X?X.get():0)
+#define SYN_MODE_SILENCE  0
+#define SYN_MODE_NOSILENCE  1
 
 #define BM_EQUAL 1
 #define BM_MODIFY 2
@@ -100,86 +91,9 @@
 #define	POST_HTTP_TYPE_TESTACCOUNT  1
 #define    POST_HTTP_TYPE_HANDLE_ITEM 2
 
-#define MAX_SEARCH_RESULT 10
-#define DB_DATABASE_NAME APP_NAME".db"
-//#define DB_TABLE_NAME "launch_db"
-#define DB_TABLE_SUFFIX APP_NAME
-
-#define LAUNCH_BM_TABLE "launch_bm"
-
-#define FIREFOX_SQLITE_UNIQUE 1
-
-#define TEST_DB_MAXINUM_TIMEOUT 3
-
 /*updatestatus flag*/
 #define UPDATESTATUS_FLAG_APPLY 0
 #define UPDATESTATUS_FLAG_RETRY 1
-
-
-#define LOGIN_FALIL_STRING   "login_failure_please_re_login"
-
-
-
-#define LANGUAGE_APPLY "apply"
-#define LANGUAGE_RETRY "retry"
-#define LANGUAGE_CANCEL "cancel"
-#define LANGUAGE_REJECT "reject"
-
-#define SYN_MODE_SILENCE  0
-#define SYN_MODE_NOSILENCE  1
-
-
-/*
-#define COME_FROM_SHORTCUT 1
-#define COME_FROM_PREDEFINE 2
-#define COME_FROM_COMMAND 3
-
-#define COME_FROM_PROGRAM 4
-#define COME_FROM_LEARNPROCESS 5
-
-#define COME_FROM_MYBOOKMARK 6
-
-#define COME_FROM_NETBOOKMARK 7
-#define COME_FROM_IE (COME_FROM_NETBOOKMARK+1)
-#define COME_FROM_FIREFOX	 (COME_FROM_NETBOOKMARK+2)
-#define COME_FROM_OPERA	 (COME_FROM_NETBOOKMARK+3)
-#define COME_FROM_MAX	(COME_FROM_NETBOOKMARK+4)
-*/
-enum{
-	COME_FROM_SHORTCUT=1,
-	COME_FROM_PREDEFINE,
-	COME_FROM_COMMAND,
-	COME_FROM_PROGRAM,
-	COME_FROM_LEARNPROCESS,
-	COME_FROM_MYBOOKMARK,
-	COME_FROM_NETBOOKMARK,
-	COME_FROM_IE,
-	COME_FROM_FIREFOX,
-	COME_FROM_OPERA,
-	COME_FROM_MAX
-};
-
-#define COME_FROM_BROWSER COME_FROM_NETBOOKMARK
-#define IS_FROM_BROWSER(x) (((x)>=COME_FROM_BROWSER)&&((x)<COME_FROM_MAX))
-#define COMEFROM_TO_BROWSER_ID(x) ((x)-COME_FROM_BROWSER)
-#define BROWSER_ID_TO_COMEFROM(x) ((x)+COME_FROM_BROWSER)
-
-
-
-//#define COME_FROM_BROWSER_END (COME_FROM_MAX-1)
-
-//#define COME_FROM_BROWSER COME_FROM_BROWSER_START
-
-
-
-#define BROWSE_TYPE_NETBOOKMARK		(COME_FROM_NETBOOKMARK-COME_FROM_BROWSER)
-#define BROWSE_TYPE_IE 		(COME_FROM_IE-COME_FROM_BROWSER)
-#define BROWSE_TYPE_FIREFOX 	(COME_FROM_FIREFOX-COME_FROM_BROWSER)
-#define BROWSE_TYPE_OPERA		(COME_FROM_OPERA-COME_FROM_BROWSER)
-#define BROWSE_TYPE_MAX 		(COME_FROM_MAX-COME_FROM_BROWSER)
-
-
-
 
 #define BOOKMARK_CATAGORY_FLAG 1
 #define BOOKMARK_ITEM_FLAG 2
@@ -187,10 +101,117 @@ enum{
 #define FIREFOX_VERSION_2 2
 #define FIREFOX_VERSION_3 3
 
+#define SETTING_MERGE_LOCALTOSERVER  0
+#define SETTING_MERGE_SERVERTOLOCAL  1
+
+#define SETTING_MERGE_MODE_DOWNLOAD 0
+#define SETTING_MERGE_MODE_CHECKFILE 1
+
+#define HTTP_OK 200
+#define HTTP_FILE_NOT_FOUND 404
+
+#define SYNC_STATUS_FAIL 0
+#define SYNC_STATUS_PROCESSING  1
+#define SYNC_STATUS_SUCCESS  2
+
+#define HOTKEY_PART_0 Qt::ControlModifier
+#define HOTKEY_PART_1 Qt::Key_Enter
+
+#define NET_BOOKMARK_GROUPID_START 8000
+
+#define REGISTER_GET_MODE 0
+#define REGISTER_SET_MODE 1
+
+#define UPDATE_SILENT_MODE 0
+#define UPDATE_DLG_MODE 1
+
+#define SECONDS 1000
+#define MINUTES  (60*SECONDS)
+#define HOURS (60*MINUTES)
+#define DAYS (24*HOURS)
+
+/**************string*******************/
+#define LABEL_FILE 0
+#define LAUNCHY_VERSION 220
+#define LAUNCHY_VERSION_STRING "2.2.0"
+#define VERSION_FILE "version.h"
+#define SERVER_VERSION_FILE_PHP "index.php"
+
+#define APP_NAME "touchAny"
+#define APP_SLOGAN "everything_is_in_touch"
+
+#define HTTP_SERVER_HOST "192.168.115.2"
+#define HTTP_SERVER_URL "http://"HTTP_SERVER_HOST"/"
+#define BM_SERVER_ADDRESS HTTP_SERVER_HOST
+#define BM_SERVER_GET_BMXML_URL HTTP_SERVER_URL"do.php?ac=bmxml&source=client&auth=%1&authkey=%2&tm=%3"
+#define BM_SERVER_TESTACCOUNT_URL HTTP_SERVER_URL"do.php?ac=testaccount&source=client&auth=%1&authkey=%2"
+#define BM_SERVER_ADD_URL "/cp.php?ac=bmdir&op=add&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_SERVER_ADD_DIR BM_SERVER_ADD_URL
+#define BM_SERVER_DELETE_URL "/cp.php?ac=bookmark&op=delete&bmid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
+#define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
+#define BM_SERVER_GET_DIGGXML_URL HTTP_SERVER_URL"do.php?ac=diggxml&source=client"
+#define BM_XML_FROM_FIREFOX  "firefox.xml"
+#define DOSUCCESSS  "do_success"
+#define DEFAULT_LANGUAGE 0 //chinese
+#define DO_NOTHING   "do_nothing"
+#define TIME_FORMAT "yyyy-MM-dd hh:mm:ss"
+#define TIME_INIT_STR "1970-01-01 00:00:00"
+#define LOCAL_BM_SETTING_FILE_NAME "localbm.dat"
+#define LOCAL_BM_TMP_FOR_BUILD "bmtmp.dat"
+#define IE_BM_XML_FILE_NAME "iefav.xml"
+#define LOCAL_BM_SETTING_INTERVAL "@@$$=$$@@"
+#define DB_DATABASE_NAME APP_NAME".db"
+#define DB_TABLE_SUFFIX APP_NAME
+#define LOGIN_FALIL_STRING   "login_failure_please_re_login"
+#define LAUNCH_BM_TABLE "launch_bm"
+#define LANGUAGE_APPLY "apply"
+#define LANGUAGE_RETRY "retry"
+#define LANGUAGE_CANCEL "cancel"
+#define LANGUAGE_REJECT "reject"
 #define PINYIN_DB_FILENAME "pinyin.db"
 #define PINYIN_DB_TABLENAME "pytable"
+#define DIGG_XML_LOCAL_FILE "./data/digg.xml"
+#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
+#define APP_HEKY_UPDATE_ITEM "updaterflag"
+#define APP_SILENT_UPDATE_NAME "updater.exe"
+#define APP_PROGRAM_NAME  "tanzhi.exe"
+#define APP_SETUP_NAME "setup.exe"
+#define APP_FILEMD5_NAME "fmd5.exe"
+#define APP_DATA_PATH "data"
+#define APP_DEFINE_DB_NAME "defines.db"
+#define UPDATE_SERVER_HOST HTTP_SERVER_HOST
+#define TEST_NET_URL HTTP_SERVER_URL"testnet.php"
+#define TOUCHANY_VERSION_URL HTTP_SERVER_URL"download/index.php"
+#define TEST_DIGGXML_URL  HTTP_SERVER_URL"do.php?ac=testdiggxml"
+#define UPDATE_DIRECTORY "temp"
+#define UPDATE_DIRECTORY_SUFFIX UPDATE_DIRECTORY"/"
+#define UPDATE_PORTABLE_DIRECTORY    UPDATE_DIRECTORY"/portable/"
+#define UPDATE_SETUP_DIRECTORY    UPDATE_DIRECTORY"/setup/"
+#define UPDATE_FILE_NAME "update.ini"
+#define UPDATE_SERVER_URL UPDATE_FILE_NAME
+#define CONFIG_USER_INI_BACKUP_FILE "config.user"
+#define CONFIG_USER_CONFIG_DIR "config"
+#define UPDATE_PORTABLE_KEYWORD    "portable"
+#define UPDATE_SETUP_KEYWORD    "setup"
+#define FAVICO_DIRECTORY "ico"
+#define FROMSERVER_XML_PREFIX "from_server_xml_"
+#define BROKEN_TOKEN_STR "$#@#$"
 
-#define CONFIG_SERVER_IP_SETTING
+
+/**************code*******************/
+
+#define IS_NULL(x) (((x)==NULL)||((x)==(void*)0xcdcdcdcd)) 
+#define TOCHAR(str) ((str).toLatin1().data())
+#define LOG_RUN_LINE qDebug("Call function %s()  %d in the file %s",__FUNCTION__,__LINE__,__FILE__);
+#define QDEBUG_LINE   qDebug("%s %d",__FUNCTION__,__LINE__);
+#define SHAREPTRPRINT(X) (X?X.get():0)
+
+
+/**************parameters*******************/
+#define MAX_SEARCH_RESULT 10
+
+
 #ifdef CONFIG_SERVER_IP_SETTING
 #define SET_SERVER_IP(x,y) do{\
 		QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
@@ -207,57 +228,6 @@ enum{
 
 #endif
 
-#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
-#define APP_HEKY_UPDATE_ITEM "updaterflag"
-#define REGISTER_GET_MODE 0
-#define REGISTER_SET_MODE 1
-
-#define APP_SILENT_UPDATE_NAME "updater.exe"
-#define APP_PROGRAM_NAME  "tanzhi.exe"
-#define APP_SETUP_NAME "setup.exe"
-#define APP_FILEMD5_NAME "fmd5.exe"
-
-#define APP_DATA_PATH "data"
-#define APP_DEFINE_DB_NAME "defines.db"
-
-#define UPDATE_SERVER_HOST HTTP_SERVER_HOST
-
-
-
-#define TEST_NET_URL HTTP_SERVER_URL"testnet.php"
-#define TOUCHANY_VERSION_URL HTTP_SERVER_URL"download/index.php"
-#define TEST_DIGGXML_URL  HTTP_SERVER_URL"do.php?ac=testdiggxml"
-
-#define UPDATE_DIRECTORY "temp"
-#define UPDATE_DIRECTORY_SUFFIX UPDATE_DIRECTORY"/"
-
-#define UPDATE_PORTABLE_DIRECTORY    UPDATE_DIRECTORY"/portable/"
-#define UPDATE_SETUP_DIRECTORY    UPDATE_DIRECTORY"/setup/"
-
-#define UPDATE_FILE_NAME "update.ini"
-#define UPDATE_SERVER_URL UPDATE_FILE_NAME
-
-#define CONFIG_USER_INI_BACKUP_FILE "config.user"
-#define CONFIG_USER_CONFIG_DIR "config"
-
-#define UPDATE_PORTABLE_KEYWORD    "portable"
-#define UPDATE_SETUP_KEYWORD    "setup"
-
-
-#define UPDATE_SILENT_MODE 0
-#define UPDATE_DLG_MODE 1
-
-
-#define FAVICO_DIRECTORY "ico"
-
-#define FROMSERVER_XML_PREFIX "from_server_xml_"
-
-#define SECONDS 1000
-#define MINUTES  (60*SECONDS)
-#define HOURS (60*MINUTES)
-#define DAYS (24*HOURS)
-#define POST_ITEM_TIMEOUT 10
-#define TEST_SERVER_TIMEOUT 10
 
 #define SET_RUN_PARAMETER(x,y) tz::runParameter(SET_MODE,(x),(y))
 #define GET_RUN_PARAMETER(x) tz::runParameter(GET_MODE,(x), 0)
@@ -295,7 +265,7 @@ enum{
 
 #define NO_PINYIN_FLAG 0
 #define HAS_PINYIN_FLAG 1
-#define BROKEN_TOKEN_STR "$#@#$"
+
 
 #define BIND_CATITEM_QUERY(x,y) do{\
 	(x)->bindValue(":fullPath", (y).fullPath);\
@@ -463,78 +433,7 @@ enum TEST_NET_RESULT{
 };
 
 
-#define SETTING_MERGE_LOCALTOSERVER  0
-#define SETTING_MERGE_SERVERTOLOCAL  1
 
-#define SETTING_MERGE_MODE_DOWNLOAD 0
-#define SETTING_MERGE_MODE_CHECKFILE 1
-
-#define HTTP_OK 200
-#define HTTP_FILE_NOT_FOUND 404
-
-#define CONFIG_OPTION_NEWUI
-
-
-#define SYNC_STATUS_FAIL 0
-#define SYNC_STATUS_PROCESSING  1
-#define SYNC_STATUS_SUCCESS  2
-
-#define HOTKEY_PART_0 Qt::ControlModifier
-#define HOTKEY_PART_1 Qt::Key_Enter
-
-#define NET_BOOKMARK_GROUPID_START 8000
-
-#define BROWSER_FIREFOX_BIN_NAME "firefox.exe"
-
-#define CONFIG_ACTION_LIST
-
-#define CONFIG_AUTO_LEARN_PROCESS
-
-
-#define CONFIG_DIGG_XML
-
-//timer
-//base unit hour
-
-
-#ifdef QT_NO_DEBUG
-#define CATALOG_BUILDER_INTERVAL (12)
-#define CATALOG_BUILDER_INTERVAL_UNIT HOURS
-#else
-#define CATALOG_BUILDER_INTERVAL (12)
-#define CATALOG_BUILDER_INTERVAL_UNIT MINUTES
-#endif
-
-
-#ifdef  CONFIG_AUTO_LEARN_PROCESS
-#ifdef QT_NO_DEBUG
-#define AUTO_LEARN_PROCESS_INTERVAL 5
-#define AUTO_LEARN_PROCESS_INTERVAL_UNIT MINUTES
-#else
-#define AUTO_LEARN_PROCESS_INTERVAL (10)
-#define AUTO_LEARN_PROCESS_INTERVAL_UNIT SECONDS
-#endif
-#endif
-
-#ifdef CONFIG_DIGG_XML
-#ifdef QT_NO_DEBUG
-#define DIGG_XML_INTERVAL 60
-#define DIGG_XML_INTERVAL_UNIT MINUTES
-#else
-#define DIGG_XML_INTERVAL (10)
-#define DIGG_XML_INTERVAL_UNIT SECONDS
-#endif
-#endif
-
-#ifdef QT_NO_DEBUG
-#define SILENT_SYNC_INTERVAL (5)
-#define SILENT_SYNC_INTERVAL_UNIT MINUTES
-#else
-#define SILENT_SYNC_INTERVAL (10)
-#define SILENT_SYNC_INTERVAL_UNIT SECONDS
-#endif
-
-#define MONITER_TIME_INTERVAL (10)
 
 
 #define INIT_TIMER_ACTION_LIST(type,name,start,val)\
@@ -557,20 +456,62 @@ enum TEST_NET_RESULT{
 	}else\
 		timer_actionlist[type].faileds++;
 
-#define DIGG_XML_LOCAL_FILE "./data/digg.xml"
 
-enum{
-	POST_HTTP_ACTION_DELETE_ITEM=0,
-	POST_HTTP_ACTION_DELETE_DIR,
-	POST_HTTP_ACTION_ADD_ITEM,
-	POST_HTTP_ACTION_ADD_DIR,	
-	DOWN_LOCAL_ACTION_ADD_ITEM,
-	DOWN_LOCAL_ACTION_ADD_DIR,
-	DOWN_LOCAL_ACTION_DELETE_ITEM,
-	DOWN_LOCAL_ACTION_DELETE_DIR
-};
 
-#define POST_DOWN_AFTER_MERGE 
+/**************time*******************/
+
+#define POST_ITEM_TIMEOUT 10
+#define TEST_SERVER_TIMEOUT 10
+
+
+#ifdef CONFIG_HTTP_TIMEOUT
+#define DEFAULT_HTTP_TIMEOUT 30 //30 seconds
+#endif
+#define TEST_DB_MAXINUM_TIMEOUT 3
+#ifdef TOUCH_ANY_DEBUG
+#define CATALOG_BUILDER_INTERVAL (12)
+#define CATALOG_BUILDER_INTERVAL_UNIT MINUTES
+#else
+#define CATALOG_BUILDER_INTERVAL (12)
+#define CATALOG_BUILDER_INTERVAL_UNIT HOURS
+#endif
+
+
+#ifdef  CONFIG_AUTO_LEARN_PROCESS
+#ifdef TOUCH_ANY_DEBUG
+#define AUTO_LEARN_PROCESS_INTERVAL (10)
+#define AUTO_LEARN_PROCESS_INTERVAL_UNIT SECONDS
+#else
+#define AUTO_LEARN_PROCESS_INTERVAL 5
+#define AUTO_LEARN_PROCESS_INTERVAL_UNIT MINUTES
+#endif
+#endif
+
+#ifdef CONFIG_DIGG_XML
+#ifdef TOUCH_ANY_DEBUG
+#define DIGG_XML_INTERVAL (10)
+#define DIGG_XML_INTERVAL_UNIT SECONDS
+#else
+#define DIGG_XML_INTERVAL 60
+#define DIGG_XML_INTERVAL_UNIT MINUTES
+#endif
+#endif
+
+#ifdef TOUCH_ANY_DEBUG
+#define SILENT_SYNC_INTERVAL (10)
+#define SILENT_SYNC_INTERVAL_UNIT SECONDS
+#else
+#define SILENT_SYNC_INTERVAL (5)
+#define SILENT_SYNC_INTERVAL_UNIT MINUTES
+#endif
+
+#define MONITER_TIME_INTERVAL (10)
+
+
+
+#ifdef TOUCH_ANY_DEBUG
+#endif
+
 
 #endif
 
