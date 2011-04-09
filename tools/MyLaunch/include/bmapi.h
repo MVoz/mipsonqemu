@@ -71,7 +71,7 @@ struct BMAPI_DLL_CLASSEXPORT handleItemInfo{
 BMAPI_DLL_FUNCEXPORT int deleteDirectory(QString path);
 BMAPI_DLL_FUNCEXPORT void runProgram(QString path, QString args) ;
 BMAPI_DLL_FUNCEXPORT BOOL GetShellDir(int iType, QString & szPath);
-BMAPI_DLL_FUNCEXPORT bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest);
+//BMAPI_DLL_FUNCEXPORT bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest);
 BMAPI_DLL_FUNCEXPORT int getDesktop();
 BMAPI_DLL_FUNCEXPORT void SetColor(unsigned short ForeColor,unsigned short BackGroundColor);
 BMAPI_DLL_FUNCEXPORT quint16 getFileChecksum(QFile *f);
@@ -191,7 +191,6 @@ class BMAPI_DLL_CLASSEXPORT  tz {
 public:
 	tz(){};
 	~tz(){};
-
 public :
 	static QString tr(const char* index);
 	static QString encrypt(QString para,uint secindex);
@@ -244,7 +243,7 @@ public :
 #ifdef TOUCH_ANY_DEBUG
 	static QString getActionListName(int type);
 #endif
-
+	static QString getUserFullpath(QSettings* s,int type);
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };
 

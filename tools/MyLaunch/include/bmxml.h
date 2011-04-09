@@ -104,7 +104,7 @@ public:
 	void setFirefoxDb(QSqlDatabase* db);
 
 	/*******************for firefox2******************************/
-	int readFirefoxBookmark2(QFile& file);
+	//int readFirefoxBookmark2(QFile& file);
 	void init_ff_bm();
 	void handler_line(QString line,int type);
 	void outToFile(QTextStream& os);
