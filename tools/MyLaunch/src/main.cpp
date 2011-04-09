@@ -372,8 +372,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	//pre-alloc the search result
 	gSearchResult=new CatItem[MAX_SEARCH_RESULT];
 	db = QSqlDatabase::addDatabase("QSQLITE", "dbManage");
-	QString dest ;
-	getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
+	QString dest =tz::getUserFullpath(gSettings,LOCAL_FULLPATH_DB);
 	bool rebuilddatabase = FALSE;
 	if(!QFile::exists(dest)){
 		rebuildAll|=(1<<TIMER_ACTION_BMSYNC)|(1<<TIMER_ACTION_CATBUILDER);
@@ -2226,12 +2225,10 @@ void MyWidget::reSync()
 }
 int MyWidget::checkLocalBmDatValid()
 {
-	QString localBmFullPath;
+	QString localBmFullPath=tz::getUserFullpath(gSettings,LOCAL_FULLPATH_BMDAT);
 	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	QString username=gSettings->value("Account/Username","").toString().trimmed();
 	int i = 0;
-	if(!getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath))
-		return -1;
 	if(!QFile::exists(localBmFullPath))
 		return 0;
 
