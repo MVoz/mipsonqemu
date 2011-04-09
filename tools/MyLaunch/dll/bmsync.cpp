@@ -252,23 +252,11 @@ void bmSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
 	if(mgthread){
-		switch(mgthread->mergestatus){
-			case MERGE_STATUS_SUCCESS_NO_MODIFY:
-				status = BM_SYNC_SUCCESS_NO_ACTION;
-			break;
-			case MERGE_STATUS_SUCCESS_WITH_MODIFY:
-				status = BM_SYNC_SUCCESS_WITH_ACTION;
-			break;
-			case MERGE_STATUS_FAIL:
-				status = BM_SYNC_FAIL_MERGE_ERROR;
-			case MERGE_STATUS_FAIL_LOGIN:
-				status = BM_SYNC_FAIL_SERVER_LOGIN;
-			break;
-		}
-		if((status == BM_SYNC_SUCCESS_NO_ACTION)||(status == BM_SYNC_SUCCESS_WITH_ACTION)){
+		status = mgthread->mergestatus;
+		if((status == BM_SYNC_SUCCESS_NO_MODIFY)||(status == BM_SYNC_SUCCESS_WITH_MODIFY)){
 			settings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESS);
 			settings->sync();
-			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_ACTION);
+			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_MODIFY);
 		}else{
 			settings->setValue("lastsyncstatus",SYNC_STATUS_FAIL);
 			settings->sync();

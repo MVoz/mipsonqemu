@@ -157,7 +157,7 @@ void bmXml::readBrowserType(int browserType)
 		}
 	}
 }
-void bmXml::getUserId()
+void bmXml::getBrowserEnable(int browserType)
 {
 	while (!atEnd())
 	{
@@ -167,6 +167,7 @@ void bmXml::getUserId()
 			if (name() == "bookmark" && attributes().value("version") == "1.0")
 			{
 				userId = attributes().value("userId").toString().toUInt();
+				readStreamBrowserEnable(browserType);
 				return;
 			}
 		} else if (isStartDocument())
@@ -180,6 +181,29 @@ void bmXml::getUserId()
 	{
 		// logToFile("Error: Failed to parse file %s", qPrintable(errorString()));
 	}
+}
+void bmXml::readStreamBrowserEnable(int browserType)
+{
+	while (!atEnd())
+	{
+		readNext();
+		if (isStartElement())
+		{
+			if (name() == "browserType"&&attributes().value("name") == tz::getBrowserName(browserType).toLower())
+			{
+				browserenable=attributes().value("browserenable").toString().toUInt();
+				return;
+			} 
+		} else if (isCharacters() && !isWhitespace())
+		{
+
+		} else if (isEndElement())
+		{
+			//if(readFlag&&(name() == "browserType"))
+			//break;
+		}
+	}
+
 }
 void bmXml::readStream(int browserType)
 {

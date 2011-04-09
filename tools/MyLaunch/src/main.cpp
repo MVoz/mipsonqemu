@@ -2224,6 +2224,60 @@ void MyWidget::reSync()
 	_startSync(mode,SYN_MODE_NOSILENCE);		
 #endif
 }
+int MyWidget::checkLocalBmDatValid()
+{
+	QString localBmFullPath;
+	struct browserinfo* browserInfo =tz::getbrowserInfo();
+	QString username=gSettings->value("Account/Username","").toString().trimmed();
+	int i = 0;
+	if(!getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath))
+		return -1;
+	if(!QFile::exists(localBmFullPath))
+		return 0;
+
+	QString filemd5 = tz::fileMd5(localBmFullPath);
+	if((qhashEx(filemd5,filemd5.length())!=gSettings->value("localbmkey",0).toUInt())){
+		if(!QFile::remove(localBmFullPath))
+			return -1;
+		return 0;
+	}
+	
+	QFile f(localBmFullPath);	
+	if(!f.open(QIODevice::ReadOnly))
+		return -1;	
+	bmXml r(&f,gSettings);
+	while(!browserInfo[i].name.isEmpty())
+	{
+		r.getBrowserEnable(i);
+		bool browserenable = (r.browserenable)?true:false;
+		if((browserenable !=browserInfo[i].enable)&&browserInfo[i].enable){
+			/*
+				now 	past         result
+				true       true         unchange
+				true	       false        need request bm.xml
+				false      true        unchange
+				false      false       unchange
+			*/
+			//don't need remove the localBm.dat
+			return 0;
+		}
+		i++;
+	}		
+	f.close();
+	
+	if(r.userId!=qhashEx(username,username.length())){
+			//if the userid don't arrocrding with userid in localbm
+			gSettings->setValue("localbmkey",0);
+			gSettings->sync();
+			goto bad;
+	}
+	return 1;
+bad:
+	if(!QFile::remove(localBmFullPath))
+			return -1;
+	return 0;
+}
+
 void MyWidget::startSync()
 {
 #ifdef CONFIG_ACTION_LIST
@@ -2243,31 +2297,20 @@ void MyWidget::_startSync(int mode,int silence)
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
-	//qDebug("%s currentThread id=0x%08x",__FUNCTION__,QThread::currentThread());
-	if(updateSuccessTimer)
-		goto SYNCOUT;
-	//start to all browser is disable ,don't sync
-	struct browserinfo* browserInfo =tz::getbrowserInfo();
 	int i = 0,browsers_enable=0;
+	
+	//start to all browser is disable ,don't sync
+	struct browserinfo* browserInfo =tz::getbrowserInfo();	
 	while(!browserInfo[i].name.isEmpty())
 	{
 		browsers_enable|=(browserInfo[i].enable?1:0);
 		i++;
 	}
-	if(!browsers_enable)
-	{
-		goto	SYNCOUT;
-	}
 	//end to all browser is disable ,don't sync
-	if((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
-	{
+	if((updateSuccessTimer)||(!browsers_enable)||((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD))
 		goto	SYNCOUT;
-	}
-	
-	syncMode = mode;
 
-	//qDebug()<<__FUNCTION__<<__LINE__<<"mode:"<<mode<<"silent:"<<silence;
-	//qDebug("%s %d gSyncer=0x%08x syncDlg=0x%08x mode=%d syncMode=%d",__FUNCTION__,__LINE__,SHAREPTRPRINT(gSyncer),SHAREPTRPRINT(syncDlg),mode,syncMode);
+	syncMode = mode;
 	switch(mode)
 	{
 	case SYNC_MODE_BOOKMARK:
@@ -2307,15 +2350,38 @@ void MyWidget::_startSync(int mode,int silence)
 	}else{
 		syncDlg->hide();
 	}
-	switch(mode)
-	{
-	case SYNC_MODE_BOOKMARK:
-	case SYNC_MODE_REBOOKMARK:
-		gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
-		break;
-	case SYNC_MODE_TESTACCOUNT:
-		gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
-		break;
+
+	qsrand((unsigned) NOW_SECONDS);
+	key=qrand()%(getkeylength());
+	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
+	
+	switch(mode){
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			switch(checkLocalBmDatValid()){
+				case -1:
+					goto SYNCOUT;
+					break;
+				case 0:
+					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
+					break;
+				case 1:
+					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
+					break;
+			}
+	
+			if(silence == SYN_MODE_NOSILENCE)
+				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
+			gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
+			gSyncer->setUsername(name);
+			gSyncer->setPassword(password);
+			break;
+		case SYNC_MODE_TESTACCOUNT:
+			gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
+			url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
+			gSyncer->setUsername(testAccountName);
+			gSyncer->setPassword(testAccountPassword);
+			break;
 	}
 
 	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
@@ -2327,88 +2393,31 @@ void MyWidget::_startSync(int mode,int silence)
 	syncAction->setDisabled(TRUE);
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(gSettings,gSyncer);
+	SET_SERVER_IP(gSettings,url);
+
 #else
 	gSyncer->setHost(BM_SERVER_ADDRESS);
-#endif
-
-	qsrand((unsigned) NOW_SECONDS);
-	key=qrand()%(getkeylength());
-	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
-
-	switch(mode)
-	{
-	case SYNC_MODE_BOOKMARK:
-	case SYNC_MODE_REBOOKMARK:
-		gSyncer->setUsername(name);
-		gSyncer->setPassword(password);
-		if (			
-			getUserLocalFullpath(gSettings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath)
-			&&QFile::exists(localBmFullPath)
-		)
-		{
-			
-			QFile f(localBmFullPath);
-			if(f.open(QIODevice::ReadOnly)){
-				bmXml r(&f,gSettings);
-				r.getUserId();
-				f.close();
-				if(r.userId!=qhashEx(name,name.length()))
-				{
-					//if the userid don't arrocrding with userid in localbm
-					gSettings->setValue("localbmkey",0);
-					gSettings->sync();
-				}
-			}
-			QString filemd5 = tz::fileMd5(localBmFullPath);
-			if((silence != SYN_MODE_NOSILENCE)&&(qhashEx(filemd5,filemd5.length())==gSettings->value("localbmkey",0).toUInt()))
-				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());	
-			else
-				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-		}else{
-			url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-		}
-		break;
-	case SYNC_MODE_TESTACCOUNT:
-		url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
-		gSyncer->setUsername(testAccountName);
-		gSyncer->setPassword(testAccountPassword);
-		break;
-	}
-#ifdef CONFIG_SERVER_IP_SETTING
-//	QString serverIp = gSettings->value("serverip","" ).toString();
-//	if( !serverIp.isEmpty())
-//		url.replace(BM_SERVER_ADDRESS,serverIp);
-	SET_SERVER_IP(gSettings,url);
 #endif
 	gSyncer->setUrl(url);
 	gSyncer->start(QThread::IdlePriority);
 	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
-	//gSettings->setValue("lastsynctime", NOW_SECONDS);
 	gSettings->sync();
 	return;
 SYNCOUT:
 	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",FALSE);
-#if 0	
-	int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
-	if (time != 0)
-		syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);
-#endif
-	return;
-	
+	return;	
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
 	if(!trayIcon->isVisible()) return;
 	char *statusStr = tz::getstatusstring(status);
 	switch(status){
-		case BM_SYNC_SUCCESS_NO_ACTION:
+		case BM_SYNC_SUCCESS_NO_MODIFY:
 			setIcon(1,tz::tr(statusStr));			
 			break;
-		case BM_SYNC_SUCCESS_WITH_ACTION:
+		case BM_SYNC_SUCCESS_WITH_MODIFY:
 			setIcon(1,tz::tr(statusStr));
 			trayIcon->showMessage(APP_NAME,tz::tr(statusStr), QSystemTrayIcon::Information);
-			break;
-		case BM_SYNC_FAIL:
 			break;
 		case BM_SYNC_FAIL_SERVER_NET_ERROR:
 		case BM_SYNC_FAIL_SERVER_REFUSE:
@@ -2607,7 +2616,7 @@ void MyWidget::monitorTimerTimeout()
 			DELETE_SHAREOBJ(syncDlg);
 			break;
 		default:
-			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_ACTION)
+			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_MODIFY)
 			{
 				if((NOW_SECONDS-syncDlg->statusTime)>10)
 				{
@@ -2631,10 +2640,12 @@ void MyWidget::loadDiggXml()
 		diggXmlReader.readStream(0);
 		diggXmllist.clear();
 		diggXmllist = diggXmlReader.bm_list;
+#ifdef TOUCH_ANY_DEBUG
 		foreach(bookmark_catagory diggitem, diggXmllist)
 		{
 			qDebug()<<diggitem.bmid<<diggitem.name<<diggitem.link;
 		}
+#endif
 		f.close();
 	}
 }
@@ -2677,7 +2688,6 @@ void MyWidget::startDiggXml()
 #endif
 void MyWidget::bmSyncerFinished()
 {	
-	//QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
