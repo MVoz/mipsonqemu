@@ -117,10 +117,10 @@ bool bmMerge::loadLastupdateData(bmXml **lastUpdate)
 {
 	//get browser enable
 	QFile f;
-	QString localBmFullPath;
+	
 	int i = 0;
 	struct browserinfo* b =tz::getbrowserInfo();
-	getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
+	QString localBmFullPath=tz::getUserFullpath(settings,LOCAL_FULLPATH_BMDAT);
 	while(!b[i].name.isEmpty())
 	{
 		int browserid = b[i].id;
@@ -210,7 +210,7 @@ void bmMerge::handleBmData()
 	bmXml *lastUpdate[BROWSE_TYPE_MAX]={NULL};
 	bmXml *fromServer[BROWSE_TYPE_MAX]={NULL};
 	uint browserenable[BROWSE_TYPE_MAX];
-	QString localBmFullPath;	
+	QString localBmFullPath=tz::getUserFullpath(settings,LOCAL_FULLPATH_BMDAT);	
 	QString ff_path;
 	QString updateTime;
 	QFile f;
@@ -219,9 +219,9 @@ void bmMerge::handleBmData()
 	if(!checkXmlfileFromServer())
 		return;
 	/*check localbm.dat if md5 faile ,remove it*/
-	getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
+
 	/*
-	
+		getUserLocalFullpath(settings,QString(LOCAL_BM_SETTING_FILE_NAME),localBmFullPath);
 	if(QFile::exists(localBmFullPath)){
 		filemd5 =  tz::fileMd5(localBmFullPath);	
 		if(qhashEx(filemd5,filemd5.length())!=settings->value("localbmkey",0).toUInt())

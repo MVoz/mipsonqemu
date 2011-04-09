@@ -79,7 +79,7 @@ void bmSync::testNetFinished()
 				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
 				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 				filename_fromserver.clear();
-				getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
+				//getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
 				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				//filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
 				filename_fromserver=tz::getSystemTempDir()+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
