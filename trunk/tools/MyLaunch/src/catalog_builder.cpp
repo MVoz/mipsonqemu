@@ -117,18 +117,6 @@ void CatBuilder::run()
 {
 	//qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
 	gSemaphore.acquire(1);
-	//qDebug()<<__FUNCTION__<<"try to aacquirec semphore!";
-	QString dest;
-	/*
-	QString dest = gSettings->fileName();
-	int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
-	if (lastSlash == -1)
-	return;
-	dest = dest.mid(0, lastSlash);
-	dest += "/";
-	dest +=DB_DATABASE_NAME;
-	*/
-	//getUserLocalFullpath(gSettings,QString(DB_DATABASE_NAME),dest);
 	uint delId=NOW_SECONDS;
 #ifdef CONFIG_ACTION_LIST
 	if(buildMode == CAT_BUILDMODE_IMPORT_NETBOOKMARK){
