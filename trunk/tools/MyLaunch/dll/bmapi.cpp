@@ -529,28 +529,7 @@ int setFileTime(QString filename, QString createTime, QString * lastAccessTime, 
 	return NULL;
 }
 #endif
-int deleteDirectory(QString path)
-{
-	path= QDir::toNativeSeparators(path);
-	QDir dir(path);
-	QString dirPath = dir.absolutePath();
-	if(!dir.exists()) return 0;
-	QStringList files = dir.entryList(QDir::Files);
-	for(int i=0;i<files.size();i++)
-	{
-		qDebug("delete file %s ",qPrintable(files[i]));
-		dir.remove(dirPath+ "/"+files[i]);
-	}
-	QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-	for(int i=0;i<dirs.size();i++)
-	{
-		deleteDirectory(dirPath+ "/"+dirs[i]);
-	}
-	qDebug("deleteDirectory %s ",qPrintable(dirPath));
-	dir.rmdir(dirPath);
-	return 1;
 
-}
 
 
 void runProgram(QString path, QString args) {
@@ -678,6 +657,7 @@ void SetColor(unsigned short ForeColor=FOREGROUND_INTENSITY,unsigned short BackG
 	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);/*STD_OUTPUT_HANDLE,STD_ERROR_HANDLE*/
 	SetConsoleTextAttribute(hCon,ForeColor|BackGroundColor); 
 } 
+#if 0
 quint16 getFileChecksum(QFile *f)
 {
 	QDataStream ss;
@@ -694,6 +674,7 @@ quint16 getFileChecksum(QFile *f)
 	return checksum;
 
 }
+#endif
 int getFirefoxPath(QString& path)
 {
 	QString iniPath;
@@ -704,9 +685,6 @@ int getFirefoxPath(QString& path)
 	GetShellDir(CSIDL_APPDATA, appData);
 	osPath = appData + "/Mozilla/Firefox/";
 	//#endif
-
-
-
 	iniPath = osPath + "profiles.ini";
 
 	QFile file(iniPath);
@@ -730,7 +708,6 @@ int getFirefoxPath(QString& path)
 			break;
 		}
 	} 	
-
 	return 1;
 }
 /*encrypt*/
@@ -1907,6 +1884,24 @@ QString tz::getActionListName(int type){
 }
 #endif
 
+int tz::deleteDirectory(const QString& path)
+{
+	QDir dir( QDir::toNativeSeparators(path));
+	QString dirPath = dir.absolutePath();
+	if(!dir.exists()) return 0;
+	QStringList files = dir.entryList(QDir::Files);
+	for(int i=0;i<files.size();i++)
+	{
+		dir.remove(dirPath+ "/"+files[i]);
+	}
+	QStringList dirs = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+	for(int i=0;i<dirs.size();i++)
+	{
+		deleteDirectory(dirPath+ "/"+dirs[i]);
+	}
+	dir.rmdir(dirPath);
+	return 1;
+}
 
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 QString tz::getProcessExeFullpath(uint dwPID)

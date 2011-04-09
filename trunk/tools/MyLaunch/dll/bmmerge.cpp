@@ -702,7 +702,7 @@ void bmMerge::downloadToLocal(bookmark_catagory * bc, int action, QString path,i
 			break;
 		case BROWSE_TYPE_IE:
 			dirPath = path + "\\" + bc->name;
-			if (!deleteDirectory(dirPath))
+			if (!tz::deleteDirectory(dirPath))
 			{
 				setMergeStatus(bc->name,bc->link,browserType,DOWN_LOCAL_ACTION_DELETE_DIR,BM_SYNC_FAIL_DOWNLOCAL_DELETE_FILE);
 				qDebug("Couldn't remove new directory %s error=%d.", qPrintable(dirPath),GetLastError());
