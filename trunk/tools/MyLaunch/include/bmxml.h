@@ -109,7 +109,8 @@ public:
 	void handler_line(QString line,int type);
 	void outToFile(QTextStream& os);
 	void item_end(QTextStream& os,int type,int& finish);
-	void getUserId();
+	void getBrowserEnable(int browserType);
+	void readStreamBrowserEnable(int browserType);
 	#ifdef CONFIG_DIGG_XML
 	void readDiggElement();
 	#endif

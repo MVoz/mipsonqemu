@@ -395,6 +395,7 @@ public slots:
 		void configModify(int type);
 		void storeConfig(int mode=0);
 		void restoreUserCommand();
+		int checkLocalBmDatValid();
 #ifdef CONFIG_DIGG_XML
 		void diggXmlFinished(int status);
 		void startDiggXml();

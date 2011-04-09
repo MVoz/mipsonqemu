@@ -408,7 +408,7 @@ void setUpdatetime(QString time)
 }
 void getUpdatetime(QString& time)
 {
-	time=gUpdatetime;;
+	time=gUpdatetime;
 }
 
 
@@ -1795,7 +1795,7 @@ void tz::clearBmlist(QList<bookmark_catagory> *l){
 		}
 		l->clear();
 }
-bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
+int tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
 #ifdef TOUCH_ANY_DEBUG
 	static int lev = 0;
 	static int count = 0;
@@ -1809,27 +1809,22 @@ bool tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid)
 			lev = level;
 #endif
 		if(l->size()>browserInfo[browserid].maxchild)
-			goto bad;
+			return  -BM_SYNC_FAIL_EXCEED_DIR_COUNT;
 		if(level>browserInfo[browserid].maxlev)
-			goto bad;
+			return -BM_SYNC_FAIL_EXCEED_LEVEL;
 		for (int i = 0; i < l->size(); i++)
 		{
 			if((*l)[i].list.size()){
-				if(!checkValidBmlist(&((*l)[i].list),level+1,browserid))
-					goto bad;
+				int ret = checkValidBmlist(&((*l)[i].list),level+1,browserid);
+				if(ret)
+					return ret;
 			}			
 		}
 #ifdef TOUCH_ANY_DEBUG
 		if(!level)
 			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
-		return true;
-bad:
-#ifdef TOUCH_ANY_DEBUG
-		if(!level)
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
-#endif
-		return false;
+		return 0;
 }
 #ifdef TOUCH_ANY_DEBUG
 /*

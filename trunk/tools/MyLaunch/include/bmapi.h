@@ -240,7 +240,7 @@ public :
 	static QString getFirefoxBinPath();
 	static QString getProcessExeFullpath(uint);
 	static void clearBmlist(QList<bookmark_catagory> *l);
-	static bool checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid);
+	static int checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid);
 #ifdef TOUCH_ANY_DEBUG
 	static QString getActionListName(int type);
 #endif

@@ -68,25 +68,6 @@ enum BM_MERGE_STATUS{
 	MERGE_STATUS_LOCAL_1_LAST_1_SERVER_1////exist in local,lastupdate&server
 };
 
-enum{
-	MERGE_STATUS_SUCCESS_NO_MODIFY=0,
-	MERGE_STATUS_SUCCESS_WITH_MODIFY,
-	MERGE_STATUS_FAIL_LOGIN,
-	MERGE_STATUS_FAIL_POST_HTTP,
-	MERGE_STATUS_FAIL_DOWNLOCAL_WRITE_FILE,
-	MERGE_STATUS_FAIL_DOWNLOCAL_DELETE_FILE,
-	MERGE_STATUS_FAIL_DOWNLOCAL_DB_LOCK,
-	MERGE_STATUS_FAIL_DOWNLOCAL_DB_QUERY,
-	MERGE_STATUS_FAIL_EXCEED_TOTAL_NUM,
-	MERGE_STATUS_FAIL_EXCEED_DIR_COUNT,
-	MERGE_STATUS_FAIL_EXCEED_LEVEL,
-	MERGE_STATUS_FAIL_GET_XML_FROM_SERVER,
-	MERGE_STATUS_FAIL_READ_XML_FROM_SERVER,
-	MERGE_STATUS_FAIL_READ_XML_LOCAL,
-	MERGE_STATUS_FAIL_REMOVE_XML_LOCAL,
-	
-};
-
 class MERGE_THREAD_CLASS_EXPORT bmMerge:public QThread
 {
 	Q_OBJECT;
@@ -113,10 +94,10 @@ public:
 		);
 	bool deleteIdFromFirefoxDb(uint id);	
 	void productFFId(QString & randString,int length);
-	void setTerminated(uint flag){	terminatedFlag=flag;}
+	void setTerminated(uint flag){terminatedFlag=flag;}
 	bool checkXmlfileFromServer();
-	bool loadLastupdateData(struct browserinfo* b,int modifiedInServer,bmXml **lastUpdate,const QString& filepath,uint *browserenable);		
-	void storeLocalbmData(const QString path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,bmXml **lastUpdate,const QString time);
+	bool loadLastupdateData(bmXml **lastUpdate);		
+	void storeLocalbmData(const QString& path,struct browserinfo* b,uint* browserenable,QList < bookmark_catagory > *result,bmXml **lastUpdate,const QString& time);
 	void setMergeStatus(QString& n,QString& f,uint i,uint a,uint s);
 signals:
 	void done(bool error);
