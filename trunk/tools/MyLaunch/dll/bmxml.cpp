@@ -1126,7 +1126,7 @@ void bmXml::setFirefoxDb(QSqlDatabase* db)
 {
 	ff_db=db;
 }
-
+#if 0
 int bmXml::readFirefoxBookmark2(QFile& file)
 {
 	init_ff_bm();
@@ -1231,6 +1231,7 @@ int bmXml::readFirefoxBookmark2(QFile& file)
 	lastFile.close();
 	return 1;
 }
+#endif
 void bmXml::init_ff_bm()
 {
 	ff_bm<<Firefox_BM(QString("ICON"),QString(""),QRegExp("ICON=\"([^\"]*)\"",Qt::CaseInsensitive),BOOKMARK_ITEM_FLAG,DATA_TYPE_STRING)

@@ -50,6 +50,10 @@ QString gUpdatetime;
 //uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
 static QString iePath;
+static QString localbmdatfullpath;
+static QString localDbFullpath;
+static QString localIniFullpath;
+
 char* gLanguageList[]={"ch","en"};
 
 char *statusString[]={
@@ -651,7 +655,7 @@ QString tz::GetShortcutTarget(const QString& LinkFileName)
 	}
 	return QString::fromUtf16((ushort*)arg);
 } 
-
+/*
 bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest)
 {
 	dest = settings->fileName();
@@ -663,7 +667,7 @@ bool getUserLocalFullpath(QSettings* settings,QString filename,QString& dest)
 	dest +=filename;
 	return true;
 }
-
+*/
 int getDesktop()
 {
 	return DESKTOP_WINDOWS;
@@ -1270,6 +1274,51 @@ QString tz::getIePath()
 	if(iePath.isEmpty())
 		GetShellDir(CSIDL_FAVORITES, iePath);
 	return iePath;
+}
+QString tz::getUserFullpath(QSettings* s,int type)
+{
+	switch(type){
+		case LOCAL_FULLPATH_BMDAT:
+			if(localbmdatfullpath.isEmpty()){
+				QString dest = s->fileName();
+				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
+				if (lastSlash == -1)
+					return QString("");
+				dest = dest.mid(0, lastSlash);
+				dest += "/";
+				dest +=QString(LOCAL_BM_SETTING_FILE_NAME);
+				localbmdatfullpath = dest;
+			}
+			return localbmdatfullpath;
+			break;
+		case LOCAL_FULLPATH_DB:
+			if(localDbFullpath.isEmpty()){
+				QString dest = s->fileName();
+				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
+				if (lastSlash == -1)
+					return QString("");
+				dest = dest.mid(0, lastSlash);
+				dest += "/";
+				dest +=QString(DB_DATABASE_NAME);
+				localDbFullpath = dest;
+			}
+			return localDbFullpath;
+			break;
+		case LOCAL_FULLPATH_INI:
+			if(localIniFullpath.isEmpty()){
+				QString dest = s->fileName();
+				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
+				if (lastSlash == -1)
+					return QString("");
+				dest = dest.mid(0, lastSlash);
+				dest += "/";
+				dest +=QString(APP_INI_NAME);
+				localIniFullpath = dest;
+			}
+			return localIniFullpath;
+			break;
+	}
+	return QString("");
 }
 QString tz::getPinyin(const char* s)
 {
