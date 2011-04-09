@@ -164,6 +164,8 @@ enum {
 #define IE_BM_XML_FILE_NAME "iefav.xml"
 #define LOCAL_BM_SETTING_INTERVAL "@@$$=$$@@"
 #define DB_DATABASE_NAME APP_NAME".db"
+#define APP_INI_NAME APP_NAME".ini"
+
 #define DB_TABLE_SUFFIX APP_NAME
 #define LOGIN_FALIL_STRING   "login_failure_please_re_login"
 #define LAUNCH_BM_TABLE "launch_bm"
@@ -574,6 +576,11 @@ enum{
 
 #define QDEBUG_LINE   TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__);
 
+enum{
+	LOCAL_FULLPATH_BMDAT=0,
+	LOCAL_FULLPATH_DB,
+	LOCAL_FULLPATH_INI
+};
 
 
 #endif
