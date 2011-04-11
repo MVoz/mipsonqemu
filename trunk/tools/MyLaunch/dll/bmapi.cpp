@@ -53,10 +53,11 @@ int language=DEFAULT_LANGUAGE;
 /*
 	static string
 */
-static QString iePath;
-static QString localbmdatfullpath;
-static QString localDbFullpath;
-static QString localIniFullpath;
+//static QString iePath;
+//static QString localbmdatfullpath;
+//static QString localDbFullpath;
+//static QString localIniFullpath;
+static QString localfullpath[LOCAL_FULLPATH_MAX];
 
 char* gLanguageList[]={"ch","en"};
 
@@ -278,20 +279,20 @@ void setBrowserFullpath(QSettings *s,int type,QString& fullpath){
 		case BROWSE_TYPE_NETBOOKMARK:
 				fullpath = s->value("netbookmarkbrowser","").toString();
 				if(fullpath.isEmpty())
-					fullpath = tz::getDefaultBrowser();
+					fullpath = tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER);
 			break;
 		case BROWSE_TYPE_IE:
 			{
 				fullpath = s->value("adv/iepath","").toString();
 				if(fullpath.isEmpty())
-					fullpath = tz::getIEBinPath();
+					fullpath = tz::getUserFullpath(NULL,LOCAL_FULLPATH_IE);
 			}
 			break;
 		case BROWSE_TYPE_FIREFOX:
 			{
 				fullpath = s->value("adv/firefoxpath","").toString();
 				if(fullpath.isEmpty())
-					fullpath=tz::getFirefoxBinPath();
+					fullpath=tz::getUserFullpath(NULL,LOCAL_FULLPATH_FIREFOX);
 			}
 			break;
 		case BROWSE_TYPE_OPERA:
@@ -810,7 +811,7 @@ uint qhashEx(QString str, int len)
 	}
 	return h;
 }
-
+/*
 QString tz::getFirefoxBinPath()
 {
 	QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
@@ -824,13 +825,15 @@ QString tz::getFirefoxBinPath()
 	}
 	return "";
 }
-
+*/
+/*
 QString tz::getIEBinPath()
 {
 	 QSettings reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
 	 reg.beginGroup("IeXPLORE.EXE");		 
 	return reg.value(".").toString().trimmed();
 }
+*/
 uint setLanguage(int l)
 {
 	language=l;
@@ -1274,7 +1277,7 @@ QString tz::getUserFullpath(QSettings* s,int type)
 {
 	switch(type){
 		case LOCAL_FULLPATH_BMDAT:
-			if(localbmdatfullpath.isEmpty()){
+			if(localfullpath[type].isEmpty()){
 				QString dest = s->fileName();
 				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
 				if (lastSlash == -1)
@@ -1282,12 +1285,12 @@ QString tz::getUserFullpath(QSettings* s,int type)
 				dest = dest.mid(0, lastSlash);
 				dest += "/";
 				dest +=QString(LOCAL_BM_SETTING_FILE_NAME);
-				localbmdatfullpath = dest;
+				localfullpath[type] = dest;
 			}
-			return localbmdatfullpath;
+			return localfullpath[type];
 			break;
 		case LOCAL_FULLPATH_DB:
-			if(localDbFullpath.isEmpty()){
+			if(localfullpath[type].isEmpty()){
 				QString dest = s->fileName();
 				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
 				if (lastSlash == -1)
@@ -1295,12 +1298,12 @@ QString tz::getUserFullpath(QSettings* s,int type)
 				dest = dest.mid(0, lastSlash);
 				dest += "/";
 				dest +=QString(DB_DATABASE_NAME);
-				localDbFullpath = dest;
+				localfullpath[type] = dest;
 			}
-			return localDbFullpath;
+			return localfullpath[type];
 			break;
 		case LOCAL_FULLPATH_INI:
-			if(localIniFullpath.isEmpty()){
+			if(localfullpath[type].isEmpty()){
 				QString dest = s->fileName();
 				int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
 				if (lastSlash == -1)
@@ -1308,15 +1311,91 @@ QString tz::getUserFullpath(QSettings* s,int type)
 				dest = dest.mid(0, lastSlash);
 				dest += "/";
 				dest +=QString(APP_INI_NAME);
-				localIniFullpath = dest;
+				localfullpath[type] = dest;
 			}
-			return localIniFullpath;
+			return localfullpath[type];
+			break;
+		case LOCAL_FULLPATH_TEMP:
+			if(localfullpath[type].isEmpty()){
+				TCHAR tmp[_MAX_PATH]={0};
+				GetTempPath(_MAX_PATH,  tmp);
+				localfullpath[type]= QString::fromUtf16((const ushort *) tmp);
+			}
+			return localfullpath[type];
+			break;
+		case LOCAL_FULLPATH_IEFAV:
+			if(localfullpath[type].isEmpty())
+				GetShellDir(CSIDL_FAVORITES, localfullpath[type]);
+			return localfullpath[type];
 			break;
 		case LOCAL_FULLPATH_IE:
-			if(iePath.isEmpty())
-				GetShellDir(CSIDL_FAVORITES, iePath);
-			return iePath;
+			if(localfullpath[type].isEmpty()){
+				 QSettings reg("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",QSettings::NativeFormat);
+				 reg.beginGroup("IeXPLORE.EXE");		 
+				 localfullpath[type]= reg.value(".").toString().trimmed();
+			}
+			return localfullpath[type];
 			break;
+		case LOCAL_FULLPATH_FIREFOX:
+			if(localfullpath[type].isEmpty()){
+				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
+				TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"firefox's version is "<<ff_reg.value("CurrentVersion","").toString());
+				QString firefox_v= ff_reg.value("CurrentVersion","").toString().trimmed();
+				if(!firefox_v.isEmpty()){
+					ff_reg.beginGroup(firefox_v);
+					ff_reg.beginGroup("Main");		 
+					QStringList keys = ff_reg.allKeys();
+					if(keys.contains("PathToExe",Qt::CaseInsensitive)){
+						 localfullpath[type]= ff_reg.value("PathToExe").toString().trimmed();
+					}				
+				}
+			}
+			return localfullpath[type];
+			break;
+		case LOCAL_FULLPATH_DEFBROWSER:
+			if(localfullpath[type].isEmpty()){
+				QString defBrowserPath;
+				 HKEY hkRoot,hSubKey; 
+				 QString htmlValue = QString("htmlfile");
+				 TCHAR defBrowser[MAX_PATH]={0}; 
+				 unsigned long cbValueName=MAX_PATH; 
+				 unsigned long cbDataValue=MAX_PATH; 
+				 DWORD dwType; 
+				 TCHAR ValueName[MAX_PATH]={0};
+
+				 if(RegOpenKey(HKEY_CLASSES_ROOT,(LPCTSTR)QString(".html").utf16(),&hkRoot)==ERROR_SUCCESS) 
+				 {
+				 	TCHAR lpWstr[MAX_PATH]={0};
+					DWORD lpType = REG_SZ;
+					DWORD maxBufSize = MAX_PATH;
+					if(RegQueryValueEx(hkRoot, NULL, NULL, &lpType, (LPBYTE)lpWstr, &maxBufSize) == ERROR_SUCCESS)
+						htmlValue=QString::fromUtf16((const ushort *) lpWstr);
+					RegCloseKey(hkRoot);
+				}
+				 
+				 if(RegOpenKey(HKEY_CLASSES_ROOT,NULL,&hkRoot)==ERROR_SUCCESS)
+				 {
+				 	if(RegOpenKeyEx(hkRoot, htmlValue .append(QString("\\shell\\open\\command")).utf16(), 0, KEY_ALL_ACCESS, &hSubKey)==ERROR_SUCCESS) 
+						{ 
+							RegEnumValue( hSubKey,  0, ValueName, &cbValueName, NULL, &dwType, (LPBYTE)defBrowser, &cbDataValue); 
+							RegCloseKey(hkRoot); 
+						} 
+					RegCloseKey(hkRoot); 
+				}
+			 	defBrowserPath= QString::fromUtf16((const ushort *) defBrowser);
+				defBrowserPath=defBrowserPath.trimmed();
+				if(!defBrowserPath.isEmpty()){
+					QRegExp regex_path("\"([^\"]*)\"", Qt::CaseInsensitive);
+					 int pos = regex_path.indexIn(defBrowserPath);
+					 if (pos > -1) {
+					     defBrowserPath = regex_path.cap(1); 
+					 }
+				}
+				localfullpath[type]= defBrowserPath;
+			}
+			return localfullpath[type];
+			break;
+			
 	}
 	return QString("");
 }
@@ -1690,12 +1769,15 @@ int tz::checkSilentUpdateFiles()
 	}
 	return 0;
 }
+/*
 QString tz::getSystemTempDir()
 {
 	TCHAR tmp[_MAX_PATH]={0};
 	GetTempPath(_MAX_PATH,  tmp);
 	return QString::fromUtf16((const ushort *) tmp);
 }
+*/
+/*
 QString tz::getDefaultBrowser()
 {
 	QString defBrowserPath;
@@ -1737,6 +1819,7 @@ QString tz::getDefaultBrowser()
 	}
 	return defBrowserPath;
 }
+*/
 unsigned int tz::getNetBookmarkMaxGroupid(QSqlDatabase *db)
 {
 	QSqlQuery q("",*db);

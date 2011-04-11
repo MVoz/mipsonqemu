@@ -82,7 +82,7 @@ void bmSync::testNetFinished()
 				//getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
 				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				//filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
-				filename_fromserver=tz::getSystemTempDir()+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
+				filename_fromserver=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
 				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				file = new QFile(filename_fromserver);
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){

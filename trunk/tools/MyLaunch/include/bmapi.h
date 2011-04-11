@@ -232,10 +232,10 @@ public :
 	static int checkToSetting(QSettings *,const QString &,QString& );
 	static int checkSilentUpdateSettings( QSettings* , QSettings* ,int);
 	static int checkSilentUpdateFiles();
-	static QString getSystemTempDir();
-	static QString getDefaultBrowser();
-	static QString getIEBinPath();
-	static QString getFirefoxBinPath();
+	//static QString getSystemTempDir();
+	//static QString getDefaultBrowser();
+	//static QString getIEBinPath();
+	//static QString getFirefoxBinPath();
 	static QString getProcessExeFullpath(uint);
 	static void clearBmlist(QList<bookmark_catagory> *l);
 	static int checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid);

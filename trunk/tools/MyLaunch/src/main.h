@@ -333,7 +333,7 @@ private:
 	QTimer* monitorTimer;
 	OptionsDlg *ops;
 	QString shortkeyString;
-	QString defBrowser;
+//	QString defBrowser;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
 #endif

@@ -81,7 +81,7 @@ using namespace boost;
 
 extern QString gNativeSep;
 extern QString gSearchTxt;
-extern QString gIeFavPath;
+//extern QString gIeFavPath;
 
 extern QSemaphore gSemaphore;
 
