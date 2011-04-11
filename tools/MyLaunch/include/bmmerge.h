@@ -116,7 +116,7 @@ public:
 	int firefox_version;
 	volatile uint terminatedFlag;
 
-	QString iePath;
+//	QString iePath;
 	QString filename_fromserver;
 	QString username;
 	QString password;
@@ -126,7 +126,9 @@ public:
 
 public:
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int comefrom,uint delId);
+#ifdef TOUCH_ANY_DEBUG
 	static void dumpBcList(QList<bookmark_catagory>* s);
+#endif
 	static void keeplaunchdb(QSqlQuery* q,int comefrom,uint delId);;
 };
 

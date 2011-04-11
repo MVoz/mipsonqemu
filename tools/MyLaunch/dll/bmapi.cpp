@@ -49,6 +49,10 @@ QString gUpdatetime;
 //uint gPostResponse=0;
 //uint gBmId=0;
 int language=DEFAULT_LANGUAGE;
+
+/*
+	static string
+*/
 static QString iePath;
 static QString localbmdatfullpath;
 static QString localDbFullpath;
@@ -86,18 +90,30 @@ char *statusString[]={
 	"update_net_error_proxy_auth",
 
 	"bm_sync_start",
-	"bm_sync_success_no_action",
-	"bm_sync_success_with_action",
-	"bm_sync_fail",
+	"bm_sync_success_no_modify",
+	"bm_sync_success_with_modify",
+	"bm_sync_fail_login",
+	"bm_sync_fail_post_http",
 	"bm_sync_fail_server_net_error",
 	"bm_sync_fail_server_refuse",
 	"bm_sync_fail_server_bmxml_fail",
 	"bm_sync_fail_bmxml_timeout",
 	"bm_sync_fail_merge_error",
 	"bm_sync_fail_proxy_error",
-	"bm_sync_fail_proxy_auth_error",		
+	"bm_sync_fail_proxy_auth_error",
 	"bm_sync_fail_server_testaccount_fail",
-	"bm_sync_fail_server_login"
+	"bm_sync_fail_server_login",
+	"bm_sync_fail_downlocal_write_file",
+	"bm_sync_fail_downlocal_delete_file",
+	"bm_sync_fail_downlocal_db_lock",
+	"bm_sync_fail_downlocal_db_query",
+	"bm_sync_fail_exceed_total_num",
+	"bm_sync_fail_exceed_dir_count",
+	"bm_sync_fail_exceed_level",
+	"bm_sync_fail_get_xml_from_server",
+	"bm_sync_fail_read_xml_from_server",
+	"bm_sync_fail_read_xml_local",
+	"bm_sync_fail_remove_xml_local"
 };
 
 
@@ -1139,7 +1155,7 @@ bool tz::readDirectory(QString directory, QList < bookmark_catagory > *list, uin
 	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
 	if(flag&& level>browserInfo[browserid].maxlev)
 		return false;
-	if(flag&&((dirs.count()+files.count())>browserInfo[browserid].maxchild))
+	if(flag&&((uint)(dirs.count()+files.count())>browserInfo[browserid].maxchild))
 		return false;
 	
 	for (int i = 0; i < dirs.count(); ++i)
@@ -1246,12 +1262,14 @@ void tz::closeFirefox3Db(QSqlDatabase& db)
 		db.close();
 	QSqlDatabase::removeDatabase("dbFirefox");		
 }
+/*
 QString tz::getIePath()
 {
 	if(iePath.isEmpty())
 		GetShellDir(CSIDL_FAVORITES, iePath);
 	return iePath;
 }
+*/
 QString tz::getUserFullpath(QSettings* s,int type)
 {
 	switch(type){
@@ -1293,6 +1311,11 @@ QString tz::getUserFullpath(QSettings* s,int type)
 				localIniFullpath = dest;
 			}
 			return localIniFullpath;
+			break;
+		case LOCAL_FULLPATH_IE:
+			if(iePath.isEmpty())
+				GetShellDir(CSIDL_FAVORITES, iePath);
+			return iePath;
 			break;
 	}
 	return QString("");
@@ -1822,19 +1845,26 @@ void tz::clearBmlist(QList<bookmark_catagory> *l){
 		l->clear();
 }
 int tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
+	static uint totalcount = 0;
+	if(!level)
+		totalcount =0;
+	totalcount += l->size();
 #ifdef TOUCH_ANY_DEBUG
-	static int lev = 0;
-	static int count = 0;
+	static uint lev = 0;
+	static uint levcount = 0;	
 	if(!level){
 		lev = 0;
-		count = 0;
+		levcount = 0;
+		totalcount = 0;
 	}
-		if(l->size() >  count)
-			count = l->size();
+		if((uint)(l->size()) >  levcount)
+			levcount = l->size();
 		if(level >  lev)
 			lev = level;
 #endif
-		if(l->size()>browserInfo[browserid].maxchild)
+		if(totalcount > BROWSER_BM_MAX_TOTAL_COUNT)
+			return  -BM_SYNC_FAIL_EXCEED_TOTAL_NUM;
+		if((uint)(l->size())>browserInfo[browserid].maxchild)
 			return  -BM_SYNC_FAIL_EXCEED_DIR_COUNT;
 		if(level>browserInfo[browserid].maxlev)
 			return -BM_SYNC_FAIL_EXCEED_LEVEL;
@@ -1842,13 +1872,13 @@ int tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
 		{
 			if((*l)[i].list.size()){
 				int ret = checkValidBmlist(&((*l)[i].list),level+1,browserid);
-				if(ret)
+				if(ret<0)
 					return ret;
 			}			
 		}
 #ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<count<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
+			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<levcount<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return 0;
 }

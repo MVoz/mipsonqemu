@@ -73,7 +73,7 @@ void CatBuilder::importNetBookmark()
 				case BROWSE_TYPE_NETBOOKMARK:
 					break;
 				case BROWSE_TYPE_IE:
-					tz::readDirectory(tz::getIePath(), &bc, 0,BROWSE_TYPE_IE,0);
+					tz::readDirectory(tz::getUserFullpath(NULL,LOCAL_FULLPATH_IE), &bc, 0,BROWSE_TYPE_IE,0);
 				break;
 				case BROWSE_TYPE_FIREFOX:
 				/*
@@ -286,7 +286,7 @@ void CatBuilder::buildCatalog_bookmark(uint delId)
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 				break;
 			case BROWSE_TYPE_IE:						
-				if(tz::readDirectory(tz::getIePath(), &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,0))
+				if(tz::readDirectory(tz::getUserFullpath(NULL,LOCAL_FULLPATH_IE), &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,0))
 					setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 				break;
 			case BROWSE_TYPE_FIREFOX:

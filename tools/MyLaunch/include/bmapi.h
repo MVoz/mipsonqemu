@@ -213,7 +213,7 @@ public :
 	static bool checkFirefoxDir(QString& path);//get & check firefox directory
 	static bool openFirefox3Db(QSqlDatabase& db,QString path);
 	static void closeFirefox3Db(QSqlDatabase& db);
-	static QString getIePath();
+//	static QString getIePath();
 	static QString getPinyin(const char* s);
 	static QString fileMd5(QString filename);
 	static uint registerInt(int mode,const QString& path,const QString& name,int val);
