@@ -474,7 +474,7 @@ enum TEST_NET_RESULT{
 #define INIT_TIMER_ACTION_LIST(type,name,start,val)\
 	timer_actionlist[type].actionType= type;\
 	timer_actionlist[type].enable =  (gSettings->value("ck"##name, true).toBool())?1:0;\
-	timer_actionlist[type].startAfterRun =  (short)(start);\
+	timer_actionlist[type].startAfterRun =  (uint)(start);\
 	timer_actionlist[type].lastActionSeconds =gSettings->value("last"##name, 0).toUInt();\
 	if(timer_actionlist[type].lastActionSeconds>runseconds)\
 		timer_actionlist[type].lastActionSeconds=0;\

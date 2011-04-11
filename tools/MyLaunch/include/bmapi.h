@@ -90,7 +90,6 @@ BMAPI_DLL_FUNCEXPORT int getkeylength();
 BMAPI_DLL_FUNCEXPORT int handleUrlString(QString& url);
 BMAPI_DLL_FUNCEXPORT void setUpdatetime(QString time);
 BMAPI_DLL_FUNCEXPORT void getUpdatetime(QString& time);
-BMAPI_DLL_FUNCEXPORT uint qhashEx(QString str, int len);
 //BMAPI_DLL_FUNCEXPORT void setBmId(uint bmid);
 //BMAPI_DLL_FUNCEXPORT uint getBmId();
 //BMAPI_DLL_FUNCEXPORT uint getFirefoxBinPath(QString& ff_bin);
@@ -244,6 +243,7 @@ public :
 #endif
 	static QString getUserFullpath(QSettings* s,int type);
 	static int deleteDirectory(const QString& path);
+	static uint qhashEx(const QString&);
 
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };

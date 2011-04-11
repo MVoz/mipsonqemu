@@ -194,7 +194,7 @@ enum{
 struct  TIMER_ACTION_LIST{
 	char actionType;
 	char enable;//0x01--enable  0x02--in queue
-	short startAfterRun;
+	uint startAfterRun;
 	uint lastActionSeconds;//seconds for units
 	uint interval;//seconds for units
 	uint faileds;//record continous fail nums 

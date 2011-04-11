@@ -249,13 +249,13 @@ void bmXml::importItem(struct bookmark_catagory *bc,int item)
 			switch(item){
 				case BOOKMARK_CATAGORY_NAME:
 					bc->name = text().toString();
-					bc->name_hash= qhashEx(bc->name,bc->name.length());
+					bc->name_hash= tz::qhashEx(bc->name);
 					break;
 				case BOOKMARK_CATAGORY_LINK:
 					bc->link = text().toString().trimmed();
 					handleUrlString(bc->link);
 					if(bc->link.length())
-						bc->link_hash=qhashEx(bc->link ,bc->link.length());
+						bc->link_hash=tz::qhashEx(bc->link);
 					else
 						bc->link_hash=0;	
 					break;
@@ -984,7 +984,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 #endif
 					struct bookmark_catagory ff_bc;
 					ff_bc.name =Q_VALUE_STRING(q,"title");									   
-					ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());									   
+					ff_bc.name_hash=tz::qhashEx(ff_bc.name);									   
 					ff_bc.link =Q_VALUE_STRING(q,"url");
 					handleUrlString(ff_bc.link);
 					QUrl url(ff_bc.link);
@@ -992,7 +992,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 						//qDebug()<<"unvalid http format!";
 						goto out;
 					}
-					ff_bc.link_hash=qhashEx(ff_bc.link,ff_bc.link.length());				
+					ff_bc.link_hash=tz::qhashEx(ff_bc.link);				
 					ff_bc.parentId=Q_VALUE_UINT(q,"parent");
 					ff_bc.flag = BOOKMARK_ITEM_FLAG;
 					//  list->push_back(ff_bc);
@@ -1009,7 +1009,7 @@ int bmXml::outChildItem(int id,QSqlDatabase *db,QTextStream& os,QList < bookmark
 					{
 						struct bookmark_catagory ff_bc;
 						ff_bc.name =Q_VALUE_STRING(q,"title");	
-						ff_bc.name_hash=qhashEx(ff_bc.name,ff_bc.name.length());		
+						ff_bc.name_hash=tz::qhashEx(ff_bc.name);		
 						ff_bc.groupId=Q_VALUE_UINT(q,"id");
 						ff_bc.parentId=Q_VALUE_UINT(q,"parent");
 						ff_bc.flag = BOOKMARK_CATAGORY_FLAG;

@@ -2236,8 +2236,7 @@ int MyWidget::checkLocalBmDatValid()
 	if(!QFile::exists(localBmFullPath))
 		return 0;
 
-	QString filemd5 = tz::fileMd5(localBmFullPath);
-	if((qhashEx(filemd5,filemd5.length())!=gSettings->value("localbmkey",0).toUInt())){
+	if((tz::qhashEx(tz::fileMd5(localBmFullPath))!=gSettings->value("localbmkey",0).toUInt())){
 		if(!QFile::remove(localBmFullPath))
 			return -1;
 		return 0;
@@ -2266,7 +2265,7 @@ int MyWidget::checkLocalBmDatValid()
 	}		
 	f.close();
 	
-	if(r.userId!=qhashEx(username,username.length())){
+	if(r.userId!=tz::qhashEx(username)){
 			//if the userid don't arrocrding with userid in localbm
 			gSettings->setValue("localbmkey",0);
 			gSettings->sync();
@@ -3120,9 +3119,9 @@ void MyWidget::getFavico(const QString& host,const QString& filename)
 	icogh->setDestdir(FAVICO_DIRECTORY);
 	QString extension = filename.section( '.', -1 );
 	if(extension.isEmpty())
-		icogh->setSaveFilename(QString("%1").arg(qhashEx(host,host.length())));
+		icogh->setSaveFilename(QString("%1").arg(tz::qhashEx(host)));
 	else
-		icogh->setSaveFilename(QString("%1.%2").arg(qhashEx(host,host.length())).arg(extension));
+		icogh->setSaveFilename(QString("%1.%2").arg(tz::qhashEx(host)).arg(extension));
 	icogh->start(QThread::IdlePriority);
 }
 void MyWidget::scanDbFavicon()
@@ -3138,7 +3137,7 @@ void MyWidget::scanDbFavicon()
 				QUrl url(fullPath);									
 				if(url.isValid()){
 					QString host = url.host();
-					if(!QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(qhashEx(host,host.length()))))
+					if(!QFile::exists(QString(FAVICO_DIRECTORY"/%1.ico").arg(tz::qhashEx(host))))
 						getFavico(host,"favicon.ico");
 				}
 			}

@@ -792,13 +792,12 @@ int handleUrlString(QString& url)
 	{
 		url.truncate(url.length()-1);
 	}
-
 	return 1;
 }
 
-uint qhashEx(QString str, int len)
+uint tz::qhashEx(const QString& str)
 {
-
+	uint len=str.length();
 	uint h = 0;
 	int g=0;
 	int i=0;
@@ -1102,7 +1101,7 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 				struct bookmark_catagory bc;
 				bc.name =Q_VALUE_STRING(q,"shortName");
 				// dir_bc.name.trimmed();
-				bc.name_hash=qhashEx(bc.name,bc.name.length());
+				bc.name_hash=tz::qhashEx(bc.name);
 				bc.link.clear();
 				bc.link_hash=0;
 				bc.flag = BOOKMARK_CATAGORY_FLAG;
@@ -1124,7 +1123,7 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 				struct bookmark_catagory bc;
 				bc.name =Q_VALUE_STRING(q,"shortName");
 				bc.name.trimmed();
-				bc.name_hash=qhashEx(bc.name,bc.name.length());
+				bc.name_hash=tz::qhashEx(bc.name);
 				bc.link = Q_VALUE_STRING(q,"fullPath");
 				if( bc.link.isEmpty()) continue;
 				QUrl url(bc.link);
@@ -1133,7 +1132,7 @@ bool tz::readMyBookmark(QSqlDatabase *db, QList < bookmark_catagory > *list,uint
 					continue;
 				}
 				handleUrlString(bc.link);
-				bc.link_hash=qhashEx(bc.link,bc.link.length());
+				bc.link_hash=tz::qhashEx(bc.link);
 				bc.flag = BOOKMARK_ITEM_FLAG;
 				bc.level = level;	
 				bc.bmid = Q_VALUE_UINT(q,"id");
@@ -1169,7 +1168,7 @@ bool tz::readDirectory(QString directory, QList < bookmark_catagory > *list, uin
 		struct bookmark_catagory dir_bc;
 		dir_bc.name = dirs[i];
 		// dir_bc.name.trimmed();
-		dir_bc.name_hash=qhashEx(dir_bc.name,dir_bc.name.length());
+		dir_bc.name_hash=tz::qhashEx(dir_bc.name);
 		dir_bc.link.clear();
 		dir_bc.link_hash=0;
 		dir_bc.flag = BOOKMARK_CATAGORY_FLAG;
@@ -1195,8 +1194,8 @@ bool tz::readDirectory(QString directory, QList < bookmark_catagory > *list, uin
 		handleUrlString(bc.link );
 		bc.name = files[i];
 		bc.name.trimmed();
-		bc.name_hash=qhashEx(bc.name,bc.name.length());
-		bc.link_hash=qhashEx(bc.link,bc.link.length());
+		bc.name_hash=tz::qhashEx(bc.name);
+		bc.link_hash=tz::qhashEx(bc.link);
 		bc.flag = BOOKMARK_ITEM_FLAG;
 		bc.level = level;			
 		addItemToSortlist(bc,list);
@@ -1411,7 +1410,7 @@ QString tz::getPinyin(const char* s)
 
 		db.open();
 		QSqlQuery q("",db);
-		r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(qhashEx(s,1)).arg(s);
+		r=QString("select pinyin from %1 where hashId=%2 and word='%3' limit 1").arg(PINYIN_DB_TABLENAME).arg(tz::qhashEx(QString(s))).arg(s);
 		if(q.exec(r)){					
 			while(q.next()) { 
 				r = q.value(0).toString();
