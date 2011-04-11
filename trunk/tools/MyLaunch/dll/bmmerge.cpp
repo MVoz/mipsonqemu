@@ -183,7 +183,7 @@ void bmMerge::storeLocalbmData(const QString& path,struct browserinfo* b,uint* b
 		QTextStream os(&localfile);
 		os.setCodec("UTF-8");
 		int i = 0;
-		uint userid = qhashEx(username,username.length());
+		uint userid = tz::qhashEx(username);
 		while(!b[i].name.isEmpty())
 		{
 			int browserid = b[i].id;
@@ -193,8 +193,8 @@ void bmMerge::storeLocalbmData(const QString& path,struct browserinfo* b,uint* b
 		localfile.close();	
 	}
 #endif
-	QString filemd5 = tz::fileMd5(path);
-	settings->setValue("localbmkey",qhashEx(filemd5,filemd5.length()));
+	//QString filemd5 = tz::fileMd5(path);
+	settings->setValue("localbmkey",tz::qhashEx( tz::fileMd5(path)));
 	settings->sync();
 }	
 

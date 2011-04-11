@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			QUrl url(fullPath);\
 			if(url.isValid()){\
 				QString site = url.host();\
-				icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(qhashEx(site,site.length()));\
+				icon = QString("%1/%2.ico").arg(FAVICO_DIRECTORY).arg(tz::qhashEx(site));\
 				domain = tz::getDomain(url.host());\
 			}\
 		}\
