@@ -6,7 +6,7 @@ bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QStrin
 	firefox_version=0;
 	mergestatus=BM_SYNC_SUCCESS_NO_MODIFY;
 	terminatedFlag=0;
-	GetShellDir(CSIDL_FAVORITES, iePath);
+//	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 bmMerge::~bmMerge(){	
 }
@@ -103,16 +103,18 @@ void bmMerge::clearObject()
 		QFile::remove(filename_fromserver);	
 	}
 }
+#ifdef TOUCH_ANY_DEBUG
 void bmMerge::dumpBcList(QList<bookmark_catagory>* s)
 {
 	foreach(bookmark_catagory item, *s)
 	{
-		qDebug()<<"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId;
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId);
 		if(item.list.count()){
 			dumpBcList(&item.list);
 		}
 	}
 }
+#endif
 bool bmMerge::loadLastupdateData(bmXml **lastUpdate)
 {
 	//get browser enable
@@ -274,7 +276,7 @@ void bmMerge::handleBmData()
 				
 					break;
 				case BROWSE_TYPE_IE:
-					if(tz::readDirectory(iePath, &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,1))
+					if(tz::readDirectory(tz::getUserFullpath(settings,LOCAL_FULLPATH_IE), &current_bc[BROWSE_TYPE_IE], 0,BROWSE_TYPE_IE,1))
 						setBrowserInfoOpFlag(browserid, BROWSERINFO_OP_LOCAL);
 					break;
 				case BROWSE_TYPE_FIREFOX:
@@ -322,7 +324,7 @@ ffout:
 					else
 					bmMergeWithoutModifyInServer(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), &result_bc[browserid],0,iePath,browserid);	
 					*/
-					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0);
+					bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,tz::getUserFullpath(settings,LOCAL_FULLPATH_IE),browserid,0);
 				}else{
 					//keep it
 					result_bc[i] = (lastUpdate[i]->bm_list);
@@ -354,7 +356,7 @@ REDO:
 		if( browserenable[i] ){
 			if(browserInfo[i].lastupdate&&browserInfo[i].fromserver&&browserInfo[i].local)
 			{
-				bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,iePath,browserid,0,doit);
+				bmMergeAction(&current_bc[browserid], &(lastUpdate[browserid]->bm_list), (modifiedInServer)?&(fromServer[browserid]->bm_list):NULL,&result_bc[browserid],0,tz::getUserFullpath(settings,LOCAL_FULLPATH_IE),browserid,0,doit);
 			}else{
 				//keep it
 				result_bc[i] = (lastUpdate[i]->bm_list);

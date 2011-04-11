@@ -1533,6 +1533,8 @@ void MyWidget::catalogBuilt(int type,int status)
 	}else
 		close();
 #endif
+	if(closeflag)
+		close();
 }
 
 void MyWidget::setSkin(QString dir, QString name)
@@ -1703,14 +1705,13 @@ void MyWidget::closeEvent(QCloseEvent * event)
 	STOP_TIMER(silentupdateTimer);
 	STOP_TIMER(syncTimer);
 #endif
-	qDebug()<<"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer;
-	if(gBuilder&&gBuilder->isRunning())
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer);
+	if(THREAD_IS_RUNNING(gBuilder))
 	{
 		//emit catalogTerminateNotify();
 		gBuilder->terminateflag = 1;
 		event->ignore();
 		return;
-
 	}
 	if(THREAD_IS_RUNNING(slientUpdate))
 	{
@@ -1719,7 +1720,7 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		event->ignore();
 		return;
 	}
-	if(gSyncer&&gSyncer->isRunning())
+	if(THREAD_IS_RUNNING(gSyncer))
 	{
 		gSyncer->setTerminateFlag(1);
 		event->ignore();
