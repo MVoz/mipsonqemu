@@ -752,7 +752,6 @@ void synchronizeDlg::updateStatus(int type,int s)
 	status=s;
 	statusTime = NOW_SECONDS;
 	char *statusStr = tz::getstatusstring(s);
-//	qDebug()<<"statuscode:"<<s<<" "<<statusStr;
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:
@@ -1017,7 +1016,7 @@ void OptionsDlg::bmExport(const int& browserid)
 			case BROWSE_TYPE_NETBOOKMARK:
 				break;
 			case BROWSE_TYPE_IE:
-				if(!tz::readDirectory(tz::getUserFullpath(NULL,LOCAL_FULLPATH_IE), &bc, 0,BROWSE_TYPE_IE,1))
+				if(!tz::readDirectory(tz::getUserFullpath(NULL,LOCAL_FULLPATH_IEFAV), &bc, 0,BROWSE_TYPE_IE,1))
 					{
 						return;
 					}

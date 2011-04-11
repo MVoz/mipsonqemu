@@ -392,11 +392,14 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 		//createDbFile();
 	}
 	catalog.reset((Catalog*)new SlowCatalog(gSettings,gSearchResult,&db));
-	GetShellDir(CSIDL_FAVORITES, gIeFavPath);
-	defBrowser = tz::getDefaultBrowser();
+	//GetShellDir(CSIDL_FAVORITES, gIeFavPath);
+	tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER);
+	/*
+	defBrowser = tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER);
 	if(!QFile::exists(defBrowser)){
 		defBrowser.clear();	
-	}	
+	}
+	*/
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -726,8 +729,8 @@ void MyWidget::launchBrowserObject(CatItem& res)
 	QString bin;
 	getBrowserFullpath(COMEFROM_TO_BROWSER_ID(res.comeFrom),bin);	
 	if(bin.isEmpty())
-		bin = defBrowser;
-	qDebug()<<bin;
+		bin = tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER);
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"default browser "<<bin);
 	if(!bin.isEmpty()){
 		if(bin.endsWith(BROWSER_FIREFOX_BIN_NAME,Qt::CaseInsensitive))
 			runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
@@ -1353,8 +1356,8 @@ QIcon MyWidget::getIcon(CatItem * item)
 			//修正自定义的url
 			QUrl url(item->fullPath);
 			if(url.isValid()){
-					qDebug()<<item->fullPath<<" is valid url";
-					return platform->icon(QDir::toNativeSeparators(defBrowser));
+					//qDebug()<<item->fullPath<<" is valid url";
+					return platform->icon(QDir::toNativeSeparators(tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER)));
 			}
 		}
 		return platform->icon(QDir::toNativeSeparators(item->fullPath));
