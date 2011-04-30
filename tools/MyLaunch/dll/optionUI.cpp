@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDesktopWidget>
 #include <catalog.h>
 
-OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::SplashScreen|Qt::MSWindowsFixedSizeDialogHint
+OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::MSWindowsFixedSizeDialogHint
 | Qt::WindowTitleHint),settings(s),db(b)
 {
 	manager=NULL;
@@ -227,7 +227,7 @@ void OptionsDlg::loading(const QString & name)
 	footerstring.append("</div >");
 	footerstring.append("<p style=\"text-align:center;\">");
 	footerstring.append("Copyright 2010 ");
-	footerstring.append("<a  href=\"#\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
+	footerstring.append("<a  href=\"#\" class=\"appname\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
 	footerstring.append("</p>");
 	footerstring.replace("\"","\\\"");
 	jsStr.append("$('#footer').html(\""+footerstring+"\");");
@@ -370,17 +370,19 @@ void OptionsDlg::loading(const QString & name)
 					typesResult += ";";
 			}
 			jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+/*
 			jsStr.append("<td><input type=\"radio\" name=\"select\" ");
 			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\">").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
 			jsStr.append("</td>");
+*/
 			jsStr.append("<td >"+settings->value("name").toString().replace("\\", "\\\\")+"</td>");
 			jsStr.append("<td >"+typesResult+"</td>");
 			jsStr.append(QString("<td >%1</td>").arg(settings->value("indexDirs", false).toBool()));
 			jsStr.append(QString("<td >%1</td>").arg(settings->value("depth", 100).toInt()));
-			jsStr.append(QString("<td > <a class=\"thickbox\" "));
+			jsStr.append(QString("<td > <a class=\"thickbox\"  name=\"edit&raquo;\""));
 			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
 			
-			jsStr.append(QString("href=\"qrc:editdir\">edit</a> "));
+			jsStr.append(QString("href=\"qrc:editdir\" rel=\"width=540&height=100\">edit</a> "));
 			jsStr.append(QString("<a class=\"thickbox\"")); 
 			jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(i));
 				
