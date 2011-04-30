@@ -28,6 +28,7 @@
 #define CONFIG_ACTION_LIST
 #define CONFIG_AUTO_LEARN_PROCESS
 #define CONFIG_DIGG_XML
+#undef CONFIG_SKIN_CONFIGURABLE
 
 /***********defines*****************/
 enum{
