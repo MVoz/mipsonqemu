@@ -91,10 +91,11 @@ function apply(key)
 			</div>
 	</div>
 <div id="wrapper">
-<div style="height: 230px;" class="box">
+<div class="content">
+<div class="cfgitem" style="height:250px;overflow:hidden;">
 <div class="box_l">
 	<h2 class="ntitle">
-		<p id="groupname">体育»</p>
+		<p id="groupname">体育&raquo;</p>
 		<ul class="nelt" id="groupdo">
 			<li class="bkad"><a class="thickbox" id="8027" onclick='addItem(123);' href='qrc:addbmdir'>增加</a></li>
 			<li class="bket"><a class="thickbox" id="8027" onclick="postDirItem('体育',123);" href="qrc:editbmdir">修改</a></li>
@@ -132,7 +133,7 @@ function apply(key)
 </div>	 
 <div class="box_r">
 <h2 class="ntitle">	
-<em>菜单»</em>
+<em>菜单&raquo;</em>
 </h2>
 <div class="muim">
 <ul class="menu_list menu_list_0" style="display: block;">
@@ -146,9 +147,18 @@ function apply(key)
 </div>
 </div>	
 </div>
+			<div class="cfgitem">
+				<h2>浏览器设置&raquo;</h2>
+				<p>
+					<span class="tl">网络收藏夹的书签将使用</span>
+					<input name="netbookmarkbrowser" type="text" id="netbookmarkbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netbookmarkbrowser',1);"/>
+				</p>
+			</div>
+			
 </div>
+<div id="footer"></div>
 <div id="exportbm" style="display:none;">
-		<fieldset class="cfgitem">
+		<div class="cfgitem">
 			<h2>&nbsp;&nbsp;导入&raquo;</h2>
 				<p>
 					<span class="tl">选择从下面浏览器中导入书签:</span>
@@ -163,10 +173,10 @@ function apply(key)
 					<div class="btn"><a href="#" onclick="bmexport()">确定</a></div>
 					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 				</p>
-		</fieldset>
+		</div>
 </div>
 <div id="addbmdir" style="display:none;">
-		<fieldset class="cfgitem">
+		<div class="cfgitem">
 			<h2>&nbsp;&nbsp;增加&raquo;</h2>
 				<p>
 					<span class="tl">名称:</span>
@@ -193,10 +203,10 @@ function apply(key)
 					<div class="btn"><a href="#" onclick="bmDirApply(0)">增加</a></div>
 					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 				</p>
-		</fieldset>
+		</div>
 </div>
 <div id="editbm" style="display:none;">
-		<fieldset class="cfgitem">
+		<div class="cfgitem">
 			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
 				<p>
 					<span class="tl">名称:</span>
@@ -217,10 +227,10 @@ function apply(key)
 					<div class="btn"><a href="#" onclick="bmApply(1)">修改</a></div>
 					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 				</p>
-		</fieldset>
+		</div>
 </div>
 <div id="deletebm" style="display:none;">
-			<fieldset class="cfgitem">
+			<div class="cfgitem">
 						<h2>&nbsp;&nbsp;删除&raquo;</h2>
 						<p>
 							<span class="tl">您确定删除网址：</span>
@@ -234,10 +244,10 @@ function apply(key)
 							<div class="btn"><a href="#" onclick="bmApply(2)">删除</a></div>
 							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
-			</fieldset>
+			</div>
 </div>
 <div id="editbmdir" style="display:none;">
-		<fieldset class="cfgitem">
+		<div class="cfgitem">
 			<h2>&nbsp;&nbsp;编辑&raquo;</h2>
 				<p>
 					<span class="tl">名称:</span>
@@ -252,10 +262,10 @@ function apply(key)
 					<div class="btn"><a href="#" onclick="bmDirApply(1)">修改</a></div>
 					<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 				</p>
-		</fieldset>
+		</div>
 </div>
 <div id="deletebmdir" style="display:none;">
-			<fieldset class="cfgitem">
+			<div class="cfgitem">
 						<h2>&nbsp;&nbsp;删除&raquo;</h2>
 						<p>
 							<span class="tl">您确定删除目录：</span>
@@ -269,17 +279,9 @@ function apply(key)
 							<div class="btn"><a href="#" onclick="bmDirApply(2)">删除</a></div>
 							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
-			</fieldset>
-</div>
-			<fieldset class="cfgitem">
-				<h2>浏览器设置&raquo;</h2>
-				<p>
-					<span class="tl">网络收藏夹的书签将使用</span>
-					<input name="netbookmarkbrowser" type="text" id="netbookmarkbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netbookmarkbrowser',1);"/>
-				</p>
-			</fieldset>
-			<div id="footer">				
 			</div>
+</div>
+</div>
 <script type="text/javascript" language="javascript">
 OptionsDlg.loading('bookmark');	
 tb_init('a.thickbox');

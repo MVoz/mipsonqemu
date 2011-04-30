@@ -39,8 +39,8 @@ function   set_selected(s_value,id){
 		</div>
 </div>
 		<div id="wrapper">
-				<div class="clearfix">
-					<fieldset class="cfgitem">
+				<div class="content">
+					<div class="cfgitem">
 					<h2>高级&raquo;</h2>
 					<ul>
 						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
@@ -58,15 +58,15 @@ function   set_selected(s_value,id){
 						<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 						</li>
 					</ul>					
-					</fieldset>
-					<fieldset class="cfgitem">
+					</div>
+					<div class="cfgitem">
 						<h2>搜索引擎&raquo;</h2>
 						<p><span>当无法匹配您所输入的字符串时,将通过网页打开&nbsp;</span><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></p>
 						<p>
 							<span>浏览器</span>
 							<input name="netsearchbrowser" type="text" id="netsearchbrowser" class="itext" style="width:450px;"/><input align="right" type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#netsearchbrowser',1);"/>
 						</p>
-					</fieldset>
+					</div>
 				</div>
 			 <div id="footer">				
 			</div>

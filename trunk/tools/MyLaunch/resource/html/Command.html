@@ -42,9 +42,9 @@ function apply(key)
 			</div>
 	</div>
 		<div id="wrapper">
-				<div class="clearfix">
-					<fieldset class="cfgitem">
-						<h2>&nbsp;目录&raquo;
+				<div class="content">
+					<div class="cfgitem">
+						<h2>目录&raquo;
 							<p style="display:inline;float:right:padding-right:10px"><a class="thickbox" href="qrc:addcmd">增加</a></p>
 						</h2>
 						<div class="tableContainer">
@@ -66,9 +66,9 @@ function apply(key)
 							</tbody>
 						</table>
 						</div>	
-					</fieldset>
+					</div>
 					<div id="editcmd" style="display:none;">
-						<fieldset class="cfgitem">
+						<div class="cfgitem">
 							<h2>编辑&raquo;</h2>
 							<p>
 								<span class="tl">名字:</span>
@@ -94,10 +94,10 @@ function apply(key)
 								<div class="btn"><a href="#" onclick="cmdApply(1)">修改</a></div>
 								<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 							</p>
-						</fieldset>
+						</div>
 					</div>
 					<div id="addcmd" style="display:none;">
-						<fieldset class="cfgitem">
+						<div class="cfgitem">
 							<h2>增加&raquo;</h2>
 							<p>
 								<span class="tl">名字:</span>
@@ -123,10 +123,10 @@ function apply(key)
 								<div class="btn"><a href="#" onclick="cmdApply(0)">增加</a></div>
 								<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 							</p>
-						</fieldset>
+						</div>
 					</div>
 					<div id="deletecmd" style="display:none;">
-					<fieldset class="cfgitem">
+					<div class="cfgitem">
 						<h2>&nbsp;&nbsp;删除&raquo;</h2>
 						<p>
 							<span class="tl">您确定删除命令：</span>
@@ -140,7 +140,7 @@ function apply(key)
 							<div class="btn"><a href="#" onclick="cmdApply(2)">删除</a></div>
 							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
 						</p>
-					</fieldset>
+					</div>
 					</div>
 				</div>
 			 <div id="footer">				
