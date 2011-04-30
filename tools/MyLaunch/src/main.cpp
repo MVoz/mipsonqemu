@@ -1294,7 +1294,7 @@ void MyWidget::searchOnInput()
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
-#if 1
+#if 0
 	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
 	for (int i = 0; i < searchResults.count(); i++)
 	{
@@ -1539,7 +1539,7 @@ void MyWidget::catalogBuilt(int type,int status)
 	if(maincloseflag)
 		close();
 }
-
+#ifdef CONFIG_SKIN_CONFIGURABLE
 void MyWidget::setSkin(QString dir, QString name)
 {
 
@@ -1555,7 +1555,7 @@ void MyWidget::setSkin(QString dir, QString name)
 	if (wasShowing)
 		showLaunchy(true);
 }
-
+#endif
 QPoint MyWidget::loadPosition(int rescue)
 {
 	QRect r = geometry();
