@@ -38,7 +38,7 @@ void IconDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option
 	else
 		painter->setPen(color);
 #ifdef CONFIG_NEW_UI
-#else
+//#else
 	painter->setFont(QFont(family, size, weight, italics));
 #endif
 
