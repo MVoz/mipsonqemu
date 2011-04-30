@@ -7,6 +7,8 @@ body{
 	background: none repeat scroll 0% 0% #f2f2f2;
 	color: #333;
 	font: 100%/125% arial,sans-serif;
+	width:800px;
+	height:370px;
 
 }
 img{border: 0pt none;vertical-align: bottom;}
@@ -26,6 +28,7 @@ fieldset{	border: 0pt none;}
 	overflow: hidden;
 	padding: 0pt 0pt 10px;
 	width: 800px;
+	height:320px;
 	margin: 0px auto;
 }
 #page
