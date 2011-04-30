@@ -11,7 +11,7 @@ function apply(key)
 }
 function postItem(path,suffix,isInclude,deep,index)
 {
-		$('#editdir #listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value="'+path+'"/>');
+		$('#editdir #listpath_span').html('<input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:300px;" value="'+path+'"/>');
 		if(isInclude)
 			$('#editdir #isIncludeChildDir_span').html('<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录');
 		else	
@@ -108,7 +108,6 @@ function rebuildcatalog()
 							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 								<thead class="fixedHeader">
 									<tr>
-										<th>选择</th>
 										<th>路径</th>
 										<th>后缀名</th>
 										<th>子目录</th>
@@ -121,8 +120,7 @@ function rebuildcatalog()
 						<div id="tableContainer" class="tableContainer">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 							<tbody class="scrollContent" id="dirlist">
-									<tr>
-									</tr>
+									
 							</tbody>
 						</table>
 						</div>	
@@ -161,11 +159,10 @@ function rebuildcatalog()
 					</div>
 					<div id="editdir" style="display:none;">
 					<div class="cfgitem">
-						<h2>&nbsp;&nbsp;编辑&raquo;</h2>
 						<p>
 							<span class="tl">路径:</span>
 							<span class="ip">
-								<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value=""/></span>
+								<span id="listpath_span"></span>
 								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
 							</span>
 							<span class="ip" id="isIncludeChildDir_span">
@@ -185,10 +182,10 @@ function rebuildcatalog()
 						<p style="display:none;" id="cmdIndex_span">
 							<input name="cmdIndex" type="text" id="cmdIndex" >
 						</p>						
-						<p>
-							<div class="btn"><a href="#" onclick="listApply(1)">修改</a></div>
-							<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>
-						</p>
+						<div>
+							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
+							<div class="btn"><a href="#" onclick="listApply(1)">修改</a></div>							
+						</div>
 					</div>
 					</div>
 					<div id="deletedir" style="display:none;">

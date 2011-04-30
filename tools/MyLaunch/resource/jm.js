@@ -13,13 +13,14 @@ function tb_init(domChunk){
 	var t = this.title || this.name || null;
 	var a = this.href;
 	var g = this.rel || false;
-	tb_show(t,a,g);
+	params=tb_parseQuery(g);
+	tb_show(t,a,params);
 	this.blur();
 	return false;
 	});
 }
 
-function tb_show(caption, url, imageGroup) {//function called when the user clicks on a thickbox link
+function tb_show(caption, url, params) {//function called when the user clicks on a thickbox link
 	try {
 		if(document.getElementById("TB_overlay") === null){
 				$("body").append("<div id='TB_overlay'></div><div id='TB_window'></div>");
@@ -34,15 +35,16 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 		if(caption===null){caption="";}
 		$("body").append("<div id='TB_load'><img src='"+imgLoader.src+"' /></div>");//add loader to the page
 		$('#TB_load').show();//show loader
-
+		TB_WIDTH = parseInt(params['width']);
+		TB_HEIGHT = parseInt(params['height']);
 		if(1){
 			var queryString = url.replace(/^[^\?]+\??/,'');
 			var params = tb_parseQuery( queryString );
-			TB_WIDTH = (params['width']*1) + 30 || 540; //defaults to 630 if no paramaters were added to URL
-			TB_HEIGHT = (params['height']*1) + 40 || 310; //defaults to 440 if no paramaters were added to URL
+			TB_WIDTH=(TB_WIDTH>0)?(TB_WIDTH+30):540;
+			TB_HEIGHT=(TB_HEIGHT>0)?(TB_HEIGHT+40):300;
+
 			ajaxContentW = TB_WIDTH - 30;
 			ajaxContentH = TB_HEIGHT - 45;
-			
 			if(1){// either iframe or ajax window		
 						$("#TB_iframeContent").remove();				
 						$("#TB_window").append("<div id='TB_title'><div id='TB_ajaxWindowTitle'>"+caption+"</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='Close'>close</a> </div></div><div id='TB_iframeContent' name='TB_iframeContent"+Math.round(Math.random()*1000)+"' style='width:"+(ajaxContentW + 29)+"px;height:"+(ajaxContentH + 17)+"px;' > </div>");
