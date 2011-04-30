@@ -364,7 +364,9 @@ public slots:
 		void setPortable(bool);
 		void mousePressEvent(QMouseEvent *e);
 		void mouseMoveEvent(QMouseEvent *e);
+#ifdef CONFIG_SKIN_CONFIGURABLE
 		void setSkin(QString, QString);
+#endif
 //		void httpGetFinished(bool result);
 		void catalogBuilt(int,int);
 		void inputMethodEvent(QInputMethodEvent* e);
