@@ -329,7 +329,7 @@ private:
 	QIcon icon;
 	QIcon icon_problem;
 	appUpdater *slientUpdate;
-	volatile int closeflag;
+	volatile int maincloseflag;
 	QTimer* monitorTimer;
 	OptionsDlg *ops;
 	QString shortkeyString;

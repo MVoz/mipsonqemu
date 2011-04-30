@@ -82,6 +82,7 @@ public:
 	int getUsage(const QString& path);
 	bool pinyinsearch(const QStringList& list,const int size,int pos,const QString& searchtxt,const int ssize,int& depth,QString suffix);
 	int isAllIn(const QString& src,const QString& all);
+	bool isExistInSearchResults(int pos,QString& realname,QString& fullpath,QString& args);
 	//int debugon;
 	//	uint isExistInDb(CatItem &item);
 };
