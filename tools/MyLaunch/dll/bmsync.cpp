@@ -149,9 +149,14 @@ void bmSync::clearobject()
 	DELETE_OBJECT(testThread);
 	DELETE_FILE(resultBuffer);
 	DELETE_FILE(file);
+#if 1
+	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver)){
+		QFile::remove(filename_fromserver);
+	}
+#else
 	//clear directory to avoid the xml file come from server
 	{
-		QDir dir = QDir(tz::getUserIniDir(GET_MODE,""));
+		QDir dir = QDir(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP));
 		QStringList filters;
 		filters << "*.xml" ;
 		dir.setNameFilters(filters);
@@ -163,6 +168,7 @@ void bmSync::clearobject()
 				dir.remove(fromserverxmls.at(i));
 		}
 	}
+#endif
 }
 void bmSync::run()
 {
