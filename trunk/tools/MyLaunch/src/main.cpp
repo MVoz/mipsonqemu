@@ -317,7 +317,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	//syncDlgTimer=NULL;
 	inputMode = 0;
 	rebuildAll = 0;
-	closeflag = 0;
+	maincloseflag = 0;
 
 	setFocusPolicy(Qt::ClickFocus);
 
@@ -1294,11 +1294,11 @@ void MyWidget::searchOnInput()
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
-#if 0
-	qDebug()<<"search results:";
+#if 1
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
 	for (int i = 0; i < searchResults.count(); i++)
 	{
-		qDebug()<<" "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom;
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL," "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom);
 	}
 #endif
 	qSort(searchResults.begin(), searchResults.end(), CatLess);
@@ -1536,7 +1536,7 @@ void MyWidget::catalogBuilt(int type,int status)
 	}else
 		close();
 #endif
-	if(closeflag)
+	if(maincloseflag)
 		close();
 }
 
@@ -1702,7 +1702,7 @@ void MyWidget::onHotKey()
 
 void MyWidget::closeEvent(QCloseEvent * event)
 {
-	closeflag = 1;
+	maincloseflag = 1;
 #if 0
 	STOP_TIMER(catalogBuilderTimer);
 	STOP_TIMER(silentupdateTimer);
@@ -1729,6 +1729,14 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		event->ignore();
 		return;
 	}
+#ifdef CONFIG_DIGG_XML
+	if(THREAD_IS_RUNNING(gDiggXmler))
+	{
+		gDiggXmler->setTerminateFlag(1);
+		event->ignore();
+		return;
+	}
+#endif
 
 	//      gSettings->setValue("Display/pos", relativePosition());
 	savePosition();
@@ -2520,7 +2528,7 @@ void MyWidget::monitorTimerTimeout()
 	//processing ........
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
-	if(!closeflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
+	if(!maincloseflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
 		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
@@ -2653,9 +2661,13 @@ void MyWidget::diggXmlFinished(int status)
 {
 	gDiggXmler->wait();								
 	gDiggXmler.reset();
-	SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
-	if(status == 1){
-		loadDiggXml();
+	if(maincloseflag)
+		close();
+	else{
+		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
+		if(status == 1){
+			loadDiggXml();
+		}
 	}
 }
 void MyWidget::startDiggXml()
@@ -2701,7 +2713,7 @@ void MyWidget::bmSyncerFinished()
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
-	if(closeflag)
+	if(maincloseflag)
 		close();
 	else{
 		// timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = NOW_SECONDS;
@@ -3066,7 +3078,7 @@ void MyWidget::silentUpdateFinished()
 		DELETE_OBJECT(slientUpdate);	
 	}
 	*/
-	if(closeflag)
+	if(maincloseflag)
 		close();
 	else{
 #ifdef QT_NO_DEBUG

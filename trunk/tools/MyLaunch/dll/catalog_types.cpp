@@ -299,7 +299,23 @@ int SlowCatalog::isAllIn(const QString& src,const QString& all)
 	}
 	return 1;
 }
-
+/*
+*/
+bool SlowCatalog::isExistInSearchResults(int pos,QString& realname,QString& fullpath,QString& args)
+{
+	int i = 0;
+	for(i=0; i <pos;i++){
+		CatItem* item=&searchResults[i];
+		if(item->realname!=realname)
+			continue;
+		if(item->fullPath==fullpath)
+			continue;
+		if(item->args==args)
+			continue;
+		return TRUE;
+	}
+	return FALSE;
+}
 QList < CatItem * >SlowCatalog::search(QString searchTxt)
 {
 	QList < CatItem * >ret;
@@ -432,7 +448,9 @@ RETRY:
 
 					if(!matched) continue;
 				}
-
+				//20110430 check wheather it existed in the results
+				if(isExistInSearchResults(i,Q_VALUE_STRING(q,"realname"),Q_VALUE_STRING(q,"fullPath"),Q_VALUE_STRING(q,"args")))
+					continue;
 				CatItem* item=&searchResults[i++];
 				item->idInTable = Q_VALUE_UINT(q,"id");
 				ids<<QString(item->idInTable);
