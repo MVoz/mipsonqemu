@@ -100,30 +100,32 @@ function rebuildcatalog()
 	</div>
 	<div id="wrapper">
 				<div class="content">
-					<div class="cfgitem">
+					<div class="cfgitem" >
 						<h2>目录&raquo;
 							<p style="display:inline;float:right:padding-right:10px"><a class="thickbox" href="qrc:adddir">增加</a></p>
 						</h2>
-						<div class="tableContainer">
+						<div style="border:1px solid #CCC;height:320px;">
+							<div class="tableContainer">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+									<thead class="fixedHeader">
+										<tr>
+											<th>路径</th>
+											<th>后缀名</th>
+											<th>子目录</th>
+											<th>深度</th>
+											<th>动作</th>
+										</tr>									
+									</thead>
+								</table>
+							</div>	
+							<div id="tableContainer" class="tableContainer">
 							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
-								<thead class="fixedHeader">
-									<tr>
-										<th>路径</th>
-										<th>后缀名</th>
-										<th>子目录</th>
-										<th>深度</th>
-										<th>动作</th>
-									</tr>									
-								</thead>
+								<tbody class="scrollContent" id="dirlist">
+										
+								</tbody>
 							</table>
-						</div>	
-						<div id="tableContainer" class="tableContainer">
-						<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
-							<tbody class="scrollContent" id="dirlist">
-									
-							</tbody>
-						</table>
-						</div>	
+							</div>	
+						</div>
 					</div>
 					<div id="adddir" style="display:none;">
 					<div class="cfgitem">
@@ -190,7 +192,6 @@ function rebuildcatalog()
 					</div>
 					<div id="deletedir" style="display:none;">
 					<div class="cfgitem">
-						<h2>&nbsp;&nbsp;删除&raquo;</h2>
 						<p>
 							<span class="tl">您确定删除目录：</span>
 							<span class="ip" id="del_dir_span">
