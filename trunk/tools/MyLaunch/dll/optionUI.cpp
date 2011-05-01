@@ -305,22 +305,24 @@ void OptionsDlg::loading(const QString & name)
 			while(q.next()) {
 				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
 				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+				/*
 				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
 				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
 				jsStr.append("</td>");
+				*/
 				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"shortName")+"</td>");
 				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"fullPath")+"</td>");
 				jsStr.append("<td >"+Q_VALUE_STRING(q,"args")+"</td>");
 
 				//action
-				jsStr.append(QString("<td > <a class=\"thickbox\" "));
+				jsStr.append(QString("<td > <a class=\"thickbox  editicon\"  name=\"edit&raquo;\""));
 				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
+				jsStr.append(QString("href=\"qrc:editcmd\" rel=\"width=540&height=100\">edit</a> "));
 				
-				jsStr.append(QString("href=\"qrc:editcmd\">edit</a> "));
-				jsStr.append(QString("<a class=\"thickbox\"")); 
-				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
-					
-				jsStr.append(QString("href=\"qrc:deletecmd\">del</a>"));
+				jsStr.append(QString("<a class=\"thickbox delicon\" name=\"delete&raquo;\"")); 
+				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));					
+				jsStr.append(QString("href=\"qrc:deletecmd\" rel=\"width=540&height=90\">del</a>"));
+				
 				jsStr.append(QString("</td >"));
 				/*				
 				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
