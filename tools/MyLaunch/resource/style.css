@@ -29,7 +29,7 @@ a:hover, a:link, a:visited{ text-decoration:none; }
 .itext{border:1px solid #ddd;line-height:20px;height:20px;margin:0 2px;padding:0 2px;color:#333;width:150px;}
 
 #TB_iframeContent .cfgitem, .cfgitem{clear:left;;margin:2px 0px 5px 0px;padding:0px;}
-#TB_iframeContent .cfgitem h2,.cfgitem h2{background: url("qrc:image/g.png") no-repeat scroll 0 -80px transparent;color:#192A63;width:100%;height:32px;margin:0px;line-height:32px;font-size:14px;padding-left:5px;}
+#TB_iframeContent .cfgitem h2,.cfgitem h2{background: url("qrc:image/g.png") no-repeat scroll 0 -80px transparent;color:#2C629E;width:100%;height:32px;margin:0px;line-height:32px;font-size:14px;padding-left:5px;}
 #TB_iframeContent .cfgitem p,.cfgitem p {width:95%;margin:2px 0px;padding:4px 0 4px 10px;clear:left;height:22px;}
 #TB_iframeContent .cfgitem span,.cfgitem span{display:block;float:left;}
 #TB_iframeContent .cfgitem p .tl,.cfgitem p .tl{padding:2px 3px;}
@@ -136,7 +136,7 @@ thead.clt_h th + th + th+th,tbody.clt_c td + td +td +td {width: 40px;text-align:
 #TB_window h1{font-size:1.2em;color:#FF6A00;border-bottom: 1px solid #ccc;padding-bottom:5px;}
 #TB_secondLine {font-size:10px;color:#666;}
 
-#TB_ajaxWindowTitle {color:#192A63;width:100%;height:32px;margin:0px;line-height:32px;font-size:14px;padding-left:5px;font-weight:bold;}
+#TB_ajaxWindowTitle {color:#2C629E;width:100%;height:32px;margin:0px;line-height:32px;font-size:14px;padding-left:5px;font-weight:bold;}
 
 #TB_window a:link,#TB_window a:visited,#TB_window a:active,#TB_window a:focus {color: #666;}
 #TB_window a:hover {color: #000;}
