@@ -202,15 +202,14 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 
 	.nelt {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
 	.nelt li{float:left;list-style: none;}
-	.nelt li a{display: block;text-decoration: none;width: 30px;white-space: nowrap;}
+	.nelt li a{display: block;text-decoration: none;width: 30px;white-space: nowrap;color:#2C629E}
 	.nelt #qkmua{background: url("qrc:image/g.png") no-repeat scroll -909px -456px transparent;width: 60px;padding: 5px 0px;}
 	.nelt li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}
 	.nelt li ul li	{float: none;display: inline}
 	.nelt li ul li a {width: auto;padding: 5px 0px;}
 	.nelt li ul li a:hover {color:#FF6600;}
 	.nelt #qkmut{font-style:normal;}
-.green{color: #438E0B;}
-	.green a{ color: #438E0B; }
+.green,.green a{color: #438E0B;}
 
 .muim{	padding: 1px;width:250px;}
 .muim .menu_list{	width:230px;height:215px;overflow:auto;}

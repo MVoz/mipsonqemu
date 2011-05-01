@@ -101,8 +101,8 @@ function rebuildcatalog()
 	<div id="wrapper">
 				<div class="content">
 					<div class="cfgitem" >
-						<h2>目录&raquo;
-							<p style="display:inline;float:right:padding-right:10px"><a class="thickbox" href="qrc:adddir">增加</a></p>
+						<h2 class="ntitle">目录&raquo;
+							<ul class="nelt" id="groupdo"><li class="bkad"><a class="thickbox" name="add&raquo;" href="qrc:adddir" rel="width=540&height=100">增加</a></li></ul>
 						</h2>
 						<div style="border:1px solid #CCC;height:320px;">
 							<div class="tableContainer">
@@ -127,69 +127,65 @@ function rebuildcatalog()
 							</div>	
 						</div>
 					</div>
-					<div id="adddir" style="display:none;">
-					<div class="cfgitem">
-						<h2>&nbsp;&nbsp;增加&raquo;</h2>
-						<p>
-							<span class="tl">路径:</span>
-							<span class="ip">
-								<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:400px;" value=""/></span>
-								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #listPath',0);"/>
-							</span>
-							<span class="ip" id="isIncludeChildDir_span">
-								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
-							</span>	
-						</p>
-						<p>
-							<span class="tl">后缀:</span>
-							<span class="ip" id="suffix_span">
-								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
-							</span>
-							<span class="tl">最大深度:</span>
-							<span class="ip" id="childDeep_span">
-								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
-							</span>	
-						</p>
-						<p style="display:none;" id="cmdIndex_span">
-							<input name="cmdIndex" type="text" id="cmdIndex" >
-						</p>						
-						<p>
+						<div id="adddir" style="display:none;">
+							<div class="cfgitem" style="border:solid 1px #ccc;">
+								<p>
+									<span class="tl">路径:</span>
+									<span class="ip">
+										<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:300px;" value=""/></span>
+										<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #listPath',0);"/>
+									</span>
+									<span class="ip" id="isIncludeChildDir_span">
+										<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+									</span>	
+								</p>
+								<p>
+									<span class="tl">后缀:</span>
+									<span class="ip" id="suffix_span">
+										<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+									</span>
+									<span class="tl">最大深度:</span>
+									<span class="ip" id="childDeep_span">
+										<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
+									</span>	
+								</p>	
+								<p style="display:none;" id="cmdIndex_span">
+									<input name="cmdIndex" type="text" id="cmdIndex" >
+								</p>
+							</div>
 							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
 							<div class="btn"><a href="#" onclick="listApply(0)">增加</a></div>							
-						</p>
-					</div>
-					</div>
-					<div id="editdir" style="display:none;">
-					<div class="cfgitem">
-						<p>
-							<span class="tl">路径:</span>
-							<span class="ip">
-								<span id="listpath_span"></span>
-								<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
-							</span>
-							<span class="ip" id="isIncludeChildDir_span">
-								<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
-							</span>	
-						</p>
-						<p>
-							<span class="tl">后缀:</span>
-							<span class="ip" id="suffix_span">
-								<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
-							</span>
-							<span class="tl">最大深度:</span>
-							<span class="ip" id="childDeep_span">
-								<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
-							</span>	
-						</p>
-						<p style="display:none;" id="cmdIndex_span">
-							<input name="cmdIndex" type="text" id="cmdIndex" >
-						</p>						
-						<div>
+						</div>
+						<div id="editdir" style="display:none;">
+							<div class="cfgitem" style="border:solid 1px #ccc;">
+								<p>
+									<span class="tl">路径:</span>
+									<span class="ip">
+										<span id="listpath_span"></span>
+										<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('listPath',0);"/>
+									</span>
+									<span class="ip" id="isIncludeChildDir_span">
+										<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+									</span>	
+								</p>
+								<p>
+									<span class="tl">后缀:</span>
+									<span class="ip" id="suffix_span">
+										<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+									</span>
+									<span class="tl">最大深度:</span>
+									<span class="ip" id="childDeep_span">
+										<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
+									</span>	
+								</p>
+								<p style="display:none;" id="cmdIndex_span">
+									<input name="cmdIndex" type="text" id="cmdIndex" >
+								</p>
+							</div>
 							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
 							<div class="btn"><a href="#" onclick="listApply(1)">修改</a></div>							
-						</div>
-					</div>
-					</div>
+						  
+					 </div>
 					<div id="deletedir" style="display:none;">
 					<div class="cfgitem">
 						<p>
