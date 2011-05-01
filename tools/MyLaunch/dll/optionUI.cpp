@@ -306,19 +306,19 @@ void OptionsDlg::loading(const QString & name)
 				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
 				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
 				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(Q_VALUE_STRING_HTML(q,"shortName")).arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
 				jsStr.append("</td>");
-				jsStr.append("<td >"+Q_VALUE_STRING(q,"shortName").replace("\\", "\\\\")+"</td>");
-				jsStr.append("<td >"+Q_VALUE_STRING(q,"fullPath").replace("\\", "\\\\")+"</td>");
+				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"shortName")+"</td>");
+				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"fullPath")+"</td>");
 				jsStr.append("<td >"+Q_VALUE_STRING(q,"args")+"</td>");
 
 				//action
 				jsStr.append(QString("<td > <a class=\"thickbox\" "));
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML(q,"shortName")).arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
+				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
 				
 				jsStr.append(QString("href=\"qrc:editcmd\">edit</a> "));
 				jsStr.append(QString("<a class=\"thickbox\"")); 
-				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
+				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
 					
 				jsStr.append(QString("href=\"qrc:deletecmd\">del</a>"));
 				jsStr.append(QString("</td >"));
@@ -355,11 +355,11 @@ void OptionsDlg::loading(const QString & name)
 		{
 			settings->setArrayIndex(i);
 			Directory tmp;
-			tmp.name = settings->value("name").toString();
-			tmp.types = settings->value("types").toStringList();
-			tmp.indexDirs = settings->value("indexDirs", false).toBool();
+			tmp.name = QSETTING_VALUE_STRING(settings,"name");
+			tmp.types =  QSETTING_VALUE_STRINGLIST(settings,"types");
+			tmp.indexDirs = QSETTING_VALUE_BOOL(settings,"indexDirs", false);
 			//tmp.indexExe = settings->value("indexExes", false).toBool();
-			tmp.depth = settings->value("depth", 100).toInt();
+			tmp.depth =QSETTING_VALUE_UINT(settings,"depth", 100);
 			dirLists.append(tmp);
 
 			QString typesResult;
@@ -375,18 +375,18 @@ void OptionsDlg::loading(const QString & name)
 			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\">").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
 			jsStr.append("</td>");
 */
-			jsStr.append("<td >"+settings->value("name").toString().replace("\\", "\\\\")+"</td>");
+			jsStr.append("<td >"+(QSETTING_VALUE_STRING_HTML(settings,"name"))+"</td>");
 			jsStr.append("<td >"+typesResult+"</td>");
-			jsStr.append(QString("<td >%1</td>").arg(settings->value("indexDirs", false).toBool()));
-			jsStr.append(QString("<td >%1</td>").arg(settings->value("depth", 100).toInt()));
-			jsStr.append(QString("<td > <a class=\"thickbox\"  name=\"edit&raquo;\""));
-			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
+			jsStr.append(QString("<td ><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
+			jsStr.append(QString("<td >%1</td>").arg(QSETTING_VALUE_UINT(settings,"depth", 100)));
+			jsStr.append(QString("<td > <a class=\"thickbox  editicon\"  name=\"edit&raquo;\""));
+			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)).arg(i));
 			
-			jsStr.append(QString("href=\"qrc:editdir\" rel=\"width=540&height=100\">edit</a> "));
-			jsStr.append(QString("<a class=\"thickbox\"")); 
-			jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(i));
+			jsStr.append(QString("href=\"qrc:editdir\" rel=\"width=540&height=100\">&nbsp;</a> "));
+			jsStr.append(QString("<a class=\"thickbox delicon\" name=\"delete&raquo;\"")); 
+			jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(i));
 				
-			jsStr.append(QString("href=\"qrc:deletedir\">del</a>"));
+			jsStr.append(QString("href=\"qrc:deletedir\" rel=\"width=540&height=90\">&nbsp;</a>"));
 			jsStr.append(QString("</td >"));
 
 		}
@@ -428,7 +428,7 @@ void OptionsDlg::loading(const QString & name)
 								 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
 								 <td width=\"7%\">%8</td>\
 								 <td width=\"7%\">%9</td>\
-								 </tr>").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i).arg(settings->value("name").toString().replace("\\", "\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()));
+								 </tr>").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)).arg(i).arg(QSETTING_VALUE_STRING_HTML(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)));
 
 		}
 
