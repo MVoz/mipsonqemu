@@ -10,7 +10,7 @@ function postItem(name,cmd,args,index)
 	
 		$('#editcmd #cmdName_span').html('<input name="cmdName" type="text" id="cmdName" size=20 class="itext" value="'+name+'"/>');
 		$('#editcmd #cmdParameter_span').html('<input name="cmdParameter" type="text" id="cmdParameter" size=50 class="itext" value="'+args+'"/>');
-		$('#editcmd #cmdCommand_span').html('<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:500px;" value="'+cmd+'"/>');
+		$('#editcmd #cmdCommand_span').html('<input name="cmdCommand" type="text" id="cmdCommand" size=50 class="itext" style="width:350px;" value="'+cmd+'"/>');
 		$('#editcmd #cmdIndex_span').html('<input name="cmdIndex" type="text" id="cmdIndex" value='+index+'>');
 }
 function postDelItem(cmd,index)
@@ -91,8 +91,8 @@ function apply(key)
 								<input name="cmdIndex" type="text" id="cmdIndex">
 							</p>
 						</div>
-						<div class="btn"><a href="#" onclick="cmdApply(1)">修改</a></div>
-						<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>	
+						<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>	
+						<div class="btn"><a href="#" onclick="cmdApply(1)">修改</a></div>						
 					</div>
 					<div id="addcmd" style="display:none;">
 						<div class="cfgitem">
@@ -117,8 +117,8 @@ function apply(key)
 								<input name="cmdIndex" type="text" id="cmdIndex">
 							</p>
 						</div>
-						<div class="btn"><a href="#" onclick="cmdApply(0)">增加</a></div>
-						<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>		
+						<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
+						<div class="btn"><a href="#" onclick="cmdApply(0)">增加</a></div>								
 					</div>
 					<div id="deletecmd" style="display:none;">
 						<div class="cfgitem">
@@ -131,8 +131,8 @@ function apply(key)
 								<input name="cmdIndex" type="text" id="cmdIndex" >
 							</p>	
 						</div>
-						<div class="btn"><a href="#" onclick="cmdApply(2)">删除</a></div>
-						<div class="btn"><a href="#" onclick="tb_remove();"> 取消</a></div>						
+						<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
+						<div class="btn"><a href="#" onclick="cmdApply(2)">删除</a></div>											
 					</div>
 				</div>
 			 <div id="footer">				

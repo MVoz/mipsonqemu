@@ -95,7 +95,8 @@ thead.fixedHeader th + th + th + th,tbody.scrollContent td + td +td +td {width:5
 thead.fixedHeader th + th + th + th+th,tbody.scrollContent td + td +td +td+td {width:40px;text-align: center;}
 
 thead.clt_h th,tbody.clt_c td {width: 147px;text-align: center;}
-thead.clt_h th + th,tbody.clt_c td + td  {width: 420px;text-align: center;}
+thead.clt_h th + th,tbody.clt_c td + td  {width: 420px;text-align: left;}
+thead.clt_h th + th{text-align: center;}
 thead.clt_h th + th + th,tbody.clt_c td + td +td  {width: 150px;text-align: center;}
 thead.clt_h th + th + th+th,tbody.clt_c td + td +td +td {width: 40px;text-align: center;}
 
