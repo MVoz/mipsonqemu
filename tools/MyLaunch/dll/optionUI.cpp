@@ -317,11 +317,11 @@ void OptionsDlg::loading(const QString & name)
 				//action
 				jsStr.append(QString("<td > <a class=\"thickbox  editicon\"  name=\"edit&raquo;\""));
 				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
-				jsStr.append(QString("href=\"qrc:editcmd\" rel=\"width=540&height=100\">edit</a> "));
+				jsStr.append(QString("href=\"qrc:editcmd\" rel=\"width=540&height=100\">&nbsp;</a> "));
 				
 				jsStr.append(QString("<a class=\"thickbox delicon\" name=\"delete&raquo;\"")); 
 				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));					
-				jsStr.append(QString("href=\"qrc:deletecmd\" rel=\"width=540&height=90\">del</a>"));
+				jsStr.append(QString("href=\"qrc:deletecmd\" rel=\"width=540&height=90\">&nbsp;</a>"));
 				
 				jsStr.append(QString("</td >"));
 				/*				
