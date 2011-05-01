@@ -256,7 +256,8 @@ enum {
 
 #define Q_RECORD_INDEX(x,y) (x).record().indexOf(y)
 #define Q_VALUE_STRING(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString()
-#define Q_VALUE_STRING_HTML(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString().replace("\\", "\\\\\\\\")
+#define Q_VALUE_STRING_HTML(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString().replace("\\", "\\\\")
+#define Q_VALUE_STRING_HTML_P(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toString().replace("\\", "\\\\\\\\")
 
 #define Q_VALUE_UINT(x,y) (x).value(Q_RECORD_INDEX((x),(y))).toUInt()
 
@@ -265,6 +266,14 @@ enum {
 #define Q_PTR_VALUE_STRING(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toString()
 #define Q_PTR_VALUE_UINT(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toUInt()
 
+
+#define QSETTING_VALUE_STRING(x,y) (x)->value(y).toString()
+#define QSETTING_VALUE_STRINGLIST(x,y) (x)->value(y).toStringList()
+#define QSETTING_VALUE_STRING_HTML(x,y) (x)->value(y).toString().replace("\\", "\\\\")
+#define QSETTING_VALUE_STRING_HTML_P(x,y) (x)->value(y).toString().replace("\\", "\\\\\\\\")
+#define QSETTING_VALUE_INT(x,y,def) (x)->value((y),(def)).toInt()
+#define QSETTING_VALUE_UINT(x,y,def) (x)->value((y),(def)).toUInt()
+#define QSETTING_VALUE_BOOL(x,y,def) (x)->value((y),(def)).toBool()
 
 
 #define NO_PINYIN_FLAG 0
