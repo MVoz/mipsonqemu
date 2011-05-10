@@ -225,7 +225,7 @@ void OptionsDlg::loading(const QString & name)
 	footerstring.append("<div  class=\"btn\">");
 	footerstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
 	footerstring.append("</div >");
-	footerstring.append("<p style=\"text-align:center;\">");
+	footerstring.append("<p style=\"margin-left:300px;\">");
 	footerstring.append("Copyright 2010 ");
 	footerstring.append("<a  href=\"#\" class=\"appname\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
 	footerstring.append("</p>");
@@ -928,7 +928,7 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
 	QSqlQuery q("",*db);
 	QString js("");	
-	js.append(QString("$(\"#groupname\").html(\"%1").arg(name));
+	js.append(QString("$(\"#groupname\").html(\"%1&raquo;").arg(name));
 	js.append("\");");
 	qDebug()<<__FUNCTION__<<groupid;	
 	js.append(QString("$(\".nelt\").html(\""));
@@ -937,7 +937,7 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 		js.append(QString("<li class='bket'><a class='thickbox' id='%1' onclick='postDirItem(\\\"%2\\\",%3);' href='qrc:editbmdir'>mod</a></li>").arg(groupid).arg(name).arg(groupid));
 		js.append(QString("<li class='bkde'><a class='thickbox' id='%1' onclick='postDelDirItem(\\\"%2\\\",%3);' href='qrc:deletebmdir'>del</a></li>").arg(groupid).arg(name).arg(groupid));
 	}else{
-		js.append(QString("<li class='bkad'><a class='thickbox' href='qrc:exportbm'>export</a></li>"));
+		js.append(QString("<li class='bket'><a class='thickbox' href='qrc:exportbm'>export</a></li>"));
 	}
 	js.append("\");");
 		
