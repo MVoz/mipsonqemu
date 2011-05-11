@@ -937,8 +937,8 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 	js.append(QString("<li class='bkad'><a class='thickbox'  name='add&raquo;' onclick='addItem(%1);' href='qrc:addbmdir' rel='width=540&height=100'>add</a></li>").arg(groupid));
 	//js.append(QString("<li class='bkad'><a class='thickbox'  name='axxdd&raquo;'  href='qrc:addbmdir' rel='width=540&height=100'>add</a></li>"));
 	if(!isroot){
-		js.append(QString("<li class='bket'><a class='thickbox' id='%1' onclick='postDirItem(\\\"%2\\\",%3);' href='qrc:editbmdir'>mod</a></li>").arg(groupid).arg(name).arg(groupid));
-		js.append(QString("<li class='bkde'><a class='thickbox' id='%1' onclick='postDelDirItem(\\\"%2\\\",%3);' href='qrc:deletebmdir'>del</a></li>").arg(groupid).arg(name).arg(groupid));
+		js.append(QString("<li class='bket'><a class='thickbox' id='%1'  name='modify&raquo;' onclick='postDirItem(\\\"%2\\\",%3);' href='qrc:editbmdir' rel='width=540&height=100'>mod</a></li>").arg(groupid).arg(name).arg(groupid));
+		js.append(QString("<li class='bkde'><a class='thickbox' id='%1' name='delete&raquo;' onclick='postDelDirItem(\\\"%2\\\",%3);' href='qrc:deletebmdir' rel='width=540&height=80'>del</a></li>").arg(groupid).arg(name).arg(groupid));
 	}else{
 		js.append(QString("<li class='bket'><a class='thickbox' name='export&raquo;' href='qrc:exportbm' rel='width=540&height=80'>export</a></li>"));
 	}
@@ -970,7 +970,7 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 	}
 	q.clear();
 	js.append("\");");
-//	js.append("tb_init('a.thickbox');");
+	js.append("tb_init('a.thickbox');");
 //	qDebug()<<js;
 	webView->page()->mainFrame()->evaluateJavaScript(js);
 }
