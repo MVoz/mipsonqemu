@@ -36,9 +36,11 @@ a:hover, a:link, a:visited{ text-decoration:none; }
 #TB_iframeContent .cfgitem p .ip,.cfgitem p .ip{padding:2px 3px;}
 #TB_iframeContent .cfgitem input,.cfgitem input {display:block;float:left;padding:0px 5px;margin:0px 5px;}
 #TB_iframeContent .cfgitem input[type=checkbox],.cfgitem input[type=checkbox]{margin-top:2px;}
+#TB_iframeContent .cfgitem input[type=radio],.cfgitem input[type=radio]{margin-top:5px;}
 #TB_iframeContent .cfgitem ul ,.cfgitem > ul {margin:0px;padding:0px 5px;list-style:none;}
 #TB_iframeContent .cfgitem li ,.cfgitem > ul li {padding:2px;clear:both;}
 #TB_iframeContent .cfgitem table,.cfgitem table{clear:left;float:left;width:100%;}
+
 
 div.tableContainer table,.clt table {float: left;width: 100%;}
 thead.fixedHeader tr,thead.clt_h tr {position: relative;display: block}
@@ -153,7 +155,7 @@ thead.clt_h th + th + th+th,tbody.clt_c td + td +td +td {width: 40px;text-align:
 position: absolute;
 margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
 }
-#TB_window img#TB_Image {display:block;margin: 15px 0 0 15px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;border-top: 1px solid #666;border-left: 1px solid #666;}
+/*#TB_window img#TB_Image {display:block;margin: 15px 0 0 15px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;border-top: 1px solid #666;border-left: 1px solid #666;}*/
 #TB_caption{line-height:32px;height:32px;padding:7px 30px 10px 25px;float:left;}
 #TB_closeWindow{line-height:32px;height:32px;padding:11px 25px 10px 0;float:right;}
 #TB_closeWindowButton {background:url("qrc:image/g.png") no-repeat scroll -958px -565px transparent;display:block;height:14px;overflow:hidden;position:absolute;right:5px;text-indent:-999em;top:2px;width:13px;}
@@ -189,9 +191,9 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:10px;overflow:hidden; }
 	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
 	.ntitle ul {list-style: none;}
-	.ntitle ul .bkad a{padding: 5px 0 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -510px transparent;}
-	.ntitle ul .bket a{padding: 5px 0 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -477px transparent;}
-	.ntitle ul .bkde a{padding: 5px 0 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -493px transparent;}
+	.ntitle ul .bkad a{padding: 5px 2px 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -510px transparent;}
+	.ntitle ul .bket a{padding: 5px 2px 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -475px transparent;}
+	.ntitle ul .bkde a{padding: 5px 2px 5px 16px;background:url("qrc:image/g.png") no-repeat scroll -954px -493px transparent;}
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
 .box_l{float: left; width: 550px;height:100%;overflow: hidden;margin-bottom:5px;}
 	.box_l .ntitle{  background: url("qrc:image/g.png") no-repeat scroll 0 -80px transparent;line-height: 32px;}
@@ -200,7 +202,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 
 	.nelt {float:right;height:18px;line-height:18px;padding:8px 2px 0 0;}
 	.nelt li{float:left;list-style: none;}
-	.nelt li a{display:block;float:left;text-decoration: none;width: 30px;white-space: nowrap;color:#2C629E;overflow: hidden;}
+	.nelt li a{display:block;float:left;text-decoration: none;white-space: nowrap;color:#2C629E;overflow: hidden;}
 /*
 	.nelt #qkmua{background: url("qrc:image/g.png") no-repeat scroll -909px -456px transparent;width: 60px;padding: 5px 0px;}
 	.nelt li ul{margin-top:-2px;padding: 0;position: absolute;visibility: hidden;z-index:200;background:none repeat scroll 0 0 #FFFFFF;}

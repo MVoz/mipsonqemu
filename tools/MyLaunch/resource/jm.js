@@ -51,7 +51,6 @@ function tb_show(caption, url, params) {//function called when the user clicks o
 						$("#TB_iframeContent").html($("#"+url).html());
 						tb_showIframe();
 			}
-					
 			$("#TB_closeWindowButton").click(tb_remove);
 
 			tb_position();
