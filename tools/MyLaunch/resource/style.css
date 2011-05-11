@@ -226,11 +226,12 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 .btn a{background:url("qrc:image/btn_g.png");}
 .btn a:hover{background:url("qrc:image/btn.png");}
 
+#bklist{ height: 215px; overflow: auto;}
 #bklist h3{ font-size: 13px; height: 20px; margin:0px; overflow: hidden;font-weight: normal;}
 #bklist h3 a {float: left;color:#2C629E;padding:0px 5px;  max-width: 250px; overflow: hidden;}
 #bklist h3 span { color: #999; font-weight: normal;font-size: 90%;}
 #bklist .oper { color: #C5C5C5;float: right;padding-right:5px;}
 #bklist .message{width:100%;overflow: hidden;height: 20px;}
-.message > a{padding:0px 10px 0px 30px;color:#999 ;float: left; max-width: 440px;}
+.message > a{padding:0px 10px 0px 30px;color:#999 ;float: left; max-width: 420px;}
 .oper > a{color:#999;}
  
