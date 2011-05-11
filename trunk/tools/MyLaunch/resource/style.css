@@ -177,7 +177,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 .box{background:url("qrc:image/boxb.png") no-repeat scroll 0 bottom transparent}
 .box .gray, .box .gray a { color: #aaa; }
 .box h2 , .boxnb h2 { font-size: 12px; }
-.box h3 , .boxnb h3{ font-size:15px;color:#438E0B;margin-bottom:5px; }
+.box h3 , .boxnb h3{ font-size:12px;color:#438E0B;margin-bottom:5px; }
 .box h4 , .boxnb h4 {margin-bottom:5px;font-size:15px;color:#438E0B; width: 970px; border-bottom: #438E0B 2px solid; position: relative; height: 22px}
 	.ntitle{ padding: 0 6px; height: 32px; line-height: 32px; color: #333; font-size: 12px; }
 		.footerbar .ntitle { margin: 0; height: 25px; line-height: 25px; font-size: 12px; }
@@ -225,3 +225,12 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 
 .btn a{background:url("qrc:image/btn_g.png");}
 .btn a:hover{background:url("qrc:image/btn.png");}
+
+#bklist h3{ font-size: 13px; height: 20px; margin:0px; overflow: hidden;font-weight: normal;}
+#bklist h3 a {float: left;color:#2C629E;padding:0px 5px;  max-width: 250px; overflow: hidden;}
+#bklist h3 span { color: #999; font-weight: normal;font-size: 90%;}
+#bklist .oper { color: #C5C5C5;float: right;padding-right:5px;}
+#bklist .message{width:100%;overflow: hidden;height: 20px;}
+.message > a{padding:0px 10px 0px 30px;color:#999 ;float: left; max-width: 440px;}
+.oper > a{color:#999;}
+ 

@@ -925,6 +925,8 @@ void OptionsDlg::bmApply(const int& action,const QString& name,const QString& ur
 #endif
 }
 
+#define QSTRING_HTML_JS_FORMAT(x) (x).replace("\"","\\\\\"")
+
 void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QString& name,const int& isroot ){
 	QSqlQuery q("",*db);
 	QString js("");	
@@ -950,14 +952,19 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 		while(q.next()) {
 			js.append("<li>");
 			js.append("<h3>");
-			js.append(QString("<a class=\\\"url\\\" style=\\\"color: rgb(44, 98, 158);\\\" href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"shortName")));
+			js.append(QString("<a class=\\\"url\\\"  href=\\\"%1\\\" title=\\\"%2\\\">%3</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"shortName")));
+			//js.append(QSTRING_HTML_JS_FORMAT(QString("<a class=\"url\" style=\"color: rgb(44, 98, 158);\" href=\"%1\" title=\"%2\">%3</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"shortName"))));
+			
+			js.append("<span class=\\\"ndate\\\">(2011-01-24)</span>");
 			js.append("</h3>");
-			js.append("<p class=\\\"message\\\">");
-			js.append(QString("<span class=\\\"id_nodes\\\"><a href=\\\"%1\\\">%2</a> ...</span>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"fullPath")));
-			js.append("<span class=\\\"ndate\\\">2011-01-24</span>");
-			js.append(QString("<a class=\\\"edit thickbox\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" style=\\\"color: rgb(136, 136, 136);\\\">edit</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
-			js.append(QString("<a class=\\\"delete thickbox\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\" style=\\\"color: rgb(136, 136, 136);\\\">del</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_UINT(q,"id")));
-			js.append("</p>");
+			js.append("<div class=\\\"message\\\">");
+			js.append(QString("<a href=\\\"%1\\\">%2</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"fullPath")));
+			js.append("<div class=\\\"oper\\\">");
+			js.append(QString("<a class=\\\"edit thickbox\\\"  name=\\\"edit&raquo;\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" rel=\\\"width=540&height=100\\\">edit</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
+			js.append("<em>|</em>");
+			js.append(QString("<a class=\\\"delete thickbox\\\" name=\\\"delete&raquo;\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\"  rel=\\\"width=540&height=100\\\">del</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_UINT(q,"id")));
+			js.append("</div>");
+			js.append("</div>");
 			js.append("</li>");
 		}	
 	}
