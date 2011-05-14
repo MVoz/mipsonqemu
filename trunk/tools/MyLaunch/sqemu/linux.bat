@@ -1,6 +1,2 @@
-REM Start qemu on windows.
-@ECHO OFF
+qemu.exe -L . -m 128 -hda test.img -boot c -net tap,ifname=mytap -net nic,model=ne2k_pci
 
-START qemu.exe -L . -m 128 -hda disk.img  -user-net
-CLS
-EXIT
