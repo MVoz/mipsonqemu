@@ -49,6 +49,9 @@ losetup -d $LOOPDEV
 dd if=/dev/zero of=$HD_IMG_NAME bs=$BLOCKSIZE count=10240
 mke2fs -F  $HD_IMG_NAME
 mount -o loop $HD_IMG_NAME $MNT_DIR
+cp -fr rootfs/* $MNT_DIR
+rm -fr $MNT_DIR/bin
+rm -fr $MNT_DIR/sbin
 cd $QEMU_MAKE_ROOT/busybox-1.18.4
 make CONFIG_PREFIX=$MNT_DIR/ install
 cd $QEMU_MAKE_ROOT
