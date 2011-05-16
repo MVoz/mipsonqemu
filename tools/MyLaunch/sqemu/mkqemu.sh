@@ -69,10 +69,10 @@ mkdir $MNT_DIR/boot/grub
 cp -fr $GRUB_IMG_NAME/boot/grub/* $MNT_DIR/boot/grub
 touch $MNT_DIR/boot/grub/menu.lst
 echo 'default 0' >> $MNT_DIR/boot/grub/menu.lst
-echo 'timeout 1' >> $MNT_DIR/boot/grub/menu.lst
+echo 'timeout 0' >> $MNT_DIR/boot/grub/menu.lst
 echo 'title linux by ramen '$NOWTIME >> $MNT_DIR/boot/grub/menu.lst
 echo 'root (hd0,0)' >> $MNT_DIR/boot/grub/menu.lst
-echo 'kernel (hd0,0)/bzImage root=/dev/ram init=/bin/ash console=ttyS0,115200n8' >> $MNT_DIR/boot/grub/menu.lst
+echo 'kernel (hd0,0)/bzImage root=/dev/ram rw load_ramdisk=1 init=linuxrc console=ttyS0,115200n8' >> $MNT_DIR/boot/grub/menu.lst
 echo 'initrd (hd0,0)/hd.img' >> $MNT_DIR/boot/grub/menu.lst
 
 umount $MNT_DIR
