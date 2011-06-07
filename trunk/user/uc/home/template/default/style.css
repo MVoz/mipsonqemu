@@ -412,7 +412,7 @@ a.c_resend {
 a.c_link {
 	background-position: 0px -64px
 }
-.oper{color:#C5C5C5;margin:-3px 6px;float:right;}
+.oper{color:#C5C5C5;margin:-3px 6px;float:right;width:120px;}
 	.oper a{float:left;padding:2px;}
 	.oper span{float:left;padding:2px;}
 .bvisit {	float: right; color: #2970a6}
@@ -582,7 +582,7 @@ border:1px solid #DDD;}
 		
 		.bklt p.message { margin: 0 0 5px 0; padding: 0; width: 180px; height: 55px; color: #666; overflow: hidden;text-indent:15px; }
 		.bklt p.messagenopic { margin: 0 0 5px 0; padding: 0; width: 320px; height: 52px; color: #666; overflow: hidden;text-indent:15px; }
-		.bklt p.tags{float:left;background:url("image/g.png") no-repeat scroll -952px -200px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;width:120px;}
+		.bklt p.tags{float:left;background:url("image/g.png") no-repeat scroll -952px -200px transparent;padding-left:19px;height:20px;overflow:hidden;color: #666;width:150px;}
 /*		.bklt p.datetime{background:url(image/icons.gif) no-repeat scroll left center transparent;padding-left:19px;height:20px;overflow:hidden;background-position:0 -45px;}		*/
 		.bklt .nhot{ float: left; color: #FF6600; }
 		.bklt .nhot a{ color: #FF6600; }
