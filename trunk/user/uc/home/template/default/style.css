@@ -181,7 +181,7 @@ body { background: #FFF; }
                     .tabs_header ul.tabs li a span { padding: 9px 10px 7px 0; background-position: right top; font-size: 14px; line-height: 14px; }
                         .tabs_header ul.tabs li a span img{ vertical-align: middle; }
 
-            .tabs_header ul.tabs li.active a { float: left; padding: 0 0 0 10px; height: 30px; background: url(image/active_tab_bg.gif) no-repeat left top; color: #000; display: block; }
+            .tabs_header ul.tabs li.active a { float: left; padding: 0 0 0 10px; height: 30px; background: url(image/active_tab_bg.gif) no-repeat left top; font-weight: bold; display: block; }
                 .tabs_header ul.tabs li.active a span { padding: 9px 10px 7px 0; background: url(image/active_tab_bg.gif) no-repeat right top; line-height: 14px; display: block; }
             .tabs_header ul.tabs li.null { margin: 0 0 0 15px; padding: 0 0 0 25px; height: 25px; background: url(image/add_button.gif) no-repeat 0 0; line-height: 24px; }
                 .tabs_header ul.tabs li.null a { padding: 0 10px 0 0; height: 25px; background: url(image/add_button.gif) no-repeat right top; color: #FFF; font-size: 12px; }
