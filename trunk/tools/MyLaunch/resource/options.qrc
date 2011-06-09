@@ -2,10 +2,8 @@
  <qresource>
      <file>image/g.png</file>
      <file>image/loading.gif</file>
-     <file>image/btn.png</file>
      <file>image/success.png</file>
      <file>image/fail.png</file>
-     <file>image/btn_g.png</file>
      <file>image/ajax-loader.gif</file>	
      <file>style.css</file>
      <file>jquery.js</file>

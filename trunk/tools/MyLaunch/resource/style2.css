@@ -6,9 +6,7 @@ h1, h2, h3, h4, h5, h6 { font-size: 1em; }
 ul li { list-style: none; }
 /*********************************network css****************************************************************/
 #header{width:800px;height:60px;clear:both;margin:0 auto 5px}
-#header .h_logo{background:url("image/g.png") no-repeat scroll 0 -200px transparent;float:left;margin:2px 0 0;width:200px;}
-#header .h_logo a {color:#FFF;display:block;height:58px;overflow:hidden;text-indent:-3000px;width:200px;}
-#header .h_adv {float:left;margin:10px 0 0 auto;position:relative;width:365px;}
+
 
 #toolbar  {background:url("image/g.png") repeat-x scroll 0 -256px transparent;height:32px;min-width:800px;position:relative;z-index:0;}
 #toolbar .tb_m {height:32px;margin:0 auto;position:relative;width:800px;}
@@ -110,8 +108,8 @@ thead.clt_h th + th + th+th,tbody.clt_c td + td +td +td {width: 40px;text-align:
 	padding:0px 1px;
 	margin:0px 2px;
 }
-.delicon { background: url("image/g.png") no-repeat scroll 0px -312px transparent;}
-.editicon { background: url("image/g.png") no-repeat scroll 0px -293px  transparent;}
+.delicon { background: url("image/g.png") no-repeat scroll 0px -317px transparent;}
+.editicon { background: url("image/g.png") no-repeat scroll 0px -298px  transparent;}
 .inc,.exc{
 	float: left;
     height: 14px;
@@ -120,8 +118,8 @@ thead.clt_h th + th + th+th,tbody.clt_c td + td +td +td {width: 40px;text-align:
 	padding:0px 2px;
 	margin:0 20px;
 }
-.inc{background: url("image/g.png") no-repeat scroll 0px -372px transparent;}
-.exc{background: url("image/g.png") no-repeat scroll 0px -351px transparent;}
+.inc{background: url("image/g.png") no-repeat scroll 0px -377px transparent;}
+.exc{background: url("image/g.png") no-repeat scroll 0px -356px transparent;}
 #footer{margin:0px;padding-top:5px;/*border:solid 1px #ccc;border-width:1px 0px 0px 0px;*/}
 #footer .appname{color: #FF6600;text-decoration: none;}
 
@@ -185,20 +183,20 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 		.ntl{ float: left; padding: 0 0 0 30px; background: transparent url(image/nlr.gif) no-repeat left top; }
 		.ntr{ float: right;  padding: 0 30px 0 0;  background: transparent url(image/nlr.gif) no-repeat right center;}
 
-	.ntitle em,.ntitle  p{float:left;max-width:40%;margin:0px;overflow:hidden;white-space:nowrap;font-size:110%;font-weight: blod;font-style:normal;}
+	.ntitle em,.ntitle  p{float:left;max-width:40%;margin:0px;overflow:hidden;white-space:nowrap;font-weight: blod;font-style:normal;}
 	.ntitle em {color:#438E0B;}
 
 	.ntitle span { float: right; font-size: 12px; font-weight: normal;height:18px;line-height:18px;padding-top:10px;overflow:hidden; }
 	/*.ntitle span .addcomment, .ntitle span .addtrackback {display:block;float:left;font-size:11px;height:15px;line-height:15px;margin-right:5px;padding-left:20px;}*/
 	.ntitle ul {list-style: none;}
-	.ntitle ul .bkad a{padding: 5px 2px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -329px transparent;}
-	.ntitle ul .bket a{padding: 5px 2px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -293px transparent;}
-	.ntitle ul .bkde a{padding: 5px 2px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -312px transparent;}
+	.ntitle ul .bkad a{padding: 5px 5px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -329px transparent;}
+	.ntitle ul .bket a{padding: 5px 5px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -293px transparent;}
+	.ntitle ul .bkde a{padding: 5px 5px 5px 16px;background:url("image/g.png") no-repeat scroll -0px -312px transparent;}
 	/*.nbox_c{ float: left; margin: 0 0px 0 0; padding: 1px;  width: 710px; border: 1px solid #DDD; overflow: hidden; }*/
 .box_l{float: left; width: 550px;height:100%;overflow: hidden;margin-bottom:5px;}
-	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 -80px transparent;line-height: 32px;}
+	.box_l .ntitle{  background: url("image/g.png") no-repeat scroll 0 -84px transparent;line-height: 32px;}
 .box_r{padding:0px;float: right; width:250px;height:100%;overflow:hidden;}
-		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -300px -80px transparent; line-height: 32px; }
+		.box_r .ntitle { height: 32px; background: url("image/g.png") no-repeat scroll -300px -84px transparent; line-height: 32px; }
 
 	.nelt {float:right;height:18px;line-height:18px;padding:8px 15px 0 0;}
 	.nelt li{float:left;list-style: none;}
@@ -228,13 +226,15 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 
 #bklist{ height: 215px; overflow: auto;}
 #bklist h3{ font-size: 13px; height: 20px; margin:0px; overflow: hidden;font-weight: normal;}
-#bklist h3 a {float: left;color:#2C629E;padding:0px 5px;  max-width: 250px; overflow: hidden;}
+#bklist h3 a {float: left;color:#2C629E;padding:0px 5px;  max-width: 250px; overflow: hidden;font-weight: bold;}
 #bklist h3 span { color: #999; font-weight: normal;font-size: 90%;}
 #bklist .oper { color: #C5C5C5;float: right;padding-right:5px;}
 #bklist .message{width:90%;overflow: hidden;height: 20px;padding:0px 5px 0px 30px;}
 #bklist li{border:1px solid #eee;margin:2px;}
+#bklist li:hover{border:1px solid #eee;margin:2px;background-color:#ECF3F8;}
 .message >span{ float: left; height: 20px;max-width: 400px;}
-.message .del{float:right;width:20px;height:20px;background: url('image/g.png') no-repeat scroll 0 -312px transparent; padding: 0px;}
-.message .edit{float:right;width:20px;height:20px;background: url('image/g.png') no-repeat scroll 0 -293px transparent; padding: 0px;}
+.message .del{float:right;width:20px;height:20px;background:url("image/g.png") no-repeat scroll 0 -312px transparent; padding: 0px;}
+.message .edit{float:right;width:20px;height:20px;background:url("image/g.png") no-repeat scroll 0 -293px transparent; padding: 0px;}
 .oper > a{color:#999;}
+.logo{float:left;width:210px;height:50px;background:url("image/g.png") no-repeat scroll 0 -130px transparent; padding: 0px;}
  
