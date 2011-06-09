@@ -108,7 +108,7 @@ function apply(key)
 <div class="cfgitem" style="height:250px;overflow:hidden;">
 <div class="box_l">
 	<h2 class="ntitle">
-		<p id="groupname">体育&raquo;</p>
+		<p id="groupname" style="padding:1px 0px">体育&raquo;</p>
 		<ul class="nelt" id="groupdo">
 			<li class="bkad"><a class="thickbox" id="8027" onclick='addItem(123);' href='qrc:addbmdir'>增加</a></li>
 			<li class="bket"><a class="thickbox" id="8027" onclick="postDirItem('体育',123);" href="qrc:editbmdir">修改</a></li>
@@ -117,18 +117,20 @@ function apply(key)
 	</h2> 
 <div id="bmcontent">
 <ul id="bklist" class="bklt">
+
 <li>
 <h3>
-<a id="260" class="url id_bm_260" target="_blank" style="font-weight:bold;" href="http://www.sohu.com" title="sohu">sohu</a>
+<a id="260" class="url id_bm_260" target="_blank" href="http://www.sohu.com" title="sohu">sohu</a>
 <span class="ndate">2011-01-24</span>
 </h3>
 <p class="message">
-<span id="260" class="id_nodes"><a href="http://www.sohu.com">http://www.sohu.comxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a></span>
+<span><a href="http://www.sohu.com">http://www.sohu.comxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a></span>
 
 <a id="260|0|0" class="del thickbox" onclick="postItem('sohu','http://www.sohu.com');" href="qrc:editbm"></a>
 <a id="260|0|0" class="edit thickbox" onclick="postItem('sohu','http://www.sohu.com');" href="qrc:editbm" ></a>
 </p>
-</li>  
+</li>
+
 <li>
 <h3>
 <a id="258" class="url id_bm_258" target="_blank" style="font-weight:bold;" href="http://www.goalhi.com" title="体育">体育</a>
@@ -170,8 +172,8 @@ function apply(key)
 </div>		
 </div>	 
 <div class="box_r">
-<h2 class="ntitle">	
-	菜单&raquo;
+<h2 class="ntitle" >	
+	<p style="padding:1px 0px">菜单&raquo;</p>
 </h2>
 <div class="muim">
 <ul class="menu_list menu_list_0" style="display: block;">
@@ -186,7 +188,7 @@ function apply(key)
 </div>	
 </div>
 
-
+<!--
 			<div class="cfgitem">
 					<h2>帐号&raquo;</h2>
 					<p>
@@ -217,7 +219,17 @@ function apply(key)
 						</span>
 					</p>
 			</div>
-			
+-->	
+			<div class="cfgitem">
+						<h2>关于&raquo;</h2>
+						 <p><a class="logo" href="http://www.sohu.com"></a></p>
+						 <p><span>欢迎使用弹指软件touchAny</span></p>
+						 <p><span>当前版本:</span><span id="version"></span></p>
+						 <p><span>Build&nbsp;时间:</span><span id="buildtime"></span></p>
+						 <p><span>版权所有@</span></p>
+						 <p><span>更多信息请访问:</span><a onclick="gohref('http://www.tanzhi.com');" style="color:blue;cursor:hand">弹指网</a></p>
+			 </div>
+
 </div>
 <div id="footer">
 	<div class="btn">
