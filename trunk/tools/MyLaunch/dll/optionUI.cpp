@@ -247,15 +247,15 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("$obj('lastbmsync').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 		switch(lastsyncstatus){
 			case SYNC_STATUS_FAIL:
-				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$obj('lastsyncstatus').className ='fail';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='failed';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip fail';"));	
 				break;
 			case SYNC_STATUS_SUCCESS:
-				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$obj('lastsyncstatus').className ='success';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='successful';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip success';"));	
 				break;
 			case SYNC_STATUS_PROCESSING:
-				jsStr.append(QString("$obj('lastsyncstatus').className ='';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip';"));	
 				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='processing...';"));	
 				break;
 		}		
@@ -680,16 +680,16 @@ void OptionsDlg::getSyncStatus()
 		jsStr.append(QString("$('lastbmsync').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 		switch(lastsyncstatus){
 			case SYNC_STATUS_FAIL:
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').className ='fail';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='failed';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip fail';"));	
 				break;
 			case SYNC_STATUS_SUCCESS:
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').className ='success';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='successful';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip success';"));	
 				break;
 			case SYNC_STATUS_PROCESSING:
-				jsStr.append(QString("$('lastsyncstatus').className ='';"));	
-				jsStr.append(QString("$('lastsyncstatus').innerHTML ='processing...';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').className ='ip';"));	
+				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='processing...';"));	
 				break;
 		}		
 		
@@ -958,12 +958,9 @@ void OptionsDlg::getbmfromid(const int& groupid,const int& browserid,const QStri
 			js.append("<span class=\\\"ndate\\\">(2011-01-24)</span>");
 			js.append("</h3>");
 			js.append("<div class=\\\"message\\\">");
-			js.append(QString("<a href=\\\"%1\\\">%2</a>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"fullPath")));
-			js.append("<div class=\\\"oper\\\">");
-			js.append(QString("<a class=\\\"edit thickbox\\\"  name=\\\"edit&raquo;\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" rel=\\\"width=540&height=100\\\">edit</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
-			js.append("<em>|</em>");
-			js.append(QString("<a class=\\\"delete thickbox\\\" name=\\\"delete&raquo;\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\"  rel=\\\"width=540&height=100\\\">del</a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_UINT(q,"id")));
-			js.append("</div>");
+			js.append(QString("<span><a href=\\\"%1\\\">%2</a></span>").arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_STRING(q,"fullPath")));
+			js.append(QString("<a class=\\\"del thickbox\\\" name=\\\"delete&raquo;\\\" onclick=\\\"postDelItem('%1',%2);\\\" href=\\\"qrc:deletebm\\\"  rel=\\\"width=540&height=100\\\"></a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_UINT(q,"id")));
+			js.append(QString("<a class=\\\"edit thickbox\\\"  name=\\\"edit&raquo;\\\" onclick=\\\"postItem('%1','%2',%3);\\\" href=\\\"qrc:editbm\\\" rel=\\\"width=540&height=100\\\"></a>").arg(Q_VALUE_STRING(q,"shortName")).arg(Q_VALUE_STRING(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));
 			js.append("</div>");
 			js.append("</li>");
 		}	
