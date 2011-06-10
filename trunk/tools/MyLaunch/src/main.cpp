@@ -461,6 +461,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	}
 	// Set the timers
 	updateSuccessTimer = NULL;
+	syncStatusTimer = NULL;
 	runseconds = NOW_SECONDS;
 	
 	timer_actionlist = new TIMER_ACTION_LIST[TIMER_ACTION_MAX];
@@ -541,10 +542,10 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 		hideLaunchy();
 	
 	icon =QIcon("images/"+QString(APP_NAME)+".png");
-	icon_problem=QIcon("images/"+QString(APP_NAME)+"_gray.png");	
+	icon_problem=QIcon("images/"+QString(APP_NAME)+"_failed.png");	
 	setWindowIcon(icon);
 	
-	setIcon(1,QString(APP_NAME));
+	setIcon(SYNC_STATUS_NONE,QString(APP_NAME));
 	if(gSettings->value("ckShowTray", true).toBool())
 	{
 		trayIcon->show();
@@ -559,6 +560,15 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 #ifdef CONFIG_DIGG_XML
 	loadDiggXml();
 #endif
+
+#ifdef CONFIG_SYNC_STATUS_DEBUG
+	syncStatus = SYNC_STATUS_PROCESSING;
+	NEW_TIMER(syncStatusTimer);
+	syncStatusTimer->setSingleShot(false);
+	connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
+	syncStatusTimer->start(200);
+#endif
+
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -1830,7 +1840,9 @@ MyWidget::~MyWidget()
 #endif
 	//delete dropTimer;
 	DELETE_TIMER(dropTimer);
-	/*
+	DELETE_TIMER(syncStatusTimer);
+
+/*
 	if (platform)
 	delete platform;
 	*/
@@ -2408,8 +2420,17 @@ void MyWidget::_startSync(int mode,int silence)
 #endif
 	gSyncer->setUrl(url);
 	gSyncer->start(QThread::IdlePriority);
-	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
-	gSettings->sync();
+	if(mode == SYNC_MODE_BOOKMARK||mode == SYNC_MODE_REBOOKMARK){
+		gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
+		gSettings->sync();
+#ifndef CONFIG_SYNC_STATUS_DEBUG
+		syncStatus = SYNC_STATUS_PROCESSING;
+		NEW_TIMER(syncStatusTimer);
+		syncStatusTimer->setSingleShot(false);
+		connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
+		syncStatusTimer->start(200);
+#endif
+	}
 	return;
 SYNCOUT:
 	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",FALSE);
@@ -2417,14 +2438,21 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
+#ifndef CONFIG_SYNC_STATUS_DEBUG
+	DELETE_TIMER(syncStatusTimer);
+#endif
 	if(!trayIcon->isVisible()) return;
 	char *statusStr = tz::getstatusstring(status);
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_MODIFY:
-			setIcon(1,tz::tr(statusStr));			
+#ifndef CONFIG_SYNC_STATUS_DEBUG
+			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(statusStr));			
+#endif
 			break;
 		case BM_SYNC_SUCCESS_WITH_MODIFY:
-			setIcon(1,tz::tr(statusStr));
+#ifndef CONFIG_SYNC_STATUS_DEBUG
+			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(statusStr));
+#endif
 			trayIcon->showMessage(APP_NAME,tz::tr(statusStr), QSystemTrayIcon::Information);
 			break;
 		case BM_SYNC_FAIL_SERVER_NET_ERROR:
@@ -2435,7 +2463,9 @@ void MyWidget::bmSyncFinishedStatus(int status)
 		case BM_SYNC_FAIL_PROXY_ERROR:
 		case BM_SYNC_FAIL_PROXY_AUTH_ERROR:
 		case BM_SYNC_FAIL_SERVER_LOGIN:
-			setIcon(0,tz::tr(statusStr));
+#ifndef CONFIG_SYNC_STATUS_DEBUG
+			setIcon(SYNC_STATUS_FAILED,tz::tr(statusStr));
+#endif
 			break;
 		case BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL:
 			break;		
@@ -2471,6 +2501,13 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 	_startSync(SYNC_MODE_TESTACCOUNT,SYN_MODE_NOSILENCE);
 #endif
 	return;
+}
+void MyWidget::syncStatusTimeout()
+{
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
+	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
+		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
+	}	
 }
 void MyWidget::monitorTimerTimeout()
 {	
@@ -3006,10 +3043,22 @@ void MyWidget::createTrayIcon()
 
 void MyWidget::setIcon(int type,const QString& tip)
 {
+	syncStatus = type;
 	switch(type){
-		case 0:
-			trayIcon->setIcon(icon_problem);
+		case SYNC_STATUS_PROCESSING_1:
+		case SYNC_STATUS_PROCESSING_2:
+		case SYNC_STATUS_PROCESSING_3:
+		case SYNC_STATUS_PROCESSING_4:
+		case SYNC_STATUS_PROCESSING_5:
+			trayIcon->setIcon(QIcon(QString("images/"+QString(APP_NAME)+"_%1.png").arg(type-SYNC_STATUS_PROCESSING_1+1)));	
 		break;
+		case SYNC_STATUS_FAILED:
+			trayIcon->setIcon(QIcon("images/"+QString(APP_NAME)+"_failed.png"));	
+		break;
+		case SYNC_STATUS_SUCCESSFUL:
+			trayIcon->setIcon(QIcon("images/"+QString(APP_NAME)+"_successful.png"));	
+		break;
+		case SYNC_STATUS_NONE:
 		default:
 			trayIcon->setIcon(icon);
 		break;

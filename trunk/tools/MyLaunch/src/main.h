@@ -233,6 +233,7 @@ public:
 #endif
 
 	QTimer* dropTimer;	
+	QTimer* syncStatusTimer;
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
@@ -333,6 +334,7 @@ private:
 	QTimer* monitorTimer;
 	OptionsDlg *ops;
 	QString shortkeyString;
+	uint syncStatus;
 //	QString defBrowser;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
@@ -359,6 +361,7 @@ public slots:
 #endif
 #endif
 		void dropTimeout();
+		void syncStatusTimeout();
 		void setAlwaysShow(bool);
 		void setAlwaysTop(bool);
 		void setPortable(bool);
