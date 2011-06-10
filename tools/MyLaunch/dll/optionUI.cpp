@@ -243,14 +243,14 @@ void OptionsDlg::loading(const QString & name)
 		JS_APPEND_PASSWD("Userpasswd","Account","");
 		//lastsynctime
 		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastbmsync", 0).toUInt());
-		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAIL).toUInt();
+		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAILED).toUInt();
 		jsStr.append(QString("$obj('lastbmsync').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 		switch(lastsyncstatus){
-			case SYNC_STATUS_FAIL:
+			case SYNC_STATUS_FAILED:
 				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='failed';"));	
 				jsStr.append(QString("$obj('lastsyncstatus').className ='ip fail';"));	
 				break;
-			case SYNC_STATUS_SUCCESS:
+			case SYNC_STATUS_SUCCESSFUL:
 				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='successful';"));	
 				jsStr.append(QString("$obj('lastsyncstatus').className ='ip success';"));	
 				break;
@@ -676,14 +676,14 @@ void OptionsDlg::getSyncStatus()
 		//lastsynctime
 		QString jsStr;
 		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastbmsync", 0).toUInt());
-		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAIL).toUInt();
+		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAILED).toUInt();
 		jsStr.append(QString("$('lastbmsync').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
 		switch(lastsyncstatus){
-			case SYNC_STATUS_FAIL:
+			case SYNC_STATUS_FAILED:
 				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='failed';"));	
 				jsStr.append(QString("$obj('lastsyncstatus').className ='ip fail';"));	
 				break;
-			case SYNC_STATUS_SUCCESS:
+			case SYNC_STATUS_SUCCESSFUL:
 				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='successful';"));	
 				jsStr.append(QString("$obj('lastsyncstatus').className ='ip success';"));	
 				break;
