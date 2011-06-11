@@ -2428,7 +2428,7 @@ void MyWidget::_startSync(int mode,int silence)
 		NEW_TIMER(syncStatusTimer);
 		syncStatusTimer->setSingleShot(false);
 		connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
-		syncStatusTimer->start(200);
+		syncStatusTimer->start(100);
 #endif
 	}
 	return;
@@ -2438,6 +2438,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif
@@ -2504,7 +2505,7 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 }
 void MyWidget::syncStatusTimeout()
 {
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
+	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
 	}	
