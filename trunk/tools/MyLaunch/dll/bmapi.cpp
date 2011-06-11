@@ -61,60 +61,66 @@ static QString localfullpath[LOCAL_FULLPATH_MAX];
 
 char* gLanguageList[]={"ch","en"};
 
-char *statusString[]={
-	"http_unconnected",
-	"http_hostlookup",
-	"http_connecting",
-	"http_sending",
-	"http_reading",
-	"http_connected",
-	"http_closing",
-	"http_timeout",
-	"http_test_account_success",
-	"http_test_account_fai",
-	"http_get_ini_failed",
-	"http_get_ini_successful",
-	"http_get_ini_not_existed",
-	"http_get_file_successful",
-	"http_get_file_not_existed",
-	"http_get_file_failed",
-	"http_need_retry",
-	"try_connect_server",
+struct{
+	uint status;
+	char* statusstr;
+}statusStrings[]={
+	{HTTP_UNCONNECTED,"http_unconnected"},
+	{HTTP_HOSTLOOKUP,"http_hostlookup"},
+	{HTTP_CONNECTING,"http_connecting"},
+	{HTTP_SENDING,"http_sending"},
+	{HTTP_READING,"http_reading"},
+	{HTTP_CONNECTED,"http_connected"},
+	{HTTP_CLOSING,"http_closing"},
+	{HTTP_TIMEOUT,"http_timeout"},
+	{HTTP_TEST_ACCOUNT_SUCCESS,"http_test_account_success"},
+	{HTTP_TEST_ACCOUNT_FAIL,"http_test_account_fai"},
+	{HTTP_GET_INI_FAILED,"http_get_ini_failed"},
+	{HTTP_GET_INI_SUCCESSFUL,"http_get_ini_successful"},
+	{HTTP_GET_INI_NOT_EXISTED,"http_get_ini_not_existed"},
+	{HTTP_GET_FILE_SUCCESSFUL,"http_get_file_successful"},
+	{HTTP_GET_FILE_NOT_EXISTED,"http_get_file_not_existed"},
+	{HTTP_GET_FILE_FAILED,"http_get_file_failed"},
+	{HTTP_NEED_RETRY,"http_need_retry"},
+	{TRY_CONNECT_SERVER,"try_connect_server"},
 	
-	"update_failed",
-	"update_successful",	
-	"update_no_need",
-	"update_net_error",	
-	"update_processing",
-	"update_server_refuse",
-	"update_net_error_proxy",
-	"update_net_error_proxy_auth",
+	{UPDATE_FAILED,"update_failed"},
+	{UPDATE_SUCCESSFUL,"update_successful"},	
+	{UPDATE_NO_NEED,"update_no_need"},
+	{UPDATE_NET_ERROR,"update_net_error"},	
+	{UPDATE_PROCESSING,"update_processing"},
+	{UPDATE_SERVER_REFUSE,"update_server_refuse"},
+	{UPDATE_NET_ERROR_PROXY,"update_net_error_proxy"},
+	{UPDATE_NET_ERROR_PROXY_AUTH,"update_net_error_proxy_auth"},
 
-	"bm_sync_start",
-	"bm_sync_success_no_modify",
-	"bm_sync_success_with_modify",
-	"bm_sync_fail_login",
-	"bm_sync_fail_post_http",
-	"bm_sync_fail_server_net_error",
-	"bm_sync_fail_server_refuse",
-	"bm_sync_fail_server_bmxml_fail",
-	"bm_sync_fail_bmxml_timeout",
-	"bm_sync_fail_merge_error",
-	"bm_sync_fail_proxy_error",
-	"bm_sync_fail_proxy_auth_error",
-	"bm_sync_fail_server_testaccount_fail",
-	"bm_sync_fail_server_login",
-	"bm_sync_fail_downlocal_write_file",
-	"bm_sync_fail_downlocal_delete_file",
-	"bm_sync_fail_downlocal_db_lock",
-	"bm_sync_fail_downlocal_db_query",
-	"bm_sync_fail_exceed_total_num",
-	"bm_sync_fail_exceed_dir_count",
-	"bm_sync_fail_exceed_level",
-	"bm_sync_fail_get_xml_from_server",
-	"bm_sync_fail_read_xml_from_server",
-	"bm_sync_fail_read_xml_local",
-	"bm_sync_fail_remove_xml_local"
+	{BM_SYNC_START,"bm_sync_start"},
+	{BM_SYNC_SUCCESS_NO_MODIFY,"bm_sync_success_no_modify"},
+	{BM_SYNC_SUCCESS_WITH_MODIFY,"bm_sync_success_with_modify"},
+	{BM_SYNC_FAIL_LOGIN,"bm_sync_fail_login"},
+	{BM_SYNC_FAIL_POST_HTTP,"bm_sync_fail_post_http"},
+	{BM_SYNC_FAIL_SERVER_NET_ERROR,"bm_sync_fail_server_net_error"},
+	{BM_SYNC_FAIL_SERVER_REFUSE,"bm_sync_fail_server_refuse"},
+	{BM_SYNC_FAIL_SERVER_BMXML_FAIL,"bm_sync_fail_server_bmxml_fail"},
+	{BM_SYNC_FAIL_BMXML_TIMEOUT,"bm_sync_fail_bmxml_timeout"},
+	{BM_SYNC_FAIL_MERGE_ERROR,"bm_sync_fail_merge_error"},
+	{BM_SYNC_FAIL_PROXY_ERROR,"bm_sync_fail_proxy_error"},
+	{BM_SYNC_FAIL_PROXY_AUTH_ERROR,"bm_sync_fail_proxy_auth_error"},
+	{BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL,"bm_sync_fail_server_testaccount_fail"},
+	{BM_SYNC_FAIL_SERVER_LOGIN,"bm_sync_fail_server_login"},
+	{BM_SYNC_FAIL_DOWNLOCAL_WRITE_FILE,"bm_sync_fail_downlocal_write_file"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DELETE_FILE,"bm_sync_fail_downlocal_delete_file"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DB_LOCK,"bm_sync_fail_downlocal_db_lock"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DB_QUERY,"bm_sync_fail_downlocal_db_query"},
+	{BM_SYNC_FAIL_EXCEED_TOTAL_NUM,"bm_sync_fail_exceed_total_num"},
+	{BM_SYNC_FAIL_EXCEED_DIR_COUNT,"bm_sync_fail_exceed_dir_count"},
+	{BM_SYNC_FAIL_EXCEED_LEVEL,"bm_sync_fail_exceed_level"},
+	{BM_SYNC_FAIL_GET_XML_FROM_SERVER,"bm_sync_fail_get_xml_from_server"},
+	{BM_SYNC_FAIL_READ_XML_FROM_SERVER,"bm_sync_fail_read_xml_from_server"},
+	{BM_SYNC_FAIL_READ_XML_LOCAL,"bm_sync_fail_read_xml_local"},
+	{BM_SYNC_FAIL_REMOVE_XML_LOCAL,"bm_sync_fail_remove_xml_local"},
+
+	
+	{SYNC_STATUS_MAX,NULL}
 };
 
 
@@ -1684,10 +1690,13 @@ QString tz::getUserIniDir(int mode,const QString& s)
 	return "";
 }
 
-char* tz::getstatusstring(int i){
-	if((i>=0)&&(i<sizeof(statusString)/sizeof(char*)))
-	return statusString[i];
-	else
+char* tz::getstatusstring(int status){
+	int j =0 ;
+	while(statusStrings[j].status<SYNC_STATUS_MAX){
+		if(statusStrings[j].status ==status)
+			return statusStrings[j].statusstr;
+		j++;
+	}
 	return "unknown error";
 }
 /*
