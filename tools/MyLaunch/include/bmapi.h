@@ -194,7 +194,7 @@ public :
 	static QString encrypt(QString para,uint secindex);
 	static QString decrypt(QString para,uint secindex);
 	static struct browserinfo* getbrowserInfo();
-	static char* getstatusstring(int i);
+	static char* getstatusstring(int);
 	static void clearbmgarbarge(QSqlQuery* q,uint delId);
 	static uint isExistInDb(QSqlQuery* q,const QString& name,const QString& fullpath,int comefrom);
 	static int testFirefoxDbLock(QSqlDatabase* db);
