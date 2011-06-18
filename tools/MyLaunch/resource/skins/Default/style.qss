@@ -9,15 +9,22 @@ QLineEdit#input {
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
-	color: white;
+	color: black;
 }
-QLineEdit#output {
+QTextEdit#output,QLineEdit#output {
 	font:  13px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
-	color: white;
 }
+QTextEdit#diggxmloutput{
+	font:  13px "Verdana";
+	border-width: 0px;
+	background-color: rgba(0,244,120,0%);
+	border-style: solid;
+	color:#286fa6;
+}
+
 QScrollBar::handle:vertical {
 	width: 3px;
 	height: 3px;
@@ -31,4 +38,12 @@ QListWidget#alternatives {
 	color: white;
 	border-style: solid;
 	border-width: 0px;
+}
+QPushButton#opsButton {
+	border: none;
+	background: url(opsbutton.png);   
+}
+QPushButton#opsButton:hover {
+	border: none;
+	background: url(opsbutton.png);   
 }

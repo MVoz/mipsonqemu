@@ -1,8 +1,10 @@
-boundary = 0,0,500,100
-output = 290,37,160,24
-input = 60,37,160,24
-alternatives = 37,61,436,100
-icon = 241,32,32,32
+boundary = 0,0,500,142
+output = 95,50,360,24
+input = 100,27,360,24
+alternatives = 37,71,436,100
+icon = 42,32,32,32
+optionsbutton = 122,68,16,16
+diggxmloutput = 150,68,320,24
 
 ; These describe the font of the full path in the dropdown box
 ; This should be in style.qss but the style sheet doesn't support it
