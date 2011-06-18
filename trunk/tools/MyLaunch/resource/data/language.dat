@@ -286,4 +286,7 @@ ch=命 令
 [bookmark]
 en=bookmark
 ch=网络收藏夹
+[bm_sync_success_no_modify]
+en=bm_sync_success_no_modify
+ch=bm_sync_success_no_modify
 
