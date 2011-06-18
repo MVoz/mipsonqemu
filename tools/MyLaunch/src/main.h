@@ -46,11 +46,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 #include <QProcess>
 //#include <weby>
+#if 1
+class QLineEditMenu : public QTextEdit
+{
+	Q_OBJECT
+public:
+	QLineEditMenu(QWidget* parent = 0) :
+	QTextEdit(parent) {setAttribute(Qt::WA_InputMethodEnabled);}
+	void contextMenuEvent(QContextMenuEvent *evt) {
+		emit menuEvent(evt);
+	}
+signals:
+	void menuEvent(QContextMenuEvent*);
+};
 
-
-
-
-
+#else
 class QLineEditMenu : public QLineEdit
 {
 	Q_OBJECT
@@ -63,7 +73,7 @@ public:
 signals:
 	void menuEvent(QContextMenuEvent*);
 };
-
+#endif
 class QCharLineEdit : public QLineEdit
 {
 	Q_OBJECT
@@ -231,7 +241,12 @@ public:
 	QTimer* diggXmlTimer;
 #endif
 #endif
-
+#ifdef CONFIG_DIGG_XML
+	QLineEditMenu *diggxmloutput;
+	QList<bookmark_catagory> diggXmllist;
+	QTimer* diggxmlDisplayTimer;
+	uint diggxmlDisplayIndex;
+#endif
 	QTimer* dropTimer;	
 	QTimer* syncStatusTimer;
 	QCharListWidget *alternatives;
@@ -339,9 +354,7 @@ private:
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
 #endif
-#ifdef CONFIG_DIGG_XML
-	QList<bookmark_catagory> diggXmllist;
-#endif
+
 public slots:
 		void monitorTimerTimeout();
 		void updateSuccessTimeout();
@@ -405,6 +418,7 @@ public slots:
 		void diggXmlFinished(int status);
 		void startDiggXml();
 		void loadDiggXml();
+		void 	diggxmlDisplayTimeout();
 #endif
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);

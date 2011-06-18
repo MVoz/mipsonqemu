@@ -343,7 +343,21 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	output->setAlignment(Qt::AlignHCenter);
 	output->setReadOnly(true);
 	output->setObjectName("output");
+	output->setWordWrapMode(QTextOption::NoWrap);
+	output->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff) ;
+	output->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff ) ; 
 	connect(output, SIGNAL(menuEvent(QContextMenuEvent *)), this, SLOT(menuEvent(QContextMenuEvent *)));
+#ifdef CONFIG_DIGG_XML
+	diggxmloutput = new QLineEditMenu(label);
+	diggxmloutput->setAlignment(Qt::AlignRight);
+	diggxmloutput->setReadOnly(true);
+	diggxmloutput->setObjectName("diggxmloutput");
+	diggxmloutput->setWordWrapMode(QTextOption::NoWrap);
+	diggxmloutput->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff) ;
+	diggxmloutput->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff ) ; 
+#endif
+
+
 
 	input = new QCharLineEdit(label);
 	input->setObjectName("input");
@@ -558,7 +572,12 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
 	monitorTimer->start(MONITER_TIME_INTERVAL);	
 #ifdef CONFIG_DIGG_XML
+	diggxmlDisplayIndex = 0;
 	loadDiggXml();
+	NEW_TIMER(diggxmlDisplayTimer);
+	diggxmlDisplayTimer->setSingleShot(false);
+	connect(diggxmlDisplayTimer, SIGNAL(timeout()), this, SLOT(diggxmlDisplayTimeout()));
+	diggxmlDisplayTimer->start(1*SECONDS);
 #endif
 
 #ifdef CONFIG_SYNC_STATUS_DEBUG
@@ -1332,7 +1351,12 @@ void MyWidget::updateDisplay()
 		QIcon icon = getIcon(searchResults[0]);
 
 		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+#if 1
+	 	QString outputs=QString("<span style=\"color:#286fa6;font-weight:bold;\">%1</span><span style=\"color:#585755\">(%2)</span>").arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
+		output->setHtml(outputs);
+#else
 		output->setText(searchResults[0]->shortName);
+#endif
 
 		// Did the plugin take control of the input?
 		// if (inputData.last().getID() != 0)
@@ -1841,6 +1865,7 @@ MyWidget::~MyWidget()
 	//delete dropTimer;
 	DELETE_TIMER(dropTimer);
 	DELETE_TIMER(syncStatusTimer);
+	DELETE_TIMER(diggxmlDisplayTimer);
 
 /*
 	if (platform)
@@ -1997,9 +2022,20 @@ void MyWidget::applySkin(QString directory)
 						licon->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0)
 					{
+						//opsButton->setIcon(QIcon(directory + "/opsbutton.png"));
+						opsButton->setAttribute(Qt::WA_StyledBackground, true);
 						opsButton->setGeometry(rect);
 						opsButton->show();
-					} else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0)
+					}
+#ifdef CONFIG_DIGG_XML
+					else if (spl.at(0).trimmed().compare("diggxmloutput", Qt::CaseInsensitive) == 0)
+					{
+	
+						diggxmloutput->setGeometry(rect);
+						diggxmloutput->show();
+					}
+#endif
+					else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0)
 					{
 						closeButton->setGeometry(rect);
 						closeButton->show();
@@ -2677,10 +2713,18 @@ void MyWidget::monitorTimerTimeout()
 	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
 #ifdef CONFIG_DIGG_XML
+void MyWidget::diggxmlDisplayTimeout()
+{
+	if(diggXmllist.size()){
+		QString diggxmloutputs=QString("<p align=\"right\">%1</p>").arg(diggXmllist.at((diggxmlDisplayIndex++)%diggXmllist.size()).name);
+		diggxmloutput->setHtml(diggxmloutputs);
+	}
+}
 void MyWidget::loadDiggXml()
 {
 	QFile f(DIGG_XML_LOCAL_FILE);
 	if(f.open(QIODevice::ReadOnly)){
+		diggxmlDisplayIndex = 0;
 		bmXml r(&f,gSettings);			
 		bmXml diggXmlReader(&f,gSettings);
 		diggXmlReader.readStream(0);
@@ -2689,10 +2733,13 @@ void MyWidget::loadDiggXml()
 #ifdef TOUCH_ANY_DEBUG
 		foreach(bookmark_catagory diggitem, diggXmllist)
 		{
-			qDebug()<<diggitem.bmid<<diggitem.name<<diggitem.link;
+			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
 		}
-#endif
+#endif	
+		diggxmlDisplayTimeout();
 		f.close();
+	}else{
+		diggXmllist.clear();
 	}
 }
 void MyWidget::diggXmlFinished(int status)
