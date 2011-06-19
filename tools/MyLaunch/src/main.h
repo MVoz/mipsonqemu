@@ -42,6 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <optionUI.h>
 #include <bmsync.h>
 #ifdef CONFIG_DIGG_XML
+#include <QTextBrowser>
 #include <diggxml.h>
 #endif
 #include <QProcess>
@@ -242,10 +243,11 @@ public:
 #endif
 #endif
 #ifdef CONFIG_DIGG_XML
-	QLineEditMenu *diggxmloutput;
+	QTextBrowser *diggxmloutput;
 	QList<bookmark_catagory> diggXmllist;
 	QTimer* diggxmlDisplayTimer;
 	uint diggxmlDisplayIndex;
+	QString diggxmloutputFormat;
 #endif
 	QTimer* dropTimer;	
 	QTimer* syncStatusTimer;
@@ -419,6 +421,7 @@ public slots:
 		void startDiggXml();
 		void loadDiggXml();
 		void 	diggxmlDisplayTimeout();
+		void diggxmloutputAnchorClicked( const QUrl & link );
 #endif
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);

@@ -348,13 +348,17 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	output->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff ) ; 
 	connect(output, SIGNAL(menuEvent(QContextMenuEvent *)), this, SLOT(menuEvent(QContextMenuEvent *)));
 #ifdef CONFIG_DIGG_XML
-	diggxmloutput = new QLineEditMenu(label);
+	diggxmloutput = new QTextBrowser(label);
 	diggxmloutput->setAlignment(Qt::AlignRight);
 	diggxmloutput->setReadOnly(true);
+	diggxmloutput->setOpenLinks (false );
 	diggxmloutput->setObjectName("diggxmloutput");
 	diggxmloutput->setWordWrapMode(QTextOption::NoWrap);
 	diggxmloutput->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff) ;
 	diggxmloutput->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff ) ; 
+//	connect(diggxmloutput, SIGNAL(menuEvent(QContextMenuEvent *)), this, SLOT(menuEvent(QContextMenuEvent *)));
+	connect(diggxmloutput, SIGNAL(anchorClicked(const QUrl&)), this, SLOT(diggxmloutputAnchorClicked(const QUrl&)));
+	 
 #endif
 
 
@@ -372,7 +376,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	tz::getUserIniDir(SET_MODE,dirs["userdir"][0]);
 #ifdef CONFIG_LOG_ENABLE
 	//      dump_setting(NULL);
-#endif
+#endif 
 
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
@@ -577,7 +581,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	NEW_TIMER(diggxmlDisplayTimer);
 	diggxmlDisplayTimer->setSingleShot(false);
 	connect(diggxmlDisplayTimer, SIGNAL(timeout()), this, SLOT(diggxmlDisplayTimeout()));
-	diggxmlDisplayTimer->start(1*SECONDS);
+	diggxmlDisplayTimer->start(10*SECONDS);
 #endif
 
 #ifdef CONFIG_SYNC_STATUS_DEBUG
@@ -1975,7 +1979,10 @@ void MyWidget::applySkin(QString directory)
 	// Hide the buttons by default
 	closeButton->hide();
 	opsButton->hide();
-
+#ifdef CONFIG_DIGG_XML
+	diggxmloutputFormat.clear();
+	diggxmloutputFormat=QString("<p><a href=\"%1\" style=\"text-decoration: none\">%2</a></p>");
+#endif
 	if (listDelegate == NULL)
 		return;
 
@@ -2033,7 +2040,22 @@ void MyWidget::applySkin(QString directory)
 	
 						diggxmloutput->setGeometry(rect);
 						diggxmloutput->show();
-					}
+					}else if (spl.at(0).trimmed().compare("diggxmloutputalign", Qt::CaseInsensitive) == 0)
+					{
+						diggxmloutputFormat.replace("<p>",QString("<p align=\"%1\">").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("diggxmloutputcolor", Qt::CaseInsensitive) == 0)
+					{
+						diggxmloutputFormat.replace("text-decoration: none",QString("color:%1;text-decoration: none").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("diggxmloutputFamily", Qt::CaseInsensitive) == 0)
+					{
+						diggxmloutputFormat.replace("text-decoration: none",QString("font:%1;text-decoration: none").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("diggxmloutputSize", Qt::CaseInsensitive) == 0)
+					{
+						diggxmloutputFormat.replace("text-decoration: none",QString("font-size:%1px;text-decoration: none").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("diggxmloutputWeight", Qt::CaseInsensitive) == 0)
+					{
+						diggxmloutputFormat.replace("text-decoration: none",QString("font-weight:%1;text-decoration: none").arg(spl.at(1).trimmed()));
+					}			
 #endif
 					else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0)
 					{
@@ -2057,6 +2079,7 @@ void MyWidget::applySkin(QString directory)
 			file.close();
 		}
 	}
+
 	// Load the style sheet
 	if (QFile::exists(directory + "/style.qss"))
 	{
@@ -2713,10 +2736,25 @@ void MyWidget::monitorTimerTimeout()
 	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
 #ifdef CONFIG_DIGG_XML
+void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
+{
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,link.toString());
+		runProgram(link.toString(),"");
+			
+}
+
 void MyWidget::diggxmlDisplayTimeout()
 {
 	if(diggXmllist.size()){
-		QString diggxmloutputs=QString("<p align=\"right\">%1</p>").arg(diggXmllist.at((diggxmlDisplayIndex++)%diggXmllist.size()).name);
+		uint index = (diggxmlDisplayIndex++)%diggXmllist.size();
+		
+		//QString diggxmloutputs=QString("<p align=\"right\"><a href=\"%1\" style=\"color:#2C629E;text-decoration: none\">%2</a></p>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
+		QString diggxmloutputs=QString(diggxmloutputFormat).arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
+		
+		 TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggxmloutputs);
+		//QString diggxmloutputs=QString("<html><body><p><a href=\"%1\">%2</a></p></body></html>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
+		//ui.textBrowser->append(QString::fromLocal8Bit("<a href = \"http://www.sina.com.cn/\">ÐÂÀË</a>"));
+		//diggxmloutput->setOpenExternalLinks (true );
 		diggxmloutput->setHtml(diggxmloutputs);
 	}
 }
