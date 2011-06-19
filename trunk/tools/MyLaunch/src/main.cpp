@@ -333,6 +333,26 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	opsButton->setToolTip(tr(APP_NAME" Options"));
 	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
 
+	homeButton = new QPushButton(label);
+	homeButton->setObjectName("homeButton");
+	homeButton->setToolTip(tr(APP_NAME" Home"));
+	connect(homeButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+
+	syncButton = new QPushButton(label);
+	syncButton->setObjectName("syncButton");
+	syncButton->setToolTip(tr(APP_NAME" Sync"));
+	connect(syncButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+
+	baiduButton = new QPushButton(label);
+	baiduButton->setObjectName("baiduButton");
+	baiduButton->setToolTip(tr(APP_NAME" Baidu"));
+	connect(baiduButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+
+	googleButton = new QPushButton(label);
+	googleButton->setObjectName("googleButton");
+	googleButton->setToolTip(tr(APP_NAME" Google"));
+	connect(googleButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
 	closeButton->setToolTip(tr("Close "APP_NAME));
@@ -1979,6 +1999,10 @@ void MyWidget::applySkin(QString directory)
 	// Hide the buttons by default
 	closeButton->hide();
 	opsButton->hide();
+	homeButton->hide();
+	syncButton->hide();
+	googleButton->hide();
+	baiduButton->hide();
 #ifdef CONFIG_DIGG_XML
 	diggxmloutputFormat.clear();
 	diggxmloutputFormat=QString("<p><a href=\"%1\" style=\"text-decoration: none\">%2</a></p>");
@@ -2029,10 +2053,30 @@ void MyWidget::applySkin(QString directory)
 						licon->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0)
 					{
-						//opsButton->setIcon(QIcon(directory + "/opsbutton.png"));
 						opsButton->setAttribute(Qt::WA_StyledBackground, true);
 						opsButton->setGeometry(rect);
 						opsButton->show();
+					}else if (spl.at(0).trimmed().compare("homebutton", Qt::CaseInsensitive) == 0)
+					{
+						homeButton->setAttribute(Qt::WA_StyledBackground, true);
+						homeButton->setGeometry(rect);
+						homeButton->show();						
+					}else if (spl.at(0).trimmed().compare("syncbutton", Qt::CaseInsensitive) == 0)
+					{
+						syncButton->setAttribute(Qt::WA_StyledBackground, true);
+						syncButton->setGeometry(rect);
+						syncButton->show();
+					}else if (spl.at(0).trimmed().compare("googlebutton", Qt::CaseInsensitive) == 0)
+					{
+						googleButton->setAttribute(Qt::WA_StyledBackground, true);
+						googleButton->setGeometry(rect);
+						googleButton->show();
+					}else if (spl.at(0).trimmed().compare("baidubutton", Qt::CaseInsensitive) == 0)
+					{
+						baiduButton->setAttribute(Qt::WA_StyledBackground, true);
+						baiduButton->setGeometry(rect);
+						baiduButton->show();
+						QDEBUG_LINE;
 					}
 #ifdef CONFIG_DIGG_XML
 					else if (spl.at(0).trimmed().compare("diggxmloutput", Qt::CaseInsensitive) == 0)
@@ -2751,7 +2795,7 @@ void MyWidget::diggxmlDisplayTimeout()
 		//QString diggxmloutputs=QString("<p align=\"right\"><a href=\"%1\" style=\"color:#2C629E;text-decoration: none\">%2</a></p>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		QString diggxmloutputs=QString(diggxmloutputFormat).arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		
-		 TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggxmloutputs);
+		// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggxmloutputs);
 		//QString diggxmloutputs=QString("<html><body><p><a href=\"%1\">%2</a></p></body></html>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		//ui.textBrowser->append(QString::fromLocal8Bit("<a href = \"http://www.sina.com.cn/\">ÐÂÀË</a>"));
 		//diggxmloutput->setOpenExternalLinks (true );
