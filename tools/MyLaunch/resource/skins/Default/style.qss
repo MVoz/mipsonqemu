@@ -57,9 +57,7 @@ QPushButton#syncButton {
 }
 QPushButton#baiduButton {
 	border: none;
-	background: url(skins/default/baidu.png);   
 }
 QPushButton#googleButton {
-	border: none;
-	background: url(skins/default/google.png);   
+	border: none; 
 }
