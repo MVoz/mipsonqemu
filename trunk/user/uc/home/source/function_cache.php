@@ -394,7 +394,8 @@ function diggxml_cache()
 	while ($value = $_SGLOBAL['db']->fetch_array($query)) {
 			fprintf($fp,"<item parentId=\"0\">\n");
 			fprintf($fp,"<name><![CDATA[%s]]></name>\n",unshtmlspecialchars($value['subject']));
-			fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
+			//fprintf($fp,"<link><![CDATA[%s]]></link>\n",unshtmlspecialchars($value['url']));
+			fprintf($fp,"<link><![CDATA[http://192.168.56.2/link.php?diggid=%d]]></link>\n",$value['diggid']);
 			fprintf($fp,"<bmid><![CDATA[%d]]></bmid>\n",$value['diggid']);
 			fprintf($fp,"</item>\n");
 	}
