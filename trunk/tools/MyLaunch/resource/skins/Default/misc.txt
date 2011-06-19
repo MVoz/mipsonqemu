@@ -5,7 +5,11 @@ alternatives = 37,71,436,100
 icon = 42,32,32,32
 optionsbutton = 122,68,16,16
 diggxmloutput = 150,68,320,24
-
+diggxmloutputalign = right
+diggxmloutputcolor = #2C629E
+diggxmloutputFamily = Lucida Sans
+diggxmloutputSize = 8
+diggxmloutputWeight = normal
 ; These describe the font of the full path in the dropdown box
 ; This should be in style.qss but the style sheet doesn't support it
 dropPathColor = 221,221,221
