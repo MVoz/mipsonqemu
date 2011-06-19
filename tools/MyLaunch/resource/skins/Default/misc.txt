@@ -13,7 +13,7 @@ baidubutton = 92,71,16,16
 diggxmloutput = 160,71,320,24
 diggxmloutputalign = right
 diggxmloutputcolor = #2C629E
-diggxmloutputFamily = Lucida Sans
+diggxmloutputFamily = Verdana
 diggxmloutputSize = 8
 diggxmloutputWeight = normal
 ; These describe the font of the full path in the dropdown box
@@ -23,3 +23,15 @@ dropPathFamily = Lucida Sans
 dropPathSize = 8
 dropPathWeight = 0
 dropPathItalics = 0
+
+;output part name
+outputNameColor = #286fa6
+outputNameSize = 12
+outputNameWeight = bold
+outputNameItalics = 0
+
+
+;output part path
+outputPathColor = #585755
+outputPathSize = 10
+outputPathItalics = 0
