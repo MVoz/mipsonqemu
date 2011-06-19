@@ -3,8 +3,14 @@ output = 95,50,360,24
 input = 100,27,360,24
 alternatives = 37,71,436,100
 icon = 42,32,32,32
-optionsbutton = 122,68,16,16
-diggxmloutput = 150,68,320,24
+
+homebutton = 28,71,16,16
+optionsbutton = 44,71,16,16
+syncbutton = 60,71,16,16
+googlebutton = 76,71,16,16
+baidubutton = 92,71,16,16
+
+diggxmloutput = 160,71,320,24
 diggxmloutputalign = right
 diggxmloutputcolor = #2C629E
 diggxmloutputFamily = Lucida Sans

@@ -47,3 +47,19 @@ QPushButton#opsButton:hover {
 	border: none;
 	background: url(opsbutton.png);   
 }
+QPushButton#homeButton {
+	border: none;
+	background: url(skins/default/home.png);   
+}
+QPushButton#syncButton {
+	border: none;
+	background: url(skins/default/sync.png);   
+}
+QPushButton#baiduButton {
+	border: none;
+	background: url(skins/default/baidu.png);   
+}
+QPushButton#googleButton {
+	border: none;
+	background: url(skins/default/google.png);   
+}
