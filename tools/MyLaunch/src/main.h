@@ -254,6 +254,10 @@ public:
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
+	QPushButton *homeButton;
+	QPushButton *syncButton;
+	QPushButton *baiduButton;
+	QPushButton *googleButton;
 	QRect altRect;
 	QLabel * licon;
 	QSqlDatabase db;
