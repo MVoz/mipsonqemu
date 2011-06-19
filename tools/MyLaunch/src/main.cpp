@@ -1397,7 +1397,7 @@ void MyWidget::updateDisplay()
 	 	//QString outputs=QString("<span style=\"color:#286fa6;font-weight:bold;\">%1</span><span style=\"font-size:10px;color:#585755\">(%2)</span>").arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
 		QString outputs=QString(outputFormat).arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
 
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,outputs);
+		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,outputs);
 
 		output->setHtml(outputs);
 #else
@@ -2842,18 +2842,22 @@ void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
 
 void MyWidget::diggxmlDisplayTimeout()
 {
+	QString diggxmloutputs;
 	if(diggXmllist.size()){
 		uint index = (diggxmlDisplayIndex++)%diggXmllist.size();
 		
 		//QString diggxmloutputs=QString("<p align=\"right\"><a href=\"%1\" style=\"color:#2C629E;text-decoration: none\">%2</a></p>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
-		QString diggxmloutputs=QString(diggxmloutputFormat).arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
+		diggxmloutputs=QString(diggxmloutputFormat).arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		
 		// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggxmloutputs);
 		//QString diggxmloutputs=QString("<html><body><p><a href=\"%1\">%2</a></p></body></html>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		//ui.textBrowser->append(QString::fromLocal8Bit("<a href = \"http://www.sina.com.cn/\">ÐÂÀË</a>"));
 		//diggxmloutput->setOpenExternalLinks (true );
-		diggxmloutput->setHtml(diggxmloutputs);
+		
+	}else{
+		diggxmloutputs=QString(diggxmloutputFormat).arg(HTTP_SERVER_URL).arg(QString(APP_NAME)+"-"+QString(APP_SLOGAN));
 	}
+	diggxmloutput->setHtml(diggxmloutputs);
 }
 void MyWidget::loadDiggXml()
 {
@@ -2866,16 +2870,19 @@ void MyWidget::loadDiggXml()
 		diggXmllist.clear();
 		diggXmllist = diggXmlReader.bm_list;
 #ifdef TOUCH_ANY_DEBUG
+/*
 		foreach(bookmark_catagory diggitem, diggXmllist)
 		{
 			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
 		}
+*/
 #endif	
-		diggxmlDisplayTimeout();
 		f.close();
 	}else{
 		diggXmllist.clear();
+		diggxmlDisplayIndex=0;
 	}
+	diggxmlDisplayTimeout();
 }
 void MyWidget::diggXmlFinished(int status)
 {
@@ -2885,6 +2892,7 @@ void MyWidget::diggXmlFinished(int status)
 		close();
 	else{
 		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,status);
 		if(status == 1){
 			loadDiggXml();
 		}
@@ -2907,7 +2915,6 @@ void MyWidget::startDiggXml()
 	SET_SERVER_IP(gSettings,url);
 #endif
 	gDiggXmler->setUrl(url);
-	qDebug()<<__FUNCTION__<<__LINE__<<diggXmllist.size();
 	if(diggXmllist.size())
 	{
 		bookmark_catagory bc = diggXmllist.at(0);
@@ -2929,7 +2936,6 @@ void MyWidget::bmSyncerFinished()
 	}
 	gSyncer->wait();								
 	gSyncer.reset();
-	//qDebug()<<__FUNCTION__<<"release gSemaphore";
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
