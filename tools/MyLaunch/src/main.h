@@ -249,6 +249,7 @@ public:
 	uint diggxmlDisplayIndex;
 	QString diggxmloutputFormat;
 #endif
+	QString outputFormat;
 	QTimer* dropTimer;	
 	QTimer* syncStatusTimer;
 	QCharListWidget *alternatives;

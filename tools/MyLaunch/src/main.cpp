@@ -1394,7 +1394,11 @@ void MyWidget::updateDisplay()
 
 		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
 #if 1
-	 	QString outputs=QString("<span style=\"color:#286fa6;font-weight:bold;\">%1</span><span style=\"color:#585755\">(%2)</span>").arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
+	 	//QString outputs=QString("<span style=\"color:#286fa6;font-weight:bold;\">%1</span><span style=\"font-size:10px;color:#585755\">(%2)</span>").arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
+		QString outputs=QString(outputFormat).arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
+
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,outputs);
+
 		output->setHtml(outputs);
 #else
 		output->setText(searchResults[0]->shortName);
@@ -2025,6 +2029,11 @@ void MyWidget::applySkin(QString directory)
 	diggxmloutputFormat.clear();
 	diggxmloutputFormat=QString("<p><a href=\"%1\" style=\"text-decoration: none\">%2</a></p>");
 #endif
+	outputFormat.clear();
+	outputFormat=QString("<span style=\"padding:0;\">%1</span><span style=\"padding:1;\">(%2)</span>");
+
+	
+
 	if (listDelegate == NULL)
 		return;
 
@@ -2119,6 +2128,33 @@ void MyWidget::applySkin(QString directory)
 						diggxmloutputFormat.replace("text-decoration: none",QString("font-weight:%1;text-decoration: none").arg(spl.at(1).trimmed()));
 					}			
 #endif
+//output name
+					else if (spl.at(0).trimmed().compare("outputNameColor", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:0;",QString("color:%1;padding:0;").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("outputNameSize", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:0;",QString("font-size:%1px;padding:0;").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("outputNameWeight", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:0;",QString("font-weight:%1;padding:0;").arg(spl.at(1).trimmed()));
+					}	
+//output path
+					else if (spl.at(0).trimmed().compare("outputPathColor", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:1;",QString("color:%1;padding:1;").arg(spl.at(1).trimmed()));
+					}
+					else if (spl.at(0).trimmed().compare("outputPathFamily", Qt::CaseInsensitive) == 0)
+					{
+							outputFormat.replace("padding:1;",QString("font:%1;padding:1;").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("outputPathSize", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:1;",QString("font-size:%1px;padding:1;").arg(spl.at(1).trimmed()));
+					}else if (spl.at(0).trimmed().compare("diggxmloutputWeight", Qt::CaseInsensitive) == 0)
+					{
+						outputFormat.replace("padding:1;",QString("font-weight:%1;padding:1;").arg(spl.at(1).trimmed()));
+					}					 
+
 					else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0)
 					{
 						closeButton->setGeometry(rect);
@@ -2548,7 +2584,7 @@ void MyWidget::_startSync(int mode,int silence)
 		NEW_TIMER(syncStatusTimer);
 		syncStatusTimer->setSingleShot(false);
 		connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
-		syncStatusTimer->start(100);
+		syncStatusTimer->start(SECONDS/2);
 #endif
 	}
 	return;
@@ -3208,9 +3244,6 @@ void MyWidget::setIcon(int type,const QString& tip)
 	switch(type){
 		case SYNC_STATUS_PROCESSING_1:
 		case SYNC_STATUS_PROCESSING_2:
-		case SYNC_STATUS_PROCESSING_3:
-		case SYNC_STATUS_PROCESSING_4:
-		case SYNC_STATUS_PROCESSING_5:
 			trayIcon->setIcon(QIcon(QString("images/"+QString(APP_NAME)+"_%1.png").arg(type-SYNC_STATUS_PROCESSING_1+1)));	
 		break;
 		case SYNC_STATUS_FAILED:
