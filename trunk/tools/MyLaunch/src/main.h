@@ -365,6 +365,9 @@ public slots:
 		void monitorTimerTimeout();
 		void updateSuccessTimeout();
 		void menuOptions();
+		void homeBtnPressed();
+		void googleBtnPressed();
+		void baiduBtnPressed();
 		void onHotKey();		
 #if 0
 		void catalogBuilderTimeout();
