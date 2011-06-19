@@ -53,6 +53,11 @@ extern shared_ptr <bmSync> gSyncer;
 extern shared_ptr<diggXml> gDiggXmler;
 #endif
 
+enum{
+	NET_SEARCH_GOOGLE=0,
+	NET_SEARCH_BAIDU	
+};
+
 struct {
 	QString name;
 	QString fullpath;
@@ -91,6 +96,14 @@ void MyWidget::configModify(int type){
 		case DIRLIST:
 			qDebug()<<"scan directory.......................";
 			buildCatalog();
+		break;
+		case NET_SEARCH_MODIFY:
+		if(!googleButton->isHidden()){
+			googleButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+		}
+		if(!baiduButton->isHidden()){
+			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
+		}
 		break;
 		default:
 		break;
@@ -331,27 +344,32 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	opsButton = new QPushButton(label);
 	opsButton->setObjectName("opsButton");
 	opsButton->setToolTip(tr(APP_NAME" Options"));
+	opsButton->setFocusPolicy(Qt::NoFocus);
 	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
 
 	homeButton = new QPushButton(label);
 	homeButton->setObjectName("homeButton");
 	homeButton->setToolTip(tr(APP_NAME" Home"));
-	connect(homeButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+	homeButton->setFocusPolicy(Qt::NoFocus);
+	connect(homeButton, SIGNAL(pressed()), this, SLOT(homeBtnPressed()));
 
 	syncButton = new QPushButton(label);
 	syncButton->setObjectName("syncButton");
 	syncButton->setToolTip(tr(APP_NAME" Sync"));
-	connect(syncButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+	syncButton->setFocusPolicy(Qt::NoFocus);
+	connect(syncButton, SIGNAL(pressed()), this, SLOT(startSync()));
 
 	baiduButton = new QPushButton(label);
 	baiduButton->setObjectName("baiduButton");
 	baiduButton->setToolTip(tr(APP_NAME" Baidu"));
-	connect(baiduButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+	baiduButton->setFocusPolicy(Qt::NoFocus);
+	connect(baiduButton, SIGNAL(pressed()), this, SLOT(baiduBtnPressed()));
 
 	googleButton = new QPushButton(label);
 	googleButton->setObjectName("googleButton");
 	googleButton->setToolTip(tr(APP_NAME" Google"));
-	connect(googleButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+	googleButton->setFocusPolicy(Qt::NoFocus);
+	connect(googleButton, SIGNAL(pressed()), this, SLOT(googleBtnPressed()));
 
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
@@ -2171,8 +2189,7 @@ void MyWidget::applySkin(QString directory)
 		connectAlpha();
 		platform->MoveAlphaBorder(pos());
 	}
-
-
+	configModify(NET_SEARCH_MODIFY);
 }
 
 
@@ -2897,6 +2914,20 @@ void MyWidget::bmSyncerFinished()
 	
 }
 
+void MyWidget::homeBtnPressed()
+{
+	runProgram(HTTP_SERVER_URL,"");
+}
+void MyWidget::googleBtnPressed()
+{
+	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool());
+	configModify(NET_SEARCH_MODIFY);
+}
+void MyWidget::baiduBtnPressed()
+{
+	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool());
+	configModify(NET_SEARCH_MODIFY);
+}
 void MyWidget::menuOptions()
 {
 	if (optionsOpen == true && ops)
