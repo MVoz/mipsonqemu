@@ -501,6 +501,8 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 		emit configModifyNotify(NETPROXY);	
 	else if(name.startsWith("netfinder"))
 		emit configModifyNotify(NET_SEARCH_MODIFY);	
+	else if(name.startsWith("Account"))
+		emit configModifyNotify(NET_ACCOUNT_MODIFY);	
 	else if(name=="adv/ckSupportIe"||name=="adv/ckSupportFirefox"||name=="adv/ckSupportOpera"||name=="netbookmarkbrowser"){
 		setBrowserEnable(settings);
 	}
