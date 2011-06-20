@@ -5,11 +5,12 @@
 
 
 QLineEdit#input {
-	font:  13px "Verdana";
-	border-width: 0px;
-	background-color: rgba(0,244,120,0%);
-	border-style: solid;
-	color: black;
+	font: bold normal large "Verdana";
+	font-size:14px;
+	color:#626262;
+	border:1px solid #b2b2b2;
+	border-radius:15px;
+	selection-color:pink
 }
 QTextEdit#output,QLineEdit#output {
 	font:  13px "Verdana";
