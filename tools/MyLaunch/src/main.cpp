@@ -105,6 +105,12 @@ void MyWidget::configModify(int type){
 			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
 		}
 		break;
+		case NET_ACCOUNT_MODIFY:
+		if(!syncButton->isHidden()){
+			syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png")))));
+			
+		}
+		break;
 		default:
 		break;
 	}
@@ -825,8 +831,9 @@ void MyWidget::launchObject()
 		increaseUsage(r,inputData[0].getText());
 		res = r;
 	}
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,res.shortName <<" with argument: "<<res.args<< " from "<<res.comeFrom);
 
-	if (res.comeFrom<=COME_FROM_PROGRAM)
+	if (res.comeFrom<=COME_FROM_LEARNPROCESS)
 	{
 		QString arg,args(res.args);
 		if (inputData.count() > 1)
@@ -840,7 +847,7 @@ void MyWidget::launchObject()
 			args.replace("%s",arg);
 		else
 			args.append(" ").append(arg);
-		qDebug()<<" "<<res.shortName <<" with argument: "<<args<< " from "<<res.comeFrom;
+		
 		if (!platform->Execute(res.fullPath, args))
 		{
 
@@ -963,11 +970,12 @@ void MyWidget::altKeyPressEvent(QKeyEvent * key)
 			int row = alternatives->currentRow();
 			if (row > -1)
 			{
+				/*
 				QString location = "History/" + input->text();
 				QStringList hist;
 				hist << searchResults[row]->lowName << searchResults[row]->fullPath;
 				gSettings->setValue(location, hist);
-
+				*/
 				CatItem* tmp = searchResults[row];
 				searchResults[row] = searchResults[0];
 				searchResults[0] = tmp;
@@ -1121,14 +1129,12 @@ void MyWidget::doTab()
 
 void MyWidget::doEnter()
 {
-
 	if (dropTimer->isActive())
 		dropTimer->stop();
 	if (searchResults.count() > 0 || inputData.count() > 1)
 		launchObject();
 	else{
 		//google or baidu
-
 		if(gSearchTxt!="")
 		{
 			QString netsearchbrowser=gSettings->value("netsearchbrowser","").toString().trimmed();
@@ -1194,7 +1200,6 @@ void MyWidget::doPageDown(int mode)
 
 void MyWidget::keyPressEvent(QKeyEvent * key)
 {
-	//LOG_RUN_LINE;
 	switch(key->key())
 	{
 	case Qt::Key_Escape:
@@ -2103,7 +2108,6 @@ void MyWidget::applySkin(QString directory)
 						baiduButton->setAttribute(Qt::WA_StyledBackground, true);
 						baiduButton->setGeometry(rect);
 						baiduButton->show();
-						QDEBUG_LINE;
 					}
 #ifdef CONFIG_DIGG_XML
 					else if (spl.at(0).trimmed().compare("diggxmloutput", Qt::CaseInsensitive) == 0)
@@ -2226,6 +2230,7 @@ void MyWidget::applySkin(QString directory)
 		platform->MoveAlphaBorder(pos());
 	}
 	configModify(NET_SEARCH_MODIFY);
+	configModify(NET_ACCOUNT_MODIFY);
 }
 
 
@@ -2594,7 +2599,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
+//	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif
@@ -2836,8 +2841,7 @@ void MyWidget::monitorTimerTimeout()
 void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
 {
 		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,link.toString());
-		runProgram(link.toString(),"");
-			
+		runProgram(link.toString(),"");			
 }
 
 void MyWidget::diggxmlDisplayTimeout()
@@ -2892,7 +2896,7 @@ void MyWidget::diggXmlFinished(int status)
 		close();
 	else{
 		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,status);
+//		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,status);
 		if(status == 1){
 			loadDiggXml();
 		}
