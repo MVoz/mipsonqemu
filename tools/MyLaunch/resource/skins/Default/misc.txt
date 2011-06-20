@@ -1,6 +1,6 @@
 boundary = 0,0,500,142
 output = 95,50,360,24
-input = 100,27,360,24
+input = 95,27,360,24
 alternatives = 37,71,436,100
 icon = 42,32,32,32
 
