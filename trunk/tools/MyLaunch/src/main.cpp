@@ -462,6 +462,11 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 		defBrowser.clear();	
 	}
 	*/
+#ifdef CONFIG_DIGG_XML
+	diggxmler=new diggXmler(this,diggxmloutput);
+	connect(diggxmler, SIGNAL(diggxmlNotify(QString)), this, SLOT(displayDiggxml(QString)));
+#endif
+
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -475,6 +480,8 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	//      combo->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 	connect(alternatives, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(altKeyPressEvent(QKeyEvent *)));
 	connect(alternatives, SIGNAL(focusOut(QFocusEvent *)), this, SLOT(focusOutEvent(QFocusEvent *)));
+	connect(alternatives, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChangedEvent()));
+	
 
 
 	// Load the plugins
@@ -620,12 +627,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
 	monitorTimer->start(MONITER_TIME_INTERVAL);	
 #ifdef CONFIG_DIGG_XML
-	diggxmlDisplayIndex = 0;
-	loadDiggXml();
-	NEW_TIMER(diggxmlDisplayTimer);
-	diggxmlDisplayTimer->setSingleShot(false);
-	connect(diggxmlDisplayTimer, SIGNAL(timeout()), this, SLOT(diggxmlDisplayTimeout()));
-	diggxmlDisplayTimer->start(10*SECONDS);
+	diggxmler->start();
 #endif
 
 #ifdef CONFIG_SYNC_STATUS_DEBUG
@@ -936,6 +938,17 @@ void MyWidget::launchObject()
 	}
 	//catalog->incrementUsage(res);
 }
+void MyWidget::itemSelectionChangedEvent()
+{
+	if (searchResults.count() > 0)
+		{
+			int row = alternatives->currentRow();
+			if (row > -1)
+			{
+				updateMainDisplay(searchResults[row]);
+			}
+		}
+}
 
 void MyWidget::focusOutEvent(QFocusEvent * evt)
 {
@@ -952,17 +965,15 @@ void MyWidget::focusOutEvent(QFocusEvent * evt)
 
 void MyWidget::altKeyPressEvent(QKeyEvent * key)
 {
-	//LOG_RUN_LINE;
+	
 	if (key->key() == Qt::Key_Escape)
 	{
 		alternatives->hide();
 	}
-	if (key->key() == Qt::Key_Up)
+	if (key->key() == Qt::Key_Up||key->key() == Qt::Key_Down)
 	{
-		key->ignore();
-	} else if (key->key() == Qt::Key_Down)
-	{
-		key->ignore();
+		key->ignore();		
+		
 	} else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter || key->key() == Qt::Key_Tab)
 	{
 		if (searchResults.count() > 0)
@@ -1017,12 +1028,9 @@ void MyWidget::altKeyPressEvent(QKeyEvent * key)
 	}
 }
 
-
-
-
-
 void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 {
+	
 	if (key->key() == Qt::Key_Tab)
 	{
 		keyPressEvent(key);
@@ -1030,6 +1038,7 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 	{
 		key->ignore();
 	}
+	input->repaint();
 }
 
 void MyWidget::parseInput(QString text)
@@ -1213,6 +1222,7 @@ void MyWidget::keyPressEvent(QKeyEvent * key)
 		doEnter();
 		break;
 	case Qt::Key_Down:
+		QDEBUG_LINE;
 		if (!alternatives->isVisible())
 		{
 			dropTimer->stop();
@@ -1390,11 +1400,21 @@ void MyWidget::searchOnInput()
 	}
 	//catalog->checkHistory(gSearchTxt, searchResults);
 }
+void MyWidget::updateMainDisplay(CatItem* t)
+{
+		QIcon icon = getIcon(t);
+		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+	 	QString outputs=QString(outputFormat).arg(t->shortName).arg(t->fullPath);
+		output->setHtml(outputs);
+		licon->repaint();
+		output->repaint();
+}
 
 void MyWidget::updateDisplay()
 {
 	if (searchResults.count() > 0)
 	{
+/*
 		QIcon icon = getIcon(searchResults[0]);
 
 		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
@@ -1408,7 +1428,8 @@ void MyWidget::updateDisplay()
 #else
 		output->setText(searchResults[0]->shortName);
 #endif
-
+*/
+		updateMainDisplay(searchResults[0]);
 		// Did the plugin take control of the input?
 		// if (inputData.last().getID() != 0)
 		//	  searchResults[0]->comeFrom = inputData.last().getID();
@@ -1421,6 +1442,8 @@ void MyWidget::updateDisplay()
 		{
 			licon->clear();
 			output->clear();
+			licon->repaint();
+			output->repaint();
 		}
 	}
 }
@@ -1821,6 +1844,12 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		event->ignore();
 		return;
 	}
+	if(diggxmler){	
+		if(diggxmler->isRunning())
+			diggxmler->stop();
+		while(diggxmler->isRunning());
+		//DELETE_OBJECT(diggxmler);		
+	}
 #endif
 
 	//      gSettings->setValue("Display/pos", relativePosition());
@@ -1913,10 +1942,18 @@ MyWidget::~MyWidget()
 	DELETE_TIMER(diggXmlTimer);
 #endif
 #endif
+	QDEBUG_LINE;
 	//delete dropTimer;
 	DELETE_TIMER(dropTimer);
 	DELETE_TIMER(syncStatusTimer);
-	DELETE_TIMER(diggxmlDisplayTimer);
+	if(diggxmler){
+		
+		if(diggxmler->isRunning())
+			diggxmler->stop();
+		DELETE_OBJECT(diggxmler);
+		
+	}
+//	DELETE_TIMER(diggxmlDisplayTimer);
 
 /*
 	if (platform)
@@ -2031,7 +2068,7 @@ void MyWidget::applySkin(QString directory)
 	googleButton->hide();
 	baiduButton->hide();
 #ifdef CONFIG_DIGG_XML
-	diggxmloutputFormat.clear();
+	QString diggxmloutputFormat;
 	diggxmloutputFormat=QString("<p><a href=\"%1\" style=\"text-decoration: none\">%2</a></p>");
 #endif
 	outputFormat.clear();
@@ -2231,6 +2268,9 @@ void MyWidget::applySkin(QString directory)
 	}
 	configModify(NET_SEARCH_MODIFY);
 	configModify(NET_ACCOUNT_MODIFY);
+#ifdef CONFIG_DIGG_XML
+	diggxmler->setDiggXmlFormat(diggxmloutputFormat);
+#endif
 }
 
 
@@ -2838,13 +2878,8 @@ void MyWidget::monitorTimerTimeout()
 	monitorTimer->start(MONITER_TIME_INTERVAL);
 }
 #ifdef CONFIG_DIGG_XML
-void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
-{
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,link.toString());
-		runProgram(link.toString(),"");			
-}
 
-void MyWidget::diggxmlDisplayTimeout()
+void diggXmler::diggxmlDisplayTimeout()
 {
 	QString diggxmloutputs;
 	if(diggXmllist.size()){
@@ -2861,9 +2896,10 @@ void MyWidget::diggxmlDisplayTimeout()
 	}else{
 		diggxmloutputs=QString(diggxmloutputFormat).arg(HTTP_SERVER_URL).arg(QString(APP_NAME)+"-"+QString(APP_SLOGAN));
 	}
-	diggxmloutput->setHtml(diggxmloutputs);
+	//textoutput->setHtml(diggxmloutputs);
+	emit diggxmlNotify(diggxmloutputs);
 }
-void MyWidget::loadDiggXml()
+void diggXmler::loadDiggXml()
 {
 	QFile f(DIGG_XML_LOCAL_FILE);
 	if(f.open(QIODevice::ReadOnly)){
@@ -2874,20 +2910,24 @@ void MyWidget::loadDiggXml()
 		diggXmllist.clear();
 		diggXmllist = diggXmlReader.bm_list;
 #ifdef TOUCH_ANY_DEBUG
-/*
 		foreach(bookmark_catagory diggitem, diggXmllist)
 		{
 			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
 		}
-*/
 #endif	
 		f.close();
 	}else{
-		diggXmllist.clear();
-		diggxmlDisplayIndex=0;
+		diggXmllist.clear();		
 	}
+	diggxmlDisplayIndex=0;
 	diggxmlDisplayTimeout();
 }
+void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
+{
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,link.toString());
+		runProgram(link.toString(),"");			
+}
+
 void MyWidget::diggXmlFinished(int status)
 {
 	gDiggXmler->wait();								
@@ -2898,9 +2938,14 @@ void MyWidget::diggXmlFinished(int status)
 		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
 //		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,status);
 		if(status == 1){
-			loadDiggXml();
+			//loadDiggXml();
+			emit diggXmlNewSignal();
 		}
 	}
+}
+void MyWidget::displayDiggxml(QString s)
+{
+	diggxmloutput->setHtml(s);
 }
 void MyWidget::startDiggXml()
 {
@@ -2919,12 +2964,15 @@ void MyWidget::startDiggXml()
 	SET_SERVER_IP(gSettings,url);
 #endif
 	gDiggXmler->setUrl(url);
+#if 1
+	gDiggXmler->setDiggId(diggxmler->getMaxDiggid());
+#else
 	if(diggXmllist.size())
 	{
 		bookmark_catagory bc = diggXmllist.at(0);
 		gDiggXmler->setDiggId(bc.bmid);
 	}
-
+#endif
 	gDiggXmler->start(QThread::IdlePriority);
 
 }

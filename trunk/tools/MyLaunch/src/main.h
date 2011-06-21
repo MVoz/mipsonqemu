@@ -84,6 +84,7 @@ public:
 	{
 		setAttribute(Qt::WA_InputMethodEnabled);
 	}
+
 	void keyPressEvent(QKeyEvent* key) {
 		//	LOG_RUN_LINE;
 		QLineEdit::keyPressEvent(key);
@@ -174,6 +175,65 @@ signals:
 	void fadeLevel(double);
 	void finishedFade(double);
 };
+#ifdef CONFIG_DIGG_XML
+class diggXmler : public QThread
+{
+	Q_OBJECT
+private:
+	QTextBrowser *textoutput;
+	QList<bookmark_catagory> diggXmllist;
+	QTimer* diggxmlDisplayTimer;
+	uint diggxmlDisplayIndex;
+	QString diggxmloutputFormat;
+public:
+	diggXmler(QObject* parent = NULL,QTextBrowser* t=NULL)
+		: QThread(parent),textoutput(t) {
+			diggxmlDisplayIndex = 0;
+			
+			
+		}
+	~diggXmler() {
+		QDEBUG_LINE;
+		DELETE_TIMER(diggxmlDisplayTimer);
+	}
+	void stop() {
+		QDEBUG_LINE;
+		exit();
+	}
+	void run(){
+		loadDiggXml();
+		QDEBUG_LINE;
+		START_TIMER_INSIDE(diggxmlDisplayTimer,false,100,diggxmlDisplayTimeout);
+		//NEW_TIMER(diggxmlDisplayTimer);
+		QDEBUG_LINE;
+		//diggxmlDisplayTimer->setSingleShot(false);
+		QDEBUG_LINE;
+		//connect(diggxmlDisplayTimer, SIGNAL(timeout()), this, SLOT(diggxmlDisplayTimeout()));
+		//QDEBUG_LINE;
+		connect(this->parent(), SIGNAL(diggXmlNewSignal()), this, SLOT(loadDiggXml()));			
+		//QDEBUG_LINE;
+		//diggxmlDisplayTimer->start(100);
+		exec();
+	}
+			
+	void setDiggXmlFormat(QString& s){
+			diggxmloutputFormat = s;
+	     }	
+	uint getMaxDiggid(){
+		if(diggXmllist.size()){
+			bookmark_catagory bc = diggXmllist.at(0);
+			return bc.bmid;
+		}
+		return 0;
+	}
+public slots:
+	void diggxmlDisplayTimeout();
+	void loadDiggXml();
+	signals:
+	void diggxmlNotify(QString s);
+
+};
+#endif
 enum {
 	SYNC_MODE_BOOKMARK=0,
 	SYNC_MODE_REBOOKMARK,	
@@ -244,10 +304,7 @@ public:
 #endif
 #ifdef CONFIG_DIGG_XML
 	QTextBrowser *diggxmloutput;
-	QList<bookmark_catagory> diggXmllist;
-	QTimer* diggxmlDisplayTimer;
-	uint diggxmlDisplayIndex;
-	QString diggxmloutputFormat;
+	diggXmler*   diggxmler;
 #endif
 	QString outputFormat;
 	QTimer* dropTimer;	
@@ -309,6 +366,7 @@ public:
 	void resetLaunchy();
 	void applySkin2(QString directory);
 	void updateDisplay();
+	void updateMainDisplay(CatItem* t);
 	void searchOnInput();
 	void fadeIn();
 	void fadeOut();
@@ -400,6 +458,7 @@ public slots:
 		void inputKeyPressEvent(QKeyEvent* key);
 		void altKeyPressEvent(QKeyEvent* key);
 		void focusOutEvent(QFocusEvent* evt);
+		void itemSelectionChangedEvent();
 		void setOpaqueness(int val);
 		void setFadeLevel(double);
 		void finishedFade(double d);
@@ -427,8 +486,7 @@ public slots:
 #ifdef CONFIG_DIGG_XML
 		void diggXmlFinished(int status);
 		void startDiggXml();
-		void loadDiggXml();
-		void 	diggxmlDisplayTimeout();
+		void displayDiggxml(QString s);
 		void diggxmloutputAnchorClicked( const QUrl & link );
 #endif
 #ifdef CONFIG_ACTION_LIST
@@ -438,6 +496,11 @@ public slots:
 private slots:
 		void setIcon(int type,const QString& tip);
 		void iconActivated(QSystemTrayIcon::ActivationReason reason);
+#ifdef CONFIG_DIGG_XML
+	signals:
+		void diggXmlNewSignal();
+#endif
+
 };
 void kickoffSilentUpdate();
 bool CatLess(CatItem * a, CatItem * b);
