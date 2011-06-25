@@ -62,9 +62,10 @@ struct {
 	QString name;
 	QString fullpath;
 	QString args;
+	QString icon;
 }netfinders[]={
-	{QString("google"),"http://www.google.com/","search?q="},
-	{QString("baidu"),"http://www.baidu.com/","s?ie=utf-8&wd="},	
+	{QString("Google"),"http://www.google.com/","search?q=","./images/google_icon.png"},
+	{QString("Baidu"),"http://www.baidu.com/","s?ie=utf-8&wd=","./images/baidu_icon.png"},	
 	{0,"",""}
 };
 
@@ -104,6 +105,7 @@ void MyWidget::configModify(int type){
 		if(!baiduButton->isHidden()){
 			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
 		}
+		updateDisplay();
 		break;
 		case NET_ACCOUNT_MODIFY:
 		if(!syncButton->isHidden()){
@@ -637,6 +639,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
 	syncStatusTimer->start(200);
 #endif
+	updateDisplay();
 
 }
 
@@ -1380,7 +1383,7 @@ void MyWidget::searchOnInput()
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
-#if 0
+#if 1
 	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
 	for (int i = 0; i < searchResults.count(); i++)
 	{
@@ -1408,6 +1411,36 @@ void MyWidget::updateMainDisplay(CatItem* t)
 		output->setHtml(outputs);
 		licon->repaint();
 		output->repaint();
+}
+void MyWidget::updateSearcherDisplay()
+{
+	int searcherindex =0;
+	QString outputs;
+	QIcon icon;
+	if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()&&gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool())
+	{
+		icon=QIcon(netfinders[NET_SEARCH_GOOGLE].icon);
+		outputs=QString(outputFormat).arg(netfinders[NET_SEARCH_GOOGLE].name+"&"+netfinders[NET_SEARCH_BAIDU].name).arg("");
+	}else{
+		if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()){
+				searcherindex = NET_SEARCH_GOOGLE;
+		}else if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()){
+				searcherindex = NET_SEARCH_BAIDU;
+		}else{
+			licon->clear();
+			output->clear();
+			licon->repaint();
+			output->repaint();
+			return;
+			
+		}
+		icon=QIcon(netfinders[searcherindex].icon);		
+		outputs=QString(outputFormat).arg(netfinders[searcherindex].name).arg(netfinders[searcherindex].fullpath);
+	}
+	licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+	output->setHtml(outputs);
+	licon->repaint();
+	output->repaint();
 }
 
 void MyWidget::updateDisplay()
@@ -1444,6 +1477,7 @@ void MyWidget::updateDisplay()
 			output->clear();
 			licon->repaint();
 			output->repaint();
+			updateSearcherDisplay();
 		}
 	}
 }
@@ -2644,6 +2678,8 @@ void MyWidget::bmSyncFinishedStatus(int status)
 	DELETE_TIMER(syncStatusTimer);
 #endif
 	if(!trayIcon->isVisible()) return;
+	if(!syncButton->isHidden())
+		syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg("sync.png"))));	
 	char *statusStr = tz::getstatusstring(status);
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_MODIFY:
@@ -2709,6 +2745,8 @@ void MyWidget::syncStatusTimeout()
 	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
+		if(!syncButton->isHidden())
+			syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
 	}	
 }
 void MyWidget::monitorTimerTimeout()
@@ -2910,10 +2948,10 @@ void diggXmler::loadDiggXml()
 		diggXmllist.clear();
 		diggXmllist = diggXmlReader.bm_list;
 #ifdef TOUCH_ANY_DEBUG
-		foreach(bookmark_catagory diggitem, diggXmllist)
-		{
-			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
-		}
+		//foreach(bookmark_catagory diggitem, diggXmllist)
+		//{
+		//	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
+		//}
 #endif	
 		f.close();
 	}else{
@@ -3011,16 +3049,19 @@ void MyWidget::bmSyncerFinished()
 void MyWidget::homeBtnPressed()
 {
 	runProgram(HTTP_SERVER_URL,"");
+	input->setFocus();
 }
 void MyWidget::googleBtnPressed()
 {
 	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool());
 	configModify(NET_SEARCH_MODIFY);
+	input->setFocus();
 }
 void MyWidget::baiduBtnPressed()
 {
 	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool());
 	configModify(NET_SEARCH_MODIFY);
+	input->setFocus();
 }
 void MyWidget::menuOptions()
 {

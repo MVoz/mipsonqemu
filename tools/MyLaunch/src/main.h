@@ -188,9 +188,7 @@ private:
 public:
 	diggXmler(QObject* parent = NULL,QTextBrowser* t=NULL)
 		: QThread(parent),textoutput(t) {
-			diggxmlDisplayIndex = 0;
-			
-			
+			diggxmlDisplayIndex = 0;			
 		}
 	~diggXmler() {
 		QDEBUG_LINE;
@@ -203,16 +201,8 @@ public:
 	void run(){
 		loadDiggXml();
 		QDEBUG_LINE;
-		START_TIMER_INSIDE(diggxmlDisplayTimer,false,100,diggxmlDisplayTimeout);
-		//NEW_TIMER(diggxmlDisplayTimer);
-		QDEBUG_LINE;
-		//diggxmlDisplayTimer->setSingleShot(false);
-		QDEBUG_LINE;
-		//connect(diggxmlDisplayTimer, SIGNAL(timeout()), this, SLOT(diggxmlDisplayTimeout()));
-		//QDEBUG_LINE;
+		START_TIMER_INSIDE(diggxmlDisplayTimer,false,10*SECONDS,diggxmlDisplayTimeout);
 		connect(this->parent(), SIGNAL(diggXmlNewSignal()), this, SLOT(loadDiggXml()));			
-		//QDEBUG_LINE;
-		//diggxmlDisplayTimer->start(100);
 		exec();
 	}
 			
@@ -489,6 +479,7 @@ public slots:
 		void displayDiggxml(QString s);
 		void diggxmloutputAnchorClicked( const QUrl & link );
 #endif
+		void updateSearcherDisplay();
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);
 		//void importNetBookmark(CATBUILDMODE mode,uint browserid);
