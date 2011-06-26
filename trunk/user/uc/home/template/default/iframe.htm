@@ -34,10 +34,11 @@
 	.link_td a { color: #333; }
 	textarea { border: 1px solid #ddd; overflow: auto; }
 	.t_input { padding: 3px 2px; border: 1px solid #ddd; line-height: 16px; }
-	.link_icon{width:14px;height:14px;}
+	.link_icon{width:15px;height:15px;}
 	.top_link_return li{padding:1px 0px;}
 	.link_icon_share{margin-left:20px;}
-
+	.link_header .link_prev a{background: url("template/default/image/return.png") no-repeat scroll 0px 0px transparent;color:#2C629E;padding:0 18px;}
+	.link_header .link_next a{background: url("template/default/image/next.png") no-repeat scroll 0px 0px transparent;color:#2C629E;padding:0 18px;}
 </style>
 </head>
 
@@ -53,9 +54,26 @@
 		<div class="top_link_return">			
 			<div class="link_return">
 				<ul>
-					<li><img class="link_icon" src="template/default/image/home1.png"/>返回我的空间<img class="link_icon link_icon_share" src="template/default/image/share.png"/>分享</li>
-					<li><img class="link_icon" src="template/default/image/return.png"/>上海真的是中国大陆最滥性sdfasdfasdgfasdgasdgasd的城市吗?-七嘴八舌频道-青6网 (复制)</li>
-					<li><img class="link_icon" src="template/default/image/next.png"/>下一篇:靠身体赚钱的性感女明星 -纯娱乐 -青69-藏经阁 </li>
+					<li>
+						<img class="link_icon" src="template/default/image/home1.png" align="absmiddle"> 
+						<a href="space.php?do=all">返回我的空间</a>
+						<img class="link_icon link_icon_share" src="template/default/image/share.png"/>
+						<a href="javascript:;" onclick="updatestatics('digg','up','$id');">分享</a>
+					</li>
+					<li class="link_prev">
+						<!--{if $id!=0 }-->
+						<a href="link.php?$type=$id" onclick="updatestatics('digg','view',$id,'digg_view_num_id_$id');">上一篇:$title</a>
+						<!--{else}-->
+						<a href="#">上一篇:无</a>
+						<!--{/if}-->
+					</li>
+					<li class="link_next">
+						<!--{if $id2!=0 }-->
+						<a href="link.php?$type=$id2" onclick="updatestatics('digg','view',$id2,'digg_view_num_id_$id2');">下一篇:$title2</a>
+						<!--{else}-->
+						<a href="#">下一篇:无</a>
+						<!--{/if}-->
+					</li>
 				</ul>	
 			</div>
 			<div class="link_advertising">
