@@ -814,5 +814,47 @@ background:url("image/g.png") no-repeat scroll 0 0 transparent; padding:4px 0 0p
 .stdn .stne{padding:18px 0 0 140px;color:#438e0b;font-size:120%;}
 .stdn .stsz{padding:2px 0 0 75px;color:#666;}
 
+/* advertising css */
+.top_link_return{
+	width: 970px;
+	height:66px;
+	margin: 0 auto;
+	position: relative;
+	padding-left:10px;
+}
+.link_return, .link_pagination, .link_advertising{
+	position: absolute;
+	bottom:4px;
+}
+.link_return, .link_pagination, img{
+	margin-right:5px;
+	vertical-align: middle;
+}
+.link_return{
+	left: 0;
+}
+.link_pagination{
+	left:120px;
+	overflow:hidden;
+	width:382px;
+	white-space:nowrap;
+	display:block;
+	
+}
+.link_advertising{
+	right: 0;
+}
+.link_advertising img{
+	width:468px;
+	height:60px;
+}
+.link_header{border-bottom: 1px solid #d1d1d1;background: url(image/boxb.png) repeat-x scroll 0 bottom transparent;}
+
+
+
+
+
+
+
 
 
