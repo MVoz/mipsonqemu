@@ -118,12 +118,12 @@ goto :EOF
 
 
 :copyfunc    
-@ echo off
+echo off
 del /Q/S %2 
 rmdir /Q/S %2
 mkdir %2
 xcopy %1 %2 /s            
-@ echo on
+echo on
 goto :EOF    
 
 :makefunc                   
