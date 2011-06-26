@@ -42,11 +42,11 @@ QListWidget#alternatives {
 }
 QPushButton#opsButton {
 	border: none;
-	background: url(opsbutton.png);   
+	background: url(skins/default/opsbutton.png);   
 }
 QPushButton#opsButton:hover {
 	border: none;
-	background: url(opsbutton.png);   
+	background: url(skins/default/opsbutton.png);   
 }
 QPushButton#homeButton {
 	border: none;
@@ -58,7 +58,9 @@ QPushButton#syncButton {
 }
 QPushButton#baiduButton {
 	border: none;
+	background: url(skins/default/baidu.png);   
 }
 QPushButton#googleButton {
 	border: none; 
+	background: url(skins/default/google.png);  
 }
