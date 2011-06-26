@@ -52,7 +52,7 @@ public:
 //	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
 	int mergeSettings(QSettings* ,QSettings* ,int );
 	void checkSilentUpdateApp();
-	void sendUpdateStatusNotify(int ,int );
+	void sendUpdateStatusNotify(int ,int,int );
 public slots: 
 	void getIniDone(int err);
 	void testNetFinished();
@@ -60,6 +60,6 @@ public slots:
 	void monitorTimeout();
 
 signals:
-	void updateStatusNotify(int type,int status);
+	void updateStatusNotify(int type,int status,int icon);
 };
 #endif

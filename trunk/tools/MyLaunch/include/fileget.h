@@ -51,14 +51,14 @@ public:
 	void run();
 	int newHttp();
 	void setDestdir(const QString& s){destdir = s;}
-	void sendUpdateStatusNotify(int flag,int type);
+	void sendUpdateStatusNotify(int flag,int type,int icon);
 public slots: 
 		void downloadFileDone(bool error);
 		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 		void httpTimeout();
 		void terminateThread();
 signals:
-		void updateStatusNotify(int type,int status);
+		void updateStatusNotify(int type,int status,int icon);
 
 };
 #endif
