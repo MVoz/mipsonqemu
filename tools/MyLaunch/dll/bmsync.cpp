@@ -34,7 +34,7 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 void bmSync::httpTimeout()
 {
 	THREAD_MONITOR_POINT;
-	mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT);
+	mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TIMEOUT,UPDATE_STATUS_ICON_FAILED);
 	http_timerover=1;
 	STOP_TIMER(httpTimer);
 	if(!http_finish)
@@ -48,22 +48,22 @@ void bmSync::testNetFinished()
 	switch(testServerResult)
 	{
 	case TEST_NET_ERROR_SERVER:
-		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
 		status = BM_SYNC_FAIL_SERVER_NET_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_ERROR,UPDATE_STATUS_ICON_FAILED);
 		status = BM_SYNC_FAIL_PROXY_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_ERROR_PROXY_AUTH:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_AUTH_ERROR);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_PROXY_AUTH_ERROR,UPDATE_STATUS_ICON_FAILED);
 		status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 		exit(status);
 		break;
 	case TEST_NET_REFUSE:
-		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_SERVER_REFUSE);
+		mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_FAIL_SERVER_REFUSE,UPDATE_STATUS_ICON_FAILED);
 		status = BM_SYNC_FAIL_SERVER_REFUSE;
 		exit(status);
 		break;
@@ -88,7 +88,7 @@ void bmSync::testNetFinished()
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
 					http->setHost(host);
-					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START);
+					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START,UPDATE_STATUS_ICON_LOADING);
 					http->get(url, file);
 				}
 			}else if(mode==BOOKMARK_TESTACCOUNT_MODE){
@@ -182,7 +182,7 @@ void bmSync::run()
 	testThread = new testNet(NULL,settings);
 	testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));
-	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,TRY_CONNECT_SERVER);
+	mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,TRY_CONNECT_SERVER,UPDATE_STATUS_ICON_LOADING);
 	testThread->start(QThread::IdlePriority);
 
 	int ret=exec();
@@ -216,11 +216,11 @@ void bmSync::testAccountFinished(bool error)
 		status = BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL;
 	exit(status);
 }
-void bmSync::mgUpdateStatus(int flag,int statusid)
+void bmSync::mgUpdateStatus(int flag,int statusid,int icon)
 {
 	THREAD_MONITOR_POINT;
 	if(!terminateFlag)
-		emit updateStatusNotify(flag,statusid);
+		emit updateStatusNotify(flag,statusid,icon);
 }
 void bmSync::bmxmlGetFinished(bool error)
 {
@@ -236,7 +236,7 @@ void bmSync::bmxmlGetFinished(bool error)
 		if(md5key==tz::fileMd5(filename_fromserver)){
 			mgthread = new bmMerge(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename_fromserver);
-			connect(mgthread, SIGNAL(mergeStatusNotify(int,int)), this, SLOT(mgUpdateStatus(int,int)));
+			connect(mgthread, SIGNAL(mergeStatusNotify(int,int,int)), this, SLOT(mgUpdateStatus(int,int,int)));
 			mgthread->start(QThread::IdlePriority);
 			return;
 		}
@@ -247,7 +247,7 @@ void bmSync::bmxmlGetFinished(bool error)
 			status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 			break;
 		default:
-			mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR);
+			mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
 			break;
 	}
 	mergeDone();
@@ -262,7 +262,7 @@ void bmSync::mergeDone()
 		if((status == BM_SYNC_SUCCESS_NO_MODIFY)||(status == BM_SYNC_SUCCESS_WITH_MODIFY)){
 			settings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESSFUL);
 			settings->sync();
-			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_MODIFY);
+			mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_SUCCESS_NO_MODIFY,UPDATE_STATUS_ICON_SUCCESSFUL);
 		}else{
 			settings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
 			settings->sync();

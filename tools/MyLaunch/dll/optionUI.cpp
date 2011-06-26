@@ -754,25 +754,40 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 {
 	webView->page()->mainFrame()->addToJavaScriptWindowObject("processDlg", this);
 }
-void synchronizeDlg::updateStatus(int type,int s)
+void synchronizeDlg::updateStatus(int type,int s,int icon)
 {
 	QString jsStr;
 	status=s;
-	statusTime = NOW_SECONDS;
+	statusTime = NOW_SECONDS;	
 	char *statusStr = tz::getstatusstring(s);
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
+	switch(icon){
+		case UPDATE_STATUS_ICON_SUCCESSFUL:
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("success.png"));
+			break;
+		case UPDATE_STATUS_ICON_FAILED:
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("fail.png"));
+			break;
+		case UPDATE_STATUS_ICON_REFUSED:
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("refused.png"));
+			break;
+		case UPDATE_STATUS_ICON_LOADING:
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("loading.gif"));
+			break;
+	}
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:
-		jsStr.append(QString("$$('loading').style.display='block';"));
-		jsStr.append(QString("$$('arrow').style.display='none';"));
+		//jsStr.append(QString("$$('loading').style.display='block';"));
+		//jsStr.append(QString("$$('arrow').style.display='none';"));
 		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
-		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
+		jsStr.append(QString("$$('btn_ok').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 		break;
 	case UPDATESTATUS_FLAG_RETRY:
-		jsStr.append(QString("$$('loading').style.display='block';"));
-		jsStr.append(QString("$$('arrow').style.display='none';"));
+		//jsStr.append(QString("$$('loading').style.display='block';"));
+		//jsStr.append(QString("$$('arrow').style.display='none';"));
 		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
-		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
+		jsStr.append(QString("$$('btn_ok').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 		break;
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
