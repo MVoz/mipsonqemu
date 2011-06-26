@@ -1,0 +1,65 @@
+.QWidget {
+
+}
+
+
+
+QLineEdit#input {
+	font: bold normal large "Verdana";
+	font-size:14px;
+	color:#626262;
+	border:1px solid #b2b2b2;
+	border-radius:15px;
+	selection-color:pink
+}
+QTextEdit#output,QLineEdit#output {
+	font:  13px "Verdana";
+	border-width: 0px;
+	background-color: rgba(0,244,120,0%);
+	border-style: solid;
+}
+QTextEdit#diggxmloutput{
+	font:  13px "Verdana";
+	border-width: 0px;
+	background-color: rgba(0,244,120,0%);
+	border-style: solid;
+	color:#286fa6;
+}
+
+QScrollBar::handle:vertical {
+	width: 3px;
+	height: 3px;
+	background: pink;
+	image: url(down_arrow.png);
+}
+
+QListWidget#alternatives {
+	font:  13px "Verdana";
+	background-color: black;
+	color: white;
+	border-style: solid;
+	border-width: 0px;
+}
+QPushButton#opsButton {
+	border: none;
+	background: url(qrc:/skins/default/opsbutton.png);   
+}
+QPushButton#opsButton:hover {
+	border: none;
+	background: url(:/skins/default/opsbutton.png);   
+}
+QPushButton#homeButton {
+	border: none;
+	background-image: url(:/skins/default/home.png);   
+}
+QPushButton#syncButton {
+	border: none;
+	background: url(:/skins/default/sync.png);   
+}
+QPushButton#baiduButton {
+	border: none;
+	background: url(:/skins/default/baidu.png);   
+}
+QPushButton#googleButton {
+	border: none; 
+}
