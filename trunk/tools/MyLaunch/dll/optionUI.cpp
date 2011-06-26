@@ -59,7 +59,11 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
 	//getHtml("./html/Customx.html");
+#ifdef CONFIG_HTML_FROM_RESOURCE
+	getHtml(":/html/common.html");
+#else
 	getHtml("./html/common.html");
+#endif
 	/*
 	webView->setHtml(QString("data:text/html,<frameset rows=\"100px,*\">"
 								"<frame src=\"./html/menu.html\">"
@@ -211,7 +215,11 @@ void OptionsDlg::loading(const QString & name)
 	menulsit<<"Common"<<"bookmark"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
+#ifdef CONFIG_HTML_FROM_RESOURCE	
+		menustring.append("<a href=\"#\" onclick=\"getHtml(':/html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
+#else
     		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
+#endif
 		menustring.append("</li>");
         }
 	//menustring.append("</ul>");
@@ -712,7 +720,11 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFix
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
 	setFixedSize(450, 70);
-	getHtml("./html/processDlg.html");
+#ifdef CONFIG_HTML_FROM_RESOURCE
+	getHtml(":/html/processDlg.html");
+#else
+	getHtml("./html/processDlg.html");	
+#endif
 	status=0;
 }
 
@@ -760,7 +772,7 @@ void synchronizeDlg::updateStatus(int type,int s,int icon)
 	status=s;
 	statusTime = NOW_SECONDS;	
 	char *statusStr = tz::getstatusstring(s);
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
+	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
 	switch(icon){
 		case UPDATE_STATUS_ICON_SUCCESSFUL:
 			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("success.png"));
