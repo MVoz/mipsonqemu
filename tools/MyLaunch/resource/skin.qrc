@@ -17,6 +17,6 @@
      <file>skins/Default/sync_gray.png</file>
      <file>skins/Default/misc.txt</file>
      <file>skins/Default/pos.txt</file>
-     <file>skins/Default/style.qss</file>    
+     <file>skins/Default/style2.qss</file>    
  </qresource>
  </RCC>

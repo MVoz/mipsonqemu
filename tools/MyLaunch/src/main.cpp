@@ -99,21 +99,49 @@ void MyWidget::configModify(int type){
 			buildCatalog();
 		break;
 		case NET_SEARCH_MODIFY:
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+		QResource::registerResource("skins/default.rcc");
+#endif
+
 		if(!googleButton->isHidden()){
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+			//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/google.png")<<(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+			googleButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png")))));
+#else
 			googleButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+#endif
 			googleButton->repaint();
 		}
 		if(!baiduButton->isHidden()){
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+			baiduButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png")))));						
+#else
 			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
-			googleButton->repaint();
+#endif
+			baiduButton->repaint();
 		}
 		updateDisplay();
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+		QResource::unregisterResource("skins/default.rcc");
+#endif
+
 		break;
 		case NET_ACCOUNT_MODIFY:
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+		QResource::registerResource("skins/default.rcc");
+#endif
+
 		if(!syncButton->isHidden()){
-			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png")))));
-			syncButton->repaint();
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+		syncButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png"))))));
+#else
+		syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png")))));
+#endif
+		syncButton->repaint();
 		}
+#ifdef CONFIG_SKIN_FROM_RESOURCE		
+		QResource::unregisterResource("skins/default.rcc");
+#endif
 		break;
 		default:
 		break;
@@ -2314,10 +2342,9 @@ void MyWidget::applySkin(QString directory)
 
 	// Load the style sheet
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/style.qss"));
-	if (QFile::exists(":/skins/Default/style.qss"))
+	if (QFile::exists(":/skins/Default/style2.qss"))
 	{
-		QFile file(":/skins/Default/style.qss");
+		QFile file(":/skins/Default/style2.qss");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			QString styleSheet = QLatin1String(file.readAll());
@@ -2326,6 +2353,17 @@ void MyWidget::applySkin(QString directory)
 			file.close();
 		}
 	}
+	if ( QFile::exists(":/skins/Default/home.png"))
+	{
+		//homeButton->setStyleSheet("QPushButton#homeButton{background: url(:/skins/default/home.png);} ");
+		//qApp->setStyleSheet("QPushButton#homeButton{background: url(:/skins/default/home.png);} ");
+		homeButton->setIcon(QIcon(QPixmap(":/skins/Default/home.png")));
+	}
+	if ( QFile::exists(":/skins/Default/opsbutton.png"))
+	{
+		//opsButton->setIcon(QIcon(QPixmap(":/skins/Default/opsbutton.png")));
+	}
+	
 	// Set the background image
 	if (!platform->SupportsAlphaBorder() && QFile::exists(":/skins/Default/background_nc.png"))
 	{
@@ -2410,15 +2448,16 @@ void MyWidget::applySkin(QString directory)
 		platform->MoveAlphaBorder(pos());
 	}
 #endif
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	QResource::unregisterResource("skins/default.rcc");
+#endif
 
 	configModify(NET_SEARCH_MODIFY);
 	configModify(NET_ACCOUNT_MODIFY);
 #ifdef CONFIG_DIGG_XML
 	diggxmler->setDiggXmlFormat(diggxmloutputFormat);
 #endif
-#ifdef CONFIG_SKIN_FROM_RESOURCE
-	QResource::unregisterResource("skins/default.rcc");
-#endif
+
 
 }
 
@@ -2792,8 +2831,10 @@ void MyWidget::bmSyncFinishedStatus(int status)
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif	
-	if(!syncButton->isHidden())
-		syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg("sync.png"))));	
+	if(!syncButton->isHidden()){
+		//syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg("sync.png"))));	
+		configModify(NET_ACCOUNT_MODIFY);
+	}
 	if(!trayIcon->isVisible()) return;
 	char *statusStr = tz::getstatusstring(status);
 	switch(status){
@@ -2860,8 +2901,15 @@ void MyWidget::syncStatusTimeout()
 	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
-		if(!syncButton->isHidden())
+		if(!syncButton->isHidden()){
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+			QResource::registerResource("skins/default.rcc");
+			syncButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png")))));	
+			QResource::unregisterResource("skins/default.rcc");
+#else
 			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
+#endif
+		}
 	}	
 }
 void MyWidget::monitorTimerTimeout()
