@@ -19,6 +19,9 @@
 <script language="javascript" type="text/javascript" src="source/script_common.js"></script>
 <link rel="shortcut icon" href="image/favicon.ico" />
 <style type="text/css">
+@import url(/template/default/style.css);
+</style>
+<style type="text/css">
 * { word-break: break-all; word-wrap: break-word; }
 	body, th, td, input, select, textarea, button { font: 12px/1.5em Verdana, "Lucida Grande",Arial, Helvetica,sans-serif; }
 	body, h1, h2, h3, h4, h5, h6, p, ul, dl, dt, dd, form, fieldset { margin: 0; padding: 0; }
@@ -31,6 +34,10 @@
 	.link_td a { color: #333; }
 	textarea { border: 1px solid #ddd; overflow: auto; }
 	.t_input { padding: 3px 2px; border: 1px solid #ddd; line-height: 16px; }
+	.link_icon{width:14px;height:14px;}
+	.top_link_return li{padding:1px 0px;}
+	.link_icon_share{margin-left:20px;}
+
 </style>
 </head>
 
@@ -40,16 +47,36 @@
 
 <table border="0" cellPadding="0" cellSpacing="0" height="100%" width="100%">
 <!--{if $type=='diggid' }-->
+<tr>
+	<td height="66">
+	<div class="link_header">
+		<div class="top_link_return">			
+			<div class="link_return">
+				<ul>
+					<li><img class="link_icon" src="template/default/image/home1.png"/>返回我的空间<img class="link_icon link_icon_share" src="template/default/image/share.png"/>分享</li>
+					<li><img class="link_icon" src="template/default/image/return.png"/>上海真的是中国大陆最滥性sdfasdfasdgfasdgasdgasd的城市吗?-七嘴八舌频道-青6网 (复制)</li>
+					<li><img class="link_icon" src="template/default/image/next.png"/>下一篇:靠身体赚钱的性感女明星 -纯娱乐 -青69-藏经阁 </li>
+				</ul>	
+			</div>
+			<div class="link_advertising">
+				<img src="template/default/image/advertising.gif"/>
+			</div>		
+		</div>		
+	</div>
+	</td>
+</tr>
+<!--
 	<tr>
 		<td height="26" class="link_td">
 			<img src="image/icon/profile.gif" align="absmiddle"> <a href="space.php?do=all">返回我的空间</a> <span class="pipe">|</span>
-			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="updatestatics('digg','up','$id');">分享</a>
+			<img src="image/icon/share.gif" align="absmiddle"> <a href="javascript:;" onclick="updatestatics('digg','up','$id');">分xxx享</a>
 			<span class="pipe">|</span>
 			<span id="digg_ud_$id" class="gray"></span>
 			<img src="image/icon/network.gif" align="absmiddle"> <a style="color:#FF6A00" href="link.php?$type=$id" onclick="updatestatics('digg','view',$id,'digg_view_num_id_$id');">$title</a> (<a href="javascript:;" onclick="javascript:setCopy('$url');return false;">复制</a>)<span class="pipe">|</span>
 			<a href="link.php?$type=$id2" onclick="updatestatics('digg','view',$id2,'digg_view_num_id_$id2');" style="color:#2C629E">下一篇:$title2</a>
 		</td>
-	</tr>
+	</tr> 
+-->
 <!--{else}-->
 	<tr>
 		<td height="26" class="link_td">
