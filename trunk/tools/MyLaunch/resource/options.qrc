@@ -5,6 +5,15 @@
      <file>image/success.png</file>
      <file>image/fail.png</file>
      <file>image/ajax-loader.gif</file>	
+     <file>html/about.html</file>
+     <file>html/Advance.html</file>
+     <file>html/bookmark.html</file>
+     <file>html/Command.html</file>
+     <file>html/common.html</file>
+     <file>html/Custom.html</file>
+     <file>html/interface.html</file>
+     <file>html/processDlg.html</file>
+     <file>html/Network.html</file>   
      <file>style.css</file>
      <file>jquery.js</file>
      <file>jm.js</file>
