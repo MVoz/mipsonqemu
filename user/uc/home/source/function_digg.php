@@ -244,6 +244,21 @@ function gettwodigg($diggid)
 {
 	global $_SGLOBAL;
 	$ret=array();
+	//get prev digg
+	$q=$_SGLOBAL['db']->query("SELECT diggid,url,subject FROM ".tname('digg')." WHERE diggid<".$diggid." ORDER BY diggid DESC limit 1");
+	while($v=$_SGLOBAL['db']->fetch_array($q))
+	{
+		$prevdigg=$v;
+	}
+	//get next digg
+	$q=$_SGLOBAL['db']->query("SELECT diggid,url,subject FROM ".tname('digg')." WHERE diggid>".$diggid." ORDER BY diggid ASC limit 1");
+	while($v=$_SGLOBAL['db']->fetch_array($q))
+	{
+		$nextdigg=$v;
+	}
+   $ret[] = $prevdigg;
+   $ret[] = $nextdigg;
+	/*
 	$q=$_SGLOBAL['db']->query("SELECT diggid,url,subject FROM ".tname('digg')." WHERE diggid<=".$diggid." ORDER BY diggid DESC limit 2");
 	while($v=$_SGLOBAL['db']->fetch_array($q))
 	{
@@ -253,6 +268,7 @@ function gettwodigg($diggid)
 		$q=$_SGLOBAL['db']->query("SELECT diggid,url,subject FROM ".tname('digg')." ORDER BY diggid DESC limit 1");
 		$ret[]=$_SGLOBAL['db']->fetch_array($q);
 	}
+	*/
 	return $ret;
 }
 ?>
