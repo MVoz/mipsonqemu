@@ -624,5 +624,8 @@ enum {
 
 
 #define BROWSER_BM_MAX_TOTAL_COUNT   512
+
+#define CONFIG_HTML_FROM_RESOURCE
+#define CONFIG_SKIN_FROM_RESOURCE
 #endif
 

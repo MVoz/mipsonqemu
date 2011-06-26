@@ -48,6 +48,9 @@ cd /d resource
 rcc -binary options.qrc -o options.rcc
 copy options.rcc ..\%obj%
 
+rcc -binary skin.qrc -o skins/default.rcc
+
+
 sqlite3.exe defines.db<readsql.bat
 copy defines.db data\
 

@@ -101,7 +101,7 @@ public:
 	void setMergeStatus(QString& n,QString& f,uint i,uint a,uint s);
 signals:
 	void done(bool error);
-	void mergeStatusNotify(int flag,int status);
+	void mergeStatusNotify(int flag,int status,int icon);
 public:
 	bmPost * posthp;
 	

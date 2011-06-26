@@ -2135,6 +2135,9 @@ void MyWidget::setOpaqueness(int val)
 void MyWidget::applySkin(QString directory)
 {
 	// Hide the buttons by default
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	QResource::registerResource("skins/default.rcc");
+#endif
 	closeButton->hide();
 	opsButton->hide();
 	homeButton->hide();
@@ -2152,18 +2155,34 @@ void MyWidget::applySkin(QString directory)
 
 	if (listDelegate == NULL)
 		return;
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	// Use default skin if this one doesn't exist
+	if (!QFile::exists(":/skins/Default/misc.txt"))
+	{
+		directory = dirs["defSkin"][0];
+		gSettings->setValue("skin", dirs["defSkin"][0]);
+	}
 
+#else
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(directory + "/misc.txt"))
 	{
 		directory = dirs["defSkin"][0];
 		gSettings->setValue("skin", dirs["defSkin"][0]);
 	}
-
+#endif
 	// Set positions
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	if (QFile::exists(":/skins/Default/misc.txt"))
+#else
 	if (QFile::exists(directory + "/misc.txt"))
+#endif
 	{
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+		QFile file(":/skins/Default/misc.txt");
+#else
 		QFile file(directory + "/misc.txt");
+#endif
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			QTextStream in(&file);
@@ -2294,6 +2313,55 @@ void MyWidget::applySkin(QString directory)
 	}
 
 	// Load the style sheet
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/style.qss"));
+	if (QFile::exists(":/skins/Default/style.qss"))
+	{
+		QFile file(":/skins/Default/style.qss");
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			QString styleSheet = QLatin1String(file.readAll());
+			// This is causing the ::destroyed connect errors
+			qApp->setStyleSheet(styleSheet);
+			file.close();
+		}
+	}
+	// Set the background image
+	if (!platform->SupportsAlphaBorder() && QFile::exists(":/skins/Default/background_nc.png"))
+	{
+		QPixmap image(":/skins/Default/background_nc.png");
+		label->setPixmap(image);
+	}
+
+	else if (QFile::exists(":/skins/Default/background.png"))
+	{
+		QPixmap image(":/skins/Default/background.png");
+		label->setPixmap(image);
+	}
+	// Set the background mask
+	if (!platform->SupportsAlphaBorder() && QFile::exists(":/skins/Default/mask_nc.png"))
+	{
+		QPixmap image(":/skins/Default/mask_nc.png");
+		setMask(image);
+	}
+
+	else if (QFile::exists(":/skins/Default/mask.png"))
+	{
+		QPixmap image(":/skins/Default/mask.png");
+		// For some reason, w/ compiz setmask won't work
+		// for rectangular areas.  This is due to compiz and
+		// XShapeCombineMask
+		setMask(image);
+	}
+
+	// Set the alpha background
+	if (QFile::exists(":/skins/Default/alpha.png") && platform->SupportsAlphaBorder())
+	{
+		platform->CreateAlphaBorder(this, ":/skins/Default/alpha.png");
+		connectAlpha();
+		platform->MoveAlphaBorder(pos());
+	}
+#else
 	if (QFile::exists(directory + "/style.qss"))
 	{
 		QFile file(directory + "/style.qss");
@@ -2305,6 +2373,7 @@ void MyWidget::applySkin(QString directory)
 			file.close();
 		}
 	}
+
 	// Set the background image
 	if (!platform->SupportsAlphaBorder() && QFile::exists(directory + "/background_nc.png"))
 	{
@@ -2340,11 +2409,17 @@ void MyWidget::applySkin(QString directory)
 		connectAlpha();
 		platform->MoveAlphaBorder(pos());
 	}
+#endif
+
 	configModify(NET_SEARCH_MODIFY);
 	configModify(NET_ACCOUNT_MODIFY);
 #ifdef CONFIG_DIGG_XML
 	diggxmler->setDiggXmlFormat(diggxmloutputFormat);
 #endif
+#ifdef CONFIG_SKIN_FROM_RESOURCE
+	QResource::unregisterResource("skins/default.rcc");
+#endif
+
 }
 
 
