@@ -49,8 +49,7 @@ table{padding:2 20px;}
 	<table width="450px" height="40px">
 	<tr>
 		<td width=40>
-			<span id="loading" style="display:none"><img src="qrc:image/loading.gif"></span>
-			<span id="arrow" style="display:none"><img src="qrc:image/arrow_g.gif"></span>
+			<span id="loading"><img src="qrc:image/loading.gif"></span>
 		</td>
 		<td align=left>
 			<span id="tip_text"></span>
@@ -59,7 +58,7 @@ table{padding:2 20px;}
 	</table>
 	<div class="tip_btn">		
 		<div class="btn"><a href="#" onclick="reject();">取 消</a></div>
-		<div class="btn"><a href="#">确 定</a></div>
+		<div class="btn" id="btn_ok"><a href="#">确 定</a></div>
 	</div>
 </div>
 </body>
