@@ -703,7 +703,7 @@ void OptionsDlg::getSyncStatus()
 synchronizeDlg parts
 */
 
-synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
+synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFixedSizeDialogHint|Qt::WindowTitleHint)
 {
 	QResource::registerResource("options.rcc");
 	setResult(2);
@@ -711,7 +711,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent)
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	setFixedSize(360, 100);
+	setFixedSize(450, 70);
 	getHtml("./html/processDlg.html");
 	status=0;
 }
@@ -765,13 +765,13 @@ void synchronizeDlg::updateStatus(int type,int s)
 	case UPDATESTATUS_FLAG_APPLY:
 		jsStr.append(QString("$$('loading').style.display='block';"));
 		jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
 		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 		break;
 	case UPDATESTATUS_FLAG_RETRY:
 		jsStr.append(QString("$$('loading').style.display='block';"));
 		jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('ps').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
 		jsStr.append(QString("$$('btn').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 		break;
 	}
@@ -781,7 +781,7 @@ void synchronizeDlg::updateStatus(int type,int s)
 void synchronizeDlg::readDateProgress(int done, int total)
 {
 	QString jsStr;
-	jsStr.append(QString("$$('ps').innerHTML ='Getting data......';"));
+	jsStr.append(QString("$$('tip_text').innerHTML ='Getting data......';"));
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
 }
