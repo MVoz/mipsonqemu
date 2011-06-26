@@ -100,17 +100,19 @@ void MyWidget::configModify(int type){
 		break;
 		case NET_SEARCH_MODIFY:
 		if(!googleButton->isHidden()){
-			googleButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+			googleButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+			googleButton->repaint();
 		}
 		if(!baiduButton->isHidden()){
-			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
+			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
+			googleButton->repaint();
 		}
 		updateDisplay();
 		break;
 		case NET_ACCOUNT_MODIFY:
 		if(!syncButton->isHidden()){
-			syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png")))));
-			
+			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(((!gSettings->value(QString("Account/Username"),"").toString().isEmpty()&&!gSettings->value(QString("Account/Userpasswd"),"").toString().isEmpty())?"sync.png":"sync_gray.png")))));
+			syncButton->repaint();
 		}
 		break;
 		default:
@@ -2676,10 +2678,10 @@ void MyWidget::bmSyncFinishedStatus(int status)
 //	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
-#endif
-	if(!trayIcon->isVisible()) return;
+#endif	
 	if(!syncButton->isHidden())
-		syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg("sync.png"))));	
+		syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg("sync.png"))));	
+	if(!trayIcon->isVisible()) return;
 	char *statusStr = tz::getstatusstring(status);
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_MODIFY:
@@ -2746,7 +2748,7 @@ void MyWidget::syncStatusTimeout()
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
 		if(!syncButton->isHidden())
-			syncButton->setIcon(QIcon(QString(gSettings->value("skin", "").toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
+			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
 	}	
 }
 void MyWidget::monitorTimerTimeout()
