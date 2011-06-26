@@ -70,8 +70,8 @@ public:
 	//    QHash<QString, QList<QString> > GetDirectories(bool);
 	PlatformWin() : PlatformBase() 		
 	{
-		instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
-
+		//instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+		instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-7FD612D378E9}"));
 		//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 		//alpha = NULL; 
@@ -79,8 +79,8 @@ public:
 
 		// Create application mutexes so that installer knows when
 		// Launchy is running
-		m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
-		mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+		m1 = CreateMutex(NULL,0,_T("TouchAnyMutex"));
+		mg1 = CreateMutex(NULL,0,_T("Global\\TouchAnyMutex"));
 
 
 		/*
