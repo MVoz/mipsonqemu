@@ -1,33 +1,33 @@
 #include <appupdater.h>
 #include <bmapi.h>
 #include <config.h>
-void appUpdater::sendUpdateStatusNotify(int flag,int type)
+void appUpdater::sendUpdateStatusNotify(int flag,int type,int icon)
 {
 	if(mode!=UPDATE_DLG_MODE) 
 		return;
-	emit updateStatusNotify(flag,type);	
+	emit updateStatusNotify(flag,type,icon);	
 }
 void appUpdater::testNetFinished()
 {
 	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT))
 	{
 	case TEST_NET_ERROR_SERVER:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR);
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_REFUSE:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE);
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,UPDATE_STATUS_ICON_REFUSED);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_ERROR_PROXY:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY);
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY,UPDATE_STATUS_ICON_FAILED);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_ERROR_PROXY_AUTH:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH);
+		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH,UPDATE_STATUS_ICON_FAILED);
 		error = 1;
 		quit();
 		break;
@@ -110,7 +110,7 @@ void appUpdater::run()
 {
 	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
 	if(mode == UPDATE_DLG_MODE )
-		connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
+		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 	
 	testThread = new testNet(NULL,settings);
 	testThread->moveToThread(this);
@@ -214,7 +214,7 @@ void appUpdater::getIniDone(int err)
 				if(filename.isEmpty()||servermd5.isEmpty())
 				{
 					//get wrong content form server
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
 					error = 1;
 					goto end;
 				}
@@ -224,7 +224,7 @@ void appUpdater::getIniDone(int err)
 					QString localmd5 = serverSettings->value("setup/md5", "").toString();
 					if( servermd5 == localmd5)
 					{
-						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED);					
+						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,UPDATE_STATUS_ICON_SUCCESSFUL);					
 						goto end;
 					}
 				}
@@ -237,10 +237,10 @@ void appUpdater::getIniDone(int err)
 				if(terminateFlag||error)
 					goto end;
 				if(error){
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
 				}else if(needed) 
 				{
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL);
+					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,UPDATE_STATUS_ICON_SUCCESSFUL);
 					//write update.ini
 					if(!localSettings)
 						localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -250,7 +250,7 @@ void appUpdater::getIniDone(int err)
 				}		
 
 			}else{
-				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED);
+				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
 			}
 			break;
 		default:
@@ -278,8 +278,8 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	fh=new GetFileHttp(NULL,settings,m,md5);
 
 	if(mode==UPDATE_DLG_MODE) {
-		connect(fh, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
-		connect(this, SIGNAL(updateStatusNotify(int,int)), this->parent(), SLOT(updateStatus(int,int)));
+		connect(fh, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
+		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 	}
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(settings,fh);
