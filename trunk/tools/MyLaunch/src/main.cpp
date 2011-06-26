@@ -2681,7 +2681,7 @@ void MyWidget::_startSync(int mode,int silence)
 
 	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int)), syncDlg.get(), SLOT(updateStatus(int,int)));
+	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,int)), syncDlg.get(), SLOT(updateStatus(int,int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
 
@@ -2757,11 +2757,11 @@ void MyWidget::testAccountFinished(bool err,QString result)
 	{
 		if(result==DOSUCCESSS)
 		{
-			syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS) ;
+			syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,UPDATE_STATUS_ICON_SUCCESSFUL) ;
 			//createSynDlgTimer();
 		}
 		else
-			syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL) ;
+			syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,UPDATE_STATUS_ICON_FAILED) ;
 
 	}
 }
