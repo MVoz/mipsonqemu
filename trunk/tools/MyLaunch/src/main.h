@@ -405,6 +405,8 @@ private:
 	OptionsDlg *ops;
 	QString shortkeyString;
 	uint syncStatus;
+	QString iconOnLabel;
+	QString pathOnoutput;
 //	QString defBrowser;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint learnProcessTimes;
@@ -480,6 +482,8 @@ public slots:
 		void diggxmloutputAnchorClicked( const QUrl & link );
 #endif
 		void updateSearcherDisplay();
+		void _updateSearcherDisplay(const QString&,const QString&);
+
 #ifdef CONFIG_ACTION_LIST
 		//void importNetBookmarkFinished(int status);
 		//void importNetBookmark(CATBUILDMODE mode,uint browserid);

@@ -337,6 +337,8 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	menuOpen = false;
 	optionsOpen = false;
 	gSearchTxt = "";
+	iconOnLabel="";
+	pathOnoutput="";
 	//syncDlgTimer=NULL;
 	inputMode = 0;
 	rebuildAll = 0;
@@ -1405,8 +1407,11 @@ void MyWidget::searchOnInput()
 	}
 	//catalog->checkHistory(gSearchTxt, searchResults);
 }
+
 void MyWidget::updateMainDisplay(CatItem* t)
 {
+		iconOnLabel="";
+		pathOnoutput="";
 		QIcon icon = getIcon(t);
 		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
 	 	QString outputs=QString(outputFormat).arg(t->shortName).arg(t->fullPath);
@@ -1414,14 +1419,40 @@ void MyWidget::updateMainDisplay(CatItem* t)
 		licon->repaint();
 		output->repaint();
 }
+void MyWidget::_updateSearcherDisplay(const QString& iconpath,const QString& outputstring)
+{
+	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,iconpath<<outputstring);
+	if(iconOnLabel!=iconpath){
+		iconOnLabel = iconpath;
+		if(iconpath.isEmpty()||iconpath.isNull()){
+			licon->clear();
+			licon->repaint();
+		}else{
+			QIcon icon(iconpath);
+			licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+			licon->repaint();			
+		}
+	}
+	if(pathOnoutput!=outputstring){
+		pathOnoutput = outputstring;
+		if(outputstring.isEmpty()||outputstring.isNull()){
+			output->clear();
+			output->repaint();
+		}else{
+			output->setHtml(outputstring);
+			output->repaint();			
+		}
+	}
+}
+
 void MyWidget::updateSearcherDisplay()
 {
 	int searcherindex =0;
 	QString outputs;
-	QIcon icon;
+	QString iconpath;
 	if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()&&gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool())
 	{
-		icon=QIcon(netfinders[NET_SEARCH_GOOGLE].icon);
+		iconpath=netfinders[NET_SEARCH_GOOGLE].icon;
 		outputs=QString(outputFormat).arg(netfinders[NET_SEARCH_GOOGLE].name+"&"+netfinders[NET_SEARCH_BAIDU].name).arg("");
 	}else{
 		if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()){
@@ -1429,20 +1460,25 @@ void MyWidget::updateSearcherDisplay()
 		}else if(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()){
 				searcherindex = NET_SEARCH_BAIDU;
 		}else{
+		/*
 			licon->clear();
 			output->clear();
 			licon->repaint();
 			output->repaint();
-			return;
-			
+		*/
+			_updateSearcherDisplay("","");
+			return;			
 		}
-		icon=QIcon(netfinders[searcherindex].icon);		
+		iconpath=netfinders[searcherindex].icon;		
 		outputs=QString(outputFormat).arg(netfinders[searcherindex].name).arg(netfinders[searcherindex].fullpath);
 	}
+	_updateSearcherDisplay(iconpath,outputs);
+	/*
 	licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
 	output->setHtml(outputs);
 	licon->repaint();
 	output->repaint();
+	*/
 }
 
 void MyWidget::updateDisplay()
@@ -1475,10 +1511,12 @@ void MyWidget::updateDisplay()
 	{
 		if( !(inputMode&(1<<INPUT_MODE_TAB)))
 		{
+			/*
 			licon->clear();
 			output->clear();
 			licon->repaint();
 			output->repaint();
+			*/
 			updateSearcherDisplay();
 		}
 	}
