@@ -16,12 +16,16 @@ if(empty($_GET['url'])&&empty($diggid)) {
 		$frame = $type.'_frame';
 		include_once(S_ROOT.'./source/function_digg.php');
 		$diggs = gettwodigg($diggid);
-		$url = $diggs[0]['url'];
-		$title = $diggs[0]['subject'];
-		$id = $diggs[0]['diggid'];
-		$url2 = $diggs[1]['url'];
-		$title2 = $diggs[1]['subject'];
-		$id2 = $diggs[1]['diggid'];
+		if(!empty($diggs[0])){
+			$url = $diggs[0]['url'];
+			$title = $diggs[0]['subject'];
+			$id = $diggs[0]['diggid'];
+		}
+		if(!empty($diggs[1])){
+			$url2 = $diggs[1]['url'];
+			$title2 = $diggs[1]['subject'];
+			$id2 = $diggs[1]['diggid'];
+		}
 	}else{
 		$url = $_GET['url'];
 		$title = $_GET['title'];
