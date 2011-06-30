@@ -60,9 +60,9 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 
 	//getHtml("./html/Customx.html");
 #ifdef CONFIG_HTML_FROM_RESOURCE
-	getHtml(":/html/common.html");
+	getHtml(":/html/Common.html");
 #else
-	getHtml("./html/common.html");
+	getHtml("./html/Common.html");
 #endif
 	/*
 	webView->setHtml(QString("data:text/html,<frameset rows=\"100px,*\">"
@@ -212,7 +212,7 @@ void OptionsDlg::loading(const QString & name)
 	QString menustring;
 	//menustring.append("<ul>");
 	QStringList menulsit;
-	menulsit<<"Common"<<"bookmark"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
+	menulsit<<"Common"<<"Bookmark"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
 	foreach (QString m, menulsit) {
 		menustring.append("<li>");
 #ifdef CONFIG_HTML_FROM_RESOURCE	
@@ -272,7 +272,7 @@ void OptionsDlg::loading(const QString & name)
 		int curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toInt();
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
-	}else if (name == "bookmark"){
+	}else if (name == "Bookmark"){
 		/*
 		QString   name=settings->value("Account/Username","").toString();
 		QString   password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);	
@@ -462,7 +462,7 @@ void OptionsDlg::loading(const QString & name)
 		jsStr.append(QString("$('#buildtime').html('%1');").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
 	}
 
-	if(name =="bookmark"){
+	if(name =="Bookmark"){
 		jsStr.append("$(function(){initMenuEx();});");
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
