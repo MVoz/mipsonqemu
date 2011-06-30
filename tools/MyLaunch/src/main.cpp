@@ -2690,6 +2690,24 @@ bad:
 void MyWidget::startSync()
 {
 #ifdef CONFIG_ACTION_LIST
+
+	if(!syncDlg)
+	{
+		syncDlg.reset(new synchronizeDlg(this));
+		connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+		connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+	}else{
+		syncDlg->status=HTTP_UNCONNECTED;
+	}
+	if(1)
+	{
+		syncDlg->setModal(1);
+		syncDlg->show();
+	}else{
+		syncDlg->hide();
+	}
+
+
 	struct ACTION_LIST item;
 	item.action = ACTION_LIST_BOOKMARK_SYNC;
 	item.id.mode = SYN_MODE_NOSILENCE;
