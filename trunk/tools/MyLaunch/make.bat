@@ -1,5 +1,9 @@
-CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
+REM CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
 SET obj=%1
+
+if "%obj%"=="" (
+  SET obj="debug"	
+)
 
 cd /d %obj%
 del touchAny.exe
