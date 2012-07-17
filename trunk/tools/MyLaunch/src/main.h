@@ -75,6 +75,21 @@ signals:
 	void menuEvent(QContextMenuEvent*);
 };
 #endif
+class LineEditStyle : public QCommonStyle
+{
+public:
+  int  pixelMetric(PixelMetric metric, const QStyleOption *option = 0, const QWidget *widget = 0) const{
+  		
+		  if (metric == QStyle::PM_TextCursorWidth){
+		  	QDEBUG_LINE;
+		    return 4;
+
+		  }
+		 
+		  return QCommonStyle::pixelMetric(metric,option,widget);
+  	}
+};
+
 class QCharLineEdit : public QLineEdit
 {
 	Q_OBJECT
@@ -89,15 +104,16 @@ public:
          searchIcon->setIcon(QIcon(pixmap));
          searchIcon->setIconSize(pixmap.size());
          searchIcon->setCursor(Qt::ArrowCursor);
-         searchIcon->setStyleSheet("QToolButton { border: red; padding: 0px; }");
+         searchIcon->setStyleSheet("QToolButton { border: none; padding: 0px; }");
          searchIcon->hide();
          //connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
       //   connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
         int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-        setStyleSheet(QString("QLineEdit { padding-left: %20px; } ").arg(searchIcon->sizeHint().width() + frameWidth + 1));
+        setStyleSheet(QString("QLineEdit { padding-left: %20px; color: #396285;} ").arg(searchIcon->sizeHint().width() + frameWidth + 1));
         QSize msz = minimumSizeHint();
         setMinimumSize(qMax(msz.width(), searchIcon->sizeHint().height() + frameWidth * 2 + 2),
                  qMax(msz.height(), searchIcon->sizeHint().height() + frameWidth * 2 + 2));
+	setStyle(new LineEditStyle);
 #endif
 	}
 
@@ -141,7 +157,7 @@ signals:
 #ifdef CONFIG_INPUT_WITH_ICON
 protected:
 	void resizeEvent(QResizeEvent *){
-		QDEBUG_LINE;
+		
 		
 		 QSize sz = searchIcon->sizeHint();
        		int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
