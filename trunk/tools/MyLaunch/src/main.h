@@ -83,6 +83,22 @@ public:
 	QLineEdit(parent) 
 	{
 		setAttribute(Qt::WA_InputMethodEnabled);
+#ifdef CONFIG_INPUT_WITH_ICON
+	searchIcon = new QToolButton(this);
+         QPixmap pixmap("google.png");
+         searchIcon->setIcon(QIcon(pixmap));
+         searchIcon->setIconSize(pixmap.size());
+         searchIcon->setCursor(Qt::ArrowCursor);
+         searchIcon->setStyleSheet("QToolButton { border: red; padding: 0px; }");
+         searchIcon->hide();
+         //connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+      //   connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
+        int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+        setStyleSheet(QString("QLineEdit { padding-left: %20px; } ").arg(searchIcon->sizeHint().width() + frameWidth + 1));
+        QSize msz = minimumSizeHint();
+        setMinimumSize(qMax(msz.width(), searchIcon->sizeHint().height() + frameWidth * 2 + 2),
+                 qMax(msz.height(), searchIcon->sizeHint().height() + frameWidth * 2 + 2));
+#endif
 	}
 
 	void keyPressEvent(QKeyEvent* key) {
@@ -116,10 +132,29 @@ public:
 	}
 	}
 	*/
+
+
 signals:
 	void keyPressed(QKeyEvent*);
 	void focusOut(QFocusEvent* evt);
 	void inputMethod(QInputMethodEvent *e);
+#ifdef CONFIG_INPUT_WITH_ICON
+protected:
+	void resizeEvent(QResizeEvent *){
+		QDEBUG_LINE;
+		
+		 QSize sz = searchIcon->sizeHint();
+       		int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+       		//searchIcon->move(rect().right() - frameWidth - sz.width(),
+                  //      (rect().bottom() + 1 - sz.height())/2);
+		searchIcon->move(rect().left() + frameWidth ,
+                        (rect().bottom() + 1 - sz.height())/2);
+			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,rect().right() <<frameWidth<<sz.width()<<sz.height());
+			searchIcon->show();
+	}
+private:
+	QToolButton *searchIcon;
+#endif
 };
 
 class QCharListWidget : public QListWidget
