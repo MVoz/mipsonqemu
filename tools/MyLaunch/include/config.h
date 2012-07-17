@@ -29,6 +29,7 @@
 #define CONFIG_AUTO_LEARN_PROCESS
 #define CONFIG_DIGG_XML
 #undef CONFIG_SKIN_CONFIGURABLE
+#define CONFIG_INPUT_WITH_ICON
 
 /***********defines*****************/
 enum{
