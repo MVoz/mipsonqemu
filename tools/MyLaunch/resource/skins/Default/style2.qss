@@ -6,11 +6,12 @@
 
 QLineEdit#input {
 	font: bold normal large "Verdana";
-	font-size:14px;
-	color:#626262;
-	border:1px solid #b2b2b2;
-	border-radius:15px;
-	selection-color:pink
+	font-size:15px;
+	border:0px solid #b2b2b2;
+	selection-color:pink;
+	color: #396285;
+	background:url(:/skins/input.png);
+	padding-left:25px;
 }
 QTextEdit#output,QLineEdit#output {
 	font:  13px "Verdana";
@@ -42,23 +43,23 @@ QListWidget#alternatives {
 }
 QPushButton#opsButton {
 	border: none;
-	background: url(qrc:/skins/default/opsbutton.png);   
+	background: url(:/skins/opsbutton.png);   
 }
 QPushButton#opsButton:hover {
 	border: none;
-	background: url(:/skins/default/opsbutton.png);   
+	background: url(:/skins/opsbutton.png);   
 }
 QPushButton#homeButton {
 	border: none;
-	background-image: url(:/skins/default/home.png);   
+	background: url(:/skins/home.png);   
 }
 QPushButton#syncButton {
 	border: none;
-	background: url(:/skins/default/sync.png);   
+	background: url(:/skins/sync.png);   
 }
 QPushButton#baiduButton {
 	border: none;
-	background: url(:/skins/default/baidu.png);   
+	background: url(:/skins/baidu.png);   
 }
 QPushButton#googleButton {
 	border: none; 
