@@ -81,7 +81,6 @@ public:
   int  pixelMetric(PixelMetric metric, const QStyleOption *option = 0, const QWidget *widget = 0) const{
   		
 		  if (metric == QStyle::PM_TextCursorWidth){
-		  	QDEBUG_LINE;
 		    return 4;
 
 		  }
