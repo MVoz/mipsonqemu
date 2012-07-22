@@ -9,8 +9,11 @@ QLineEdit#input {
 	font-size:14px;
 	color:#626262;
 	border:1px solid #b2b2b2;
-	border-radius:15px;
-	selection-color:pink
+#	border-radius:15px;
+	selection-color:pink;
+	padding-left: 20px; 
+	color: #396285;image: 
+	url(:/skins/Default/input.png);
 }
 QTextEdit#output,QLineEdit#output {
 	font:  13px "Verdana";

@@ -1,22 +1,23 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
- <qresource>
-     <file>skins/Default/alpha.png</file>
-     <file>skins/Default/background.png</file>
-     <file>skins/Default/baidu.png</file>
-     <file>skins/Default/baidu_gray.png</file>
-     <file>skins/Default/down_arrow.png</file>	
-     <file>skins/Default/google.png</file>
-     <file>skins/Default/google_gray.png</file>
-     <file>skins/Default/home.png</file>
-     <file>skins/Default/home_gray.png</file>
-     <file>skins/Default/mask.png</file>
-     <file>skins/Default/opsbutton.png</file>
-     <file>skins/Default/sync.png</file>
-     <file>skins/Default/sync2.png</file>
-     <file>skins/Default/sync_gray.png</file>
-     <file>skins/Default/misc.txt</file>
-     <file>skins/Default/pos.txt</file>
-     <file>skins/Default/style2.qss</file>    
+ <qresource prefix="/skins">
+     <file>alpha.png</file>
+     <file>background.png</file>
+     <file>baidu.png</file>
+     <file>baidu_gray.png</file>
+     <file>down_arrow.png</file>	
+     <file>google.png</file>
+     <file>google_gray.png</file>
+     <file alias="home.png">home.png</file>
+     <file>home_gray.png</file>
+     <file>mask.png</file>
+     <file alias="opsbutton.png">opsbutton.png</file>
+     <file>sync.png</file>
+     <file>sync2.png</file>
+     <file>sync_gray.png</file>
+     <file>misc.txt</file>
+     <file>pos.txt</file>
+     <file>style2.qss</file>
+     <file>input.png</file>
  </qresource>
  </RCC>
