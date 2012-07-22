@@ -17,6 +17,11 @@
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
+#include <shlguid.h>
+#include <shellapi.h>
+#include <commctrl.h>
+#include <commoncontrols.h>
+
 //#include <stdlib.h>
 //#include <stdio.h>
 #include <TCHAR.h>
@@ -90,7 +95,7 @@ private:
 	int GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const;
 
 	int GetDirIconIndex(BOOL bSmallIcon );
-	HICON GetFileIconHandle(QString strFileName, BOOL bSmallIcon);
+	HICON GetFileIconHandle(QString strFileName, BOOL bSmallIcon) const;
 
 	HICON GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const;
 

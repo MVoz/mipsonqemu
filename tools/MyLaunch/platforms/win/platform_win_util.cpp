@@ -109,12 +109,15 @@ int WinIconProvider::GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) c
 	}
 	else
 	{
+
 		ret = SHGetFileInfo(
 			(LPCTSTR) strFileName.utf16(), 
 			FILE_ATTRIBUTE_NORMAL,
 			&sfi, 
 			sizeof(SHFILEINFO), 
 			SHGFI_SYSICONINDEX | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
+		
+
 	}
 	// The following removes the unknown icon
 	//	if (sfi.iIcon == 3)
@@ -148,7 +151,7 @@ int WinIconProvider::GetDirIconIndex(BOOL bSmallIcon )
 	return sfi.iIcon;
 
 }
-HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon)
+HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon) const
 {
 
 	SHFILEINFO    sfi;
@@ -163,18 +166,55 @@ HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon)
 	}
 	else
 	{
+#if    OUTPUT_ICON_DEFAULT_SIZE==48
+			 SHGetFileInfo(
+				(LPCTSTR) strFileName.utf16(), 
+				FILE_ATTRIBUTE_NORMAL,
+				&sfi, 
+				sizeof(SHFILEINFO), 
+				SHGFI_SYSICONINDEX );
+				// Retrieve the system image list.
+				// To get the 48x48 icons, use SHIL_EXTRALARGE
+				// To get the 256x256 icons (Vista only), use SHIL_JUMBO
+				HIMAGELIST* imageList;
+				HRESULT hResult = SHGetImageList(SHIL_EXTRALARGE, IID_IImageList, (void**)&imageList);
+		
+				if (hResult == S_OK) {
+					  // Get the icon we need from the list. Note that the HIMAGELIST we retrieved
+					  // earlier needs to be casted to the IImageList interface before use.
+					  HICON hIcon;
+					  hResult = ((IImageList*)imageList)->GetIcon(sfi.iIcon, ILD_TRANSPARENT, &hIcon);
+		
+					  if (hResult == S_OK) {
+					  	return hIcon;					  
+					}
+				}
+			
+				SHGetFileInfo(
+					(LPCTSTR) strFileName.utf16(), 
+					FILE_ATTRIBUTE_NORMAL,
+					&sfi, 
+					sizeof(SHFILEINFO), 
+					SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
+
+#else
 		SHGetFileInfo(
 			(LPCTSTR) strFileName.utf16(), 
 			FILE_ATTRIBUTE_NORMAL,
 			&sfi, 
 			sizeof(SHFILEINFO), 
 			SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
+#endif
 	}
 	return sfi.hIcon;
 }
 
 HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const
 {
+#if    OUTPUT_ICON_DEFAULT_SIZE==48
+	HICON  nH=GetFileIconHandle(strFileName, bSmallIcon);
+	return nH;
+#else
 	int index = GetFileIconIndex(strFileName, bSmallIcon);
 
 	HICON nH = ImageList_GetIcon(      
@@ -183,6 +223,7 @@ HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIc
 		ILD_TRANSPARENT 
 		);
 	return nH;
+#endif
 }
 
 HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
@@ -234,8 +275,9 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 
     BITMAPINFOHEADER bitmapInfo;
     bitmapInfo.biSize        = sizeof(BITMAPINFOHEADER);
-    bitmapInfo.biWidth       = iconinfo.xHotspot * 2;
-    bitmapInfo.biHeight      = iconinfo.yHotspot * 2;
+    bitmapInfo.biWidth       = iconinfo.xHotspot * MULTIPLE_ICON_SIZE;
+    bitmapInfo.biHeight      = iconinfo.yHotspot * MULTIPLE_ICON_SIZE; 
+   TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<bitmapInfo.biWidth<< bitmapInfo.biHeight );
     bitmapInfo.biPlanes      = 1;
     bitmapInfo.biBitCount    = 32;
     bitmapInfo.biCompression = BI_RGB;
@@ -248,7 +290,7 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 
     HBITMAP winBitmap = CreateDIBSection(hdc, (BITMAPINFO*)&bitmapInfo, DIB_RGB_COLORS, (VOID**)&bits, NULL, 0);
     HGDIOBJ oldhdc = (HBITMAP)SelectObject(hdc, winBitmap);
-    DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_NORMAL);
+    DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * MULTIPLE_ICON_SIZE, iconinfo.yHotspot * MULTIPLE_ICON_SIZE, 0, 0, DI_NORMAL);
 
     QPixmap::HBitmapFormat alphaType = QPixmap::PremultipliedAlpha;
     QPixmap iconpixmap = QPixmap::fromWinHBITMAP(winBitmap, alphaType);
@@ -266,7 +308,7 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 
     if (!foundAlpha) {
         //If no alpha was found, we use the mask to set alpha values
-        DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_MASK);
+        DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * MULTIPLE_ICON_SIZE, iconinfo.yHotspot * MULTIPLE_ICON_SIZE, 0, 0, DI_MASK);
         QPixmap maskPixmap = QPixmap::fromWinHBITMAP(winBitmap, alphaType);
         QImage mask = maskPixmap.toImage();
 
