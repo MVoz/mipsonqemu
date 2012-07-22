@@ -443,6 +443,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 
 	input = new QCharLineEdit(label);
 	input->setObjectName("input");
+	//input->setFrame(false);
 	connect(input, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(inputKeyPressEvent(QKeyEvent *)));
 	connect(input, SIGNAL(focusOut(QFocusEvent *)), this, SLOT(focusOutEvent(QFocusEvent *)));
 	connect(input, SIGNAL(inputMethod(QInputMethodEvent *)), this, SLOT(inputMethodEvent(QInputMethodEvent *)));
@@ -2185,7 +2186,7 @@ void MyWidget::applySkin(QString directory)
 		return;
 #ifdef CONFIG_SKIN_FROM_RESOURCE
 	// Use default skin if this one doesn't exist
-	if (!QFile::exists(":/skins/Default/misc.txt"))
+	if (!QFile::exists(":/skins/misc.txt"))
 	{
 		directory = dirs["defSkin"][0];
 		gSettings->setValue("skin", dirs["defSkin"][0]);
@@ -2201,13 +2202,13 @@ void MyWidget::applySkin(QString directory)
 #endif
 	// Set positions
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-	if (QFile::exists(":/skins/Default/misc.txt"))
+	if (QFile::exists(":/skins/misc.txt"))
 #else
 	if (QFile::exists(directory + "/misc.txt"))
 #endif
 	{
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-		QFile file(":/skins/Default/misc.txt");
+		QFile file(":/skins/misc.txt");
 #else
 		QFile file(directory + "/misc.txt");
 #endif
@@ -2342,9 +2343,10 @@ void MyWidget::applySkin(QString directory)
 
 	// Load the style sheet
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-	if (QFile::exists(":/skins/Default/style2.qss"))
+
+	if (QFile::exists(":/skins/style2.qss"))
 	{
-		QFile file(":/skins/Default/style2.qss");
+		QFile file(":/skins/style2.qss");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			QString styleSheet = QLatin1String(file.readAll());
@@ -2353,15 +2355,26 @@ void MyWidget::applySkin(QString directory)
 			file.close();
 		}
 	}
-	if ( QFile::exists(":/skins/Default/home.png"))
+	if ( QFile::exists(":/skins/home.png"))
 	{
-		//homeButton->setStyleSheet("QPushButton#homeButton{background: url(:/skins/default/home.png);} ");
+	//	QDEBUG_LINE;
+		//homeButton->setStyleSheet(QString("background: url(:/skins/home.png);"));
+		//QDEBUG_LINE;
+		//homeButton->setStyleSheet(QString::fromUtf8("background-image: url(:/skins/home.png); "));
 		//qApp->setStyleSheet("QPushButton#homeButton{background: url(:/skins/default/home.png);} ");
-		homeButton->setIcon(QIcon(QPixmap(":/skins/Default/home.png")));
+		//homeButton->setIcon(QIcon(QPixmap(":/skins/Default/home.png")));
 	}
+	//	if ( QFile::exists(":/skins/input.png"))
+	{
+	//	input->setStyleSheet(QString(" color: #ff0000;background: url(:/skins/input.png);"));
+		//homeButton->setStyleSheet("background-image: url(:/skins/default/home.png); ");
+		//qApp->setStyleSheet("QPushButton#homeButton{background: url(:/skins/default/home.png);} ");
+		//homeButton->setIcon(QIcon(QPixmap(":/skins/Default/home.png")));
+	}
+
 	if ( QFile::exists(":/skins/Default/opsbutton.png"))
 	{
-		//opsButton->setIcon(QIcon(QPixmap(":/skins/Default/opsbutton.png")));
+		opsButton->setIcon(QIcon(QPixmap(":/skins/Default/opsbutton.png")));
 	}
 	
 	// Set the background image
@@ -2371,9 +2384,9 @@ void MyWidget::applySkin(QString directory)
 		label->setPixmap(image);
 	}
 
-	else if (QFile::exists(":/skins/Default/background.png"))
+	else if (QFile::exists(":/skins/background.png"))
 	{
-		QPixmap image(":/skins/Default/background.png");
+		QPixmap image(":/skins/background.png");
 		label->setPixmap(image);
 	}
 	// Set the background mask
@@ -2383,9 +2396,9 @@ void MyWidget::applySkin(QString directory)
 		setMask(image);
 	}
 
-	else if (QFile::exists(":/skins/Default/mask.png"))
+	else if (QFile::exists(":/skins/mask.png"))
 	{
-		QPixmap image(":/skins/Default/mask.png");
+		QPixmap image(":/skins/mask.png");
 		// For some reason, w/ compiz setmask won't work
 		// for rectangular areas.  This is due to compiz and
 		// XShapeCombineMask
@@ -2393,9 +2406,9 @@ void MyWidget::applySkin(QString directory)
 	}
 
 	// Set the alpha background
-	if (QFile::exists(":/skins/Default/alpha.png") && platform->SupportsAlphaBorder())
+	if (QFile::exists(":/skins/alpha.png") && platform->SupportsAlphaBorder())
 	{
-		platform->CreateAlphaBorder(this, ":/skins/Default/alpha.png");
+		platform->CreateAlphaBorder(this, ":/skins/alpha.png");
 		connectAlpha();
 		platform->MoveAlphaBorder(pos());
 	}
@@ -2449,7 +2462,8 @@ void MyWidget::applySkin(QString directory)
 	}
 #endif
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-	QResource::unregisterResource("skins/default.rcc");
+	//QResource::unregisterResource("skins/default.rcc");
+	input->setStyle(new LineEditStyle);
 #endif
 
 	configModify(NET_SEARCH_MODIFY);

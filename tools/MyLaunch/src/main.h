@@ -81,7 +81,8 @@ public:
   int  pixelMetric(PixelMetric metric, const QStyleOption *option = 0, const QWidget *widget = 0) const{
   		
 		  if (metric == QStyle::PM_TextCursorWidth){
-		    return 4;
+		  	QDEBUG_LINE;
+		    return 3;
 
 		  }
 		 
@@ -97,6 +98,8 @@ public:
 	QLineEdit(parent) 
 	{
 		setAttribute(Qt::WA_InputMethodEnabled);
+	//	setStyle(new LineEditStyle);
+	//	setStyleSheet(QString("QLineEdit { padding-left: %25px; )}"));
 #ifdef CONFIG_INPUT_WITH_ICON
 	searchIcon = new QToolButton(this);
          QPixmap pixmap("google.png");
@@ -108,12 +111,13 @@ public:
          //connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
       //   connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
         int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-        setStyleSheet(QString("QLineEdit { padding-left: %20px; color: #396285;} ").arg(searchIcon->sizeHint().width() + frameWidth + 1));
+      //  setStyleSheet(QString("QLineEdit { padding-left: %20px; color: #396285;image: url(:/skins/Default/input.png)} ").arg(searchIcon->sizeHint().width() + frameWidth + 1));
         QSize msz = minimumSizeHint();
         setMinimumSize(qMax(msz.width(), searchIcon->sizeHint().height() + frameWidth * 2 + 2),
                  qMax(msz.height(), searchIcon->sizeHint().height() + frameWidth * 2 + 2));
-	setStyle(new LineEditStyle);
+	
 #endif
+	
 	}
 
 	void keyPressEvent(QKeyEvent* key) {
