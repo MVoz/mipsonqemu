@@ -61,6 +61,15 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const {
 	DestroyIcon(hico);
 	return qpix;
 }
+QIcon WinIconProvider::icon( IconType type) const {
+	if(type ==QFileIconProvider::Folder ){
+		HICON hico = GetFolderIconHandle(false);
+		QPixmap qpix = convertHIconToPixmap(hico);
+		DestroyIcon(hico);
+		return qpix;
+	}
+	return QFileIconProvider::icon(type);
+}
 
 HIMAGELIST WinIconProvider::GetSystemImageListHandle( bool bSmallIcon ) 
 {
@@ -212,6 +221,7 @@ HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon) c
 HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const
 {
 #if    OUTPUT_ICON_DEFAULT_SIZE==48
+	// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<strFileName);
 	HICON  nH=GetFileIconHandle(strFileName, bSmallIcon);
 	return nH;
 #else
@@ -226,7 +236,7 @@ HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIc
 #endif
 }
 
-HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
+HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon ) const
 {
 	SHFILEINFO    sfi;
 	if (bSmallIcon)
@@ -240,12 +250,46 @@ HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
 	}
 	else
 	{
+#if    OUTPUT_ICON_DEFAULT_SIZE==48
+			 SHGetFileInfo(
+				(LPCTSTR)"Doesn't matter", 
+				FILE_ATTRIBUTE_DIRECTORY,
+				&sfi, 
+				sizeof(SHFILEINFO), 
+				SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES );
+				// Retrieve the system image list.
+				// To get the 48x48 icons, use SHIL_EXTRALARGE
+				// To get the 256x256 icons (Vista only), use SHIL_JUMBO
+				HIMAGELIST* imageList;
+				HRESULT hResult = SHGetImageList(SHIL_EXTRALARGE, IID_IImageList, (void**)&imageList);
+				
+				if (hResult == S_OK) {
+					  // Get the icon we need from the list. Note that the HIMAGELIST we retrieved
+					  // earlier needs to be casted to the IImageList interface before use.
+					  HICON hIcon;
+					  hResult = ((IImageList*)imageList)->GetIcon(sfi.iIcon, ILD_TRANSPARENT, &hIcon);
+				
+					  if (hResult == S_OK) {
+					  	// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon success! ");
+						return hIcon;					  
+						}
+				}
+				//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon fail! ");	
+				SHGetFileInfo(
+					(LPCTSTR)"Doesn't matter", 
+					FILE_ATTRIBUTE_DIRECTORY,
+					&sfi, 
+					sizeof(SHFILEINFO), 
+					SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);		
+#else
+
 		SHGetFileInfo(
 			(LPCTSTR)"Does not matter", 
 			FILE_ATTRIBUTE_DIRECTORY,
 			&sfi, 
 			sizeof(SHFILEINFO), 
 			SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
+#endif
 	}
 	return sfi.hIcon;
 }
@@ -277,7 +321,7 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
     bitmapInfo.biSize        = sizeof(BITMAPINFOHEADER);
     bitmapInfo.biWidth       = iconinfo.xHotspot * MULTIPLE_ICON_SIZE;
     bitmapInfo.biHeight      = iconinfo.yHotspot * MULTIPLE_ICON_SIZE; 
-   TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<bitmapInfo.biWidth<< bitmapInfo.biHeight );
+  // TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<bitmapInfo.biWidth<< bitmapInfo.biHeight );
     bitmapInfo.biPlanes      = 1;
     bitmapInfo.biBitCount    = 32;
     bitmapInfo.biCompression = BI_RGB;
