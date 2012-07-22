@@ -1,14 +1,14 @@
-boundary = 0,0,500,142
-output = 95,50,360,24
-input = 95,27,360,24
-alternatives = 37,71,436,100
-icon = 42,32,32,32
+boundary = 0,0,653,198
+output = 134,116,360,24
+input = 134,73,352,35
+alternatives = 134,116,436,100
+icon = 69,66,48,48
 
-homebutton = 28,71,16,16
-optionsbutton = 44,71,16,16
-syncbutton = 60,71,16,16
-googlebutton = 76,71,16,16
-baidubutton = 92,71,16,16
+homebutton = 480,25,16,16
+optionsbutton = 500,25,16,16
+syncbutton = 520,25,16,16
+googlebutton = 540,25,16,16
+baidubutton = 560,25,16,16
 
 diggxmloutput = 160,71,320,24
 diggxmloutputalign = right
@@ -25,13 +25,13 @@ dropPathWeight = 0
 dropPathItalics = 0
 
 ;output part name
-outputNameColor = #286fa6
-outputNameSize = 12
+outputNameColor = #D4D4D4
+outputNameSize = 16
 outputNameWeight = bold
 outputNameItalics = 0
 
 
 ;output part path
-outputPathColor = #585755
-outputPathSize = 10
+outputPathColor = #D4D4D4
+outputPathSize = 16
 outputPathItalics = 0
