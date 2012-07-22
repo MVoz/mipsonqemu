@@ -1441,7 +1441,7 @@ void MyWidget::updateMainDisplay(CatItem* t)
 		iconOnLabel="";
 		pathOnoutput="";
 		QIcon icon = getIcon(t);
-		licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+		licon->setPixmap(icon.pixmap(QSize(OUTPUT_ICON_DEFAULT_SIZE, OUTPUT_ICON_DEFAULT_SIZE), QIcon::Normal, QIcon::On));
 	 	QString outputs=QString(outputFormat).arg(t->shortName).arg(t->fullPath);
 		output->setHtml(outputs);
 		licon->repaint();
@@ -1457,7 +1457,7 @@ void MyWidget::_updateSearcherDisplay(const QString& iconpath,const QString& out
 			licon->repaint();
 		}else{
 			QIcon icon(iconpath);
-			licon->setPixmap(icon.pixmap(QSize(32, 32), QIcon::Normal, QIcon::On));
+			licon->setPixmap(icon.pixmap(QSize(OUTPUT_ICON_DEFAULT_SIZE, OUTPUT_ICON_DEFAULT_SIZE), QIcon::Normal, QIcon::On));
 			licon->repaint();			
 		}
 	}
