@@ -82,7 +82,7 @@ public:
 
 
 	virtual QIcon icon(const QFileInfo& info) const;
-
+	virtual QIcon icon ( IconType type ) const;
 private:
 
 	HIMAGELIST iconlist;	
@@ -99,7 +99,7 @@ private:
 
 	HICON GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const;
 
-	HICON GetFolderIconHandle(BOOL bSmallIcon );
+	HICON GetFolderIconHandle(BOOL bSmallIcon ) const;
 
 	QString GetFileType(QString strFileName);
 
