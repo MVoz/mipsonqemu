@@ -52,7 +52,7 @@ cd /d resource
 rcc -binary options.qrc -o options.rcc
 copy options.rcc ..\%obj%
 
-rcc -binary skin.qrc -o skins/default.rcc
+rcc -binary skins/Default/default.qrc -o skins/default.rcc
 
 
 sqlite3.exe defines.db<readsql.bat
@@ -70,7 +70,13 @@ copy ..\update\updater\release\updater.exe ..\release
 call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 )
 
-for %%i in (data html skins images) do call :copyfunc %%i ..\%obj%\%%i
+for %%i in (data html images) do call :copyfunc %%i ..\%obj%\%%i
+
+rmdir /Q/S ..\%obj%\skins
+mkdir ..\%obj%\skins
+xcopy skins\default.rcc ..\%obj%\skins /s  
+
+mkdir ..\ 
 
 del defines.db
 del options.rcc
