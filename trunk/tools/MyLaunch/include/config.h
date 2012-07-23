@@ -29,7 +29,13 @@
 #define CONFIG_AUTO_LEARN_PROCESS
 #define CONFIG_DIGG_XML
 #undef CONFIG_SKIN_CONFIGURABLE
-#define CONFIG_INPUT_WITH_ICON
+#undef CONFIG_INPUT_WITH_ICON
+#define OUTPUT_ICON_DEFAULT_SIZE 48
+#if    OUTPUT_ICON_DEFAULT_SIZE==48
+#define MULTIPLE_ICON_SIZE 2
+#else
+#define MULTIPLE_ICON_SIZE 2
+#endif
 
 /***********defines*****************/
 enum{
