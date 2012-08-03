@@ -9,6 +9,7 @@ optionsbutton = 500,25,16,16
 syncbutton = 520,25,16,16
 googlebutton = 540,25,16,16
 baidubutton = 560,25,16,16
+gobutton = 486,73,95,35
 
 diggxmloutput = 160,71,320,24
 diggxmloutputalign = right

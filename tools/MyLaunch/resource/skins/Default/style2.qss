@@ -64,3 +64,7 @@ QPushButton#baiduButton {
 QPushButton#googleButton {
 	border: none; 
 }
+QPushButton#goButton {
+	border: none;
+	background: url(:/skins/go_ok.png);   
+}
