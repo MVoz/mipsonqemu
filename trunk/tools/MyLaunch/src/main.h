@@ -81,7 +81,7 @@ public:
   int  pixelMetric(PixelMetric metric, const QStyleOption *option = 0, const QWidget *widget = 0) const{
   		
 		  if (metric == QStyle::PM_TextCursorWidth){
-		  	QDEBUG_LINE;
+		//  	QDEBUG_LINE;
 		    return 3;
 
 		  }
@@ -98,6 +98,7 @@ public:
 	QLineEdit(parent) 
 	{
 		setAttribute(Qt::WA_InputMethodEnabled);
+		setAttribute( Qt::WA_KeyCompression,true );
 	//	setStyle(new LineEditStyle);
 	//	setStyleSheet(QString("QLineEdit { padding-left: %25px; )}"));
 #ifdef CONFIG_INPUT_WITH_ICON
@@ -121,7 +122,6 @@ public:
 	}
 
 	void keyPressEvent(QKeyEvent* key) {
-		//	LOG_RUN_LINE;
 		QLineEdit::keyPressEvent(key);
 		emit keyPressed(key);
 	}
@@ -137,9 +137,25 @@ public:
 	}
 
 	void inputMethodEvent(QInputMethodEvent *e) {
-		QLineEdit::inputMethodEvent(e);
+#if 1
+	  bool normalInputMethod = false;
+	  for (int i = 0; i < e->attributes().size(); ++i) {
+	        const QInputMethodEvent::Attribute &a = e->attributes().at(i);
+	        if (a.type == QInputMethodEvent::Cursor) {
+			//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<< a.start<<a.length);
+			normalInputMethod = a.length?true:false;
+	         } 
+	    }
+#endif
+		if(!normalInputMethod){
+			QLineEdit::inputMethodEvent(e);
+			repaint();
+		}
+		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<e->commitString()<<e->preeditString()<<displayText()<<text()<<e->spontaneous());
 		if (e->commitString() != "") {
 			emit inputMethod(e);
+			if(normalInputMethod)
+				QLineEdit::inputMethodEvent(e);
 		}
 	}
 	/*
@@ -360,6 +376,7 @@ public:
 	QPushButton *syncButton;
 	QPushButton *baiduButton;
 	QPushButton *googleButton;
+	QPushButton *goButton;
 	QRect altRect;
 	QLabel * licon;
 	QSqlDatabase db;
@@ -473,6 +490,7 @@ public slots:
 		void homeBtnPressed();
 		void googleBtnPressed();
 		void baiduBtnPressed();
+		void goBtnPressed();
 		void onHotKey();		
 #if 0
 		void catalogBuilderTimeout();

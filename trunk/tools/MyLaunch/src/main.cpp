@@ -411,6 +411,12 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	googleButton->setFocusPolicy(Qt::NoFocus);
 	connect(googleButton, SIGNAL(pressed()), this, SLOT(googleBtnPressed()));
 
+	goButton = new QPushButton(label);
+	goButton->setObjectName("goButton");
+	goButton->setToolTip(tr(APP_NAME" Go"));
+	goButton->setFocusPolicy(Qt::NoFocus);
+	connect(goButton, SIGNAL(pressed()), this, SLOT(goBtnPressed()));
+
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
 	closeButton->setToolTip(tr("Close "APP_NAME));
@@ -1066,7 +1072,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent * key)
 
 void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 {
-	
 	if (key->key() == Qt::Key_Tab)
 	{
 		keyPressEvent(key);
@@ -1074,6 +1079,7 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 	{
 		key->ignore();
 	}
+	QDEBUG_LINE;
 	input->repaint();
 }
 
@@ -1387,6 +1393,7 @@ void MyWidget::processKey()
 void MyWidget::inputMethodEvent(QInputMethodEvent * e)
 {
 	e = e;			// Warning removal
+	QDEBUG_LINE;
 	processKey();
 }
 
@@ -1897,12 +1904,15 @@ void MyWidget::dropTimeout()
 
 void MyWidget::onHotKey()
 {
-
+#if 1
+	showLaunchy();
+#else
 	if (menuOpen || optionsOpen)
 	{
 		showLaunchy();
 		return;
 	}
+
 
 	if (isVisible())
 	{
@@ -1911,6 +1921,7 @@ void MyWidget::onHotKey()
 	{
 		showLaunchy();
 	}
+#endif
 }
 
 
@@ -2178,6 +2189,7 @@ void MyWidget::applySkin(QString directory)
 	syncButton->hide();
 	googleButton->hide();
 	baiduButton->hide();
+	goButton->hide();
 #ifdef CONFIG_DIGG_XML
 	QString diggxmloutputFormat;
 	diggxmloutputFormat=QString("<p><a href=\"%1\" style=\"text-decoration: none\">%2</a></p>");
@@ -2272,6 +2284,11 @@ void MyWidget::applySkin(QString directory)
 						baiduButton->setAttribute(Qt::WA_StyledBackground, true);
 						baiduButton->setGeometry(rect);
 						baiduButton->show();
+					}else if (spl.at(0).trimmed().compare("gobutton", Qt::CaseInsensitive) == 0)
+					{
+						goButton->setAttribute(Qt::WA_StyledBackground, true);
+						goButton->setGeometry(rect);
+						goButton->show();
 					}
 #ifdef CONFIG_DIGG_XML
 					else if (spl.at(0).trimmed().compare("diggxmloutput", Qt::CaseInsensitive) == 0)
@@ -3262,6 +3279,10 @@ void MyWidget::baiduBtnPressed()
 	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool());
 	configModify(NET_SEARCH_MODIFY);
 	input->setFocus();
+}
+void MyWidget::goBtnPressed()
+{
+	doEnter();
 }
 void MyWidget::menuOptions()
 {
