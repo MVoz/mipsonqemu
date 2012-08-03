@@ -1300,8 +1300,13 @@ void MyWidget::keyPressEvent(QKeyEvent * key)
 			key->ignore();
 		}
 		break;
-	default:
+	default:	
 		key->ignore();
+		if(!input->hasFocus()){
+			 input->setFocus();
+			  input->keyPressEvent(key);
+			  return;
+		}
 		processKey();
 		break;
 	}
@@ -1372,7 +1377,7 @@ void MyWidget::processKey()
 	alternatives->hide();
 	dropTimer->stop();
 	dropTimer->start(1000);
-
+	QDEBUG_LINE;
 	parseInput(input->text());
 	searchOnInput();
 	updateDisplay();
