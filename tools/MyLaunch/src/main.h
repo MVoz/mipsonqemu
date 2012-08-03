@@ -152,10 +152,10 @@ public:
 			repaint();
 		}
 		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<e->commitString()<<e->preeditString()<<displayText()<<text()<<e->spontaneous());
-		if (e->commitString() != "") {
-			emit inputMethod(e);
+		if (e->commitString() != "") {			
 			if(normalInputMethod)
 				QLineEdit::inputMethodEvent(e);
+			emit inputMethod(e);
 		}
 	}
 	/*

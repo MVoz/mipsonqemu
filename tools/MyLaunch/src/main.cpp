@@ -1079,7 +1079,6 @@ void MyWidget::inputKeyPressEvent(QKeyEvent * key)
 	{
 		key->ignore();
 	}
-	QDEBUG_LINE;
 	input->repaint();
 }
 
@@ -1180,6 +1179,7 @@ void MyWidget::doTab()
 
 void MyWidget::doEnter()
 {
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<gSearchTxt)
 	if (dropTimer->isActive())
 		dropTimer->stop();
 	if (searchResults.count() > 0 || inputData.count() > 1)
@@ -1382,8 +1382,7 @@ void MyWidget::processKey()
 {
 	alternatives->hide();
 	dropTimer->stop();
-	dropTimer->start(1000);
-	QDEBUG_LINE;
+	dropTimer->start(1000);	
 	parseInput(input->text());
 	searchOnInput();
 	updateDisplay();
@@ -1393,7 +1392,6 @@ void MyWidget::processKey()
 void MyWidget::inputMethodEvent(QInputMethodEvent * e)
 {
 	e = e;			// Warning removal
-	QDEBUG_LINE;
 	processKey();
 }
 
@@ -1401,19 +1399,14 @@ void MyWidget::searchOnInput()
 {
 	if (catalog == NULL)
 		return;
-
 	searchResults.clear();
 	if(inputMode&(1<<INPUT_MODE_NULL_PAGEDOWN))
 	{
 		catalog->getHistory(searchResults);
 		return;
 	}
-
 	gSearchTxt = inputData.count() > 0 ? inputData.last().getText() : "";
-
-
-	//qDebug()<<inputData.count() <<"  : "<<gSearchTxt;
-
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,inputData.count() <<"  : "<<input->text());
 	if (inputData.count() <= 1)
 		catalog->searchCatalogs(gSearchTxt, searchResults);
 
@@ -1428,11 +1421,13 @@ void MyWidget::searchOnInput()
 
 	//	plugins.getLabels(&inputData);
 	//	plugins.getResults(&inputData, &searchResults);
-#if 1
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
-	for (int i = 0; i < searchResults.count(); i++)
-	{
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL," "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom);
+#ifndef CONFIG_RELEASE
+	if(gSettings->value("serachresultshow", false).toBool()){
+		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
+		for (int i = 0; i < searchResults.count(); i++)
+		{
+			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL," "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom);
+		}
 	}
 #endif
 	qSort(searchResults.begin(), searchResults.end(), CatLess);
@@ -3023,7 +3018,11 @@ void MyWidget::monitorTimerTimeout()
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
 	if(!maincloseflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
+#ifndef CONFIG_RELEASE
+		if(gSettings->value("actiondebug", false).toBool()){
+			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
+		}
+#endif		
 		switch(item.action){
 			case ACTION_LIST_CATALOGBUILD:
 				_buildCatalog((CATBUILDMODE)item.id.mode,0);
@@ -3750,7 +3749,8 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 					 	return;
 					 uint level = debugmsg.left(index).trimmed().toUInt();
 					 if((1<<level)&debuglevel){
-						 fprintf(stderr, "%s\n",TOCHAR(debugmsg.remove(0,index+QString(" :").size())));
+						// fprintf(stderr, "%s\n",TOCHAR(debugmsg.remove(0,index+QString(" :").size())));
+						 fprintf(stderr,"%s\n",msg);
 					 }				 
 					
 				 }
