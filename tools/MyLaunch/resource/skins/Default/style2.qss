@@ -66,5 +66,9 @@ QPushButton#googleButton {
 }
 QPushButton#goButton {
 	border: none;
+	background: url(:/skins/go.png);   
+}
+QPushButton#goButton:hover {
+	border: none;
 	background: url(:/skins/go_ok.png);   
 }
