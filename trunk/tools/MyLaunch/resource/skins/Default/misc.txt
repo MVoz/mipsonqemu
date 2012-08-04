@@ -1,7 +1,7 @@
 boundary = 0,0,653,198
 output = 134,116,360,24
 input = 134,73,352,35
-alternatives = 134,116,436,100
+alternatives = 134,109,447,100
 icon = 69,66,48,48
 
 homebutton = 480,25,16,16
