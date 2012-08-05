@@ -6,14 +6,12 @@
 
 QLineEdit#input {
 	font: bold normal large "Verdana";
-	font-size:14px;
-	color:#626262;
-	border:1px solid #b2b2b2;
-#	border-radius:15px;
-	selection-color:pink;
-	padding-left: 20px; 
-	color: #396285;image: 
-	url(:/skins/Default/input.png);
+	font-size:15px;
+	border:0px solid #b2b2b2;
+	selection-color:white;
+	color: #396285;
+	background:url(:/skins/input.png);
+	padding-left:25px;
 }
 QTextEdit#output,QLineEdit#output {
 	font:  13px "Verdana";
@@ -38,32 +36,80 @@ QScrollBar::handle:vertical {
 
 QListWidget#alternatives {
 	font:  13px "Verdana";
-	background-color: black;
+	background-color: #3C6689;
 	color: white;
 	border-style: solid;
 	border-width: 0px;
 }
 QPushButton#opsButton {
 	border: none;
-	background: url(skins/default/opsbutton.png);   
+	background: url(:/skins/option_on.png);   
 }
 QPushButton#opsButton:hover {
 	border: none;
-	background: url(skins/default/opsbutton.png);   
+	background: url(:/skins/option_hover.png);   
 }
 QPushButton#homeButton {
 	border: none;
-	background: url(skins/default/home.png);   
+	background: url(:/skins/home_on.png);   
+}
+QPushButton#homeButton:hover {
+	border: none;
+	background: url(:/skins/home_hover.png);   
+}
+QPushButton#userButton {
+	border: none;
+	background: url(:/skins/user_on.png);   
+}
+QPushButton#userButton:hover {
+	border: none;
+	background: url(:/skins/user_hover.png);   
 }
 QPushButton#syncButton {
 	border: none;
-	background: url(skins/default/sync.png);   
+	background: url(:/skins/sync_on.png);   
+}
+QPushButton#syncButton:hover {
+	border: none;
+	background: url(:/skins/sync_hover.png);   
 }
 QPushButton#baiduButton {
 	border: none;
-	background: url(skins/default/baidu.png);   
+	background: url(:/skins/baidu_on.png);   
+}
+QPushButton#baiduButton:hover {
+	border: none;
+	background: url(:/skins/baidu_hover.png);   
 }
 QPushButton#googleButton {
 	border: none; 
-	background: url(skins/default/google.png);  
+	background: url(:/skins/google_on.png);   
+}
+QPushButton#googleButton:hover {
+	border: none; 
+	background: url(:/skins/google_hover.png);   
+}
+QPushButton#optionButton {
+	border: none; 
+	background: url(:/skins/option_on.png);   
+}
+QPushButton#optionButton:hover {
+	border: none; 
+	background: url(:/skins/option_hover.png);   
+}
+QPushButton#minButton {
+	border: none; 
+	background: url(:/skins/min_on.png);   
+}
+QPushButton#minButton:hover {
+	border: none; 
+	background: url(:/skins/min_hover.png);   
+}
+QPushButton#goButton {
+	border: none;
+	background: url(:/skins/go.png);   
+}
+QPushButton#goButton:hover {
+	border: none;
+	background: url(:/skins/go_ok.png);   
 }
