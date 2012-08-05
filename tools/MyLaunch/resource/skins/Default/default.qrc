@@ -3,23 +3,34 @@
  <qresource prefix="/skins">
      <file>misc.txt</file>
      <file>pos.txt</file>
-     <file>style2.qss</file>
+     <file>style.qss</file>
      <file>alpha.png</file>
      <file>background.png</file>
-     <file>baidu.png</file>
-     <file>baidu_gray.png</file>
+     <file>mask.png</file>
+     <file>input.png</file>
      <file>down_arrow.png</file>	
-     <file>google.png</file>
-     <file>google_gray.png</file>
      <file>go_ok.png</file>
      <file>go.png</file>
-     <file alias="home.png">home.png</file>
-     <file>home_gray.png</file>
-     <file>mask.png</file>
-     <file alias="opsbutton.png">opsbutton.png</file>
-     <file>sync.png</file>
-     <file>sync2.png</file>
-     <file>sync_gray.png</file>
-     <file>input.png</file>
+     <file>home_on.png</file>
+     <file>home_off.png</file>
+     <file>home_hover.png</file>
+     <file>user_on.png</file>
+     <file>user_off.png</file>
+     <file>user_hover.png</file>
+     <file>sync_on.png</file>
+     <file>sync_off.png</file>
+     <file>sync_hover.png</file>
+     <file>google_on.png</file>
+     <file>google_off.png</file>
+     <file>google_hover.png</file>
+     <file>baidu_on.png</file>
+     <file>baidu_off.png</file>
+     <file>baidu_hover.png</file>
+     <file>option_on.png</file>
+     <file>option_off.png</file>
+     <file>option_hover.png</file>
+     <file>min_on.png</file>
+     <file>min_off.png</file>
+     <file>min_hover.png</file>
  </qresource>
  </RCC>
