@@ -3,8 +3,10 @@
 
 #ifdef QT_NO_DEBUG
 #undef TOUCH_ANY_DEBUG
+#define CONFIG_RELEASE
 #else
 #define TOUCH_ANY_DEBUG
+#undef CONFIG_RELEASE
 #endif
 
 #include "version.h"
@@ -591,7 +593,11 @@ enum{
 	DEBUG_LEVEL_TESTACCOUNT	
 };
 #ifdef TOUCH_ANY_DEBUG
-#define TOUCHANYDEBUG(level,y) do{qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;}while(0);
+#define TOUCHANYDEBUG(level,y) do{\
+	      QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));\
+	      QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));\
+	     qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;\
+          }while(0);
 #else
 #define TOUCHANYDEBUG(level,y) do{}while(0);
 #endif
