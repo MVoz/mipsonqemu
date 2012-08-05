@@ -100,13 +100,14 @@ void MyWidget::configModify(int type){
 		break;
 		case NET_SEARCH_MODIFY:
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-		QResource::registerResource("skins/default.rcc");
+		//QResource::registerResource("skins/default.rcc");
 #endif
 
 		if(!googleButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
 			//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/google.png")<<(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
-			googleButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png")))));
+			  //googleButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");->setIcon(QIcon(QPixmap(QString(":/skins/").append(QString("%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google_on.png":"google_off.png")))));
+			  googleButton->setStyleSheet(QString("QPushButton#googleButton{border: none;background: url(:/skins/%1);}\nQPushButton#googleButton:hover{border: none;background: url(:/skins/google_hover);}").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google_on.png":"google_off.png"));
 #else
 			googleButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
 #endif
@@ -114,7 +115,8 @@ void MyWidget::configModify(int type){
 		}
 		if(!baiduButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-			baiduButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png")))));						
+			 baiduButton->setStyleSheet(QString("QPushButton#baiduButton{border: none;background: url(:/skins/%1);}\nQPushButton#baiduButton:hover{border: none;background: url(:/skins/baidu_hover);}").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu_on.png":"baidu_off.png"));
+			//baiduButton->setIcon(QIcon(QPixmap(QString(":/skins/").append(QString("%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu_on.png":"baidu_off.png")))));						
 #else
 			baiduButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_BAIDU].name),true).toBool()?"baidu.png":"baidu_gray.png"))));
 #endif
@@ -122,13 +124,13 @@ void MyWidget::configModify(int type){
 		}
 		updateDisplay();
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-		QResource::unregisterResource("skins/default.rcc");
+		//QResource::unregisterResource("skins/default.rcc");
 #endif
 
 		break;
 		case NET_ACCOUNT_MODIFY:
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-		QResource::registerResource("skins/default.rcc");
+		//QResource::registerResource("skins/default.rcc");
 #endif
 
 		if(!syncButton->isHidden()){
@@ -140,7 +142,7 @@ void MyWidget::configModify(int type){
 		syncButton->repaint();
 		}
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-		QResource::unregisterResource("skins/default.rcc");
+		//QResource::unregisterResource("skins/default.rcc");
 #endif
 		break;
 		default:
@@ -392,7 +394,13 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	homeButton->setToolTip(tr(APP_NAME" Home"));
 	homeButton->setFocusPolicy(Qt::NoFocus);
 	connect(homeButton, SIGNAL(pressed()), this, SLOT(homeBtnPressed()));
-
+	
+	userButton = new QPushButton(label);
+	userButton->setObjectName("userButton");
+	userButton->setToolTip(tr(APP_NAME" User"));
+	userButton->setFocusPolicy(Qt::NoFocus);
+	connect(userButton, SIGNAL(pressed()), this, SLOT(userBtnPressed()));
+	
 	syncButton = new QPushButton(label);
 	syncButton->setObjectName("syncButton");
 	syncButton->setToolTip(tr(APP_NAME" Sync"));
@@ -417,10 +425,10 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	goButton->setFocusPolicy(Qt::NoFocus);
 	connect(goButton, SIGNAL(pressed()), this, SLOT(goBtnPressed()));
 
-	closeButton = new QPushButton(label);
-	closeButton->setObjectName("closeButton");
-	closeButton->setToolTip(tr("Close "APP_NAME));
-	connect(closeButton, SIGNAL(pressed()), qApp, SLOT(quit()));
+	minButton = new QPushButton(label);
+	minButton->setObjectName("minButton");
+	minButton->setToolTip(tr("Min "APP_NAME));
+	connect(minButton, SIGNAL(pressed()), this, SLOT(minBtnPressed()));
 
 
 	output = new QLineEditMenu(label);
@@ -2178,12 +2186,13 @@ void MyWidget::applySkin(QString directory)
 #ifdef CONFIG_SKIN_FROM_RESOURCE
 	QResource::registerResource("skins/default.rcc");
 #endif
-	closeButton->hide();
-	opsButton->hide();
 	homeButton->hide();
+	userButton->hide();
 	syncButton->hide();
 	googleButton->hide();
 	baiduButton->hide();
+	minButton->hide();
+	opsButton->hide();	
 	goButton->hide();
 #ifdef CONFIG_DIGG_XML
 	QString diggxmloutputFormat;
@@ -2254,16 +2263,16 @@ void MyWidget::applySkin(QString directory)
 						label->setGeometry(rect);
 					} else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0)
 						licon->setGeometry(rect);
-					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0)
-					{
-						opsButton->setAttribute(Qt::WA_StyledBackground, true);
-						opsButton->setGeometry(rect);
-						opsButton->show();
-					}else if (spl.at(0).trimmed().compare("homebutton", Qt::CaseInsensitive) == 0)
+					else if (spl.at(0).trimmed().compare("homebutton", Qt::CaseInsensitive) == 0)
 					{
 						homeButton->setAttribute(Qt::WA_StyledBackground, true);
 						homeButton->setGeometry(rect);
 						homeButton->show();						
+					}else if (spl.at(0).trimmed().compare("userbutton", Qt::CaseInsensitive) == 0)
+					{
+						userButton->setAttribute(Qt::WA_StyledBackground, true);
+						userButton->setGeometry(rect);
+						userButton->show();						
 					}else if (spl.at(0).trimmed().compare("syncbutton", Qt::CaseInsensitive) == 0)
 					{
 						syncButton->setAttribute(Qt::WA_StyledBackground, true);
@@ -2279,6 +2288,16 @@ void MyWidget::applySkin(QString directory)
 						baiduButton->setAttribute(Qt::WA_StyledBackground, true);
 						baiduButton->setGeometry(rect);
 						baiduButton->show();
+					}else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0)
+					{
+						opsButton->setAttribute(Qt::WA_StyledBackground, true);
+						opsButton->setGeometry(rect);
+						opsButton->show();
+					}else if (spl.at(0).trimmed().compare("minbutton", Qt::CaseInsensitive) == 0)
+					{
+						minButton->setAttribute(Qt::WA_StyledBackground, true);
+						minButton->setGeometry(rect);
+						minButton->show();
 					}else if (spl.at(0).trimmed().compare("gobutton", Qt::CaseInsensitive) == 0)
 					{
 						goButton->setAttribute(Qt::WA_StyledBackground, true);
@@ -2335,10 +2354,10 @@ void MyWidget::applySkin(QString directory)
 						outputFormat.replace("padding:1;",QString("font-weight:%1;padding:1;").arg(spl.at(1).trimmed()));
 					}					 
 
-					else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0)
+					else if (spl.at(0).trimmed().compare("minbutton", Qt::CaseInsensitive) == 0)
 					{
-						closeButton->setGeometry(rect);
-						closeButton->show();
+						minButton->setGeometry(rect);
+						minButton->show();
 					} else if (spl.at(0).trimmed().compare("dropPathColor", Qt::CaseInsensitive) == 0)
 						listDelegate->setColor(spl.at(1));
 					else if (spl.at(0).trimmed().compare("dropPathSelColor", Qt::CaseInsensitive) == 0)
@@ -2361,9 +2380,9 @@ void MyWidget::applySkin(QString directory)
 	// Load the style sheet
 #ifdef CONFIG_SKIN_FROM_RESOURCE
 
-	if (QFile::exists(":/skins/style2.qss"))
+	if (QFile::exists(":/skins/style.qss"))
 	{
-		QFile file(":/skins/style2.qss");
+		QFile file(":/skins/style.qss");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			QString styleSheet = QLatin1String(file.readAll());
@@ -2952,9 +2971,9 @@ void MyWidget::syncStatusTimeout()
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
 		if(!syncButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-			QResource::registerResource("skins/default.rcc");
+		//	QResource::registerResource("skins/default.rcc");
 			syncButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png")))));	
-			QResource::unregisterResource("skins/default.rcc");
+		//	QResource::unregisterResource("skins/default.rcc");
 #else
 			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
 #endif
@@ -3267,6 +3286,12 @@ void MyWidget::homeBtnPressed()
 	runProgram(HTTP_SERVER_URL,"");
 	input->setFocus();
 }
+void MyWidget::userBtnPressed()
+{
+	runProgram(HTTP_SERVER_URL,"");
+	input->setFocus();
+}
+
 void MyWidget::googleBtnPressed()
 {
 	gSettings->setValue(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),!gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool());
@@ -3283,6 +3308,11 @@ void MyWidget::goBtnPressed()
 {
 	doEnter();
 }
+void MyWidget::minBtnPressed()
+{
+	hideLaunchy();
+}
+
 void MyWidget::menuOptions()
 {
 	if (optionsOpen == true && ops)

@@ -371,7 +371,8 @@ public:
 	QTimer* syncStatusTimer;
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
-	QPushButton *closeButton;
+	QPushButton *minButton;
+	QPushButton *userButton;
 	QPushButton *homeButton;
 	QPushButton *syncButton;
 	QPushButton *baiduButton;
@@ -488,9 +489,11 @@ public slots:
 		void updateSuccessTimeout();
 		void menuOptions();
 		void homeBtnPressed();
+		void userBtnPressed();
 		void googleBtnPressed();
 		void baiduBtnPressed();
 		void goBtnPressed();
+		void minBtnPressed();
 		void onHotKey();		
 #if 0
 		void catalogBuilderTimeout();
