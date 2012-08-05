@@ -4,13 +4,13 @@ input = 134,73,352,35
 alternatives = 134,109,447,100
 icon = 69,66,48,48
 
-homebutton = 480,25,20,16
-userbutton = 500,25,20,16
-syncbutton = 520,25,20,16
-googlebutton = 540,25,20,16
-baidubutton = 560,25,20,16
-optionsbutton = 580,25,20,16
-minbutton = 600,25,20,16
+homebutton = 480,25,20,18
+userbutton = 500,25,20,18
+syncbutton = 520,25,20,18
+googlebutton = 540,25,20,18
+baidubutton = 560,25,20,18
+optionsbutton = 580,25,20,18
+minbutton = 600,25,20,18
 
 gobutton = 486,73,95,35
 
