@@ -70,7 +70,7 @@ copy ..\update\updater\release\updater.exe ..\release
 call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 )
 
-for %%i in (data html images) do call :copyfunc %%i ..\%obj%\%%i
+for %%i in (data html images Microsoft.VC80.DebugCRT) do call :copyfunc %%i ..\%obj%\%%i
 
 rmdir /Q/S ..\%obj%\skins
 mkdir ..\%obj%\skins
