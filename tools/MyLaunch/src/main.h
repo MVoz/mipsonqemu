@@ -149,14 +149,15 @@ public:
 #endif
 		if(!normalInputMethod){
 			QLineEdit::inputMethodEvent(e);
-			repaint();
 		}
+				
 		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<e->commitString()<<e->preeditString()<<displayText()<<text()<<e->spontaneous());
 		if (e->commitString() != "") {			
 			if(normalInputMethod)
 				QLineEdit::inputMethodEvent(e);
 			emit inputMethod(e);
 		}
+		repaint();
 	}
 	/*
 	void mouseReleaseEvent(QMouseEvent* e)
