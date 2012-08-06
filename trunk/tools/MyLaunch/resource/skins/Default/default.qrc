@@ -2,7 +2,6 @@
 <RCC version="1.0">
  <qresource prefix="/skins">
      <file>misc.txt</file>
-     <file>pos.txt</file>
      <file>style.qss</file>
      <file>alpha.png</file>
      <file>background.png</file>
