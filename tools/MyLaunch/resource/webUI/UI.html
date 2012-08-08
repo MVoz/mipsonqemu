@@ -21,9 +21,7 @@
       });
     </script>
 </head>
-<body id="top"><div class="tooltip"><p></p><div class="tt_arrow"></div></div>
-	<div class="banner"></div>  
-    
+<body id="top">    
     <div id="header">
     
         <div class="header_center">                   
@@ -41,6 +39,7 @@
     </div> <!-- /#header -->
     
     <div id="container"> 
+		<div id="demos">
         <fieldset class="lf llf">
 			<legend>启动&raquo;</legend>
 			<dl>
@@ -98,8 +97,8 @@
 				<dt><label></label></dt>
 				<dd>
 					<ul>
-						<li><input type="checkbox" name="baidu" id="baidu" /><span>&nbsp;百度</span></li>
-						<li><input type="checkbox" name="google" id="google" /><span>&nbsp;Google&nbsp;&nbsp;搜索</span></li>						
+						<li><input type="checkbox" name="baidu" id="baidu"/>百度</li>
+						<li><input type="checkbox" name="google" id="google"/>Google</li>						
 					</ul>	
 				</dd>
 			</dl>
@@ -113,12 +112,20 @@
 						<li>
 							<input type="file" />
 						</li>
+						<li>
+							<div class="uploader">
+								<input name="netsearchbrowser" type="text" id="netsearchbrowser" style="opacity: 0;">
+								<span class="filename"></span>
+								<span class="action" onclick="javascript:alert('xx');">Choose File</span>
+							</div>
+						</li>
 					</ul>	
 				</dd>
 			</dl>
 		</fieldset>
+		</div><!-- /#demos -->
 
-
+		<div id="docs">
 		<fieldset class="lf blf">
     		<legend>帐号&raquo;</legend>
 			<dl>
@@ -187,26 +194,10 @@
 				</dl>
 			</dl>
 		</fieldset>
-		<fieldset class="lf nlf">
-    		<legend>高级&raquo;</legend>
-			<dl>
-				<dt><label></label></dt>
-				<dd>
-					<ul>
-						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
-						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
-						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>						
-					</ul>	
-				</dd>
-			</dl>
-		</fieldset>
-
-		
-		
-
+		</div><!-- /#docs -->
 
          <!-- /.column -->             
-        
+        <div id="opts">
         <div class="column" style="float: none;">
         
             <h1>Vertical demo</h1>
@@ -541,10 +532,8 @@
             <!-- End HTML - Vertical tabs -->                
         
         </div> <!-- /.column -->                                              
-        
-         <!-- /#features -->
-        
-         <!-- /#docs -->
+        </div><!-- /.opts -->   
+
         
         <div id="footer">               
        	
