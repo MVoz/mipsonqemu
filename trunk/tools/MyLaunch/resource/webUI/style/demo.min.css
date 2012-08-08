@@ -11,23 +11,23 @@ body { font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif; color: rg
 a { outline: medium none; text-decoration: none; color: rgb(28, 165, 236); }
 a:hover { color: rgb(255, 255, 255); background-color: rgb(54, 54, 54); }
 h1, h2 { color: rgb(69, 69, 69); }
-div#container { width: 775px; margin: 15px auto; }
+div#container { width: 775px; margin: 5px auto; }
 div#header { position: fixed; top: 0px; left: 0px; width: 100%; z-index: 10000; background: url("../images/header_bg.jpg") repeat-x scroll 0px -2px rgb(245, 245, 245); }
 div#header div.header_center { width: 775px; margin: 0px auto; }
 div#intro { float: left; width: 775px; font: 24px/33px Georgia,"Times New Roman",Times,serif; color: rgb(169, 169, 169); padding: 18px 0px; border-bottom: 1px solid rgb(228, 228, 228); }
 div#intro span { color: rgb(122, 122, 122); }
 div.column { float: left; clear: both; width: 775px; height: 412px; }
 div.loading { background: url("urn:not-loaded:http://www.slidetabs.com/img/demo/spinner.gif") no-repeat scroll 50% 50% transparent; }
-div#demos { height: 433px; padding-top: 30px; }
+div#demos { height: 433px; padding-top: 0px; }
 div#st_horizontal { z-index: 1000; }
 div#st_vertical { z-index: 500; }
 h1 { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
 div.banner { position: fixed; top: 0px; right: 0px; z-index: 100000; width: 149px; height: 149px; background: url("../images/banner.png") no-repeat scroll 0px 0px transparent; }
-ul#nav { float: left; clear: both; width: 775px; padding: 14px 0px 13px; border-bottom: 1px solid rgb(228, 228, 228); }
+ul#nav { float: left; clear: both; width: 775px; padding: 5px 0px 5px; border-bottom: 1px solid rgb(228, 228, 228); }
 ul#nav li { float: left; }
 ul#nav li.fl_r { float: right; }
 ul#nav li.logo { margin-top: 9px; padding: 15px 34px 15px 0px; border-right: 1px solid rgb(228, 228, 228); }
-ul#nav li h1 { float: left; display: block; width: 161px; height: 34px; margin-bottom: 0px; background: url("../images/logo.gif") no-repeat scroll 0px 0px transparent; text-indent: -9999px; }
+ul#nav li h1 { float: left; display: block; width: 161px; height: 40px; margin-bottom: 0px; background: url("../images/logo.png") no-repeat scroll 0px 0px transparent; text-indent: -9999px; }
 ul#nav li h1 a { width: 180px; height: 34px; background: none repeat scroll 0% 0% transparent; }
 ul#nav li a.version { float: left; height: auto; font-size: 10px; line-height: 11px; color: rgb(255, 255, 255); margin-left: 6px; padding: 1px 2px; text-indent: 0px; background: none repeat scroll 0% 0% rgb(82, 82, 82); border-radius: 2px 2px 2px 2px; }
 ul#nav li a.version:hover { background: none repeat scroll 0% 0% rgb(28, 165, 236); border-bottom: 0px none; }
