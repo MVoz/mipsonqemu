@@ -26,7 +26,7 @@ Enjoy!
       selectClass:   'selector',
       radioClass: 'radio',
       checkboxClass: 'checker',
-      fileClass: 'uploader',
+      fileClass: 'xuploader',
       filenameClass: 'filename',
       fileBtnClass: 'action',
       fileDefaultText: 'No file selected',
