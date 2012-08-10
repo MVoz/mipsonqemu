@@ -59,7 +59,9 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
 	//getHtml("./html/Customx.html");
-#ifdef CONFIG_HTML_FROM_RESOURCE
+#ifdef CONFIG_OPTION_NEWUI
+	getHtml(":UI.html");
+#elif CONFIG_HTML_FROM_RESOURCE
 	getHtml(":/html/Common.html");
 #else
 	getHtml("./html/Common.html");
