@@ -1,0 +1,16 @@
+fieldset {padding:10px;border: 1px solid #e4e4e4;margin-bottom:8px;}
+fieldset.lf{float:left;width:350px;}
+fieldset.rf{float:right;width:350px;}
+fieldset.af{clear:both;width:750px;}
+input, textarea, select {font:12px/12px Arial, Helvetica, sans-serif; padding:0;}
+fieldset.action {background:#9da2a6; border-color:#e5e5e5 #797c80 #797c80 #e5e5e5; margin-top:-20px;}
+legend {color:#464646; font:17px/21px Calibri, Arial, Helvetica, sans-serif; padding:0 10px;font-weight:bold; }
+label {font-weight:bold;}
+label.opt {font-weight:normal;}
+dl {clear:both;padding:0px;margin:0px}
+dt {float:left; text-align:right;line-height:25px; margin:0 10px 10px 0;}
+dd {float:left; line-height:25px; margin:0 0 10px 0;}
+fieldset.llf dt{width:10px;}
+fieldset.nlf dt{width:50px;}
+fieldset.blf dt{width:90px;}
+fieldset p{float:left;line-height:25px; margin:0 0 0 10px;}
