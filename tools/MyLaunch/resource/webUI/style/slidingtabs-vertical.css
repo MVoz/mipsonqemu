@@ -1,6 +1,6 @@
 /* Effective stylesheet produced by snapshot save */
 div.st_vertical { position: relative; float: left; clear: both; width: 775px; color: rgb(97, 97, 97); }
-div.st_vertical a.st_prev, div.st_vertical a.st_next { display: none; float: left; position: relative; z-index: 100; height: 36px; width: 83px; border-right: 1px solid rgb(212, 212, 212); border-width: 0px 1px 1px; border-style: none solid solid; border-color: -moz-use-text-color rgb(212, 212, 212) rgb(212, 212, 212); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-image: none; outline: medium none; background: url("btn_arrows.gif") no-repeat scroll 0% 0% rgb(255, 255, 255); }
+div.st_vertical a.st_prev, div.st_vertical a.st_next { display: none; float: left; position: relative; z-index: 100; height: 36px; width: 83px; border-right: 1px solid rgb(212, 212, 212); border-width: 0px 1px 1px; border-style: none solid solid; border-color: -moz-use-text-color rgb(212, 212, 212) rgb(212, 212, 212); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-image: none; outline: medium none; background: url("qrc:images/btn_arrows.gif") no-repeat scroll 0% 0% rgb(255, 255, 255); }
 div.st_vertical a.st_prev { border-right: 0px none; background-position: 35px -47px; }
 div.st_vertical a.st_prev:hover { background-position: -28px -47px; background-color: rgb(245, 245, 245); }
 div.st_vertical a.st_next { background-position: 34px -79px; }

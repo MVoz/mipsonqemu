@@ -7,45 +7,45 @@ input { margin: 0px; padding: 0px; }
 .fr { float: right; }
 .clear { clear: both; }
 .hide { display: none; }
-body { font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(97, 97, 97); padding-top: 105px; background-color: rgb(245, 245, 245); }
+body { font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(97, 97, 97); padding-top: 90px; background-color: rgb(245, 245, 245); }
 a { outline: medium none; text-decoration: none; color: rgb(28, 165, 236); }
 a:hover { color: rgb(255, 255, 255); background-color: rgb(54, 54, 54); }
 h1, h2 { color: rgb(69, 69, 69); }
 div#container { width: 775px; margin: 5px auto; }
-div#header { position: fixed; top: 0px; left: 0px; width: 100%; z-index: 10000; background: url("../images/header_bg.jpg") repeat-x scroll 0px -2px rgb(245, 245, 245); }
+div#header { position: fixed; top: 0px; left: 0px; width: 100%; z-index: 10000; background: url("qrc:images/header_bg.jpg") repeat-x scroll 0px -2px rgb(245, 245, 245); }
 div#header div.header_center { width: 775px; margin: 0px auto; }
 div#intro { float: left; width: 775px; font: 24px/33px Georgia,"Times New Roman",Times,serif; color: rgb(169, 169, 169); padding: 18px 0px; border-bottom: 1px solid rgb(228, 228, 228); }
 div#intro span { color: rgb(122, 122, 122); }
 div.column { float: left; clear: both; width: 775px; height: 412px; }
 div.loading { background: url("urn:not-loaded:http://www.slidetabs.com/img/demo/spinner.gif") no-repeat scroll 50% 50% transparent; }
-div#demos { height: 433px; padding-top: 0px; }
+div#demos { height: 433px; padding-top: 100px; }
 div#st_horizontal { z-index: 1000; }
 div#st_vertical { z-index: 500; }
 h1 { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
-div.banner { position: fixed; top: 0px; right: 0px; z-index: 100000; width: 149px; height: 149px; background: url("../images/banner.png") no-repeat scroll 0px 0px transparent; }
-ul#nav { float: left; clear: both; width: 775px; padding: 5px 0px 5px; border-bottom: 1px solid rgb(228, 228, 228); }
+div.banner { position: fixed; top: 0px; right: 0px; z-index: 100000; width: 149px; height: 149px; background: url("qrc:images/banner.png") no-repeat scroll 0px 0px transparent; }
+ul#nav { float: left; clear: both; width: 775px; height:80px;padding: 0px ; border-bottom: 1px solid rgb(228, 228, 228); }
 ul#nav li { float: left; }
 ul#nav li.fl_r { float: right; }
 ul#nav li.logo { margin-top: 9px; padding: 15px 34px 15px 0px; border-right: 1px solid rgb(228, 228, 228); }
-ul#nav li h1 { float: left; display: block; width: 161px; height: 40px; margin-bottom: 0px; background: url("../images/logo.png") no-repeat scroll 0px 0px transparent; text-indent: -9999px; }
+ul#nav li h1 { float: left; display: block; width: 161px; height: 40px; margin-bottom: 0px; background: url("qrc:images/logo.png") no-repeat scroll 0px 0px transparent; text-indent: -9999px; }
 ul#nav li h1 a { width: 180px; height: 34px; background: none repeat scroll 0% 0% transparent; }
 ul#nav li a.version { float: left; height: auto; font-size: 10px; line-height: 11px; color: rgb(255, 255, 255); margin-left: 6px; padding: 1px 2px; text-indent: 0px; background: none repeat scroll 0% 0% rgb(82, 82, 82); border-radius: 2px 2px 2px 2px; }
 ul#nav li a.version:hover { background: none repeat scroll 0% 0% rgb(28, 165, 236); border-bottom: 0px none; }
 ul#nav li h1 a:hover { border: 0px none; }
-ul#nav li a { display: block; height: 9px; background: url("../images/nav.jpg") no-repeat scroll 0% 0% transparent; text-indent: -9999px; }
+ul#nav li a { display: block; height: 9px; background: url("qrc:images/nav.jpg") no-repeat scroll 0% 0% transparent; text-indent: -9999px; }
 ul#nav li a:hover { border-bottom: 2px solid rgb(190, 190, 190); }
 ul#nav li a.demos, ul#nav li a.howto, ul#nav li a.opts { margin-top: 36px; margin-left: 34px; padding-bottom: 9px; }
 ul#nav li a.demos { width: 112px; background-position: 0px 0px; }
 ul#nav li a.howto { width: 71px; background-position: -151px 0px; }
 ul#nav li a.opts { width: 50px; background-position: -260px 0px; }
-ul#nav li a.buy { width: 76px; height: 76px; margin-top: 1px; margin-right: 0px; background: url("../images/buy_now.png") no-repeat scroll 0px 0px transparent; }
+ul#nav li a.buy { width: 76px; height: 76px; margin-top: 1px; margin-right: 0px; background: url("qrc:images/buy_now.png") no-repeat scroll 0px 0px transparent; }
 ul#nav li a.buy:hover { border-bottom: 0px none; }
 div.customize_container { clear: both; position: absolute; top: -46px; right: 0px; }
 div#st_horizontal div.customize_container { z-index: 200; }
 div#st_vertical div.customize_container { z-index: 150; }
 ul.customize li { float: left; }
 ul.customize li p { padding-top: 7px; padding-right: 10px; color: rgb(133, 133, 133); }
-ul.customize li a { display: block; text-indent: -9999px; height: 29px; width: 29px; border: 1px solid rgb(218, 218, 218); background: url("../images/icons.gif") no-repeat scroll 0% 0% rgb(255, 255, 255); }
+ul.customize li a { display: block; text-indent: -9999px; height: 29px; width: 29px; border: 1px solid rgb(218, 218, 218); background: url("qrc:images/icons.gif") no-repeat scroll 0% 0% rgb(255, 255, 255); }
 ul.customize li a.add { background-position: -1px 0px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
 ul.customize li a.add.btn_enabled:hover { background-position: -1px -29px; }
 ul.customize li a.remove { border-right: 0px none; border-left: 0px none; background-position: -31px 0px; }
@@ -78,17 +78,17 @@ div#features { float: left; }
 div#features h1 { margin-bottom: 8px; }
 div#features ul { float: left; width: 375px; color: rgb(130, 130, 130); }
 div#features ul.f_right { margin-left: 20px; }
-div#features ul li { margin-top: 12px; padding-left: 20px; background: url("../images/list_bullet.gif") no-repeat scroll 0px center transparent; }
+div#features ul li { margin-top: 12px; padding-left: 20px; background: url("qrc:images/list_bullet.gif") no-repeat scroll 0px center transparent; }
 div#features h3 { font-size: 16px; font-weight: normal; color: rgb(78, 78, 78); margin-bottom: 2px; }
-div#docs { float: left; width: 775px; margin-top: 40px; }
-div#opts { float: left; margin-top: 40px; }
+div#docs { float: left; width: 775px; margin-top: 40px; padding-top: 100px;}
+div#opts { float: left; margin-top: 40px; padding-top: 100px;}
 div#opts_list { border-top: 1px solid rgb(216, 216, 216); }
 div#docs h1 { margin-top: 30px; }
 div#docs h2 { font-size: 16px; color: rgb(51, 51, 51); font-weight: normal; margin-top: 25px; margin-bottom: 15px; }
 div#docs h3 { font-size: 15px; color: rgb(79, 79, 79); font-weight: normal; margin-top: 25px; margin-bottom: 15px; }
 div#setup { border-top: 1px solid rgb(216, 216, 216); }
 div#setup ul.markup { margin: 10px 0px; }
-div#setup ul.markup li, div#setup ul.notes li { padding-left: 16px; background: url("../images/list_bullet.gif") no-repeat scroll 0px 7px transparent; }
+div#setup ul.markup li, div#setup ul.notes li { padding-left: 16px; background: url("qrc:images/list_bullet.gif") no-repeat scroll 0px 7px transparent; }
 div#setup ul.markup li { margin-bottom: 4px; }
 div#docs ul.notes li { margin-bottom: 12px; }
 div#docs pre { font-family: Consolas,monospace; width: 769px; margin-top: 15px; padding: 1px 3px; overflow: auto; background-color: rgb(31, 31, 31); }
