@@ -1,0 +1,31 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>images/banner.png</file>
+     <file>images/loading.gif</file>
+     <file>images/success.png</file>
+     <file>images/fail.png</file>
+     <file>images/ajax-loader.gif</file>
+     <file>images/btn_arrows.gif</file>
+     <file>images/header_bg.jpg</file>
+     <file>images/logo.png</file>
+     <file>images/banner.png</file>
+     <file>images/button.gif</file>
+     <file>images/icons.gif</file>
+     <file>images/nav.jpg</file>
+     <file>images/bg-input-focus.png</file>
+     <file>images/list_bullet.gif</file>
+     <file>images/sprite.png</file>
+     <file>images/h_tab_bg.jpg</file>
+     <file>images/logo.gif</file>
+     <file>images/v_tab_bg.jpg</file>
+     <file>js/jquery.min.js</file>
+     <file>js/jquery.uniform.js</file>
+     <file>js/jquery.uniform.min.js</file>
+     <file>style/demo.min.css</file>
+     <file>style/niceform.css</file>
+     <file>style/slidingtabs-vertical.css</file>
+     <file>style/uniform.default.css</file>
+     <file>UI.html</file>
+
+ </qresource>
+ </RCC>
