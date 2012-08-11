@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="style/demo.min.css">
     <!--[if IE 6]><style type="text/css">body {padding-top:0px;}</style><![endif]-->
     <!--[if lte IE 7]><style type="text/css">div.tooltip {width:73px;}</style><![endif]-->
-    <link rel="stylesheet" type="text/css" href="style/slidingtabs-vertical.css">
+    <link rel="stylesheet" type="text/css" href="style/slidingtabs-horizontal.css">
 	<link rel="stylesheet" type="text/css" href="style/uniform.default.css">    
 	<link rel="stylesheet" type="text/css" href="style/niceform.css"> 
     <!-- JavaScript -->
@@ -20,6 +20,12 @@
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .opts').addClass('navnow');
+		$('.st_tabs  a').click(function(){
+			$('.st_tab_view').hide();
+			$('.st_tab').removeClass('st_tab_active');
+			$('#'+$(this).attr('rel')).show();
+			$(this).addClass('st_tab_active');
+		});
       });
     </script>
 </head>
@@ -37,183 +43,64 @@
     </div> <!-- /#header -->
     
     <div id="container"> 		
-        <div id="opts">
-        <div class="column" style="float: none;">
+<div class="column" id="demos" style="float: none;">                	
         
-            <h1>Vertical demo</h1>
-            
-            <!-- Start HTML - Vertical tabs -->
-            <div class="st_vertical" id="st_vertical">
-                                
-                <div class="st_tabs_container st_sliding_active">
-                                                           
-                    <a class="st_prev st_btn_disabled" href="#prev" style="display: inline;"></a>
-                    <a class="st_next" href="#next" style="display: inline;"></a>
-                                                                                                         
-                    <div class="st_slide_container">
-                    
-                        <ul class="st_tabs" style="margin-top: 0px;">
-                            <li><a class="st_tab st_tab_active" rel="v-tab-1" href="#stv_content_1">Vertical Tab #1<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-2" href="#stv_content_2">Vertical Tab #2<span>Lorem ipsum dolor sit amet</span></a></li>                                    
-                            <li><a class="st_tab" rel="v-tab-3" href="#stv_content_3">Vertical Tab #3<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-4" href="#stv_content_4">Vertical Tab #4<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-5" href="#stv_content_5">Vertical Tab #5<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-6" href="#stv_content_6">Vertical Tab #6<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-7" href="#stv_content_7">Vertical Tab #7<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-8" href="#stv_content_8">Vertical Tab #8<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-9" href="#stv_content_9">Vertical Tab #9<span>Lorem ipsum dolor sit amet</span></a></li>
-                            <li><a class="st_tab" rel="v-tab-10" href="#stv_content_10">Vertical Tab #10<span>Lorem ipsum dolor sit amet</span></a></li>                                      
+            <!-- Start HTML - Horizontal tabs -->
+            <div class="st_horizontal" id="st_horizontal">  
+                <div class="st_tabs_container">       
+                    <a class="st_prev" href="#prev" style="display: none;"></a>
+                    <div class="st_slide_container" style="overflow: hidden;">
+                        <ul class="st_tabs" style="margin-left: 0px;">
+                            <li><a class="st_tab st_first_tab st_tab_active" rel="st_content_1" href="#">Horizontal Tab #1</a></li>
+                            <li><a class="st_tab" rel="st_content_2" href="#">Horizontal Tab #2</a></li>     
                         </ul>
-                        
+                    
                     </div> <!-- /.st_slide_container -->
-                
-                </div> <!-- /.st_tabs_container -->                               
-                
+                </div> <!-- /.st_tabs_container -->
+               
                 <div class="st_view_container">
                 
                     <div class="st_view">
                                 
-                        <div class="st_tab_view st_first_tab_view st_active_view" id="stv_content_1" style="position: absolute;">
-                            <h2>Vertical Tab #1</h2>
-                            
-                            <div class="text">                                                                                                   
-                                <p>Lorem ipsum dolor sit amet, duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam praesent purus, aliquam quisque, eget nisl. Pellentesque scelerisque convallis tincidunt tristique.</p>
-                                
-                                <blockquote><p>Aliquam commodo arcu libero. Nullam justo neque porttitor laoreet. Aenean adipiscing nisi.</p></blockquote>
-                                        
-                                <p>Aliquam commodo ullamcorper erat. Nullam justo in neque porttitor laoreet. Aenean lacus consequat adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare, massa.</p>
-                                
-                                <p>Curabitur velit. Veniam donec orci viverra, lorem convallis in libero quisque, purus erat dolor, justo arcu nisl, et natoque velit euismod dapibus nulla semper. Suspendisse odio tempor. Id ornare nam nec feugiat, ac consectetuer magna, dolor enim vel in, pulvinar bibendum ante ac, dui nibh dui est neque lacinia et. Duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam mauris, aliquam quisque, eget nisl. Pellentesque nibh ut tristique.</p>
-                            </div>                            
-                        </div>
+                        <div class="st_tab_view st_first_tab_view st_active_view" id="st_content_1" style="position: absolute;">
+                             <div class="text">
+									<div class="tableContainer">
+										<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+											<thead class="fixedHeader">
+												<tr>
+													<th>选择</th>
+													<th>路径</th>
+													<th>后缀名</th>
+													<th>子目录</th>
+													<th>深度</th>													
+												</tr>									
+											</thead>
+										</table>
+									</div>	<!-- /.tableContainer -->
+									<div id="tableContainer" class="tableContainer">
+									<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+										<tbody class="scrollContent" id="dirlist">
+												
+										</tbody>
+									</table>
+									</div>	<!-- /.tableContainer -->
+                             </div><!-- /.text -->                            
+                        </div><!-- /.st_tab_view -->
                         
-                        <div class="st_tab_view" id="stv_content_2" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #2</h2>
-                            
-                            <div class="text">                                
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor lacus. Fringilla accumsan ultrices, molestie at purus. Nulla volutpat consectetur sapien, non semper libero feugiat sed. Donec laoreet suscipit nisi, ut varius elit ultrices eget. Vivamus eget quam nibh. Ut porttitor odio auctor sit amet gravida nec, aliquet vel nisl. Sed feugiat lorem quis odio viverra pharetra.</p>
-                                
-                                <blockquote><p>Aenean congue magna feugiat nunc gravida congue enim. Cursus dui commodo aliquam.</p></blockquote>
-                                        
-                                <p>Aenean fermentum magna feugiat nunc gravida cras congue, enim ut cursus commodo, erat nibh imperdiet nibh, vel malesuada neque lectus lacus maecenas non commodo turpis.</p>
-                                
-                                <p>Praesent arcu erat, venenatis sagittis porta ut, aliquam eu tellus. Sed tempor metus aliquam porta. Praesent faucibus sodales dolor, et vulputate lacus vulputate sagittis. Suspendisse potenti. In vel tortor ante. Curabitur ultrices convallis nulla, a lobortis nibh auctor sed. In hac habitasse platea dictumst. Integer luctus mattis orci, id fermentum leo tristique vitae. Duis at tellus iaculis nisl fringilla lobortis. Curabitur dolor risus, imperdiet a tincidunt pretium.</p>                                                                                              
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_3" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #3</h2>
+                        <div class="st_tab_view" id="st_content_2" style="position: absolute; display: none;">
+                            <h2>Horizontal Tab #2</h2>
                             
                             <div class="text">
-                                <p>Lorem ipsum dolor sit amet, duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam praesent purus, aliquam quisque, eget nisl. Pellentesque scelerisque convallis tincidunt tristique.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris a tellus nec tellus volutpat interdum vel vel nisi. Vestibulum vestibulum porta ultrices. Suspendisse pharetra nisi eu orci sollicitudin nec suscipit tellus lacinia. Cras porta metus sit amet dolor imperdiet at mollis est malesuada. Nulla ligula dolor, porta vel odio. Sed sodales nulla blandit mauris commodo eu varius purus rhoncus. Nam imperdiet elementum egestas. Proin sapien metus, viverra quis tristique a, malesuada a nibh.</p>                                                                
                                 
-                                <blockquote><p>Aliquam commodo arcu libero. Nullam justo neque porttitor laoreet. Aenean adipiscing nisi.</p></blockquote>
-                                        
-                                <p>Aliquam commodo ullamcorper erat. Nullam justo in neque porttitor laoreet. Aenean lacus consequat adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare, massa.</p>
+                                <blockquote>Nam et iaculis est. Phasellus nec tempor arcu. Praesent risus vitae eget facilisis tempus fermentum eget mauris semper.</blockquote>                                                                        
                                 
-                                <p>Curabitur velit. Veniam donec orci viverra, lorem convallis in libero quisque, purus erat dolor, justo arcu nisl, et natoque velit euismod dapibus nulla semper. Suspendisse odio tempor. Id ornare nam nec feugiat, ac consectetuer magna, dolor enim vel in, pulvinar bibendum ante ac, dui nibh dui est neque lacinia et. Duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam mauris, aliquam quisque, eget nisl. Pellentesque nibh ut tristique.</p>
+                                <p>Nam et iaculis est. Phasellus nec tempor arcu. Praesent at risus vitae lacus facilisis tempus et sed tortor. Duis cursus sapien eget neque laoreet quis fermentum mauris semper. Nulla a diam quis tellus lobortis congue ut vitae massa, sed a ante eros.</p>
+                                
+                                <p>Donec lacinia aliquet porttitor. Pellentesque vel sem et dui sagittis aliquet. Ut et est eget augue tristique pharetra sit amet quis orci. Quisque elit sem, feugiat a auctor ac, congue vitae massa. Nulla convallis tortor eget ligula elementum in fringilla augue elementum. Ut bibendum accumsan nibh non fringilla. Fusce nec elementum enim. Duis condimentum cursus massa, elit bibendum turpis auctor elementum. Quisque ante felis, tincidunt vel iaculis non, volutpat non neque.</p>                                
                             </div>
                         </div>
-                        
-                        <div class="st_tab_view" id="stv_content_4" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #4</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor lacus. Fringilla accumsan ultrices, molestie at purus. Nulla volutpat consectetur sapien, non semper libero feugiat sed. Donec laoreet suscipit nisi, ut varius elit ultrices eget. Vivamus eget quam nibh. Ut porttitor odio auctor sit amet gravida nec, aliquet vel nisl. Sed feugiat lorem quis odio viverra pharetra.</p>
-                                
-                                <blockquote><p>Aenean congue magna feugiat nunc gravida congue enim. Cursus dui commodo aliquam.</p></blockquote>
-                                        
-                                <p>Aenean fermentum magna feugiat nunc gravida cras congue, enim ut cursus commodo, erat nibh imperdiet nibh, vel malesuada neque lectus lacus maecenas non commodo turpis.</p>
-                                
-                                <p>Praesent arcu erat, venenatis sagittis porta ut, aliquam eu tellus. Sed tempor metus aliquam porta. Praesent faucibus sodales dolor, et vulputate lacus vulputate sagittis. Suspendisse potenti. In vel tortor ante. Curabitur ultrices convallis nulla, a lobortis nibh auctor sed. In hac habitasse platea dictumst. Integer luctus mattis orci, id fermentum leo tristique vitae. Duis at tellus iaculis nisl fringilla lobortis. Curabitur dolor risus, imperdiet a tincidunt pretium.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_5" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #5</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam praesent purus, aliquam quisque, eget nisl. Pellentesque scelerisque convallis tincidunt tristique.</p>
-                                
-                                <blockquote><p>Aliquam commodo arcu libero. Nullam justo neque porttitor laoreet. Aenean adipiscing nisi.</p></blockquote>
-                                        
-                                <p>Aliquam commodo ullamcorper erat. Nullam justo in neque porttitor laoreet. Aenean lacus consequat adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare, massa.</p>
-                                
-                                <p>Curabitur velit. Veniam donec orci viverra, lorem convallis in libero quisque, purus erat dolor, justo arcu nisl, et natoque velit euismod dapibus nulla semper. Suspendisse odio tempor. Id ornare nam nec feugiat, ac consectetuer magna, dolor enim vel in, pulvinar bibendum ante ac, dui nibh dui est neque lacinia et. Duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam mauris, aliquam quisque, eget nisl. Pellentesque nibh ut tristique.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_6" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #6</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor lacus. Fringilla accumsan ultrices, molestie at purus. Nulla volutpat consectetur sapien, non semper libero feugiat sed. Donec laoreet suscipit nisi, ut varius elit ultrices eget. Vivamus eget quam nibh. Ut porttitor odio auctor sit amet gravida nec, aliquet vel nisl. Sed feugiat lorem quis odio viverra pharetra.</p>
-                                
-                                <blockquote><p>Aenean congue magna feugiat nunc gravida congue enim. Cursus dui commodo aliquam.</p></blockquote>
-                                        
-                                <p>Aenean fermentum magna feugiat nunc gravida cras congue, enim ut cursus commodo, erat nibh imperdiet nibh, vel malesuada neque lectus lacus maecenas non commodo turpis.</p>
-                                
-                                <p>Praesent arcu erat, venenatis sagittis porta ut, aliquam eu tellus. Sed tempor metus aliquam porta. Praesent faucibus sodales dolor, et vulputate lacus vulputate sagittis. Suspendisse potenti. In vel tortor ante. Curabitur ultrices convallis nulla, a lobortis nibh auctor sed. In hac habitasse platea dictumst. Integer luctus mattis orci, id fermentum leo tristique vitae. Duis at tellus iaculis nisl fringilla lobortis. Curabitur dolor risus, imperdiet a tincidunt pretium.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_7" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #7</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam praesent purus, aliquam quisque, eget nisl. Pellentesque scelerisque convallis tincidunt tristique.</p>
-                                
-                                <blockquote><p>Aliquam commodo arcu libero. Nullam justo neque porttitor laoreet. Aenean adipiscing nisi.</p></blockquote>
-                                        
-                                <p>Aliquam commodo ullamcorper erat. Nullam justo in neque porttitor laoreet. Aenean lacus consequat adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare, massa.</p>
-                                
-                                <p>Curabitur velit. Veniam donec orci viverra, lorem convallis in libero quisque, purus erat dolor, justo arcu nisl, et natoque velit euismod dapibus nulla semper. Suspendisse odio tempor. Id ornare nam nec feugiat, ac consectetuer magna, dolor enim vel in, pulvinar bibendum ante ac, dui nibh dui est neque lacinia et. Duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam mauris, aliquam quisque, eget nisl. Pellentesque nibh ut tristique.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_8" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #8</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor lacus. Fringilla accumsan ultrices, molestie at purus. Nulla volutpat consectetur sapien, non semper libero feugiat sed. Donec laoreet suscipit nisi, ut varius elit ultrices eget. Vivamus eget quam nibh. Ut porttitor odio auctor sit amet gravida nec, aliquet vel nisl. Sed feugiat lorem quis odio viverra pharetra.</p>
-                                
-                                <blockquote><p>Aenean congue magna feugiat nunc gravida congue enim. Cursus dui commodo aliquam.</p></blockquote>
-                                        
-                                <p>Aenean fermentum magna feugiat nunc gravida cras congue, enim ut cursus commodo, erat nibh imperdiet nibh, vel malesuada neque lectus lacus maecenas non commodo turpis.</p>
-                                
-                                <p>Praesent arcu erat, venenatis sagittis porta ut, aliquam eu tellus. Sed tempor metus aliquam porta. Praesent faucibus sodales dolor, et vulputate lacus vulputate sagittis. Suspendisse potenti. In vel tortor ante. Curabitur ultrices convallis nulla, a lobortis nibh auctor sed. In hac habitasse platea dictumst. Integer luctus mattis orci, id fermentum leo tristique vitae. Duis at tellus iaculis nisl fringilla lobortis. Curabitur dolor risus, imperdiet a tincidunt pretium.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_9" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #9</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam praesent purus, aliquam quisque, eget nisl. Pellentesque scelerisque convallis tincidunt tristique.</p>
-                                
-                                <blockquote><p>Aliquam commodo arcu libero. Nullam justo neque porttitor laoreet. Aenean adipiscing nisi.</p></blockquote>
-                                        
-                                <p>Aliquam commodo ullamcorper erat. Nullam justo in neque porttitor laoreet. Aenean lacus consequat adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare, massa.</p>
-                                
-                                <p>Curabitur velit. Veniam donec orci viverra, lorem convallis in libero quisque, purus erat dolor, justo arcu nisl, et natoque velit euismod dapibus nulla semper. Suspendisse odio tempor. Id ornare nam nec feugiat, ac consectetuer magna, dolor enim vel in, pulvinar bibendum ante ac, dui nibh dui est neque lacinia et. Duis netus ut posuere feugiat arcu, purus wisi quis fringilla at, nunc ut eget elit duis erat, eu praesent, ut fermentum lacus turpis cras. Justo gravida erat quam mauris, aliquam quisque, eget nisl. Pellentesque nibh ut tristique.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="st_tab_view" id="stv_content_10" style="position: absolute; display: none;">
-                            <h2>Vertical Tab #10</h2>
-                            
-                            <div class="text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor lacus. Fringilla accumsan ultrices, molestie at purus. Nulla volutpat consectetur sapien, non semper libero feugiat sed. Donec laoreet suscipit nisi, ut varius elit ultrices eget. Vivamus eget quam nibh. Ut porttitor odio auctor sit amet gravida nec, aliquet vel nisl. Sed feugiat lorem quis odio viverra pharetra.</p>
-                                
-                                <blockquote><p>Aenean congue magna feugiat nunc gravida congue enim. Cursus dui commodo aliquam.</p></blockquote>
-                                        
-                                <p>Aenean fermentum magna feugiat nunc gravida cras congue, enim ut cursus commodo, erat nibh imperdiet nibh, vel malesuada neque lectus lacus maecenas non commodo turpis.</p>
-                                
-                                <p>Praesent arcu erat, venenatis sagittis porta ut, aliquam eu tellus. Sed tempor metus aliquam porta. Praesent faucibus sodales dolor, et vulputate lacus vulputate sagittis. Suspendisse potenti. In vel tortor ante. Curabitur ultrices convallis nulla, a lobortis nibh auctor sed. In hac habitasse platea dictumst. Integer luctus mattis orci, id fermentum leo tristique vitae. Duis at tellus iaculis nisl fringilla lobortis. Curabitur dolor risus, imperdiet a tincidunt pretium.</p>
-                            </div>
-                        </div>
-                    
-                    </div> <!-- /.st_view --> 
+                    </div> <!-- /.st_view -->
                  
                 </div> <!-- /.st_view_container -->
                 
@@ -221,158 +108,46 @@
                 <div class="customize_container">
                 
                     <ul class="customize">          
-                        <li><p>Customize</p></li>
+                        <li><p>Customize</p></li>                        
                         <li><a title="Add tab" class="add btn_enabled" href="#add">Add tab</a></li>           
                         <li><a title="Remove tab" class="remove btn_enabled" href="#remove">Remove tab</a></li>
-                        <li><a title="Options" class="options btn_enabled" href="#options">Options</a></li>             
-                    </ul>
-                    
-                    <div class="options_box hide">                                                
-                        
-                        <h2>Tab Options</h2>
-                        
-                        <ul class="opts_list">                            
-                            <li>
-                            	<h3>Alignment:</h3>
-                                <ul>
-                                    <li><input type="radio" checked="checked" value="left" name="v_tabs_align"><label>left</label></li>                                    
-                                    <li><input type="radio" value="right" name="v_tabs_align"><label>right</label></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>Animation speed:</h3>
-                                <ul>
-                                    <li><input type="radio" value="600" name="v_tabs_dur"><label>slow</label></li>                                    
-                                    <li><input type="radio" checked="checked" value="300" name="v_tabs_dur"><label>normal</label></li>                                  
-                                    <li><input type="radio" value="200" name="v_tabs_dur"><label>fast</label></li>                                    
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>Directional buttons:</h3>
-                                <ul>
-                                    <li><input type="radio" value="click" name="v_buttons"><label>click tabs</label></li>                                    
-                                    <li><input type="radio" checked="checked" value="slide" name="v_buttons"><label>slide tabs</label></li>
-                                </ul>
-                            </li>                            
-                            <li>                             
-                                <h3>Easing effect:</h3>
-                                <select class="tab_fx">
-                                    <option selected="selected" value="">(none)</option>
-                                    <option value="jswing">jswing</option>                                    
-                                    <option value="easeInQuad">easeInQuad</option>
-                                    <option value="easeOutQuad">easeOutQuad</option>
-                                    <option value="easeInOutQuad">easeInOutQuad</option>
-                                    <option value="easeInCubic">easeInCubic</option>
-                                    <option value="easeOutCubic">easeOutCubic</option>
-                                    <option value="easeInOutCubic">easeInOutCubic</option>
-                                    <option value="easeInQuart">easeInQuart</option>
-                                    <option value="easeOutQuart">easeOutQuart</option>
-                                    <option value="easeInOutQuart">easeInOutQuart</option>
-                                    <option value="easeInQuint">easeInQuint</option>
-                                    <option value="easeOutQuint">easeOutQuint</option>
-                                    <option value="easeInOutQuint">easeInOutQuint</option>
-                                    <option value="easeInSine">easeInSine</option>
-                                    <option value="easeOutSine">easeOutSine</option>
-                                    <option value="easeInOutSine">easeInOutSine</option>
-                                    <option value="easeInExpo">easeInExpo</option>
-                                    <option value="easeOutExpo">easeOutExpo</option>
-                                    <option value="easeInOutExpo">easeInOutExpo</option>
-                                    <option value="easeInCirc">easeInCirc</option>
-                                    <option value="easeOutCirc">easeOutCirc</option>
-                                    <option value="easeInOutCirc">easeInOutCirc</option>
-                                    <option value="easeInElastic">easeInElastic</option>
-                                    <option value="easeOutElastic">easeOutElastic</option>
-                                    <option value="easeInOutElastic">easeInOutElastic</option>
-                                    <option value="easeInBack">easeInBack</option>
-                                    <option value="easeOutBack">easeOutBack</option>
-                                    <option value="easeInOutBack">easeInOutBack</option>
-                                    <option value="easeInBounce">easeInBounce</option>
-                                    <option value="easeOutBounce">easeOutBounce</option>
-                                    <option value="easeInOutBounce">easeInOutBounce</option>
-                                </select>
-                            </li>
-                            <li>
-                                <h3>Mouse Scroll wheel:</h3>
-                                <ul>
-                                    <li><input type="radio" checked="checked" value="true" name="v_scroll"><label>enabled</label></li>                                    
-                                    <li><input type="radio" value="false" name="v_scroll"><label>disabled</label></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        
-                        <h2 class="content">Content Options</h2>
-                        
-                        <ul class="opts_list">                                      
-                            <li>
-                            	<h3>Animation speed:</h3>
-                                <ul>
-                                    <li><input type="radio" value="900" name="v_cont_dur"><label>slow</label></li>                                    
-                                    <li><input type="radio" checked="checked" value="600" name="v_cont_dur"><label>normal</label></li>                                   
-                                    <li><input type="radio" value="400" name="v_cont_dur"><label>fast</label></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>Animation type:</h3>
-                                <select class="cont_anim">
-                                    <option value="">(none)</option>
-                                    <option value="fade">fade</option>
-                                    <option value="fadeOutIn">fadeOutIn</option>
-                                    <option selected="selected" value="slideH">slideHorizontal</option>
-                                    <option value="slideV">slideVertical</option>                                 
-                                </select>                                
-                            </li>                                                     
-                            <li>
-                                <h3>Easing effect:</h3>
-                                <select class="cont_fx">
-                                	<option value="">(none)</option>
-                                    <option value="jswing">jswing</option>                                    
-                                    <option value="easeInQuad">easeInQuad</option>
-                                    <option value="easeOutQuad">easeOutQuad</option>
-                                    <option value="easeInOutQuad">easeInOutQuad</option>
-                                    <option value="easeInCubic">easeInCubic</option>
-                                    <option value="easeOutCubic">easeOutCubic</option>
-                                    <option value="easeInOutCubic">easeInOutCubic</option>
-                                    <option value="easeInQuart">easeInQuart</option>
-                                    <option value="easeOutQuart">easeOutQuart</option>
-                                    <option value="easeInOutQuart">easeInOutQuart</option>
-                                    <option value="easeInQuint">easeInQuint</option>
-                                    <option value="easeOutQuint">easeOutQuint</option>
-                                    <option value="easeInOutQuint">easeInOutQuint</option>
-                                    <option value="easeInSine">easeInSine</option>
-                                    <option value="easeOutSine">easeOutSine</option>
-                                    <option value="easeInOutSine">easeInOutSine</option>
-                                    <option value="easeInExpo">easeInExpo</option>
-                                    <option value="easeOutExpo">easeOutExpo</option>
-                                    <option selected="selected" value="easeInOutExpo">easeInOutExpo</option>
-                                    <option value="easeInCirc">easeInCirc</option>
-                                    <option value="easeOutCirc">easeOutCirc</option>
-                                    <option value="easeInOutCirc">easeInOutCirc</option>
-                                    <option value="easeInElastic">easeInElastic</option>
-                                    <option value="easeOutElastic">easeOutElastic</option>
-                                    <option value="easeInOutElastic">easeInOutElastic</option>
-                                    <option value="easeInBack">easeInBack</option>
-                                    <option value="easeOutBack">easeOutBack</option>
-                                    <option value="easeInOutBack">easeInOutBack</option>
-                                    <option value="easeInBounce">easeInBounce</option>
-                                    <option value="easeOutBounce">easeOutBounce</option>
-                                    <option value="easeInOutBounce">easeInOutBounce</option>                                
-                                </select>
-                            </li>
-                        </ul>
-                        
-                        <div class="save_cont">
-                        	<a title="Apply Options" class="save_btn" href="#save">Apply Options</a>
-                        </div>
-                    </div> <!-- /.options_box -->
-                
+                        <li><a title="Options" class="options btn_enabled" href="#options">Options</a></li>                        
+                    </ul>                
                 </div> <!-- /.customize_continer -->
-                <!-- End HTML - Customize tabs -->                    	            
-            
-            </div> <!-- /#st_vertical -->                    
-            <!-- End HTML - Vertical tabs -->                
+                <!-- End HTML - Customize tabs -->                           
+						<div id="adddir" style="display:none;">
+							<div class="cfgitem">
+								<p>
+									<span class="tl">路径:</span>
+									<span class="ip">
+										<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:300px;" value=""/></span>
+										<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #listPath',0);"/>
+									</span>
+									<span class="ip" id="isIncludeChildDir_span">
+										<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
+									</span>	
+								</p>
+								<p>
+									<span class="tl">后缀:</span>
+									<span class="ip" id="suffix_span">
+										<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
+									</span>
+									<span class="tl">最大深度:</span>
+									<span class="ip" id="childDeep_span">
+										<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
+									</span>	
+								</p>	
+								<p style="display:none;" id="cmdIndex_span">
+									<input name="cmdIndex" type="text" id="cmdIndex" >
+								</p>
+							</div>
+							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
+							<div class="btn"><a href="#" onclick="listApply(0)">增加</a></div>							
+						</div> <!-- /#adddir --> 
+            </div> <!-- /#st_horizontal -->        
+            <!-- End HTML - Horizontal tabs -->               
         
-        </div> <!-- /.column -->                                              
-        </div><!-- /.opts -->   
+        </div>
 		<div id="apply"> 
 			<ul></ul>        
         </div>        
