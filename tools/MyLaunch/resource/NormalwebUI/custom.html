@@ -11,7 +11,8 @@
     <!--[if lte IE 7]><style type="text/css">div.tooltip {width:73px;}</style><![endif]-->
     <link rel="stylesheet" type="text/css" href="style/slidingtabs-horizontal.css">
 	<link rel="stylesheet" type="text/css" href="style/uniform.default.css">    
-	<link rel="stylesheet" type="text/css" href="style/niceform.css"> 
+	<link rel="stylesheet" type="text/css" href="style/niceform.css">
+	<link rel="stylesheet" type="text/css" href="style/thinkbox.css"> 
     <!-- JavaScript -->
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
@@ -26,6 +27,7 @@
 			$('#'+$(this).attr('rel')).show();
 			$(this).addClass('st_tab_active');
 		});
+		tb_init('a.thickbox');
       });
     </script>
 </head>
@@ -109,9 +111,9 @@
                 
                     <ul class="customize">          
                         <li><p>Customize</p></li>                        
-                        <li><a title="Add tab" class="add btn_enabled" href="#add">Add tab</a></li>           
-                        <li><a title="Remove tab" class="remove btn_enabled" href="#remove">Remove tab</a></li>
-                        <li><a title="Options" class="options btn_enabled" href="#options">Options</a></li>                        
+                        <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=540&height=100" >Add</a></li>           
+                        <li><a title="Remove tab" class="remove btn_enabled" href="#remove">Remove</a></li>
+                        <li><a title="Options" class="options btn_enabled" href="#options">Edit</a></li>                        
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
