@@ -15,9 +15,11 @@
     <!-- JavaScript -->
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/my.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       $(function(){
-        $("input, textarea, select, button").uniform();
+		$('#nav > li').removeClass('navnow');
+		$('#nav .opts').addClass('navnow');
       });
     </script>
 </head>
@@ -28,168 +30,13 @@
                            
             <ul id="nav">
                 <li class="logo"><h1><a href="#top">Sliding Tabs</a></h1><a title="View changelog" class="version" href="http://www.slidetabs.com/changelog.txt">1.9.1</a></li>
-                <li><a class="demos" href="#demos">Demos &amp; Features</a></li>            
-                <li><a class="howto" href="#docs">How to Use</a></li>
-                <li><a class="opts" href="#opts">Options</a></li>
-                <li class="fl_r"><a class="buy">Purchase</a></li>
             </ul>                                              
         
         </div> <!-- /.header_center -->
     
     </div> <!-- /#header -->
     
-    <div id="container"> 
-		<div id="demos">
-        <fieldset class="lf llf">
-			<legend>启动&raquo;</legend>
-			<dl>
-				<dt><label></label></dt>
-				<dd>
-					<ul>
-						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
-						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
-						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
-						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
-						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
-					</ul>
-				</dd>
-			</dl>
-			<dl>
-				<dt><label></label></dt>
-				<dd>  
-					<label>快捷键:</label>
-					<select id="hotkey_0" class="select">	
-							<option value="134217728">Alt</option>
-							<option value="67108864">Ctrl</option>
-							<option value="33554432">Shift</option>
-							<option value="268435456">Win</option>											
-					</select>
-					<select id="hotkey_1" class="select">
-							<option value="16777219">Backspace</option>
-							<option value="16777221">Enter</option>
-							<option value="16777216">Space</option>
-							<option value="16777217">Tab</option>							
-					</select>      
-				</dd>
-          </dl>
-	    </fieldset>
-		<fieldset class="rf llf">
-    		<legend>界面&raquo;</legend>
-			<dl>
-				<dt><label></label></dt>
-				<dd>
-					<ul>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终在最前面</li>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终居中</li>	
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp透明效果 <input name="textfield" type="text" id="textfield" size="10"/></li>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp淡入淡出效果<input name="textfield" type="text" id="textfield" size="10"/></li>
-						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
-						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
-						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>		
-					</ul>	
-				</dd>
-			</dl>			
-		</fieldset>
-		<fieldset class="af nlf">
-    		<legend>搜索&raquo;</legend>
-			<p>当无法匹配您所输入的字符串时,将通过网页打开</p>
-			<dl>
-				<dt><label></label></dt>
-				<dd>
-					<ul>
-						<li><input type="checkbox" name="baidu" id="baidu"/>百度</li>
-						<li><input type="checkbox" name="google" id="google"/>Google</li>						
-					</ul>	
-				</dd>
-			</dl>
-			<dl>
-				<dt><label>浏览器:</label></dt>
-				<dd>
-					<ul>
-						<li>
-							<div class="uploader">
-								<span class="filename"></span>
-								<span class="action" onclick="javascript:alert('xx');">Choose File</span>
-							</div>
-						</li>
-					</ul>	
-				</dd>
-			</dl>
-		</fieldset>
-		</div><!-- /#demos -->
-
-		<div id="docs">
-		<fieldset class="lf blf">
-    		<legend>帐号&raquo;</legend>
-			<dl>
-				<dt><label>用户名:</label></dt>
-				<dd><input type="email" maxlength="128" size="32" id="email" name="email"></dd>
-			</dl>
-			<dl>
-				<dt><label>密码:</label></dt>
-				<dd><input type="password" maxlength="32" size="32" id="password" name="password"></dd>
-			</dl>	
-			<dl>
-				<dt><label>上次同步时间:</label></dt>
-				<dd></dd>
-			</dl>
-			<dl>
-				<dt><label>上次同步状态:</label></dt>
-				<dd></dd>
-			</dl>	
-			<dl>
-				<dt><label></label></dt>
-				<dl>
-					<a href="#" onclick="accountTestClick();">测试</a> 
-					<a href="#" onclick="syncClick();">同步</a>
-				</dl>
-			</dl>
-		</fieldset>
-
-		<fieldset class="rf nlf">
-    		<legend>网络代理&raquo;</legend>
-			<dl>
-				<dt></dt>
-				<dd><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();" />&nbsp启用HTTP代理</dd>
-			</dl>
-			<dl>
-				<dt><label>地址:</label></dt>
-				<dd><input type="text" maxlength="128" size="32" id="email" name="email"></dd>
-			</dl>
-			<dl>
-				<dt><label>端口:</label></dt>
-				<dd><input type="text" maxlength="32" size="32" id="password" name="password"></dd>
-			</dl>	
-			<dl>
-				<dt><label>用户名:</label></dt>
-				<dd><input type="text" maxlength="128" size="32" id="email" name="email"></dd>
-			</dl>
-			<dl>
-				<dt><label>密码:</label></dt>
-				<dd><input type="password" maxlength="32" size="32" id="password" name="password"></dd>
-			</dl>	
-			<dl>
-				<a href="#" onclick="accountTestClick();">测试</a> 
-				<a href="#" onclick="accountTestClick();">测试</a>
-			</dl>
-		</fieldset>
-
-		<fieldset class="af blf">
-    		<legend>软件更新&raquo;</legend>
-			<dl>
-				<dt><label>当前版本:</label></dt>
-				<dd></dd>
-			</dl>
-			<dl>
-				<dt><label></label></dt>
-				<dl>
-					<a href="#" onclick="accountTestClick();">立即更新</a> 
-				</dl>
-			</dl>
-		</fieldset>
-		</div><!-- /#docs -->
-
-         <!-- /.column -->             
+    <div id="container"> 		
         <div id="opts">
         <div class="column" style="float: none;">
         
@@ -526,21 +373,14 @@
         
         </div> <!-- /.column -->                                              
         </div><!-- /.opts -->   
-
-        
-        <div id="footer">               
-       	
+		<div id="apply"> 
+			<ul></ul>        
+        </div>        
+        <div id="footer"> 
             <ul>
-                <li>&copy; 2012 - <a href="http://codecanyon.net/user/360north">360north</a> &nbsp;/&nbsp; <a href="http://codecanyon.net/user/360north/follow">Follow on Envato</a></li>                    
-                <li class="fr"><a id="top_btn" href="#top">Top</a></li>
             </ul>
-        
         </div> <!-- /#footer -->
     
     </div> <!-- /#container -->
-    
-
-
-
 </body>
 </html>
