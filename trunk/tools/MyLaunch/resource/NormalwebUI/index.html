@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>UI</title>
+    <meta name="description" content="UI">
+    
+    <!-- CSS -->           
+    <link rel="stylesheet" type="text/css" href="style/demo.min.css">
+    <!--[if IE 6]><style type="text/css">body {padding-top:0px;}</style><![endif]-->
+    <!--[if lte IE 7]><style type="text/css">div.tooltip {width:73px;}</style><![endif]-->
+    <link rel="stylesheet" type="text/css" href="style/slidingtabs-vertical.css">
+	<link rel="stylesheet" type="text/css" href="style/uniform.default.css">    
+	<link rel="stylesheet" type="text/css" href="style/niceform.css"> 
+    <!-- JavaScript -->
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/my.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function(){
+		$('#nav > li').removeClass('navnow');
+		$('#nav .demos').addClass('navnow');
+      });
+    </script>
+</head>
+<body id="top">    
+    <div id="header">
+    
+        <div class="header_center">        
+                           
+            <ul id="nav">
+                <li class="logo"><h1><a href="#top">Sliding Tabs</a></h1><a title="View changelog" class="version" href="http://www.slidetabs.com/changelog.txt">1.9.1</a></li>
+            </ul>                                              
+        
+        </div> <!-- /.header_center -->
+    
+    </div> <!-- /#header -->
+    
+    <div id="container"> 
+		<div id="demos">
+        <fieldset class="lf llf">
+			<legend>启动&raquo;</legend>
+			<dl>
+				<dt><label></label></dt>
+				<dd>
+					<ul>
+						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
+						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
+						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>
+					</ul>
+				</dd>
+			</dl>
+			<dl>
+				<dt><label></label></dt>
+				<dd>  
+					<label>快捷键:</label>
+					<select id="hotkey_0" class="select">	
+							<option value="134217728">Alt</option>
+							<option value="67108864">Ctrl</option>
+							<option value="33554432">Shift</option>
+							<option value="268435456">Win</option>											
+					</select>
+					<select id="hotkey_1" class="select">
+							<option value="16777219">Backspace</option>
+							<option value="16777221">Enter</option>
+							<option value="16777216">Space</option>
+							<option value="16777217">Tab</option>							
+					</select>      
+				</dd>
+          </dl>
+	    </fieldset>
+		<fieldset class="rf llf">
+    		<legend>界面&raquo;</legend>
+			<dl>
+				<dt><label></label></dt>
+				<dd>
+					<ul>
+						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终在最前面</li>
+						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终居中</li>	
+						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp透明效果 <input name="textfield" type="text" id="textfield" size="10"/></li>
+						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp淡入淡出效果<input name="textfield" type="text" id="textfield" size="10"/></li>
+						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
+						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
+						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>		
+					</ul>	
+				</dd>
+			</dl>			
+		</fieldset>
+		<fieldset class="af nlf">
+    		<legend>搜索&raquo;</legend>
+			<p>当无法匹配您所输入的字符串时,将通过网页打开</p>
+			<dl>
+				<dt><label></label></dt>
+				<dd>
+					<ul>
+						<li><input type="checkbox" name="baidu" id="baidu"/>百度</li>
+						<li><input type="checkbox" name="google" id="google"/>Google</li>						
+					</ul>	
+				</dd>
+			</dl>
+			<dl>
+				<dt><label>浏览器:</label></dt>
+				<dd>
+					<ul>
+						<li>
+							<div class="uploader">
+								<span class="filename"></span>
+								<span class="action" onclick="javascript:alert('xx');">Choose File</span>
+							</div>
+						</li>
+					</ul>	
+				</dd>
+			</dl>
+		</fieldset>
+		</div><!-- /#demos -->  
+		<div id="apply"> 
+			<ul></ul>        
+        </div>
+        <div id="footer"> 
+            <ul>
+            </ul>        
+        </div> <!-- /#footer -->    
+    </div> <!-- /#container -->
+    
+</body>
+</html>
