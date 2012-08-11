@@ -40,7 +40,7 @@ ul#nav li a.howto { width: 100px; background-position: -151px 0px; }
 ul#nav li a.opts { width: 100px; background-position: -260px 0px; }
 ul#nav li a.buy { width: 76px; height: 76px; margin-top: 1px; margin-right: 0px; background: url("../images/buy_now.png") no-repeat scroll 0px 0px transparent; }
 ul#nav li a.buy:hover { border-bottom: 0px none; }
-div.customize_container { clear: both; position: absolute; top: -46px; right: 0px; }
+div.customize_container { clear: both; position: absolute; top: 0px; right: 0px; }
 div#st_horizontal div.customize_container { z-index: 200; }
 div#st_vertical div.customize_container { z-index: 150; }
 ul.customize li { float: left; }
