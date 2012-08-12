@@ -21,6 +21,7 @@
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .opts').addClass('navnow');
+
 		$('.st_tabs  a').click(function(){
 			$('.st_tab_view').hide();
 			$('.st_tab').removeClass('st_tab_active');
@@ -28,6 +29,8 @@
 			$(this).addClass('st_tab_active');
 		});
 		tb_init('a.thickbox');
+
+	       
       });
     </script>
 </head>
@@ -111,40 +114,51 @@
                 
                     <ul class="customize">          
                         <li><p>Customize</p></li>                        
-                        <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=540&height=100" >Add</a></li>           
+                        <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=640&height=150" >Add</a></li>           
                         <li><a title="Remove tab" class="remove btn_enabled" href="#remove">Remove</a></li>
                         <li><a title="Options" class="options btn_enabled" href="#options">Edit</a></li>                        
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
 						<div id="adddir" style="display:none;">
-							<div class="cfgitem">
-								<p>
-									<span class="tl">路径:</span>
-									<span class="ip">
-										<span id="listpath_span"><input name="listPath" type="text" id="listPath" size=40 class="itext" style="width:300px;" value=""/></span>
-										<input type="button" value="..." onclick="javascript:OptionsDlg.getListDirectory('#TB_window #listPath',0);"/>
-									</span>
-									<span class="ip" id="isIncludeChildDir_span">
-										<input type="checkbox" name="isIncludeChildDir" id="isIncludeChildDir" checked/>包含子目录
-									</span>	
-								</p>
-								<p>
-									<span class="tl">后缀:</span>
-									<span class="ip" id="suffix_span">
-										<input name="suffix" class="itext" type="text" id="suffix" size=40 value="*.exe" onBlur="suffixCheck();"/>
-									</span>
-									<span class="tl">最大深度:</span>
-									<span class="ip" id="childDeep_span">
-										<input name="childDeep" type="text" id="childDeep" size="5" value="100" class="itext" onBlur="childDeepCheck();" style="width:80px;"/>
-									</span>	
-								</p>	
-								<p style="display:none;" id="cmdIndex_span">
-									<input name="cmdIndex" type="text" id="cmdIndex" >
-								</p>
-							</div>
-							<div class="btn"><a href="#" onclick="tb_remove();">取消</a></div>
-							<div class="btn"><a href="#" onclick="listApply(0)">增加</a></div>							
+							<fieldset class="t_f">
+								<legend>添加目录&raquo;</legend>								
+								<dl>
+									<dt><label>目录路径:</label></dt>
+									<dd>
+										<ul>
+											<li>
+												<div class="uploader">
+													<span class="filename"></span>
+													<span class="action" onclick="javascript:alert('xx');">Choose File</span>
+												</div>
+											</li>
+										</ul>	
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>子目录:</label></dt>
+									<dd>
+										<input type="checkbox" name="baidu" id="baidu"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>后缀:</label></dt>
+									<dd>
+											<li><input name="textfield" type="text" id="textfield" size="10"/></li>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>最大深度:</label></dt>
+									<dd>
+											<li><input name="textfield" type="text" id="textfield" size="10"/></li>					
+									</dd>
+								</dl>
+								<ul class="btn">
+										<li ><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="accountTestClick();">确定</a></li>										
+								</ul>
+							</fieldset>			
 						</div> <!-- /#adddir --> 
             </div> <!-- /#st_horizontal -->        
             <!-- End HTML - Horizontal tabs -->               

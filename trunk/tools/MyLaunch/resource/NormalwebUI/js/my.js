@@ -6,7 +6,7 @@ function $obj(a){return document.getElementById(a);}
 
 $(function(){   
 	imgLoader = new Image();// preload image
-	imgLoader.src = "qrc:image/ajax-loader.gif";
+	imgLoader.src = "../image/ajax-loader.gif";
 });
 function tb_init(domChunk){
 	$(domChunk).click(function(){
@@ -47,7 +47,7 @@ function tb_show(caption, url, params) {//function called when the user clicks o
 			ajaxContentH = TB_HEIGHT - 45;
 			if(1){// either iframe or ajax window		
 						$("#TB_iframeContent").remove();				
-						$("#TB_window").append("<div id='TB_title'><div id='TB_ajaxWindowTitle'>"+caption+"</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='Close'>close</a> </div></div><div id='TB_iframeContent' name='TB_iframeContent"+Math.round(Math.random()*1000)+"' style='width:"+(ajaxContentW + 29)+"px;height:"+(ajaxContentH + 17)+"px;' > </div>");
+						$("#TB_window").append("<div id='TB_iframeContent' name='TB_iframeContent"+Math.round(Math.random()*1000)+"' style='width:"+(ajaxContentW + 29)+"px;height:"+(ajaxContentH + 17)+"px;' > </div>");
 						$("#TB_iframeContent").html($("#"+url).html());
 						tb_showIframe();
 			}
@@ -131,4 +131,5 @@ function tb_detectMacXFF() {
 		$("#apply > ul").append('<li><a href="#">确定</a></li>');		
 		//footer
 		$("#footer ul").append('<li>&copy; 2012 - <a href="http://codecanyon.net/user/360north">360north</a> &nbsp;/&nbsp; <a href="http://codecanyon.net/user/360north/follow">Follow on Envato</a></li>');
-      });
+
+ });
