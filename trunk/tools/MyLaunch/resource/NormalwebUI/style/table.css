@@ -1,7 +1,7 @@
 div.tableContainer ,.clt{
 	clear: both;
 	/*border: 1px solid #ccc;*/
-	height: 9em;
+	height: 24em;
 	width: 750px;
 	overflow:scroll;
 	overflow-x:hidden;	
