@@ -56,8 +56,8 @@
                     <a class="st_prev" href="#prev" style="display: none;"></a>
                     <div class="st_slide_container" style="overflow: hidden;">
                         <ul class="st_tabs" style="margin-left: 0px;">
-                            <li><a class="st_tab st_first_tab st_tab_active" rel="st_content_1" href="#">Horizontal Tab #1</a></li>
-                            <li><a class="st_tab" rel="st_content_2" href="#">Horizontal Tab #2</a></li>     
+                            <li><a class="st_tab st_first_tab st_tab_active" rel="st_content_1" href="#">目&nbsp;录</a></li>
+                            <li><a class="st_tab" rel="st_content_2" href="#">命&nbsp;令</a></li>     
                         </ul>
                     
                     </div> <!-- /.st_slide_container -->
@@ -110,13 +110,12 @@
                 </div> <!-- /.st_view_container -->
                 
                 <!-- Start HTML - Customize tabs -->
-                <div class="customize_container">
-                
+                <div class="customize_container">                
                     <ul class="customize">          
                         <li><p>Customize</p></li>                        
                         <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=640&height=150" >Add</a></li>           
-                        <li><a title="Remove tab" class="remove btn_enabled" href="#remove">Remove</a></li>
-                        <li><a title="Options" class="options btn_enabled" href="#options">Edit</a></li>                        
+                        <li><a title="Remove tab" class="remove btn_enabled thickbox" href="qrc:deletedir" rel="width=640&height=80">Remove</a></li>
+                        <li><a title="Options" class="options btn_enabled thickbox" href="qrc:adddir" rel="width=640&height=150">Edit</a></li>                        
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
@@ -155,11 +154,34 @@
 									</dd>
 								</dl>
 								<ul class="btn">
-										<li ><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
 										<li><a href="#" onclick="accountTestClick();">确定</a></li>										
 								</ul>
 							</fieldset>			
 						</div> <!-- /#adddir --> 
+						<div id="deletedir" style="display:none;">
+							<fieldset class="t_f">
+								<legend>删除目录&raquo;</legend>								
+								<dl>
+									<dt><label>&nbsp;</label></dt>
+									<dd>
+										您确定删除目录:<span class="ip" id="del_dir_span"></span>							
+									</dd>
+								</dl>
+								<dl>
+									<dt><label></label></dt>
+									<dd>
+									<p style="display:none;" id="cmdDelIndex_span">
+										<input name="cmdIndex" type="text" id="cmdIndex" >
+									</p>	
+								</dd>
+								</dl>
+								<ul class="btn">
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="accountTestClick();">确定</a></li>										
+								</ul>
+							</fieldset>			
+						</div> <!-- /#deletedir --> 
             </div> <!-- /#st_horizontal -->        
             <!-- End HTML - Horizontal tabs -->               
         
