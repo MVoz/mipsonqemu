@@ -38,10 +38,12 @@ tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even
 	border-bottom: 1px solid #DDD;
 	padding: 4px 3px;
 	height:1.5em;
-	overflow-x:hidden;
+	overflow:hidden;
 	display: block;
 	float:left;
-
+	text-overflow:ellipsis;
+	word-break:keep-all;
+	white-space:nowrap;
 }
 tbody.scrollContent tr.even td,tbody.clt_c tr.even td{
 	background: #FFF;
