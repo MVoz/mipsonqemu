@@ -16,7 +16,7 @@ div.st_horizontal ul.st_tabs li a{display:block;color:#ccc; font:17px/21px Calib
 div.st_horizontal ul.st_tabs a:hover{color:#333}
 div.st_horizontal ul.st_tabs li a.st_first_tab{border-left:1px solid #d4d4d4}
 div.st_horizontal ul.st_tabs a.st_tab_active{color:#464646;border-bottom-color:#fff;background:#fff}
-div.st_horizontal div.st_view_container{position:relative;z-index:5;height:277px;border:1px solid #d4d4d4;background-color:#fff;overflow:hidden;padding:10px 20px 23px}
+div.st_horizontal div.st_view_container{position:relative;z-index:5;height:277px;border:1px solid #d4d4d4;background-color:#fff;overflow:hidden;padding:10px 10px 23px 20px}
 div.st_horizontal div.st_view{position:relative;height:100%;overflow:hidden}
 div.st_horizontal div.st_tab_view{display:none;width:100%}
 div.st_horizontal div.st_first_tab_view{display:block}
