@@ -1,5 +1,5 @@
 .tableContainer_h{	clear: both;	height: 2.5em;	width: 750px;	overflow:scroll;	overflow-x:hidden;	}
-div.tableContainer ,.clt{	clear: both;	/*border: 1px solid #ccc;*/	height: 24em;	width: 750px;	overflow:scroll;	overflow-x:hidden;	}
+div.tableContainer ,.clt{	clear: both;	/*border: 1px solid #ccc;*/	height: 22em;	width: 750px;	overflow:scroll;	overflow-x:hidden;	}
 div.tableContainer table,.clt table {float: left;width: 723px;}
 
 thead.fixedHeader th{border-bottom: 2px solid #bebebe;}
