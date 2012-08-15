@@ -29,15 +29,10 @@
 			$(this).addClass('st_tab_active');
 		});
 
-		$("#dirlist input[type=checkbox]").click(function(){
-		//  if($(this).attr("checked") == true){ //check all
-		//   $("input[@name='checkbox_name[]']").each(function(){
-			$("#dirlist input[type=checkbox]").each(function(){
-				$(this).attr("checked",false);		
+		$("#dirlist input[type=radio]").click(function(){
+				//alert($(this).parent().html());		
+                alert('xx');
 			});
-			//$("#dirlist input[type=checkbox]").removeAttr("checked");	
-			//$(this).attr("checked",true);
-			//alert('xx');
 		 });
 
 		tb_init('a.thickbox');
@@ -98,35 +93,35 @@
 									<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 											<tbody class="scrollContent" id="dirlist">
 													<tr class="even">
-														<td><input type="checkbox" id="dir_1"/></td>
+														<td><input type="radio" name="ckdir" id="dir_1"/></td>
 														<td>d:/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch2012/8/14</td>
 														<td>*.exe;*.exe;*.exe;*.exe;*.exe;</td>
 														<td>y</td>
 														<td>100</td>													
 													</tr>	
 													<tr class="odd">
-														<td><input type="checkbox" id="dir_2"/></td>
+														<td><input type="radio" name="ckdir" id="dir_2"/></td>
 														<td>d:/mylaunch</td>
 														<td>*.exe</td>
 														<td>y</td>
 														<td>100</td>													
 													</tr>	
 													<tr class="even">
-														<td><input type="checkbox" id="dir_3"/></td>
+														<td><input type="radio" name="ckdir" id="dir_3"/></td>
 														<td>d:/mylaunch</td>
 														<td>*.exe</td>
 														<td>y</td>
 														<td>100</td>													
 													</tr>	
 													<tr class="odd">
-														<td><input type="checkbox" id="dir_4"/></td>
+														<td><input type="radio" id="dir_4"/></td>
 														<td>d:/mylaunch</td>
 														<td>*.exe</td>
 														<td>y</td>
 														<td>100</td>													
 													</tr>			
 													<tr class="even">
-														<td><input type="checkbox" id="dir_5"/></td>
+														<td><input type="radio" id="dir_5"/></td>
 														<td>d:/mylaunch</td>
 														<td>*.exe</td>
 														<td>y</td>
