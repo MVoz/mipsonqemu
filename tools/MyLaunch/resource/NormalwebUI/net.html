@@ -20,6 +20,14 @@
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .howto').addClass('navnow');
+		
+		$('#proxyEnable').click(function(){
+			//proxyEnableClick();
+			$("#net_proxy input[type=text]").attr("disabled",!$(this).attr('checked'));
+			$("#net_proxy input[type=password]").attr("disabled",!$(this).attr('checked'));
+			$("#net_proxy a").attr("disabled",!$(this).attr('checked'));
+		});
+
       });
     </script>
 </head>
@@ -62,11 +70,11 @@
 			</ul>
 		</fieldset>
 
-		<fieldset class="rf nlf">
+		<fieldset class="rf nlf " id="net_proxy">
     		<legend>网络代理&raquo;</legend>
 			<dl>
 				<dt><label>启用:</label></dt>
-				<dd><input type="checkbox" name="proxyEnable" id="proxyEnable" onclick="proxyEnableClick();"/></dd>
+				<dd><input type="checkbox" name="proxyEnable" id="proxyEnable"/></dd>
 			</dl>
 			<dl>
 				<dt><label>地址:</label></dt>
