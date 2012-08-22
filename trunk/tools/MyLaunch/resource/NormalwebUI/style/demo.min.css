@@ -57,23 +57,6 @@ ul.customize li a.vert { position: relative; z-index: -1; }
 ul.customize li a.options.btn_enabled:hover { background-position: -61px -29px; }
 ul.customize li a.options.active { border-color: rgb(193, 193, 193) rgb(193, 193, 193) rgb(255, 255, 255); background-position: -61px -29px; border-bottom-right-radius: 0px; }
 ul.customize li a.btn_disabled { cursor: default; opacity: 0.4; }
-div.options_box { position: absolute; top: 30px; right: 0px; border: 1px solid rgb(193, 193, 193); background: none repeat scroll 0% 0% rgb(245, 245, 245); border-radius: 3px 0px 3px 3px; }
-div.options_box.show { display: block; }
-div.options_box ul li { float: left; padding-bottom: 6px; }
-div.options_box ul.opts_list { float: left; width: 179px; padding: 13px 0px 10px 20px; }
-div.options_box ul.opts_list ul li { float: left; margin-right: 12px; }
-div.options_box label { display: block; float: left; padding-left: 4px; line-height: 12px; }
-div.options_box input { float: left; height: 14px; width: 14px; }
-div.options_box select { width: 162px; padding: 2px; border: 1px solid rgb(204, 204, 204); border-radius: 3px 3px 3px 3px; }
-div.options_box h2 { display: inline-block; clear: both; font-size: 14px; font-weight: normal; width: 173px; padding: 12px 16px; border-bottom: 1px solid rgb(232, 232, 232); background-color: rgb(255, 255, 255); }
-div.options_box h2.content { border-top: 1px solid rgb(232, 232, 232); border-bottom: 1px solid rgb(232, 232, 232); }
-div.options_box h3 { width: 159px; clear: both; padding-bottom: 6px; font-size: 12px; font-weight: normal; color: rgb(88, 88, 88); }
-div.options_box div.save_cont { clear: both; padding: 14px 20px; border-top: 1px solid rgb(232, 232, 232); background-color: rgb(255, 255, 255); }
-div.options_box div.save_cont a.save_btn { display: block; width: 163px; padding: 5px 0px; border: 1px solid rgb(191, 191, 191); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgb(48, 48, 48); text-align: center; background: none repeat scroll 0% 0% rgb(230, 230, 230); border-radius: 3px 3px 3px 3px; }
-div.options_box div.save_cont a.save_btn:hover { color: rgb(255, 255, 255); background: none repeat scroll 0% 0% rgb(53, 53, 53); }
-div.tooltip { display: none; position: absolute; text-align: center; font-size: 10px; line-height: normal; color: rgb(255, 255, 255); z-index: 100000; opacity: 0.85; }
-div.tooltip p { padding: 6px 8px; background-color: rgb(0, 0, 0); border-radius: 2px 2px 2px 2px; }
-div.tooltip div.tt_arrow { width: 0px; height: 0px; margin: 0px auto; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid rgb(0, 0, 0); }
 div#features { float: left; }
 div#features h1 { margin-bottom: 8px; }
 div#features ul { float: left; width: 375px; color: rgb(130, 130, 130); }
