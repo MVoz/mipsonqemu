@@ -6,8 +6,7 @@ if "%obj%"=="" (
 )
 
 cd /d %obj%
-del touchAny.exe
-del options.rcc
+del /Q/S *
 
 if "%obj%"=="release" (
 del /Q/S *
@@ -71,7 +70,7 @@ copy ..\update\updater\release\updater.exe ..\release
 call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 )
 
-for %%i in (data images Microsoft.VC80.DebugCRT) do call :copyfunc %%i ..\%obj%\%%i
+for %%i in (data images) do call :copyfunc %%i ..\%obj%\%%i
 
 rmdir /Q/S ..\%obj%\skins
 mkdir ..\%obj%\skins
@@ -118,6 +117,11 @@ copy ..\win\installer\release\setup.exe ..\download\setup\setup.exe
 cd ..
 
 )
+
+cd .\%obj%
+del *.exp *.lib *.manifest *.ilk *.pdb
+cd ..
+
 
 if "%obj%"=="debug" (
 cd .\%obj%
