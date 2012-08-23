@@ -8,6 +8,9 @@ HEADERS         =../include/bmsync.h
 SOURCES         = bmsync.cpp
 #TARGET          = $$qtLibraryTarget(mergethread)
 
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 QT += network
 QT += xml
 QT += sql

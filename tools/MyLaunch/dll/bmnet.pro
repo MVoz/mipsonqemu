@@ -16,6 +16,10 @@ LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
 DEFINES += TEST_SERVER_DLL
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 QT += sql
 QT += network
 QT += xml

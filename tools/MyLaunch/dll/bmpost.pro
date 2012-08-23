@@ -9,6 +9,10 @@ SOURCES         = bmpost.cpp
 QT += network
 QT += xml
 QT += sql
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 DEFINES += WIN32
 DEFINES += POST_HTTP_DLL
 CONFIG -= embed_manifest_dll

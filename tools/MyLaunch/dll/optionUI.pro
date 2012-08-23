@@ -11,6 +11,10 @@ QT += network
 QT += xml
 QT += webkit
 QT += sql
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 DEFINES += WIN32
 DEFINES += OPTIONS_DLL
 CONFIG -= embed_manifest_dll

@@ -9,6 +9,10 @@ INCLUDEPATH    += c:/boost/
 SOURCES += bmxml.cpp
 HEADERS  = ../include/bmxml.h
 CONFIG += dll qt_warn debug_and_release
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 QT += network
 QT += xml
 QT += sql
