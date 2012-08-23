@@ -1,6 +1,6 @@
 TEMPLATE = app
 unix {
-  TARGET = launchy
+  TARGET = touchAny
 }
 win32 {
   TARGET = touchAny
@@ -14,6 +14,9 @@ QT += sql
 INCLUDEPATH += .
 
 INCLUDEPATH += ../include/
+
+MOC_DIR += ../build
+OBJECTS_DIR += ../build
 
 SOURCES = main.cpp \
  globals.cpp \
@@ -73,7 +76,7 @@ win32 {
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     CONFIG += console
-    DESTDIR =     ../debug/
+      DESTDIR =     ../debug/
       LIBS +=   ../debug/bmapi.lib
       LIBS +=   ../debug/bmxml.lib
       LIBS +=   ../debug/bmpost.lib
@@ -84,7 +87,7 @@ win32 {
       LIBS +=   ../debug/appupdater.lib
       LIBS +=   ../debug/fileget.lib
       LIBS +=   ../debug/bmnet.lib
-	  LIBS +=   ../debug/diggxml.lib
+      LIBS +=   ../debug/diggxml.lib
    }
    CONFIG(release, debug|release) {
       DESTDIR =    ../release/	
@@ -98,7 +101,7 @@ win32 {
       LIBS +=   ../release/appupdater.lib
       LIBS +=   ../release/fileget.lib
       LIBS +=   ../release/bmnet.lib
-	  LIBS +=   ../release/diggxml.lib      
+      LIBS +=   ../release/diggxml.lib      
   }
 }
 }
@@ -110,5 +113,4 @@ win32 {
 #UI_DIR = build
 #RESOURCES += launchy.qrc
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+

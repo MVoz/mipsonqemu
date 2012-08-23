@@ -35,10 +35,7 @@ cd /d dll
 for %%i in (bmapi bmnet catalog bmxml  bmpost bmmerge bmsync diggxml fileget appupdater  optionUI fileget) do call :makefunc %%i 
 cd ..
 
-cd /d src
-SET SRC=src
-call :makefunc %SRC% 
-cd ..
+
 
 cd /d platforms
 cd /d win
@@ -47,6 +44,10 @@ call :makefunc %SRC%
 cd ..
 cd ..
 
+cd /d src
+SET SRC=src
+call :makefunc %SRC% 
+cd ..
 
 cd /d resource
 rcc -binary webUI/optionUI.qrc -o options.rcc
@@ -70,7 +71,7 @@ copy ..\update\updater\release\updater.exe ..\release
 call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 )
 
-for %%i in (data html images Microsoft.VC80.DebugCRT) do call :copyfunc %%i ..\%obj%\%%i
+for %%i in (data images Microsoft.VC80.DebugCRT) do call :copyfunc %%i ..\%obj%\%%i
 
 rmdir /Q/S ..\%obj%\skins
 mkdir ..\%obj%\skins
