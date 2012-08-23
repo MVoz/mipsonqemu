@@ -8,10 +8,10 @@ VPATH 		+= ../../src/
 INCLUDEPATH += ../../src/
 INCLUDEPATH += c:/boost/
 INCLUDEPATH += ../../win/
-INCLUDEPATH += ../include/
+INCLUDEPATH += ./include/
 VPATH		+= src/
 SOURCES		=fileget.cpp
-HEADERS         = ../include/fileget.h
+HEADERS         = ./include/fileget.h
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
@@ -20,19 +20,19 @@ QT += sql
 QT += network
 QT += xml
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
-    LIBS +=../debug/bmapi.lib
-    LIBS +=../debug/bmnet.lib
+    DESTDIR =     ./debug/
+    LIBS +=./debug/bmapi.lib
+    LIBS +=./debug/bmnet.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/
-    LIBS +=../release/bmapi.lib
-    LIBS +=../release/bmnet.lib
+    DESTDIR = ./release/
+    LIBS +=./release/bmapi.lib
+    LIBS +=./release/bmnet.lib
    }
  }

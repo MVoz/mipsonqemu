@@ -4,14 +4,14 @@
 
 TEMPLATE = lib
 INCLUDEPATH += .
-INCLUDEPATH += ../include/
+INCLUDEPATH += ./include/
 INCLUDEPATH    += c:/boost/
 SOURCES += bmxml.cpp
-HEADERS  = ../include/bmxml.h
+HEADERS  = ./include/bmxml.h
 CONFIG += dll qt_warn debug_and_release
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 
 QT += network
 QT += xml
@@ -24,14 +24,14 @@ CONFIG -= embed_manifest_dll
 
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
-	LIBS +=   ../debug/bmapi.lib
-	LIBS +=   ../debug/baseitem.lib
+    DESTDIR =     ./debug/
+	LIBS +=   ./debug/bmapi.lib
+	LIBS +=   ./debug/baseitem.lib
    }
    CONFIG(release, debug|release) {
 #    CONFIG +=     embed_manifest_dll
-    DESTDIR = ../release/
-	LIBS +=   ../release/bmapi.lib
-	LIBS +=   ../release/baseitem.lib
+    DESTDIR = ./release/
+	LIBS +=   ./release/bmapi.lib
+	LIBS +=   ./release/baseitem.lib
    }
  }

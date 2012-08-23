@@ -7,17 +7,18 @@ TARGET =
 CONFIG		+=debug_and_release
 DEPENDPATH += .
 INCLUDEPATH += .
+INCLUDEPATH += ./include/
 CONFIG += console 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 # Input
 SOURCES += version.cpp
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =    ../include/
+    DESTDIR =    ./include/
    }
    CONFIG(release, debug|release) {
-    DESTDIR = ../include/
+    DESTDIR = ./include/
    }
  }
 

@@ -5,24 +5,18 @@ if "%obj%"=="" (
   SET obj="debug"	
 )
 
-cd /d %obj%
-del /Q/S *
+
+rmdir /Q/S %obj%
 
 if "%obj%"=="release" (
-del /Q/S *
-@for /d %%a in (*) do @rd /s/q "%%a" 
+REM del /Q/S *
+REM @for /d %%a in (*) do @rd /s/q "%%a" 
 )
 
-cd ..
 
-cd /d version
-call :makefunc version
+
+call :makefunc ./version/version
 nmake release
-cd ..
-
-cd /d fmd5
-call :makefunc fmd5
-cd ..
 
 if "%obj%"=="release" (
 cd /d include
@@ -30,23 +24,8 @@ version.exe
 cd ..
 )
 
-cd /d dll
-for %%i in (bmapi bmnet catalog bmxml  bmpost bmmerge bmsync diggxml fileget appupdater  optionUI fileget) do call :makefunc %%i 
-cd ..
+for %%i in (./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmpost ./dll/bmmerge ./dll/bmsync ./dll/diggxml ./dll/fileget ./dll/appupdater  ./dll/optionUI ./dll/fileget ./platforms/win/win ./src/src) do call :makefunc %%i 
 
-
-
-cd /d platforms
-cd /d win
-SET SRC=win
-call :makefunc %SRC% 
-cd ..
-cd ..
-
-cd /d src
-SET SRC=src
-call :makefunc %SRC% 
-cd ..
 
 cd /d resource
 rcc -binary webUI/optionUI.qrc -o options.rcc
