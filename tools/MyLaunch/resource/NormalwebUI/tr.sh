@@ -1,5 +1,6 @@
 #!/bin/sh
-rm -f ../webUI/*
+rm -fr ../webUI
+mkdir ../webUI
 cp -fr * ../webUI
 cd ../webUI
 sed 's/style\//qrc:style\//g' index.html > 1
