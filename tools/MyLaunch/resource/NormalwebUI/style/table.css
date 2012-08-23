@@ -1,19 +1,9 @@
-.tableContainer_h{	clear: both;	height: 2.5em;	width: 750px;	overflow:scroll;	overflow-x:hidden;	}
-div.tableContainer ,.clt{	clear: both;	/*border: 1px solid #ccc;*/	height: 22em;	width: 750px;	overflow:scroll;	overflow-x:hidden;	}
+.tableContainer_h{	clear: both;height: 2.5em;width:750px;overflow:hidden;}
+div.tableContainer ,.clt{clear: both;height: 22em;width: 750px;overflow:hidden;overflow-y:scroll;}
 div.tableContainer table,.clt table {float: left;width: 723px;}
-
 thead.fixedHeader th{border-bottom: 2px solid #bebebe;}
-
 thead.fixedHeader tr,thead.clt_h tr {position: relative;display: block;}
-
-thead.fixedHeader th,thead.clt_h th {
-	font-weight: bold;
-	padding: 4px 3px;
-	text-align: left;
-	display: block;
-	overflow-x:hidden;
-	float:left;
-}
+thead.fixedHeader th,thead.clt_h th {font-weight: bold;	padding:4px 3px;text-align: left;display: block;	overflow-x:hidden;float:left;}
 thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited ,thead.clt_h a,thead.clt_h a:link,thead.clt_h a:visited {
 	color: #FFF;
 	display: block;
