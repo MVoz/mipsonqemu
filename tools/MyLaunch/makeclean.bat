@@ -1,5 +1,6 @@
+@echo off
 cd /d debug
-del tanzhi.exe
+del touchany.exe
 del options.rcc
 del /s /q *.dll
 cd ..

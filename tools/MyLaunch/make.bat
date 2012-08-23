@@ -1,8 +1,9 @@
 REM CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
+@echo off
 SET obj=%1
 
 if "%obj%"=="" (
-  SET obj="debug"	
+  SET obj=debug
 )
 
 cd /d %obj%
@@ -49,7 +50,7 @@ cd ..
 
 
 cd /d resource
-rcc -binary options.qrc -o options.rcc
+rcc -binary webUI/optionUI.qrc -o options.rcc
 copy options.rcc ..\%obj%
 
 rcc -binary skins/Default/default.qrc -o skins/default.rcc
