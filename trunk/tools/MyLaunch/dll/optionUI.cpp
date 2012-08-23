@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::MSWindowsFixedSizeDialogHint
 | Qt::WindowTitleHint),settings(s),db(b)
 {
-	#define  OPTION_DLG_WIDTH 775
+	#define  OPTION_DLG_WIDTH 800
 	manager=NULL;
 	reply=NULL;
 	updaterDlg=NULL;
@@ -209,6 +209,16 @@ void OptionsDlg::gohref(const QString & url)
 void OptionsDlg::loading(const QString & name)
 {
 	QString jsStr;
+#ifdef CONFIG_OPTION_NEWUI
+	if (name == "index"){
+		QDEBUG_LINE;
+		JS_APPEND_CHECKED("ckStartWithSystem","",false);
+		JS_APPEND_CHECKED("ckShowTray","",true);
+		JS_APPEND_CHECKED("ckShowMainwindow","",false);
+		JS_APPEND_CHECKED("ckAutoUpdate","",false);
+		JS_APPEND_CHECKED("ckScanDir","",false);
+	}
+#else
 	//menu
 	QString menustring;
 	//menustring.append("<ul>");
@@ -466,6 +476,9 @@ void OptionsDlg::loading(const QString & name)
 	if(name =="Bookmark"){
 		jsStr.append("$(function(){initMenuEx();});");
 	}
+#endif
+	
+	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"jsStr:"<<jsStr);
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 }
 

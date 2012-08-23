@@ -345,8 +345,13 @@ enum{
 
 
 #define PASSWORD_ENCRYPT_KEY 98122130
-#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$obj("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\")+"';");
-#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
+#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\")+"';");
+//#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
+#define JS_APPEND_CHECKED(x,y,defval) do{\
+	QString v=(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"));\
+	jsStr.append(QString("$('%1').attr('checked','%2');").arg("."+x).arg(v));\
+}while(0);
+
 #define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$obj("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
 
 
