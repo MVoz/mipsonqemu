@@ -22,10 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QDesktopWidget>
 #include <catalog.h>
-
 OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(parent,Qt::MSWindowsFixedSizeDialogHint
 | Qt::WindowTitleHint),settings(s),db(b)
 {
+	#define  OPTION_DLG_WIDTH 775
 	manager=NULL;
 	reply=NULL;
 	updaterDlg=NULL;
@@ -36,12 +36,12 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	webView = new QWebView(this);
 
 	webView->setObjectName(QString::fromUtf8("webView"));
-	webView->setMinimumSize(QSize(805, 480));
-	webView->setMaximumSize(QSize(805, 16777215));
+	webView->setMinimumSize(QSize(OPTION_DLG_WIDTH, 480));
+	webView->setMaximumSize(QSize(OPTION_DLG_WIDTH, 16777215));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
 	QResource::registerResource("options.rcc");
-	setFixedSize(805, 450);
+	setFixedSize(OPTION_DLG_WIDTH, 550);
 	metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
 	iMetaKeys << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
 
@@ -54,13 +54,12 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	for (int i = 'A'; i <= 'Z'; i++)
 		iActionKeys << i;
 
-
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 
 	//getHtml("./html/Customx.html");
 #ifdef CONFIG_OPTION_NEWUI
-	getHtml(":UI.html");
+	getHtml(":index.html");
 #elif CONFIG_HTML_FROM_RESOURCE
 	getHtml(":/html/Common.html");
 #else
