@@ -5,27 +5,27 @@
 TEMPLATE	= lib
 TARGET		= bmapi
 CONFIG		+=dll  qt_warn debug_and_release
-VPATH 		+= ../../src/
-INCLUDEPATH += ../../src/
+VPATH 		+= ./src/
+INCLUDEPATH += ./src/
 INCLUDEPATH += c:/boost/
-INCLUDEPATH += ../../win/
-INCLUDEPATH += ../include/
+INCLUDEPATH += ./../win/
+INCLUDEPATH += ./include/
 VPATH		+= src/
 SOURCES		=bmapi.cpp
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib Advapi32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
 DEFINES += BMAPI_DLL
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 QT += sql
 QT += network
 RC_FILE =   bmapi.rc
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
+    DESTDIR =     ./debug/
    }
    CONFIG(release, debug|release) {
-   DESTDIR = ../release/
+   DESTDIR = ./release/
    }
  }

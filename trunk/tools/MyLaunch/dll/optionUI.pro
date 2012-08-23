@@ -1,9 +1,9 @@
 TEMPLATE        = lib
 CONFIG         += dll qt_warn debug_and_release
 INCLUDEPATH    += .
-INCLUDEPATH    += ../include/
+INCLUDEPATH    += ./include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = ../include/optionUI.h
+HEADERS         = ./include/optionUI.h
 SOURCES         = optionUI.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
 
@@ -12,8 +12,8 @@ QT += xml
 QT += webkit
 QT += sql
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 
 DEFINES += WIN32
 DEFINES += OPTIONS_DLL
@@ -21,24 +21,24 @@ CONFIG -= embed_manifest_dll
 
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-	DESTDIR =     ../debug/
-	LIBS +=   ../debug/bmapi.lib
-	LIBS +=   ../debug/bmxml.lib
-	LIBS +=   ../debug/bmpost.lib
-	LIBS +=   ../debug/bmsync.lib
-	LIBS +=   ../debug/appupdater.lib
-	LIBS +=   ../debug/baseitem.lib
-	LIBS +=   ../debug/bmnet.lib
+	DESTDIR =     ./debug/
+	LIBS +=   ./debug/bmapi.lib
+	LIBS +=   ./debug/bmxml.lib
+	LIBS +=   ./debug/bmpost.lib
+	LIBS +=   ./debug/bmsync.lib
+	LIBS +=   ./debug/appupdater.lib
+	LIBS +=   ./debug/baseitem.lib
+	LIBS +=   ./debug/bmnet.lib
 	
    }
    CONFIG(release, debug|release) {
-	DESTDIR = ../release/
-	LIBS +=   ../release/bmapi.lib
-	LIBS +=   ../release/bmxml.lib
-	LIBS +=   ../release/bmpost.lib
-	LIBS +=   ../release/bmsync.lib
-	LIBS +=   ../release/baseitem.lib
-	LIBS +=   ../release/appupdater.lib
-	LIBS +=   ../release/bmnet.lib
+	DESTDIR = ./release/
+	LIBS +=   ./release/bmapi.lib
+	LIBS +=   ./release/bmxml.lib
+	LIBS +=   ./release/bmpost.lib
+	LIBS +=   ./release/bmsync.lib
+	LIBS +=   ./release/baseitem.lib
+	LIBS +=   ./release/appupdater.lib
+	LIBS +=   ./release/bmnet.lib
    }
  }

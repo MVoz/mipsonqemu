@@ -13,10 +13,10 @@ QT += xml
 QT += sql
 INCLUDEPATH += .
 
-INCLUDEPATH += ../include/
+INCLUDEPATH += ./include/
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 
 SOURCES = main.cpp \
  globals.cpp \
@@ -76,32 +76,32 @@ win32 {
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     CONFIG += console
-      DESTDIR =     ../debug/
-      LIBS +=   ../debug/bmapi.lib
-      LIBS +=   ../debug/bmxml.lib
-      LIBS +=   ../debug/bmpost.lib
-      LIBS +=   ../debug/bmmerge.lib
-      LIBS +=   ../debug/bmsync.lib
-      LIBS +=   ../debug/optionUI.lib
-      LIBS +=   ../debug/baseitem.lib
-      LIBS +=   ../debug/appupdater.lib
-      LIBS +=   ../debug/fileget.lib
-      LIBS +=   ../debug/bmnet.lib
-      LIBS +=   ../debug/diggxml.lib
+      DESTDIR =     ./debug/
+      LIBS +=   ./debug/bmapi.lib
+      LIBS +=   ./debug/bmxml.lib
+      LIBS +=   ./debug/bmpost.lib
+      LIBS +=   ./debug/bmmerge.lib
+      LIBS +=   ./debug/bmsync.lib
+      LIBS +=   ./debug/optionUI.lib
+      LIBS +=   ./debug/baseitem.lib
+      LIBS +=   ./debug/appupdater.lib
+      LIBS +=   ./debug/fileget.lib
+      LIBS +=   ./debug/bmnet.lib
+      LIBS +=   ./debug/diggxml.lib
    }
    CONFIG(release, debug|release) {
-      DESTDIR =    ../release/	
-      LIBS +=   ../release/bmapi.lib
-      LIBS +=   ../release/bmxml.lib
-      LIBS +=   ../release/bmpost.lib
-      LIBS +=   ../release/bmmerge.lib
-      LIBS +=   ../release/bmsync.lib
-      LIBS +=   ../release/optionUI.lib
-      LIBS +=   ../release/baseitem.lib
-      LIBS +=   ../release/appupdater.lib
-      LIBS +=   ../release/fileget.lib
-      LIBS +=   ../release/bmnet.lib
-      LIBS +=   ../release/diggxml.lib      
+      DESTDIR =    ./release/	
+      LIBS +=   ./release/bmapi.lib
+      LIBS +=   ./release/bmxml.lib
+      LIBS +=   ./release/bmpost.lib
+      LIBS +=   ./release/bmmerge.lib
+      LIBS +=   ./release/bmsync.lib
+      LIBS +=   ./release/optionUI.lib
+      LIBS +=   ./release/baseitem.lib
+      LIBS +=   ./release/appupdater.lib
+      LIBS +=   ./release/fileget.lib
+      LIBS +=   ./release/bmnet.lib
+      LIBS +=   ./release/diggxml.lib      
   }
 }
 }

@@ -6,9 +6,9 @@ TEMPLATE        = lib
 TARGET		=baseitem
 CONFIG         += dll  debug_and_release
 INCLUDEPATH    += .
-INCLUDEPATH    += ../include/
+INCLUDEPATH    += ./include/
 INCLUDEPATH    += c:/boost/
-HEADERS         = ../include/catalog.h	../include/icon_delegate.h   ../include/catalog_types.h
+HEADERS         = ./include/catalog.h	./include/icon_delegate.h   ./include/catalog_types.h
 SOURCES         = catalog.cpp  icon_delegate.cpp catalog_types.cpp
 #TARGET          = $$qtLibraryTarget(mergethread)
 DEFINES += WIN32
@@ -16,19 +16,19 @@ DEFINES += CATALOG_DLL
 DEFINES += ICON_DELEGATE
 DEFINES += CATALOG_TYPES_DLL
 
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 
 CONFIG -= embed_manifest_dll
 QT += sql
 QT += network
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
-    LIBS +=../debug/bmapi.lib
+    DESTDIR =     ./debug/
+    LIBS +=./debug/bmapi.lib
    }
    CONFIG(release, debug|release) {
-    DESTDIR = ../release/
-    LIBS +=../release/bmapi.lib
+    DESTDIR = ./release/
+    LIBS +=./release/bmapi.lib
    }
  }

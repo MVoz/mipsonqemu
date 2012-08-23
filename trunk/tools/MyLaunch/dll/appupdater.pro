@@ -4,35 +4,35 @@
 
 TEMPLATE	= lib
 CONFIG		+=dll  qt_warn debug_and_release
-VPATH 		+= ../../src/
-INCLUDEPATH += ../../src/
+VPATH 		+= ./../src/
+INCLUDEPATH += ./../src/
 INCLUDEPATH += c:/boost/
-INCLUDEPATH += ../../win/
-INCLUDEPATH += ../include/
+INCLUDEPATH += ./../win/
+INCLUDEPATH += ./include/
 VPATH		+= src/
 SOURCES		=appupdater.cpp
-HEADERS         = ../include/appupdater.h
+HEADERS         = ./include/appupdater.h
 LIBS 		+= shell32.lib user32.lib gdi32.lib comctl32.lib
 CONFIG -= embed_manifest_dll
 DEFINES += WIN32
 DEFINES += UPDATER_THREAD_DLL
-MOC_DIR += ../tmp
-OBJECTS_DIR += ../tmp
+MOC_DIR += tmp
+OBJECTS_DIR += tmp
 QT += sql
 QT += network
 QT += xml
 
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
-    DESTDIR =     ../debug/
-    LIBS +=../debug/bmapi.lib
-    LIBS +=../debug/bmnet.lib
-    LIBS +=../debug/fileget.lib
+    DESTDIR =     ./debug/
+    LIBS +=./debug/bmapi.lib
+    LIBS +=./debug/bmnet.lib
+    LIBS +=./debug/fileget.lib
    }
    CONFIG(release, debug|release) {
-    DESTDIR = ../release/
-    LIBS +=../release/bmapi.lib
-    LIBS +=../release/bmnet.lib
-    LIBS +=../release/fileget.lib
+    DESTDIR = ./release/
+    LIBS +=./release/bmapi.lib
+    LIBS +=./release/bmnet.lib
+    LIBS +=./release/fileget.lib
    }
  }

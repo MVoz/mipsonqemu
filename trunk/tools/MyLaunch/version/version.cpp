@@ -8,7 +8,7 @@
 #include <QTextStream>
 #include <QSettings>
 #include <qDebug>
-#include "../include/config.h"
+#include "config.h"
 
 //#define APP_VERSION "1.2.12"
 //#define APP_BUILD_TIME 1000000
