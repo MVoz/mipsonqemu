@@ -6,17 +6,15 @@ if "%obj%"=="" (
 )
 
 
-rmdir /Q/S %obj%
+@rmdir /Q/S %obj%
 
 if "%obj%"=="release" (
 REM del /Q/S *
 REM @for /d %%a in (*) do @rd /s/q "%%a" 
 )
 
-
-
-call :makefunc ./version/version
-nmake release
+@call :makefunc ./version/version
+@nmake release
 
 if "%obj%"=="release" (
 cd /d include
@@ -27,17 +25,16 @@ cd ..
 for %%i in (./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmpost ./dll/bmmerge ./dll/bmsync ./dll/diggxml ./dll/fileget ./dll/appupdater  ./dll/optionUI ./dll/fileget ./platforms/win/win ./src/src) do call :makefunc %%i 
 
 
-cd /d resource
-rcc -binary webUI/optionUI.qrc -o options.rcc
-copy options.rcc ..\%obj%
+@cd /d resource
+@rcc -binary webUI/optionUI.qrc -o options.rcc
+@copy options.rcc ..\%obj%
 
-rcc -binary skins/Default/default.qrc -o skins/default.rcc
+@rcc -binary skins/Default/default.qrc -o skins/default.rcc
 
+@sqlite3.exe defines.db<readsql.bat
+@copy defines.db data\
 
-sqlite3.exe defines.db<readsql.bat
-copy defines.db data\
-
-if "%obj%"=="release" (
+@if "%obj%"=="release" (
 copy ..\win\msvcr80.dll ..\release
 copy ..\win\QtXml4.dll ..\release
 copy ..\win\QtNetwork4.dll ..\release
@@ -51,17 +48,16 @@ call :copyfunc ..\win\Microsoft.VC80.CRT ..\%obj%\Microsoft.VC80.CRT
 
 for %%i in (data images) do call :copyfunc %%i ..\%obj%\%%i
 
-rmdir /Q/S ..\%obj%\skins
-mkdir ..\%obj%\skins
-xcopy skins\default.rcc ..\%obj%\skins /s  
-del skins\default.rcc
-mkdir ..\ 
+@rmdir /Q/S ..\%obj%\skins
+@mkdir ..\%obj%\skins
+@xcopy skins\default.rcc ..\%obj%\skins /s  
+@del skins\default.rcc
 
-del defines.db
-del data\defines.db
+@del defines.db
+@del data\defines.db
 cd ..
 
-if "%obj%"=="release" (
+@if "%obj%"=="release" (
 rmdir /Q/S download
 mkdir download
 mkdir download\portable
@@ -97,39 +93,34 @@ cd ..
 )
 
 REM clean somethings
-cd .\%obj%
-del *.exp *.lib *.manifest *.ilk *.pdb
-cd ..
+@cd .\%obj%
+@del /Q *.exp *.lib *.manifest *.ilk *.pdb
+@cd ..
 
-cd include
-del *.exp *.lib *.manifest *.ilk *.pdb
-cd ..
+@cd include
+@del /Q *.exp *.lib *.manifest *.ilk *.pdb
+@cd ..
 
-cd resource
-del *.exp *.lib *.manifest *.ilk *.pdb
-cd ..
+@cd resource
+@del /Q *.lib *.manifest *.ilk *.pdb fmd5.exe
+@cd ..
 
-del Makefile Makefile.Debug Makefile.Release vc80.pdb
+@del /Q Makefile Makefile.Debug Makefile.Release
 
-if "%obj%"=="debug" (
-cd .\%obj%
+@if "%obj%"=="debug" (
+@cd .\%obj%
 touchAny.exe
-cd ..
+@cd ..
 )
-
 goto :EOF
 
 
 :copyfunc    
-echo off
-del /Q/S %2 
-rmdir /Q/S %2
-mkdir %2
-xcopy %1 %2 /s            
-echo on
-goto :EOF    
+@mkdir %2
+@xcopy %1 %2 /s /Q          
+@goto :EOF    
 
 :makefunc                   
-qmake %1%.pro
-nmake %obj%
-goto :EOF 
+@qmake %1%.pro
+@nmake %obj%
+@goto :EOF 
