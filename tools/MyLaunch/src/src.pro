@@ -105,7 +105,10 @@ win32 {
 #TRANSLATIONS =  ../translations/launchy_fr.ts  ../translations/launchy_nl.ts  \
 #		    ../translations/launchy_zh.ts ../translations/launchy_es.ts \
 #		    ../translations/launchy_de.ts ../translations/launchy_ja.ts
-OBJECTS_DIR = build
-MOC_DIR = build
+#OBJECTS_DIR = build
+#MOC_DIR = build
 #UI_DIR = build
 #RESOURCES += launchy.qrc
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
