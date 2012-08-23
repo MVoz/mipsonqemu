@@ -54,11 +54,10 @@ for %%i in (data images) do call :copyfunc %%i ..\%obj%\%%i
 rmdir /Q/S ..\%obj%\skins
 mkdir ..\%obj%\skins
 xcopy skins\default.rcc ..\%obj%\skins /s  
-
+del skins\default.rcc
 mkdir ..\ 
 
 del defines.db
-del options.rcc
 del data\defines.db
 cd ..
 
@@ -97,10 +96,20 @@ cd ..
 
 )
 
+REM clean somethings
 cd .\%obj%
 del *.exp *.lib *.manifest *.ilk *.pdb
 cd ..
 
+cd include
+del *.exp *.lib *.manifest *.ilk *.pdb
+cd ..
+
+cd resource
+del *.exp *.lib *.manifest *.ilk *.pdb
+cd ..
+
+del Makefile Makefile.Debug Makefile.Release vc80.pdb
 
 if "%obj%"=="debug" (
 cd .\%obj%
