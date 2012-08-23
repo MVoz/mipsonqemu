@@ -18,7 +18,8 @@ INCLUDEPATH += ../include/
 SOURCES += main.cpp
  
 QT += sql
-
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
 HEADERS = 
 win32 {
   INCLUDEPATH += c:/boost/

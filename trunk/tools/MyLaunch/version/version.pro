@@ -8,6 +8,8 @@ CONFIG		+=debug_and_release
 DEPENDPATH += .
 INCLUDEPATH += .
 CONFIG += console 
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
 # Input
 SOURCES += main.cpp
 if(!debug_and_release|build_pass) {

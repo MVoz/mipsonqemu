@@ -18,6 +18,8 @@ SOURCES += main.cpp \
 	..\lzma\Threads.c
 	
 CONFIG += console 
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR = ../resource/
