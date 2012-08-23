@@ -15,6 +15,10 @@ DEFINES += WIN32
 DEFINES += CATALOG_DLL
 DEFINES += ICON_DELEGATE
 DEFINES += CATALOG_TYPES_DLL
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 CONFIG -= embed_manifest_dll
 QT += sql
 QT += network

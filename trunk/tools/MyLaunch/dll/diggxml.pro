@@ -12,6 +12,10 @@ QT += network
 QT += sql
 DEFINES += WIN32
 DEFINES += DIGG_XML_DLL
+
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 CONFIG -= embed_manifest_dll
 
 if(!debug_and_release|build_pass) {

@@ -7,6 +7,9 @@ HEADERS         = ../include/bmmerge.h
 SOURCES         = bmmerge.cpp 
 #TARGET          = $$qtLibraryTarget(mergethread)
 
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
+
 QT += network
 QT += xml
 QT += sql
