@@ -8,6 +8,10 @@ INCLUDEPATH += ../../src/
 INCLUDEPATH += c:/boost/
 INCLUDEPATH += ../../win/
 INCLUDEPATH += ../../include/
+
+MOC_DIR += ../../tmp
+OBJECTS_DIR += ../../tmp
+
 VPATH		+= src/
 SOURCES		= platform_win.cpp platform_base_hotkey.cpp platform_win_hotkey.cpp platform_win_util.cpp
 HEADERS		= platform_base.h platform_win.h platform_base_hotkey.h platform_base_hottrigger.h platform_win_util.h
