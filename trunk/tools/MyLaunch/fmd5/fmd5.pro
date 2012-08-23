@@ -7,7 +7,7 @@ TARGET =
 CONFIG		+=debug_and_release
 DEPENDPATH += .
 INCLUDEPATH += .
-SOURCES += main.cpp \
+SOURCES += fmd5.cpp \
 	..\lzma\7zFile.c\
 	..\lzma\7zStream.c\
 	..\lzma\Alloc.c\
