@@ -15,8 +15,8 @@ INCLUDEPATH += .
 
 INCLUDEPATH += ../include/
 
-MOC_DIR += ../build
-OBJECTS_DIR += ../build
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
 
 SOURCES = main.cpp \
  globals.cpp \

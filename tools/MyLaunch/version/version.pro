@@ -11,7 +11,7 @@ CONFIG += console
 MOC_DIR += ../tmp
 OBJECTS_DIR += ../tmp
 # Input
-SOURCES += main.cpp
+SOURCES += version.cpp
 if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =    ../include/
