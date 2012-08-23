@@ -15,7 +15,8 @@ INCLUDEPATH += .
 CONFIG += debug_and_release
 CONFIG += console
 INCLUDEPATH += ../include/
-
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp
 
 # Input
 SOURCES += main.cpp\

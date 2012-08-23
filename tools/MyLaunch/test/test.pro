@@ -16,7 +16,8 @@ INCLUDEPATH += ../include/
 
 # Input
 SOURCES += main.cpp
- 
+MOC_DIR += ../tmp
+OBJECTS_DIR += ../tmp 
 HEADERS = 
 win32 {
   INCLUDEPATH += c:/boost/
