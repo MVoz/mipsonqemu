@@ -41,6 +41,7 @@
 
 				//OptionsDlg.apply('netfinder/baidu',$('#baidu').attr('checked'));
 				//OptionsDlg.apply('netfinder/google',$('#google').attr('checked'));
+				//OptionsDlg.apply('netfinder/netsearchbrowser',$('#netsearchbrowser').html());
 
 				//OptionsDlg.accept();
 		});
@@ -132,7 +133,7 @@
 						<li>
 							<div class="uploader">
 								<span class="filename" id="netsearchbrowser"></span>
-								<span class="action" onclick="javascript:alert('xx');">Choose File</span>
+								<span class="action" onclick="javascript:OptionsDlg.getListDirectory('#netsearchbrowser',1);">Choose File</span>
 							</div>
 						</li>
 					</ul>	
