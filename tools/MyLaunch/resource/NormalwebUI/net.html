@@ -27,6 +27,7 @@
 			$("#net_proxy input[type=password]").attr("disabled",!$(this).attr('checked'));
 			$("#net_proxy a").attr("disabled",!$(this).attr('checked'));
 		});
+		//OptionsDlgOuput.loading('net');
 		$("input, textarea, select, button").uniform();
       });
     </script>
@@ -50,11 +51,11 @@
     		<legend>帐号&raquo;</legend>
 			<dl>
 				<dt><label>用户名:</label></dt>
-				<dd><input type="email" maxlength="128" size="32" id="email" name="email"></dd>
+				<dd><input type="email" maxlength="128" size="32" id="Username" name="Username"></dd>
 			</dl>
 			<dl>
 				<dt><label>密码:</label></dt>
-				<dd><input type="password" maxlength="32" size="32" id="password" name="password"></dd>
+				<dd><input type="password" maxlength="32" size="32" id="Userpasswd" name="Userpasswd"></dd>
 			</dl>	
 			<dl>
 				<dt><label>上次同步时间:</label></dt>
@@ -78,19 +79,19 @@
 			</dl>
 			<dl>
 				<dt><label>地址:</label></dt>
-				<dd><input type="text" maxlength="128" size="32" id="email" name="email"></dd>
+				<dd><input type="text" maxlength="128" size="32" id="proxyAddress" name="proxyAddress"></dd>
 			</dl>
 			<dl>
 				<dt><label>端口:</label></dt>
-				<dd><input type="text" maxlength="32" size="32" id="password" name="password"></dd>
+				<dd><input type="text" maxlength="32" size="32" id="proxyPort" name="proxyPort"></dd>
 			</dl>	
 			<dl>
 				<dt><label>用户名:</label></dt>
-				<dd><input type="text" maxlength="128" size="32" id="email" name="email"></dd>
+				<dd><input type="text" maxlength="128" size="32" id="proxyUsername" name="proxyUsername"></dd>
 			</dl>
 			<dl>
 				<dt><label>密码:</label></dt>
-				<dd><input type="password" maxlength="32" size="32" id="password" name="password"></dd>
+				<dd><input type="password" maxlength="32" size="32" id="proxyPassword" name="proxyPassword"></dd>
 			</dl>	
 			<ul class="btn">
 					<li><a href="#" onclick="accountTestClick();">测试</a></li>
