@@ -275,6 +275,16 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_CHECKED(c,"baidu","netfinder",true);
 		JS_APPEND_CHECKED(c,"google","netfinder",true);
 		c->append(QString("$('#netsearchbrowser').html('%1');").arg(SETTING_GET_STRING_VALUE("netsearchbrowser","","")));
+	}else if(name == "net"){
+		JS_APPEND_VALUE(c,"Username","Account","");
+		JS_APPEND_PASSWD(c,"Userpasswd","Account","");
+		
+		JS_APPEND_CHECKED(c,"proxyEnable","HttpProxy",false);
+		JS_APPEND_VALUE(c,"proxyAddress","HttpProxy","");
+		JS_APPEND_VALUE(c,"proxyPort","HttpProxy","");
+		JS_APPEND_VALUE(c,"proxyUsername","HttpProxy","");
+		JS_APPEND_PASSWD(c,"proxyPassword","HttpProxy","");
+		
 	}
 	TD(DEBUG_LEVEL_NORMAL,*c);
 #else
