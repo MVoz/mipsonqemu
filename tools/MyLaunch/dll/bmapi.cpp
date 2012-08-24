@@ -1344,7 +1344,7 @@ QString tz::getUserFullpath(QSettings* s,int type)
 		case LOCAL_FULLPATH_FIREFOX:
 			if(localfullpath[type].isEmpty()){
 				QSettings ff_reg("HKEY_LOCAL_MACHINE\\Software\\Mozilla\\Mozilla Firefox",QSettings::NativeFormat);
-				TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"firefox's version is "<<ff_reg.value("CurrentVersion","").toString());
+				TD(DEBUG_LEVEL_NORMAL,"firefox's version is "<<ff_reg.value("CurrentVersion","").toString());
 				QString firefox_v= ff_reg.value("CurrentVersion","").toString().trimmed();
 				if(!firefox_v.isEmpty()){
 					ff_reg.beginGroup(firefox_v);
@@ -1969,7 +1969,7 @@ int tz::checkValidBmlist(QList<bookmark_catagory> *l,uint level,uint browserid){
 		}
 #ifdef TOUCH_ANY_DEBUG
 		if(!level)
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<levcount<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
+			TD(DEBUG_LEVEL_BMMERGE," level ="<<lev<<"max count ="<<levcount<<"browserid:"<<browserid<<browserInfo[browserid].maxlev<<browserInfo[browserid].maxchild);
 #endif
 		return 0;
 }

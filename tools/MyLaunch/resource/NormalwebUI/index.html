@@ -20,7 +20,8 @@
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .demos').addClass('navnow');
-		OptionsDlg.loading('index');
+		//OptionsDlgOuput.loading('index');
+		$("input, textarea, select, button").uniform();
       });
     </script>
 </head>
@@ -46,7 +47,7 @@
 				<dd>
 					<ul>
 						<li><input type="checkbox" name="ckStartWithSystem" id="ckStartWithSystem" />&nbsp随系统启动</li>
-						<li><input type="checkbox" name="ckShowTray" id="ckShowTray" />&nbsp显示托盘</li>
+						<li><input type="checkbox" name="ckShowTray" id="ckShowTray"/>&nbsp显示托盘</li>
 						<li><input type="checkbox" name="ckShowMainwindow" id="ckShowMainwindow" />&nbsp显示主窗口</li>
 						<li><input type="checkbox" name="ckAutoUpdate" id="ckAutoUpdate" />&nbsp自动检查升级</li>
 						<li><input type="checkbox" name="ckScanDir" id="ckScanDir" />&nbsp扫描自定义文件夹</li>

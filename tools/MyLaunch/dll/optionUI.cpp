@@ -195,30 +195,70 @@ QString OptionsDlg::tr(const QString & s){
 }
 void OptionsDlg::getHtml(const QString & path)
 {
+	QDEBUG_LINE;
+#ifdef CONFIG_OPTION_NEWUI
+	#define HTML_PARSE_FUNCTION "//OptionsDlgOuput."
+	QFile htmlFile(path);
+	QString htmlcontent;
+	htmlcontent.clear();
+	if (!htmlFile.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+	while (!htmlFile.atEnd()) {
+		QString line = htmlFile.readLine();
+		QString xline=line.simplified();
+		if (xline.startsWith(HTML_PARSE_FUNCTION)) {
+			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+			xline.remove(HTML_PARSE_FUNCTION);
+			 xline.replace(QString(";"), QString(" "));
+			 xline.replace(QString("("), QString(" "));
+			 xline.replace(QString(")"), QString(" "));
+			 xline.replace(QString("'"), QString(" "));
+			 xline.replace(QString("\""), QString(" "));
+			 xline=xline.simplified();
+			 QStringList func_args=xline.split(" ");
+			 int i = 0;
+			 for(i=0;i<func_args.size();i++){
+			 	TD(DEBUG_LEVEL_NORMAL,"func_args:"<<func_args.at(i));
+			 }
+			 if(func_args.at(0)=="loading"){
+			 	loading(func_args.at(1),&line);
+			 }
+		}
+		htmlcontent.append(line);
+		//TD(DEBUG_LEVEL_NORMAL,htmlcontent);
+	}
+	//webView->setHtml(trUtf8(htmlcontent.toLocal8Bit()));
+	webView->setHtml(htmlcontent);
+	htmlFile.close();
+
+#else
 	QFile htmlFile(path);
 	if (!htmlFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		return;
+	
 	webView->setHtml(trUtf8(htmlFile.readAll()));
-
+	
 	htmlFile.close();
+#endif
 }
 void OptionsDlg::gohref(const QString & url)
 {
 	runProgram(url,"");
 }
-void OptionsDlg::loading(const QString & name)
+void OptionsDlg::loading(const QString & name,QString* c)
 {
-	QString jsStr;
 #ifdef CONFIG_OPTION_NEWUI
+	c->clear();
 	if (name == "index"){
-		QDEBUG_LINE;
-		JS_APPEND_CHECKED("ckStartWithSystem","",false);
-		JS_APPEND_CHECKED("ckShowTray","",true);
-		JS_APPEND_CHECKED("ckShowMainwindow","",false);
-		JS_APPEND_CHECKED("ckAutoUpdate","",false);
-		JS_APPEND_CHECKED("ckScanDir","",false);
+		JS_APPEND_CHECKED(c,"ckStartWithSystem","",false);
+		JS_APPEND_CHECKED(c,"ckShowTray","",true);
+		JS_APPEND_CHECKED(c,"ckShowMainwindow","",false);
+		JS_APPEND_CHECKED(c,"ckAutoUpdate","",false);
+		JS_APPEND_CHECKED(c,"ckScanDir","",false);
 	}
+	TD(DEBUG_LEVEL_NORMAL,*c);
 #else
+	QString jsStr;
 	//menu
 	QString menustring;
 	//menustring.append("<ul>");
@@ -476,10 +516,9 @@ void OptionsDlg::loading(const QString & name)
 	if(name =="Bookmark"){
 		jsStr.append("$(function(){initMenuEx();});");
 	}
-#endif
-	
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"jsStr:"<<jsStr);
+	TD(DEBUG_LEVEL_NORMAL,"jsStr:"<<jsStr);
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
+#endif
 }
 
 void OptionsDlg::accept()
@@ -786,7 +825,7 @@ void synchronizeDlg::updateStatus(int type,int s,int icon)
 	status=s;
 	statusTime = NOW_SECONDS;	
 	char *statusStr = tz::getstatusstring(s);
-	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
+	//TD(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
 	switch(icon){
 		case UPDATE_STATUS_ICON_SUCCESSFUL:
 			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("success.png"));

@@ -18,6 +18,12 @@ else
   obj='debug'
 fi
 
+if [ $obj ==  "clean" ];then
+rm -fr debug release tmp
+exit 0
+fi
+
+
 rm -fr $obj
 mkdir $obj
 
@@ -39,7 +45,6 @@ cd ./resource/NormalwebUI/
 ./tr.sh
 cd ../..
 
-echo 'rcc -binary resource/webUI/optionUI.qrc -o $obj/options.rcc'
 cmd /c @rcc -binary resource/webUI/optionUI.qrc -o $obj/options.rcc
 
 rm -fr resource/webUI
@@ -65,6 +70,7 @@ find $obj -name ".svn"|xargs rm -fr
 rm -fr Makefile Makefile.Debug Makefile.Release
 
 cd $obj
+echo "runing touchany.................."
 ./touchany.exe
 cd ..
 

@@ -119,8 +119,7 @@ function tb_detectMacXFF() {
     return true;
   }
 }
- $(function(){
-        $("input, textarea, select, button").uniform();
+ $(function(){       
 		//nav
 		$("#nav").append('<li><a class="demos" href="index.html">通&nbsp;&nbsp;&nbsp;用</a></li>');
 		$("#nav").append('<li><a class="howto" href="net.html">网&nbsp;&nbsp;&nbsp;络</a></li>');
@@ -141,5 +140,4 @@ function tb_detectMacXFF() {
 		});
 		//footer
 		$("#footer ul").append('<li>&copy; 2012 - <a href="http://codecanyon.net/user/360north">360north</a> &nbsp;/&nbsp; <a href="http://codecanyon.net/user/360north/follow">Follow on Envato</a></li>');
-
  });

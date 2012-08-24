@@ -105,7 +105,7 @@ public slots:
 	void startSync();
 	void getHtml(const QString &path);
 	void gohref(const QString &url);
-	void loading(const QString &name);
+	void loading(const QString &name,QString* c);
 	void accept();
 	void reject();
 	void apply(const QString& name,const QVariant &value);
