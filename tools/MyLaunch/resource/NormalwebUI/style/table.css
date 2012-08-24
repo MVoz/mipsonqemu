@@ -24,7 +24,7 @@ html>body tbody.scrollContent,tbody.clt_c {
 	width: 100%
 }
 tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even td,tbody.clt_c tr.odd td {
-	border-bottom: 1px solid #DDD;
+	border-bottom: 1px dotted #DDD;
 	padding: 4px 3px;
 	height:1.5em;
 	overflow:hidden;
@@ -34,12 +34,10 @@ tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even
 	word-break:keep-all;
 	white-space:nowrap;
 }
-tbody.scrollContent tr.even td,tbody.clt_c tr.even td{
-	background: #FFF;
+tbody.scrollContent tr:hover,tbody.clt_c tr:hover{
+	background: #eee;
 }
-tbody.scrollContent tr.odd td,tbody.clt_c tr.odd td{
-	background: #EEE;
-}
+
 
 thead.fixedHeader th,tbody.scrollContent td {width: 50px}
 thead.clt_h th,tbody.clt_c td {width: 50px}

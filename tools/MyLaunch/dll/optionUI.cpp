@@ -199,6 +199,7 @@ void OptionsDlg::getHtml(const QString & path)
 #ifdef CONFIG_OPTION_NEWUI
 	#define JS_PARSE_FUNCTION "//OptionsDlgOuput."
 	#define HTML_PARSE_FUNCTION "<!--OptionsDlgOuput."
+	#define JS_PARSE_CALL "//OptionsDlg."
 	QFile htmlFile(path);
 	QString htmlcontent;
 	htmlcontent.clear();
@@ -209,7 +210,7 @@ void OptionsDlg::getHtml(const QString & path)
 		QString xline=line.simplified();
 		if (xline.startsWith(JS_PARSE_FUNCTION)) {
 			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
-			xline.remove(JS_PARSE_FUNCTION);
+			 xline.remove(JS_PARSE_FUNCTION);
 			 xline.replace(QString(";"), QString(" "));
 			 xline.replace(QString("("), QString(" "));
 			 xline.replace(QString(")"), QString(" "));
@@ -242,6 +243,10 @@ void OptionsDlg::getHtml(const QString & path)
 			 if(func_args.at(0)=="loading"){
 			 	loading(func_args.at(1),&line);
 			 }
+		}else if (xline.startsWith(JS_PARSE_CALL)) {
+			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+			 line=xline.remove("//");
+			 TD(DEBUG_LEVEL_NORMAL,"line:"<<line);			
 		}
 		htmlcontent.append(line);
 		//TD(DEBUG_LEVEL_NORMAL,htmlcontent);
@@ -278,7 +283,13 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		uint curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toUInt();
 		c->append(QString("$('#hotkey_0').val(%1);").arg(curMeta));
 		c->append(QString("$('#hotkey_1').val(%2);").arg(curAction));
-		
+
+
+
+                   JS_APPEND_CHECKED(c,settings,"adv","ckalwaystop",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckalwayscenter",false);
+		JS_APPEND_CHECKED(c,settings,"adv","cktransparent",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckfade",false);
 		JS_APPEND_CHECKED(c,settings,"adv","ckFuzzyMatch",false);
 		JS_APPEND_CHECKED(c,settings,"adv","ckCaseSensitive",false);
 		JS_APPEND_CHECKED(c,settings,"adv","ckRebuilderCatalogTimer",false);
