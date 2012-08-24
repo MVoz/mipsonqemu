@@ -218,10 +218,6 @@ void OptionsDlg::getHtml(const QString & path)
 			 xline.replace(QString("\""), QString(" "));
 			 xline=xline.simplified();
 			 QStringList func_args=xline.split(" ");
-			 int i = 0;
-			 for(i=0;i<func_args.size();i++){
-			 	TD(DEBUG_LEVEL_NORMAL,"func_args:"<<func_args.at(i));
-			 }
 			 if(func_args.at(0)=="loading"){
 			 	loading(func_args.at(1),&line);
 			 }
@@ -235,18 +231,15 @@ void OptionsDlg::getHtml(const QString & path)
 			 xline.replace(QString("'"), QString(" "));
 			 xline.replace(QString("\""), QString(" "));
 			 xline=xline.simplified();
-			 QStringList func_args=xline.split(" ");
-			 int i = 0;
-			 for(i=0;i<func_args.size();i++){
-			 	TD(DEBUG_LEVEL_NORMAL,"func_args:"<<func_args.at(i));
-			 }
+			 QStringList func_args=xline.split(" ");	
+
 			 if(func_args.at(0)=="loading"){
 			 	loading(func_args.at(1),&line);
 			 }
 		}else if (xline.startsWith(JS_PARSE_CALL)) {
-			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+//			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
 			 line=xline.remove("//");
-			 TD(DEBUG_LEVEL_NORMAL,"line:"<<line);			
+//			 TD(DEBUG_LEVEL_NORMAL,"line:"<<line);			
 		}
 		htmlcontent.append(line);
 		//TD(DEBUG_LEVEL_NORMAL,htmlcontent);
@@ -304,7 +297,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 #endif
 		JS_APPEND_CHECKED(c,settings,"netfinder","baidu",true);
 		JS_APPEND_CHECKED(c,settings,"netfinder","google",true);
-		c->append(QString("$('#netsearchbrowser').html('%1');").arg(QSETTING_VALUE_STRING(settings,"","netsearchbrowser",QSETTING_DEFAULT_STRING)));
+		c->append(QString("$('#netsearchbrowser').html('%1');").arg(QSETTING_VALUE_STRING_HTML(settings,"netfinder","netsearchbrowser",QSETTING_DEFAULT_STRING)));
 	}else if(name == "net"){
 		JS_APPEND_VALUE(c,settings,"Account","Username",QSETTING_DEFAULT_STRING);
 		JS_APPEND_PASSWD(c,settings,"Account","Userpasswd",QSETTING_DEFAULT_STRING);
@@ -799,7 +792,7 @@ void OptionsDlg::getListDirectory(const QString & id,const int& type)
 //	msgBox.setText(str);
 //	msgBox.exec();
 
-	QString status = QString("$('%1').attr('value', '%2');").arg(id).arg(dir.replace("/", "\\\\"));
+	QString status = QString("$('%1').html('%2');").arg(id).arg(dir.replace("/", "\\\\"));
 	webView->page()->mainFrame()->evaluateJavaScript(status);
 }
 void OptionsDlg::rebuildcatalog()
