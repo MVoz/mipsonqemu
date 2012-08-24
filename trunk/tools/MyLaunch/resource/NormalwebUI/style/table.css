@@ -24,7 +24,7 @@ html>body tbody.scrollContent,tbody.clt_c {
 	width: 100%
 }
 tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even td,tbody.clt_c tr.odd td {
-	border-bottom: 1px dotted #DDD;
+	border-bottom: 1px solid #DDD;
 	padding: 4px 3px;
 	height:1.5em;
 	overflow:hidden;
