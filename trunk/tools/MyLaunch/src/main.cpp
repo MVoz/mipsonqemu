@@ -105,7 +105,7 @@ void MyWidget::configModify(int type){
 
 		if(!googleButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE		
-			//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/google.png")<<(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
+			//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<QFile::exists(":/skins/Default/google.png")<<(QString(":/skins/Default").append(QString("/%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google.png":"google_gray.png"))));
 			  //googleButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");->setIcon(QIcon(QPixmap(QString(":/skins/").append(QString("%1").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google_on.png":"google_off.png")))));
 			  googleButton->setStyleSheet(QString("QPushButton#googleButton{border: none;background: url(:/skins/%1);}\nQPushButton#googleButton:hover{border: none;background: url(:/skins/google_hover);}").arg(gSettings->value(QString("netfinder/").append(netfinders[NET_SEARCH_GOOGLE].name),true).toBool()?"google_on.png":"google_off.png"));
 #else
@@ -859,7 +859,7 @@ void MyWidget::launchBrowserObject(CatItem& res)
 	getBrowserFullpath(COMEFROM_TO_BROWSER_ID(res.comeFrom),bin);	
 	if(bin.isEmpty())
 		bin = tz::getUserFullpath(NULL,LOCAL_FULLPATH_DEFBROWSER);
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"default browser "<<bin);
+	TD(DEBUG_LEVEL_NORMAL,"default browser "<<bin);
 	if(!bin.isEmpty()){
 		if(bin.endsWith(BROWSER_FIREFOX_BIN_NAME,Qt::CaseInsensitive))
 			runProgram(bin,tr("-new-tab %1").arg(res.fullPath));
@@ -883,7 +883,7 @@ void MyWidget::launchObject()
 		increaseUsage(r,inputData[0].getText());
 		res = r;
 	}
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,res.shortName <<" with argument: "<<res.args<< " from "<<res.comeFrom);
+	TD(DEBUG_LEVEL_NORMAL,res.shortName <<" with argument: "<<res.args<< " from "<<res.comeFrom);
 
 	if (res.comeFrom<=COME_FROM_LEARNPROCESS)
 	{
@@ -1187,7 +1187,7 @@ void MyWidget::doTab()
 
 void MyWidget::doEnter()
 {
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<gSearchTxt)
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<gSearchTxt)
 	if (dropTimer->isActive())
 		dropTimer->stop();
 	if (searchResults.count() > 0 || inputData.count() > 1)
@@ -1414,7 +1414,7 @@ void MyWidget::searchOnInput()
 		return;
 	}
 	gSearchTxt = inputData.count() > 0 ? inputData.last().getText() : "";
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,inputData.count() <<"  : "<<input->text());
+	TD(DEBUG_LEVEL_NORMAL,inputData.count() <<"  : "<<input->text());
 	if (inputData.count() <= 1)
 		catalog->searchCatalogs(gSearchTxt, searchResults);
 
@@ -1431,10 +1431,10 @@ void MyWidget::searchOnInput()
 	//	plugins.getResults(&inputData, &searchResults);
 #ifndef CONFIG_RELEASE
 	if(gSettings->value("serachresultshow", false).toBool()){
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"search results:");
+		TD(DEBUG_LEVEL_NORMAL,"search results:");
 		for (int i = 0; i < searchResults.count(); i++)
 		{
-			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL," "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom);
+			TD(DEBUG_LEVEL_NORMAL," "<<searchResults[i]->shortName<<" "<<searchResults[i]->fullPath<<" "<<searchResults[i]->comeFrom);
 		}
 	}
 #endif
@@ -1465,7 +1465,7 @@ void MyWidget::updateMainDisplay(CatItem* t)
 }
 void MyWidget::_updateSearcherDisplay(const QString& iconpath,const QString& outputstring)
 {
-	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,iconpath<<outputstring);
+	//TD(DEBUG_LEVEL_NORMAL,iconpath<<outputstring);
 	if(iconOnLabel!=iconpath){
 		iconOnLabel = iconpath;
 		if(iconpath.isEmpty()||iconpath.isNull()){
@@ -1537,7 +1537,7 @@ void MyWidget::updateDisplay()
 	 	//QString outputs=QString("<span style=\"color:#286fa6;font-weight:bold;\">%1</span><span style=\"font-size:10px;color:#585755\">(%2)</span>").arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
 		QString outputs=QString(outputFormat).arg(searchResults[0]->shortName).arg(searchResults[0]->fullPath);
 
-		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,outputs);
+		//TD(DEBUG_LEVEL_NORMAL,outputs);
 
 		output->setHtml(outputs);
 #else
@@ -1938,7 +1938,7 @@ void MyWidget::closeEvent(QCloseEvent * event)
 	STOP_TIMER(silentupdateTimer);
 	STOP_TIMER(syncTimer);
 #endif
-	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer);
+	TD(DEBUG_LEVEL_NORMAL,"emit erminateNotify"<<gBuilder<<":"<<slientUpdate<<":"<<gSyncer);
 	if(THREAD_IS_RUNNING(gBuilder))
 	{
 		//emit catalogTerminateNotify();
@@ -2895,7 +2895,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
-//	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
+//	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif	
@@ -2966,7 +2966,7 @@ void MyWidget::testAccount(const QString& name,const QString& password)
 }
 void MyWidget::syncStatusTimeout()
 {
-	//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
+	//TD(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
 		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
 		if(!syncButton->isHidden()){
@@ -3039,7 +3039,7 @@ void MyWidget::monitorTimerTimeout()
 	if(!maincloseflag&&!gBuilder&&!gSyncer&&!updateSuccessTimer&&getFromActionList(item)){
 #ifndef CONFIG_RELEASE
 		if(gSettings->value("actiondebug", false).toBool()){
-			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
+			TD(DEBUG_LEVEL_NORMAL,"runtime:"<<(NOW_SECONDS-runseconds)<<","<<tz::getActionListName(item.action));
 		}
 #endif		
 		switch(item.action){
@@ -3161,7 +3161,7 @@ void diggXmler::diggxmlDisplayTimeout()
 		//QString diggxmloutputs=QString("<p align=\"right\"><a href=\"%1\" style=\"color:#2C629E;text-decoration: none\">%2</a></p>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		diggxmloutputs=QString(diggxmloutputFormat).arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		
-		// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggxmloutputs);
+		// TD(DEBUG_LEVEL_NORMAL,diggxmloutputs);
 		//QString diggxmloutputs=QString("<html><body><p><a href=\"%1\">%2</a></p></body></html>").arg(diggXmllist.at(index).link).arg(diggXmllist.at(index).name);
 		//ui.textBrowser->append(QString::fromLocal8Bit("<a href = \"http://www.sina.com.cn/\">ÐÂÀË</a>"));
 		//diggxmloutput->setOpenExternalLinks (true );
@@ -3185,7 +3185,7 @@ void diggXmler::loadDiggXml()
 #ifdef TOUCH_ANY_DEBUG
 		//foreach(bookmark_catagory diggitem, diggXmllist)
 		//{
-		//	TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
+		//	TD(DEBUG_LEVEL_NORMAL,diggitem.bmid<<diggitem.name<<diggitem.link);
 		//}
 #endif	
 		f.close();
@@ -3197,7 +3197,7 @@ void diggXmler::loadDiggXml()
 }
 void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
 {
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,link.toString());
+		TD(DEBUG_LEVEL_NORMAL,link.toString());
 		runProgram(link.toString(),"");			
 }
 
@@ -3209,7 +3209,7 @@ void MyWidget::diggXmlFinished(int status)
 		close();
 	else{
 		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
-//		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,status);
+//		TD(DEBUG_LEVEL_NORMAL,status);
 		if(status == 1){
 			//loadDiggXml();
 			emit diggXmlNewSignal();

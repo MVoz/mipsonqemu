@@ -142,7 +142,7 @@ public:
 	  for (int i = 0; i < e->attributes().size(); ++i) {
 	        const QInputMethodEvent::Attribute &a = e->attributes().at(i);
 	        if (a.type == QInputMethodEvent::Cursor) {
-			//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<< a.start<<a.length);
+			//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<< a.start<<a.length);
 			normalInputMethod = a.length?true:false;
 	         } 
 	    }
@@ -151,7 +151,7 @@ public:
 			QLineEdit::inputMethodEvent(e);
 		}
 				
-		//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<e->commitString()<<e->preeditString()<<displayText()<<text()<<e->spontaneous());
+		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<e->commitString()<<e->preeditString()<<displayText()<<text()<<e->spontaneous());
 		if (e->commitString() != "") {			
 			if(normalInputMethod)
 				QLineEdit::inputMethodEvent(e);
@@ -185,7 +185,7 @@ protected:
                   //      (rect().bottom() + 1 - sz.height())/2);
 		searchIcon->move(rect().left() + frameWidth ,
                         (rect().bottom() + 1 - sz.height())/2);
-			TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,rect().right() <<frameWidth<<sz.width()<<sz.height());
+			TD(DEBUG_LEVEL_NORMAL,rect().right() <<frameWidth<<sz.width()<<sz.height());
 			searchIcon->show();
 	}
 private:

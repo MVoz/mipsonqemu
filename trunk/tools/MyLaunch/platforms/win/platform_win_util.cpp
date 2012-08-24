@@ -221,7 +221,7 @@ HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon) c
 HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const
 {
 #if    OUTPUT_ICON_DEFAULT_SIZE==48
-	// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<strFileName);
+	// TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<strFileName);
 	HICON  nH=GetFileIconHandle(strFileName, bSmallIcon);
 	return nH;
 #else
@@ -270,11 +270,11 @@ HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon ) const
 					  hResult = ((IImageList*)imageList)->GetIcon(sfi.iIcon, ILD_TRANSPARENT, &hIcon);
 				
 					  if (hResult == S_OK) {
-					  	// TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon success! ");
+					  	// TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon success! ");
 						return hIcon;					  
 						}
 				}
-				//TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon fail! ");	
+				//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<"get 48X48 folder icon fail! ");	
 				SHGetFileInfo(
 					(LPCTSTR)"Doesn't matter", 
 					FILE_ATTRIBUTE_DIRECTORY,
@@ -321,7 +321,7 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
     bitmapInfo.biSize        = sizeof(BITMAPINFOHEADER);
     bitmapInfo.biWidth       = iconinfo.xHotspot * MULTIPLE_ICON_SIZE;
     bitmapInfo.biHeight      = iconinfo.yHotspot * MULTIPLE_ICON_SIZE; 
-  // TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<bitmapInfo.biWidth<< bitmapInfo.biHeight );
+  // TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<bitmapInfo.biWidth<< bitmapInfo.biHeight );
     bitmapInfo.biPlanes      = 1;
     bitmapInfo.biBitCount    = 32;
     bitmapInfo.biCompression = BI_RGB;

@@ -347,9 +347,9 @@ enum{
 #define PASSWORD_ENCRYPT_KEY 98122130
 #define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\")+"';");
 //#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
-#define JS_APPEND_CHECKED(x,y,defval) do{\
+#define JS_APPEND_CHECKED(s,x,y,defval) do{\
 	QString v=(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"));\
-	jsStr.append(QString("$('%1').attr('checked','%2');").arg("."+x).arg(v));\
+	(s)->append(QString("$('%1').attr('checked',%2);").arg("#"x).arg(v));\
 }while(0);
 
 #define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$obj("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
@@ -598,16 +598,16 @@ enum{
 	DEBUG_LEVEL_TESTACCOUNT	
 };
 #ifdef TOUCH_ANY_DEBUG
-#define TOUCHANYDEBUG(level,y) do{\
+#define TD(level,y) do{\
 	      QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));\
 	      QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));\
 	     qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;\
           }while(0);
 #else
-#define TOUCHANYDEBUG(level,y) do{}while(0);
+#define TD(level,y) do{}while(0);
 #endif
 
-#define QDEBUG_LINE   TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__);
+#define QDEBUG_LINE   TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__);
 
 enum{
 	LOCAL_FULLPATH_BMDAT=0,

@@ -32,15 +32,15 @@ bool bmMerge::checkXmlfileFromServer()
 		QString line = s_file.readLine();
 		if (line.contains(DO_NOTHING)) {
 			modifiedInServer=0;
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE,"no modification on server!");
+			TD(DEBUG_LEVEL_BMMERGE,"no modification on server!");
 			goto good;
 		}else if(line.contains(LOGIN_FALIL_STRING)){
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE,"login failed!!!please check your name & password");
+			TD(DEBUG_LEVEL_BMMERGE,"login failed!!!please check your name & password");
 			mergestatus = BM_SYNC_FAIL_LOGIN;
 			emit mergeStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_LOGIN,UPDATE_STATUS_ICON_FAILED);
 			goto bad;
 		}else{
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE,"has modification on server!!!");
+			TD(DEBUG_LEVEL_BMMERGE,"has modification on server!!!");
 			goto good;
 		}
 	}
@@ -108,7 +108,7 @@ void bmMerge::dumpBcList(QList<bookmark_catagory>* s)
 {
 	foreach(bookmark_catagory item, *s)
 	{
-		TOUCHANYDEBUG(DEBUG_LEVEL_NORMAL,"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId);
+		TD(DEBUG_LEVEL_NORMAL,"item:name:"<<item.name<<"link:"<<item.link<<"bmid:"<<item.bmid<<"parentid:"<<item.parentId<<"groupid:"<<item.groupId);
 		if(item.list.count()){
 			dumpBcList(&item.list);
 		}
@@ -228,7 +228,7 @@ void bmMerge::handleBmData()
 		filemd5 =  tz::fileMd5(localBmFullPath);	
 		if(qhashEx(filemd5,filemd5.length())!=settings->value("localbmkey",0).toUInt())
 		{
-			TOUCHANYDEBUG(DEBUG_LEVEL_BMMERGE,"md5 error remove "<<localBmFullPath);
+			TD(DEBUG_LEVEL_BMMERGE,"md5 error remove "<<localBmFullPath);
 			if(!QFile::remove(localBmFullPath)){
 				setMergeStatus("","",0,0,MERGE_STATUS_FAIL_REMOVE_XML_LOCAL);
 				return;
