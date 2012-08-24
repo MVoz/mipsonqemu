@@ -132,9 +132,7 @@ function tb_detectMacXFF() {
 		//apply
 		$("#apply > ul").append('<li id="cancel"><a href="#">取消</a></li>');
 		$("#apply > ul").append('<li id="apply"><a href="#">确定</a></li>');	
-		$('#apply #apply a').click(function(){
-			//OptionsDlg.reject();
-		});
+
 		$('#apply #cancel a').click(function(){
 			OptionsDlg.reject();
 		});

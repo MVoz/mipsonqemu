@@ -21,6 +21,29 @@
 		$('#nav > li').removeClass('navnow');
 		$('#nav .demos').addClass('navnow');
 		//OptionsDlgOuput.loading('index');
+
+		$('#apply #apply a').click(function(){
+				//OptionsDlg.apply('ckStartWithSystem',$('#ckStartWithSystem').attr('checked'));
+				//OptionsDlg.apply('ckShowTray',$('#ckShowTray').attr('checked'));
+				//OptionsDlg.apply('ckShowMainwindow',$('#ckShowMainwindow').attr('checked'));
+				//OptionsDlg.apply('ckAutoUpdate',$('#ckAutoUpdate').attr('checked'));
+				//OptionsDlg.apply('ckScanDir',$('#ckScanDir').attr('checked'));
+				//OptionsDlg.apply('hotkeyModifier',$('#hotkey_0').val());
+				//OptionsDlg.apply('hotkeyAction',$('#hotkey_1').val());
+
+				//OptionsDlg.apply('adv/ckalwaystop',$('#ckalwaystop').attr('checked'));
+				//OptionsDlg.apply('adv/ckalwayscenter',$('#ckalwayscenter').attr('checked'));
+				//OptionsDlg.apply('adv/cktransparent',$('#cktransparent').attr('checked'));
+				//OptionsDlg.apply('adv/ckfade',$('#ckfade').attr('checked'));
+				//OptionsDlg.apply('adv/ckFuzzyMatch',$('#ckFuzzyMatch').attr('checked'));
+				//OptionsDlg.apply('adv/ckCaseSensitive',$('#ckCaseSensitive').attr('checked'));
+				//OptionsDlg.apply('adv/ckRebuilderCatalogTimer',$('#ckRebuilderCatalogTimer').attr('checked'));
+
+				//OptionsDlg.apply('netfinder/baidu',$('#baidu').attr('checked'));
+				//OptionsDlg.apply('netfinder/google',$('#google').attr('checked'));
+
+				//OptionsDlg.accept();
+		});
 		$("input, textarea, select, button").uniform();
       });
     </script>
@@ -79,10 +102,10 @@
 				<dt><label></label></dt>
 				<dd>
 					<ul>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终在最前面</li>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp始终居中</li>	
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp透明效果 <input name="textfield" type="text" id="textfield" size="10"/></li>
-						<li><input type="checkbox" name="checkbox" id="checkbox" />&nbsp淡入淡出效果<input name="textfield" type="text" id="textfield" size="10"/></li>
+						<li><input type="checkbox" name="ckalwaystop" id="ckalwaystop" />&nbsp始终在最前面</li>
+						<li><input type="checkbox" name="ckalwayscenter" id="ckalwayscenter" />&nbsp始终居中</li>	
+						<li><input type="checkbox" name="cktransparent" id="cktransparent" />&nbsp透明效果 <input name="textfield" type="text" id="textfield" size="10"/></li>
+						<li><input type="checkbox" name="ckfade" id="ckfade" />&nbsp淡入淡出效果<input name="textfield" type="text" id="textfield" size="10"/></li>
 						<li><input type="checkbox" name="ckFuzzyMatch" id="ckFuzzyMatch" />&nbsp支持模糊匹配</li>
 						<li><input type="checkbox" name="ckCaseSensitive" id="ckCaseSensitive" />&nbsp支持字母大小写</li>
 						<li><input type="checkbox" name="ckRebuilderCatalogTimer" id="ckRebuilderCatalogTimer" />&nbsp定时重建列表</li>		
