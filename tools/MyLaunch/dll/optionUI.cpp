@@ -197,7 +197,8 @@ void OptionsDlg::getHtml(const QString & path)
 {
 	QDEBUG_LINE;
 #ifdef CONFIG_OPTION_NEWUI
-	#define HTML_PARSE_FUNCTION "//OptionsDlgOuput."
+	#define JS_PARSE_FUNCTION "//OptionsDlgOuput."
+	#define HTML_PARSE_FUNCTION "<!--OptionsDlgOuput."
 	QFile htmlFile(path);
 	QString htmlcontent;
 	htmlcontent.clear();
@@ -206,9 +207,27 @@ void OptionsDlg::getHtml(const QString & path)
 	while (!htmlFile.atEnd()) {
 		QString line = htmlFile.readLine();
 		QString xline=line.simplified();
-		if (xline.startsWith(HTML_PARSE_FUNCTION)) {
+		if (xline.startsWith(JS_PARSE_FUNCTION)) {
 			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
-			xline.remove(HTML_PARSE_FUNCTION);
+			xline.remove(JS_PARSE_FUNCTION);
+			 xline.replace(QString(";"), QString(" "));
+			 xline.replace(QString("("), QString(" "));
+			 xline.replace(QString(")"), QString(" "));
+			 xline.replace(QString("'"), QString(" "));
+			 xline.replace(QString("\""), QString(" "));
+			 xline=xline.simplified();
+			 QStringList func_args=xline.split(" ");
+			 int i = 0;
+			 for(i=0;i<func_args.size();i++){
+			 	TD(DEBUG_LEVEL_NORMAL,"func_args:"<<func_args.at(i));
+			 }
+			 if(func_args.at(0)=="loading"){
+			 	loading(func_args.at(1),&line);
+			 }
+		}else if (xline.startsWith(HTML_PARSE_FUNCTION)) {
+			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+			 xline.remove(HTML_PARSE_FUNCTION);
+			 xline.replace(QString("-->"), QString(" "));
 			 xline.replace(QString(";"), QString(" "));
 			 xline.replace(QString("("), QString(" "));
 			 xline.replace(QString(")"), QString(" "));
@@ -319,7 +338,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		}
 		settings->endArray();
 	}
-	TD(DEBUG_LEVEL_NORMAL,*c);
+	//TD(DEBUG_LEVEL_NORMAL,*c);
 #else
 	QString jsStr;
 	//menu
