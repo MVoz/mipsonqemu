@@ -285,6 +285,39 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_VALUE(c,"proxyUsername","HttpProxy","");
 		JS_APPEND_PASSWD(c,"proxyPassword","HttpProxy","");
 		
+	}else if(name == "custom"){
+		
+	}else if(name == "dirlist"){
+		dirLists.clear();
+		int count = settings->beginReadArray("directories");
+		for (int i = 0; i < count; ++i)
+		{
+			settings->setArrayIndex(i);
+			Directory tmp;
+			tmp.name = QSETTING_VALUE_STRING(settings,"name");
+			tmp.types =  QSETTING_VALUE_STRINGLIST(settings,"types");
+			tmp.indexDirs = QSETTING_VALUE_BOOL(settings,"indexDirs", false);
+			tmp.depth =QSETTING_VALUE_UINT(settings,"depth", 100);
+			dirLists.append(tmp);
+
+			QString typesResult;
+			for (int j = 0; j < tmp.types.size(); j++)
+			{
+				typesResult += tmp.types.at(j);
+				if (j != (tmp.types.size() - 1))
+					typesResult += ";";
+			}
+			c->append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+			c->append(QString("<td><input type=\"radio\" name=\"ckdir\" id=\"dir_%1\"/></td>").arg(i+1));
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_STRING(settings,"name")));
+			c->append(QString("<td>%1</td>").arg(typesResult));
+			//c->append(QString("<td><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"Y":"N"));
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_UINT(settings,"depth", 100)));			
+			c->append(QString("</tr>"));
+
+		}
+		settings->endArray();
 	}
 	TD(DEBUG_LEVEL_NORMAL,*c);
 #else
