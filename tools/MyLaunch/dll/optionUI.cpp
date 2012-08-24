@@ -250,40 +250,40 @@ void OptionsDlg::loading(const QString & name,QString* c)
 #ifdef CONFIG_OPTION_NEWUI
 	c->clear();
 	if (name == "index"){
-		JS_APPEND_CHECKED(c,"ckStartWithSystem","",false);
-		JS_APPEND_CHECKED(c,"ckShowTray","",true);
-		JS_APPEND_CHECKED(c,"ckShowMainwindow","",false);
-		JS_APPEND_CHECKED(c,"ckAutoUpdate","",false);
-		JS_APPEND_CHECKED(c,"ckScanDir","",false);
+		JS_APPEND_CHECKED(c,settings,"","ckStartWithSystem",false);
+		JS_APPEND_CHECKED(c,settings,"","ckShowTray",true);
+		JS_APPEND_CHECKED(c,settings,"","ckShowMainwindow",false);
+		JS_APPEND_CHECKED(c,settings,"","ckAutoUpdate",false);
+		JS_APPEND_CHECKED(c,settings,"","ckScanDir",false);
 		uint curMeta = settings->value("hotkeyModifier", HOTKEY_PART_0).toUInt();
 		uint curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toUInt();
 		c->append(QString("$('#hotkey_0').val(%1);").arg(curMeta));
 		c->append(QString("$('#hotkey_1').val(%2);").arg(curAction));
 		
-		JS_APPEND_CHECKED(c,"ckFuzzyMatch","adv",false);
-		JS_APPEND_CHECKED(c,"ckCaseSensitive","adv",false);
-		JS_APPEND_CHECKED(c,"ckRebuilderCatalogTimer","adv",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckFuzzyMatch",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckCaseSensitive",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckRebuilderCatalogTimer",false);
 #ifdef CONFIG_SUPPORT_IE
-		JS_APPEND_CHECKED(c,"ckSupportIe","adv",true);
+		JS_APPEND_CHECKED(c,settings,"adv","ckSupportIe",true);
 #endif
 #ifdef CONFIG_SUPPORT_FIREFOX
-		JS_APPEND_CHECKED(c,"ckSupportFirefox","adv",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckSupportFirefox",false);
 #endif
 #ifdef CONFIG_SUPPORT_OPERA
-		JS_APPEND_CHECKED(c,"ckSupportOpera","adv",false);
+		JS_APPEND_CHECKED(c,settings,"adv","ckSupportOpera",false);
 #endif
-		JS_APPEND_CHECKED(c,"baidu","netfinder",true);
-		JS_APPEND_CHECKED(c,"google","netfinder",true);
-		c->append(QString("$('#netsearchbrowser').html('%1');").arg(SETTING_GET_STRING_VALUE("netsearchbrowser","","")));
+		JS_APPEND_CHECKED(c,settings,"netfinder","baidu",true);
+		JS_APPEND_CHECKED(c,settings,"netfinder","google",true);
+		c->append(QString("$('#netsearchbrowser').html('%1');").arg(QSETTING_VALUE_STRING(settings,"","netsearchbrowser",QSETTING_DEFAULT_STRING)));
 	}else if(name == "net"){
-		JS_APPEND_VALUE(c,"Username","Account","");
-		JS_APPEND_PASSWD(c,"Userpasswd","Account","");
+		JS_APPEND_VALUE(c,settings,"Account","Username",QSETTING_DEFAULT_STRING);
+		JS_APPEND_PASSWD(c,settings,"Account","Userpasswd",QSETTING_DEFAULT_STRING);
 		
-		JS_APPEND_CHECKED(c,"proxyEnable","HttpProxy",false);
-		JS_APPEND_VALUE(c,"proxyAddress","HttpProxy","");
-		JS_APPEND_VALUE(c,"proxyPort","HttpProxy","");
-		JS_APPEND_VALUE(c,"proxyUsername","HttpProxy","");
-		JS_APPEND_PASSWD(c,"proxyPassword","HttpProxy","");
+		JS_APPEND_CHECKED(c,settings,"HttpProxy","proxyEnable",false);
+		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyAddress",QSETTING_DEFAULT_STRING);
+		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyPort",QSETTING_DEFAULT_STRING);
+		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyUsername",QSETTING_DEFAULT_STRING);
+		JS_APPEND_PASSWD(c,settings,"HttpProxy","proxyPassword",QSETTING_DEFAULT_STRING);
 		
 	}else if(name == "custom"){
 		
@@ -294,10 +294,10 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		{
 			settings->setArrayIndex(i);
 			Directory tmp;
-			tmp.name = QSETTING_VALUE_STRING(settings,"name");
-			tmp.types =  QSETTING_VALUE_STRINGLIST(settings,"types");
-			tmp.indexDirs = QSETTING_VALUE_BOOL(settings,"indexDirs", false);
-			tmp.depth =QSETTING_VALUE_UINT(settings,"depth", 100);
+			tmp.name = QSETTING_VALUE_STRING(settings,"","name",QSETTING_DEFAULT_STRING);
+			tmp.types =  QSETTING_VALUE_STRINGLIST(settings,"","types",QSETTING_DEFAULT_STRINGLIST);
+			tmp.indexDirs = QSETTING_VALUE_BOOL(settings,"","indexDirs", false);
+			tmp.depth =QSETTING_VALUE_UINT(settings,"","depth", 100);
 			dirLists.append(tmp);
 
 			QString typesResult;
@@ -309,11 +309,11 @@ void OptionsDlg::loading(const QString & name,QString* c)
 			}
 			c->append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
 			c->append(QString("<td><input type=\"radio\" name=\"ckdir\" id=\"dir_%1\"/></td>").arg(i+1));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_STRING(settings,"name")));
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_STRING(settings,"","name",QSETTING_DEFAULT_STRING)));
 			c->append(QString("<td>%1</td>").arg(typesResult));
 			//c->append(QString("<td><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"Y":"N"));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_UINT(settings,"depth", 100)));			
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"Y":"N"));
+			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_UINT(settings,"","depth", 100)));			
 			c->append(QString("</tr>"));
 
 		}

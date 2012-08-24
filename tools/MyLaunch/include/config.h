@@ -275,14 +275,20 @@ enum{
 #define Q_PTR_VALUE_STRING(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toString()
 #define Q_PTR_VALUE_UINT(x,y) (x)->value(Q_PTR_RECORD_INDEX((x),(y))).toUInt()
 
+#define QSETTING_DEFAULT_STRING ""
+#define QSETTING_DEFAULT_STRINGLIST QSETTING_DEFAULT_STRING
 
-#define QSETTING_VALUE_STRING(x,y) (x)->value(y).toString()
-#define QSETTING_VALUE_STRINGLIST(x,y) (x)->value(y).toStringList()
-#define QSETTING_VALUE_STRING_HTML(x,y) (x)->value(y).toString().replace("\\", "\\\\")
-#define QSETTING_VALUE_STRING_HTML_P(x,y) (x)->value(y).toString().replace("\\", "\\\\\\\\")
-#define QSETTING_VALUE_INT(x,y,def) (x)->value((y),(def)).toInt()
-#define QSETTING_VALUE_UINT(x,y,def) (x)->value((y),(def)).toUInt()
-#define QSETTING_VALUE_BOOL(x,y,def) (x)->value((y),(def)).toBool()
+#define QSETTING_DEFAULT_INT 0
+#define QSETTING_DEFAULT_UINT QSETTING_DEFAULT_INT
+
+
+#define QSETTING_VALUE_STRING(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toString()
+#define QSETTING_VALUE_STRINGLIST(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toStringList()
+#define QSETTING_VALUE_STRING_HTML(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toString().replace("\\", "\\\\")
+#define QSETTING_VALUE_STRING_HTML_P(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toString().replace("\\", "\\\\\\\\")
+#define QSETTING_VALUE_INT(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toInt()
+#define QSETTING_VALUE_UINT(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toUInt()
+#define QSETTING_VALUE_BOOL(s,x,y,defval) (s)->value((!QString(x).isEmpty())?x"/"y:y, defval).toBool()
 
 
 #define NO_PINYIN_FLAG 0
@@ -349,23 +355,22 @@ enum{
 
 
 #define PASSWORD_ENCRYPT_KEY 98122130
-#define SETTING_GET_STRING_VALUE(x,y,defval)  settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()
 //#define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\")+"';");
-#define JS_APPEND_VALUE(s,x,y,defval) do{\
-	QString v = settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\");\
-	(s)->append(QString("$('%1').val('%2');").arg("#"x).arg(v));\
+#define JS_APPEND_VALUE(c,s,x,y,defval) do{\
+	QString v = QSETTING_VALUE_STRING_HTML(s,x,y,defval);\
+	(c)->append(QString("$('%1').val('%2');").arg("#"y).arg(v));\
 }while(0);
 
 //#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
-#define JS_APPEND_CHECKED(s,x,y,defval) do{\
-	QString v=(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"));\
-	(s)->append(QString("$('%1').attr('checked',%2);").arg("#"x).arg(v));\
+#define JS_APPEND_CHECKED(c,s,x,y,defval) do{\
+	QString v=(QSETTING_VALUE_BOOL(s,x,y,defval)?QString("true"):QString("false"));\
+	(c)->append(QString("$('%1').attr('checked',%2);").arg("#"y).arg(v));\
 }while(0);
 
 //#define JS_APPEND_PASSWD(x,y,defval) jsStr.append("$obj("#x").value ='"+tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY)+"';");
-#define JS_APPEND_PASSWD(s,x,y,defval) do{\
-	QString v = tz::decrypt(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString(),PASSWORD_ENCRYPT_KEY);\
-	(s)->append(QString("$('%1').val('%2');").arg("#"x).arg(v));\
+#define JS_APPEND_PASSWD(c,s,x,y,defval) do{\
+	QString v = tz::decrypt(QSETTING_VALUE_STRING(s,x,y,defval),PASSWORD_ENCRYPT_KEY);\
+	(c)->append(QString("$('%1').val('%2');").arg("#"y).arg(v));\
 }while(0);
 
 
