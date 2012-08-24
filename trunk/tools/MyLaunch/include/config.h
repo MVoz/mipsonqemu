@@ -77,6 +77,10 @@ enum{
 #define BROWSE_TYPE_MAX 		(COME_FROM_MAX-COME_FROM_BROWSER)
 
 
+#define CONFIG_SUPPORT_IE
+#undef CONFIG_SUPPORT_FIREFOX
+#undef CONFIG_SUPPORT_OPERA
+
 #define SYN_MODE_SILENCE  0
 #define SYN_MODE_NOSILENCE  1
 
@@ -345,6 +349,7 @@ enum{
 
 
 #define PASSWORD_ENCRYPT_KEY 98122130
+#define SETTING_GET_STRING_VALUE(x,y,defval)  settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString()
 #define JS_APPEND_VALUE(x,y,defval) jsStr.append("$("#x").value ='"+settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toString().replace("\\", "\\\\")+"';");
 //#define JS_APPEND_CHECKED(x,y,defval) jsStr.append("$obj("#x").checked ="+(settings->value((!QString(y).isEmpty())?y"/"x:x, defval).toBool()?QString("true"):QString("false"))+";");
 #define JS_APPEND_CHECKED(s,x,y,defval) do{\

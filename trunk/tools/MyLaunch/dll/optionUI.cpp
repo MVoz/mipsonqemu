@@ -255,6 +255,26 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_CHECKED(c,"ckShowMainwindow","",false);
 		JS_APPEND_CHECKED(c,"ckAutoUpdate","",false);
 		JS_APPEND_CHECKED(c,"ckScanDir","",false);
+		uint curMeta = settings->value("hotkeyModifier", HOTKEY_PART_0).toUInt();
+		uint curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toUInt();
+		c->append(QString("$('#hotkey_0').val(%1);").arg(curMeta));
+		c->append(QString("$('#hotkey_1').val(%2);").arg(curAction));
+		
+		JS_APPEND_CHECKED(c,"ckFuzzyMatch","adv",false);
+		JS_APPEND_CHECKED(c,"ckCaseSensitive","adv",false);
+		JS_APPEND_CHECKED(c,"ckRebuilderCatalogTimer","adv",false);
+#ifdef CONFIG_SUPPORT_IE
+		JS_APPEND_CHECKED(c,"ckSupportIe","adv",true);
+#endif
+#ifdef CONFIG_SUPPORT_FIREFOX
+		JS_APPEND_CHECKED(c,"ckSupportFirefox","adv",false);
+#endif
+#ifdef CONFIG_SUPPORT_OPERA
+		JS_APPEND_CHECKED(c,"ckSupportOpera","adv",false);
+#endif
+		JS_APPEND_CHECKED(c,"baidu","netfinder",true);
+		JS_APPEND_CHECKED(c,"google","netfinder",true);
+		c->append(QString("$('#netsearchbrowser').html('%1');").arg(SETTING_GET_STRING_VALUE("netsearchbrowser","","")));
 	}
 	TD(DEBUG_LEVEL_NORMAL,*c);
 #else

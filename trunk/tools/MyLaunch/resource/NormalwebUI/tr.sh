@@ -22,8 +22,13 @@ rm -fr 1
 cd style
 sed 's/..\/images\//qrc:images\//g' demo.min.css >  2
 mv 2 demo.min.css
+
 sed 's/..\/images\//qrc:images\//g' uniform.default.css > 2
 mv 2 uniform.default.css
+
+sed 's/margin-top: -2px;/margin-top: -10px;/g' uniform.default.css > 2
+mv 2 uniform.default.css
+
 cd ..
 
 cd ../NormalwebUI
