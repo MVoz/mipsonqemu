@@ -30,7 +30,11 @@
 		});
 
 		$("#dirlist input[type=radio]").click(function(){
-                alert('xx');
+				var id = $(this).attr('id').substring(4);
+                alert($('#d_t_p_'+id).html());
+				//alert($('#d_t_s_1').html());
+				//alert($('#d_t_i_1').html());
+				//alert($('#d_t_d_1').html());
 		 });
 
 		tb_init('a.thickbox');
@@ -94,10 +98,10 @@
 													
 													<tr class="even">
 														<td><input type="radio" name="ckdir" id="dir_1"/></td>
-														<td>d:/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch2012/8/14</td>
-														<td>*.exe;*.exe;*.exe;*.exe;*.exe;</td>
-														<td>y</td>
-														<td>100</td>													
+														<td id="d_t_p_1">d:/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch2012/8/14</td>
+														<td id="d_t_s_1">*.exe;*.exe;*.exe;*.exe;*.exe;</td>
+														<td id="d_t_i_1">y</td>
+														<td id="d_t_d_1">100</td>													
 													</tr>
 													
 													<!--OptionsDlgOuput.loading('dirlist');-->
@@ -152,19 +156,19 @@
 								<dl>
 									<dt><label>子目录:</label></dt>
 									<dd>
-										<input type="checkbox" name="baidu" id="baidu"/>
+										<input type="checkbox" name="subdir" id="subdir"/>
 									</dd>
 								</dl>
 								<dl>
 									<dt><label>后缀:</label></dt>
 									<dd>
-										<input name="textfield" type="text" id="textfield" size="10"/>
+										<input type="text" name="suffix" id="suffix"  size="10"/>
 									</dd>
 								</dl>
 								<dl>
 									<dt><label>最大深度:</label></dt>
 									<dd>
-											<input name="textfield" type="text" id="textfield" size="10"/>			
+											<input type="text" name="deep" id="deep" size="10"/>			
 									</dd>
 								</dl>
 								<ul class="btn">
