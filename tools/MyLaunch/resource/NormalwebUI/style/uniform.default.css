@@ -399,7 +399,7 @@ div.uploader {  width: 100%;  cursor: pointer;}
 
 div.uploader span.action {  width: 85px;  text-align: center;  text-shadow: #fff 0px 1px 0px;  background-color: #fff;  font-size: 11px;  font-weight: bold;}
 
-div.uploader span.filename {  color: #777;  width: 400px;  border-right: solid 1px #bbb;  font-size: 11px;}
+div.uploader span.filename {  color: #777;  width: 400px;  border-right: solid 1px #bbb;  font-size: 12px;}
 
 div.uploader input {  width: 190px;}
 
