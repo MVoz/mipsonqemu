@@ -331,12 +331,12 @@ void OptionsDlg::loading(const QString & name,QString* c)
 					typesResult += ";";
 			}
 			c->append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
-			c->append(QString("<td><input type=\"radio\" name=\"ckdir\" id=\"dir_%1\"/></td>").arg(i+1));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_STRING(settings,"","name",QSETTING_DEFAULT_STRING)));
-			c->append(QString("<td>%1</td>").arg(typesResult));
+			c->append(QString("<td><input type=\"radio\" name=\"ckdir\" id=\"dir_%1\"/></td>").arg(i));
+			c->append(QString("<td id='d_t_p_%1'>%2</td>").arg(i).arg(QSETTING_VALUE_STRING(settings,"","name",QSETTING_DEFAULT_STRING)));
+			c->append(QString("<td id='d_t_s_%1'>%2</td>").arg(i).arg(typesResult));
 			//c->append(QString("<td><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"Y":"N"));
-			c->append(QString("<td>%1</td>").arg(QSETTING_VALUE_UINT(settings,"","depth", 100)));			
+			c->append(QString("<td id='d_t_i_%1'>%2</td>").arg(i).arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"Y":"N"));
+			c->append(QString("<td id='d_t_d_%1'>%2</td>").arg(i).arg(QSETTING_VALUE_UINT(settings,"","depth", 100)));			
 			c->append(QString("</tr>"));
 
 		}
@@ -707,7 +707,7 @@ int OptionsDlg::checkListDirSpecialchar(const QString& dirname)
 }
 void OptionsDlg::listApply(const int &type, const QString & listPath, const QString & listSuffix, const bool & isIncludeChildDir, const int &childDeep, const int &index)
 {
-
+	TD(DEBUG_LEVEL_NORMAL,type<<listPath<<listSuffix<<isIncludeChildDir<<childDeep<<index);
 	Directory dc;
 	QDir dir(listPath);
 	int err=0;
@@ -792,8 +792,12 @@ void OptionsDlg::getListDirectory(const QString & id,const int& type)
 //	msgBox.setText(str);
 //	msgBox.exec();
 
-	QString status = QString("$('%1').html('%2');").arg(id).arg(dir.replace("/", "\\\\"));
-	webView->page()->mainFrame()->evaluateJavaScript(status);
+	QString js ;
+	//js.append(QString("alert($('%1').html());").arg("#TB_iframeContent"));
+	js.append(QString("$('%1').html('%2');").arg(id).arg(dir.replace("/", "\\\\")));
+	//js.append(QString("alert($('%1').html());").arg(id));
+	TD(DEBUG_LEVEL_NORMAL,js);
+	webView->page()->mainFrame()->evaluateJavaScript(js);
 }
 void OptionsDlg::rebuildcatalog()
 {	

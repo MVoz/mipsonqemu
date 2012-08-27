@@ -18,6 +18,24 @@
     <script src="js/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/my.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
+	 function dirlistApply(type){
+		   tb_remove();
+		   if(type==0||type==1){
+			   var dirpath=$('#TB_window .filename').html();
+			   dirpath=dirpath.replace(/(^\s*)/g, ""); 
+			   dirpath=dirpath.replace(/(\s*$)/g, "");
+			   alert($('#TB_iframeContent .suffix_d').html());
+			   alert($('#TB_window input[name="suffix"]').val());
+			   alert($('#TB_iframeContent .subdir').attr("checked"));
+			   alert($('#TB_iframeContent .deep').val());
+			   OptionsDlg.listApply(type,dirpath,$('#TB_window .suffix').val(),$('#TB_window .subdir').attr("checked"),$('#TB_window .deep').val(),0);
+			   alert('xxx');
+		   }else{
+			   OptionsDlg.listApply(type,'','',false,100,$('#TB_window .dirindex').val());   
+		   }
+		   OptionsDlg.getHtml(':custom.html');
+      }
+
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .opts').addClass('navnow');
@@ -31,10 +49,24 @@
 
 		$("#dirlist input[type=radio]").click(function(){
 				var id = $(this).attr('id').substring(4);
-                alert($('#d_t_p_'+id).html());
-				//alert($('#d_t_s_1').html());
-				//alert($('#d_t_i_1').html());
-				//alert($('#d_t_d_1').html());
+				$('#adddir .dirindex_d').html('<input type="checkbox" name="dirindex" id="dirindex" class="dirindex" />');
+				$('#adddir .filename').html('');
+				$('#adddir .subdir_d').html('<input type="checkbox" name="subdir" id="subdir" class="subdir" checked/>');
+				$('#adddir .suffix_d').html('<input type="text" name="suffix" id="suffix" class="suffix" value="*.*"  size="10"/>');
+				$('#adddir .deep_d').html('<input type="text" name="deep" id="deep" class="deep" value="100"  size="10"/>');
+
+
+				$('#editdir .dirindex_d').html('<input type="checkbox" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
+				$('#editdir .filename').html($('#d_t_p_'+id).html());
+				if($('#d_t_i_1').html()=='y'){
+					$('#editdir .subdir_d').html('<input type="checkbox" name="subdir" checked id="subdir" class="subdir" />');
+				}else
+					$('#editdir .subdir_d').html('<input type="checkbox" name="subdir" id="subdir" class="subdir"/>');
+				$('#editdir .suffix_d').html('<input type="text" name="suffix" id="suffix" class="suffix" value="'+$('#d_t_s_'+id).html()+'"  size="10"/>');
+				$('#editdir .deep_d').html('<input type="text" name="deep" id="deep" class="deep" value="'+$('#d_t_d_'+id).html()+'"  size="10"/>');
+
+				$('#deletedir .del_dir_span').html($('#d_t_p_'+id).html());
+				$('#deletedir .dirindex_d').html('<input type="checkbox" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
 		 });
 
 		tb_init('a.thickbox');
@@ -95,7 +127,7 @@
 									<div id="tableContainer" class="tableContainer" style="width: 740px;  overflow: auto;">
 									<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
 											<tbody class="scrollContent" id="dirlist">
-													
+													<!--
 													<tr class="even">
 														<td><input type="radio" name="ckdir" id="dir_1"/></td>
 														<td id="d_t_p_1">d:/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch2012/8/14</td>
@@ -103,7 +135,7 @@
 														<td id="d_t_i_1">y</td>
 														<td id="d_t_d_1">100</td>													
 													</tr>
-													
+													-->
 													<!--OptionsDlgOuput.loading('dirlist');-->
 											</tbody>
 										</table>
@@ -133,21 +165,27 @@
                     <ul class="customize">  
                         <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=640&height=150" >Add</a></li>           
                         <li><a title="Remove tab" class="remove btn_enabled thickbox" href="qrc:deletedir" rel="width=640&height=80">Remove</a></li>
-                        <li><a title="Options" class="options btn_enabled thickbox" href="qrc:adddir" rel="width=640&height=150">Edit</a></li>                        
+                        <li><a title="Options" class="options btn_enabled thickbox" href="qrc:editdir" rel="width=640&height=150">Edit</a></li>                        
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
-						<div id="adddir" style="display:none;">
+						<div id="adddir" style="display:block;">
 							<fieldset class="t_f">
-								<legend>添加目录&raquo;</legend>								
+								<legend>添加目录&raquo;</legend>	
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="dirindex_d">
+										<input type="checkbox" name="dirindex" id="dirindex" class="dirindex"/>
+									</dd>
+								</dl>
 								<dl>
 									<dt><label>目录路径:</label></dt>
 									<dd>
 										<ul>
 											<li>
 												<div class="uploader">
-													<span class="filename"></span>
-													<span class="action" onclick="javascript:alert('xx');">Choose File</span>
+													<span class="filename" id="dirpath"></span>
+													<span class="action" onclick="OptionsDlg.getListDirectory('#TB_iframeContent .filename',0);">选择目录</span>
 												</div>
 											</li>
 										</ul>	
@@ -155,48 +193,92 @@
 								</dl>
 								<dl>
 									<dt><label>子目录:</label></dt>
+									<dd class="subdir_d">
+										<input type="checkbox" name="subdir" id="subdir" checked/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>后缀:</label></dt>
+									<dd class="suffix_d">
+										<input type="text" name="suffix" id="suffix" size="10" value="*.*"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>最大深度:</label></dt>
+									<dd class="deep_d">
+											<input type="text" name="deep" id="deep" value="100" size="10"/>			
+									</dd>
+								</dl>
+								<ul class="btn">
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="dirlistApply(0);">确定</a></li>										
+								</ul>
+							</fieldset>			
+						</div> <!-- /#adddir --> 
+						<div id="editdir" style="display:none;">
+							<fieldset class="t_f">
+								<legend>添加目录&raquo;</legend>	
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="dirindex_d">
+										<input type="checkbox" name="dirindex" id="dirindex" class="dirindex"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>目录路径:</label></dt>
 									<dd>
+										<ul>
+											<li>
+												<div class="uploader">
+													<span class="filename" id="dirpath"></span>
+													<span class="action" onclick="OptionsDlg.getListDirectory('#TB_iframeContent .filename',0);">选择目录</span>
+												</div>
+											</li>
+										</ul>	
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>子目录:</label></dt>
+									<dd class="subdir_d">
 										<input type="checkbox" name="subdir" id="subdir"/>
 									</dd>
 								</dl>
 								<dl>
 									<dt><label>后缀:</label></dt>
-									<dd>
-										<input type="text" name="suffix" id="suffix"  size="10"/>
+									<dd class="suffix_d">
+										<input type="text" name="suffix" id="suffix" size="10"/>
 									</dd>
 								</dl>
 								<dl>
 									<dt><label>最大深度:</label></dt>
-									<dd>
+									<dd class="deep_d">
 											<input type="text" name="deep" id="deep" size="10"/>			
 									</dd>
 								</dl>
 								<ul class="btn">
 										<li><a href="#" onclick="tb_remove();">取消</a></li>
-										<li><a href="#" onclick="accountTestClick();">确定</a></li>										
+										<li><a href="#" onclick="dirlistApply(1);">确定</a></li>										
 								</ul>
 							</fieldset>			
-						</div> <!-- /#adddir --> 
+						</div> <!-- /#editdir --> 
 						<div id="deletedir" style="display:none;">
 							<fieldset class="t_f">
-								<legend>删除目录&raquo;</legend>								
-								<dl>
-									<dt><label>&nbsp;</label></dt>
-									<dd>
-										您确定删除目录:<span class="ip" id="del_dir_span"></span>							
+								<legend>删除目录&raquo;</legend>	
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="dirindex_d">
+										<input type="checkbox" name="dirindex" id="dirindex" class="dirindex"/>
 									</dd>
 								</dl>
 								<dl>
-									<dt><label></label></dt>
+									<dt><label>&nbsp;</label></dt>
 									<dd>
-									<p style="display:none;" id="cmdDelIndex_span">
-										<input name="cmdIndex" type="text" id="cmdIndex" >
-									</p>	
-								</dd>
-								</dl>
+										您确定删除目录:<span class="del_dir_span" id="del_dir_span"></span>							
+									</dd>
+								</dl>							
 								<ul class="btn">
 										<li><a href="#" onclick="tb_remove();">取消</a></li>
-										<li><a href="#" onclick="accountTestClick();">确定</a></li>										
+										<li><a href="#" onclick="dirlistApply(2);">确定</a></li>										
 								</ul>
 							</fieldset>			
 						</div> <!-- /#deletedir --> 

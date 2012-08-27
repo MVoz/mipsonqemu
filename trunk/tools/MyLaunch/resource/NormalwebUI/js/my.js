@@ -1,9 +1,3 @@
-function getHtml(path){OptionsDlg.getHtml(path);}
-function reject(){OptionsDlg.reject();}
-function tr(a){document.write(OptionsDlg.tr(a));}
-function gohref(url){OptionsDlg.gohref(url);}
-function $obj(a){return document.getElementById(a);}
-
 $(function(){   
 	imgLoader = new Image();// preload image
 	imgLoader.src = "../image/ajax-loader.gif";
@@ -49,6 +43,7 @@ function tb_show(caption, url, params) {//function called when the user clicks o
 						$("#TB_iframeContent").remove();				
 						$("#TB_window").append("<div id='TB_iframeContent' name='TB_iframeContent"+Math.round(Math.random()*1000)+"' style='width:"+(ajaxContentW + 29)+"px;height:"+(ajaxContentH + 17)+"px;' > </div>");
 						$("#TB_iframeContent").html($("#"+url).html());
+						$("#TB_iframeContent input, textarea, select, button").uniform();
 						tb_showIframe();
 			}
 			$("#TB_closeWindowButton").click(tb_remove);
