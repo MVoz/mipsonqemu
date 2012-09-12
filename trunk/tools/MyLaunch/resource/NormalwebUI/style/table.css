@@ -48,3 +48,5 @@ thead.clt_h th + th + th,tbody.clt_c td + td + td  {width: 400px}
 thead.fixedHeader th + th + th + th,tbody.scrollContent td + td + td +td  {	width: 50px}
 thead.clt_h th + th + th + th,tbody.clt_c td + td + td +td  {	width: 150px}
 thead.fixedHeader th + th + th + th + th,tbody.scrollContent td + td + td +td +td {	width: 30px}
+
+.del_dir_span{font-weight: bold;}

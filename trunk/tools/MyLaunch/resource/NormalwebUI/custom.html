@@ -58,10 +58,11 @@
 
 				$('#editdir .dirindex_d').html('<input type="checkbox" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
 				$('#editdir .filename').html($('#d_t_p_'+id).html());
-				if($('#d_t_i_1').html()=='y'){
+				if($('#d_t_i_'+id).attr('class')=='checked'){
 					$('#editdir .subdir_d').html('<input type="checkbox" name="subdir" checked id="subdir" class="subdir" />');
-				}else
+				}else{
 					$('#editdir .subdir_d').html('<input type="checkbox" name="subdir" id="subdir" class="subdir"/>');
+				}
 				$('#editdir .suffix_d').html('<input type="text" name="suffix" id="suffix" class="suffix" value="'+$('#d_t_s_'+id).html()+'"  size="10"/>');
 				$('#editdir .deep_d').html('<input type="text" name="deep" id="deep" class="deep" value="'+$('#d_t_d_'+id).html()+'"  size="10"/>');
 
@@ -132,7 +133,7 @@
 														<td><input type="radio" name="ckdir" id="dir_1"/></td>
 														<td id="d_t_p_1">d:/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch/mylaunch2012/8/14</td>
 														<td id="d_t_s_1">*.exe;*.exe;*.exe;*.exe;*.exe;</td>
-														<td id="d_t_i_1">y</td>
+														<td id="d_t_i_1" class="checked">y</td>
 														<td id="d_t_d_1">100</td>													
 													</tr>
 													-->
@@ -169,7 +170,7 @@
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
-						<div id="adddir" style="display:block;">
+						<div id="adddir" style="display:none;">
 							<fieldset class="t_f">
 								<legend>添加目录&raquo;</legend>	
 								<dl style="display:none">
