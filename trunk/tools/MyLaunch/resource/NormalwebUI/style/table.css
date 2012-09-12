@@ -1,9 +1,9 @@
 .tableContainer_h{	clear: both;height: 1.8em;width:750px;overflow:hidden;border-bottom: 2px solid #bebebe;}
 div.tableContainer ,.clt{clear: both;height: 22em;width: 750px;overflow:hidden;overflow-y:scroll;}
 div.tableContainer table,.clt table {float: left;width: 723px;}
-thead.fixedHeader tr,thead.clt_h tr {position: relative;display: block;}
-thead.fixedHeader th,thead.clt_h th {font-weight: bold;	padding:4px 3px;text-align: left;display: block;	overflow-x:hidden;float:left;}
-thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited ,thead.clt_h a,thead.clt_h a:link,thead.clt_h a:visited {
+thead.dirHeader tr,thead.cmdHeader tr {position: relative;display: block;}
+thead.dirHeader th,thead.cmdHeader th {font-weight: bold;	padding:4px 3px;text-align: left;display: block;	overflow-x:hidden;float:left;}
+thead.dirHeader a, thead.dirHeader a:link, thead.dirHeader a:visited ,thead.cmdHeader a,thead.cmdHeader a:link,thead.cmdHeader a:visited {
 	color: #FFF;
 	display: block;
 	text-decoration: none;
@@ -11,19 +11,19 @@ thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited ,thea
 	font-size:12px;
 	text-align:center;
 }
-thead.fixedHeader a:hover,thead.clt_h a:visited {
+thead.dirHeader a:hover,thead.cmdHeader a:visited {
 	color: #FFF;
 	display: block;
 	text-decoration: none;
 	width: 100%
 }
 
-html>body tbody.scrollContent,tbody.clt_c {
+html>body tbody.dirContent,tbody.cmdContent {
 	display: block;
 	height: 8em;
 	width: 100%
 }
-tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even td,tbody.clt_c tr.odd td {
+tbody.dirContent tr.even td,tbody.dirContent tr.odd td,tbody.cmdContent tr.even td,tbody.cmdContent tr.odd td {
 	border-bottom: 1px solid #DDD;
 	padding: 4px 3px;
 	height:1.5em;
@@ -34,19 +34,19 @@ tbody.scrollContent tr.even td,tbody.scrollContent tr.odd td,tbody.clt_c tr.even
 	word-break:keep-all;
 	white-space:nowrap;
 }
-tbody.scrollContent tr:hover,tbody.clt_c tr:hover{
+tbody.dirContent tr:hover,tbody.cmdContent tr:hover{
 	background: #eee;
 }
 
 
-thead.fixedHeader th,tbody.scrollContent td {width: 50px}
-thead.clt_h th,tbody.clt_c td {width: 50px}
-thead.fixedHeader th + th,tbody.scrollContent td + td {	width: 413px}
-thead.clt_h th+th,tbody.clt_c td+td {width: 100px}
-thead.fixedHeader th + th + th,tbody.scrollContent td + td + td  {width: 150px}
-thead.clt_h th + th + th,tbody.clt_c td + td + td  {width: 400px}
-thead.fixedHeader th + th + th + th,tbody.scrollContent td + td + td +td  {	width: 50px}
-thead.clt_h th + th + th + th,tbody.clt_c td + td + td +td  {	width: 150px}
-thead.fixedHeader th + th + th + th + th,tbody.scrollContent td + td + td +td +td {	width: 30px}
+thead.dirHeader th,tbody.dirContent td {width: 50px}
+thead.cmdHeader th,tbody.cmdContent td {width: 50px}
+thead.dirHeader th + th,tbody.dirContent td + td {	width: 413px}
+thead.cmdHeader th+th,tbody.cmdContent td+td {width: 100px}
+thead.dirHeader th + th + th,tbody.dirContent td + td + td  {width: 150px}
+thead.cmdHeader th + th + th,tbody.cmdContent td + td + td  {width: 400px}
+thead.dirHeader th + th + th + th,tbody.dirContent td + td + td +td  {	width: 50px}
+thead.cmdHeader th + th + th + th,tbody.cmdContent td + td + td +td  {	width: 149px}
+thead.dirHeader th + th + th + th + th,tbody.dirContent td + td + td +td +td {	width: 30px}
 
 .del_dir_span{font-weight: bold;}
