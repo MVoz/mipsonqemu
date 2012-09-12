@@ -341,6 +341,25 @@ void OptionsDlg::loading(const QString & name,QString* c)
 
 		}
 		settings->endArray();
+	}else if(name == "cmdlist"){	
+		QSqlQuery q("",*db);
+		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
+		int i = 0;
+		if(q.exec(s))
+		{
+			while(q.next()) {
+				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
+
+				c->append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
+				c->append(QString("<td><input type=\"radio\" name=\"ckcmd\" id=\"cmd_%1\"/></td>").arg(i));
+				c->append(QString("<td id='c_t_n_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"shortName")));
+				c->append(QString("<td id='c_t_p_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"fullPath")));
+				c->append(QString("<td id='c_t_a_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"args")));	
+				c->append(QString("</tr>"));
+				i++;
+			}
+		}
+		q.clear();
 	}
 	//TD(DEBUG_LEVEL_NORMAL,*c);
 #else
