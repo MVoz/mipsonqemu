@@ -56,7 +56,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
-
+	show_tab = SHOW_TAB_DIR;
 	//getHtml("./html/Customx.html");
 #ifdef CONFIG_OPTION_NEWUI
 	getHtml(":index.html");
@@ -308,6 +308,8 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyUsername",QSETTING_DEFAULT_STRING);
 		JS_APPEND_PASSWD(c,settings,"HttpProxy","proxyPassword",QSETTING_DEFAULT_STRING);
 		
+	}else if(name == "showtab"){
+		c->append(QString("showtab(%1);").arg(show_tab));
 	}else if(name == "custom"){
 		
 	}else if(name == "dirlist"){
@@ -348,13 +350,13 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		if(q.exec(s))
 		{
 			while(q.next()) {
-				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
+				qDebug()<<Q_VALUE_UINT(q,"id")<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
 
 				c->append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
-				c->append(QString("<td><input type=\"radio\" name=\"ckcmd\" id=\"cmd_%1\"/></td>").arg(i));
-				c->append(QString("<td id='c_t_n_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"shortName")));
-				c->append(QString("<td id='c_t_p_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"fullPath")));
-				c->append(QString("<td id='c_t_a_%1'>%2</td>").arg(i).arg(Q_VALUE_STRING(q,"args")));	
+				c->append(QString("<td><input type=\"radio\" name=\"ckcmd\" id=\"cmd_%1\"/></td>").arg(Q_VALUE_UINT(q,"id")));
+				c->append(QString("<td id='c_t_n_%1'>%2</td>").arg(Q_VALUE_UINT(q,"id")).arg(Q_VALUE_STRING(q,"shortName")));
+				c->append(QString("<td id='c_t_p_%1'>%2</td>").arg(Q_VALUE_UINT(q,"id")).arg(Q_VALUE_STRING(q,"fullPath")));
+				c->append(QString("<td id='c_t_a_%1'>%2</td>").arg(Q_VALUE_UINT(q,"id")).arg(Q_VALUE_STRING(q,"args")));	
 				c->append(QString("</tr>"));
 				i++;
 			}
@@ -678,24 +680,24 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 
 
 
-void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QString & cmdCommand, const QString & cmdParameter, const QString & cmdIndex)
+void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QString & cmdCommand, const QString & cmdParameter, const int & cmdIndex)
 {
-	//CMD_LIST cl;
-	//qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
+	show_tab = SHOW_TAB_CMD;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<type<<cmdIndex);
 	CatItem item(cmdCommand,cmdName,cmdParameter,COME_FROM_COMMAND);
-	if(cmdCommand.isEmpty()) return;
+	
 	switch (type)
 	{
 	case 0:		//add
+		if(cmdCommand.isEmpty()) return;
 		CatItem::addCatitemToDb(db,item);
 		break;
 	case 1:		//modify
-		CatItem::modifyCatitemFromDb(db,item,cmdIndex.toInt());
+		if(cmdCommand.isEmpty()) return;
+		CatItem::modifyCatitemFromDb(db,item,cmdIndex);
 		break;
 	case 2:		//delete
-		//qDebug("type=%d cmdinex=%d cmdLists.size=%d",type,cmdIndex.toInt(),cmdLists.size());
-		//  cmdLists.removeAt(cmdIndex.toInt());
-		CatItem::deleteCatitemFromDb(db,item,cmdIndex.toInt());
+		CatItem::deleteCatitemFromDb(db,item,cmdIndex);
 		break;
 	default:
 		break;
@@ -726,6 +728,7 @@ int OptionsDlg::checkListDirSpecialchar(const QString& dirname)
 }
 void OptionsDlg::listApply(const int &type, const QString & listPath, const QString & listSuffix, const bool & isIncludeChildDir, const int &childDeep, const int &index)
 {
+	show_tab = SHOW_TAB_DIR;
 	TD(DEBUG_LEVEL_NORMAL,type<<listPath<<listSuffix<<isIncludeChildDir<<childDeep<<index);
 	Directory dc;
 	QDir dir(listPath);
