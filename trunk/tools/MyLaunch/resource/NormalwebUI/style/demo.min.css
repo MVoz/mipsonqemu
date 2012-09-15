@@ -45,7 +45,7 @@ div#st_horizontal div.customize_container { z-index: 200; }
 div#st_vertical div.customize_container { z-index: 150; }
 ul.customize li { float: left; }
 ul.customize li p { padding-top: 7px; padding-right: 10px; color: rgb(133, 133, 133); }
-ul.customize li a { display: block; text-indent: -9999px; height: 29px; width: 29px; border: 1px solid rgb(218, 218, 218); background: url("../images/icons.gif") no-repeat scroll 0% 0% rgb(255, 255, 255); }
+ul.customize li a { display: block; text-indent: -9999px; height: 29px; width: 29px; border: 1px solid rgb(218, 218, 218); background: url("../images/icons.png") no-repeat scroll 0% 0% rgb(255, 255, 255); }
 ul.customize li a.add { background-position: -1px 0px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
 ul.customize li a.add.btn_enabled:hover { background-position: -1px -29px; }
 ul.customize li a.remove { border-right: 0px none; border-left: 0px none; background-position: -31px 0px; }
