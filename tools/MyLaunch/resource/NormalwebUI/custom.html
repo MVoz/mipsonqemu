@@ -19,7 +19,7 @@
 	<script src="js/my.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
 	 function dirlistApply(type){
-		   tb_remove();
+		  
 		   if(type==0||type==1){
 			   var dirpath=$('#TB_window .filename').html();
 			   dirpath=dirpath.replace(/(^\s*)/g, ""); 
@@ -33,30 +33,63 @@
 		   }else{
 			   OptionsDlg.listApply(type,'','',false,100,$('#TB_window .dirindex').val());   
 		   }
+		    tb_remove();
 		   OptionsDlg.getHtml(':custom.html');
       }
+	 function cmdlistApply(type){
+		   
+		   if(type==0||type==1){
+			   var cmdpath=$('#TB_window .filename').html();
+			   cmdpath=cmdpath.replace(/(^\s*)/g, ""); 
+			   cmdpath=cmdpath.replace(/(\s*$)/g, "");
+			   alert(cmdpath);
+			   alert($('#TB_window .cmdname').val());
+			   alert($('#TB_window .cmdarg').val());
+			   alert($('#TB_window .cmdindex').val());
+			   OptionsDlg.cmdApply(type,$('#TB_window .cmdname').val(),cmdpath,$('#TB_window .cmdarg').val(),$('#TB_window .cmdindex').val());
+			   alert('xxx');
+		   }else{
+				alert($('#TB_window .cmdindex').val());
+			   OptionsDlg.cmdApply(type,'','','',$('#TB_window .cmdindex').val());   
+			   alert('xxx');
+		   }
+		   tb_remove();
+		   OptionsDlg.getHtml(':custom.html');
+      }
+	  function showtab(id){
+		$('.st_tab').removeClass('st_tab_active');
+		$('#st_tab_'+id).addClass('st_tab_active');
+		$('#st_content_'+id).show();
+		$('.st_content_'+id+'_btns').show();
+	  }
 
       $(function(){
 		$('#nav > li').removeClass('navnow');
 		$('#nav .opts').addClass('navnow');
+		$('.customize').hide();
+
+		//OptionsDlgOuput.loading('showtab');
 
 		$('.st_tabs  a').click(function(){
 			$('.st_tab_view').hide();
 			$('.st_tab').removeClass('st_tab_active');
 			$('#'+$(this).attr('rel')).show();
 			$(this).addClass('st_tab_active');
+
+			$('.customize').hide();
+			$('.'+$(this).attr('rel')+'_btns').show();
 		});
 
 		$("#dirlist input[type=radio]").click(function(){
 				var id = $(this).attr('id').substring(4);
-				$('#adddir .dirindex_d').html('<input type="checkbox" name="dirindex" id="dirindex" class="dirindex" />');
+				$('#adddir .dirindex_d').html('<input type="text" name="dirindex" id="dirindex" class="dirindex" />');
 				$('#adddir .filename').html('');
 				$('#adddir .subdir_d').html('<input type="checkbox" name="subdir" id="subdir" class="subdir" checked/>');
 				$('#adddir .suffix_d').html('<input type="text" name="suffix" id="suffix" class="suffix" value="*.*"  size="10"/>');
 				$('#adddir .deep_d').html('<input type="text" name="deep" id="deep" class="deep" value="100"  size="10"/>');
 
 
-				$('#editdir .dirindex_d').html('<input type="checkbox" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
+				$('#editdir .dirindex_d').html('<input type="text" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
 				$('#editdir .filename').html($('#d_t_p_'+id).html());
 				if($('#d_t_i_'+id).attr('class')=='checked'){
 					$('#editdir .subdir_d').html('<input type="checkbox" name="subdir" checked id="subdir" class="subdir" />');
@@ -67,7 +100,26 @@
 				$('#editdir .deep_d').html('<input type="text" name="deep" id="deep" class="deep" value="'+$('#d_t_d_'+id).html()+'"  size="10"/>');
 
 				$('#deletedir .del_dir_span').html($('#d_t_p_'+id).html());
-				$('#deletedir .dirindex_d').html('<input type="checkbox" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
+				$('#deletedir .dirindex_d').html('<input type="text" value="'+id+'"name="dirindex" id="dirindex" class="dirindex" />');
+		 });
+
+		 $("#cmdlist input[type=radio]").click(function(){
+				var id = $(this).attr('id').substring(4);
+				alert(id);
+				$('#addcmd .filename').html('');
+				$('#addcmd .cmdindex_d').html('<input type="text" name="cmdindex" id="cmdindex" class="cmdindex" value="0"/>');
+				$('#addcmd .cmdname_d').html('<input type="text" name="cmdname" id="cmdname" class="cmdname" size="10" value=""/>');
+				$('#addcmd .arg_d').html('<input type="text" name="cmdarg" id="cmdarg" class="cmdarg" size="10" value=""/>');
+
+
+				$('#editcmd .cmdindex_d').html('<input type="text" value="'+id+'"name="cmdindex" id="cmdindex" class="cmdindex" />');
+				
+				$('#editcmd .filename').html($('#c_t_p_'+id).html());
+				$('#editcmd .cmdname_d').html('<input type="text" name="cmdname" id="cmdname" class="cmdname" value="'+$('#c_t_n_'+id).html()+'"  size="10"/>');
+				$('#editcmd .arg_d').html('<input type="text" name="cmdarg" id="cmdarg" class="cmdarg" value="'+$('#c_t_a_'+id).html()+'"  size="10"/>');
+
+				$('#deletecmd .del_cmd_span').html($('#c_t_n_'+id).html());
+				$('#deletecmd .cmdindex_d').html('<input type="text" value="'+id+'"name="cmdindex" id="cmdindex" class="cmdindex" />');
 		 });
 
 		tb_init('a.thickbox');
@@ -99,8 +151,8 @@
                     <a class="st_prev" href="#prev" style="display: none;"></a>
                     <div class="st_slide_container" style="overflow: hidden;">
                         <ul class="st_tabs" style="margin-left: 0px;">
-                            <li><a class="st_tab st_first_tab st_tab_active" rel="st_content_1" href="#">目&nbsp;录</a></li>
-                            <li><a class="st_tab" rel="st_content_2" href="#">命&nbsp;令</a></li>     
+                            <li><a class="st_tab st_first_tab st_tab_active" rel="st_content_1"  id="st_tab_1"  href="#">目&nbsp;录</a></li>
+                            <li><a class="st_tab" rel="st_content_2" id="st_tab_2" href="#">命&nbsp;令</a></li>     
                         </ul>
                     
                     </div> <!-- /.st_slide_container -->
@@ -110,7 +162,7 @@
                 
                     <div class="st_view">
                                 
-                        <div class="st_tab_view st_first_tab_view st_active_view" id="st_content_1" style="position: absolute;">
+                        <div class="st_tab_view st_first_tab_view st_active_view" id="st_content_1" style="position: absolute;display: none;">
                              <div class="text" >
 									<div class="tableContainer_h">
 										<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
@@ -181,10 +233,15 @@
                 
                 <!-- Start HTML - Customize tabs -->
                 <div class="customize_container">                
-                    <ul class="customize">  
+                    <ul class="customize st_content_1_btns">  
                         <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:adddir" rel="width=640&height=150" >Add</a></li>           
                         <li><a title="Remove tab" class="remove btn_enabled thickbox" href="qrc:deletedir" rel="width=640&height=80">Remove</a></li>
                         <li><a title="Options" class="options btn_enabled thickbox" href="qrc:editdir" rel="width=640&height=150">Edit</a></li>                        
+                    </ul>  
+					 <ul class="customize st_content_2_btns">  
+                        <li><a title="Add tab" class="add btn_enabled thickbox" name="add&raquo;" href="qrc:addcmd" rel="width=640&height=150" >Add</a></li>           
+                        <li><a title="Remove tab" class="remove btn_enabled thickbox" href="qrc:deletecmd" rel="width=640&height=80">Remove</a></li>
+                        <li><a title="Options" class="options btn_enabled thickbox" href="qrc:editcmd" rel="width=640&height=150">Edit</a></li>                        
                     </ul>                
                 </div> <!-- /.customize_continer -->
                 <!-- End HTML - Customize tabs -->                           
@@ -301,6 +358,108 @@
 								</ul>
 							</fieldset>			
 						</div> <!-- /#deletedir --> 
+
+						<div id="addcmd" style="display:none;">
+							<fieldset class="t_f">
+								<legend>添加命令&raquo;</legend>	
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="cmdindex_d">
+										<input type="text" name="cmdindex" id="cmdindex" class="cmdindex"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>名字:</label></dt>
+									<dd class="cmdname_d">
+										<input type="text" name="cmdname" id="cmdname" class="cmdname" size="10" value=""/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>命令路径:</label></dt>
+									<dd>
+										<ul>
+											<li>
+												<div class="uploader">
+													<span class="filename" id="cmdpath"></span>
+													<span class="action" onclick="OptionsDlg.getListDirectory('#TB_iframeContent .filename',1);">选择文件</span>
+												</div>
+											</li>
+										</ul>	
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>参数:</label></dt>
+									<dd class="arg_d">
+										<input type="text" name="cmdarg" id="cmdarg" class="cmdarg" size="10" value=""/>
+									</dd>
+								</dl>
+								<ul class="btn">
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="cmdlistApply(0);">确定</a></li>										
+								</ul>
+							</fieldset>			
+						</div> <!-- /#addcmd --> 
+						<div id="editcmd" style="display:none;">
+							<fieldset class="t_f">
+								<legend>编辑命令&raquo;</legend>
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="cmdindex_d">
+										<input type="text" name="cmdindex" id="cmdindex" class="cmdindex"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>名字:</label></dt>
+									<dd class="cmdname_d">
+										<input type="text" name="cmdname" id="cmdname" size="10" value=""/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>命令路径:</label></dt>
+									<dd>
+										<ul>
+											<li>
+												<div class="uploader">
+													<span class="filename" id="cmdpath"></span>
+													<span class="action" onclick="OptionsDlg.getListDirectory('#TB_iframeContent .filename',1);">选择文件</span>
+												</div>
+											</li>
+										</ul>	
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>参数:</label></dt>
+									<dd class="arg_d">
+										<input type="text" name="cmdarg" id="cmdarg" size="10" value=""/>
+									</dd>
+								</dl>
+								<ul class="btn">
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="cmdlistApply(1);">确定</a></li>										
+								</ul>
+							</fieldset>			
+						</div> <!-- /#editcmd --> 
+						<div id="deletecmd" style="display:none;">
+							<fieldset class="t_f">
+								<legend>删除命令&raquo;</legend>	
+								<dl style="display:none">
+									<dt></dt>
+									<dd class="cmdindex_d">
+										<input type="text" name="cmdindex" id="cmdindex" class="cmdindex"/>
+									</dd>
+								</dl>
+								<dl>
+									<dt><label>&nbsp;</label></dt>
+									<dd>
+										您确定删除命令:<span class="del_cmd_span" id="del_cmd_span"></span>							
+									</dd>
+								</dl>							
+								<ul class="btn">
+										<li><a href="#" onclick="tb_remove();">取消</a></li>
+										<li><a href="#" onclick="cmdlistApply(2);">确定</a></li>										
+								</ul>
+							</fieldset>			
+						</div> <!-- /#deletecmd --> 
             </div> <!-- /#st_horizontal -->        
             <!-- End HTML - Horizontal tabs -->               
         
