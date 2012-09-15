@@ -24,12 +24,12 @@
 			   var dirpath=$('#TB_window .filename').html();
 			   dirpath=dirpath.replace(/(^\s*)/g, ""); 
 			   dirpath=dirpath.replace(/(\s*$)/g, "");
-			   alert($('#TB_iframeContent .suffix_d').html());
-			   alert($('#TB_window input[name="suffix"]').val());
-			   alert($('#TB_iframeContent .subdir').attr("checked"));
-			   alert($('#TB_iframeContent .deep').val());
+			  // alert($('#TB_iframeContent .suffix_d').html());
+			 //  alert($('#TB_window input[name="suffix"]').val());
+			 //  alert($('#TB_iframeContent .subdir').attr("checked"));
+			 //  alert($('#TB_iframeContent .deep').val());
 			   OptionsDlg.listApply(type,dirpath,$('#TB_window .suffix').val(),$('#TB_window .subdir').attr("checked"),$('#TB_window .deep').val(),0);
-			   alert('xxx');
+			 //  alert('xxx');
 		   }else{
 			   OptionsDlg.listApply(type,'','',false,100,$('#TB_window .dirindex').val());   
 		   }
@@ -42,16 +42,16 @@
 			   var cmdpath=$('#TB_window .filename').html();
 			   cmdpath=cmdpath.replace(/(^\s*)/g, ""); 
 			   cmdpath=cmdpath.replace(/(\s*$)/g, "");
-			   alert(cmdpath);
-			   alert($('#TB_window .cmdname').val());
-			   alert($('#TB_window .cmdarg').val());
-			   alert($('#TB_window .cmdindex').val());
+			//   alert(cmdpath);
+			//   alert($('#TB_window .cmdname').val());
+			//   alert($('#TB_window .cmdarg').val());
+			//   alert($('#TB_window .cmdindex').val());
 			   OptionsDlg.cmdApply(type,$('#TB_window .cmdname').val(),cmdpath,$('#TB_window .cmdarg').val(),$('#TB_window .cmdindex').val());
-			   alert('xxx');
+			//   alert('xxx');
 		   }else{
-				alert($('#TB_window .cmdindex').val());
+			//	alert($('#TB_window .cmdindex').val());
 			   OptionsDlg.cmdApply(type,'','','',$('#TB_window .cmdindex').val());   
-			   alert('xxx');
+			//   alert('xxx');
 		   }
 		   tb_remove();
 		   OptionsDlg.getHtml(':custom.html');
@@ -124,6 +124,9 @@
 
 		tb_init('a.thickbox');
 		//OptionsDlgOuput.loading('custom');
+		$('#apply #apply a').click(function(){				
+			//OptionsDlg.accept();
+		});
 		$("input, textarea, select, button").uniform();
 	       
       });
