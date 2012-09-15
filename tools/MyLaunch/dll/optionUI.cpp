@@ -336,8 +336,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 			c->append(QString("<td><input type=\"radio\" name=\"ckdir\" id=\"dir_%1\"/></td>").arg(i));
 			c->append(QString("<td id='d_t_p_%1'>%2</td>").arg(i).arg(QSETTING_VALUE_STRING(settings,"","name",QSETTING_DEFAULT_STRING)));
 			c->append(QString("<td id='d_t_s_%1'>%2</td>").arg(i).arg(typesResult));
-			//c->append(QString("<td><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
-			c->append(QString("<td id='d_t_i_%1' class='%2' >%3</td>").arg(i).arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"checked":"").arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"Y":"N"));
+			c->append(QString("<td id='d_t_i_%1' class='%2' ><div class='%3'>&nbsp;</div></td>").arg(i).arg(QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"checked":"").arg((QSETTING_VALUE_BOOL(settings,"","indexDirs", false)?"ind":"exd")));
 			c->append(QString("<td id='d_t_d_%1'>%2</td>").arg(i).arg(QSETTING_VALUE_UINT(settings,"","depth", 100)));			
 			c->append(QString("</tr>"));
 
