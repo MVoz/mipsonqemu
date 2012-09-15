@@ -430,11 +430,6 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
 		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
 	}else if (name == "Bookmark"){
-		/*
-		QString   name=settings->value("Account/Username","").toString();
-		QString   password=tz::decrypt(settings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);	
-		jsStr.append(QString("$('#netbookmark').attr(\"src\",\"http://"HTTP_SERVER_HOST"/do.php?ac=4e9ded254714e0a04aca9db62e5e8fd9&source=client&username="+name+"&password="+password+"\");"));	
-		*/
 		jsStr.append("$('#menu').html('");
 		netbookmarkmenu(COME_FROM_MYBOOKMARK,0,"getbmfromid",jsStr);
 		getbmfromid(0,COME_FROM_MYBOOKMARK,"root",1);
@@ -452,14 +447,6 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		jsStr.append(QString("proxyEnableClick();"));
 
 	} else if (name == "Command"){
-		/*jsStr.append(QString("$('cmd_table').innerHTML='<table width=\"100%\" align=\"center\" cellspacing=\"1\" >\
-							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
-							 <td width=\"15%\">"+tz::tr("html_name")+"</td>\
-							 <td width=\"60%\">"+tz::tr("html_command")+"</td>\
-							 <td width=\"20%\">"+tz::tr("html_argument")+"</td>\
-							 </tr>"));
-		*/
 		jsStr.append("$('#cmdlist').html('");
 		//cmdLists.clear();
 		QSqlQuery q("",*db);
@@ -470,11 +457,6 @@ void OptionsDlg::loading(const QString & name,QString* c)
 			while(q.next()) {
 				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
 				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
-				/*
-				jsStr.append("<td><input type=\"radio\" name=\"select\" ");
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\">").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
-				jsStr.append("</td>");
-				*/
 				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"shortName")+"</td>");
 				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"fullPath")+"</td>");
 				jsStr.append("<td >"+Q_VALUE_STRING(q,"args")+"</td>");
@@ -489,21 +471,6 @@ void OptionsDlg::loading(const QString & name,QString* c)
 				jsStr.append(QString("href=\"qrc:deletecmd\" rel=\"width=540&height=90\">&nbsp;</a>"));
 				
 				jsStr.append(QString("</td >"));
-				/*				
-				jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-									 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\"></td>\
-									 <td width=\"15%\">%5</td>\
-									 <td width=\"60%\"  style=\"font-size:10;\" align=\"left\"><span class=\"cmd\">%6</span></td>\
-									 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
-									 </tr>")
-									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\\\\\"))
-									 .arg(q.value(args_Idx).toString())
-									 .arg(q.value(id_Idx).toUInt())
-									 .arg(q.value(shortName_Idx).toString().replace("\\", "\\\\"))
-									 .arg(q.value(fullPath_Idx).toString().replace("\\", "\\\\"))
-									 .arg(q.value(args_Idx).toString()));
-				*/
 				i++;
 			}
 
