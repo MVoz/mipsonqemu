@@ -49,4 +49,4 @@ thead.dirHeader th + th + th + th,tbody.dirContent td + td + td +td  {	width: 50
 thead.cmdHeader th + th + th + th,tbody.cmdContent td + td + td +td  {	width: 149px}
 thead.dirHeader th + th + th + th + th,tbody.dirContent td + td + td +td +td {	width: 30px}
 
-.del_dir_span{font-weight: bold;}
+.del_dir_span,.del_cmd_span{font-weight: bold;}
