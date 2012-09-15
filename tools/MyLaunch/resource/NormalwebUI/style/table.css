@@ -50,3 +50,5 @@ thead.cmdHeader th + th + th + th,tbody.cmdContent td + td + td +td  {	width: 14
 thead.dirHeader th + th + th + th + th,tbody.dirContent td + td + td +td +td {	width: 30px}
 
 .del_dir_span,.del_cmd_span{font-weight: bold;}
+.dirContent .ind{background: url("../images/icons.png") no-repeat scroll -87px -33px;height:100%;margin:0px;padding:0px;width:25px;text-indent: -9999px;}
+.dirContent .exd{background: url("../images/icons.png") no-repeat scroll -115px -33px;height:100%;margin:0px;padding:0px;width:25px;text-indent: -9999px;}

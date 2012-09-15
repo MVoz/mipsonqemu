@@ -26,6 +26,9 @@ mv 2 demo.min.css
 sed 's/..\/images\//qrc:images\//g' uniform.default.css > 2
 mv 2 uniform.default.css
 
+sed 's/..\/images\//qrc:images\//g' table.css > 2
+mv 2 table.css
+
 sed 's/margin-top: -2px;/margin-top: -10px;/g' uniform.default.css > 2
 mv 2 uniform.default.css
 
