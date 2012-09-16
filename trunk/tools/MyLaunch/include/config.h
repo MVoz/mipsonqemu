@@ -163,6 +163,8 @@ enum{
 #define BM_SERVER_DELETE_DIR  "/cp.php?ac=bmdir&op=delete&bmdirid=%1&browserid=%2&source=client&auth=%3&authkey=%4"
 #define BM_TEST_ACCOUNT_URL "/do.php?testAccount.php&"
 #define BM_SERVER_GET_DIGGXML_URL HTTP_SERVER_URL"do.php?ac=diggxml&source=client"
+#define HTTP_SERVER_URL_HELP HTTP_SERVER_URL"space?do=help"
+#define HTTP_SERVER_URL_VERSION HTTP_SERVER_URL"space?do=soft"
 #define BM_XML_FROM_FIREFOX  "firefox.xml"
 #define DOSUCCESSS  "do_success"
 #define DEFAULT_LANGUAGE 0 //chinese
