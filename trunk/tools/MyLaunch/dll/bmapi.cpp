@@ -1516,6 +1516,8 @@ void tz::netProxy(int mode,QSettings* s,QNetworkProxy** r)
 //			return;
 		if(s->value("HttpProxy/proxyEnable", false).toBool())
 		{
+			if(s->value("HttpProxy/proxyAddress", "").toString().trimmed().isEmpty()||s->value("HttpProxy/proxyPort", 0).toUInt()==0)
+				return;
 			runParameter(SET_MODE,RUN_PARAMETER_NETPROXY_ENABLE,1);
 			if(netproxy ==NULL)
 			{

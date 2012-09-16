@@ -65,11 +65,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 #else
 	getHtml("./html/Common.html");
 #endif
-	/*
-	webView->setHtml(QString("data:text/html,<frameset rows=\"100px,*\">"
-								"<frame src=\"./html/menu.html\">"
-								"<frame src=\"data:text/html,content\"></frameset>"), QUrl());
-	*/
+
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
 
