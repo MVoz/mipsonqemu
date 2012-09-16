@@ -304,6 +304,11 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyUsername",QSETTING_DEFAULT_STRING);
 		JS_APPEND_PASSWD(c,settings,"HttpProxy","proxyPassword",QSETTING_DEFAULT_STRING);
 
+		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastbmsync", 0).toUInt());
+		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAILED).toUInt();
+		c->append(QString("$('#lastbmsync').html('%1');").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
+		c->append(QString("$('#lastsyncstatus').html('%1');").arg((lastsyncstatus==SYNC_STATUS_FAILED)?"failed":((lastsyncstatus==SYNC_STATUS_SUCCESSFUL)?"successful":"processing...")));
+	
 		c->append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		
 	}else if(name == "showtab"){
