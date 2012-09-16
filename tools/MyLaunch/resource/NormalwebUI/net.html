@@ -42,6 +42,12 @@
 		});
 
 		//OptionsDlgOuput.loading('net');
+		
+		//proxy
+		$("#net_proxy input[type=text]").attr("disabled",!$('#proxyEnable').attr('checked'));
+		$("#net_proxy input[type=password]").attr("disabled",!$('#proxyEnable').attr('checked'));
+		$("#net_proxy a").attr("disabled",!$('#proxyEnable').attr('checked'));
+
 		$("input, textarea, select, button").uniform();
       });
     </script>
@@ -108,7 +114,6 @@
 				<dd><input type="password" maxlength="32" size="32" id="proxyPassword" name="proxyPassword"></dd>
 			</dl>	
 			<ul class="btn">
-					<li><a href="#" onclick="accountTestClick();">测试</a></li>
 					<li><a href="#" onclick="accountTestClick();">测试</a></li>
 			</ul>
 		</fieldset>
