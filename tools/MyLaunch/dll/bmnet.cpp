@@ -38,6 +38,7 @@ testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),
 }
 void testNet::testServerFinished(QNetworkReply* reply)
 {
+	QDEBUG_LINE;
 	STOP_TIMER(testNetTimer);
 	QNetworkReply::NetworkError error=reply->error();
 	if(!error)
@@ -104,6 +105,7 @@ void testNet::testServerFinished(QNetworkReply* reply)
 }
 void testNet::testServerTimeout()
 {
+	QDEBUG_LINE;
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(testNetTimer);
@@ -157,7 +159,7 @@ void testNet::run()
 #else
 	reply=manager->get(QNetworkRequest(QUrl(url)));
 #endif
-	
+	TD(DEBUG_LEVEL_NORMAL,url);
 	START_TIMER_INSIDE(testNetTimer,false,TEST_SERVER_TIMEOUT*SECONDS,testServerTimeout);
 	exec();
 	clearObject();		
