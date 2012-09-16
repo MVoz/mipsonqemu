@@ -114,6 +114,9 @@ function tb_detectMacXFF() {
     return true;
   }
 }
+function gohref(url) {
+	OptionsDlg.gohref(url);
+}
  $(function(){       
 		//nav
 		$("#nav").append('<li><a class="demos" href="index.html">通&nbsp;&nbsp;&nbsp;用</a></li>');
@@ -131,6 +134,5 @@ function tb_detectMacXFF() {
 		$('#apply #cancel a').click(function(){
 			OptionsDlg.reject();
 		});
-		//footer
-		$("#footer ul").append('<li>&copy; 2012 - <a href="http://codecanyon.net/user/360north">360north</a> &nbsp;/&nbsp; <a href="http://codecanyon.net/user/360north/follow">Follow on Envato</a></li>');
+
  });
