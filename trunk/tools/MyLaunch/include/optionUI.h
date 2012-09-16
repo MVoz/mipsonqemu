@@ -66,6 +66,10 @@ signals:
 		void stopSyncNotify();
 		void updateSuccessNotify();
 };
+enum SHOW_TAB{
+	SHOW_TAB_DIR=1,
+	SHOW_TAB_CMD
+};
 
 
 class OPTIONS_CLASS_EXPORT OptionsDlg:public QDialog
@@ -95,7 +99,7 @@ public:
 	QTimer* testProxyTimer;
 
 	volatile char testproxying;
-	
+	enum SHOW_TAB  show_tab;
 public:
 	int checkListDirExist(const QString& dirname);
 	int checkListDirSpecialchar(const QString& dirname);
@@ -109,7 +113,7 @@ public slots:
 	void accept();
 	void reject();
 	void apply(const QString& name,const QVariant &value);
-	void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const QString& cmdIndex);
+	void cmdApply(const int& type,const QString& cmdName,const QString &cmdCommand,const QString &cmdParameter,const int& cmdIndex);
 	void listApply(const int& type,const QString& listPath,const QString &listSuffix,const bool &isIncludeChildDir,const int& childDeep,const int& index);
 	void getListDirectory(const QString& id,const int& type);
 	void accountTestClick(const QString& name,const QString& password);
