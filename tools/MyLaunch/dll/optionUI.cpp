@@ -303,9 +303,13 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyPort",QSETTING_DEFAULT_STRING);
 		JS_APPEND_VALUE(c,settings,"HttpProxy","proxyUsername",QSETTING_DEFAULT_STRING);
 		JS_APPEND_PASSWD(c,settings,"HttpProxy","proxyPassword",QSETTING_DEFAULT_STRING);
+
+		c->append(QString("$('#version').html('%1');").arg(APP_VERSION));
 		
 	}else if(name == "showtab"){
 		c->append(QString("showtab(%1);").arg(show_tab));
+	}else if(name == "version"){
+		c->append(QString("<a class=\"version\" href=\"#\" onclick=\"gohref(%1)\">%2</a>;").arg(HTTP_SERVER_URL).arg(APP_VERSION));		
 	}else if(name == "custom"){
 		
 	}else if(name == "dirlist"){
