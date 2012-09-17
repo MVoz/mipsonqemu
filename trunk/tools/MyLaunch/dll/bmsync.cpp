@@ -175,7 +175,7 @@ void bmSync::run()
 	THREAD_MONITOR_POINT;
 	semaphore->acquire(1);
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
 //	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
 	

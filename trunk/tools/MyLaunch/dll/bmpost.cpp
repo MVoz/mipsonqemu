@@ -20,7 +20,7 @@ void bmPost::clearObject()
 void bmPost::gorun()
 {
 	THREAD_MONITOR_POINT;
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
 	START_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
 	
 	posthttp = new QHttp();
