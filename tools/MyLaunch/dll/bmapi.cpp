@@ -1504,6 +1504,66 @@ int tz::runParameter(int mode,int type,int ret)
 	}
 	return 0;
 }
+static uint32 monitorTimeout = MONITER_TIME_INTERVAL;
+static uint32 testnetTimeout =  TEST_SERVER_TIMEOUT;
+static uint32 postitemTimeout = POST_ITEM_TIMEOUT;
+static uint32 catalogbuilderTimeout = CATALOG_BUILDER_INTERVAL;
+static uint32 silentsyncTimeout = SILENT_SYNC_INTERVAL;
+static uint32 diggxmlTimeout = DIGG_XML_INTERVAL;
+static uint32 autolearnprocessTimeout = AUTO_LEARN_PROCESS_INTERVAL;
+
+
+struct parameter_mib{
+	uint32* val;	
+	uint32 min;
+	uint32 max;
+	QString name;
+} PARAMETER_MIB[]={
+		{&monitorTimeout,MONITER_TIME_INTERVAL_MIN,MONITER_TIME_INTERVAL_MAX,QString("monitorTimeout")},
+		{&testnetTimeout,TEST_SERVER_TIMEOUT_MIN,TEST_SERVER_TIMEOUT_MAX,QString("testnetTimeout")},
+		{&postitemTimeout,POST_ITEM_TIMEOUT_MIN,POST_ITEM_TIMEOUT_MAX,QString("postitemTimeout")},
+		{&catalogbuilderTimeout,CATALOG_BUILDER_INTERVAL_MIN,CATALOG_BUILDER_INTERVAL_MAX,QString("catalogbuilderTimeout")},
+		{&silentsyncTimeout,SILENT_SYNC_INTERVAL_MIN,SILENT_SYNC_INTERVAL_MAX,QString("silentsyncTimeout")},
+		{&diggxmlTimeout,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MAX,QString("diggxmlTimeout")},
+		{&autolearnprocessTimeout,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MAX,QString("autolearnprocessTimeout")},
+		{NULL,0,0,QString("")}
+};
+
+void tz::setParameterMib(QSettings* s,QString& parametername)
+{
+	int i = 0;
+	while(PARAMETER_MIB[i].val){
+		if(PARAMETER_MIB[i].name == parametername){
+				(*PARAMETER_MIB[i].val) = s->value(QString("SYS/").arg(parametername), MONITER_TIME_INTERVAL_MIN).toUInt();
+				if((*PARAMETER_MIB[i].val) <PARAMETER_MIB[i].min)
+					(*PARAMETER_MIB[i].val)  = PARAMETER_MIB[i].min;
+				else if((*PARAMETER_MIB[i].val)  > PARAMETER_MIB[i].max )
+					(*PARAMETER_MIB[i].val)  = PARAMETER_MIB[i].max;
+		}
+		i++;
+	}
+}
+uint32 tz::getParameterMib(QString& parametername)
+{
+	int i = 0;
+	while(PARAMETER_MIB[i].val){
+		if(PARAMETER_MIB[i].name == parametername){
+			return (*PARAMETER_MIB[i].val);
+		}
+		i++;
+	}
+	return 0;
+}
+void tz::initParameterMib(QSettings* s){
+	setParameterMib(s,QString("monitorTimeout"));
+	setParameterMib(s,QString("testnetTimeout"));
+	setParameterMib(s,QString("postitemTimeout"));
+	setParameterMib(s,QString("catalogbuilderTimeout"));
+	setParameterMib(s,QString("silentsyncTimeout"));
+	setParameterMib(s,QString("diggxmlTimeout"));
+	setParameterMib(s,QString("autolearnprocessTimeout"));
+}
+
 void tz::netProxy(int mode,QSettings* s,QNetworkProxy** r)
 {
 	switch(mode)

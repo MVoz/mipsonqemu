@@ -74,7 +74,7 @@ int GetFileHttp::newHttp()
 void GetFileHttp::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,10,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
 	QDir dir(".");
 	if(!dir.exists(destdir))
 		dir.mkdir(destdir);

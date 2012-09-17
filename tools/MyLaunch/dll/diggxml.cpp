@@ -102,7 +102,7 @@ void diggXml::run()
 {
 	THREAD_MONITOR_POINT;
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,MONITER_TIME_INTERVAL,monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
 	
 	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML,diggid);
 	testThread->moveToThread(this);

@@ -13,6 +13,7 @@
 
 #define GET_MODE 0
 #define SET_MODE 1
+typedef  unsigned int uint32;
 
 enum BROWSERINFO_OP{
 	BROWSERINFO_OP_LASTUPDATE=0,
@@ -244,6 +245,9 @@ public :
 	static QString getUserFullpath(QSettings* s,int type);
 	static int deleteDirectory(const QString& path);
 	static uint qhashEx(const QString&);
+	static void initParameterMib(QSettings* s);
+	static uint32 getParameterMib(QString& parametername);
+	static void setParameterMib(QSettings* s,QString& parametername);
 
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };

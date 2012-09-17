@@ -348,6 +348,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 			storeConfig(1);
 		}
 	}
+	tz::initParameterMib(gSettings);
 	//inital language
 	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
 	shortkeyString=getShortkeyString();
@@ -2876,6 +2877,7 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 #endif
 	gSyncer->setUrl(url);
+	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);
 	if(mode == SYNC_MODE_BOOKMARK||mode == SYNC_MODE_REBOOKMARK){
 		gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
