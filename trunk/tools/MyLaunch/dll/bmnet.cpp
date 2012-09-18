@@ -21,11 +21,11 @@ void MyThread::monitorTimeout(){
 		terminateThread();
 	else
 	{
-		monitorTimer->start(MONITER_TIME_INTERVAL);
+		monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 	}
 }
 void MyThread::run(){
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 }
 void MyThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
@@ -38,7 +38,6 @@ testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),
 }
 void testNet::testServerFinished(QNetworkReply* reply)
 {
-	QDEBUG_LINE;
 	STOP_TIMER(testNetTimer);
 	QNetworkReply::NetworkError error=reply->error();
 	if(!error)
@@ -105,9 +104,8 @@ void testNet::testServerFinished(QNetworkReply* reply)
 }
 void testNet::testServerTimeout()
 {
-	QDEBUG_LINE;
 	THREAD_MONITOR_POINT;
-	STOP_TIMER(monitorTimer);
+	//STOP_TIMER(monitorTimer);
 	STOP_TIMER(testNetTimer);
 	reply->abort();
 }
@@ -123,12 +121,14 @@ void testNet::clearObject()
 	DELETE_OBJECT(reply);
 	DELETE_OBJECT(manager);
 	DELETE_TIMER(testNetTimer);
+	DELETE_TIMER(monitorTimer);
+	QDEBUG_LINE;
 }
 void testNet::run()
 {
-	THREAD_MONITOR_POINT;
+	THREAD_MONITOR_POINT;	
 	QString url ="";
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);	
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);	
 	if(mode==TEST_SERVER_NET)
 	{
 		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
@@ -160,7 +160,7 @@ void testNet::run()
 	reply=manager->get(QNetworkRequest(QUrl(url)));
 #endif
 	TD(DEBUG_LEVEL_NORMAL,url);
-	START_TIMER_INSIDE(testNetTimer,false,(tz::getParameterMib(QString("testnetTimeout")))*SECONDS,testServerTimeout);
+	START_TIMER_INSIDE(testNetTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT))*SECONDS,testServerTimeout);
 	exec();
 	clearObject();		
 }

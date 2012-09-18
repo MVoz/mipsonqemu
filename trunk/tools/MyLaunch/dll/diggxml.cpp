@@ -41,7 +41,7 @@ void diggXml::testNetFinished()
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http,settings);
-			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
+			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
 			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 			diggxml_fromserver.clear();
@@ -86,7 +86,7 @@ void diggXml::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(MONITER_TIME_INTERVAL);
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 
 }
 void diggXml::clearobject()
@@ -102,7 +102,7 @@ void diggXml::run()
 {
 	THREAD_MONITOR_POINT;
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 	
 	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML,diggid);
 	testThread->moveToThread(this);

@@ -68,13 +68,13 @@ int GetFileHttp::newHttp()
 
 	url=QString(branch).append("/").append(updaterFilename);
 	http[retryTime]->get(url, file[retryTime]);
-	START_TIMER_INSIDE(httpTimer[retryTime],false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
+	START_TIMER_INSIDE(httpTimer[retryTime],false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
 	return 1;
 }
 void GetFileHttp::run()
 {
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 	QDir dir(".");
 	if(!dir.exists(destdir))
 		dir.mkdir(destdir);

@@ -30,6 +30,10 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 	mgthread=NULL;
 	httpTimer = NULL;
 	needwatchchild = false;
+	http_state = 0;
+	http_state_time = 0;
+	http_send_len = 0;
+	http_rcv_len = 0;
 }
 void bmSync::httpTimeout()
 {
@@ -72,12 +76,14 @@ void bmSync::testNetFinished()
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http,settings);
-			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
+			//START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
 
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
 				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
-				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
+				connect(http, SIGNAL(stateChanged(int)), this, SLOT(bmxmlstateChanged(int)),Qt::DirectConnection);
+				connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(bmxmldataSendProgress(int,int)),Qt::DirectConnection);
+				connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(bmxmldataReadProgress(int,int)),Qt::DirectConnection);
 				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 				filename_fromserver.clear();
 				filename_fromserver=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(filename_fromserver));
@@ -118,6 +124,12 @@ void bmSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
+	if(http){
+		http_state_time++;
+		if(tz::getParameterMib(http_state)&&((http_state_time*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
+			http->abort();
+		}
+	}
 	if(THREAD_IS_FINISHED(testThread))
 	{
 		DELETE_OBJECT(testThread);
@@ -134,7 +146,7 @@ void bmSync::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(MONITER_TIME_INTERVAL);
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 
 }
 void bmSync::clearobject()
@@ -172,7 +184,7 @@ void bmSync::run()
 	THREAD_MONITOR_POINT;
 	semaphore->acquire(1);
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(QString("monitorTimeout"))),monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 //	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
 	
@@ -219,6 +231,26 @@ void bmSync::mgUpdateStatus(int flag,int statusid,int icon)
 	if(!terminateFlag)
 		emit updateStatusNotify(flag,statusid,icon);
 }
+void bmSync::bmxmlstateChanged(int state){
+	if(http_state!=state)
+		http_state_time=0;
+	http_state = state;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);
+	
+}
+void bmSync::bmxmldataSendProgress(int len,int total){
+	if(http_send_len != len)
+		http_state_time=0;
+	http_send_len = len;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_send_len);
+}
+void bmSync::bmxmldataReadProgress(int len,int total){
+	if(http_rcv_len != len)
+		http_state_time=0;
+	http_rcv_len = len;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
+}
+
 void bmSync::bmxmlGetFinished(bool error)
 {
 	THREAD_MONITOR_POINT;

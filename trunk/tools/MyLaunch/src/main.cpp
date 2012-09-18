@@ -675,7 +675,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	
 	NEW_TIMER(monitorTimer);
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
-	monitorTimer->start(MONITER_TIME_INTERVAL);	
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));	
 #ifdef CONFIG_DIGG_XML
 	diggxmler->start();
 #endif
@@ -3150,7 +3150,7 @@ void MyWidget::monitorTimerTimeout()
 
 	}
 	//clear user directory	
-	monitorTimer->start(MONITER_TIME_INTERVAL);
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 }
 #ifdef CONFIG_DIGG_XML
 
