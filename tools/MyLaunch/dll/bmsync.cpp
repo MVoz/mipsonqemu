@@ -72,18 +72,15 @@ void bmSync::testNetFinished()
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http,settings);
-			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimeout);
+			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
 
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
 				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
+				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
 				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 				filename_fromserver.clear();
-				//getUserLocalFullpath(settings,QUuid::createUuid ().toString(),filename_fromserver);
-				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
-				//filename_fromserver=tz::getUserIniDir(GET_MODE,"")+"/"+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(qhashEx(filename_fromserver,filename_fromserver.length()));
 				filename_fromserver=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(filename_fromserver));
-				//qDebug("random file from server:%s",qPrintable(filename_fromserver));
 				file = new QFile(filename_fromserver);
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);

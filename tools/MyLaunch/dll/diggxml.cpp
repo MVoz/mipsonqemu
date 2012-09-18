@@ -41,7 +41,7 @@ void diggXml::testNetFinished()
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http,settings);
-			START_TIMER_INSIDE(httpTimer,false,10*SECONDS,httpTimeout);
+			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
 			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 			diggxml_fromserver.clear();

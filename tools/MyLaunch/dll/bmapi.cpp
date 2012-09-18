@@ -1511,22 +1511,29 @@ static uint32 catalogbuilderTimeout = CATALOG_BUILDER_INTERVAL;
 static uint32 silentsyncTimeout = SILENT_SYNC_INTERVAL;
 static uint32 diggxmlTimeout = DIGG_XML_INTERVAL;
 static uint32 autolearnprocessTimeout = AUTO_LEARN_PROCESS_INTERVAL;
+static uint32 httpgetTimeout = HTTP_GET_INTERVAL;
+static uint32 httpgetrespondTimeout = HTTP_GET_RESPOND_INTERVAL;
+static uint32 httppostTimeout = HTTP_POST_INTERVAL;
 
 
 struct parameter_mib{
-	uint32* val;	
+	uint32* val;
+	uint32 defval;
 	uint32 min;
 	uint32 max;
 	QString name;
 } PARAMETER_MIB[]={
-		{&monitorTimeout,MONITER_TIME_INTERVAL_MIN,MONITER_TIME_INTERVAL_MAX,QString("monitorTimeout")},
-		{&testnetTimeout,TEST_SERVER_TIMEOUT_MIN,TEST_SERVER_TIMEOUT_MAX,QString("testnetTimeout")},
-		{&postitemTimeout,POST_ITEM_TIMEOUT_MIN,POST_ITEM_TIMEOUT_MAX,QString("postitemTimeout")},
-		{&catalogbuilderTimeout,CATALOG_BUILDER_INTERVAL_MIN,CATALOG_BUILDER_INTERVAL_MAX,QString("catalogbuilderTimeout")},
-		{&silentsyncTimeout,SILENT_SYNC_INTERVAL_MIN,SILENT_SYNC_INTERVAL_MAX,QString("silentsyncTimeout")},
-		{&diggxmlTimeout,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MAX,QString("diggxmlTimeout")},
-		{&autolearnprocessTimeout,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MAX,QString("autolearnprocessTimeout")},
-		{NULL,0,0,QString("")}
+		{&monitorTimeout,MONITER_TIME_INTERVAL_MAX,MONITER_TIME_INTERVAL_MIN,MONITER_TIME_INTERVAL_MAX,QString("monitorTimeout")},
+		{&testnetTimeout,TEST_SERVER_TIMEOUT_MAX,TEST_SERVER_TIMEOUT_MIN,TEST_SERVER_TIMEOUT_MAX,QString("testnetTimeout")},
+		{&postitemTimeout,POST_ITEM_TIMEOUT_MAX,POST_ITEM_TIMEOUT_MIN,POST_ITEM_TIMEOUT_MAX,QString("postitemTimeout")},
+		{&catalogbuilderTimeout,CATALOG_BUILDER_INTERVAL_MAX,CATALOG_BUILDER_INTERVAL_MIN,CATALOG_BUILDER_INTERVAL_MAX,QString("catalogbuilderTimeout")},
+		{&silentsyncTimeout,SILENT_SYNC_INTERVAL_MAX,SILENT_SYNC_INTERVAL_MIN,SILENT_SYNC_INTERVAL_MAX,QString("silentsyncTimeout")},
+		{&diggxmlTimeout,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MAX,QString("diggxmlTimeout")},
+		{&autolearnprocessTimeout,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MAX,QString("autolearnprocessTimeout")},
+		{&httpgetTimeout,HTTP_GET_INTERVAL,HTTP_GET_INTERVAL_MIN,HTTP_GET_INTERVAL_MAX,QString("httpgetTimeout")},
+		{&httpgetrespondTimeout,HTTP_GET_RESPOND_INTERVAL,HTTP_GET_RESPOND_INTERVAL_MIN,HTTP_GET_RESPOND_INTERVAL_MAX,QString("httpgetrespondTimeout")},
+		{&httppostTimeout,HTTP_POST_INTERVAL,HTTP_POST_INTERVAL_MIN,HTTP_POST_INTERVAL_MAX,QString("httppostTimeout")},
+		{NULL,0,0,0,QString("")}
 };
 
 void tz::setParameterMib(QSettings* s,QString& parametername)
@@ -1534,7 +1541,7 @@ void tz::setParameterMib(QSettings* s,QString& parametername)
 	int i = 0;
 	while(PARAMETER_MIB[i].val){
 		if(PARAMETER_MIB[i].name == parametername){
-				(*PARAMETER_MIB[i].val) = s->value(QString("SYS/").arg(parametername), MONITER_TIME_INTERVAL_MIN).toUInt();
+				(*PARAMETER_MIB[i].val) = s->value(QString("SYS/%1").arg(parametername), PARAMETER_MIB[i].defval).toUInt();
 				if((*PARAMETER_MIB[i].val) <PARAMETER_MIB[i].min)
 					(*PARAMETER_MIB[i].val)  = PARAMETER_MIB[i].min;
 				else if((*PARAMETER_MIB[i].val)  > PARAMETER_MIB[i].max )
@@ -1562,6 +1569,16 @@ void tz::initParameterMib(QSettings* s){
 	setParameterMib(s,QString("silentsyncTimeout"));
 	setParameterMib(s,QString("diggxmlTimeout"));
 	setParameterMib(s,QString("autolearnprocessTimeout"));
+	setParameterMib(s,QString("httpgetTimeout"));
+	setParameterMib(s,QString("httpgetrespondTimeout"));
+	setParameterMib(s,QString("httppostTimeout"));
+#ifdef TOUCH_ANY_DEBUG
+	int i = 0;
+	while(PARAMETER_MIB[i].val){
+		TD(DEBUG_LEVEL_NORMAL,PARAMETER_MIB[i].name<<*PARAMETER_MIB[i].val);
+		i++;
+	}
+#endif
 }
 
 void tz::netProxy(int mode,QSettings* s,QNetworkProxy** r)

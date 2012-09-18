@@ -68,7 +68,7 @@ int GetFileHttp::newHttp()
 
 	url=QString(branch).append("/").append(updaterFilename);
 	http[retryTime]->get(url, file[retryTime]);
-	START_TIMER_INSIDE(httpTimer[retryTime],false,10*SECONDS,httpTimeout);
+	START_TIMER_INSIDE(httpTimer[retryTime],false,(tz::getParameterMib(QString("httpgetrespondTimeout")))*SECONDS,httpTimeout);
 	return 1;
 }
 void GetFileHttp::run()
