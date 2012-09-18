@@ -1504,6 +1504,14 @@ int tz::runParameter(int mode,int type,int ret)
 	}
 	return 0;
 }
+static uint32 httpunconnectedTimeout = QHTTP_UNCONNECTED_TIME_INTERVAL;
+static uint32 httphostlookupTimeout = QHTTP_HOSTLOOKUP_TIME_INTERVAL;
+static uint32 httpconnectingTimeout = QHTTP_CONNECTING_TIME_INTERVAL;
+static uint32 httpsendingTimeout = QHTTP_SENDING_TIME_INTERVAL;
+static uint32 httpreadingTimeout = QHTTP_READING_TIME_INTERVAL;
+static uint32 httpconnectedTimeout = QHTTP_CONNECTED_TIME_INTERVAL;
+static uint32 httpclosingTimeout = QHTTP_CLOSING_TIME_INTERVAL;
+
 static uint32 monitorTimeout = MONITER_TIME_INTERVAL;
 static uint32 testnetTimeout =  TEST_SERVER_TIMEOUT;
 static uint32 postitemTimeout = POST_ITEM_TIMEOUT;
@@ -1515,33 +1523,40 @@ static uint32 httpgetTimeout = HTTP_GET_INTERVAL;
 static uint32 httpgetrespondTimeout = HTTP_GET_RESPOND_INTERVAL;
 static uint32 httppostTimeout = HTTP_POST_INTERVAL;
 
-
 struct parameter_mib{
+	uint32 id;
 	uint32* val;
 	uint32 defval;
 	uint32 min;
-	uint32 max;
+	uint32 max;	
 	QString name;
 } PARAMETER_MIB[]={
-		{&monitorTimeout,MONITER_TIME_INTERVAL_MAX,MONITER_TIME_INTERVAL_MIN,MONITER_TIME_INTERVAL_MAX,QString("monitorTimeout")},
-		{&testnetTimeout,TEST_SERVER_TIMEOUT_MAX,TEST_SERVER_TIMEOUT_MIN,TEST_SERVER_TIMEOUT_MAX,QString("testnetTimeout")},
-		{&postitemTimeout,POST_ITEM_TIMEOUT_MAX,POST_ITEM_TIMEOUT_MIN,POST_ITEM_TIMEOUT_MAX,QString("postitemTimeout")},
-		{&catalogbuilderTimeout,CATALOG_BUILDER_INTERVAL_MAX,CATALOG_BUILDER_INTERVAL_MIN,CATALOG_BUILDER_INTERVAL_MAX,QString("catalogbuilderTimeout")},
-		{&silentsyncTimeout,SILENT_SYNC_INTERVAL_MAX,SILENT_SYNC_INTERVAL_MIN,SILENT_SYNC_INTERVAL_MAX,QString("silentsyncTimeout")},
-		{&diggxmlTimeout,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MAX,QString("diggxmlTimeout")},
-		{&autolearnprocessTimeout,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MAX,QString("autolearnprocessTimeout")},
-		{&httpgetTimeout,HTTP_GET_INTERVAL,HTTP_GET_INTERVAL_MIN,HTTP_GET_INTERVAL_MAX,QString("httpgetTimeout")},
-		{&httpgetrespondTimeout,HTTP_GET_RESPOND_INTERVAL,HTTP_GET_RESPOND_INTERVAL_MIN,HTTP_GET_RESPOND_INTERVAL_MAX,QString("httpgetrespondTimeout")},
-		{&httppostTimeout,HTTP_POST_INTERVAL,HTTP_POST_INTERVAL_MIN,HTTP_POST_INTERVAL_MAX,QString("httppostTimeout")},
-		{NULL,0,0,0,QString("")}
+		{QHTTP_UNCONNECTED,&httpunconnectedTimeout,0,0,0,QString("httpunconnectedTimeout")},
+		{QHTTP_HOSTLOOKUP,&httphostlookupTimeout,QHTTP_HOSTLOOKUP_TIME_INTERVAL,QHTTP_HOSTLOOKUP_TIME_INTERVAL_MIN,QHTTP_HOSTLOOKUP_TIME_INTERVAL_MAX,QString("httphostlookupTimeout")},
+		{QHTTP_CONNECTING,&httpconnectingTimeout,QHTTP_CONNECTING_TIME_INTERVAL,QHTTP_CONNECTING_TIME_INTERVAL_MIN,QHTTP_CONNECTING_TIME_INTERVAL_MAX,QString("httpconnectingTimeout")},
+		{QHTTP_SENDING,&httpsendingTimeout,QHTTP_SENDING_TIME_INTERVAL,QHTTP_SENDING_TIME_INTERVAL_MIN,QHTTP_SENDING_TIME_INTERVAL_MAX,QString("httpsendingTimeout")},
+		{QHTTP_READING,&httpreadingTimeout,QHTTP_READING_TIME_INTERVAL,QHTTP_READING_TIME_INTERVAL_MIN,QHTTP_READING_TIME_INTERVAL_MAX,QString("httpreadingTimeout")},
+		{QHTTP_CONNECTED,&httpconnectedTimeout,QHTTP_CONNECTED_TIME_INTERVAL,QHTTP_CONNECTED_TIME_INTERVAL_MIN,QHTTP_CONNECTED_TIME_INTERVAL_MAX,QString("httpconnectedTimeout")},
+		{QHTTP_CLOSING,&httpclosingTimeout,0,0,0,QString("httpclosingTimeout")},
+		{SYS_MONITORTIMEOUT,&monitorTimeout,MONITER_TIME_INTERVAL_MAX,MONITER_TIME_INTERVAL_MIN,MONITER_TIME_INTERVAL_MAX,QString("monitorTimeout")},
+		{SYS_TESTNETTIMEOUT,&testnetTimeout,TEST_SERVER_TIMEOUT_MAX,TEST_SERVER_TIMEOUT_MIN,TEST_SERVER_TIMEOUT_MAX,QString("testnetTimeout")},
+		{SYS_POSTITEMTIMEOUT,&postitemTimeout,POST_ITEM_TIMEOUT_MAX,POST_ITEM_TIMEOUT_MIN,POST_ITEM_TIMEOUT_MAX,QString("postitemTimeout")},
+		{SYS_CATALOGBUILDERTIMEOUT,&catalogbuilderTimeout,CATALOG_BUILDER_INTERVAL_MAX,CATALOG_BUILDER_INTERVAL_MIN,CATALOG_BUILDER_INTERVAL_MAX,QString("catalogbuilderTimeout")},
+		{SYS_SILENTSYNCTIMEOUT,&silentsyncTimeout,SILENT_SYNC_INTERVAL_MAX,SILENT_SYNC_INTERVAL_MIN,SILENT_SYNC_INTERVAL_MAX,QString("silentsyncTimeout")},
+		{SYS_DIGGXMLTIMEOUT,&diggxmlTimeout,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MIN,DIGG_XML_INTERVAL_MAX,QString("diggxmlTimeout")},
+		{SYS_AUTOLEARNPROCESSTIMEOUT,&autolearnprocessTimeout,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MIN,AUTO_LEARN_PROCESS_INTERVAL_MAX,QString("autolearnprocessTimeout")},
+		{SYS_HTTPGETTIMEOUT,&httpgetTimeout,HTTP_GET_INTERVAL,HTTP_GET_INTERVAL_MIN,HTTP_GET_INTERVAL_MAX,QString("httpgetTimeout")},
+		{SYS_HTTPGETRESPONDTIMEOUT,&httpgetrespondTimeout,HTTP_GET_RESPOND_INTERVAL,HTTP_GET_RESPOND_INTERVAL_MIN,HTTP_GET_RESPOND_INTERVAL_MAX,QString("httpgetrespondTimeout")},
+		{SYS_HTTPPOSTTIMEOUTT,&httppostTimeout,HTTP_POST_INTERVAL,HTTP_POST_INTERVAL_MIN,HTTP_POST_INTERVAL_MAX,QString("httppostTimeout")},
+		{0,NULL,0,0,0,QString("")}
 };
 
-void tz::setParameterMib(QSettings* s,QString& parametername)
+void tz::setParameterMib(QSettings* s,int id)
 {
 	int i = 0;
 	while(PARAMETER_MIB[i].val){
-		if(PARAMETER_MIB[i].name == parametername){
-				(*PARAMETER_MIB[i].val) = s->value(QString("SYS/%1").arg(parametername), PARAMETER_MIB[i].defval).toUInt();
+		if(PARAMETER_MIB[i].id == id){
+				(*PARAMETER_MIB[i].val) = s->value(QString("SYS/%1").arg(PARAMETER_MIB[i].name), PARAMETER_MIB[i].defval).toUInt();
 				if((*PARAMETER_MIB[i].val) <PARAMETER_MIB[i].min)
 					(*PARAMETER_MIB[i].val)  = PARAMETER_MIB[i].min;
 				else if((*PARAMETER_MIB[i].val)  > PARAMETER_MIB[i].max )
@@ -1550,11 +1565,11 @@ void tz::setParameterMib(QSettings* s,QString& parametername)
 		i++;
 	}
 }
-uint32 tz::getParameterMib(QString& parametername)
+uint32 tz::getParameterMib(int id)
 {
 	int i = 0;
 	while(PARAMETER_MIB[i].val){
-		if(PARAMETER_MIB[i].name == parametername){
+		if(PARAMETER_MIB[i].id == id){
 			return (*PARAMETER_MIB[i].val);
 		}
 		i++;
@@ -1562,18 +1577,14 @@ uint32 tz::getParameterMib(QString& parametername)
 	return 0;
 }
 void tz::initParameterMib(QSettings* s){
-	setParameterMib(s,QString("monitorTimeout"));
-	setParameterMib(s,QString("testnetTimeout"));
-	setParameterMib(s,QString("postitemTimeout"));
-	setParameterMib(s,QString("catalogbuilderTimeout"));
-	setParameterMib(s,QString("silentsyncTimeout"));
-	setParameterMib(s,QString("diggxmlTimeout"));
-	setParameterMib(s,QString("autolearnprocessTimeout"));
-	setParameterMib(s,QString("httpgetTimeout"));
-	setParameterMib(s,QString("httpgetrespondTimeout"));
-	setParameterMib(s,QString("httppostTimeout"));
-#ifdef TOUCH_ANY_DEBUG
 	int i = 0;
+	while(PARAMETER_MIB[i].val){
+		setParameterMib(s,PARAMETER_MIB[i].id);
+		i++;
+	}
+	
+#ifdef TOUCH_ANY_DEBUG
+	i=0;
 	while(PARAMETER_MIB[i].val){
 		TD(DEBUG_LEVEL_NORMAL,PARAMETER_MIB[i].name<<*PARAMETER_MIB[i].val);
 		i++;

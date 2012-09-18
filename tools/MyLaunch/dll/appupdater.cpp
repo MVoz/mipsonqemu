@@ -103,12 +103,12 @@ void appUpdater::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start(tz::getParameterMib(QString("monitorTimeout")));	
+	monitorTimer->start(tz::getParameterMib(SYS_MONITORTIMEOUT));	
 }
 
 void appUpdater::run()
 {
-	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(QString("monitorTimeout")),monitorTimeout);
+	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(SYS_MONITORTIMEOUT),monitorTimeout);
 	if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 	

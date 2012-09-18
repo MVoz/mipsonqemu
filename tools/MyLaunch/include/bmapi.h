@@ -13,7 +13,8 @@
 
 #define GET_MODE 0
 #define SET_MODE 1
-typedef  unsigned int uint32;
+
+
 
 enum BROWSERINFO_OP{
 	BROWSERINFO_OP_LASTUPDATE=0,
@@ -184,6 +185,25 @@ enum BMAPI_DLL_CLASSEXPORT RUNPARAMETER{
 };
 
 
+enum BMAPI_DLL_CLASSEXPORT TIMEOUT_TYPE{
+	QHTTP_UNCONNECTED=QHttp::Unconnected,
+	QHTTP_HOSTLOOKUP=QHttp::HostLookup,
+	QHTTP_CONNECTING=QHttp::Connecting,
+	QHTTP_SENDING=QHttp::Sending,
+	QHTTP_READING=QHttp::Reading,
+	QHTTP_CONNECTED=QHttp::Connected,
+	QHTTP_CLOSING=QHttp::Closing,
+	SYS_MONITORTIMEOUT,
+	SYS_TESTNETTIMEOUT,
+	SYS_POSTITEMTIMEOUT,
+	SYS_CATALOGBUILDERTIMEOUT,
+	SYS_SILENTSYNCTIMEOUT,
+	SYS_DIGGXMLTIMEOUT,
+	SYS_AUTOLEARNPROCESSTIMEOUT,
+	SYS_HTTPGETTIMEOUT,
+	SYS_HTTPGETRESPONDTIMEOUT,
+	SYS_HTTPPOSTTIMEOUTT,
+};
 
 
 class BMAPI_DLL_CLASSEXPORT  tz {
@@ -246,8 +266,8 @@ public :
 	static int deleteDirectory(const QString& path);
 	static uint qhashEx(const QString&);
 	static void initParameterMib(QSettings* s);
-	static uint32 getParameterMib(QString& parametername);
-	static void setParameterMib(QSettings* s,QString& parametername);
+	static uint32 getParameterMib(int id);
+	static void setParameterMib(QSettings* s,int id);
 
 	//static void deleteRelatedFromShortCut(QSqlDatabase *db,QString name,QString fullpath,uint comeFrom);
 };
