@@ -5,27 +5,28 @@
 bmPost::bmPost(QObject * parent,QSettings* s,int type ):MyThread(parent,s)
 {
 	postType=type;
-	postTimer = NULL;
-	resultBuffer = NULL;
-	posthttp = NULL;
+//ostTimer = NULL;
+//	resultBuffer = NULL;
+//	posthttp = NULL;
 }
 void bmPost::clearObject()
 {
 	THREAD_MONITOR_POINT;
-	DELETE_FILE(resultBuffer);
-	DELETE_TIMER(monitorTimer);
-	DELETE_TIMER(postTimer);
-	DELETE_OBJECT(posthttp);
+	MyThread::clearObject();
+//	DELETE_FILE(resultBuffer);
+//	DELETE_TIMER(monitorTimer);
+//ELETE_TIMER(postTimer);
+//	DELETE_OBJECT(posthttp);
 }
 void bmPost::gorun()
 {
 	THREAD_MONITOR_POINT;
 	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
-	START_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
+//TART_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
 	
-	posthttp = new QHttp();
-	posthttp->moveToThread(this);	
-	SET_NET_PROXY(posthttp,settings);
+	http = new QHttp();
+	http->moveToThread(this);	
+	SET_NET_PROXY(http,settings);
 	/*
 
 	I found the problem:
@@ -34,11 +35,14 @@ void bmPost::gorun()
 	created, and thus lives, in the main GUI thread. The QTimer is created in the thread spawned off of the 
 	QThread object. So in this case I needed a Qt:: DirectConnection.
 	*/
-	connect(posthttp, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
+	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
+	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
+	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+	connect(http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
 #ifdef CONFIG_SERVER_IP_SETTING
-	SET_HOST_IP(settings,posthttp);
+	SET_HOST_IP(settings,http);
 #else
-	posthttp->setHost(BM_SERVER_ADDRESS);
+	http->setHost(BM_SERVER_ADDRESS);
 #endif
 	QHttpRequestHeader header;
 	switch(postType)
@@ -83,7 +87,7 @@ void bmPost::gorun()
 	resultBuffer = new QBuffer();
 	resultBuffer->moveToThread(this);
 	resultBuffer->open(QIODevice::ReadWrite);
-	posthttp->request(header, postString.toUtf8(), resultBuffer);
+	http->request(header, postString.toUtf8(), resultBuffer);
 
 }
 
@@ -92,15 +96,15 @@ void bmPost::run()
 	THREAD_MONITOR_POINT;
 	gorun();
 	exec();
-	if(posthttp)
-		disconnect(posthttp, 0, 0, 0);
+	if(http)
+		disconnect(http, 0, 0, 0);
 	clearObject();
 }
 
 void bmPost::httpDone(bool error)
 {
 	THREAD_MONITOR_POINT;
-	STOP_TIMER(postTimer);
+//	STOP_TIMER(postTimer);
 	if(!error)
 	{
 		uint newgroupid=0;
@@ -165,18 +169,27 @@ void bmPost::httpDone(bool error)
 	SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,error);
 	exit(error);
 }
-
+/*
 void bmPost::postTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
 	STOP_TIMER(postTimer);
-	posthttp->abort();
+	http->abort();
 }
+*/
 void bmPost::terminateThread()
 {
-	postTimeout();
+	//postTimeout();
 	MyThread::terminateThread();
 }
-
-
+void bmPost::monitorTimeout(){
+	STOP_TIMER(monitorTimer);
+	if(http){
+		http_timeout++;
+		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
+			http->abort();
+		}
+	}
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
+}

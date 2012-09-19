@@ -9,6 +9,8 @@
 #else
 #define TEST_SERVER_DLL_CLASS_EXPORT __declspec(dllimport)
 #endif
+
+#define USE_HTTP
 class TEST_SERVER_DLL_CLASS_EXPORT MyThread:public QThread
 {
 	Q_OBJECT;
@@ -20,11 +22,42 @@ public:
 	
 	QTimer* monitorTimer;
 	QSettings* settings;
+
+	QString host;
+	QString url;
+	int http_state;
+	uint32 http_timeout;
+	int http_send_len;
+	int http_rcv_len;
+	QHttp * http;
+	QBuffer* resultBuffer;
 	
 public slots:
 	virtual void monitorTimeout();
+	virtual void clearObject();
+	void httpstateChanged(int state){
+		if(http_state!=state)
+			http_timeout=0;
+		http_state = state;
+		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);
+		
+	}
+	void httpdataSendProgress(int len,int total){
+		if(http_send_len != len)
+			http_timeout=0;
+		http_send_len = len;
+		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_send_len);
+	}
+	void httpdataReadProgress(int len,int total){
+		if(http_rcv_len != len)
+			http_timeout=0;
+		http_rcv_len = len;
+		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
+	}
+
 public:
 	void run();
+	virtual void newHttpX();
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
 };
@@ -38,9 +71,14 @@ class  TEST_SERVER_DLL_CLASS_EXPORT testNet:public MyThread
 {
 	Q_OBJECT;
 public:
+#ifdef USE_HTTP
+	//QHttp * http;
+	//QBuffer* resultBuffer;
+#else
 	QNetworkAccessManager *manager;
 	QNetworkReply *reply;
-	QTimer* testNetTimer;
+#endif
+//	QTimer* testNetTimer;	
 	int mode;
 	uint id;
 public:
@@ -48,9 +86,17 @@ public:
 	~testNet(){};
 	void run();
 	void clearObject();
-public slots: 
-	void testServerFinished(QNetworkReply*);
-	void testServerTimeout();
+public slots: 	
+	void monitorTimeout();
+//	void testServerTimeout();
 	void terminateThread();
+#ifdef USE_HTTP
+	void testServerFinished(bool error);
+//	void bmxmlstateChanged(int state);
+//	void bmxmldataSendProgress(int len,int total);
+//	void bmxmldataReadProgress(int len,int total);
+#else
+	void testServerFinished(QNetworkReply*);
+#endif
 };
 #endif

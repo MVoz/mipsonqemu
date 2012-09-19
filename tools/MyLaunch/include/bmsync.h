@@ -43,33 +43,27 @@ class BOOKMARK_SYNC_CLASS_EXPORT bmSync:public MyThread
 	Q_OBJECT;
 public:
 	QFile *file;
-	QBuffer* resultBuffer;
-	QTimer* httpTimer;
+//	QBuffer* resultBuffer;
+//	QTimer* httpTimer;
 	QSemaphore *semaphore;
 	QSqlDatabase *db;
 	
-	QString host;
-	QString url;
+
 	QString username;
 	QString password;
 	QString filename_fromserver;
 	QString md5key;
 	
 	int mode;	
-	int http_finish;
-	int http_timerover;	
-	int http_state;
-	uint32 http_state_time;
-	int http_send_len;
-	int http_rcv_len;
+
 	int status;
 
-	volatile int testServerResult;
+//	volatile int testServerResult;
 	volatile bool needwatchchild;	
 	
 	testNet *testThread;
 	bmMerge *mgthread;
-	QHttp * http;
+//	QHttp * http;
 	
 public:
 	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
@@ -81,13 +75,13 @@ public:
 	void run();
 public slots: 
 	void bmxmlGetFinished(bool error);
-	void bmxmlstateChanged(int state);
-	void bmxmldataSendProgress(int len,int total);
-	void bmxmldataReadProgress(int len,int total);
+	//void bmxmlstateChanged(int state);
+	//void bmxmldataSendProgress(int len,int total);
+	//void bmxmldataReadProgress(int len,int total);
 	void testAccountFinished(bool error);
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 	void mergeDone();
-	void httpTimeout();
+//	void httpTimeout();
 	void mgUpdateStatus(int flag,int status,int icon);
 	void testNetFinished();
 	void terminateThread();
@@ -97,7 +91,7 @@ signals:
 	void bmSyncFinishedStatusNotify(int status);
 	void updateStatusNotify(int type,int status,int icon);
 	void readDateProgressNotify(int done, int total);
-	void testAccountFinishedNotify(bool error,QString result);
+	void testAccountFinishedNotify(int status);
 };
 
 #define LOCAL_EXIST_OFFSET  2
