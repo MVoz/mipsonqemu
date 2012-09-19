@@ -54,14 +54,13 @@ void appUpdater::testVersionFinished()
 }
 void appUpdater::clearObject()
 {
-	DELETE_TIMER(monitorTimer);
 	DELETE_OBJECT(testThread);
 	if(fh)
 		fh->wait();
 	DELETE_OBJECT(fh);
 	DELETE_OBJECT(localSettings);
 	DELETE_OBJECT(serverSettings);
-
+	MyThread::clearObject();
 }
 void appUpdater::terminateThread()
 {	

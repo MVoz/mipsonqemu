@@ -57,9 +57,9 @@ public:
 	~bmPost(){};
 	void run();
 public:
-	QHttp * posthttp;
-	QBuffer *resultBuffer;
-	QTimer* postTimer;	
+	//QHttp * posthttp;
+	//QBuffer *resultBuffer;
+//	QTimer* postTimer;	
 	
 	uint quitFlag;
 	uint bmid;
@@ -74,9 +74,10 @@ public:
 	
 public slots: 
 	void httpDone(bool error);
-	void postTimeout();
+//	void postTimeout();
 	void terminateThread();
 	void gorun();
+	void monitorTimeout();
 	void clearObject();
 };
 

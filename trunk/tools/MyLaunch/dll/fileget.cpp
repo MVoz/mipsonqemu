@@ -3,11 +3,12 @@
 #include <config.h>
 void GetFileHttp::terminateThread()
 {
-	httpTimeout();
+	//httpTimeout();
 	retryTime = UPDATE_MAX_RETRY_TIME;
 
 }
 void GetFileHttp::clearObject(){
+	/*
 		for(int i=0;i<=retryTime;i++)
 		{
 			DELETE_OBJECT(http[i]);
@@ -15,6 +16,10 @@ void GetFileHttp::clearObject(){
 			DELETE_TIMER(httpTimer[i]);
 		}
 		DELETE_TIMER(monitorTimer);
+	*/
+	MyThread::clearObject();
+	DELETE_FILE(file);
+		
 }
 void GetFileHttp::sendUpdateStatusNotify(int flag,int type,int icon)
 {
@@ -36,12 +41,22 @@ int GetFileHttp::newHttp()
 	if(retryTime>=(UPDATE_MAX_RETRY_TIME-1))
 		return 0;
 	retryTime++;
-	http[retryTime] = new QHttp();
-	http[retryTime]->moveToThread(this);
-	SET_NET_PROXY(http[retryTime],settings);
-	connect(http[retryTime], SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
-	connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
-	http[retryTime]->setHost(host);
+	//http[retryTime] = new QHttp();
+	//http[retryTime]->moveToThread(this);
+	//SET_NET_PROXY(http[retryTime],settings);
+	//connect(http[retryTime], SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
+	//connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
+	//http[retryTime]->setHost(host);
+	DELETE_OBJECT(http);
+	http = new QHttp();
+	http->moveToThread(this);
+	SET_NET_PROXY(http,settings);
+	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
+	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
+	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+	connect(http, SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
+	connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
+	
 	QDir dir(".");
 	if(downloadFilename.isNull())
 	{
@@ -62,13 +77,17 @@ int GetFileHttp::newHttp()
 			downloadFilename=QString(dirPath.append(savefilename));//real filename
 	}		
 //	qDebug("downloadFilename=%s",qPrintable(downloadFilename));
-	file[retryTime] = new QFile(downloadFilename);
-	file[retryTime]->open(QIODevice::ReadWrite | QIODevice::Truncate);
+	//file[retryTime] = new QFile(downloadFilename);
+	//file[retryTime]->open(QIODevice::ReadWrite | QIODevice::Truncate);
 
+	DELETE_FILE(file);
+	file = new QFile(downloadFilename);
+	file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 
 	url=QString(branch).append("/").append(updaterFilename);
-	http[retryTime]->get(url, file[retryTime]);
-	START_TIMER_INSIDE(httpTimer[retryTime],false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
+	//http[retryTime]->get(url, file[retryTime]);
+	http->get(url, file);
+	//START_TIMER_INSIDE(httpTimer[retryTime],false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
 	return 1;
 }
 void GetFileHttp::run()
@@ -82,6 +101,7 @@ void GetFileHttp::run()
 	exec();	
 	clearObject();
 }
+/*
 void GetFileHttp::httpTimeout()
 {
 	STOP_TIMER(monitorTimer);
@@ -90,35 +110,41 @@ void GetFileHttp::httpTimeout()
 	if(httpTimer[retryTime])
 		http[retryTime]->abort();	
 }
+*/
 GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int m,QString c): MyThread(parent,s),mode(m),md5(c)
 {
 	errCode=0;
 	statusCode=0;
 	retryTime=-1;
+	file = NULL;
+/*
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 	{
 		http[i]=NULL;
 		httpTimer[i]=NULL;
 		file[i]=NULL;
 	}
+*/
 }
+
 void GetFileHttp::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
 {
 	statusCode=resp.statusCode();
-	if(statusCode == HTTP_OK)
-		STOP_TIMER(httpTimer[retryTime]); 
+	//if(statusCode == HTTP_OK)
+	//	STOP_TIMER(httpTimer[retryTime]); 
 }
 void GetFileHttp::downloadFileDone(bool error)
 {
 	THREAD_MONITOR_POINT;
-	DELETE_FILE( file[retryTime] );
+//	DELETE_FILE( file[retryTime] );
+	DELETE_FILE( file );
         if(terminateFlag)
 	{
 		errCode=HTTP_GET_FILE_FAILED;
 		quit();
 		return;
         }
-	qDebug()<<"statusCode"<<statusCode<<" error:"<<error<<" "<<http[retryTime]->errorString();
+	qDebug()<<"statusCode"<<statusCode<<" error:"<<error<<" "<<http->errorString();
 	if(!error){
 		switch(statusCode)
 			{

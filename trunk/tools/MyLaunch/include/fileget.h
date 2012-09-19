@@ -22,10 +22,10 @@ class FILE_GET_DLL_CLASS_EXPORT GetFileHttp:public MyThread
 {
 	Q_OBJECT;
 public:
-	QHttp * http[UPDATE_MAX_RETRY_TIME];
-	QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
-	QFile *file[UPDATE_MAX_RETRY_TIME];
-	
+	//QHttp * http[UPDATE_MAX_RETRY_TIME];
+	//QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
+	//QFile *file[UPDATE_MAX_RETRY_TIME];
+	QFile *file;
 	QString host;
 	QString url;
 	QString updaterFilename;
@@ -55,7 +55,7 @@ public:
 public slots: 
 		void downloadFileDone(bool error);
 		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-		void httpTimeout();
+//		void httpTimeout();
 		void terminateThread();
 signals:
 		void updateStatusNotify(int type,int status,int icon);

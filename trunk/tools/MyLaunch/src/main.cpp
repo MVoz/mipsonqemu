@@ -2866,7 +2866,7 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,int)), syncDlg.get(), SLOT(updateStatus(int,int,int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(bool,QString)), this, SLOT(testAccountFinished(bool,QString)));
+	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	syncAction->setDisabled(TRUE);
 #ifdef CONFIG_SERVER_IP_SETTING
@@ -2936,12 +2936,12 @@ void MyWidget::bmSyncFinishedStatus(int status)
 	}	
 }
 
-void MyWidget::testAccountFinished(bool err,QString result)
+void MyWidget::testAccountFinished(int status)
 {
-	qDebug("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
-	if (!err&&syncDlg)
+	//qDebug("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
+	if (syncDlg)
 	{
-		if(result==DOSUCCESSS)
+		if(status==HTTP_TEST_ACCOUNT_SUCCESS)
 		{
 			syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,UPDATE_STATUS_ICON_SUCCESSFUL) ;
 			//createSynDlgTimer();
@@ -3254,6 +3254,7 @@ void MyWidget::startDiggXml()
 #endif
 void MyWidget::bmSyncerFinished()
 {	
+	QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
@@ -3261,8 +3262,11 @@ void MyWidget::bmSyncerFinished()
 	if(syncDlg&&syncDlg->isHidden()){
 		DELETE_SHAREOBJ(syncDlg);
 	}
+	QDEBUG_LINE;
 	gSyncer->wait();								
+	QDEBUG_LINE;
 	gSyncer.reset();
+	QDEBUG_LINE;
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
@@ -3280,6 +3284,7 @@ void MyWidget::bmSyncerFinished()
 			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
 #endif
 	}
+	QDEBUG_LINE;
 	
 }
 

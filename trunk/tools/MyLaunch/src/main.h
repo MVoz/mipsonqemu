@@ -538,7 +538,7 @@ public slots:
 		void _startSync(int mode,int silence);
 		void updateApp();
 		//	void bookmark_finished(bool error);
-		void testAccountFinished(bool err,QString result);
+		void testAccountFinished(int status);
 		void bmSyncFinishedStatus(int status);
 		void bmSyncerFinished();
 		void reSync();
