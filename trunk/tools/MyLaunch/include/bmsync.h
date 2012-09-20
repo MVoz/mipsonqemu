@@ -42,7 +42,7 @@ class BOOKMARK_SYNC_CLASS_EXPORT bmSync:public MyThread
 {
 	Q_OBJECT;
 public:
-	QFile *file;
+//	QFile *file;
 //	QBuffer* resultBuffer;
 //	QTimer* httpTimer;
 	QSemaphore *semaphore;
@@ -51,7 +51,7 @@ public:
 
 	QString username;
 	QString password;
-	QString filename_fromserver;
+//	QString filename_fromserver;
 	QString md5key;
 	
 	int mode;	
@@ -68,8 +68,8 @@ public:
 public:
 	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
 	~bmSync(){};
-	void setHost(const QString& s){host = s;}
-	void setUrl(const QString& s){url = s;}
+//	void setHost(const QString& s){host = s;}
+//	void setUrl(const QString& s){url = s;}
 	void setUsername(const QString& s){username = s;}
 	void setPassword(const QString& s){password = s;}
 	void run();

@@ -288,7 +288,7 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	fh->setHost(UPDATE_SERVER_HOST);
 #endif
 */
-	SET_HOST_IP(settings,fh,&url,header);
+//	SET_HOST_IP(settings,fh,&url,header);
 	fh->setDestdir(UPDATE_DIRECTORY);
 	fh->setServerBranch("/download");
 	//htttp://www.tanzhi.com/download/setup/tanzhi.exe

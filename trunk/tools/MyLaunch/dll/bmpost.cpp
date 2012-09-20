@@ -24,8 +24,7 @@ void bmPost::run()
 	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
         //TART_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
 	MyThread::run();
-	MyThread::newHttpX();
-	connect(http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
+
 /*
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(settings,http);
@@ -74,10 +73,12 @@ void bmPost::run()
 	header.setValue("Host", BM_SERVER_ADDRESS);
 #endif
 */
-	header=new QHttpRequestHeader("POST", url);
-	SET_HOST_IP(settings,http,&url,header);
-	header->setContentType("application/x-www-form-urlencoded");
-	MyThread::newHttpBuffer();
+	//header=new QHttpRequestHeader("POST", url);
+	MyThread::newHttpX(TRUE,TRUE,FALSE,FALSE);
+	connect(http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
+	//SET_HOST_IP(settings,http,&url,header);
+	
+	//MyThread::newHttpBuffer();
 	//resultBuffer = new QBuffer();
 	//resultBuffer->moveToThread(this);
 	//resultBuffer->open(QIODevice::ReadWrite);
@@ -172,6 +173,7 @@ void bmPost::terminateThread()
 }
 void bmPost::monitorTimeout(){
 	STOP_TIMER(monitorTimer);
+/*
 	if(http){
 		http_timeout++;
 		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
@@ -179,4 +181,6 @@ void bmPost::monitorTimeout(){
 		}
 	}
 	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
+*/
+	MyThread::monitorTimeout();
 }

@@ -2880,7 +2880,7 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 #endif
 */
-	SET_HOST_IP(gSettings,gSyncer,&url,header);
+//	SET_HOST_IP(gSettings,gSyncer,&url,header);
 	gSyncer->setUrl(url);
 	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);
@@ -3241,7 +3241,7 @@ void MyWidget::startDiggXml()
 #endif
 */
 	QString url=QString(BM_SERVER_GET_DIGGXML_URL);
-	SET_HOST_IP(gSettings,gDiggXmler,&url,header);
+//	SET_HOST_IP(gSettings,gDiggXmler,&url,header);
 	connect(gDiggXmler.get(), SIGNAL(diggXmlFinishedStatusNotify(int)), this, SLOT(diggXmlFinished(int)));
 	
 	gDiggXmler->setUrl(url);
@@ -3730,7 +3730,7 @@ void MyWidget::getFavico(const QString& host,const QString& filename)
 	getfavicolist.append(icogh);
 	qDebug()<<__FUNCTION__<<"get fav ico from"<<host;
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
-	icogh->setHost(host);
+	//icogh->setHost(host);
 	icogh->setUrl(filename);
 
 	icogh->setDestdir(FAVICO_DIRECTORY);

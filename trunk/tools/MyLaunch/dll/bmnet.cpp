@@ -12,13 +12,11 @@ MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
 	terminateFlag=0;
 	monitorTimer=NULL;
 	header = NULL;
+	file = NULL;
 }
 MyThread::~MyThread()
 {
-	DELETE_TIMER(monitorTimer);
-	DELETE_OBJECT(http);	
-	DELETE_OBJECT(header);	
-	DELETE_FILE(resultBuffer);
+	clearObject();
 }
 
 void MyThread::setTerminateFlag(int f)
@@ -33,12 +31,15 @@ void MyThread::monitorTimeout(){
 			http->abort();
 		}
 	}
+/*
 	if(terminateFlag)
 		terminateThread();
 	else
 	{
 		monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 	}
+*/
+	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 }
 void MyThread::run(){
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
@@ -49,12 +50,15 @@ void MyThread::terminateThread(){
 }
 void MyThread::clearObject(){
 	DELETE_TIMER(monitorTimer);
-	DELETE_OBJECT(http);			
+	DELETE_OBJECT(http);	
+	DELETE_OBJECT(header);	
 	DELETE_FILE(resultBuffer);
+	DELETE_FILE(file);
 }
-void MyThread::newHttpX(){
+void MyThread::newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidden){
 	http = new QHttp();
 	http->moveToThread(this);
+	http->setHost(BM_SERVER_ADDRESS);	
 	SET_NET_PROXY(http,settings);
 	/*
 	I found the problem:
@@ -66,12 +70,36 @@ void MyThread::newHttpX(){
 	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+	if(needHeader){
+		header=new QHttpRequestHeader("POST", url);
+		header->setContentType("application/x-www-form-urlencoded");
+		header->setValue("Host", BM_SERVER_ADDRESS);
+	}
+	if(needBuffer){
+		resultBuffer = new QBuffer();
+		resultBuffer->moveToThread(this);
+		resultBuffer->open(QIODevice::ReadWrite);
+	}
+	if(needFile){
+		file = new QFile(filename);
+		if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
+			if(hidden)
+				SetFileAttributes(filename.utf16(),FILE_ATTRIBUTE_HIDDEN);
+		}
+	}
+	SET_HOST_IP(settings,http,&url,header);
 }
-void MyThread::newHttpBuffer(){
-	resultBuffer = new QBuffer();
-	resultBuffer->moveToThread(this);
-	resultBuffer->open(QIODevice::ReadWrite);
+
+void MyThread::setUrl(const QString &s){
+	url = s;
 }
+
+void MyThread::setFilename(const QString &s){
+	filename.clear();
+	filename = s;
+}
+
+
 
 
 testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),mode(m),id(d)
@@ -219,25 +247,27 @@ void testNet::clearObject()
 void testNet::run()
 {
 	THREAD_MONITOR_POINT;	
-	QString url ="";
+	//QString url ="";
 	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);	
 	MyThread::run();
-	if(mode==TEST_SERVER_NET)
-	{
-		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
-		url =TEST_NET_URL;
-	}else if(mode==TEST_SERVER_VERSION){
-		SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,0);
-		url =TOUCHANY_VERSION_URL;
-	}
+	switch(mode){
+		case TEST_SERVER_NET:
+			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
+			setUrl(TEST_NET_URL);
+			break;
+		case TEST_SERVER_VERSION:
+			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,0);
+			setUrl(TOUCHANY_VERSION_URL);
+			break;
 #ifdef CONFIG_DIGG_XML
-	else if(mode ==  TEST_SERVER_DIGG_XML){
-		SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,0);
-		url =QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(id));
-	}
+		case TEST_SERVER_DIGG_XML:
+			SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,0);
+			setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(id)));
+			break;
 #endif
+	}
 #ifdef USE_HTTP
-	MyThread::newHttpX();
+	MyThread::newHttpX(FALSE,TRUE,FALSE,FALSE);
 	connect(http, SIGNAL(done(bool)), this, SLOT(testServerFinished(bool)),Qt::DirectConnection);
 #else
 
@@ -257,13 +287,13 @@ void testNet::run()
 	}while(0);
 #endif
 */
-      SET_HOST_IP(settings,http,&url,header);
+  //    SET_HOST_IP(settings,http,&url,header);
 
 #ifdef USE_HTTP		
 	//resultBuffer = new QBuffer();
 	//resultBuffer->moveToThread(this);
 	//resultBuffer->open(QIODevice::ReadWrite);
-	MyThread::newHttpBuffer();
+	//MyThread::newHttpBuffer();
 	http->get(url, resultBuffer);
 #else
 	reply=manager->get(QNetworkRequest(QUrl(url)));
