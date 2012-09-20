@@ -14,6 +14,9 @@
      <file>images/logo.png</file>
      <file>images/sprite.png</file>
      <file>images/v_tab_bg.jpg</file>     
+     <file>images/success.png</file> 
+     <file>images/loading.gif</file> 
+     <file>images/fail.png</file>
      <file>js/jquery.min.js</file>
      <file>js/jquery.uniform.js</file>
      <file>js/my.js</file>
