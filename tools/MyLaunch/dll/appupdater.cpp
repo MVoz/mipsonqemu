@@ -132,9 +132,9 @@ int appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m
 		if(terminateFlag||error)
 			break;
 		srcSettings->setArrayIndex(i);
-		QString filename=srcSettings->value("name").toString();
+		QString f=srcSettings->value("name").toString();
 		QString md5=srcSettings->value("md5","").toString(); 
-		int  flag =tz::checkToSetting(dstSetting,filename,md5);
+		int  flag =tz::checkToSetting(dstSetting,f,md5);
 		switch(flag)
 		{
 		case -1://no found
@@ -144,13 +144,13 @@ int appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m
 			if(((m==SETTING_MERGE_SERVERTOLOCAL)&&(flag==-1))||((m==SETTING_MERGE_LOCALTOSERVER)&&(flag==1)))
 			{
 				if(
-					(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))||
-					(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))))&&
-					(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
+					(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(f))||
+					(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(f))))&&
+					(!QFile::exists(f)||(md5!=tz::fileMd5(f)))
 				  )
 				{
 					needed=1;
-					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,md5);	
+					downloadFileFromServer(f,UPDATE_MODE_GET_FILE,md5);	
 
 				}
 			}
@@ -209,9 +209,9 @@ void appUpdater::getIniDone(int err)
 		case UPDATE_DLG_MODE:
 			if(!err){
 				serverSettings = new QSettings(QString(UPDATE_SETUP_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
-				QString filename = serverSettings->value("setup/name", "").toString();
+				QString f = serverSettings->value("setup/name", "").toString();
 				QString servermd5 = serverSettings->value("setup/md5", "").toString();
-				if(filename.isEmpty()||servermd5.isEmpty())
+				if(f.isEmpty()||servermd5.isEmpty())
 				{
 					//get wrong content form server
 					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
@@ -229,10 +229,10 @@ void appUpdater::getIniDone(int err)
 					}
 				}
 				//start download setup.exe
-				if(!filename.isEmpty()&&!servermd5.isEmpty())
+				if(!f.isEmpty()&&!servermd5.isEmpty())
 				{
 					needed = 1;
-					downloadFileFromServer(filename,UPDATE_MODE_GET_FILE,servermd5);
+					downloadFileFromServer(f,UPDATE_MODE_GET_FILE,servermd5);
 				}
 				if(terminateFlag||error)
 					goto end;
@@ -244,7 +244,7 @@ void appUpdater::getIniDone(int err)
 					//write update.ini
 					if(!localSettings)
 						localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
-					localSettings->setValue("setup/name",filename);
+					localSettings->setValue("setup/name",f);
 					localSettings->setValue("setup/md5",servermd5);
 					localSettings->sync();
 				}		
