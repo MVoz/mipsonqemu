@@ -18,6 +18,11 @@ sed 's/js\//qrc:js\//g' 1 > 2
 mv 2 custom.html
 rm -fr 1
 
+sed 's/style\//qrc:style\//g' processDlg.html > 1
+sed 's/js\//qrc:js\//g' 1 > 2
+mv 2 custom.html
+rm -fr 1
+
 
 cd style
 sed 's/..\/images\//qrc:images\//g' demo.min.css >  2

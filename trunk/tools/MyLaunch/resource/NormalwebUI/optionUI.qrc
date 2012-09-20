@@ -29,5 +29,6 @@
      <file>index.html</file>
      <file>net.html</file>
      <file>custom.html</file>
+     <file>processDlg.html</file>
  </qresource>
  </RCC>
