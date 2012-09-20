@@ -82,14 +82,14 @@ public slots:
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
 	void mergeDone();
 //	void httpTimeout();
-	void mgUpdateStatus(int flag,int status,int icon);
+//	void mgUpdateStatus(int flag,int status,int icon);
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();
 	void clearobject();
 signals:
 	void bmSyncFinishedStatusNotify(int status);
-	void updateStatusNotify(int type,int status,int icon);
+//	void updateStatusNotify(int type,int status,int icon);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(int status);
 };

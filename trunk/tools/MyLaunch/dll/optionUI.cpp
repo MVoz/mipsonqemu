@@ -813,7 +813,8 @@ void OptionsDlg::startUpdater()
 	}
 	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
-		appUpdater* updaterthread=new appUpdater(updaterDlg,settings,UPDATE_DLG_MODE);	
+		appUpdater* updaterthread=new appUpdater(updaterDlg,settings);
+		updaterthread->dlgmode = UPDATE_DLG_MODE;
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
 		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));
 		updaterthread->start(QThread::IdlePriority);		
@@ -905,8 +906,11 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 {
 	webView->page()->mainFrame()->addToJavaScriptWindowObject("processDlg", this);
 }
-void synchronizeDlg::updateStatus(int type,int s,int icon)
+void synchronizeDlg::updateStatus(int status)
 {
+#if 1
+	TD(DEBUG_LEVEL_NORMAL,status);
+#else
 	QString jsStr;
 	status=s;
 	statusTime = NOW_SECONDS;	
@@ -943,6 +947,7 @@ void synchronizeDlg::updateStatus(int type,int s,int icon)
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
 	update();
+#endif
 }
 void synchronizeDlg::readDateProgress(int done, int total)
 {

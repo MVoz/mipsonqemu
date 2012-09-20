@@ -36,6 +36,8 @@ public:
 	QHttpRequestHeader *header;
 	QBuffer* resultBuffer;
 	QFile* file;
+
+	int dlgmode;
 	
 public slots:
 	virtual void monitorTimeout();
@@ -59,7 +61,11 @@ public slots:
 		http_rcv_len = len;
 		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
 	}
-
+	virtual void sendUpdateStatusNotify(int status){
+		//if(dlgmode!=UPDATE_DLG_MODE) 
+		//	return;
+		emit updateStatusNotify(status);
+	}
 public:
 	void run();
 	virtual void newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidden);
@@ -78,6 +84,8 @@ public:
 */
 	virtual void setUrl(const QString &s);
 	void setFilename(const QString &s);
+signals:
+	void updateStatusNotify(int status);
 };
 
 enum{
