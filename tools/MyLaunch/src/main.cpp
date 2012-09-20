@@ -2741,7 +2741,7 @@ bad:
 void MyWidget::startSync()
 {
 #ifdef CONFIG_ACTION_LIST
-
+#if 0
 	if(!syncDlg)
 	{
 		syncDlg.reset(new synchronizeDlg(this));
@@ -2758,7 +2758,7 @@ void MyWidget::startSync()
 		syncDlg->hide();
 	}
 
-
+#endif
 	struct ACTION_LIST item;
 	item.action = ACTION_LIST_BOOKMARK_SYNC;
 	item.id.mode = SYN_MODE_NOSILENCE;
@@ -2818,6 +2818,7 @@ void MyWidget::_startSync(int mode,int silence)
 	if(!syncDlg)
 	{
 		syncDlg.reset(new synchronizeDlg(this));
+		syncDlg->mode = mode;
 		connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 		connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
 	}else{
@@ -2871,16 +2872,6 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	syncAction->setDisabled(TRUE);
-/*
-#ifdef CONFIG_SERVER_IP_SETTING
-	SET_HOST_IP(gSettings,gSyncer,&url,NULL);
-	SET_SERVER_IP(gSettings,url);
-
-#else
-	gSyncer->setHost(BM_SERVER_ADDRESS);
-#endif
-*/
-//	SET_HOST_IP(gSettings,gSyncer,&url,header);
 	gSyncer->setUrl(url);
 	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);

@@ -17,18 +17,9 @@ dt {float:left; text-align:right;line-height:25px; margin:0 10px 10px 0;}
 dd {float:left; line-height:25px; margin:0 0 10px 0;}
 </style>
 <script language="javascript">
-function accept()
-{
-	processDlg.accept();
-}
-function reject()
-{
-	processDlg.reject();
-}
-function retry()
-{
-	processDlg.retry();
-}
+function accept(){processDlg.accept();}
+function reject(){processDlg.reject();}
+function retry(){processDlg.retry();}
 function $$(a) {
         return document.getElementById(a)
 };
@@ -45,8 +36,8 @@ function $$(a) {
 				<dt><label></label></dt>
 				<dl>
 				    <ul class="btn">
-						<li id="cancel"><a href="#">取消</a></li>
-						<li id="apply"><a href="#">确定</a></li>
+						<li id="cancel"><a href="#" onclick="accept();">取消</a></li>
+						<li id="apply"> <a href="#" onclick="reject();">确定</a></li>
 					</ul>
 				</dl>
 			</dl>

@@ -52,6 +52,7 @@ public:
 	QWebView *webView;
 	int status;
 	uint statusTime;//second
+	int mode;
 public slots:
 		void getHtml(const QString &path);
 		void accept();
