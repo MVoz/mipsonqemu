@@ -1522,6 +1522,7 @@ static uint32 autolearnprocessTimeout = AUTO_LEARN_PROCESS_INTERVAL;
 static uint32 httpgetTimeout = HTTP_GET_INTERVAL;
 static uint32 httpgetrespondTimeout = HTTP_GET_RESPOND_INTERVAL;
 static uint32 httppostTimeout = HTTP_POST_INTERVAL;
+static uint32 proxytestTimeout = PROXY_TEST_INTERVAL;
 
 struct parameter_mib{
 	uint32 id;
@@ -1548,6 +1549,7 @@ struct parameter_mib{
 		{SYS_HTTPGETTIMEOUT,&httpgetTimeout,HTTP_GET_INTERVAL,HTTP_GET_INTERVAL_MIN,HTTP_GET_INTERVAL_MAX,QString("httpgetTimeout")},
 		{SYS_HTTPGETRESPONDTIMEOUT,&httpgetrespondTimeout,HTTP_GET_RESPOND_INTERVAL,HTTP_GET_RESPOND_INTERVAL_MIN,HTTP_GET_RESPOND_INTERVAL_MAX,QString("httpgetrespondTimeout")},
 		{SYS_HTTPPOSTTIMEOUTT,&httppostTimeout,HTTP_POST_INTERVAL,HTTP_POST_INTERVAL_MIN,HTTP_POST_INTERVAL_MAX,QString("httppostTimeout")},
+		{SYS_PROXYTESTTIMEOUTT,&proxytestTimeout,PROXY_TEST_INTERVAL,PROXY_TEST_INTERVAL_MIN,PROXY_TEST_INTERVAL_MAX,QString("proxytestTimeout")},
 		{0,NULL,0,0,0,QString("")}
 };
 
@@ -1564,6 +1566,7 @@ void tz::setParameterMib(QSettings* s,int id)
 		}
 		i++;
 	}
+	s->sync();
 }
 uint32 tz::getParameterMib(int id)
 {

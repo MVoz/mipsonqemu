@@ -176,7 +176,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 
 		reply=manager->get(request);
 
-		START_TIMER_SYN(testProxyTimer,TRUE,10*SECONDS,proxyTestTimeout);
+		START_TIMER_SYN(testProxyTimer,TRUE,tz::getParameterMib(SYS_PROXYTESTTIMEOUTT)*SECONDS,proxyTestTimeout);
 		connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(proxyTestFinished(QNetworkReply *)));
 	}
 
@@ -810,6 +810,7 @@ void OptionsDlg::startUpdater()
 {
 	if(!updaterDlg){
 		updaterDlg = new synchronizeDlg(this);
+		updaterDlg->mode = SYNC_MODE_UPGRADE;
 	}
 	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
@@ -859,7 +860,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFix
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	setFixedSize(850, 220);
+	setFixedSize(620, 160);
 #ifdef CONFIG_OPTION_NEWUI
 	getHtml(":processDlg.html");
 
@@ -898,8 +899,19 @@ void synchronizeDlg::accept()
 void synchronizeDlg::reject()
 {
 	qDebug("%s %d currentthreadid=0x%08x",__FUNCTION__,__LINE__,QThread::currentThreadId());
-	emit stopSyncNotify();
-	QDialog::reject();
+	switch(mode){
+		case SYNC_MODE_BOOKMARK:
+		case SYNC_MODE_REBOOKMARK:
+			emit stopSyncNotify();
+		break;
+		case SYNC_MODE_TESTACCOUNT:
+		break;
+		case SYNC_MODE_UPGRADE:
+		break;
+	}
+	
+	//QDialog::reject();
+	hide();
 }
 void synchronizeDlg::retry()
 {
