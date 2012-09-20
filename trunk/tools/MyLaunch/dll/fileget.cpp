@@ -18,8 +18,6 @@ void GetFileHttp::clearObject(){
 		DELETE_TIMER(monitorTimer);
 	*/
 	MyThread::clearObject();
-	DELETE_FILE(file);
-		
 }
 void GetFileHttp::sendUpdateStatusNotify(int flag,int type,int icon)
 {
@@ -106,6 +104,12 @@ void GetFileHttp::run()
 	newHttp();
 	exec();	
 	clearObject();
+}
+void GetFileHttp::monitorTimeout()
+{
+	THREAD_MONITOR_POINT;
+	STOP_TIMER(monitorTimer);
+	MyThread::monitorTimeout();
 }
 /*
 void GetFileHttp::httpTimeout()
