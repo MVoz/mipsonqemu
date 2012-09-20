@@ -2902,7 +2902,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
-//	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif	
@@ -2975,11 +2975,14 @@ void MyWidget::syncStatusTimeout()
 {
 	//TD(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
 	if((syncStatus>=SYNC_STATUS_PROCESSING)&&(syncStatus<SYNC_STATUS_PROCESSING_MAX)){
-		setIcon((syncStatus==(SYNC_STATUS_PROCESSING_MAX-1))?(SYNC_STATUS_PROCESSING_1):(syncStatus+1),"syncing......");
+		syncStatus = (syncStatus+1);
+		if(syncStatus == SYNC_STATUS_PROCESSING_MAX)
+			syncStatus=SYNC_STATUS_PROCESSING_1;
+		setIcon(syncStatus,"syncing......");
 		if(!syncButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-		//	QResource::registerResource("skins/default.rcc");
-			syncButton->setIcon(QIcon(QPixmap(QString(":/skins/Default").append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png")))));	
+		//	QResource::registerResource("skins/default.rcc");			
+			syncButton->setIcon(QIcon(QPixmap(QString(":/skins/%1/%2").arg(gSettings->value("skin", dirs["defSkin"][0]).toString()).arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync_on.png":"sync_off.png"))));	
 		//	QResource::unregisterResource("skins/default.rcc");
 #else
 			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
@@ -3181,6 +3184,11 @@ void diggXmler::diggxmlDisplayTimeout()
 }
 void diggXmler::loadDiggXml()
 {
+	if(QFile::exists(DIGG_XML_LOCAL_FILE_TMP)&&!gDiggXmler){
+		
+		QFile::remove(DIGG_XML_LOCAL_FILE);
+		QFile::copy(DIGG_XML_LOCAL_FILE_TMP,DIGG_XML_LOCAL_FILE);
+	}
 	QFile f(DIGG_XML_LOCAL_FILE);
 	if(f.open(QIODevice::ReadOnly)){
 		diggxmlDisplayIndex = 0;
@@ -3260,7 +3268,6 @@ void MyWidget::startDiggXml()
 #endif
 void MyWidget::bmSyncerFinished()
 {	
-	QDEBUG_LINE;
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
@@ -3268,11 +3275,8 @@ void MyWidget::bmSyncerFinished()
 	if(syncDlg&&syncDlg->isHidden()){
 		DELETE_SHAREOBJ(syncDlg);
 	}
-	QDEBUG_LINE;
 	gSyncer->wait();								
-	QDEBUG_LINE;
 	gSyncer.reset();
-	QDEBUG_LINE;
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
@@ -3290,7 +3294,6 @@ void MyWidget::bmSyncerFinished()
 			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
 #endif
 	}
-	QDEBUG_LINE;
 	
 }
 

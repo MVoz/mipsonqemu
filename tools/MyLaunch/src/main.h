@@ -262,16 +262,13 @@ public:
 			diggxmlDisplayIndex = 0;			
 		}
 	~diggXmler() {
-		QDEBUG_LINE;
 		DELETE_TIMER(diggxmlDisplayTimer);
 	}
 	void stop() {
-		QDEBUG_LINE;
 		exit();
 	}
 	void run(){
 		loadDiggXml();
-		QDEBUG_LINE;
 		START_TIMER_INSIDE(diggxmlDisplayTimer,false,10*SECONDS,diggxmlDisplayTimeout);
 		connect(this->parent(), SIGNAL(diggXmlNewSignal()), this, SLOT(loadDiggXml()));	
 		QDEBUG_LINE;

@@ -20,7 +20,7 @@ rm -fr 1
 
 sed 's/style\//qrc:style\//g' processDlg.html > 1
 sed 's/js\//qrc:js\//g' 1 > 2
-mv 2 custom.html
+mv 2 processDlg.html
 rm -fr 1
 
 

@@ -48,7 +48,7 @@ void diggXml::testNetFinished()
 */
 			//filename.clear();
 			//filename=;
-			setFilename(QString(DIGG_XML_LOCAL_FILE)+".tmp");
+			setFilename(DIGG_XML_LOCAL_FILE_TMP);
 			MyThread::newHttpX(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
 			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);

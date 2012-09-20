@@ -190,6 +190,7 @@ enum{
 #define PINYIN_DB_FILENAME "pinyin.db"
 #define PINYIN_DB_TABLENAME "pytable"
 #define DIGG_XML_LOCAL_FILE "./data/digg.xml"
+#define DIGG_XML_LOCAL_FILE_TMP DIGG_XML_LOCAL_FILE".tmp"
 #define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
 #define APP_HEKY_UPDATE_ITEM "updaterflag"
 #define APP_SILENT_UPDATE_NAME "updater.exe"
