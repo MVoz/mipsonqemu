@@ -107,7 +107,8 @@ void appUpdater::monitorTimeout()
 
 void appUpdater::run()
 {
-	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(SYS_MONITORTIMEOUT),monitorTimeout);
+//	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(SYS_MONITORTIMEOUT),monitorTimeout);
+	MyThread::run();
 	if(mode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 	
@@ -280,11 +281,14 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 		connect(fh, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
 	}
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(settings,fh);
 #else
 	fh->setHost(UPDATE_SERVER_HOST);
 #endif
+*/
+	SET_HOST_IP(settings,fh,&url,header);
 	fh->setDestdir(UPDATE_DIRECTORY);
 	fh->setServerBranch("/download");
 	//htttp://www.tanzhi.com/download/setup/tanzhi.exe

@@ -2770,8 +2770,10 @@ void MyWidget::startSync()
 
 void MyWidget::_startSync(int mode,int silence)      
 {
+	QDEBUG_LINE;
 	QString localBmFullPath;
 	QString url;
+	QHttpRequestHeader *header=NULL;
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
@@ -2869,13 +2871,16 @@ void MyWidget::_startSync(int mode,int silence)
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	syncAction->setDisabled(TRUE);
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
-	SET_HOST_IP(gSettings,gSyncer);
+	SET_HOST_IP(gSettings,gSyncer,&url,NULL);
 	SET_SERVER_IP(gSettings,url);
 
 #else
 	gSyncer->setHost(BM_SERVER_ADDRESS);
 #endif
+*/
+	SET_HOST_IP(gSettings,gSyncer,&url,header);
 	gSyncer->setUrl(url);
 	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);
@@ -3224,20 +3229,21 @@ void MyWidget::displayDiggxml(QString s)
 }
 void MyWidget::startDiggXml()
 {
+	QHttpRequestHeader *header=NULL;
 	if(gDiggXmler)
 		return;
 	gDiggXmler.reset(new diggXml(this,gSettings));
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(gSettings,gDiggXmler);
 #else
 	gDiggXmler->setHost(BM_SERVER_ADDRESS);
 #endif
-	connect(gDiggXmler.get(), SIGNAL(diggXmlFinishedStatusNotify(int)), this, SLOT(diggXmlFinished(int)));
+*/
 	QString url=QString(BM_SERVER_GET_DIGGXML_URL);
-
-#ifdef CONFIG_SERVER_IP_SETTING
-	SET_SERVER_IP(gSettings,url);
-#endif
+	SET_HOST_IP(gSettings,gDiggXmler,&url,header);
+	connect(gDiggXmler.get(), SIGNAL(diggXmlFinishedStatusNotify(int)), this, SLOT(diggXmlFinished(int)));
+	
 	gDiggXmler->setUrl(url);
 #if 1
 	gDiggXmler->setDiggId(diggxmler->getMaxDiggid());

@@ -15,8 +15,8 @@ class DIGG_XML_CLASS_EXPORT diggXml:public MyThread
 	Q_OBJECT;
 public:
 	QFile *file;
-	QBuffer* resultBuffer;
-	QTimer* httpTimer;
+	//QBuffer* resultBuffer;
+	//QTimer* httpTimer;
 	
 	QString host;
 	QString url;
@@ -24,15 +24,15 @@ public:
 	QString md5key;
 	
 	int mode;	
-	int http_finish;
-	int http_timerover;	
+	//int http_finish;
+	//int http_timerover;	
 	int status;
 
 	volatile int testDiggXmlResult;
 	volatile bool needwatchchild;	
 	
 	testNet *testThread;
-	QHttp * http;
+	//QHttp * http;
 	uint diggid;
 	
 public:
@@ -45,7 +45,7 @@ public:
 public slots: 
 	void diggXmlGetFinished(bool error);
 	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-	void httpTimeout();
+//	void httpTimeout();
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();

@@ -48,12 +48,15 @@ int GetFileHttp::newHttp()
 	//connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
 	//http[retryTime]->setHost(host);
 	DELETE_OBJECT(http);
+/*
 	http = new QHttp();
 	http->moveToThread(this);
 	SET_NET_PROXY(http,settings);
 	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+*/
+	MyThread::newHttpX();
 	connect(http, SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
 	connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 	
@@ -92,8 +95,9 @@ int GetFileHttp::newHttp()
 }
 void GetFileHttp::run()
 {
-	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
+	//qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
+	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
+	MyThread::run();
 	QDir dir(".");
 	if(!dir.exists(destdir))
 		dir.mkdir(destdir);

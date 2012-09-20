@@ -1,8 +1,10 @@
 #!/bin/sh
-cmd /c CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
-cmd /c set MAKEFLAGS=
 export QMAKESPEC=win32-msvc2005
 export PATH=/cygdrive/D/Program\ Files/Microsoft\ Visual\ Studio\ 8/VC/bin:$PATH
+
+cmd /c CALL "d:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat" x86
+cmd /c set MAKEFLAGS=
+
 obj=''
 
 function makefunc()
