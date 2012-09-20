@@ -1,25 +1,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>processing....</title>
- <link rel="stylesheet" type="text/css" href="style/demo.min.css">
-<link rel="stylesheet" type="text/css" href="style/niceform.css">
+<style type="text/css">
+body, div, ul, ol, li, p, h1, h2, h3, span, pre, a, img, { margin: 0px; padding: 0px; border: 0px none; outline: 0px none; vertical-align: baseline; }
+body { font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(97, 97, 97); padding-top: 5px; background-color: rgb(245, 245, 245); }
+ol, ul { list-style: none outside none; }
+fieldset {padding:10px;border: 1px solid #e4e4e4;margin-bottom:8px;}
+fieldset.af { clear: both; width: 580px;}
+fieldset.blf dt {  width: 120px;}
+fieldset .btn {clear:both}
+fieldset .btn ul{width:100%;margin:0px auto}
+fieldset .btn li{padding: 2px 10px;float:right;}
+fieldset .btn a{ display: block; padding: 2px 19px;color:#ccc; background-color:#333; border-radius: 2px; }
+fieldset .btn a:hover{color:#fff;}
+dt {float:left; text-align:right;line-height:25px; margin:0 10px 10px 0;}
+dd {float:left; line-height:25px; margin:0 0 10px 0;}
+</style>
 <script language="javascript">
-
- var i;
- function go()
- {
-  bar_width = document.getElementById("bg").clientWidth;
-  i = bar_width;
-  setTimeout('start();',300);
- }
- function start()
- {
-  if(i-->0)
-  {
-   ps.style.width = i;
-   setTimeout('start();',20);
-  }
- }
 function accept()
 {
 	processDlg.accept();
@@ -40,10 +37,9 @@ function $$(a) {
 </head>
 <body>
 <fieldset class="af blf">
-    		<legend>软件更新»</legend>
-			<dl>
-				<dt><label>当前版本:</label></dt>
-				<dd id="version"></dd>
+			<dl style="padding-top:15px">
+				<dt><label id="loading"><img src="images/success.png"></label></dt>
+				<dd id="info">升级成功</dd>
 			</dl>
 			<dl>
 				<dt><label></label></dt>

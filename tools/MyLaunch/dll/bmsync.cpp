@@ -260,7 +260,7 @@ void bmSync::bmxmlGetFinished(bool error)
 			mgthread = new bmMerge(NULL,db,settings,username,password);		
 			mgthread->setRandomFileFromserver(filename);
 			//connect(mgthread, SIGNAL(mergeStatusNotify(int,int,int)), this, SLOT(mgUpdateStatus(int,int,int)));
-			connect(mgthread, SIGNAL(mergeStatusNotify(int,)), this, SLOT(sendUpdateStatusNotify(int)));
+			connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 			mgthread->start(QThread::IdlePriority);
 			return;
 		}

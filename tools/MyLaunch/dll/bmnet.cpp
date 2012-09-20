@@ -25,7 +25,6 @@ void MyThread::setTerminateFlag(int f)
 	terminateFlag=f;
 }
 void MyThread::monitorTimeout(){
-	QDEBUG_LINE;
 	if(http){
 		http_timeout++;
 		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
@@ -232,7 +231,7 @@ void testNet::terminateThread()
 }
 void testNet::clearObject()
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 	THREAD_MONITOR_POINT;
 #ifdef USE_HTTP
 	MyThread::clearObject();
@@ -242,8 +241,8 @@ void testNet::clearObject()
 	DELETE_TIMER(monitorTimer);
 #endif	
 //	DELETE_TIMER(testNetTimer);
-	
-	QDEBUG_LINE;
+//	
+//	QDEBUG_LINE;
 }
 void testNet::run()
 {

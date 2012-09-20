@@ -46,20 +46,20 @@ public slots:
 		if(http_state!=state)
 			http_timeout=0;
 		http_state = state;
-		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);
+		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);
 		
 	}
 	void httpdataSendProgress(int len,int total){
 		if(http_send_len != len)
 			http_timeout=0;
 		http_send_len = len;
-		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_send_len);
+		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_send_len);
 	}
 	void httpdataReadProgress(int len,int total){
 		if(http_rcv_len != len)
 			http_timeout=0;
 		http_rcv_len = len;
-		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
+		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
 	}
 	virtual void sendUpdateStatusNotify(int status){
 		//if(dlgmode!=UPDATE_DLG_MODE) 

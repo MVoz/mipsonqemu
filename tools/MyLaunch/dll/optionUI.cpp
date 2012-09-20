@@ -859,8 +859,11 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFix
 	webView->setObjectName(QString::fromUtf8("webView"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	setFixedSize(450, 70);
-#ifdef CONFIG_HTML_FROM_RESOURCE
+	setFixedSize(850, 220);
+#ifdef CONFIG_OPTION_NEWUI
+	getHtml(":processDlg.html");
+
+#elif CONFIG_HTML_FROM_RESOURCE
 	getHtml(":/html/processDlg.html");
 #else
 	getHtml("./html/processDlg.html");	
@@ -910,24 +913,40 @@ void synchronizeDlg::updateStatus(int status)
 {
 #if 1
 	TD(DEBUG_LEVEL_NORMAL,status);
-#else
+
 	QString jsStr;
-	status=s;
+	//status=s;
 	statusTime = NOW_SECONDS;	
-	char *statusStr = tz::getstatusstring(s);
+	char *statusStr = tz::getstatusstring(status);
+	int icon =0;
+	int type = 0;
 	//TD(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
+	if(status>SUCCESS_MIN&&status<SUCCESS_MAX){
+		icon = UPDATE_STATUS_ICON_SUCCESSFUL;
+		type = UPDATESTATUS_FLAG_APPLY;
+	}else if(status>REFUSE_MIN&&status<REFUSE_MAX){
+		icon = UPDATE_STATUS_ICON_REFUSED;
+		type = UPDATESTATUS_FLAG_APPLY;
+	}else if(status>FAIL_MIN&&status<FAIL_MAX){
+		icon = UPDATE_STATUS_ICON_FAILED;
+		type = UPDATESTATUS_FLAG_RETRY;
+	} else if(status>LOADING_MIN&&status<LOADING_MAX){		
+		icon = UPDATE_STATUS_ICON_LOADING;
+		type = UPDATESTATUS_FLAG_APPLY;
+	}
+		
 	switch(icon){
 		case UPDATE_STATUS_ICON_SUCCESSFUL:
-			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("success.png"));
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:images/%1\">';").arg("success.png"));
 			break;
 		case UPDATE_STATUS_ICON_FAILED:
-			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("fail.png"));
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:images/%1\">';").arg("fail.png"));
 			break;
 		case UPDATE_STATUS_ICON_REFUSED:
-			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("refused.png"));
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:images/%1\">';").arg("refused.png"));
 			break;
 		case UPDATE_STATUS_ICON_LOADING:
-			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:image/%1\">';").arg("loading.gif"));
+			jsStr.append(QString("$$('loading').innerHTML='<img src=\"qrc:images/%1\">';").arg("loading.gif"));
 			break;
 	}
 	switch(type)
@@ -935,14 +954,14 @@ void synchronizeDlg::updateStatus(int status)
 	case UPDATESTATUS_FLAG_APPLY:
 		//jsStr.append(QString("$$('loading').style.display='block';"));
 		//jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
-		jsStr.append(QString("$$('btn_ok').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
+		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('apply').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 		break;
 	case UPDATESTATUS_FLAG_RETRY:
 		//jsStr.append(QString("$$('loading').style.display='block';"));
 		//jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('tip_text').innerHTML ='%1';").arg(tz::tr(statusStr)));
-		jsStr.append(QString("$$('btn_ok').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
+		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('apply').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 		break;
 	}
 	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
