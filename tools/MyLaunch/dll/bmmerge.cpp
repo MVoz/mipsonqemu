@@ -37,7 +37,8 @@ bool bmMerge::checkXmlfileFromServer()
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			TD(DEBUG_LEVEL_BMMERGE,"login failed!!!please check your name & password");
 			mergestatus = BM_SYNC_FAIL_LOGIN;
-			emit mergeStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_LOGIN,UPDATE_STATUS_ICON_FAILED);
+			//emit mergeStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_LOGIN,UPDATE_STATUS_ICON_FAILED);
+			emit mergeStatusNotify(BM_SYNC_FAIL_LOGIN);
 			goto bad;
 		}else{
 			TD(DEBUG_LEVEL_BMMERGE,"has modification on server!!!");

@@ -13,6 +13,7 @@ MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
 	monitorTimer=NULL;
 	header = NULL;
 	file = NULL;
+	dlgmode = UPDATE_DLG_MODE;
 }
 MyThread::~MyThread()
 {

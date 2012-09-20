@@ -1,33 +1,36 @@
 #include <appupdater.h>
 #include <bmapi.h>
 #include <config.h>
+/*
 void appUpdater::sendUpdateStatusNotify(int flag,int type,int icon)
 {
 	if(mode!=UPDATE_DLG_MODE) 
 		return;
 	emit updateStatusNotify(flag,type,icon);	
 }
+*/
 void appUpdater::testNetFinished()
 {
 	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT))
 	{
 	case TEST_NET_ERROR_SERVER:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
+		//sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
+		sendUpdateStatusNotify(UPDATE_NET_ERROR);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_REFUSE:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SERVER_REFUSE,UPDATE_STATUS_ICON_REFUSED);
+		sendUpdateStatusNotify(UPDATE_SERVER_REFUSE);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_ERROR_PROXY:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY,UPDATE_STATUS_ICON_FAILED);
+		sendUpdateStatusNotify(UPDATE_NET_ERROR_PROXY);
 		error = 1;
 		quit();
 		break;
 	case TEST_NET_ERROR_PROXY_AUTH:
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NET_ERROR_PROXY_AUTH,UPDATE_STATUS_ICON_FAILED);
+		sendUpdateStatusNotify(UPDATE_NET_ERROR_PROXY_AUTH);
 		error = 1;
 		quit();
 		break;
@@ -109,8 +112,8 @@ void appUpdater::run()
 {
 //	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(SYS_MONITORTIMEOUT),monitorTimeout);
 	MyThread::run();
-	if(mode == UPDATE_DLG_MODE )
-		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
+	if(dlgmode == UPDATE_DLG_MODE )
+		connect(this, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
 	
 	testThread = new testNet(NULL,settings);
 	testThread->moveToThread(this);
@@ -175,7 +178,7 @@ void appUpdater::getIniDone(int err)
 {
 	THREAD_MONITOR_POINT;
 	if(terminateFlag||error)	goto end;
-	switch(mode){
+	switch(dlgmode){
 		case UPDATE_SILENT_MODE:				
 			if(!err){
 				//merge local with server
@@ -214,7 +217,7 @@ void appUpdater::getIniDone(int err)
 				if(f.isEmpty()||servermd5.isEmpty())
 				{
 					//get wrong content form server
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
+					sendUpdateStatusNotify(UPDATE_FAILED);
 					error = 1;
 					goto end;
 				}
@@ -224,7 +227,7 @@ void appUpdater::getIniDone(int err)
 					QString localmd5 = serverSettings->value("setup/md5", "").toString();
 					if( servermd5 == localmd5)
 					{
-						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_NO_NEED,UPDATE_STATUS_ICON_SUCCESSFUL);					
+						sendUpdateStatusNotify(UPDATE_NO_NEED);					
 						goto end;
 					}
 				}
@@ -237,10 +240,10 @@ void appUpdater::getIniDone(int err)
 				if(terminateFlag||error)
 					goto end;
 				if(error){
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
+					sendUpdateStatusNotify(UPDATE_FAILED);
 				}else if(needed) 
 				{
-					sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,UPDATE_SUCCESSFUL,UPDATE_STATUS_ICON_SUCCESSFUL);
+					sendUpdateStatusNotify(UPDATE_SUCCESSFUL);
 					//write update.ini
 					if(!localSettings)
 						localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -250,7 +253,7 @@ void appUpdater::getIniDone(int err)
 				}		
 
 			}else{
-				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,UPDATE_FAILED,UPDATE_STATUS_ICON_FAILED);
+				sendUpdateStatusNotify(UPDATE_FAILED);
 			}
 			break;
 		default:
@@ -277,9 +280,9 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	DELETE_OBJECT(fh);
 	fh=new GetFileHttp(NULL,settings,m,md5);
 
-	if(mode==UPDATE_DLG_MODE) {
-		connect(fh, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
-		connect(this, SIGNAL(updateStatusNotify(int,int,int)), this->parent(), SLOT(updateStatus(int,int,int)));
+	if(dlgmode==UPDATE_DLG_MODE) {
+		connect(fh, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
+		connect(this, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
 	}
 /*
 #ifdef CONFIG_SERVER_IP_SETTING
@@ -293,7 +296,7 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	fh->setServerBranch("/download");
 	//htttp://www.tanzhi.com/download/setup/tanzhi.exe
 	//htttp://www.tanzhi.com/download/portable/tanzhi.exe
-	switch(mode)
+	switch(dlgmode)
 	{
 	case UPDATE_DLG_MODE:
 		fh->setUrl(QString("setup/").append(pathname));

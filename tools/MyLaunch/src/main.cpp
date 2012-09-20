@@ -2866,7 +2866,7 @@ void MyWidget::_startSync(int mode,int silence)
 
 	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int,int,int)), syncDlg.get(), SLOT(updateStatus(int,int,int)));
+	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
 	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
 	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
@@ -2948,11 +2948,11 @@ void MyWidget::testAccountFinished(int status)
 	{
 		if(status==HTTP_TEST_ACCOUNT_SUCCESS)
 		{
-			syncDlg->updateStatus(UPDATESTATUS_FLAG_APPLY,HTTP_TEST_ACCOUNT_SUCCESS,UPDATE_STATUS_ICON_SUCCESSFUL) ;
+			syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
 			//createSynDlgTimer();
 		}
 		else
-			syncDlg->updateStatus(UPDATESTATUS_FLAG_RETRY,HTTP_TEST_ACCOUNT_FAIL,UPDATE_STATUS_ICON_FAILED) ;
+			syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
 
 	}
 }
@@ -3702,7 +3702,8 @@ void MyWidget::startSilentUpdate()
 
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 	if(!slientUpdate||slientUpdate->isFinished()){
-		slientUpdate=new appUpdater(this,gSettings,UPDATE_SILENT_MODE); 
+		slientUpdate=new appUpdater(this,gSettings); 
+		slientUpdate->dlgmode = UPDATE_SILENT_MODE;
 		connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));		
 		//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
 		slientUpdate->start(QThread::IdlePriority);		

@@ -58,7 +58,7 @@ public slots:
 		void reject();
 		void retry();
 		void populateJavaScriptWindowObject();
-		void updateStatus(int type,int s,int icon);
+		void updateStatus(int);
 		void readDateProgress(int done,int total);
 		void reSyncSlot();
 signals:

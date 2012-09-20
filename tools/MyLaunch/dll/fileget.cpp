@@ -19,6 +19,7 @@ void GetFileHttp::clearObject(){
 	*/
 	MyThread::clearObject();
 }
+/*
 void GetFileHttp::sendUpdateStatusNotify(int flag,int type,int icon)
 {
 	if(type == HTTP_GET_FILE_SUCCESSFUL||type == HTTP_GET_INI_SUCCESSFUL)
@@ -29,7 +30,7 @@ void GetFileHttp::sendUpdateStatusNotify(int flag,int type,int icon)
 		return;
 	emit updateStatusNotify(flag,type,icon);
 }
-
+*/
 /*
 	1----success
 	0----failed
@@ -162,17 +163,17 @@ void GetFileHttp::downloadFileDone(bool error)
 				{
 					qDebug()<<"md5"<<md5<<" filemd5:"<<tz::fileMd5(filename);
 					if(md5.isEmpty()||tz::fileMd5(filename)==md5){
-						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,UPDATE_STATUS_ICON_SUCCESSFUL);
+						sendUpdateStatusNotify(HTTP_GET_FILE_SUCCESSFUL);
 					}else{
 						goto RETRY;
 					}	
 				}
 				break;
 			case HTTP_FILE_NOT_FOUND:	
-				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_NOT_EXISTED:HTTP_GET_INI_NOT_EXISTED,UPDATE_STATUS_ICON_FAILED);				
+				sendUpdateStatusNotify((mode==UPDATE_MODE_GET_FILE)?(HTTP_GET_FILE_NOT_EXISTED):(HTTP_GET_INI_NOT_EXISTED));				
 				break;
 			default:
-				sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:HTTP_GET_INI_FAILED,UPDATE_STATUS_ICON_FAILED);
+				sendUpdateStatusNotify((mode==UPDATE_MODE_GET_FILE)?(HTTP_GET_FILE_FAILED):(HTTP_GET_INI_FAILED));
 				break;
 			}
 	}else{
@@ -182,9 +183,9 @@ void GetFileHttp::downloadFileDone(bool error)
 	return;
 RETRY:
 	if(newHttp())	
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,HTTP_NEED_RETRY,UPDATE_STATUS_ICON_FAILED);
+		sendUpdateStatusNotify(HTTP_NEED_RETRY);
 	else
-		sendUpdateStatusNotify(UPDATESTATUS_FLAG_RETRY,(mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:HTTP_GET_INI_FAILED,UPDATE_STATUS_ICON_FAILED);	
+		sendUpdateStatusNotify((mode==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:(HTTP_GET_INI_FAILED));	
 	if(errCode!=HTTP_NEED_RETRY)
 		quit();	
 	return;

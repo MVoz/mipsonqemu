@@ -30,10 +30,10 @@ public:
 	GetFileHttp *fh;
 	int needed;
 	int error;
-	int mode;
+//	int mode;
 	bool needwatchchild;
 public:
-	appUpdater(QObject * parent = 0,QSettings* s=0,int m=0):MyThread(parent,s),mode(m)
+	appUpdater(QObject * parent = 0,QSettings* s=0):MyThread(parent,s)
 	{
 		timers=0;
 		needed=0;
@@ -52,14 +52,14 @@ public:
 //	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
 	int mergeSettings(QSettings* ,QSettings* ,int );
 	void checkSilentUpdateApp();
-	void sendUpdateStatusNotify(int ,int,int );
+//	void sendUpdateStatusNotify(int);
 public slots: 
 	void getIniDone(int err);
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();
 
-signals:
-	void updateStatusNotify(int type,int status,int icon);
+//signals:
+//	void updateStatusNotify(int type,int status,int icon);
 };
 #endif
