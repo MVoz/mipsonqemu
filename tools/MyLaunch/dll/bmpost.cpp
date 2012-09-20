@@ -18,60 +18,50 @@ void bmPost::clearObject()
 //ELETE_TIMER(postTimer);
 //	DELETE_OBJECT(posthttp);
 }
-void bmPost::gorun()
+void bmPost::run()
 {
 	THREAD_MONITOR_POINT;
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
-//TART_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
-	
-	http = new QHttp();
-	http->moveToThread(this);	
-	SET_NET_PROXY(http,settings);
-	/*
-
-	I found the problem:
-	From the Qt docs, a Qt::QueuedConnection will cause the slot to execute when control returns to the event loop 
-	of the thread where the receiver object lives. The receiver object in my case is the QThread object which is 
-	created, and thus lives, in the main GUI thread. The QTimer is created in the thread spawned off of the 
-	QThread object. So in this case I needed a Qt:: DirectConnection.
-	*/
-	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
+        //TART_TIMER_INSIDE(postTimer,false,POST_ITEM_TIMEOUT*SECONDS,postTimeout);	
+	MyThread::run();
+	MyThread::newHttpX();
 	connect(http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)), Qt::DirectConnection);
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(settings,http);
 #else
 	http->setHost(BM_SERVER_ADDRESS);
 #endif
-	QHttpRequestHeader header;
+*/
+	
+	
 	switch(postType)
 	{
 	case POST_HTTP_TYPE_HANDLE_ITEM:
 		{
-			QString bm_handle_url;
+			//QString bm_handle_url;
 			qsrand((unsigned) NOW_SECONDS);
 			uint key=qrand()%(getkeylength());
 			QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(username).arg(password),key);			
 			if(action==POST_HTTP_ACTION_ADD_ITEM||action==POST_HTTP_ACTION_ADD_DIR)
 			{
-				bm_handle_url=QString(BM_SERVER_ADD_URL).arg(parentid).arg(browserid).arg(auth_encrypt_str).arg(key);
+				url=QString(BM_SERVER_ADD_URL).arg(parentid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
 			else if(action==POST_HTTP_ACTION_DELETE_ITEM)
 			{
-				bm_handle_url=QString(BM_SERVER_DELETE_URL).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
+				url=QString(BM_SERVER_DELETE_URL).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
 			else if(action==POST_HTTP_ACTION_DELETE_DIR)
 			{
-				bm_handle_url=QString(BM_SERVER_DELETE_DIR).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
+				url=QString(BM_SERVER_DELETE_DIR).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
 			}
-			header=QHttpRequestHeader("POST", bm_handle_url);
 		}
 		break;
 	case POST_HTTP_TYPE_TESTACCOUNT:
-		header=QHttpRequestHeader("POST", BM_TEST_ACCOUNT_URL);
+		url = QString(BM_TEST_ACCOUNT_URL);	
 		break;				
 	}
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
 	do{
 		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
@@ -83,18 +73,15 @@ void bmPost::gorun()
 #else
 	header.setValue("Host", BM_SERVER_ADDRESS);
 #endif
-	header.setContentType("application/x-www-form-urlencoded");
-	resultBuffer = new QBuffer();
-	resultBuffer->moveToThread(this);
-	resultBuffer->open(QIODevice::ReadWrite);
-	http->request(header, postString.toUtf8(), resultBuffer);
-
-}
-
-void bmPost::run()
-{
-	THREAD_MONITOR_POINT;
-	gorun();
+*/
+	header=new QHttpRequestHeader("POST", url);
+	SET_HOST_IP(settings,http,&url,header);
+	header->setContentType("application/x-www-form-urlencoded");
+	MyThread::newHttpBuffer();
+	//resultBuffer = new QBuffer();
+	//resultBuffer->moveToThread(this);
+	//resultBuffer->open(QIODevice::ReadWrite);
+	http->request(*header, postString.toUtf8(), resultBuffer);
 	exec();
 	if(http)
 		disconnect(http, 0, 0, 0);

@@ -9,6 +9,9 @@
 #undef CONFIG_RELEASE
 #endif
 
+#pragma warning (disable:4100)
+
+
 #include "version.h"
 
 
@@ -226,21 +229,18 @@ enum{
 #define MAX_SEARCH_RESULT 10
 
 
-#ifdef CONFIG_SERVER_IP_SETTING
-#define SET_SERVER_IP(x,y) do{\
-		QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
-		if( !serverIp.isEmpty())\
-			(y).replace(BM_SERVER_ADDRESS,serverIp);\
-	}while(0);	
-#define SET_HOST_IP(x,y) do{\
-		QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
-		if( !serverIp.isEmpty())\
-			(y)->setHost(serverIp);\
-		else\
-			(y)->setHost(BM_SERVER_ADDRESS);\
-	}while(0);
+#define SET_HOST_IP(x,y,z,h) do{\
+			QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
+			if( !serverIp.isEmpty()){\
+				  if(y)  (y)->setHost(serverIp);\
+				  if(z)  (z)->replace(BM_SERVER_ADDRESS,serverIp);\
+				  if(h)  (h)->setValue("Host", serverIp);\
+			}else{\
+				if(y)   (y)->setHost(BM_SERVER_ADDRESS);\
+				if(h)   (h)->setValue("Host", BM_SERVER_ADDRESS);\
+			}\
+	  }while(0);
 
-#endif
 
 
 #define SET_RUN_PARAMETER(x,y) tz::runParameter(SET_MODE,(x),(y))

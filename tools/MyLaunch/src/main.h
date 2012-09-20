@@ -273,7 +273,8 @@ public:
 		loadDiggXml();
 		QDEBUG_LINE;
 		START_TIMER_INSIDE(diggxmlDisplayTimer,false,10*SECONDS,diggxmlDisplayTimeout);
-		connect(this->parent(), SIGNAL(diggXmlNewSignal()), this, SLOT(loadDiggXml()));			
+		connect(this->parent(), SIGNAL(diggXmlNewSignal()), this, SLOT(loadDiggXml()));	
+		QDEBUG_LINE;
 		exec();
 	}
 			

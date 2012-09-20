@@ -76,7 +76,7 @@ public slots:
 	void httpDone(bool error);
 //	void postTimeout();
 	void terminateThread();
-	void gorun();
+//	void gorun();
 	void monitorTimeout();
 	void clearObject();
 };

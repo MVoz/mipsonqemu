@@ -76,6 +76,8 @@ void bmSync::testNetFinished()
 	case TEST_NET_SUCCESS:
 		{
 			QDEBUG_LINE;
+			MyThread::newHttpX();
+/*			
 			http = new QHttp();
 			http->moveToThread(this);
 			SET_NET_PROXY(http,settings);
@@ -83,6 +85,8 @@ void bmSync::testNetFinished()
 			connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
 			connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 			connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+*/
+			SET_HOST_IP(settings,http,&url,header);
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
 				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
@@ -95,16 +99,18 @@ void bmSync::testNetFinished()
 				file = new QFile(filename_fromserver);
 				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
-					http->setHost(host);
+					//http->setHost(host);					
 					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START,UPDATE_STATUS_ICON_LOADING);
 					http->get(url, file);
 				}
 			}else if(mode==BOOKMARK_TESTACCOUNT_MODE){
-				http->setHost(BM_SERVER_ADDRESS);
+				//http->setHost(BM_SERVER_ADDRESS);
+				//SET_HOST_IP(settings,http,NULL,NULL);
 				connect(http, SIGNAL(done(bool)), this, SLOT(testAccountFinished(bool)));
-				resultBuffer = new QBuffer();
-				resultBuffer->moveToThread(this);
-				resultBuffer->open(QIODevice::ReadWrite);
+				MyThread::newHttpBuffer();
+				//resultBuffer = new QBuffer();
+				//resultBuffer->moveToThread(this);
+				//resultBuffer->open(QIODevice::ReadWrite);
 				http->get(url, resultBuffer);
 			}
 		}						
@@ -168,12 +174,13 @@ void bmSync::clearobject()
 void bmSync::run()
 {
 	THREAD_MONITOR_POINT;
+	QDEBUG_LINE;
 	semaphore->acquire(1);
-	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
+//	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
+//	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 //	tz::netProxy(SET_MODE,settings,NULL);
 	//check server status
-	
+	MyThread::run();
 	testThread = new testNet(NULL,settings);
 	testThread->moveToThread(this);
 		//connect(testThread,SIGNAL(finished()),this,  SLOT(testNetFinished()));

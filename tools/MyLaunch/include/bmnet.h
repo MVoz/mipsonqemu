@@ -29,7 +29,9 @@ public:
 	uint32 http_timeout;
 	int http_send_len;
 	int http_rcv_len;
+	
 	QHttp * http;
+	QHttpRequestHeader *header;
 	QBuffer* resultBuffer;
 	
 public slots:
@@ -58,6 +60,7 @@ public slots:
 public:
 	void run();
 	virtual void newHttpX();
+	virtual void newHttpBuffer();
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
 };

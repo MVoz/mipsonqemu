@@ -11,11 +11,13 @@ MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
 	http_rcv_len = 0;
 	terminateFlag=0;
 	monitorTimer=NULL;
+	header = NULL;
 }
 MyThread::~MyThread()
 {
 	DELETE_TIMER(monitorTimer);
-	DELETE_OBJECT(http);			
+	DELETE_OBJECT(http);	
+	DELETE_OBJECT(header);	
 	DELETE_FILE(resultBuffer);
 }
 
@@ -24,15 +26,6 @@ void MyThread::setTerminateFlag(int f)
 	terminateFlag=f;
 }
 void MyThread::monitorTimeout(){
-/*
-	STOP_TIMER(monitorTimer);
-	if(terminateFlag)
-		terminateThread();
-	else
-	{
-		monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
-	}
-*/
 	QDEBUG_LINE;
 	if(http){
 		http_timeout++;
@@ -48,6 +41,7 @@ void MyThread::monitorTimeout(){
 	}
 }
 void MyThread::run(){
+	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 }
 void MyThread::terminateThread(){
@@ -59,20 +53,25 @@ void MyThread::clearObject(){
 	DELETE_FILE(resultBuffer);
 }
 void MyThread::newHttpX(){
-	QDEBUG_LINE;
 	http = new QHttp();
-	TD(DEBUG_LEVEL_NORMAL,this<<http);
 	http->moveToThread(this);
 	SET_NET_PROXY(http,settings);
-	QDEBUG_LINE;
+	/*
+	I found the problem:
+	From the Qt docs, a Qt::QueuedConnection will cause the slot to execute when control returns to the event loop 
+	of the thread where the receiver object lives. The receiver object in my case is the QThread object which is 
+	created, and thus lives, in the main GUI thread. The QTimer is created in the thread spawned off of the 
+	QThread object. So in this case I needed a Qt:: DirectConnection.
+	*/
 	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
-	QDEBUG_LINE;
 }
-
-
-
+void MyThread::newHttpBuffer(){
+	resultBuffer = new QBuffer();
+	resultBuffer->moveToThread(this);
+	resultBuffer->open(QIODevice::ReadWrite);
+}
 
 
 testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),mode(m),id(d)
@@ -87,24 +86,8 @@ testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),
 
 
 void testNet::monitorTimeout(){
-	QDEBUG_LINE;
 	STOP_TIMER(monitorTimer);
-#if 1
 	MyThread::monitorTimeout();
-#else
-	if(http){
-		http_timeout++;
-		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
-			http->abort();
-		}
-	}
-	if(terminateFlag)
-		terminateThread();
-	else
-	{
-		monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
-	}
-#endif
 }
 
 
@@ -169,6 +152,20 @@ void testNet::testServerFinished(QNetworkReply* reply)
 	}else{
 		if(mode == TEST_SERVER_NET){
 			switch(error){
+#ifdef USE_HTTP
+				//case QNetworkReply::ProxyConnectionRefusedError:
+				//case QNetworkReply::ProxyConnectionClosedError:
+				//case QNetworkReply::ProxyNotFoundError:
+				//case QNetworkReply::ProxyTimeoutError:
+				//	SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
+				//	break;
+				case QHttp::ProxyAuthenticationRequiredError:
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
+					break;
+				default:
+					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
+					break;
+#else
 				case QNetworkReply::ProxyConnectionRefusedError:
 				case QNetworkReply::ProxyConnectionClosedError:
 				case QNetworkReply::ProxyNotFoundError:
@@ -181,6 +178,7 @@ void testNet::testServerFinished(QNetworkReply* reply)
 				default:
 					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
 					break;
+#endif
 			}		
 		}else if(mode == TEST_SERVER_VERSION){
 		}
@@ -240,29 +238,7 @@ void testNet::run()
 #endif
 #ifdef USE_HTTP
 	MyThread::newHttpX();
-//	TD(DEBUG_LEVEL_NORMAL,http);
-/*	
-	http = new QHttp();
-	http->moveToThread(this);
-	SET_NET_PROXY(http,settings);
-	QDEBUG_LINE;
-	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
-*/
-	
-	QDEBUG_LINE;
 	connect(http, SIGNAL(done(bool)), this, SLOT(testServerFinished(bool)),Qt::DirectConnection);
-	QDEBUG_LINE;
-/*
-	http = new QHttp();
-	http->moveToThread(this);
-	SET_NET_PROXY(http,settings);
-	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
-	connect(http, SIGNAL(done(bool)), this, SLOT(testServerFinished(bool)),Qt::DirectConnection);
-*/
 #else
 
 	manager=new QNetworkAccessManager();
@@ -271,7 +247,7 @@ void testNet::run()
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);	
 #endif
-
+/*
 #ifdef CONFIG_SERVER_IP_SETTING
 	do{
 		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
@@ -280,14 +256,17 @@ void testNet::run()
 		http->setHost(serverIp);
 	}while(0);
 #endif
+*/
+      SET_HOST_IP(settings,http,&url,header);
 
 #ifdef USE_HTTP		
-	resultBuffer = new QBuffer();
-	resultBuffer->moveToThread(this);
-	resultBuffer->open(QIODevice::ReadWrite);
+	//resultBuffer = new QBuffer();
+	//resultBuffer->moveToThread(this);
+	//resultBuffer->open(QIODevice::ReadWrite);
+	MyThread::newHttpBuffer();
 	http->get(url, resultBuffer);
 #else
-		reply=manager->get(QNetworkRequest(QUrl(url)));
+	reply=manager->get(QNetworkRequest(QUrl(url)));
 #endif
 
 	TD(DEBUG_LEVEL_NORMAL,url);
