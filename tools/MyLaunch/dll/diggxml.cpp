@@ -15,7 +15,7 @@ diggXml::diggXml(QObject* parent,QSettings* s):MyThread(parent,s)
 	testDiggXmlResult = 0;
 //	resultBuffer = NULL;
 	testThread = NULL;
-	file =NULL;
+//	file =NULL;
 //	http =NULL;
 //	httpTimer = NULL;
 	needwatchchild = false;
@@ -46,18 +46,21 @@ void diggXml::testNetFinished()
 			SET_NET_PROXY(http,settings);
 			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
 */
-			MyThread::newHttpX();
+			//filename.clear();
+			//filename=;
+			setFilename(QString(DIGG_XML_LOCAL_FILE)+".tmp");
+			MyThread::newHttpX(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
 			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
-			diggxml_fromserver.clear();
-			diggxml_fromserver=QString(DIGG_XML_LOCAL_FILE);
-			file = new QFile(diggxml_fromserver);
-			if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
-				SetFileAttributes(diggxml_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
+			//filename.clear();
+			//filename=QString(DIGG_XML_LOCAL_FILE);
+			//file = new QFile(diggxml_fromserver);
+			//if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
+			//	SetFileAttributes(diggxml_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
 				//http->setHost(host);
-				SET_HOST_IP(settings,http,&url,header);
-				http->get(url, file);
-			}
+//				SET_HOST_IP(settings,http,&url,header);
+			http->get(url, file);
+			//}
 		}
 		break;
 	case TEST_NET_UNNEED:
@@ -103,7 +106,8 @@ void diggXml::clearobject()
 	//DELETE_TIMER(httpTimer);
 	DELETE_OBJECT(testThread);
 	//DELETE_FILE(resultBuffer);
-	DELETE_FILE(file);
+//	DELETE_FILE(file);
+
 	MyThread::clearObject();
 }
 void diggXml::run()
@@ -133,10 +137,14 @@ void diggXml::diggXmlGetFinished(bool error)
 //	http_finish=1;
 	if(!error)	
 	{
-		if(md5key==tz::fileMd5(diggxml_fromserver)){
+		if(md5key==tz::fileMd5(filename)){
 			status = 1;
 			exit(status);
 			return;
+		}
+	}else{
+		if(!filename.isEmpty()&&QFile::exists(filename)){
+			QFile::remove(filename);
 		}
 	}
 	status = 0;

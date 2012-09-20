@@ -23,8 +23,10 @@ public:
 	QTimer* monitorTimer;
 	QSettings* settings;
 
-	QString host;
+//	QString host;
 	QString url;
+	QString filename;
+	
 	int http_state;
 	uint32 http_timeout;
 	int http_send_len;
@@ -33,6 +35,7 @@ public:
 	QHttp * http;
 	QHttpRequestHeader *header;
 	QBuffer* resultBuffer;
+	QFile* file;
 	
 public slots:
 	virtual void monitorTimeout();
@@ -59,10 +62,22 @@ public slots:
 
 public:
 	void run();
-	virtual void newHttpX();
-	virtual void newHttpBuffer();
+	virtual void newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidden);
+//	virtual void newHttpBuffer();
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
+//	virtual void setHost(const QString& s){
+//		host = s;
+/*
+		if(http)
+			http->setHost(s);			
+		if(header)  
+		 	header->setValue("Host", s);
+
+	}
+*/
+	virtual void setUrl(const QString &s);
+	void setFilename(const QString &s);
 };
 
 enum{

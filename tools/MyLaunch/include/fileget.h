@@ -25,11 +25,11 @@ public:
 	//QHttp * http[UPDATE_MAX_RETRY_TIME];
 	//QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
 	//QFile *file[UPDATE_MAX_RETRY_TIME];
-	QFile *file;
-	QString host;
-	QString url;
+//	QFile *file;
+//	QString host;
+//	QString url;
 	QString updaterFilename;
-	QString downloadFilename;
+//	QString downloadFilename;
 	QString md5;
 	QString destdir;
 	QString branch;
@@ -44,7 +44,7 @@ public:
 	GetFileHttp(QObject * parent = 0,QSettings* s=0,int mode=0,QString md5="");	
 	~GetFileHttp(){};
 	void clearObject();
-	void setHost(const QString& s){host = s;}
+	//void setHost(const QString& s){host = s;}
 	void setUrl(const QString &s){url = s;updaterFilename=s;}
 	void setServerBranch(const QString &s){branch = s;}
 	void setSaveFilename(const QString &s){savefilename = s;}

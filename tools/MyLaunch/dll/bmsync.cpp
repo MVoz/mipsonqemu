@@ -76,7 +76,7 @@ void bmSync::testNetFinished()
 	case TEST_NET_SUCCESS:
 		{
 			QDEBUG_LINE;
-			MyThread::newHttpX();
+			//MyThread::newHttpX(FALSE);
 /*			
 			http = new QHttp();
 			http->moveToThread(this);
@@ -86,28 +86,33 @@ void bmSync::testNetFinished()
 			connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 			connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
 */
-			SET_HOST_IP(settings,http,&url,header);
+//			SET_HOST_IP(settings,http,&url,header);
 			if(mode==BOOKMARK_SYNC_MODE)	
 			{
+				//filename.clear();
+				//filename=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(filename));
+				setFilename(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
+				MyThread::newHttpX(FALSE,FALSE,TRUE,TRUE);
 				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
 				//connect(http, SIGNAL(stateChanged(int)), this, SLOT(bmxmlstateChanged(int)),Qt::DirectConnection);
 				//connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(bmxmldataSendProgress(int,int)),Qt::DirectConnection);
 				//connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(bmxmldataReadProgress(int,int)),Qt::DirectConnection);
 				connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
-				filename_fromserver.clear();
-				filename_fromserver=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(filename_fromserver));
-				file = new QFile(filename_fromserver);
-				if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
-					SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
+				//filename_fromserver.clear();
+				//filename_fromserver=tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(filename_fromserver));
+				//file = new QFile(filename_fromserver);
+				//if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
+				//	SetFileAttributes(filename_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
 					//http->setHost(host);					
-					mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START,UPDATE_STATUS_ICON_LOADING);
-					http->get(url, file);
-				}
+				mgUpdateStatus(UPDATESTATUS_FLAG_APPLY,BM_SYNC_START,UPDATE_STATUS_ICON_LOADING);
+				http->get(url, file);
+				//}
 			}else if(mode==BOOKMARK_TESTACCOUNT_MODE){
 				//http->setHost(BM_SERVER_ADDRESS);
 				//SET_HOST_IP(settings,http,NULL,NULL);
+				MyThread::newHttpX(FALSE,TRUE,FALSE,FALSE);
 				connect(http, SIGNAL(done(bool)), this, SLOT(testAccountFinished(bool)));
-				MyThread::newHttpBuffer();
+				//MyThread::newHttpBuffer();
 				//resultBuffer = new QBuffer();
 				//resultBuffer->moveToThread(this);
 				//resultBuffer->open(QIODevice::ReadWrite);
@@ -135,12 +140,14 @@ void bmSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
+/*
 	if(http){
 		http_timeout++;
 		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
 			http->abort();
 		}
 	}
+*/
 	if(THREAD_IS_FINISHED(testThread))
 	{
 		DELETE_OBJECT(testThread);
@@ -157,7 +164,8 @@ void bmSync::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
+	//monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
+	MyThread::monitorTimeout();
 
 }
 void bmSync::clearobject()
@@ -167,8 +175,8 @@ void bmSync::clearobject()
 	DELETE_OBJECT(mgthread);
 	DELETE_OBJECT(testThread);
 	DELETE_FILE(file);
-	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver)){
-		QFile::remove(filename_fromserver);
+	if(!filename.isEmpty()&&QFile::exists(filename)){
+		QFile::remove(filename);
 	}
 }
 void bmSync::run()
@@ -241,9 +249,9 @@ void bmSync::bmxmlGetFinished(bool error)
 	//qDebug("emit bookmarkFinished error %d to networkpage", error);
 	if(!error)	
 	{
-		if(md5key==tz::fileMd5(filename_fromserver)){
+		if(md5key==tz::fileMd5(filename)){
 			mgthread = new bmMerge(NULL,db,settings,username,password);		
-			mgthread->setRandomFileFromserver(filename_fromserver);
+			mgthread->setRandomFileFromserver(filename);
 			connect(mgthread, SIGNAL(mergeStatusNotify(int,int,int)), this, SLOT(mgUpdateStatus(int,int,int)));
 			mgthread->start(QThread::IdlePriority);
 			return;

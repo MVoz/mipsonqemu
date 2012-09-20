@@ -14,13 +14,13 @@ class DIGG_XML_CLASS_EXPORT diggXml:public MyThread
 {
 	Q_OBJECT;
 public:
-	QFile *file;
+	//QFile *file;
 	//QBuffer* resultBuffer;
 	//QTimer* httpTimer;
 	
-	QString host;
-	QString url;
-	QString diggxml_fromserver;
+	//QString host;
+	//QString url;
+//	QString diggxml_fromserver;
 	QString md5key;
 	
 	int mode;	
@@ -38,8 +38,8 @@ public:
 public:
 	diggXml(QObject * parent = 0,QSettings* s=0);
 	~diggXml(){};
-	void setHost(const QString& s){host = s;}
-	void setUrl(const QString& s){url = s;}
+//	void setHost(const QString& s){host = s;}
+//	void setUrl(const QString& s){url = s;}
 	void setDiggId(uint id){diggid = id;}	
 	void run();
 public slots: 

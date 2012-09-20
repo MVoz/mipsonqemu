@@ -48,6 +48,7 @@ int GetFileHttp::newHttp()
 	//connect(http[retryTime], SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
 	//http[retryTime]->setHost(host);
 	DELETE_OBJECT(http);
+	DELETE_FILE(file);
 /*
 	http = new QHttp();
 	http->moveToThread(this);
@@ -56,12 +57,9 @@ int GetFileHttp::newHttp()
 	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
 */
-	MyThread::newHttpX();
-	connect(http, SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
-	connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
-	
+
 	QDir dir(".");
-	if(downloadFilename.isNull())
+	if(filename.isNull())
 	{
 		QStringList na = updaterFilename.split("/");
 		QString  dirPath=QString(destdir).append("\\");
@@ -75,17 +73,21 @@ int GetFileHttp::newHttp()
 			dirPath.append("\\");
 		}
 		if(savefilename.isEmpty())
-			downloadFilename=QString(dirPath.append(na.at(count-1)));//real filename
+			filename=QString(dirPath.append(na.at(count-1)));//real filename
 		else
-			downloadFilename=QString(dirPath.append(savefilename));//real filename
+			filename=QString(dirPath.append(savefilename));//real filename
 	}		
 //	qDebug("downloadFilename=%s",qPrintable(downloadFilename));
 	//file[retryTime] = new QFile(downloadFilename);
 	//file[retryTime]->open(QIODevice::ReadWrite | QIODevice::Truncate);
-
-	DELETE_FILE(file);
-	file = new QFile(downloadFilename);
-	file->open(QIODevice::ReadWrite | QIODevice::Truncate);
+	
+	
+	MyThread::newHttpX(FALSE,FALSE,TRUE,FALSE);
+	connect(http, SIGNAL(done(bool)), this, SLOT(downloadFileDone(bool)),Qt::DirectConnection);
+	connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
+	
+	//file = new QFile(downloadFilename);
+//	file->open(QIODevice::ReadWrite | QIODevice::Truncate);
 
 	url=QString(branch).append("/").append(updaterFilename);
 	//http[retryTime]->get(url, file[retryTime]);
@@ -120,7 +122,7 @@ GetFileHttp::GetFileHttp(QObject* parent,QSettings* s,int m,QString c): MyThread
 	errCode=0;
 	statusCode=0;
 	retryTime=-1;
-	file = NULL;
+//	file = NULL;
 /*
 	for(int i=0;i<UPDATE_MAX_RETRY_TIME;i++)
 	{
@@ -154,8 +156,8 @@ void GetFileHttp::downloadFileDone(bool error)
 			{
 			case HTTP_OK:
 				{
-					qDebug()<<"md5"<<md5<<" filemd5:"<<tz::fileMd5(downloadFilename);
-					if(md5.isEmpty()||tz::fileMd5(downloadFilename)==md5){
+					qDebug()<<"md5"<<md5<<" filemd5:"<<tz::fileMd5(filename);
+					if(md5.isEmpty()||tz::fileMd5(filename)==md5){
 						sendUpdateStatusNotify(UPDATESTATUS_FLAG_APPLY,HTTP_GET_FILE_SUCCESSFUL,UPDATE_STATUS_ICON_SUCCESSFUL);
 					}else{
 						goto RETRY;

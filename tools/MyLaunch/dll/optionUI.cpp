@@ -318,7 +318,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 	}else if(name == "custom"){
 		
 	}else if(name == "footer"){
-		c->append(QString("$('#footer ul').append(\"<li>&copy; 2012 - <a href='#' onclick=gohref('%1')>%2</a> &nbsp;/&nbsp; <a href='#' onclick=gohref('%3')>Help</a></li>\");").arg(HTTP_SERVER_URL).arg(APP_NAME).arg(HTTP_SERVER_URL_HELP));	
+		c->append(QString("$('#footer ul').append(\"<li>&copy; 2012 - <a href='#' onclick=gohref('%1')>%2</a> &nbsp;/&nbsp; <a href='#' onclick=gohref('%3%4')>Help</a></li>\");").arg(HTTP_SERVER_URL).arg(APP_NAME).arg(HTTP_SERVER_URL).arg(HTTP_SERVER_URL_HELP));	
 		TD(DEBUG_LEVEL_NORMAL,(*c));
 	}else if(name == "dirlist"){
 		dirLists.clear();
