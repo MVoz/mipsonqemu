@@ -26,8 +26,11 @@ exit 0
 fi
 
 
+if [ $obj ==  "release" ];then
 rm -fr $obj
 mkdir $obj
+fi
+
 
 makefunc './version/version'
 

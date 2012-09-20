@@ -125,7 +125,7 @@ void testNet::testServerFinished(bool error)
 void testNet::testServerFinished(QNetworkReply* reply)
 #endif
 {
-	QDEBUG_LINE;
+	//QDEBUG_LINE;
 
 	//STOP_TIMER(testNetTimer);
 #ifdef USE_HTTP

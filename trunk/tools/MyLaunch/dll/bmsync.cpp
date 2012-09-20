@@ -79,7 +79,7 @@ void bmSync::testNetFinished()
 		break;
 	case TEST_NET_SUCCESS:
 		{
-			QDEBUG_LINE;
+//			QDEBUG_LINE;
 			//MyThread::newHttpX(FALSE);
 /*			
 			http = new QHttp();
@@ -179,7 +179,6 @@ void bmSync::clearobject()
 	MyThread::clearObject();	
 	DELETE_OBJECT(mgthread);
 	DELETE_OBJECT(testThread);
-	DELETE_FILE(file);
 	if(!filename.isEmpty()&&QFile::exists(filename)){
 		QFile::remove(filename);
 	}
@@ -187,7 +186,6 @@ void bmSync::clearobject()
 void bmSync::run()
 {
 	THREAD_MONITOR_POINT;
-	QDEBUG_LINE;
 	semaphore->acquire(1);
 //	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 //	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
@@ -208,6 +206,7 @@ void bmSync::run()
 		case BOOKMARK_SYNC_MODE:
 			//if(!http_timerover)
 			//	emit bmSyncFinishedNotify(ret);
+			TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<status);
 			emit bmSyncFinishedStatusNotify(status);
 			break;
 		case BOOKMARK_TESTACCOUNT_MODE:
@@ -222,7 +221,6 @@ void bmSync::run()
 //	if(mode==BOOKMARK_SYNC_MODE)
 //			emit bmSyncFinishedStatusNotify(status);
 	clearobject();
-	QDEBUG_LINE;
 }
 
 void bmSync::testAccountFinished(bool error)
@@ -246,7 +244,6 @@ void bmSync::mgUpdateStatus(int flag,int statusid,int icon)
 
 void bmSync::bmxmlGetFinished(bool error)
 {
-	QDEBUG_LINE;
 	THREAD_MONITOR_POINT;
 	file->flush();
 	DELETE_FILE(file);
@@ -265,13 +262,14 @@ void bmSync::bmxmlGetFinished(bool error)
 			return;
 		}
 	}	
-	status = BM_SYNC_FAIL_SERVER_BMXML_FAIL;
+	
 	switch(http->error()){
 		case QHttp::ProxyAuthenticationRequiredError:
 			status = BM_SYNC_FAIL_PROXY_AUTH_ERROR;
 			break;
 		default:
 			//mgUpdateStatus(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_SERVER_NET_ERROR,UPDATE_STATUS_ICON_FAILED);
+			status = BM_SYNC_FAIL_SERVER_NET_ERROR;
 			sendUpdateStatusNotify(BM_SYNC_FAIL_SERVER_NET_ERROR);
 			break;
 	}
