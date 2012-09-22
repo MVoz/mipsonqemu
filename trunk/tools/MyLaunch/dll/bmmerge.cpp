@@ -2,7 +2,7 @@
 bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QString p):QThread(parent),db(b),settings(s),username(u),password(p)
 {
 	file = NULL;
-	posthp=NULL;
+	postHttp=NULL;
 	firefox_version=0;
 	mergestatus=BM_SYNC_SUCCESS_NO_MODIFY;
 	terminatedFlag=0;
@@ -10,7 +10,7 @@ bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QStrin
 }
 bmMerge::~bmMerge(){	
 	DELETE_FILE(file);
-	DELETE_OBJECT(posthp);
+	DELETE_OBJECT(postHttp);
 	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
 	{
 		QFile::remove(filename_fromserver);	
@@ -490,12 +490,12 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 	THREAD_MONITOR_POINT;
 	QString postString;
 	uint nowparentid=0;
-	DELETE_OBJECT(posthp);
-	posthp = new bmPost(NULL,settings,POST_HTTP_TYPE_HANDLE_ITEM);
-	posthp->parentid=parentId;
-	posthp->browserid=browserType;
-	posthp->username = username;
-	posthp->password = password;
+	DELETE_OBJECT(postHttp);
+	postHttp = new DoNetThread(NULL,settings,DOWHAT_POST_ITEM,0);
+	postHttp->parentid=parentId;
+	postHttp->browserid=browserType;
+	postHttp->username = username;
+	postHttp->password = password;
 
 	switch (bc->flag)
 	{
@@ -504,19 +504,19 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		{
 			bc->parentId = parentId;
 			postString = QString("subject=%1&addsubmit=true&category=1&source=client").arg(QString(QUrl::toPercentEncoding(bc->name)));
-			posthp->action = POST_HTTP_ACTION_ADD_DIR;
+			postHttp->action = POST_HTTP_ACTION_ADD_DIR;
 		}else{
 			//delete
 			postString = QString("deletesubmit=true&source=client");
-			posthp->action = POST_HTTP_ACTION_DELETE_DIR;
-			posthp->bmid =  bc->groupId;
+			postHttp->action = POST_HTTP_ACTION_DELETE_DIR;
+			postHttp->bmid =  bc->groupId;
 		}
-		posthp->postString = postString;
-		posthp->start(QThread::IdlePriority);
-		posthp->wait();
+		postHttp->postString = postString;
+		postHttp->start(QThread::IdlePriority);
+		postHttp->wait();
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
-			setMergeStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR),BM_SYNC_FAIL_POST_HTTP);
+			setMergeStatus(bc->name,bc->link,postHttp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR),BM_SYNC_FAIL_POST_HTTP);
 			return;
 		}
 		if(action)//add
@@ -527,7 +527,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			//mustn't be zero
 			if(bc->groupId==0)
 				{
-					setMergeStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR),BM_SYNC_FAIL_POST_HTTP);
+					setMergeStatus(bc->name,bc->link,postHttp->browserid,action?(POST_HTTP_ACTION_ADD_DIR):(POST_HTTP_ACTION_DELETE_DIR),BM_SYNC_FAIL_POST_HTTP);
 					return;
 				}
 			//bc->bmid= getBmId();
@@ -552,25 +552,25 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 			postString.append("&subject=");
 			postString.append(QString(QUrl::toPercentEncoding(bc->name)));
 			postString.append("&addsubmit=true&category=0&source=client");
-			posthp->action = POST_HTTP_ACTION_ADD_ITEM;
+			postHttp->action = POST_HTTP_ACTION_ADD_ITEM;
 		}else
 		{
 			//delete
 			postString = QString("deletesubmit=true&source=client");
-			posthp->action = POST_HTTP_ACTION_DELETE_ITEM;
+			postHttp->action = POST_HTTP_ACTION_DELETE_ITEM;
 		}
 
-		posthp->bmid =  bc->bmid;
-		posthp->postString = postString;
+		postHttp->bmid =  bc->bmid;
+		postHttp->postString = postString;
 		//qDebug()<<"post string:"<<postString;
-		posthp->start(QThread::IdlePriority);
-		posthp->wait();
+		postHttp->start(QThread::IdlePriority);
+		postHttp->wait();
 		bc->groupId= 0;
 		//bc->bmid= getBmId();
 		bc->bmid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID);
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
-			setMergeStatus(bc->name,bc->link,posthp->browserid,action?(POST_HTTP_ACTION_ADD_ITEM):(POST_HTTP_ACTION_ADD_DIR),BM_SYNC_FAIL_POST_HTTP);
+			setMergeStatus(bc->name,bc->link,postHttp->browserid,action?(POST_HTTP_ACTION_ADD_ITEM):(POST_HTTP_ACTION_ADD_DIR),BM_SYNC_FAIL_POST_HTTP);
 			return;
 		}
 		break;

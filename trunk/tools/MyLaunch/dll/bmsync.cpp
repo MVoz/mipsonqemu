@@ -57,8 +57,8 @@ void bmSync::terminateThread()
 	if(THREAD_IS_RUNNING(mgthread))
 	{
 		mgthread->setTerminated(1);
-		if(THREAD_IS_RUNNING(mgthread->posthp))
-			mgthread->posthp->setTerminateFlag(1);
+		if(THREAD_IS_RUNNING(mgthread->postHttp))
+			mgthread->postHttp->setTerminateFlag(1);
 	}
 }
 void bmSync::monitorTimeout()

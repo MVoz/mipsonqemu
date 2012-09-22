@@ -117,6 +117,61 @@ void DoNetThread::monitorTimeout(){
 	STOP_TIMER(monitorTimer);
 	NetThread::monitorTimeout();
 }
+void DoNetThread::doPostItemDone(bool error){
+	THREAD_MONITOR_POINT;
+	if(!error)
+	{
+		uint newgroupid=0;
+		QString lastModified=0;
+		uint bmid=0;
+		QXmlStreamReader* resultXml=new QXmlStreamReader(resultBuffer->data());
+		while (!resultXml->atEnd())
+		{
+			resultXml->readNext();
+			if (resultXml->isStartElement())
+			{
+				if (resultXml->name() == "status" )
+				{
+					if(resultXml->attributes().value("result").toString()==DOSUCCESSS)
+					{
+						lastModified=resultXml->attributes().value("lastmodified").toString();
+						newgroupid=resultXml->attributes().value("groupid").toString().toUInt();
+						bmid=resultXml->attributes().value("bmid").toString().toUInt();
+					}
+					break;
+				}
+			} 
+		}
+		if(!lastModified.isEmpty()){
+			setUpdatetime(lastModified);
+		}else
+			error = QHttp::UnknownError;
+		switch(action){
+			case POST_HTTP_ACTION_DELETE_ITEM:					
+				break;
+			case POST_HTTP_ACTION_DELETE_DIR:
+				break;
+			case POST_HTTP_ACTION_ADD_ITEM:
+				if(bmid){
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);
+				}else
+					error = QHttp::UnknownError;
+				break;
+			case POST_HTTP_ACTION_ADD_DIR:
+				if(newgroupid&&bmid){
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID,newgroupid);
+					SET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID,bmid);	
+				}else
+					error = QHttp::UnknownError;
+				break;
+		}
+		DELETE_OBJECT(resultXml);
+		//qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),GET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID),qPrintable(lastModified),GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID));
+	}
+	SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,error);
+	exit(error);
+}
+
 void DoNetThread::doHttpFinished(bool error){
 	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<doWhat);
 	if(!error)
@@ -244,6 +299,28 @@ void DoNetThread::run()
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
 			sendUpdateStatusNotify(BM_SYNC_START);
 			http->get(url, file);
+			break;
+		case DOWHAT_POST_ITEM:
+			{
+				qsrand((unsigned) NOW_SECONDS);
+				uint key=qrand()%(getkeylength());
+				QString auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(username).arg(password),key);	
+				switch(action){
+					case POST_HTTP_ACTION_ADD_ITEM:
+					case POST_HTTP_ACTION_ADD_DIR:
+						url=QString(BM_SERVER_ADD_URL).arg(parentid).arg(browserid).arg(auth_encrypt_str).arg(key);
+					break;
+					case POST_HTTP_ACTION_DELETE_ITEM:
+						url=QString(BM_SERVER_DELETE_URL).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
+					break;
+					case POST_HTTP_ACTION_DELETE_DIR:
+						url=QString(BM_SERVER_DELETE_DIR).arg(bmid).arg(browserid).arg(auth_encrypt_str).arg(key);
+					break;
+				}
+				NetThread::newHttp(TRUE,TRUE,FALSE,FALSE);
+				connect(http, SIGNAL(done(bool)), this, SLOT(doPostItemDone(bool)), Qt::DirectConnection);
+				http->request(*header, postString.toUtf8(), resultBuffer);
+			}
 			break;
 		default:
 			break;
