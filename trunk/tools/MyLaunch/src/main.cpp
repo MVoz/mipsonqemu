@@ -51,7 +51,7 @@ extern CatItem* gSearchResult;
 extern shared_ptr <bmSync> gSyncer;
 extern shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
-extern shared_ptr<diggXml> gDiggXmler;
+extern shared_ptr<bmSync> gDiggXmler;
 #endif
 
 enum{
@@ -2801,7 +2801,7 @@ void MyWidget::_startTestAccount(const QString& testAccountName,const QString& t
 	key=qrand()%(getkeylength());
 	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(testAccountName).arg(testAccountPassword),key);
 	
-	gTestAccounter.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
+	gTestAccounter.reset(new bmSync(this,gSettings,&db,NULL,SYNC_DO_TESTACCOUNT));
 	url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
 	gTestAccounter->setUsername(testAccountName);
 	gTestAccounter->setPassword(testAccountPassword);
@@ -2888,7 +2888,7 @@ void MyWidget::_startSync(int mode,int silence)
 	
 	if(silence == SYN_MODE_NOSILENCE)
 		url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-	gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
+	gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,SYNC_DO_BOOKMARK));
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
 
@@ -2965,7 +2965,7 @@ void MyWidget::testAccountFinished()
 	//	testAccountDlg->updateStatus(gTestAccounter->status==HTTP_TEST_ACCOUNT_SUCCESS?(HTTP_TEST_ACCOUNT_SUCCESS):(HTTP_TEST_ACCOUNT_FAIL)) ;
 	gTestAccounter->wait();								
 	gTestAccounter.reset();
-	gSemaphore.release(1);
+//	gSemaphore.release(1);
 }
 
 void MyWidget::syncStatusTimeout()
@@ -3215,20 +3215,19 @@ void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
 		runProgram(link.toString(),"");			
 }
 
-void MyWidget::diggXmlFinished(int status)
+void MyWidget::diggXmlFinished(bool status)
 {
-	gDiggXmler->wait();								
-	gDiggXmler.reset();
+
 	if(maincloseflag)
 		close();
 	else{
 		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
-//		TD(DEBUG_LEVEL_NORMAL,status);
-		if(status == 1){
-			//loadDiggXml();
+		if(gDiggXmler->statusCode == DOWHAT_GET_FILE_SUCCESS){
 			emit diggXmlNewSignal();
 		}
 	}
+	gDiggXmler->wait();								
+	gDiggXmler.reset();
 }
 void MyWidget::displayDiggxml(QString s)
 {
@@ -3236,10 +3235,11 @@ void MyWidget::displayDiggxml(QString s)
 }
 void MyWidget::startDiggXml()
 {
-	QHttpRequestHeader *header=NULL;
+//	QHttpRequestHeader *header=NULL;
 	if(gDiggXmler)
 		return;
-	gDiggXmler.reset(new diggXml(this,gSettings));
+//	gDiggXmler.reset(new bmSync(this,gSettings));
+	gDiggXmler.reset(new bmSync(NULL,gSettings,&db,NULL,SYNC_DO_DIGG));
 /*
 #ifdef CONFIG_SERVER_IP_SETTING
 	SET_HOST_IP(gSettings,gDiggXmler);
@@ -3249,7 +3249,7 @@ void MyWidget::startDiggXml()
 */
 	QString url=QString(BM_SERVER_GET_DIGGXML_URL);
 //	SET_HOST_IP(gSettings,gDiggXmler,&url,header);
-	connect(gDiggXmler.get(), SIGNAL(diggXmlFinishedStatusNotify(int)), this, SLOT(diggXmlFinished(int)));
+	connect(gDiggXmler.get(), SIGNAL(done(bool)), this, SLOT(diggXmlFinished(bool)));
 	
 	gDiggXmler->setUrl(url);
 #if 1

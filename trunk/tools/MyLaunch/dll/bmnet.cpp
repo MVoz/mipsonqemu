@@ -164,6 +164,7 @@ void DoNetThread::doHttpFinished(bool error){
 					}
 				}
 			break;
+			case DOWHAT_GET_DIGGXML_FILE:
 			case DOWHAT_GET_BMXML_FILE:
 				 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<filename<<md5key);
 				//if(md5key.isEmpty()||(md5key==tz::fileMd5(filename)))
@@ -232,12 +233,12 @@ void DoNetThread::run()
 			break;
 #ifdef CONFIG_DIGG_XML
 		case DOWHAT_TEST_SERVER_DIGG_XML:
-			setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(id)));
 			NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
 			http->get(url, resultBuffer);
 			break;
 #endif
+		case DOWHAT_GET_DIGGXML_FILE:
 		case DOWHAT_GET_BMXML_FILE:
 			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
