@@ -19,34 +19,33 @@
 #define UPDATE_MAX_RETRY_TIME 3
 
 
-class  UPDATER_THREAD_DLL_CLASS_EXPORT appUpdater:public MyThread
+class  UPDATER_THREAD_DLL_CLASS_EXPORT appUpdater:public NetThread
 {
 	Q_OBJECT;
 public:
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
-	testNet *testThread;
+	DoNetThread *donetThread;
 	GetFileHttp *fh;
 	int needed;
 	int error;
 //	int mode;
 	bool needwatchchild;
 public:
-	appUpdater(QObject * parent = 0,QSettings* s=0):MyThread(parent,s)
+	appUpdater(QObject * parent = 0,QSettings* s=0):NetThread(parent,s)
 	{
 		timers=0;
 		needed=0;
 		error=0;
 		localSettings =NULL;
 		serverSettings =NULL;
-		testThread =NULL;
+		donetThread =NULL;
 		fh = NULL;
 		needwatchchild = false;
 	}
-	~appUpdater(){};
+	~appUpdater();
 	void run();
-	void clearObject();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
 	void testVersionFinished();
 //	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
@@ -58,6 +57,7 @@ public slots:
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();
+	virtual void cleanObjects();
 
 //signals:
 //	void updateStatusNotify(int type,int status,int icon);

@@ -49,7 +49,7 @@
 #define POST_HTTP_CLASS_EXPORT __declspec(dllimport)
 #endif
 
-class  POST_HTTP_CLASS_EXPORT bmPost:public MyThread
+class  POST_HTTP_CLASS_EXPORT bmPost:public NetThread
 {
 	Q_OBJECT;
 public:
@@ -78,7 +78,8 @@ public slots:
 	void terminateThread();
 //	void gorun();
 	void monitorTimeout();
-	void clearObject();
+	virtual void cleanObjects();
+
 };
 
 #endif

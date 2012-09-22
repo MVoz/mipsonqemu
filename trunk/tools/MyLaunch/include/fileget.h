@@ -18,48 +18,32 @@
 #define UPDATE_MAX_RETRY_TIME 3
 
 
-class FILE_GET_DLL_CLASS_EXPORT GetFileHttp:public MyThread
+class FILE_GET_DLL_CLASS_EXPORT GetFileHttp:public NetThread
 {
 	Q_OBJECT;
 public:
-	//QHttp * http[UPDATE_MAX_RETRY_TIME];
-	//QTimer *httpTimer[UPDATE_MAX_RETRY_TIME];
-	//QFile *file[UPDATE_MAX_RETRY_TIME];
-//	QFile *file;
-//	QString host;
-//	QString url;
 	QString updaterFilename;
-//	QString downloadFilename;
 	QString md5;
 	QString destdir;
 	QString branch;
 	QString savefilename;
 	
 	int retryTime;
-	int mode;
-	int statusCode;
 	int errCode;
 
 public:
 	GetFileHttp(QObject * parent = 0,QSettings* s=0,int mode=0,QString md5="");	
-	~GetFileHttp(){};
-	void clearObject();
-	//void setHost(const QString& s){host = s;}
+	~GetFileHttp();
 	void setUrl(const QString &s){url = s;updaterFilename=s;}
 	void setServerBranch(const QString &s){branch = s;}
 	void setSaveFilename(const QString &s){savefilename = s;}
 	void run();
-	int newHttp();
+	int newHttpX();
 	void setDestdir(const QString& s){destdir = s;}
-//	void sendUpdateStatusNotify(int flag,int type,int icon);
 public slots: 
 		void downloadFileDone(bool error);
-		void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-//		void httpTimeout();
 		void monitorTimeout();
 		void terminateThread();
-//signals:
-//		void updateStatusNotify(int type,int status,int icon);
-
+		virtual void cleanObjects();
 };
 #endif

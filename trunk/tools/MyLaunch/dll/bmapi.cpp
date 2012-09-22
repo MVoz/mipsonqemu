@@ -94,6 +94,7 @@ struct{
 	{UPDATE_NET_ERROR_PROXY_AUTH,"update_net_error_proxy_auth"},
 
 	{BM_SYNC_START,"bm_sync_start"},
+	{BM_TESTACCOUNT_START,"bm_testaccount_start"},	
 	{BM_SYNC_SUCCESS_NO_MODIFY,"bm_sync_success_no_modify"},
 	{BM_SYNC_SUCCESS_WITH_MODIFY,"bm_sync_success_with_modify"},
 	{BM_SYNC_FAIL_LOGIN,"bm_sync_fail_login"},

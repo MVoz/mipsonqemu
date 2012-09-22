@@ -122,8 +122,6 @@ public:
 	QString password;
 	
 	void setRandomFileFromserver(QString &s);
-	void clearObject();
-
 public:
 	static void bmintolaunchdb(QSqlQuery* q,QList < bookmark_catagory > *bc,int comefrom,uint delId);
 #ifdef TOUCH_ANY_DEBUG

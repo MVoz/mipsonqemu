@@ -293,34 +293,6 @@ public slots:
 
 };
 #endif
-enum {
-	SYNC_MODE_BOOKMARK=0,
-	SYNC_MODE_REBOOKMARK,	
-	SYNC_MODE_TESTACCOUNT,
-	SYNC_MODE_UPGRADE
-};
-enum{
-	INPUT_MODE_NULL=0,
-	INPUT_MODE_TAB,
-	INPUT_MODE_NULL_PAGEDOWN,
-	INPUT_MODE_PAGEDOWN
-};
-/*
-enum{
-	REBUILD_CATALOG=0,
-	REBUILD_SILENT_SYNC,
-	REBUILD_DATABASE
-};
-*/
-
-enum{
-	TIMER_ACTION_BMSYNC=0,
-	TIMER_ACTION_CATBUILDER,
-	TIMER_ACTION_AUTOLEARNPROCESS,
-	TIMER_ACTION_DIGGXML,
-	TIMER_ACTION_SILENTUPDATER,
-	TIMER_ACTION_MAX
-};
 
 struct  TIMER_ACTION_LIST{
 	char actionType;
@@ -400,13 +372,11 @@ public:
 	QTimer* updateSuccessTimer;
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
-	QString testAccountName;
-	QString testAccountPassword;
 	int syncMode;
 	QList<GetFileHttp*> getfavicolist;
 
 	shared_ptr < synchronizeDlg> syncDlg;
-
+	shared_ptr < synchronizeDlg> testAccountDlg;
 	void connectAlpha();
 	QIcon getIcon(CatItem * item);
 	void MoveFromAlpha(QPoint pos);
@@ -537,12 +507,12 @@ public slots:
 		void _startSync(int mode,int silence);
 		void updateApp();
 		//	void bookmark_finished(bool error);
-		void testAccountFinished(int status);
+		void testAccountFinished();
 		void bmSyncFinishedStatus(int status);
 		void bmSyncerFinished();
 		void reSync();
 		void stopSync();
-		void testAccount(const QString&name,const QString& password);
+		void _startTestAccount(const QString&name,const QString& password);
 		void startSilentUpdate();
 		void silentUpdateFinished();
 		void getFavicoFinished();

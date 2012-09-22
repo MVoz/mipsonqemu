@@ -1,70 +1,33 @@
 #include <diggxml.h>
 #include <bmapi.h>
 
-void diggXml::on_http_responseHeaderReceived(const QHttpResponseHeader & resp)
+diggXml::diggXml(QObject* parent,QSettings* s):NetThread(parent,s,0)
 {
-	md5key = resp.value("md5key");
-//	if(resp.statusCode() == HTTP_OK)
-//		STOP_TIMER(httpTimer); 
-}
-diggXml::diggXml(QObject* parent,QSettings* s):MyThread(parent,s)
-{
-//	http_finish=0;
-//	http_timerover=0;
-	status=0;
 	testDiggXmlResult = 0;
-//	resultBuffer = NULL;
-	testThread = NULL;
-//	file =NULL;
-//	http =NULL;
-//	httpTimer = NULL;
+	donetThread = NULL;
 	needwatchchild = false;
 	diggid = 0;
 }
-/*
-void diggXml::httpTimeout()
-{
-	THREAD_MONITOR_POINT;
-	http_timerover=1;
-	STOP_TIMER(httpTimer);
-	if(!http_finish)
-		http->abort();
+diggXml::~diggXml(){
+
 }
-*/
 void diggXml::testNetFinished()
 {
 	THREAD_MONITOR_POINT;
 	testDiggXmlResult=GET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML);
-	DELETE_OBJECT(testThread);
+	DELETE_OBJECT(donetThread);
 	switch(testDiggXmlResult)
 	{
 	case TEST_NET_SUCCESS:
 		{
-/*
-			http = new QHttp();
-			http->moveToThread(this);
-			SET_NET_PROXY(http,settings);
-			START_TIMER_INSIDE(httpTimer,false,(tz::getParameterMib(SYS_HTTPGETRESPONDTIMEOUT))*SECONDS,httpTimeout);
-*/
-			//filename.clear();
-			//filename=;
 			setFilename(DIGG_XML_LOCAL_FILE_TMP);
-			MyThread::newHttpX(FALSE,FALSE,TRUE,TRUE);
+			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(diggXmlGetFinished(bool)),Qt::DirectConnection);
-			connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(on_http_responseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
-			//filename.clear();
-			//filename=QString(DIGG_XML_LOCAL_FILE);
-			//file = new QFile(diggxml_fromserver);
-			//if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
-			//	SetFileAttributes(diggxml_fromserver.utf16(),FILE_ATTRIBUTE_HIDDEN);
-				//http->setHost(host);
-//				SET_HOST_IP(settings,http,&url,header);
 			http->get(url, file);
-			//}
 		}
 		break;
 	case TEST_NET_UNNEED:
-		status=TEST_NET_UNNEED;
+		statusCode=TEST_NET_UNNEED;
 		exit(0);
 		break;
 	default:
@@ -75,18 +38,16 @@ void diggXml::testNetFinished()
 void diggXml::terminateThread()
 {
 	THREAD_MONITOR_POINT;
-	if(THREAD_IS_RUNNING(testThread))
-		testThread->setTerminateFlag(1);
-//	if(TIMER_IS_ACTIVE(httpTimer))
-//		httpTimeout();
+	if(THREAD_IS_RUNNING(donetThread))
+		donetThread->setTerminateFlag(1);
 }
 void diggXml::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
-	if(THREAD_IS_FINISHED(testThread))
+	if(THREAD_IS_FINISHED(donetThread))
 	{
-		DELETE_OBJECT(testThread);
+		DELETE_OBJECT(donetThread);
 		testNetFinished();
 	}
 	
@@ -95,51 +56,39 @@ void diggXml::monitorTimeout()
 		needwatchchild = true;
 		terminateThread();
 	}
-	//monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
-	MyThread::monitorTimeout();
+	NetThread::monitorTimeout();
 
 }
-void diggXml::clearobject()
-{
+void diggXml::cleanObjects(){
 	THREAD_MONITOR_POINT;
-	//DELETE_OBJECT(http);			
-	//DELETE_TIMER(httpTimer);
-	DELETE_OBJECT(testThread);
-	//DELETE_FILE(resultBuffer);
-//	DELETE_FILE(file);
-
-	MyThread::clearObject();
+	DELETE_OBJECT(donetThread);
+	NetThread::cleanObjects();
 }
+
 void diggXml::run()
 {
 	THREAD_MONITOR_POINT;
-	//qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
-	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
-	MyThread::run();
-	testThread = new testNet(NULL,settings,TEST_SERVER_DIGG_XML,diggid);
-	testThread->moveToThread(this);
-	testThread->start(QThread::IdlePriority);
+	NetThread::run();
+	donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
+	donetThread->moveToThread(this);
+	donetThread->start(QThread::IdlePriority);
 	exec();
-	if(testDiggXmlResult==1){
-//		STOP_TIMER(httpTimer);
-		DELETE_FILE(resultBuffer);
-	}
-	emit diggXmlFinishedStatusNotify(status);
-	clearobject();
+	//if(testDiggXmlResult==1){
+	//	DELETE_BUFFER(resultBuffer);
+	//}
+	emit diggXmlFinishedStatusNotify(statusCode);
+	cleanObjects();
 }
 
 void diggXml::diggXmlGetFinished(bool error)
 {
 	THREAD_MONITOR_POINT;
-	file->flush();
 	DELETE_FILE(file);
-//	STOP_TIMER(httpTimer);
-//	http_finish=1;
 	if(!error)	
 	{
 		if(md5key==tz::fileMd5(filename)){
-			status = 1;
-			exit(status);
+			statusCode = 1;
+			exit(statusCode);
 			return;
 		}
 	}else{
@@ -147,7 +96,7 @@ void diggXml::diggXmlGetFinished(bool error)
 			QFile::remove(filename);
 		}
 	}
-	status = 0;
-	exit(status);
+	statusCode = 0;
+	exit(statusCode);
 	return;
 }

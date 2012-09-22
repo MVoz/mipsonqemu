@@ -9,6 +9,12 @@ bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QStrin
 //	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 bmMerge::~bmMerge(){	
+	DELETE_FILE(file);
+	DELETE_OBJECT(posthp);
+	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
+	{
+		QFile::remove(filename_fromserver);	
+	}
 }
 
 void bmMerge::setRandomFileFromserver(QString& s)
@@ -37,7 +43,6 @@ bool bmMerge::checkXmlfileFromServer()
 		}else if(line.contains(LOGIN_FALIL_STRING)){
 			TD(DEBUG_LEVEL_BMMERGE,"login failed!!!please check your name & password");
 			mergestatus = BM_SYNC_FAIL_LOGIN;
-			//emit mergeStatusNotify(UPDATESTATUS_FLAG_RETRY,BM_SYNC_FAIL_LOGIN,UPDATE_STATUS_ICON_FAILED);
 			emit mergeStatusNotify(BM_SYNC_FAIL_LOGIN);
 			goto bad;
 		}else{
@@ -95,15 +100,6 @@ void mergeThread::closeFirefox3Db(QSqlDatabase& db)
 	QSqlDatabase::removeDatabase("dbFirefox");		
 }
 #endif
-void bmMerge::clearObject()
-{
-	DELETE_FILE(file);
-	DELETE_OBJECT(posthp);
-	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
-	{
-		QFile::remove(filename_fromserver);	
-	}
-}
 #ifdef TOUCH_ANY_DEBUG
 void bmMerge::dumpBcList(QList<bookmark_catagory>* s)
 {
@@ -607,6 +603,7 @@ void bmMerge::setMergeStatus(QString& n,QString& f,uint i,uint a,uint s)
 {
 	setHandleItemInfo(n,f,i,a);
 	mergestatus = s;
+	emit mergeStatusNotify(mergestatus);
 	if((s!=BM_SYNC_SUCCESS_NO_MODIFY)&&(s!=BM_SYNC_SUCCESS_WITH_MODIFY))
 		terminatedFlag = 1;
 }

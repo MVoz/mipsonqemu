@@ -1,30 +1,31 @@
 #include <bmnet.h>
 #include <bmapi.h>
 
-MyThread::MyThread(QObject * parent,QSettings* s):QThread(parent),settings(s)
+NetThread::NetThread(QObject * parent,QSettings* s,int m):QThread(parent),settings(s),doWhat(m)
 {
 	resultBuffer = NULL;
 	http =NULL;
+	monitorTimer=NULL;
+	header = NULL;
+	file = NULL;
+	
 	http_state = 0;
 	http_timeout = 0;
 	http_send_len = 0;
 	http_rcv_len = 0;
 	terminateFlag=0;
-	monitorTimer=NULL;
-	header = NULL;
-	file = NULL;
 	dlgmode = UPDATE_DLG_MODE;
+	statusCode =0;
+	httpRspCode = 0;
 }
-MyThread::~MyThread()
-{
-	clearObject();
+NetThread::~NetThread(){
 }
 
-void MyThread::setTerminateFlag(int f)
+void NetThread::setTerminateFlag(int f)
 {
 	terminateFlag=f;
 }
-void MyThread::monitorTimeout(){
+void NetThread::monitorTimeout(){
 	if(http){
 		http_timeout++;
 		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
@@ -41,21 +42,14 @@ void MyThread::monitorTimeout(){
 */
 	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
 }
-void MyThread::run(){
+void NetThread::run(){
 	qRegisterMetaType<QHttpResponseHeader>("QHttpResponseHeader");
 	START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);
 }
-void MyThread::terminateThread(){
+void NetThread::terminateThread(){
 	STOP_TIMER(monitorTimer);
 }
-void MyThread::clearObject(){
-	DELETE_TIMER(monitorTimer);
-	DELETE_OBJECT(http);	
-	DELETE_OBJECT(header);	
-	DELETE_FILE(resultBuffer);
-	DELETE_FILE(file);
-}
-void MyThread::newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidden){
+void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidden){
 	http = new QHttp();
 	http->moveToThread(this);
 	http->setHost(BM_SERVER_ADDRESS);	
@@ -69,7 +63,8 @@ void MyThread::newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidde
 	*/
 	connect(http, SIGNAL(stateChanged(int)), this, SLOT(httpstateChanged(int)),Qt::DirectConnection);
 	connect(http, SIGNAL(dataSendProgress(int,int)), this, SLOT(httpdataSendProgress(int,int)),Qt::DirectConnection);
-	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);
+	connect(http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpdataReadProgress(int,int)),Qt::DirectConnection);	
+	connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)), this, SLOT(httpResponseHeaderReceived(const QHttpResponseHeader &)),Qt::DirectConnection);
 	if(needHeader){
 		header=new QHttpRequestHeader("POST", url);
 		header->setContentType("application/x-www-form-urlencoded");
@@ -90,218 +85,174 @@ void MyThread::newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidde
 	SET_HOST_IP(settings,http,&url,header);
 }
 
-void MyThread::setUrl(const QString &s){
+void NetThread::setUrl(const QString &s){
 	url = s;
 }
 
-void MyThread::setFilename(const QString &s){
+void NetThread::setFilename(const QString &s){
 	filename.clear();
 	filename = s;
 }
-
-
-
-
-testNet::testNet(QObject * parent ,QSettings* s,int m,int d):MyThread(parent,s),mode(m),id(d)
-{
-#ifdef USE_HTTP
-#else
-	manager = NULL;
-	reply = NULL;
-//	testNetTimer = NULL;
-#endif
+void NetThread::cleanObjects(){
+	THREAD_MONITOR_POINT;
+	DELETE_TIMER(monitorTimer);
+	DELETE_OBJECT(http);	
+	DELETE_OBJECT(header);	
+	DELETE_BUFFER(resultBuffer);
+	DELETE_FILE(file);
 }
 
 
-void testNet::monitorTimeout(){
+
+
+
+
+
+DoNetThread::DoNetThread(QObject * parent ,QSettings* s,int m,int d):NetThread(parent,s,m),id(d)
+{
+}
+
+
+void DoNetThread::monitorTimeout(){
 	STOP_TIMER(monitorTimer);
-	MyThread::monitorTimeout();
+	NetThread::monitorTimeout();
 }
-
-
-#ifdef USE_HTTP
-void testNet::testServerFinished(bool error)
-#else
-void testNet::testServerFinished(QNetworkReply* reply)
-#endif
-{
-	//QDEBUG_LINE;
-
-	//STOP_TIMER(testNetTimer);
-#ifdef USE_HTTP
-#else
-	QNetworkReply::NetworkError error=reply->error();
-#endif
+void DoNetThread::doHttpFinished(bool error){
+	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<doWhat);
 	if(!error)
-	{
-#ifdef USE_HTTP
-		QString replybuf(resultBuffer->data().trimmed());
-#else
-		QString replybuf(reply->readAll().trimmed());
-#endif
-		switch(mode){
-			case TEST_SERVER_NET:				
-				if(replybuf.startsWith(QString("1")))
+	{		
+		switch(doWhat){
+			case DOWHAT_TEST_SERVER_NET:	
 				{
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_SUCCESS);
+					QString replybuf(resultBuffer->data().trimmed());
+					if(replybuf.startsWith(QString("1")))
+						statusCode = TEST_NET_SUCCESS;
+					else
+						statusCode = TEST_NET_REFUSE;
 				}
 			break;
 #ifdef CONFIG_DIGG_XML
-			case TEST_SERVER_DIGG_XML:
-				if(replybuf.startsWith(QString("1")))
+			case DOWHAT_TEST_SERVER_DIGG_XML:
 				{
-					SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,TEST_NET_SUCCESS);
-				}else if(replybuf.startsWith(QString("0"))){
-					SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,TEST_NET_UNNEED);
+					QString replybuf(resultBuffer->data().trimmed());
+					if(replybuf.startsWith(QString("1"))){
+						statusCode = TEST_DIGGXML_SUCCESS;
+					}else if(replybuf.startsWith(QString("0"))){
+						statusCode = TEST_DIGGXML_UNNEED;
+					}
 				}
 			break;
 #endif
-			case TEST_SERVER_VERSION:
+			case DOWHAT_TEST_SERVER_VERSION:
 				{
+					QString replybuf(resultBuffer->data().trimmed());
 					qDebug()<<replybuf;
 					QRegExp verre("^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}$");
+					statusCode = TEST_VERSION_UNNEED;
 					if(verre.exactMatch(replybuf)){
-						QDEBUG_LINE;	
+						QDEBUG_LINE;							
 						QStringList s_version = replybuf.split(".");
 						QStringList l_version = QString(APP_VERSION).split(".");
 						 for (int i = 0; i < s_version.size(); ++i)
        							{ 
        								if(s_version.at(i).toUInt()>l_version.at(i).toUInt())
        								{
-       									SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,1);
+									statusCode = TEST_VERSION_SUCCESS;
 									break;
        								}       								
 						 	}						
 					}
 				}
 			break;
+			case DOWHAT_GET_BMXML_FILE:
+				 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<filename<<md5key);
+				//if(md5key.isEmpty()||(md5key==tz::fileMd5(filename)))
+				if(1){
+						statusCode = DOWHAT_GET_FILE_SUCCESS;
+				}else{
+						statusCode = DOWHAT_GET_FILE_FAIL;
+						exit(-1);
+						return;
+				}
+				break;
+			case DOWHAT_TEST_ACCOUNT:
+				{
+					if(QString(resultBuffer->data())==DOSUCCESSS){
+						statusCode = HTTP_TEST_ACCOUNT_SUCCESS;
+					}else{	
+						statusCode = HTTP_TEST_ACCOUNT_FAIL;
+						exit(-1);
+						return;
+					}
+				}
+				break;
+			case DOWHAT_POST_ITEM:
+				break;
 
-		}		
-	}else{
-		if(mode == TEST_SERVER_NET){
-			switch(error){
-#ifdef USE_HTTP
-				//case QNetworkReply::ProxyConnectionRefusedError:
-				//case QNetworkReply::ProxyConnectionClosedError:
-				//case QNetworkReply::ProxyNotFoundError:
-				//case QNetworkReply::ProxyTimeoutError:
-				//	SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
-				//	break;
-				case QHttp::ProxyAuthenticationRequiredError:
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
-					break;
-				default:
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
-					break;
-#else
-				case QNetworkReply::ProxyConnectionRefusedError:
-				case QNetworkReply::ProxyConnectionClosedError:
-				case QNetworkReply::ProxyNotFoundError:
-				case QNetworkReply::ProxyTimeoutError:
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY);
-					break;
-				case QNetworkReply::ProxyAuthenticationRequiredError:
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_PROXY_AUTH);
-					break;
-				default:
-					SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_ERROR_SERVER);
-					break;
-#endif
-			}		
-		}else if(mode == TEST_SERVER_VERSION){
 		}
+		 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
+		exit(0);
+		return;
 	}
-	QDEBUG_LINE;
-	quit();
+	
+
+	switch(http->error()){
+		case QHttp::ProxyAuthenticationRequiredError:
+			statusCode = TEST_NET_ERROR_PROXY_AUTH;
+			break;
+		default:
+			statusCode = TEST_NET_ERROR_SERVER;
+			break;
+	}
+	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
+	exit(0);
+	return;
 }
-/*
-void testNet::testServerTimeout()
+void DoNetThread::terminateThread()
 {
 	THREAD_MONITOR_POINT;
-	//STOP_TIMER(monitorTimer);
-	STOP_TIMER(testNetTimer);
-	reply->abort();
+	NetThread::terminateThread();
 }
-*/
-void testNet::terminateThread()
-{
-	THREAD_MONITOR_POINT;
-//	testServerTimeout();
-	MyThread::terminateThread();
-}
-void testNet::clearObject()
-{
-	//QDEBUG_LINE;
-	THREAD_MONITOR_POINT;
-#ifdef USE_HTTP
-	MyThread::clearObject();
-#else
-	DELETE_OBJECT(reply);
-	DELETE_OBJECT(manager);
-	DELETE_TIMER(monitorTimer);
-#endif	
-//	DELETE_TIMER(testNetTimer);
-//	
-//	QDEBUG_LINE;
-}
-void testNet::run()
+void DoNetThread::run()
 {
 	THREAD_MONITOR_POINT;	
-	//QString url ="";
-	//START_TIMER_INSIDE(monitorTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT)),monitorTimeout);	
-	MyThread::run();
-	switch(mode){
-		case TEST_SERVER_NET:
-			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT,TEST_NET_REFUSE);
-			setUrl(TEST_NET_URL);
+	NetThread::run();
+	switch(doWhat){
+		case DOWHAT_TEST_ACCOUNT:
+		case DOWHAT_TEST_SERVER_NET:
+			NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
+			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+			http->get(url, resultBuffer);
 			break;
-		case TEST_SERVER_VERSION:
-			SET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_VERSION,0);
+		case DOWHAT_TEST_SERVER_VERSION:
 			setUrl(TOUCHANY_VERSION_URL);
+			NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
+			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+			http->get(url, resultBuffer);
 			break;
 #ifdef CONFIG_DIGG_XML
-		case TEST_SERVER_DIGG_XML:
-			SET_RUN_PARAMETER(RUN_PARAMETER_DIGG_XML,0);
+		case DOWHAT_TEST_SERVER_DIGG_XML:
 			setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(id)));
+			NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
+			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+			http->get(url, resultBuffer);
 			break;
 #endif
+		case DOWHAT_GET_BMXML_FILE:
+			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
+			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+			sendUpdateStatusNotify(BM_SYNC_START);
+			http->get(url, file);
+			break;
+		default:
+			break;
 	}
-#ifdef USE_HTTP
-	MyThread::newHttpX(FALSE,TRUE,FALSE,FALSE);
-	connect(http, SIGNAL(done(bool)), this, SLOT(testServerFinished(bool)),Qt::DirectConnection);
-#else
-
-	manager=new QNetworkAccessManager();
-	manager->moveToThread(this);	
-	SET_NET_PROXY(manager,settings);	
-
-	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(testServerFinished(QNetworkReply*)),Qt::DirectConnection);	
-#endif
-/*
-#ifdef CONFIG_SERVER_IP_SETTING
-	do{
-		QString serverIp = (settings)->value("serverip","" ).toString().trimmed();
-		if( !serverIp.isEmpty())
-			url.replace(BM_SERVER_ADDRESS, serverIp);	
-		http->setHost(serverIp);
-	}while(0);
-#endif
-*/
-  //    SET_HOST_IP(settings,http,&url,header);
-
-#ifdef USE_HTTP		
-	//resultBuffer = new QBuffer();
-	//resultBuffer->moveToThread(this);
-	//resultBuffer->open(QIODevice::ReadWrite);
-	//MyThread::newHttpBuffer();
-	http->get(url, resultBuffer);
-#else
-	reply=manager->get(QNetworkRequest(QUrl(url)));
-#endif
-
 	TD(DEBUG_LEVEL_NORMAL,url);
-//	START_TIMER_INSIDE(testNetTimer,false,(tz::getParameterMib(SYS_MONITORTIMEOUT))*SECONDS,testServerTimeout);
 	exec();
-	clearObject();		
-	QDEBUG_LINE;
+	emit doNetStatusNotify(statusCode);
+	cleanObjects();
 }
+void DoNetThread::cleanObjects(){
+	NetThread::cleanObjects();
+}
+
