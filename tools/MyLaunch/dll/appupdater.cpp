@@ -9,6 +9,10 @@ void appUpdater::sendUpdateStatusNotify(int flag,int type,int icon)
 	emit updateStatusNotify(flag,type,icon);	
 }
 */
+appUpdater::~appUpdater(){
+
+}
+
 void appUpdater::testNetFinished()
 {
 	switch(GET_RUN_PARAMETER(RUN_PARAMETER_TESTNET_RESULT))
@@ -36,9 +40,9 @@ void appUpdater::testNetFinished()
 		break;
 	case TEST_NET_SUCCESS:
 		{
-			testThread = new testNet(NULL,settings,TEST_SERVER_VERSION);
-			testThread->moveToThread(this);
-			testThread->start(QThread::IdlePriority);				
+			donetThread = new DoNetThread(this,settings,DOWHAT_TEST_SERVER_VERSION);
+			donetThread->moveToThread(this);
+			donetThread->start(QThread::IdlePriority);				
 		}
 		break;
 	}	
@@ -55,22 +59,12 @@ void appUpdater::testVersionFinished()
 			break;
 	}
 }
-void appUpdater::clearObject()
-{
-	DELETE_OBJECT(testThread);
-	if(fh)
-		fh->wait();
-	DELETE_OBJECT(fh);
-	DELETE_OBJECT(localSettings);
-	DELETE_OBJECT(serverSettings);
-	MyThread::clearObject();
-}
 void appUpdater::terminateThread()
 {	
 	QDEBUG_LINE;
 	STOP_TIMER(monitorTimer);
-	if(THREAD_IS_RUNNING(testThread))
-		testThread->setTerminateFlag(1);
+	if(THREAD_IS_RUNNING(donetThread))
+		donetThread->setTerminateFlag(1);
 	if(THREAD_IS_RUNNING(fh))
 		fh->setTerminateFlag(1);
 }
@@ -78,21 +72,21 @@ void appUpdater::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
-	 if(THREAD_IS_FINISHED(testThread))
+	 if(THREAD_IS_FINISHED(donetThread))
 	 {
-	 	if(testThread->mode==TEST_SERVER_NET){
-			DELETE_OBJECT(testThread);
+	 	if(donetThread->doWhat==DOWHAT_TEST_SERVER_NET){
+			DELETE_OBJECT(donetThread);
 	 		testNetFinished();
-	 	}else if(testThread->mode==TEST_SERVER_VERSION){
+	 	}else if(donetThread->doWhat==DOWHAT_TEST_SERVER_VERSION){
 	 		QDEBUG_LINE;
-	 		DELETE_OBJECT(testThread);
+	 		DELETE_OBJECT(donetThread);
 	 		testVersionFinished();
 	 	}
 	 }
 
 	 if(THREAD_IS_FINISHED(fh))
 	 {
-		if(fh->mode==UPDATE_MODE_GET_INI)
+		if(fh->doWhat==UPDATE_MODE_GET_INI)
 			{
 				int err = fh->errCode;
 				fh->wait();
@@ -107,19 +101,28 @@ void appUpdater::monitorTimeout()
 	}
 	monitorTimer->start(tz::getParameterMib(SYS_MONITORTIMEOUT));	
 }
+void appUpdater::cleanObjects(){
+	DELETE_OBJECT(donetThread);
+	if(fh)
+		fh->wait();
+	DELETE_OBJECT(fh);
+	DELETE_OBJECT(localSettings);
+	DELETE_OBJECT(serverSettings);
+	NetThread::cleanObjects();
+}
 
 void appUpdater::run()
 {
-//	START_TIMER_INSIDE(monitorTimer,false,tz::getParameterMib(SYS_MONITORTIMEOUT),monitorTimeout);
-	MyThread::run();
+	NetThread::run();
 	if(dlgmode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
 	
-	testThread = new testNet(NULL,settings);
-	testThread->moveToThread(this);
-	testThread->start(QThread::IdlePriority);	
+	donetThread = new DoNetThread(this,settings,DOWHAT_TEST_SERVER_NET,0);
+	donetThread->setUrl(TEST_NET_URL);
+	donetThread->moveToThread(this);
+	donetThread->start(QThread::IdlePriority);	
 	exec();
-	clearObject();
+	cleanObjects();
 }
 
 /*
@@ -307,7 +310,7 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	}
 
 	fh->start(QThread::IdlePriority);
-	 if(fh&&(fh->mode==UPDATE_MODE_GET_FILE))
+	 if(fh&&(fh->doWhat==UPDATE_MODE_GET_FILE))
 		fh->wait();
 	 error = fh->errCode;
 	 qDebug()<<pathname<<" error code:"<<error;

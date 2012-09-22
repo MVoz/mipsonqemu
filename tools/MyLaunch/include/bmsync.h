@@ -38,58 +38,38 @@
 
 #define BOOKMARK_SYNC_MODE	0
 #define BOOKMARK_TESTACCOUNT_MODE  1
-class BOOKMARK_SYNC_CLASS_EXPORT bmSync:public MyThread
+class BOOKMARK_SYNC_CLASS_EXPORT bmSync:public NetThread
 {
 	Q_OBJECT;
 public:
-//	QFile *file;
-//	QBuffer* resultBuffer;
-//	QTimer* httpTimer;
 	QSemaphore *semaphore;
 	QSqlDatabase *db;
 	
 
 	QString username;
 	QString password;
-//	QString filename_fromserver;
-	QString md5key;
-	
-	int mode;	
 
-	int status;
-
-//	volatile int testServerResult;
 	volatile bool needwatchchild;	
 	
-	testNet *testThread;
+	DoNetThread *donetThread;
 	bmMerge *mgthread;
-//	QHttp * http;
 	
 public:
 	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
-	~bmSync(){};
-//	void setHost(const QString& s){host = s;}
-//	void setUrl(const QString& s){url = s;}
+	~bmSync();
 	void setUsername(const QString& s){username = s;}
 	void setPassword(const QString& s){password = s;}
 	void run();
 public slots: 
-	void bmxmlGetFinished(bool error);
-	//void bmxmlstateChanged(int state);
-	//void bmxmldataSendProgress(int len,int total);
-	//void bmxmldataReadProgress(int len,int total);
-	void testAccountFinished(bool error);
-	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
+	void bmxmlGetFinished(int status);
+//	void testAccountFinished(bool error);
 	void mergeDone();
-//	void httpTimeout();
-//	void mgUpdateStatus(int flag,int status,int icon);
-	void testNetFinished();
+	void testNetFinished(int status);
 	void terminateThread();
 	void monitorTimeout();
-	void clearobject();
+	virtual void cleanObjects();
 signals:
 	void bmSyncFinishedStatusNotify(int status);
-//	void updateStatusNotify(int type,int status,int icon);
 	void readDateProgressNotify(int done, int total);
 	void testAccountFinishedNotify(int status);
 };

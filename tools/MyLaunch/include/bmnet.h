@@ -11,43 +11,43 @@
 #endif
 
 #define USE_HTTP
-class TEST_SERVER_DLL_CLASS_EXPORT MyThread:public QThread
+class TEST_SERVER_DLL_CLASS_EXPORT NetThread:public QThread
 {
 	Q_OBJECT;
 public:
-	MyThread(QObject * parent = 0,QSettings* s=0);
-	~MyThread();
+	NetThread(QObject * parent = 0,QSettings* s=0,int mode=0);
+	~NetThread();
 public:
-	volatile int terminateFlag;
+	
 	
 	QTimer* monitorTimer;
 	QSettings* settings;
-
-//	QString host;
-	QString url;
-	QString filename;
-	
-	int http_state;
-	uint32 http_timeout;
-	int http_send_len;
-	int http_rcv_len;
-	
 	QHttp * http;
 	QHttpRequestHeader *header;
 	QBuffer* resultBuffer;
 	QFile* file;
 
+	QString url;
+	QString filename;
+	QString md5key;	
+
+	volatile int terminateFlag;
+	int doWhat;	
+	int http_state;
+	uint32 http_timeout;
+	int http_send_len;
+	int http_rcv_len;
 	int dlgmode;
+	int statusCode;
+	int httpRspCode;
 	
 public slots:
 	virtual void monitorTimeout();
-	virtual void clearObject();
 	void httpstateChanged(int state){
 		if(http_state!=state)
 			http_timeout=0;
 		http_state = state;
-		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);
-		
+		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<state);		
 	}
 	void httpdataSendProgress(int len,int total){
 		if(http_send_len != len)
@@ -64,24 +64,20 @@ public slots:
 	virtual void sendUpdateStatusNotify(int status){
 		//if(dlgmode!=UPDATE_DLG_MODE) 
 		//	return;
+		statusCode = status;
 		emit updateStatusNotify(status);
 	}
+	virtual void httpResponseHeaderReceived(const QHttpResponseHeader & resp){
+		httpRspCode=resp.statusCode();
+		if(resp.statusCode() == HTTP_OK)
+			md5key = resp.value("md5key");
+	}
+	virtual void cleanObjects();
 public:
 	void run();
-	virtual void newHttpX(bool needHeader,bool needBuffer,bool needFile,bool hidden);
-//	virtual void newHttpBuffer();
+	virtual void newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidden);
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
-//	virtual void setHost(const QString& s){
-//		host = s;
-/*
-		if(http)
-			http->setHost(s);			
-		if(header)  
-		 	header->setValue("Host", s);
-
-	}
-*/
 	virtual void setUrl(const QString &s);
 	void setFilename(const QString &s);
 signals:
@@ -89,40 +85,28 @@ signals:
 };
 
 enum{
-	TEST_SERVER_NET = 0,
-	TEST_SERVER_VERSION,
-	TEST_SERVER_DIGG_XML
+	DOWHAT_TEST_SERVER_NET = 0,
+	DOWHAT_TEST_SERVER_VERSION,
+	DOWHAT_TEST_SERVER_DIGG_XML,
+	DOWHAT_GET_BMXML_FILE,
+	DOWHAT_POST_ITEM,
+	DOWHAT_TEST_ACCOUNT,
 };
-class  TEST_SERVER_DLL_CLASS_EXPORT testNet:public MyThread
+class  TEST_SERVER_DLL_CLASS_EXPORT DoNetThread:public NetThread
 {
 	Q_OBJECT;
 public:
-#ifdef USE_HTTP
-	//QHttp * http;
-	//QBuffer* resultBuffer;
-#else
-	QNetworkAccessManager *manager;
-	QNetworkReply *reply;
-#endif
-//	QTimer* testNetTimer;	
-	int mode;
 	uint id;
 public:
-	testNet(QObject * parent = 0,QSettings* s=0,int m=TEST_SERVER_NET,int d=0);
-	~testNet(){};
+	DoNetThread(QObject * parent = 0,QSettings* s=0,int m=DOWHAT_TEST_SERVER_NET,int d=0);
+	~DoNetThread(){};
 	void run();
-	void clearObject();
 public slots: 	
 	void monitorTimeout();
-//	void testServerTimeout();
 	void terminateThread();
-#ifdef USE_HTTP
-	void testServerFinished(bool error);
-//	void bmxmlstateChanged(int state);
-//	void bmxmldataSendProgress(int len,int total);
-//	void bmxmldataReadProgress(int len,int total);
-#else
-	void testServerFinished(QNetworkReply*);
-#endif
+	void  doHttpFinished(bool error);
+	virtual void cleanObjects();
+signals:	
+	void doNetStatusNotify(int);
 };
 #endif

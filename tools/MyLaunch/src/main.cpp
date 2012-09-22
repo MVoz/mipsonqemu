@@ -49,6 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern shared_ptr<CatBuilder> gBuilder;
 extern CatItem* gSearchResult;
 extern shared_ptr <bmSync> gSyncer;
+extern shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
 extern shared_ptr<diggXml> gDiggXmler;
 #endif
@@ -358,6 +359,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 			text.replace("shortkey",shortkeyString);		
 			QMessageBox::warning(this, tr(APP_NAME),text, QMessageBox::Ok,QMessageBox::Ok);
 			exit(1);
+			return;
 		}
 	gSemaphore.release(1);
 	fader = new Fader(this);
@@ -495,6 +497,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	{
 		qDebug("connect database %s failure!\n",qPrintable(dest)) 	;
 		exit(1);
+		return;
 	} 
 	else{
 		//   qDebug("connect database %s successfully!\n",qPrintable(dest));  
@@ -2767,6 +2770,52 @@ void MyWidget::startSync()
 	_startSync(SYNC_MODE_BOOKMARK,SYN_MODE_NOSILENCE);
 #endif
 }
+void MyWidget::_startTestAccount(const QString& testAccountName,const QString& testAccountPassword) 
+{
+	QDEBUG_LINE;
+	QString url;
+	QString auth_encrypt_str;
+	uint key;
+
+	if(testAccountName.isEmpty()||testAccountPassword.isEmpty())
+		return;
+	if(gTestAccounter&&testAccountDlg){
+		testAccountDlg->setModal(1);
+		testAccountDlg->show();
+		return;
+	}
+	if(!testAccountDlg)
+	{
+		testAccountDlg.reset(new synchronizeDlg(this));
+		testAccountDlg->mode = SYNC_MODE_TESTACCOUNT;
+		connect(testAccountDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+		connect(testAccountDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+	}else{
+		testAccountDlg->status=HTTP_UNCONNECTED;
+	}
+	testAccountDlg->setModal(1);
+	testAccountDlg->show();
+	
+
+	qsrand((unsigned) NOW_SECONDS);
+	key=qrand()%(getkeylength());
+	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(testAccountName).arg(testAccountPassword),key);
+	
+	gTestAccounter.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
+	url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
+	gTestAccounter->setUsername(testAccountName);
+	gTestAccounter->setPassword(testAccountPassword);
+	
+	connect(gTestAccounter.get(), SIGNAL(finished()), this, SLOT(testAccountFinished()));
+	connect(gTestAccounter.get(), SIGNAL(updateStatusNotify(int)), testAccountDlg.get(), SLOT(updateStatus(int)));
+	//connect(gTestAccounter.get(), SIGNAL(readDateProgressNotify(int, int)), testAccountDlg.get(), SLOT(readDateProgress(int, int)));
+	//connect(gTestAccounter.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
+
+	gTestAccounter->setUrl(url);
+	TD(DEBUG_LEVEL_NORMAL,url);
+	gTestAccounter->start(QThread::IdlePriority);
+	return;
+}	
 
 void MyWidget::_startSync(int mode,int silence)      
 {
@@ -2789,20 +2838,8 @@ void MyWidget::_startSync(int mode,int silence)
 	//end to all browser is disable ,don't sync
 	if((updateSuccessTimer)||(!browsers_enable)||((silence!=SYN_MODE_NOSILENCE)&&tz::GetCpuUsage()>CPU_USAGE_THRESHOLD))
 		goto	SYNCOUT;
-
-	syncMode = mode;
-	switch(mode)
-	{
-	case SYNC_MODE_BOOKMARK:
-	case SYNC_MODE_REBOOKMARK:
-		name=gSettings->value("Account/Username","").toString();
-		password=tz::decrypt(gSettings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);					
-		break;
-	case SYNC_MODE_TESTACCOUNT:
-		name=testAccountName;
-		password=testAccountPassword;
-		break;
-	}
+	name=gSettings->value("Account/Username","").toString();
+	password=tz::decrypt(gSettings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);					
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
 	if(gSyncer){
@@ -2836,56 +2873,47 @@ void MyWidget::_startSync(int mode,int silence)
 	key=qrand()%(getkeylength());
 	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(name).arg(password),key);
 	
-	switch(mode){
-		case SYNC_MODE_BOOKMARK:
-		case SYNC_MODE_REBOOKMARK:
-			switch(checkLocalBmDatValid()){
-				case -1:
-					goto SYNCOUT;
-					break;
-				case 0:
-					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-					break;
-				case 1:
-					url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
-					break;
-			}
-	
-			if(silence == SYN_MODE_NOSILENCE)
-				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-			gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
-			gSyncer->setUsername(name);
-			gSyncer->setPassword(password);
-			break;
-		case SYNC_MODE_TESTACCOUNT:
-			gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_TESTACCOUNT_MODE));
-			url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
-			gSyncer->setUsername(testAccountName);
-			gSyncer->setPassword(testAccountPassword);
-			break;
-	}
 
-	connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
+	switch(checkLocalBmDatValid()){
+			case -1:
+				goto SYNCOUT;
+				break;
+			case 0:
+				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
+				break;
+			case 1:
+				url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(gSettings->value("updateTime","0").toString());
+				break;
+	}
+	
+	if(silence == SYN_MODE_NOSILENCE)
+		url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
+	gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,BOOKMARK_SYNC_MODE));
+	gSyncer->setUsername(name);
+	gSyncer->setPassword(password);
+
+
+
+	//connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
-	connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-	connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
+	//connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
+	//connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	syncAction->setDisabled(TRUE);
 	gSyncer->setUrl(url);
 	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);
-	if(mode == SYNC_MODE_BOOKMARK||mode == SYNC_MODE_REBOOKMARK){
-		gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
-		gSettings->sync();
+	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
+	gSettings->sync();
 #ifndef CONFIG_SYNC_STATUS_DEBUG
-		syncStatus = SYNC_STATUS_PROCESSING;
-		NEW_TIMER(syncStatusTimer);
-		syncStatusTimer->setSingleShot(false);
-		connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
-		syncStatusTimer->start(SECONDS/2);
+	syncStatus = SYNC_STATUS_PROCESSING;
+	NEW_TIMER(syncStatusTimer);
+	syncStatusTimer->setSingleShot(false);
+	connect(syncStatusTimer, SIGNAL(timeout()), this, SLOT(syncStatusTimeout()));
+	syncStatusTimer->start(SECONDS/2);
 #endif
-	}
+
 	return;
 SYNCOUT:
 	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",FALSE);
@@ -2923,45 +2951,23 @@ void MyWidget::bmSyncFinishedStatus(int status)
 		case BM_SYNC_FAIL_PROXY_ERROR:
 		case BM_SYNC_FAIL_PROXY_AUTH_ERROR:
 		case BM_SYNC_FAIL_SERVER_LOGIN:
+		default:
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 			setIcon(SYNC_STATUS_FAILED,tz::tr(statusStr));
 #endif
-			break;
-		case BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL:
-			break;		
+			break;	
 	}	
 }
 
-void MyWidget::testAccountFinished(int status)
+void MyWidget::testAccountFinished()
 {
-	//qDebug("%s %d error=%d syncDlg=0x%08x result=%s",__FUNCTION__,__LINE__,err,SHAREPTRPRINT(syncDlg),qPrintable(result));
-	if (syncDlg)
-	{
-		if(status==HTTP_TEST_ACCOUNT_SUCCESS)
-		{
-			syncDlg->updateStatus(HTTP_TEST_ACCOUNT_SUCCESS) ;
-			//createSynDlgTimer();
-		}
-		else
-			syncDlg->updateStatus(HTTP_TEST_ACCOUNT_FAIL) ;
-
-	}
+	//if (testAccountDlg)
+	//	testAccountDlg->updateStatus(gTestAccounter->status==HTTP_TEST_ACCOUNT_SUCCESS?(HTTP_TEST_ACCOUNT_SUCCESS):(HTTP_TEST_ACCOUNT_FAIL)) ;
+	gTestAccounter->wait();								
+	gTestAccounter.reset();
+	gSemaphore.release(1);
 }
 
-void MyWidget::testAccount(const QString& name,const QString& password)
-{
-	testAccountName=name;
-	testAccountPassword=password;
-#ifdef CONFIG_ACTION_LIST
-	struct ACTION_LIST item;
-	item.action = ACTION_LIST_TEST_ACCOUNT;
-	item.id.mode = SYN_MODE_NOSILENCE;
-	addToActionList(item);
-#else
-	_startSync(SYNC_MODE_TESTACCOUNT,SYN_MODE_NOSILENCE);
-#endif
-	return;
-}
 void MyWidget::syncStatusTimeout()
 {
 	//TD(DEBUG_LEVEL_NORMAL,"syncStatus:"<<syncStatus);
@@ -3050,9 +3056,11 @@ void MyWidget::monitorTimerTimeout()
 			case ACTION_LIST_BOOKMARK_SYNC:
 				_startSync(SYNC_MODE_BOOKMARK,item.id.mode);
 				break;
+/*
 			case ACTION_LIST_TEST_ACCOUNT:
 				_startSync(SYNC_MODE_TESTACCOUNT,item.id.mode);
 				break;
+*/
 			case ACTION_LIST_IMPORT_BOOKMARK:
 				//importNetBookmark(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
 				_buildCatalog(CAT_BUILDMODE_IMPORT_NETBOOKMARK,item.id.browserid);
@@ -3259,6 +3267,7 @@ void MyWidget::startDiggXml()
 #endif
 void MyWidget::bmSyncerFinished()
 {	
+	bmSyncFinishedStatus(gSyncer->statusCode);
 	if(gSyncer->terminateFlag)
 	{
 		DELETE_SHAREOBJ(syncDlg);
@@ -3332,7 +3341,7 @@ void MyWidget::menuOptions()
 	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
 	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
 	connect(ops, SIGNAL(configModifyNotify(int)), this, SLOT(configModify(int)));
-	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(testAccount(const QString&,const QString&)));	
+	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(_startTestAccount(const QString&,const QString&)));	
 
 	ops->setModal(0);
 	ops->setObjectName("options");

@@ -10,46 +10,27 @@
 #define DIGG_XML_CLASS_EXPORT __declspec(dllimport)
 #endif
 
-class DIGG_XML_CLASS_EXPORT diggXml:public MyThread
+class DIGG_XML_CLASS_EXPORT diggXml:public NetThread
 {
 	Q_OBJECT;
 public:
-	//QFile *file;
-	//QBuffer* resultBuffer;
-	//QTimer* httpTimer;
+	DoNetThread *donetThread;	
 	
-	//QString host;
-	//QString url;
-//	QString diggxml_fromserver;
-	QString md5key;
-	
-	int mode;	
-	//int http_finish;
-	//int http_timerover;	
-	int status;
-
 	volatile int testDiggXmlResult;
 	volatile bool needwatchchild;	
-	
-	testNet *testThread;
-	//QHttp * http;
 	uint diggid;
 	
 public:
 	diggXml(QObject * parent = 0,QSettings* s=0);
-	~diggXml(){};
-//	void setHost(const QString& s){host = s;}
-//	void setUrl(const QString& s){url = s;}
+	~diggXml();
 	void setDiggId(uint id){diggid = id;}	
 	void run();
 public slots: 
 	void diggXmlGetFinished(bool error);
-	void on_http_responseHeaderReceived(const QHttpResponseHeader & resp);
-//	void httpTimeout();
 	void testNetFinished();
 	void terminateThread();
 	void monitorTimeout();
-	void clearobject();
+	virtual void cleanObjects();
 signals:
 	void diggXmlFinishedStatusNotify(int status);
 };

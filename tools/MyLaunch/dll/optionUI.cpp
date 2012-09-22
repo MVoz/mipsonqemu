@@ -924,12 +924,11 @@ void synchronizeDlg::populateJavaScriptWindowObject()
 void synchronizeDlg::updateStatus(int status)
 {
 #if 1
-	TD(DEBUG_LEVEL_NORMAL,status);
-
 	QString jsStr;
 	//status=s;
 	statusTime = NOW_SECONDS;	
 	char *statusStr = tz::getstatusstring(status);
+		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status<<statusStr);
 	int icon =0;
 	int type = 0;
 	//TD(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);

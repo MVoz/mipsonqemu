@@ -36,6 +36,7 @@ QSettings *gSettings;
 QString gSearchTxt;
 shared_ptr < CatBuilder > gBuilder;
 shared_ptr < bmSync> gSyncer;
+shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
 shared_ptr < diggXml> gDiggXmler;
 #endif
