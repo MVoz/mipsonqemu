@@ -36,7 +36,7 @@ if [ $obj ==  "release" ];then
 cmd /c include/version.exe
 fi
 
-actions=(./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmpost ./dll/bmmerge ./dll/bmsync ./dll/diggxml ./dll/fileget ./dll/appupdater  ./dll/optionUI ./dll/fileget ./platforms/win/win ./src/src)
+actions=(./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmmerge ./dll/bmsync ./dll/appupdater  ./dll/optionUI  ./platforms/win/win ./src/src)
 
 for action in ${actions[*]}
 do

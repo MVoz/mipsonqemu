@@ -79,29 +79,24 @@ win32 {
       DESTDIR =     ./debug/
       LIBS +=   ./debug/bmapi.lib
       LIBS +=   ./debug/bmxml.lib
-      LIBS +=   ./debug/bmpost.lib
       LIBS +=   ./debug/bmmerge.lib
       LIBS +=   ./debug/bmsync.lib
       LIBS +=   ./debug/optionUI.lib
       LIBS +=   ./debug/baseitem.lib
       LIBS +=   ./debug/appupdater.lib
-      LIBS +=   ./debug/fileget.lib
       LIBS +=   ./debug/bmnet.lib
-      LIBS +=   ./debug/diggxml.lib
    }
    CONFIG(release, debug|release) {
       DESTDIR =    ./release/	
       LIBS +=   ./release/bmapi.lib
       LIBS +=   ./release/bmxml.lib
-      LIBS +=   ./release/bmpost.lib
       LIBS +=   ./release/bmmerge.lib
       LIBS +=   ./release/bmsync.lib
       LIBS +=   ./release/optionUI.lib
       LIBS +=   ./release/baseitem.lib
       LIBS +=   ./release/appupdater.lib
-      LIBS +=   ./release/fileget.lib
       LIBS +=   ./release/bmnet.lib
-      LIBS +=   ./release/diggxml.lib      
+  
   }
 }
 }

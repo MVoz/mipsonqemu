@@ -14,8 +14,6 @@
 #endif
 
 #define UPDATE_FILE_PREFIX "ramen_launchy_"
-#define UPDATE_MODE_GET_INI 1
-#define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
 
 
@@ -27,7 +25,7 @@ public:
 	QSettings *serverSettings;
 	int timers;
 	DoNetThread *donetThread;
-	GetFileHttp *fh;
+//	GetFileHttp *fh;
 	int needed;
 	int error;
 //	int mode;
@@ -41,20 +39,18 @@ public:
 		localSettings =NULL;
 		serverSettings =NULL;
 		donetThread =NULL;
-		fh = NULL;
 		needwatchchild = false;
 	}
 	~appUpdater();
 	void run();
 	void downloadFileFromServer(QString pathname,int mode,QString checksum);
-	void testVersionFinished();
 //	int checkToSetting(QSettings *s,const QString &filename1,QString& md51);
 	int mergeSettings(QSettings* ,QSettings* ,int );
 	void checkSilentUpdateApp();
 //	void sendUpdateStatusNotify(int);
 public slots: 
-	void getIniDone(int err);
-	void testNetFinished();
+	void getUpdateINIDone(int);
+	void testNetFinished(int);
 	void terminateThread();
 	void monitorTimeout();
 	virtual void cleanObjects();

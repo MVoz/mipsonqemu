@@ -236,7 +236,7 @@ public :
 	static void closeFirefox3Db(QSqlDatabase& db);
 //	static QString getIePath();
 	static QString getPinyin(const char* s);
-	static QString fileMd5(QString filename);
+	static QString fileMd5(const QString& f);
 	static uint registerInt(int mode,const QString& path,const QString& name,int val);
 	static QString registerString(int mode,const QString& path,const QString& name,QString val);
 	static int runParameter(int,int,int);

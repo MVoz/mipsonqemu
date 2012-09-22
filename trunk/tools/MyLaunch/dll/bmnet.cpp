@@ -17,6 +17,8 @@ NetThread::NetThread(QObject * parent,QSettings* s,int m):QThread(parent),settin
 	dlgmode = UPDATE_DLG_MODE;
 	statusCode =0;
 	httpRspCode = 0;
+	md5key.clear();
+	
 }
 NetThread::~NetThread(){
 }
@@ -29,6 +31,7 @@ void NetThread::monitorTimeout(){
 	if(http){
 		http_timeout++;
 		if(tz::getParameterMib(http_state)&&((http_timeout*tz::getParameterMib(SYS_MONITORTIMEOUT)/1000)>tz::getParameterMib(http_state))){
+			QDEBUG_LINE;
 			http->abort();
 		}
 	}
@@ -52,8 +55,7 @@ void NetThread::terminateThread(){
 void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidden){
 	http = new QHttp();
 	http->moveToThread(this);
-	http->setHost(BM_SERVER_ADDRESS);	
-	SET_NET_PROXY(http,settings);
+
 	/*
 	I found the problem:
 	From the Qt docs, a Qt::QueuedConnection will cause the slot to execute when control returns to the event loop 
@@ -68,7 +70,6 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 	if(needHeader){
 		header=new QHttpRequestHeader("POST", url);
 		header->setContentType("application/x-www-form-urlencoded");
-		header->setValue("Host", BM_SERVER_ADDRESS);
 	}
 	if(needBuffer){
 		resultBuffer = new QBuffer();
@@ -76,23 +77,40 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 		resultBuffer->open(QIODevice::ReadWrite);
 	}
 	if(needFile){
-		file = new QFile(filename);
+		QDir dir(".");
+		if(fileWithFullpath.isNull())
+		{
+			//destdir ----------download
+			//savefilename----real file name
+			QStringList na = url.split("/");
+			if(!dir.exists(destDirectory))
+					dir.mkdir(destDirectory);	
+			QString  dirPath=QString(destDirectory).append("\\");
+			int i=0;
+			int count=na.count();
+			TD(DEBUG_LEVEL_NORMAL,url<<destDirectory<<count<<savefilename);
+			for(i=0;i<count-1&&count>1;i++)
+			{
+				dirPath.append(na.at(i));
+				if(!dir.exists(dirPath))
+					dir.mkdir(dirPath);		
+				dirPath.append("\\");
+			}
+			if(savefilename.isEmpty())
+				fileWithFullpath=QString(dirPath.append(na.at(count-1)));//real filename
+			else
+				fileWithFullpath=QString(dirPath.append(savefilename));//real filename
+		}		
+		file = new QFile(fileWithFullpath);
 		if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 			if(hidden)
-				SetFileAttributes(filename.utf16(),FILE_ATTRIBUTE_HIDDEN);
+				SetFileAttributes(fileWithFullpath.utf16(),FILE_ATTRIBUTE_HIDDEN);
 		}
 	}
-	SET_HOST_IP(settings,http,&url,header);
+	SET_HOST_IP(settings,http,&url,header,&host);
+	SET_NET_PROXY(http,settings);
 }
 
-void NetThread::setUrl(const QString &s){
-	url = s;
-}
-
-void NetThread::setFilename(const QString &s){
-	filename.clear();
-	filename = s;
-}
 void NetThread::cleanObjects(){
 	THREAD_MONITOR_POINT;
 	DELETE_TIMER(monitorTimer);
@@ -110,6 +128,7 @@ void NetThread::cleanObjects(){
 
 DoNetThread::DoNetThread(QObject * parent ,QSettings* s,int m,int d):NetThread(parent,s,m),id(d)
 {
+	retryTime = 0;
 }
 
 
@@ -173,7 +192,7 @@ void DoNetThread::doPostItemDone(bool error){
 }
 
 void DoNetThread::doHttpFinished(bool error){
-	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<doWhat);
+//	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<doWhat);
 	if(!error)
 	{		
 		switch(doWhat){
@@ -219,9 +238,11 @@ void DoNetThread::doHttpFinished(bool error){
 					}
 				}
 			break;
+			case DOWHAT_GET_COMMON_FILE:
+			case DOWHAT_GET_UPDATEINI_FILE:
 			case DOWHAT_GET_DIGGXML_FILE:
 			case DOWHAT_GET_BMXML_FILE:
-				 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<filename<<md5key);
+	//			 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<fileWithFullpath<<md5key);
 				//if(md5key.isEmpty()||(md5key==tz::fileMd5(filename)))
 				if(1){
 						statusCode = DOWHAT_GET_FILE_SUCCESS;
@@ -246,7 +267,7 @@ void DoNetThread::doHttpFinished(bool error){
 				break;
 
 		}
-		 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
+	//	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
 		exit(0);
 		return;
 	}
@@ -281,7 +302,6 @@ void DoNetThread::run()
 			http->get(url, resultBuffer);
 			break;
 		case DOWHAT_TEST_SERVER_VERSION:
-			setUrl(TOUCHANY_VERSION_URL);
 			NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
 			http->get(url, resultBuffer);
@@ -294,10 +314,19 @@ void DoNetThread::run()
 			break;
 #endif
 		case DOWHAT_GET_DIGGXML_FILE:
-		case DOWHAT_GET_BMXML_FILE:
+		case DOWHAT_GET_BMXML_FILE:		
+		case DOWHAT_GET_UPDATEINI_FILE:
 			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
-			sendUpdateStatusNotify(BM_SYNC_START);
+			if(doWhat==DOWHAT_GET_BMXML_FILE)
+				sendUpdateStatusNotify(BM_SYNC_START);
+			http->get(url, file);
+		break;
+		case DOWHAT_GET_COMMON_FILE:		
+			NetThread::newHttp(FALSE,FALSE,TRUE,FALSE);
+			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+			if(doWhat==DOWHAT_GET_BMXML_FILE)
+				sendUpdateStatusNotify(BM_SYNC_START);
 			http->get(url, file);
 			break;
 		case DOWHAT_POST_ITEM:

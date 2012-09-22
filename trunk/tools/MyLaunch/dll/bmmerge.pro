@@ -22,7 +22,6 @@ if(!debug_and_release|build_pass) {
 	DESTDIR =     ./debug/
 	LIBS +=   ./debug/bmapi.lib
 	LIBS +=   ./debug/bmxml.lib
-	LIBS +=   ./debug/bmpost.lib
 	LIBS +=   ./debug/baseitem.lib
 	LIBS +=   ./debug/bmnet.lib
    }
@@ -30,7 +29,6 @@ if(!debug_and_release|build_pass) {
 	DESTDIR = ./release/
 	LIBS +=   ./release/bmapi.lib
 	LIBS +=   ./release/bmxml.lib
-	LIBS +=   ./release/bmpost.lib
 	LIBS +=   ./release/baseitem.lib
 	LIBS +=   ./release/bmnet.lib
    }
