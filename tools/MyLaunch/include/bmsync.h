@@ -36,8 +36,12 @@
 #define BOOKMARK_SYNC_CLASS_EXPORT __declspec(dllimport)
 #endif
 
-#define BOOKMARK_SYNC_MODE	0
-#define BOOKMARK_TESTACCOUNT_MODE  1
+enum{
+	SYNC_DO_BOOKMARK=0,
+	SYNC_DO_TESTACCOUNT,
+	SYNC_DO_DIGG
+};
+
 class BOOKMARK_SYNC_CLASS_EXPORT bmSync:public NetThread
 {
 	Q_OBJECT;
@@ -53,15 +57,19 @@ public:
 	
 	DoNetThread *donetThread;
 	bmMerge *mgthread;
+
+	uint diggid;
 	
 public:
-	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=BOOKMARK_SYNC_MODE);
+	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=SYNC_DO_BOOKMARK);
 	~bmSync();
 	void setUsername(const QString& s){username = s;}
 	void setPassword(const QString& s){password = s;}
 	void run();
+	void setDiggId(uint id){diggid = id;}	
 public slots: 
 	void bmxmlGetFinished(int status);
+	void diggxmlGetFinished(int);
 //	void testAccountFinished(bool error);
 	void mergeDone();
 	void testNetFinished(int status);

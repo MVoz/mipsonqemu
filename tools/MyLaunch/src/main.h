@@ -521,7 +521,7 @@ public slots:
 		void restoreUserCommand();
 		int checkLocalBmDatValid();
 #ifdef CONFIG_DIGG_XML
-		void diggXmlFinished(int status);
+		void diggXmlFinished(bool);
 		void startDiggXml();
 		void displayDiggxml(QString s);
 		void diggxmloutputAnchorClicked( const QUrl & link );

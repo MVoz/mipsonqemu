@@ -38,7 +38,7 @@ shared_ptr < CatBuilder > gBuilder;
 shared_ptr < bmSync> gSyncer;
 shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
-shared_ptr < diggXml> gDiggXmler;
+shared_ptr < bmSync> gDiggXmler;
 #endif
 /*
 	use gSemaphore to separate syner from catabuilder

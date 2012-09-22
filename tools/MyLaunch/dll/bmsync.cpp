@@ -14,59 +14,34 @@ bmSync::~bmSync(){
 
 void bmSync::testNetFinished(int status)
 {
-	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
 	THREAD_MONITOR_POINT;
+         TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
 	switch(status)
 	{
-#if 0
-	case TEST_NET_ERROR_SERVER:
-		sendUpdateStatusNotify(BM_SYNC_FAIL_SERVER_NET_ERROR);
-		exit(-1);
-		break;
-	case TEST_NET_ERROR_PROXY_AUTH:
-		sendUpdateStatusNotify(BM_SYNC_FAIL_PROXY_AUTH_ERROR);
-		exit(-1);
-		break;
-	case TEST_NET_REFUSE:
-		sendUpdateStatusNotify(BM_SYNC_FAIL_SERVER_REFUSE);
-		exit(-1);
-		break;
-#endif
 	case TEST_NET_SUCCESS:
 		{
 			QDEBUG_LINE;
-			if(doWhat==BOOKMARK_SYNC_MODE)	
+			if(doWhat==SYNC_DO_BOOKMARK)	
 			{				
-#if 1
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_BMXML_FILE,0);
 				donetThread->setFilename(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
 				sendUpdateStatusNotify(BM_SYNC_START);
-#else
-				setFilename(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
-				NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
-				connect(http, SIGNAL(done(bool)), this, SLOT(bmxmlGetFinished(bool)),Qt::DirectConnection);
-				sendUpdateStatusNotify(BM_SYNC_START);
-				http->get(url, file);
-#endif
-				QDEBUG_LINE;
-			}else if(doWhat==BOOKMARK_TESTACCOUNT_MODE){
-#if 1
+			}else if(doWhat==SYNC_DO_TESTACCOUNT){
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_ACCOUNT,0);
 				sendUpdateStatusNotify(BM_TESTACCOUNT_START);
-#else
-				NetThread::newHttp(FALSE,TRUE,FALSE,FALSE);
-				connect(http, SIGNAL(done(bool)), this, SLOT(testAccountFinished(bool)));
-				sendUpdateStatusNotify(BM_TESTACCOUNT_START);
-				http->get(url, resultBuffer);
-#endif
 			}
-#if 1
-				donetThread->moveToThread(this);	
-				donetThread->setUrl(url);
-				connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
-				donetThread->start(QThread::IdlePriority);
-#endif
+			donetThread->moveToThread(this);	
+			donetThread->setUrl(url);
+			connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+			donetThread->start(QThread::IdlePriority);
 		}						
+		break;
+	case TEST_DIGGXML_SUCCESS:
+		donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_DIGGXML_FILE,0);
+		donetThread->setFilename(DIGG_XML_LOCAL_FILE_TMP);
+		donetThread->moveToThread(this);	
+		donetThread->setUrl(url);
+		donetThread->start(QThread::IdlePriority);
 		break;
 	default:
 		exit(-1);
@@ -97,7 +72,11 @@ void bmSync::monitorTimeout()
 		DELETE_OBJECT(donetThread);
 		switch(d){
 			case DOWHAT_TEST_SERVER_NET:
+			case DOWHAT_TEST_SERVER_DIGG_XML:
 				testNetFinished(s);
+			break;
+			case DOWHAT_GET_DIGGXML_FILE:
+				diggxmlGetFinished(s);
 			break;
 			case DOWHAT_GET_BMXML_FILE:
 				bmxmlGetFinished(s);
@@ -129,19 +108,35 @@ void bmSync::cleanObjects(){
 void bmSync::run()
 {
 	THREAD_MONITOR_POINT;
-	semaphore->acquire(1);
+	if(semaphore)
+		semaphore->acquire(1);
 	NetThread::run();
 	sendUpdateStatusNotify(TRY_CONNECT_SERVER);
-	donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
-	donetThread->moveToThread(this);	
-	donetThread->setUrl(TEST_NET_URL);
+
+
+	switch(doWhat){
+		case SYNC_DO_BOOKMARK:
+		case SYNC_DO_TESTACCOUNT:
+			donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
+			donetThread->setUrl(TEST_NET_URL);
+		break;
+		case SYNC_DO_DIGG:
+			donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
+			donetThread->setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(diggid)));
+		break;
+		default:
+		break;
+	}
+	
+
+	donetThread->moveToThread(this);		
 	connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 	donetThread->start(QThread::IdlePriority);
 	
 	
 	int ret=exec();
 	
-	if(doWhat==BOOKMARK_SYNC_MODE){
+	if(doWhat==SYNC_DO_BOOKMARK){
 		if(ret<0){
 			settings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
 		}else{
@@ -152,47 +147,25 @@ void bmSync::run()
 	cleanObjects();
 	QDEBUG_LINE;
 }
-/*
-void bmSync::testAccountFinished(bool error)
-{
-	if(!error&&QString(resultBuffer->data())==DOSUCCESSS){
-		sendUpdateStatusNotify(HTTP_TEST_ACCOUNT_SUCCESS);
-		exit(0);
-	}else{	
-		sendUpdateStatusNotify(HTTP_TEST_ACCOUNT_FAIL);
-		exit(-1);
-	}
-}
-*/
 void bmSync::bmxmlGetFinished(int status)
 {
-	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
 	THREAD_MONITOR_POINT;
-#if 0
-	DELETE_FILE(file);
-	if(error){
-		switch(http->error()){
-			case QHttp::ProxyAuthenticationRequiredError:
-				sendUpdateStatusNotify(BM_SYNC_FAIL_PROXY_AUTH_ERROR);
-				break;
-			default:
-				sendUpdateStatusNotify(BM_SYNC_FAIL_SERVER_NET_ERROR);
-				break;
-		}
-		exit(-1);
-		return;
-	}
-#endif
 	if(status==DOWHAT_GET_FILE_SUCCESS){
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
 		mgthread->setRandomFileFromserver(filename);
 		connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 		mgthread->start(QThread::IdlePriority);
 		return;
-	}else{
-		//sendUpdateStatusNotify(BM_SYNC_FAIL_GET_XML_FROM_SERVER);
-		exit(-1);
 	}
+	exit(-1);	
+}
+void bmSync::diggxmlGetFinished(int status)
+{
+	THREAD_MONITOR_POINT;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+	statusCode = status;
+	exit(-1);	
 }
 
 void bmSync::mergeDone()
