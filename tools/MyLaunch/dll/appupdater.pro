@@ -27,12 +27,10 @@ if(!debug_and_release|build_pass) {
     DESTDIR =     ./debug/
     LIBS +=./debug/bmapi.lib
     LIBS +=./debug/bmnet.lib
-    LIBS +=./debug/fileget.lib
    }
    CONFIG(release, debug|release) {
     DESTDIR = ./release/
     LIBS +=./release/bmapi.lib
     LIBS +=./release/bmnet.lib
-    LIBS +=./release/fileget.lib
    }
  }

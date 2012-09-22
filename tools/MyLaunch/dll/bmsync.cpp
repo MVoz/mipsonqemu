@@ -24,7 +24,7 @@ void bmSync::testNetFinished(int status)
 			if(doWhat==SYNC_DO_BOOKMARK)	
 			{				
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_BMXML_FILE,0);
-				donetThread->setFilename(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
+				donetThread->setFileWithFullpath(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
 				sendUpdateStatusNotify(BM_SYNC_START);
 			}else if(doWhat==SYNC_DO_TESTACCOUNT){
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_ACCOUNT,0);
@@ -38,7 +38,7 @@ void bmSync::testNetFinished(int status)
 		break;
 	case TEST_DIGGXML_SUCCESS:
 		donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_DIGGXML_FILE,0);
-		donetThread->setFilename(DIGG_XML_LOCAL_FILE_TMP);
+		donetThread->setFileWithFullpath(DIGG_XML_LOCAL_FILE_TMP);
 		donetThread->moveToThread(this);	
 		donetThread->setUrl(url);
 		donetThread->start(QThread::IdlePriority);
@@ -99,8 +99,8 @@ void bmSync::monitorTimeout()
 void bmSync::cleanObjects(){
 	DELETE_OBJECT(mgthread);
 	DELETE_OBJECT(donetThread);
-	if(!filename.isEmpty()&&QFile::exists(filename)){
-		QFile::remove(filename);
+	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
+		QFile::remove(fileWithFullpath);
 	}
 	NetThread::cleanObjects();
 }
@@ -153,7 +153,7 @@ void bmSync::bmxmlGetFinished(int status)
 	THREAD_MONITOR_POINT;
 	if(status==DOWHAT_GET_FILE_SUCCESS){
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
-		mgthread->setRandomFileFromserver(filename);
+		mgthread->setRandomFileFromserver(fileWithFullpath);
 		connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 		mgthread->start(QThread::IdlePriority);
 		return;

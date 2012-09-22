@@ -65,63 +65,69 @@ struct{
 	uint status;
 	char* statusstr;
 }statusStrings[]={
-	{HTTP_UNCONNECTED,"http_unconnected"},
-	{HTTP_HOSTLOOKUP,"http_hostlookup"},
-	{HTTP_CONNECTING,"http_connecting"},
-	{HTTP_SENDING,"http_sending"},
-	{HTTP_READING,"http_reading"},
-	{HTTP_CONNECTED,"http_connected"},
-	{HTTP_CLOSING,"http_closing"},
-	{HTTP_TIMEOUT,"http_timeout"},
-	{HTTP_TEST_ACCOUNT_SUCCESS,"http_test_account_success"},
-	{HTTP_TEST_ACCOUNT_FAIL,"http_test_account_fai"},
-	{HTTP_GET_INI_FAILED,"http_get_ini_failed"},
-	{HTTP_GET_INI_SUCCESSFUL,"http_get_ini_successful"},
-	{HTTP_GET_INI_NOT_EXISTED,"http_get_ini_not_existed"},
-	{HTTP_GET_FILE_SUCCESSFUL,"http_get_file_successful"},
-	{HTTP_GET_FILE_NOT_EXISTED,"http_get_file_not_existed"},
-	{HTTP_GET_FILE_FAILED,"http_get_file_failed"},
-	{HTTP_NEED_RETRY,"http_need_retry"},
-	{TRY_CONNECT_SERVER,"try_connect_server"},
-	
-	{UPDATE_FAILED,"update_failed"},
-	{UPDATE_SUCCESSFUL,"update_successful"},	
-	{UPDATE_NO_NEED,"update_no_need"},
-	{UPDATE_NET_ERROR,"update_net_error"},	
-	{UPDATE_PROCESSING,"update_processing"},
-	{UPDATE_SERVER_REFUSE,"update_server_refuse"},
-	{UPDATE_NET_ERROR_PROXY,"update_net_error_proxy"},
-	{UPDATE_NET_ERROR_PROXY_AUTH,"update_net_error_proxy_auth"},
-
-	{BM_SYNC_START,"bm_sync_start"},
-	{BM_TESTACCOUNT_START,"bm_testaccount_start"},	
-	{BM_SYNC_SUCCESS_NO_MODIFY,"bm_sync_success_no_modify"},
-	{BM_SYNC_SUCCESS_WITH_MODIFY,"bm_sync_success_with_modify"},
-	{BM_SYNC_FAIL_LOGIN,"bm_sync_fail_login"},
-	{BM_SYNC_FAIL_POST_HTTP,"bm_sync_fail_post_http"},
-	{BM_SYNC_FAIL_SERVER_NET_ERROR,"bm_sync_fail_server_net_error"},
-	{BM_SYNC_FAIL_SERVER_REFUSE,"bm_sync_fail_server_refuse"},
-	{BM_SYNC_FAIL_SERVER_BMXML_FAIL,"bm_sync_fail_server_bmxml_fail"},
-	{BM_SYNC_FAIL_BMXML_TIMEOUT,"bm_sync_fail_bmxml_timeout"},
-	{BM_SYNC_FAIL_MERGE_ERROR,"bm_sync_fail_merge_error"},
-	{BM_SYNC_FAIL_PROXY_ERROR,"bm_sync_fail_proxy_error"},
-	{BM_SYNC_FAIL_PROXY_AUTH_ERROR,"bm_sync_fail_proxy_auth_error"},
-	{BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL,"bm_sync_fail_server_testaccount_fail"},
-	{BM_SYNC_FAIL_SERVER_LOGIN,"bm_sync_fail_server_login"},
-	{BM_SYNC_FAIL_DOWNLOCAL_WRITE_FILE,"bm_sync_fail_downlocal_write_file"},
-	{BM_SYNC_FAIL_DOWNLOCAL_DELETE_FILE,"bm_sync_fail_downlocal_delete_file"},
-	{BM_SYNC_FAIL_DOWNLOCAL_DB_LOCK,"bm_sync_fail_downlocal_db_lock"},
-	{BM_SYNC_FAIL_DOWNLOCAL_DB_QUERY,"bm_sync_fail_downlocal_db_query"},
-	{BM_SYNC_FAIL_EXCEED_TOTAL_NUM,"bm_sync_fail_exceed_total_num"},
-	{BM_SYNC_FAIL_EXCEED_DIR_COUNT,"bm_sync_fail_exceed_dir_count"},
-	{BM_SYNC_FAIL_EXCEED_LEVEL,"bm_sync_fail_exceed_level"},
-	{BM_SYNC_FAIL_GET_XML_FROM_SERVER,"bm_sync_fail_get_xml_from_server"},
-	{BM_SYNC_FAIL_READ_XML_FROM_SERVER,"bm_sync_fail_read_xml_from_server"},
-	{BM_SYNC_FAIL_READ_XML_LOCAL,"bm_sync_fail_read_xml_local"},
-	{BM_SYNC_FAIL_REMOVE_XML_LOCAL,"bm_sync_fail_remove_xml_local"},
-
-	
-	{SYNC_STATUS_MAX,NULL}
+	{LOADING_MIN,"LOADING_MIN"},
+	{HTTP_UNCONNECTED,"HTTP_UNCONNECTED"},
+	{HTTP_HOSTLOOKUP,"HTTP_HOSTLOOKUP"},
+	{HTTP_CONNECTING,"HTTP_CONNECTING"},
+	{HTTP_SENDING,"HTTP_SENDING"},
+	{HTTP_READING,"HTTP_READING"},
+	{HTTP_CONNECTED,"HTTP_CONNECTED"},
+	{HTTP_CLOSING,"HTTP_CLOSING"},
+	{HTTP_TIMEOUT,"HTTP_TIMEOUT"},
+	{UPDATE_PROCESSING,"UPDATE_PROCESSING"},
+	{TRY_CONNECT_SERVER,"TRY_CONNECT_SERVER"},
+	{BM_SYNC_START,"BM_SYNC_START"},
+	{BM_TESTACCOUNT_START,"BM_TESTACCOUNT_START"},
+	{BM_TESTVERSION_START,"BM_TESTVERSION_START"},
+	{LOADING_MAX,"LOADING_MAX"},
+	{SUCCESS_MIN,"SUCCESS_MIN"},
+	{TEST_NET_SUCCESS,"TEST_NET_SUCCESS"},
+	{TEST_VERSION_UNNEED,"TEST_VERSION_UNNEED"},
+	{DOWHAT_GET_FILE_SUCCESS,"DOWHAT_GET_FILE_SUCCESS"},
+	{HTTP_TEST_ACCOUNT_SUCCESS,"HTTP_TEST_ACCOUNT_SUCCESS"},
+	{UPDATE_SUCCESSFUL,"UPDATE_SUCCESSFUL"},
+	{BM_SYNC_SUCCESS_NO_MODIFY,"BM_SYNC_SUCCESS_NO_MODIFY"},
+	{BM_SYNC_SUCCESS_WITH_MODIFY,"BM_SYNC_SUCCESS_WITH_MODIFY"},
+	{UPDATE_NO_NEED,"UPDATE_NO_NEED"},
+	{TEST_VERSION_SUCCESS,"TEST_VERSION_SUCCESS"},
+	{TEST_DIGGXML_SUCCESS,"TEST_DIGGXML_SUCCESS"},
+	{TEST_DIGGXML_UNNEED,"TEST_DIGGXML_UNNEED"},
+	{SUCCESS_MAX,"SUCCESS_MAX"},
+	{REFUSE_MIN,"REFUSE_MIN"},
+	{TEST_NET_REFUSE,"TEST_NET_REFUSE"},
+	{UPDATE_SERVER_REFUSE,"UPDATE_SERVER_REFUSE"},
+	{BM_SYNC_FAIL_SERVER_REFUSE,"BM_SYNC_FAIL_SERVER_REFUSE"},
+	{REFUSE_MAX,"REFUSE_MAX"},
+	{FAIL_MIN,"FAIL_MIN"},
+	{TEST_NET_ERROR_PROXY_AUTH,"TEST_NET_ERROR_PROXY_AUTH"},
+	{TEST_NET_ERROR_SERVER,"TEST_NET_ERROR_SERVER"},
+	{HTTP_TEST_ACCOUNT_FAIL,"HTTP_TEST_ACCOUNT_FAIL"},
+	{DOWHAT_GET_FILE_FAIL,"DOWHAT_GET_FILE_FAIL"},
+	{HTTP_NEED_RETRY,"HTTP_NEED_RETRY"},
+	{UPDATE_FAILED,"UPDATE_FAILED"},
+	{BM_SYNC_FAIL_LOGIN,"BM_SYNC_FAIL_LOGIN"},
+	{BM_SYNC_FAIL_POST_HTTP,"BM_SYNC_FAIL_POST_HTTP"},
+	{BM_SYNC_FAIL_SERVER_NET_ERROR,"BM_SYNC_FAIL_SERVER_NET_ERROR"},
+	{BM_SYNC_FAIL_SERVER_BMXML_FAIL,"BM_SYNC_FAIL_SERVER_BMXML_FAIL"},
+	{BM_SYNC_FAIL_BMXML_TIMEOUT,"BM_SYNC_FAIL_BMXML_TIMEOUT"},
+	{BM_SYNC_FAIL_MERGE_ERROR,"BM_SYNC_FAIL_MERGE_ERROR"},
+	{BM_SYNC_FAIL_PROXY_ERROR,"BM_SYNC_FAIL_PROXY_ERROR"},
+	{BM_SYNC_FAIL_PROXY_AUTH_ERROR,"BM_SYNC_FAIL_PROXY_AUTH_ERROR"},
+	{BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL,"BM_SYNC_FAIL_SERVER_TESTACCOUNT_FAIL"},
+	{BM_SYNC_FAIL_SERVER_LOGIN,"BM_SYNC_FAIL_SERVER_LOGIN"},
+	{BM_SYNC_FAIL_DOWNLOCAL_WRITE_FILE,"BM_SYNC_FAIL_DOWNLOCAL_WRITE_FILE"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DELETE_FILE,"BM_SYNC_FAIL_DOWNLOCAL_DELETE_FILE"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DB_LOCK,"BM_SYNC_FAIL_DOWNLOCAL_DB_LOCK"},
+	{BM_SYNC_FAIL_DOWNLOCAL_DB_QUERY,"BM_SYNC_FAIL_DOWNLOCAL_DB_QUERY"},
+	{BM_SYNC_FAIL_EXCEED_TOTAL_NUM,"BM_SYNC_FAIL_EXCEED_TOTAL_NUM"},
+	{BM_SYNC_FAIL_EXCEED_DIR_COUNT,"BM_SYNC_FAIL_EXCEED_DIR_COUNT"},
+	{BM_SYNC_FAIL_EXCEED_LEVEL,"BM_SYNC_FAIL_EXCEED_LEVEL"},
+	{BM_SYNC_FAIL_GET_XML_FROM_SERVER,"BM_SYNC_FAIL_GET_XML_FROM_SERVER"},
+	{BM_SYNC_FAIL_READ_XML_FROM_SERVER,"BM_SYNC_FAIL_READ_XML_FROM_SERVER"},
+	{BM_SYNC_FAIL_READ_XML_LOCAL,"BM_SYNC_FAIL_READ_XML_LOCAL"},
+	{BM_SYNC_FAIL_REMOVE_XML_LOCAL,"BM_SYNC_FAIL_REMOVE_XML_LOCAL"},
+	{FAIL_MAX,"FAIL_MAX"},
+	{SYNC_STATUS_MAX,"SYNC_STATUS_MAX"},
 };
 
 
@@ -1432,16 +1438,16 @@ QString tz::getPinyin(const char* s)
 		r=QString(s);
 	return r;
 }
-QString tz::fileMd5(QString filename)
+QString tz::fileMd5(const QString& f)
 {
 	QByteArray  md5res;
 	QCryptographicHash md(QCryptographicHash::Md5);
-	if(!QFile::exists(filename))
+	if(!QFile::exists(f))
 	{
 		//fprintf(stdout,"file %s doesn't existed!\n",qPrintable(filename));
 		return "";
 	}
-	QFile infile(filename);
+	QFile infile(f);
 	if (infile.open(QIODevice::ReadOnly)) {
 		QDataStream ins(&infile);
 		while(!ins.atEnd())
@@ -1828,9 +1834,9 @@ int tz::checkSilentUpdateSettings(QSettings* src, QSettings* dst,int m)
 	for (int i = 0; i < count; i++)
 	{
 		src->setArrayIndex(i);
-		QString filename=src->value("name").toString();
+		QString f=src->value("name").toString();
 		QString md5=src->value("md5","").toString(); 
-		int  flag = checkToSetting(dst,filename,md5);
+		int  flag = checkToSetting(dst,f,md5);
 		switch(flag)
 		{
 		case -1://no found
@@ -1840,9 +1846,9 @@ int tz::checkSilentUpdateSettings(QSettings* src, QSettings* dst,int m)
 			if(((m==SETTING_MERGE_SERVERTOLOCAL)&&(flag==-1))||((m==SETTING_MERGE_LOCALTOSERVER)&&(flag==1)))
 			{
 				if(
-					(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))||
-					(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(filename))))&&
-					(!QFile::exists(filename)||(md5!=tz::fileMd5(filename)))
+					(!QFile::exists(QString(UPDATE_PORTABLE_DIRECTORY).append(f))||
+					(md5!=tz::fileMd5(QString(UPDATE_PORTABLE_DIRECTORY).append(f))))&&
+					(!QFile::exists(f)||(md5!=tz::fileMd5(f)))
 				  )
 				{
 					need=1;

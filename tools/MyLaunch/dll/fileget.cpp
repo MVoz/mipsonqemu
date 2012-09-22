@@ -29,6 +29,8 @@ int GetFileHttp::newHttpX()
 	QDir dir(".");
 	if(filename.isNull())
 	{
+		//updaterFilename --image/g.png
+		//destdir ----------download
 		QStringList na = updaterFilename.split("/");
 		QString  dirPath=QString(destdir).append("\\");
 		int i=0;
@@ -98,10 +100,10 @@ void GetFileHttp::downloadFileDone(bool error)
 				}
 				break;
 			case HTTP_FILE_NOT_FOUND:	
-				sendUpdateStatusNotify((doWhat==UPDATE_MODE_GET_FILE)?(HTTP_GET_FILE_NOT_EXISTED):(HTTP_GET_INI_NOT_EXISTED));				
+				sendUpdateStatusNotify((doWhat==DOWHAT_GET_COMMON_FILE)?(HTTP_GET_FILE_NOT_EXISTED):(HTTP_GET_INI_NOT_EXISTED));				
 				break;
 			default:
-				sendUpdateStatusNotify((doWhat==UPDATE_MODE_GET_FILE)?(HTTP_GET_FILE_FAILED):(HTTP_GET_INI_FAILED));
+				sendUpdateStatusNotify((doWhat==DOWHAT_GET_COMMON_FILE)?(HTTP_GET_FILE_FAILED):(HTTP_GET_INI_FAILED));
 				break;
 			}
 	}else{
@@ -113,7 +115,7 @@ RETRY:
 	if(newHttpX())	
 		sendUpdateStatusNotify(HTTP_NEED_RETRY);
 	else
-		sendUpdateStatusNotify((doWhat==UPDATE_MODE_GET_FILE)?HTTP_GET_FILE_FAILED:(HTTP_GET_INI_FAILED));	
+		sendUpdateStatusNotify((doWhat==DOWHAT_GET_COMMON_FILE)?HTTP_GET_FILE_FAILED:(HTTP_GET_INI_FAILED));	
 	if(errCode!=HTTP_NEED_RETRY)
 		quit();	
 	return;

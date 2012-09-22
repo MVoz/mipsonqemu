@@ -373,7 +373,7 @@ public:
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
 	int syncMode;
-	QList<GetFileHttp*> getfavicolist;
+	QList<DoNetThread*> getfavicolist;
 
 	shared_ptr < synchronizeDlg> syncDlg;
 	shared_ptr < synchronizeDlg> testAccountDlg;
@@ -422,7 +422,7 @@ public:
 	void freeOccupyMemeory();
 	//void createSynDlgTimer();
 	//	void deleteSynDlgTimer();
-	void getFavico(const QString& host,const QString& filename);
+	void getFavico(const QString& host,const QString& f);
 	void scanDbFavicon();
 	QString getShortkeyString();
 private:

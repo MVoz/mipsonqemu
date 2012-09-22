@@ -3267,6 +3267,7 @@ void MyWidget::startDiggXml()
 #endif
 void MyWidget::bmSyncerFinished()
 {	
+	QDEBUG_LINE;
 	bmSyncFinishedStatus(gSyncer->statusCode);
 	if(gSyncer->terminateFlag)
 	{
@@ -3718,7 +3719,7 @@ void MyWidget::getFavicoFinished()
 	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	int i =getfavicolist.size();
 	while((--i)>=0){
-		GetFileHttp* icogh = getfavicolist.at(i);
+		DoNetThread* icogh = getfavicolist.at(i);
 		if(icogh->isFinished())
 		{
 			getfavicolist.removeOne(icogh);
@@ -3727,18 +3728,16 @@ void MyWidget::getFavicoFinished()
 	}
 }
 
-void MyWidget::getFavico(const QString& host,const QString& filename)
+void MyWidget::getFavico(const QString& host,const QString& f)
 {
-	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
-	GetFileHttp* icogh =  new GetFileHttp(NULL,gSettings,UPDATE_MODE_GET_FILE,"");
+	DoNetThread* icogh =  new DoNetThread(NULL,gSettings,DOWHAT_GET_COMMON_FILE,0);
 	getfavicolist.append(icogh);
-	qDebug()<<__FUNCTION__<<"get fav ico from"<<host;
+	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<"get fav ico from"<<host);
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
-	//icogh->setHost(host);
-	icogh->setUrl(filename);
-
-	icogh->setDestdir(FAVICO_DIRECTORY);
-	QString extension = filename.section( '.', -1 );
+	icogh->setHost(host);
+	icogh->setUrl(f);
+	icogh->setDestDirectory(FAVICO_DIRECTORY);
+	QString extension = f.section( '.', -1 );
 	if(extension.isEmpty())
 		icogh->setSaveFilename(QString("%1").arg(tz::qhashEx(host)));
 	else

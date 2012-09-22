@@ -27,8 +27,9 @@ public:
 	QBuffer* resultBuffer;
 	QFile* file;
 
+	QString host;
 	QString url;
-	QString filename;
+	
 	QString md5key;	
 
 	volatile int terminateFlag;
@@ -40,6 +41,11 @@ public:
 	int dlgmode;
 	int statusCode;
 	int httpRspCode;
+
+	QString fileWithFullpath;
+	QString destDirectory;
+//	QString branch;
+	QString savefilename;
 	
 public slots:
 	virtual void monitorTimeout();
@@ -69,7 +75,7 @@ public slots:
 	}
 	virtual void httpResponseHeaderReceived(const QHttpResponseHeader & resp){
 		httpRspCode=resp.statusCode();
-		if(resp.statusCode() == HTTP_OK)
+		if(resp.statusCode() == HTTP_OK&&md5key.isEmpty())
 			md5key = resp.value("md5key");
 	}
 	virtual void cleanObjects();
@@ -78,8 +84,22 @@ public:
 	virtual void newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidden);
 	virtual void setTerminateFlag(int f);
 	virtual void terminateThread();
-	virtual void setUrl(const QString &s);
-	void setFilename(const QString &s);
+	virtual void setHost(const QString &s){
+		host=s;
+	}
+	void setUrl(const QString &s){
+		url = s;
+	}
+	virtual void setMD5Key(const QString &s){
+		md5key=s;
+	}		
+	void setFileWithFullpath(const QString &s){
+		fileWithFullpath.clear();
+		fileWithFullpath = s;
+	}
+//	void setServerBranch(const QString &s){branch = s;}
+	void setSaveFilename(const QString &s){savefilename = s;}
+	void setDestDirectory(const QString& s){destDirectory = s;}
 signals:
 	void updateStatusNotify(int status);
 };
@@ -92,6 +112,8 @@ enum{
 	DOWHAT_GET_DIGGXML_FILE,
 	DOWHAT_POST_ITEM,
 	DOWHAT_TEST_ACCOUNT,
+	DOWHAT_GET_UPDATEINI_FILE,
+	DOWHAT_GET_COMMON_FILE,
 };
 class  TEST_SERVER_DLL_CLASS_EXPORT DoNetThread:public NetThread
 {
@@ -106,11 +128,16 @@ public:
 	QString username;
 	QString password;
 	QString postString;	
+
+
+	
+	int retryTime;
 	
 public:
 	DoNetThread(QObject * parent = 0,QSettings* s=0,int m=DOWHAT_TEST_SERVER_NET,int d=0);
 	~DoNetThread(){};
 	void run();
+	
 public slots: 	
 	void monitorTimeout();
 	void terminateThread();

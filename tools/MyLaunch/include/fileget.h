@@ -13,8 +13,6 @@
 #endif
 
 #define UPDATE_FILE_PREFIX "ramen_launchy_"
-#define UPDATE_MODE_GET_INI 1
-#define UPDATE_MODE_GET_FILE 2
 #define UPDATE_MAX_RETRY_TIME 3
 
 

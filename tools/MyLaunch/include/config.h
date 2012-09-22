@@ -230,17 +230,29 @@ enum{
 #define MAX_SEARCH_RESULT 10
 
 
-#define SET_HOST_IP(x,y,z,h) do{\
-			QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
-			if( !serverIp.isEmpty()){\
-				  if(y)  (y)->setHost(serverIp);\
-				  if(z)  (z)->replace(BM_SERVER_ADDRESS,serverIp);\
-				  if(h)  (h)->setValue("Host", serverIp);\
-			}else{\
-				if(y)   (y)->setHost(BM_SERVER_ADDRESS);\
-				if(h)   (h)->setValue("Host", BM_SERVER_ADDRESS);\
-			}\
-	  }while(0);
+#define SET_HOST_IP(x,y,z,h,t) do{\
+	QString serverIp = (x)->value("serverip","" ).toString().trimmed();\
+	if( !serverIp.isEmpty()){\
+		if((t)->isEmpty()){\
+			if(y)  (y)->setHost(serverIp);\
+			if(z)  (z)->replace(BM_SERVER_ADDRESS,serverIp);\
+			if(h)  (h)->setValue("Host", *(t));\
+		}else{\
+			if(y)  (y)->setHost(*(t));\
+			if(z)  (z)->replace(BM_SERVER_ADDRESS,serverIp);\
+			if(h)   (h)->setValue("Host", *(t));\
+		}\
+	}else{\
+		if((t)->isEmpty()){\
+			if(y)   (y)->setHost(BM_SERVER_ADDRESS);\
+			if(h)   (h)->setValue("Host", BM_SERVER_ADDRESS);\
+		}else{\
+			if(y)   (y)->setHost(*(t));\
+			if(h)   (h)->setValue("Host", *(t));\
+		}\
+	}\
+}while(0);
+
 
 
 
@@ -442,35 +454,37 @@ enum {
 	TRY_CONNECT_SERVER,
 	BM_SYNC_START,
 	BM_TESTACCOUNT_START,
-	HTTP_GET_INI_SUCCESSFUL,
-	HTTP_GET_FILE_SUCCESSFUL,
+	BM_TESTVERSION_START,
+
 	LOADING_MAX,
 //success	
 	SUCCESS_MIN,
+	TEST_NET_SUCCESS,
+	TEST_VERSION_UNNEED,
+	DOWHAT_GET_FILE_SUCCESS,
 	HTTP_TEST_ACCOUNT_SUCCESS,
 	UPDATE_SUCCESSFUL,
 	BM_SYNC_SUCCESS_NO_MODIFY,//merge success but no any action
 	BM_SYNC_SUCCESS_WITH_MODIFY,//merge successful with action
-	UPDATE_NO_NEED,
+	UPDATE_NO_NEED,	
+	TEST_VERSION_SUCCESS,
+	TEST_DIGGXML_SUCCESS,
+	TEST_DIGGXML_UNNEED,
 	SUCCESS_MAX,
 //refuse
 	REFUSE_MIN,
+	TEST_NET_REFUSE,
 	UPDATE_SERVER_REFUSE,	
 	BM_SYNC_FAIL_SERVER_REFUSE,//server refuse sevice
 	REFUSE_MAX,
 //fail	
 	FAIL_MIN,
+	TEST_NET_ERROR_PROXY_AUTH,
+	TEST_NET_ERROR_SERVER,
 	HTTP_TEST_ACCOUNT_FAIL,
-	HTTP_GET_INI_FAILED,
-
-	HTTP_GET_INI_NOT_EXISTED,
-	HTTP_GET_FILE_NOT_EXISTED,
-	HTTP_GET_FILE_FAILED,
+	DOWHAT_GET_FILE_FAIL,
 	HTTP_NEED_RETRY,	
 	UPDATE_FAILED,	
-	UPDATE_NET_ERROR,		
-	UPDATE_NET_ERROR_PROXY,
-	UPDATE_NET_ERROR_PROXY_AUTH,	
 
 	BM_SYNC_FAIL_LOGIN,
 	BM_SYNC_FAIL_POST_HTTP,
@@ -497,6 +511,7 @@ enum {
 	FAIL_MAX,
 	SYNC_STATUS_MAX
 };
+
 enum{
 	UPDATE_STATUS_ICON_LOADING=0,
 	UPDATE_STATUS_ICON_SUCCESSFUL,
@@ -523,25 +538,6 @@ enum{
 	
 };
 */
-
-
-enum TEST_NET_RESULT{
-	TEST_NET_REFUSE=0,
-	TEST_NET_SUCCESS,
-	TEST_NET_ERROR_PROXY,
-	TEST_NET_ERROR_PROXY_AUTH,
-	TEST_NET_ERROR_SERVER,
-	TEST_NET_UNNEED,
-	TEST_DIGGXML_SUCCESS,
-	TEST_DIGGXML_UNNEED,
-	TEST_VERSION_SUCCESS,
-	TEST_VERSION_UNNEED,
-	DOWHAT_GET_FILE_SUCCESS,
-	DOWHAT_GET_FILE_FAIL,
-};
-
-
-
 
 
 #define INIT_TIMER_ACTION_LIST(type,name,start,val)\
