@@ -103,7 +103,7 @@ signals:
 	void done(bool error);
 	void mergeStatusNotify(int);
 public:
-	bmPost * posthp;
+	DoNetThread* postHttp;
 	
 	QFile *file;
 	QSettings* settings;	

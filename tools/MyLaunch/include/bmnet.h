@@ -98,6 +98,15 @@ class  TEST_SERVER_DLL_CLASS_EXPORT DoNetThread:public NetThread
 	Q_OBJECT;
 public:
 	uint id;
+
+	uint bmid;
+	uint action;
+	uint parentid;
+	uint browserid;
+	QString username;
+	QString password;
+	QString postString;	
+	
 public:
 	DoNetThread(QObject * parent = 0,QSettings* s=0,int m=DOWHAT_TEST_SERVER_NET,int d=0);
 	~DoNetThread(){};
@@ -105,7 +114,8 @@ public:
 public slots: 	
 	void monitorTimeout();
 	void terminateThread();
-	void  doHttpFinished(bool error);
+	void  doHttpFinished(bool);
+	void  doPostItemDone(bool);
 	virtual void cleanObjects();
 signals:	
 	void doNetStatusNotify(int);
