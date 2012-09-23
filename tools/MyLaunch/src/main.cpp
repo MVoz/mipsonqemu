@@ -2773,7 +2773,6 @@ void MyWidget::startSync()
 void MyWidget::_startTestAccount(const QString& testAccountName,const QString& testAccountPassword) 
 {
 	QDEBUG_LINE;
-	QString url;
 	QString auth_encrypt_str;
 	uint key;
 
@@ -2794,23 +2793,20 @@ void MyWidget::_startTestAccount(const QString& testAccountName,const QString& t
 		testAccountDlg->status=HTTP_UNCONNECTED;
 	}
 	testAccountDlg->setModal(1);
-	testAccountDlg->show();
-	
+	testAccountDlg->show();	
 
 	qsrand((unsigned) NOW_SECONDS);
 	key=qrand()%(getkeylength());
 	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(testAccountName).arg(testAccountPassword),key);
 	
 	gTestAccounter.reset(new bmSync(this,gSettings,&db,NULL,SYNC_DO_TESTACCOUNT));
-	url=QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key);
 	gTestAccounter->setUsername(testAccountName);
 	gTestAccounter->setPassword(testAccountPassword);
 	
 	connect(gTestAccounter.get(), SIGNAL(finished()), this, SLOT(testAccountFinished()));
 	connect(gTestAccounter.get(), SIGNAL(updateStatusNotify(int)), testAccountDlg.get(), SLOT(updateStatus(int)));
 
-	gTestAccounter->setUrl(url);
-	TD(DEBUG_LEVEL_NORMAL,url);
+	gTestAccounter->setUrl(QString(BM_SERVER_TESTACCOUNT_URL).arg(auth_encrypt_str).arg(key));
 	gTestAccounter->start(QThread::IdlePriority);
 	return;
 }	
@@ -2820,7 +2816,6 @@ void MyWidget::_startSync(int mode,int silence)
 	QDEBUG_LINE;
 	QString localBmFullPath;
 	QString url;
-//	QHttpRequestHeader *header=NULL;
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
@@ -2841,30 +2836,19 @@ void MyWidget::_startSync(int mode,int silence)
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
 	if(gSyncer){
-		if((silence ==SYN_MODE_NOSILENCE)&&syncDlg)
+		if((silence ==SYN_MODE_NOSILENCE))
 		{
-			syncDlg->setModal(1);
-			syncDlg->show();
+			if(!syncDlg){
+				syncDlg.reset(new synchronizeDlg(this));
+				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+				connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+				connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+				syncDlg->setModal(1);
+				syncDlg->show();
+				gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
+			}
 		}
 		return;
-	}
-
-	//deleteSynDlgTimer();
-	if(!syncDlg)
-	{
-		syncDlg.reset(new synchronizeDlg(this));
-		syncDlg->mode = mode;
-		connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-		connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
-	}else{
-		syncDlg->status=HTTP_UNCONNECTED;
-	}
-	if(silence == SYN_MODE_NOSILENCE)
-	{
-		syncDlg->setModal(1);
-		syncDlg->show();
-	}else{
-		syncDlg->hide();
 	}
 
 	qsrand((unsigned) NOW_SECONDS);
@@ -2887,11 +2871,20 @@ void MyWidget::_startSync(int mode,int silence)
 	if(silence == SYN_MODE_NOSILENCE)
 		url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
 	gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,SYNC_DO_BOOKMARK));
+	if((silence ==SYN_MODE_NOSILENCE)){
+			if(!syncDlg){
+				syncDlg.reset(new synchronizeDlg(this));
+				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+				connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+				connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+				syncDlg->setModal(1);
+				syncDlg->show();
+				gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
+			}
+	}
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
-
-	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
-	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));	
 
 	syncAction->setDisabled(TRUE);
 	gSyncer->setUrl(url);
@@ -2914,26 +2907,33 @@ SYNCOUT:
 void MyWidget::bmSyncFinishedStatus(int status)
 {
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
+
+	if(status==BM_SYNC_SUCCESS_NO_MODIFY||status==BM_SYNC_SUCCESS_WITH_MODIFY){
+			gSettings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
+	}else{
+			gSettings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESSFUL);
+	}
+	gSettings->sync();
+
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif	
 	if(!syncButton->isHidden()){
-		//syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg("sync.png"))));	
 		configModify(NET_ACCOUNT_MODIFY);
 	}
-	if(!trayIcon->isVisible()) return;
-	char *statusStr = tz::getstatusstring(status);
+	if(!trayIcon->isVisible()) 
+		return;
 	switch(status){
 		case BM_SYNC_SUCCESS_NO_MODIFY:
 #ifndef CONFIG_SYNC_STATUS_DEBUG
-			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(statusStr));			
+			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(tz::getstatusstring(status)));			
 #endif
 			break;
 		case BM_SYNC_SUCCESS_WITH_MODIFY:
 #ifndef CONFIG_SYNC_STATUS_DEBUG
-			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(statusStr));
+			setIcon(SYNC_STATUS_SUCCESSFUL,tz::tr(tz::getstatusstring(status)));
 #endif
-			trayIcon->showMessage(APP_NAME,tz::tr(statusStr), QSystemTrayIcon::Information);
+			trayIcon->showMessage(APP_NAME,tz::tr(tz::getstatusstring(status)), QSystemTrayIcon::Information);
 			break;
 		case BM_SYNC_FAIL_SERVER_NET_ERROR:
 		case BM_SYNC_FAIL_SERVER_REFUSE:
@@ -2945,7 +2945,7 @@ void MyWidget::bmSyncFinishedStatus(int status)
 		case BM_SYNC_FAIL_SERVER_LOGIN:
 		default:
 #ifndef CONFIG_SYNC_STATUS_DEBUG
-			setIcon(SYNC_STATUS_FAILED,tz::tr(statusStr));
+			setIcon(SYNC_STATUS_FAILED,tz::tr(tz::getstatusstring(status)));
 #endif
 			break;	
 	}	
@@ -2953,11 +2953,8 @@ void MyWidget::bmSyncFinishedStatus(int status)
 
 void MyWidget::testAccountFinished()
 {
-	//if (testAccountDlg)
-	//	testAccountDlg->updateStatus(gTestAccounter->status==HTTP_TEST_ACCOUNT_SUCCESS?(HTTP_TEST_ACCOUNT_SUCCESS):(HTTP_TEST_ACCOUNT_FAIL)) ;
 	gTestAccounter->wait();								
 	gTestAccounter.reset();
-//	gSemaphore.release(1);
 }
 
 void MyWidget::syncStatusTimeout()
@@ -2970,9 +2967,7 @@ void MyWidget::syncStatusTimeout()
 		setIcon(syncStatus,"syncing......");
 		if(!syncButton->isHidden()){
 #ifdef CONFIG_SKIN_FROM_RESOURCE
-		//	QResource::registerResource("skins/default.rcc");			
 			syncButton->setIcon(QIcon(QPixmap(QString(":/skins/%1/%2").arg(gSettings->value("skin", dirs["defSkin"][0]).toString()).arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync_on.png":"sync_off.png"))));	
-		//	QResource::unregisterResource("skins/default.rcc");
 #else
 			syncButton->setIcon(QIcon(QString(gSettings->value("skin", dirs["defSkin"][0]).toString()).append(QString("/%1").arg(syncStatus==(SYNC_STATUS_PROCESSING_1)?"sync.png":"sync2.png"))));			
 #endif
@@ -3251,13 +3246,15 @@ void MyWidget::bmSyncerFinished()
 	bmSyncFinishedStatus(gSyncer->statusCode);
 	if(gSyncer->terminateFlag)
 	{
-		syncDlg->done(0);
+		if(syncDlg)
+			syncDlg->done(0);
 		DELETE_SHAREOBJ(syncDlg);
 	}
 	if(syncDlg&&syncDlg->isHidden()){
 		syncDlg->done(0);
 		DELETE_SHAREOBJ(syncDlg);
 	}
+
 	gSyncer->wait();								
 	gSyncer.reset();
 	gSemaphore.release(1);

@@ -325,8 +325,6 @@ void DoNetThread::run()
 		case DOWHAT_GET_COMMON_FILE:		
 			NetThread::newHttp(FALSE,FALSE,TRUE,FALSE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
-			if(doWhat==DOWHAT_GET_BMXML_FILE)
-				sendUpdateStatusNotify(BM_SYNC_START);
 			http->get(url, file);
 			break;
 		case DOWHAT_POST_ITEM:
@@ -354,7 +352,7 @@ void DoNetThread::run()
 		default:
 			break;
 	}
-	TD(DEBUG_LEVEL_NORMAL,url);
+	TD(DEBUG_LEVEL_NORMAL,QString("http://"+(host.isEmpty()?(BM_SERVER_ADDRESS):(host))+url));
 	exec();
 	emit doNetStatusNotify(statusCode);
 	cleanObjects();
