@@ -2076,7 +2076,7 @@ MyWidget::~MyWidget()
 		
 		if(diggxmler->isRunning())
 			diggxmler->stop();
-		DELETE_OBJECT(diggxmler);
+		DELETE_THREAD(diggxmler);
 		
 	}
 //	DELETE_TIMER(diggxmlDisplayTimer);
@@ -3643,7 +3643,7 @@ void MyWidget::silentUpdateFinished()
 	//qDebug("silent update finished!!!!!");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"silentupdate",TRUE);
-	DELETE_OBJECT(slientUpdate);
+	DELETE_THREAD(slientUpdate);
 	/*
 	if(slientUpdate)
 	{
