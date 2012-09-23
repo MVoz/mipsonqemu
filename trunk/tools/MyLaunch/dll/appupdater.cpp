@@ -50,11 +50,11 @@ void appUpdater::monitorTimeout()
 		switch(d){
 			case DOWHAT_TEST_SERVER_VERSION:
 			case DOWHAT_TEST_SERVER_NET:
-				DELETE_OBJECT(donetThread);
+				DELETE_THREAD(donetThread);
 				testNetFinished(s);
 				break;
 			case DOWHAT_GET_UPDATEINI_FILE:
-				DELETE_OBJECT(donetThread);
+				DELETE_THREAD(donetThread);
 				getUpdateINIDone(s);
 				break;
 			case DOWHAT_GET_COMMON_FILE:
@@ -81,7 +81,7 @@ void appUpdater::monitorTimeout()
 	monitorTimer->start(tz::getParameterMib(SYS_MONITORTIMEOUT));	
 }
 void appUpdater::cleanObjects(){
-	DELETE_OBJECT(donetThread);
+	DELETE_THREAD(donetThread);
 	//if(fh)
 	//	fh->wait();
 	//DELETE_OBJECT(fh);
@@ -249,7 +249,7 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	if(terminateFlag||error)
 		return;
 	TD(DEBUG_LEVEL_NORMAL,"download......"<<pathname<<"md5:"<<md5);
-	DELETE_OBJECT(donetThread);	
+	DELETE_THREAD(donetThread);	
 	donetThread=new DoNetThread(NULL,settings,m,0);
 	donetThread->setMD5Key(md5);
 	if(dlgmode==UPDATE_DLG_MODE) {

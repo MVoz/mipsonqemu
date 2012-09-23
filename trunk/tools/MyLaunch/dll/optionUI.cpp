@@ -85,7 +85,7 @@ OptionsDlg::~OptionsDlg()
 	DELETE_OBJECT(reply);
 	DELETE_OBJECT(proxy);
 	DELETE_OBJECT(manager);
-	DELETE_OBJECT(updaterthread);
+	DELETE_THREAD(updaterthread);
 	DELETE_OBJECT(updaterDlg);
 	DELETE_OBJECT(webView);
 	DELETE_TIMER(testProxyTimer);	

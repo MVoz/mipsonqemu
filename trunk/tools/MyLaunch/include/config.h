@@ -357,6 +357,7 @@ enum{
 
 
 #define DELETE_OBJECT(x) if(x){	delete (x);(x)=NULL;}
+#define DELETE_THREAD(x) if(x){	(x)->wait();delete (x);(x)=NULL;}
 
 #define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
 #define DELETE_SHAREOBJ(x) if(x) (x).reset();

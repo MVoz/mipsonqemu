@@ -67,7 +67,7 @@ void bmSync::monitorTimeout()
 	{
 		int d = donetThread->doWhat;
 		int s = donetThread->statusCode;
-		DELETE_OBJECT(donetThread);
+		DELETE_THREAD(donetThread);
 		switch(d){
 			case DOWHAT_TEST_SERVER_NET:
 			case DOWHAT_TEST_SERVER_DIGG_XML:
@@ -97,8 +97,8 @@ void bmSync::monitorTimeout()
 }
 void bmSync::cleanObjects(){
 	QDEBUG_LINE;
-	DELETE_OBJECT(mgthread);
-	DELETE_OBJECT(donetThread);
+	DELETE_THREAD(mgthread);
+	DELETE_THREAD(donetThread);
 	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
 		QFile::remove(fileWithFullpath);
 	}

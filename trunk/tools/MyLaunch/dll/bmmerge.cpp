@@ -14,7 +14,7 @@ bmMerge::~bmMerge(){
 void bmMerge::clearObjects()
 {
 	DELETE_FILE(file);
-	DELETE_OBJECT(postHttp);
+	DELETE_THREAD(postHttp);
 	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
 	{
 		QFile::remove(filename_fromserver);	
@@ -495,7 +495,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 	QDEBUG_LINE;
 	QString postString;
 	uint nowparentid=0;
-	DELETE_OBJECT(postHttp);
+	DELETE_THREAD(postHttp);
 	postHttp = new DoNetThread(NULL,settings,DOWHAT_POST_ITEM,0);
 	postHttp->parentid=parentId;
 	postHttp->browserid=browserType;
