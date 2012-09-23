@@ -120,6 +120,7 @@ public:
 	QString filename_fromserver;
 	QString username;
 	QString password;
+	void clearObjects();
 	
 	void setRandomFileFromserver(QString &s);
 public:

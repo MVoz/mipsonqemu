@@ -7,7 +7,7 @@ appUpdater::~appUpdater(){
 void appUpdater::testNetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
-         TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+         TD(DEBUG_LEVEL_NORMAL,tz::getstatusstring(status));
 	switch(status)
 	{
 	case TEST_NET_SUCCESS:

@@ -88,7 +88,7 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 			QString  dirPath=QString(destDirectory).append("\\");
 			int i=0;
 			int count=na.count();
-			TD(DEBUG_LEVEL_NORMAL,url<<destDirectory<<count<<savefilename);
+			//TD(DEBUG_LEVEL_NORMAL,url<<destDirectory<<count<<savefilename);
 			for(i=0;i<count-1&&count>1;i++)
 			{
 				dirPath.append(na.at(i));
@@ -281,7 +281,7 @@ void DoNetThread::doHttpFinished(bool error){
 			statusCode = TEST_NET_ERROR_SERVER;
 			break;
 	}
-	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
+//	 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<statusCode);
 	exit(0);
 	return;
 }

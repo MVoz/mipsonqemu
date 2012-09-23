@@ -9,6 +9,10 @@ bmMerge::bmMerge(QObject * parent ,QSqlDatabase* b,QSettings* s,QString u,QStrin
 //	GetShellDir(CSIDL_FAVORITES, iePath);
 }
 bmMerge::~bmMerge(){	
+
+}
+void bmMerge::clearObjects()
+{
 	DELETE_FILE(file);
 	DELETE_OBJECT(postHttp);
 	if(!filename_fromserver.isEmpty()&&QFile::exists(filename_fromserver))
@@ -23,7 +27,7 @@ void bmMerge::setRandomFileFromserver(QString& s)
 }
 bool bmMerge::checkXmlfileFromServer()
 {
-
+	TD(DEBUG_LEVEL_BMMERGE,filename_fromserver);
 	if(!QFile::exists(filename_fromserver)){
 		setMergeStatus(QString(""),QString(""),0,0,BM_SYNC_FAIL_GET_XML_FROM_SERVER);
 		return false;
@@ -1149,6 +1153,9 @@ void bmMerge::run()
 	handleBmData();
 	exit();
 	emit done(terminatedFlag);
+	if(mergestatus==BM_SYNC_SUCCESS_NO_MODIFY)
+		emit mergeStatusNotify(BM_SYNC_SUCCESS_NO_MODIFY);
+	clearObjects();
 }
 void bmMerge::productFFId(QString & randString,int length){   
 	int max = length;   

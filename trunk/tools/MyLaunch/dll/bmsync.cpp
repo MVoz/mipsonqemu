@@ -15,16 +15,16 @@ bmSync::~bmSync(){
 void bmSync::testNetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
-         TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+         TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 	switch(status)
 	{
 	case TEST_NET_SUCCESS:
 		{
-			QDEBUG_LINE;
 			if(doWhat==SYNC_DO_BOOKMARK)	
 			{				
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_BMXML_FILE,0);
 				donetThread->setFileWithFullpath(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
+				setFileWithFullpath(donetThread->fileWithFullpath);
 				sendUpdateStatusNotify(BM_SYNC_START);
 			}else if(doWhat==SYNC_DO_TESTACCOUNT){
 				donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_ACCOUNT,0);
@@ -145,11 +145,10 @@ void bmSync::run()
 		settings->sync();
 	}
 	cleanObjects();
-	QDEBUG_LINE;
 }
 void bmSync::bmxmlGetFinished(int status)
 {
-	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status)<<fileWithFullpath);
 	THREAD_MONITOR_POINT;
 	if(status==DOWHAT_GET_FILE_SUCCESS){
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
@@ -163,7 +162,7 @@ void bmSync::bmxmlGetFinished(int status)
 void bmSync::diggxmlGetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
-	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status);
+	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status) );
 	statusCode = status;
 	exit(-1);	
 }
@@ -171,7 +170,7 @@ void bmSync::diggxmlGetFinished(int status)
 void bmSync::mergeDone()
 {
 	THREAD_MONITOR_POINT;
-	QDEBUG_LINE;
+	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(mgthread->mergestatus));
 	if(mgthread->mergestatus==BM_SYNC_SUCCESS_NO_MODIFY||mgthread->mergestatus==BM_SYNC_SUCCESS_WITH_MODIFY)
 		exit(0);
 	else

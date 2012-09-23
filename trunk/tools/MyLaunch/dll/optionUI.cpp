@@ -657,7 +657,7 @@ void OptionsDlg::apply(const QString & name, const QVariant & value)
 void OptionsDlg::cmdApply(const int &type, const QString & cmdName, const QString & cmdCommand, const QString & cmdParameter, const int & cmdIndex)
 {
 	show_tab = SHOW_TAB_CMD;
-	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<type<<cmdIndex);
+	TD(DEBUG_LEVEL_NORMAL,type<<cmdIndex);
 	CatItem item(cmdCommand,cmdName,cmdParameter,COME_FROM_COMMAND);
 	
 	switch (type)
@@ -928,7 +928,7 @@ void synchronizeDlg::updateStatus(int status)
 	//status=s;
 	statusTime = NOW_SECONDS;	
 	char *statusStr = tz::getstatusstring(status);
-		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<status<<statusStr);
+	TD(DEBUG_LEVEL_NORMAL,status<<statusStr);
 	int icon =0;
 	int type = 0;
 	//TD(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
