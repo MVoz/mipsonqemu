@@ -58,6 +58,7 @@ public:
 	DoNetThread *donetThread;
 	bmMerge *mgthread;
 
+	uint bmSyncMode;
 	uint diggid;
 	
 public:
@@ -76,6 +77,12 @@ public slots:
 	void terminateThread();
 	void monitorTimeout();
 	virtual void cleanObjects();
+	virtual void sendUpdateStatusNotify(int status){
+		statusCode = status;
+		if(doWhat==SYNC_DO_BOOKMARK&&bmSyncMode==SYN_MODE_SILENCE) 
+			return;		
+		emit updateStatusNotify(status);
+	}
 signals:
 	void bmSyncFinishedStatusNotify(int status);
 	void readDateProgressNotify(int done, int total);

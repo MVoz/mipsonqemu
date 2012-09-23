@@ -8,6 +8,7 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 	donetThread = NULL;
 	mgthread=NULL;
 	needwatchchild = false;
+	bmSyncMode = SYN_MODE_SILENCE;
 }
 bmSync::~bmSync(){
 }
