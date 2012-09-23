@@ -3735,7 +3735,7 @@ void MyWidget::getFavico(const QString& host,const QString& f)
 	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<"get fav ico from"<<host);
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
 	icogh->setHost(host);
-	icogh->setUrl(f);
+	icogh->setUrl("/"+f);
 	icogh->setDestDirectory(FAVICO_DIRECTORY);
 	QString extension = f.section( '.', -1 );
 	if(extension.isEmpty())
