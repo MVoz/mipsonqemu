@@ -85,6 +85,7 @@ void bmSync::monitorTimeout()
 	if(THREAD_IS_FINISHED(mgthread))
 	{
 		mergeDone();
+		return;
 	}
 
 	if(!needwatchchild&&terminateFlag)
@@ -95,12 +96,14 @@ void bmSync::monitorTimeout()
 	NetThread::monitorTimeout();
 }
 void bmSync::cleanObjects(){
+	QDEBUG_LINE;
 	DELETE_OBJECT(mgthread);
 	DELETE_OBJECT(donetThread);
 	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
 		QFile::remove(fileWithFullpath);
 	}
 	NetThread::cleanObjects();
+	QDEBUG_LINE;
 }
 
 void bmSync::run()

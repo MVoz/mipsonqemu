@@ -492,6 +492,7 @@ action:0--delete 1--add
 void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int parentId,int browserType)
 {
 	THREAD_MONITOR_POINT;
+	QDEBUG_LINE;
 	QString postString;
 	uint nowparentid=0;
 	DELETE_OBJECT(postHttp);
