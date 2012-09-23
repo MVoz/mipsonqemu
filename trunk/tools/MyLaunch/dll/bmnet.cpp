@@ -248,7 +248,7 @@ void DoNetThread::doHttpFinished(bool error){
 						statusCode = DOWHAT_GET_FILE_SUCCESS;
 				}else{
 						statusCode = DOWHAT_GET_FILE_FAIL;
-						exit(-1);
+						doFetchHttpFile();
 						return;
 				}
 				break;
@@ -290,6 +290,32 @@ void DoNetThread::terminateThread()
 	THREAD_MONITOR_POINT;
 	NetThread::terminateThread();
 }
+void DoNetThread::doFetchHttpFile()
+{
+	THREAD_MONITOR_POINT;
+	retryTime++;
+	if(retryTime<=(settings->value("trygetfilenum",1).toUInt())){
+		switch(doWhat){
+			case DOWHAT_GET_DIGGXML_FILE:
+			case DOWHAT_GET_BMXML_FILE:		
+			case DOWHAT_GET_UPDATEINI_FILE:
+				DELETE_OBJECT(http);
+				NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
+				connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+				http->get(url, file);
+				return;
+			case DOWHAT_GET_COMMON_FILE:
+				DELETE_OBJECT(http);
+				NetThread::newHttp(FALSE,FALSE,TRUE,FALSE);
+				connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
+				http->get(url, file);
+				return;			
+		}
+
+	}
+	exit(-1);
+}
+
 void DoNetThread::run()
 {
 	THREAD_MONITOR_POINT;	
@@ -316,16 +342,25 @@ void DoNetThread::run()
 		case DOWHAT_GET_DIGGXML_FILE:
 		case DOWHAT_GET_BMXML_FILE:		
 		case DOWHAT_GET_UPDATEINI_FILE:
+#if 1
+			doFetchHttpFile();
+#else
 			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
 			if(doWhat==DOWHAT_GET_BMXML_FILE)
 				sendUpdateStatusNotify(BM_SYNC_START);
 			http->get(url, file);
+#endif
 		break;
-		case DOWHAT_GET_COMMON_FILE:		
+		case DOWHAT_GET_COMMON_FILE:
+#if 1
+			doFetchHttpFile();
+#else
+
 			NetThread::newHttp(FALSE,FALSE,TRUE,FALSE);
 			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
 			http->get(url, file);
+#endif
 			break;
 		case DOWHAT_POST_ITEM:
 			{
