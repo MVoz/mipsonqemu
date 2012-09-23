@@ -2808,8 +2808,6 @@ void MyWidget::_startTestAccount(const QString& testAccountName,const QString& t
 	
 	connect(gTestAccounter.get(), SIGNAL(finished()), this, SLOT(testAccountFinished()));
 	connect(gTestAccounter.get(), SIGNAL(updateStatusNotify(int)), testAccountDlg.get(), SLOT(updateStatus(int)));
-	//connect(gTestAccounter.get(), SIGNAL(readDateProgressNotify(int, int)), testAccountDlg.get(), SLOT(readDateProgress(int, int)));
-	//connect(gTestAccounter.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	gTestAccounter->setUrl(url);
 	TD(DEBUG_LEVEL_NORMAL,url);
@@ -2822,7 +2820,7 @@ void MyWidget::_startSync(int mode,int silence)
 	QDEBUG_LINE;
 	QString localBmFullPath;
 	QString url;
-	QHttpRequestHeader *header=NULL;
+//	QHttpRequestHeader *header=NULL;
 	QString auth_encrypt_str;
 	uint key;
 	QString name,password;
@@ -2892,17 +2890,11 @@ void MyWidget::_startSync(int mode,int silence)
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
 
-
-
-	//connect(gSyncer.get(), SIGNAL(bmSyncFinishedStatusNotify(int)), this, SLOT(bmSyncFinishedStatus(int)));
 	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
-	//connect(gSyncer.get(), SIGNAL(readDateProgressNotify(int, int)), syncDlg.get(), SLOT(readDateProgress(int, int)));
-	//connect(gSyncer.get(), SIGNAL(testAccountFinishedNotify(int)), this, SLOT(testAccountFinished(int)));
 
 	syncAction->setDisabled(TRUE);
 	gSyncer->setUrl(url);
-	TD(DEBUG_LEVEL_NORMAL,url);
 	gSyncer->start(QThread::IdlePriority);
 	gSettings->setValue("lastsyncstatus",SYNC_STATUS_PROCESSING);
 	gSettings->sync();
@@ -2921,7 +2913,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncFinishedStatus(int status)
 {
-	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<" sync status:"<<status);
+	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 #ifndef CONFIG_SYNC_STATUS_DEBUG
 	DELETE_TIMER(syncStatusTimer);
 #endif	
@@ -3215,13 +3207,13 @@ void MyWidget::diggxmloutputAnchorClicked(const QUrl & link)
 		runProgram(link.toString(),"");			
 }
 
-void MyWidget::diggXmlFinished(bool status)
+void MyWidget::diggXmlFinished()
 {
 
 	if(maincloseflag)
 		close();
 	else{
-		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((status==0)?0:1));
+		SAVE_TIMER_ACTION(TIMER_ACTION_DIGGXML,"diggxml",((gDiggXmler->statusCode ==DOWHAT_GET_FILE_SUCCESS)?1:0));
 		if(gDiggXmler->statusCode == DOWHAT_GET_FILE_SUCCESS){
 			emit diggXmlNewSignal();
 		}
@@ -3235,23 +3227,11 @@ void MyWidget::displayDiggxml(QString s)
 }
 void MyWidget::startDiggXml()
 {
-//	QHttpRequestHeader *header=NULL;
 	if(gDiggXmler)
 		return;
-//	gDiggXmler.reset(new bmSync(this,gSettings));
 	gDiggXmler.reset(new bmSync(NULL,gSettings,&db,NULL,SYNC_DO_DIGG));
-/*
-#ifdef CONFIG_SERVER_IP_SETTING
-	SET_HOST_IP(gSettings,gDiggXmler);
-#else
-	gDiggXmler->setHost(BM_SERVER_ADDRESS);
-#endif
-*/
-	QString url=QString(BM_SERVER_GET_DIGGXML_URL);
-//	SET_HOST_IP(gSettings,gDiggXmler,&url,header);
-	connect(gDiggXmler.get(), SIGNAL(done(bool)), this, SLOT(diggXmlFinished(bool)));
-	
-	gDiggXmler->setUrl(url);
+	connect(gDiggXmler.get(), SIGNAL(finished()), this, SLOT(diggXmlFinished()));
+	gDiggXmler->setUrl(BM_SERVER_GET_DIGGXML_URL);
 #if 1
 	gDiggXmler->setDiggId(diggxmler->getMaxDiggid());
 #else
@@ -3271,9 +3251,11 @@ void MyWidget::bmSyncerFinished()
 	bmSyncFinishedStatus(gSyncer->statusCode);
 	if(gSyncer->terminateFlag)
 	{
+		syncDlg->done(0);
 		DELETE_SHAREOBJ(syncDlg);
 	}
 	if(syncDlg&&syncDlg->isHidden()){
+		syncDlg->done(0);
 		DELETE_SHAREOBJ(syncDlg);
 	}
 	gSyncer->wait();								
@@ -3284,16 +3266,7 @@ void MyWidget::bmSyncerFinished()
 	if(maincloseflag)
 		close();
 	else{
-		// timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds = NOW_SECONDS;
-		// gSettings->setValue("lastbmsync", timer_actionlist[TIMER_ACTION_BMSYNC].lastActionSeconds);
-		// timer_actionlist.enable &=(~(0x02)); 
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
-		// rebuildAll&=~(1<<TIMER_ACTION_BMSYNC);		
-#if 0		
-		int time = gSettings->value("synctimer", SILENT_SYNC_INTERVAL).toInt();
-		if (time != 0)
-			syncTimer->start(time * SILENT_SYNC_INTERVAL_UNIT);			
-#endif
 	}
 	
 }
@@ -3716,7 +3689,7 @@ void MyWidget::startSilentUpdate()
 void MyWidget::getFavicoFinished()
 {
 	//qDebug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-	qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
+	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	int i =getfavicolist.size();
 	while((--i)>=0){
 		DoNetThread* icogh = getfavicolist.at(i);
@@ -3732,7 +3705,7 @@ void MyWidget::getFavico(const QString& host,const QString& f)
 {
 	DoNetThread* icogh =  new DoNetThread(NULL,gSettings,DOWHAT_GET_COMMON_FILE,0);
 	getfavicolist.append(icogh);
-	TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<"get fav ico from"<<host);
+	TD(DEBUG_LEVEL_NORMAL,"get fav ico from"<<host);
 	connect(icogh,SIGNAL(finished()),this,SLOT(getFavicoFinished()));
 	icogh->setHost(host);
 	icogh->setUrl("/"+f);
@@ -3787,7 +3760,7 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 		 {
 			 if(gSettings){
 				 gSettings->sync();
-				 uint debuglevel = gSettings->value("debug",1).toUInt();
+				 uint debuglevel = gSettings->value("debug",1<<DEBUG_LEVEL_NORMAL).toUInt();
 				 if(1){		
 				 	 QString debugmsg(msg);
 					 int index = debugmsg.indexOf(QString(" :"));
@@ -3800,20 +3773,6 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 					 }				 
 					
 				 }
-				 /*
-				 if((gSettings->value("debug",0).toUInt())&0x02)
-				 {
-					 QFile debugfile("log.txt");
-					 debugfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-					 QTextStream debugos(&debugfile);
-					 debugos.setCodec("UTF-8");
-					 QString msgstr=QString::fromLocal8Bit(msg);
-					 debugos << "[";
-					 debugos << QDateTime::currentDateTime().toString("hh:mm:ss");
-					 debugos << "] " << msgstr << "\n";
-					 debugfile.close();
-				 }
-				 */
 			 }
 		 }
 		 break;

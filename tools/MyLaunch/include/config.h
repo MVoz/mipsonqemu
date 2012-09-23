@@ -437,7 +437,7 @@ enum CONFIG_NOTIFY{
 
 #define THREAD_MONITOR_POINT \
 	if(QThread::currentThread()!=this)\
-		TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<QThread::currentThread()<<this);
+		TD(DEBUG_LEVEL_NORMAL, QThread::currentThread()<<this);
 
 enum {
 	//loading
@@ -713,7 +713,6 @@ enum{
 	DEBUG_LEVEL_BMSYNC,
 	DEBUG_LEVEL_BMMERGE,
 	DEBUG_LEVEL_DIGGXML,
-	DEBUG_LEVEL_POSTHTTP,
 	DEBUG_LEVEL_DOWNLOCAL,
 	DEBUG_LEVEL_TESTACCOUNT	
 };
@@ -721,13 +720,13 @@ enum{
 #define TD(level,y) do{\
 	      QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));\
 	      QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));\
-	     qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<y;\
+	     qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<__FUNCTION__<<__LINE__<<y;\
           }while(0);
 #else
 #define TD(level,y) do{}while(0);
 #endif
 
-#define QDEBUG_LINE   TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__);
+#define QDEBUG_LINE   TD(DEBUG_LEVEL_NORMAL,"");
 
 enum{
 	LOCAL_FULLPATH_BMDAT=0,
