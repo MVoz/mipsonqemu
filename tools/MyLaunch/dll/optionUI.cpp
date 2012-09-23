@@ -925,13 +925,10 @@ void synchronizeDlg::updateStatus(int status)
 {
 #if 1
 	QString jsStr;
-	//status=s;
 	statusTime = NOW_SECONDS;	
-	char *statusStr = tz::getstatusstring(status);
-	TD(DEBUG_LEVEL_NORMAL,status<<statusStr);
+	TD(DEBUG_LEVEL_NORMAL,tz::getstatusstring(status));
 	int icon =0;
 	int type = 0;
-	//TD(DEBUG_LEVEL_NORMAL,"type:"<<type<<"s:"<<s<<"statustr:"<<statusStr);
 	if(status>SUCCESS_MIN&&status<SUCCESS_MAX){
 		icon = UPDATE_STATUS_ICON_SUCCESSFUL;
 		type = UPDATESTATUS_FLAG_APPLY;
@@ -963,15 +960,11 @@ void synchronizeDlg::updateStatus(int status)
 	switch(type)
 	{
 	case UPDATESTATUS_FLAG_APPLY:
-		//jsStr.append(QString("$$('loading').style.display='block';"));
-		//jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(tz::getstatusstring(status))));
 		jsStr.append(QString("$$('apply').innerHTML ='<a href=\"#\"  onclick=\"accept();\" >%1</a>';").arg(tz::tr(LANGUAGE_APPLY)));
 		break;
 	case UPDATESTATUS_FLAG_RETRY:
-		//jsStr.append(QString("$$('loading').style.display='block';"));
-		//jsStr.append(QString("$$('arrow').style.display='none';"));
-		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(statusStr)));
+		jsStr.append(QString("$$('info').innerHTML ='%1';").arg(tz::tr(tz::getstatusstring(status))));
 		jsStr.append(QString("$$('apply').innerHTML ='<a href=\"#\"  onclick=\"retry();\" >%1</a>';").arg(tz::tr(LANGUAGE_RETRY)));
 		break;
 	}

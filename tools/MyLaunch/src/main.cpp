@@ -2835,6 +2835,7 @@ void MyWidget::_startSync(int mode,int silence)
 	password=tz::decrypt(gSettings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);					
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
+	silence = SYN_MODE_NOSILENCE;
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE))
 		{
@@ -2874,13 +2875,13 @@ void MyWidget::_startSync(int mode,int silence)
 	if((silence ==SYN_MODE_NOSILENCE)){
 			if(!syncDlg){
 				syncDlg.reset(new synchronizeDlg(this));
-				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-				connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
-				connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
 				syncDlg->setModal(1);
-				syncDlg->show();
-				gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
+				syncDlg->show();				
 			}
+			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+			connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+			gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
 	}
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
@@ -2904,9 +2905,36 @@ SYNCOUT:
 	SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",FALSE);
 	return;	
 }
+void MyWidget::bmSyncerFinished()
+{	
+	QDEBUG_LINE;
+	bmSyncFinishedStatus(gSyncer->statusCode);
+	if(gSyncer->terminateFlag)
+	{
+		if(syncDlg)
+			syncDlg->done(0);
+		DELETE_SHAREOBJ(syncDlg);
+	}
+	if(syncDlg&&syncDlg->isHidden()){
+		syncDlg->done(0);
+		DELETE_SHAREOBJ(syncDlg);
+	}
+	disconnect(gSyncer.get(), 0, 0, 0);
+	gSyncer->wait();								
+	gSyncer.reset();
+	gSemaphore.release(1);
+	scanDbFavicon();
+	syncAction->setDisabled(FALSE);
+	if(maincloseflag)
+		close();
+	else{
+		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
+	}	
+}
+
 void MyWidget::bmSyncFinishedStatus(int status)
 {
-	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
+//	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 
 	if(status==BM_SYNC_SUCCESS_NO_MODIFY||status==BM_SYNC_SUCCESS_WITH_MODIFY){
 			gSettings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
@@ -3240,33 +3268,6 @@ void MyWidget::startDiggXml()
 
 }
 #endif
-void MyWidget::bmSyncerFinished()
-{	
-	QDEBUG_LINE;
-	bmSyncFinishedStatus(gSyncer->statusCode);
-	if(gSyncer->terminateFlag)
-	{
-		if(syncDlg)
-			syncDlg->done(0);
-		DELETE_SHAREOBJ(syncDlg);
-	}
-	if(syncDlg&&syncDlg->isHidden()){
-		syncDlg->done(0);
-		DELETE_SHAREOBJ(syncDlg);
-	}
-
-	gSyncer->wait();								
-	gSyncer.reset();
-	gSemaphore.release(1);
-	scanDbFavicon();
-	syncAction->setDisabled(FALSE);
-	if(maincloseflag)
-		close();
-	else{
-		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
-	}
-	
-}
 
 void MyWidget::homeBtnPressed()
 {

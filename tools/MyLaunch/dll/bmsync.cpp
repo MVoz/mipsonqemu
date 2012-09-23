@@ -10,9 +10,6 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 	needwatchchild = false;
 	bmSyncMode = SYN_MODE_SILENCE;
 }
-bmSync::~bmSync(){
-}
-
 void bmSync::testNetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
@@ -133,18 +130,8 @@ void bmSync::run()
 	donetThread->moveToThread(this);		
 	connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 	donetThread->start(QThread::IdlePriority);
-	
-	
+		
 	int ret=exec();
-	
-	if(doWhat==SYNC_DO_BOOKMARK){
-		if(ret<0){
-			settings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
-		}else{
-			settings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESSFUL);
-		}
-		settings->sync();
-	}
 	cleanObjects();
 }
 void bmSync::bmxmlGetFinished(int status)

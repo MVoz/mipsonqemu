@@ -128,10 +128,8 @@ public:
 	QString username;
 	QString password;
 	QString postString;	
-
-
 	
-	int retryTime;
+	uint retryTime;
 	
 public:
 	DoNetThread(QObject * parent = 0,QSettings* s=0,int m=DOWHAT_TEST_SERVER_NET,int d=0);
@@ -143,6 +141,7 @@ public slots:
 	void terminateThread();
 	void  doHttpFinished(bool);
 	void  doPostItemDone(bool);
+	void doFetchHttpFile();
 	virtual void cleanObjects();
 signals:	
 	void doNetStatusNotify(int);
