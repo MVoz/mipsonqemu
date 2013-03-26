@@ -46,12 +46,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "plugin_interface.h"
 
-extern shared_ptr<CatBuilder> gBuilder;
+extern CatBuilder* gBuilder;
 extern CatItem* gSearchResult;
-extern shared_ptr <bmSync> gSyncer;
+extern bmSync* gSyncer;
 extern shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
-extern shared_ptr<bmSync> gDiggXmler;
+extern bmSync* gDiggXmler;
 #endif
 
 enum{
@@ -349,6 +349,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 			storeConfig(1);
 		}
 	}
+	syncDlg=NULL;
 	tz::initParameterMib(gSettings);
 	//inital language
 	setLanguage(gSettings->value("language", DEFAULT_LANGUAGE).toInt()) ;
@@ -516,8 +517,8 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	}
 	*/
 #ifdef CONFIG_DIGG_XML
-	diggxmler=new diggXmler(this,diggxmloutput);
-	connect(diggxmler, SIGNAL(diggxmlNotify(QString)), this, SLOT(displayDiggxml(QString)));
+//	diggxmler=new diggXmler(this,diggxmloutput);
+//	connect(diggxmler, SIGNAL(diggxmlNotify(QString)), this, SLOT(displayDiggxml(QString)));
 #endif
 
 	alternatives = new QCharListWidget(this);
@@ -680,7 +681,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	connect(monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerTimeout()), Qt::DirectConnection);					
 	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));	
 #ifdef CONFIG_DIGG_XML
-	diggxmler->start();
+//	diggxmler->start();
 #endif
 
 #ifdef CONFIG_SYNC_STATUS_DEBUG
@@ -691,6 +692,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	syncStatusTimer->start(200);
 #endif
 	updateDisplay();
+	QDEBUG_LINE;
 
 }
 
@@ -1698,7 +1700,7 @@ void MyWidget::catalogBuilt(int type,int status)
 	//catalog = gBuilder->getCatalog();
 	//qDebug()<<__FUNCTION__<<gBuilder<<type;
 	gBuilder->wait();
-	gBuilder.reset();
+	//gBuilder.reset();
 	//qDebug()<<__FUNCTION__<<"release gSemaphore";
 	gSemaphore.release(1);
 	//QDEBUG("%s gBuilder=0x%08x\n",__FUNCTION__,gBuilder);
@@ -1970,12 +1972,14 @@ void MyWidget::closeEvent(QCloseEvent * event)
 		event->ignore();
 		return;
 	}
+/*
 	if(diggxmler){	
 		if(diggxmler->isRunning())
 			diggxmler->stop();
 		while(diggxmler->isRunning());
 		//DELETE_OBJECT(diggxmler);		
 	}
+*/
 #endif
 
 	//      gSettings->setValue("Display/pos", relativePosition());
@@ -2072,6 +2076,7 @@ MyWidget::~MyWidget()
 	//delete dropTimer;
 	DELETE_TIMER(dropTimer);
 	DELETE_TIMER(syncStatusTimer);
+/*
 	if(diggxmler){
 		
 		if(diggxmler->isRunning())
@@ -2079,6 +2084,7 @@ MyWidget::~MyWidget()
 		DELETE_THREAD(diggxmler);
 		
 	}
+*/
 //	DELETE_TIMER(diggxmlDisplayTimer);
 
 /*
@@ -2509,7 +2515,7 @@ void MyWidget::applySkin(QString directory)
 	configModify(NET_SEARCH_MODIFY);
 	configModify(NET_ACCOUNT_MODIFY);
 #ifdef CONFIG_DIGG_XML
-	diggxmler->setDiggXmlFormat(diggxmloutputFormat);
+//	diggxmler->setDiggXmlFormat(diggxmloutputFormat);
 #endif
 
 
@@ -2605,11 +2611,15 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode,uint browserid)
 	*/
 			return;
 	}
+	if(THREAD_IS_FINISHED(gBuilder)){
+		delete gBuilder ;
+		gBuilder=NULL;
+	}
 
 	if (gBuilder == NULL)
 	{
 
-		gBuilder.reset(new CatBuilder(true,mode,&db));
+		gBuilder=new CatBuilder(true,mode,&db);
 		// gBuilder->setPreviousCatalog(catalog);
 		switch(mode){
 			case CAT_BUILDMODE_ALL:
@@ -2632,7 +2642,7 @@ void MyWidget::_buildCatalog(CATBUILDMODE mode,uint browserid)
 #endif			
 		
 		}
-		connect(gBuilder.get(), SIGNAL(catalogFinished(int,int)), this, SLOT(catalogBuilt(int,int)));
+		connect(gBuilder, SIGNAL(catalogFinished(int,int)), this, SLOT(catalogBuilt(int,int)));
 		//  connect(this, SIGNAL(catalogTerminateNotify()), gBuilder.get(), SLOT(quit()));
 		gBuilder->start(QThread::IdlePriority);
 	}
@@ -2836,14 +2846,19 @@ void MyWidget::_startSync(int mode,int silence)
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
 	silence = SYN_MODE_NOSILENCE;
+	QDEBUG_LINE;
+	if(THREAD_IS_FINISHED(gSyncer)){
+		delete gSyncer ;
+		gSyncer=NULL;
+	}
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE))
 		{
 			if(!syncDlg){
-				syncDlg.reset(new synchronizeDlg(this));
-				connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-				connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
-				connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+				syncDlg=new synchronizeDlg(this);
+				connect(syncDlg,SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+				connect(syncDlg,SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+				connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
 				syncDlg->setModal(1);
 				syncDlg->show();
 				gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
@@ -2851,6 +2866,7 @@ void MyWidget::_startSync(int mode,int silence)
 		}
 		return;
 	}
+	QDEBUG_LINE;
 
 	qsrand((unsigned) NOW_SECONDS);
 	key=qrand()%(getkeylength());
@@ -2871,21 +2887,22 @@ void MyWidget::_startSync(int mode,int silence)
 	
 	if(silence == SYN_MODE_NOSILENCE)
 		url=QString(BM_SERVER_GET_BMXML_URL).arg(auth_encrypt_str).arg(key).arg(0);
-	gSyncer.reset(new bmSync(this,gSettings,&db,&gSemaphore,SYNC_DO_BOOKMARK));
+	gSyncer=new bmSync(this,gSettings,&db,&gSemaphore,SYNC_DO_BOOKMARK);
 	if((silence ==SYN_MODE_NOSILENCE)){
 			if(!syncDlg){
-				syncDlg.reset(new synchronizeDlg(this));
+				syncDlg=new synchronizeDlg(this);
 				syncDlg->setModal(1);
 				syncDlg->show();				
 			}
-			connect(syncDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
-			connect(syncDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
-			connect(gSyncer.get(), SIGNAL(updateStatusNotify(int)), syncDlg.get(), SLOT(updateStatus(int)));
+			connect(syncDlg,SIGNAL(reSyncNotify()),this,SLOT(reSync()));
+			connect(syncDlg,SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+			connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
 			gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
 	}
+	QDEBUG_LINE;
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
-	connect(gSyncer.get(), SIGNAL(finished()), this, SLOT(bmSyncerFinished()));	
+	connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()));	
 
 	syncAction->setDisabled(TRUE);
 	gSyncer->setUrl(url);
@@ -2909,19 +2926,22 @@ void MyWidget::bmSyncerFinished()
 {	
 	QDEBUG_LINE;
 	bmSyncFinishedStatus(gSyncer->statusCode);
+/*
 	if(gSyncer->terminateFlag)
 	{
 		if(syncDlg)
 			syncDlg->done(0);
-		DELETE_SHAREOBJ(syncDlg);
+		//DELETE_SHAREOBJ(syncDlg);
 	}
 	if(syncDlg&&syncDlg->isHidden()){
 		syncDlg->done(0);
 		DELETE_SHAREOBJ(syncDlg);
 	}
-	disconnect(gSyncer.get(), 0, 0, 0);
+*/
+	disconnect(gSyncer, 0, 0, 0);
 	gSyncer->wait();								
-	gSyncer.reset();
+	//delete gSyncer;
+	//gSyncer=NULL;
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
@@ -2930,6 +2950,7 @@ void MyWidget::bmSyncerFinished()
 	else{
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 	}	
+	QDEBUG_LINE;
 }
 
 void MyWidget::bmSyncFinishedStatus(int status)
@@ -3004,6 +3025,18 @@ void MyWidget::syncStatusTimeout()
 }
 void MyWidget::monitorTimerTimeout()
 {	
+	if(THREAD_IS_FINISHED(gSyncer)){
+		delete gSyncer;
+		gSyncer=NULL;
+	}
+	if(THREAD_IS_FINISHED(gDiggXmler)){
+		delete gDiggXmler ;
+		gDiggXmler=NULL;
+	}
+	if(THREAD_IS_FINISHED(gBuilder)){
+		delete gBuilder ;
+		gBuilder=NULL;
+	}
 	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
 		if(!(timer_actionlist[i].enable&0x01))//enable ?
 			continue;
@@ -3157,14 +3190,22 @@ void MyWidget::monitorTimerTimeout()
 		{
 		case QDialog::Accepted:				
 		case QDialog::Rejected:
-			DELETE_SHAREOBJ(syncDlg);
+			//DELETE_SHAREOBJ(syncDlg);
+			QDEBUG_LINE;
+			delete syncDlg;
+			syncDlg=NULL;
 			break;
 		default:
 			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_MODIFY)
 			{
 				if((NOW_SECONDS-syncDlg->statusTime)>10)
 				{
-					DELETE_SHAREOBJ(syncDlg);
+					//DELETE_SHAREOBJ(syncDlg);
+					if(!gSyncer||THREAD_IS_FINISHED(gSyncer)){
+						QDEBUG_LINE;
+						delete syncDlg;
+						syncDlg=NULL;
+					}
 				}
 			}
 			break;
@@ -3242,7 +3283,7 @@ void MyWidget::diggXmlFinished()
 		}
 	}
 	gDiggXmler->wait();								
-	gDiggXmler.reset();
+	//gDiggXmler.reset();
 }
 void MyWidget::displayDiggxml(QString s)
 {
@@ -3250,13 +3291,21 @@ void MyWidget::displayDiggxml(QString s)
 }
 void MyWidget::startDiggXml()
 {
-	if(gDiggXmler)
+	return;
+	if(THREAD_IS_RUNNING(gDiggXmler)){
 		return;
-	gDiggXmler.reset(new bmSync(NULL,gSettings,&db,NULL,SYNC_DO_DIGG));
-	connect(gDiggXmler.get(), SIGNAL(finished()), this, SLOT(diggXmlFinished()));
+	}
+	if(THREAD_IS_FINISHED(gDiggXmler)){
+		delete gDiggXmler ;
+		gDiggXmler=NULL;
+	}
+	
+	gDiggXmler=new bmSync(NULL,gSettings,&db,NULL,SYNC_DO_DIGG);
+	connect(gDiggXmler, SIGNAL(finished()), this, SLOT(diggXmlFinished()));
 	gDiggXmler->setUrl(BM_SERVER_GET_DIGGXML_URL);
 #if 1
-	gDiggXmler->setDiggId(diggxmler->getMaxDiggid());
+	//gDiggXmler->setDiggId(diggxmler->getMaxDiggid());
+	gDiggXmler->setDiggId(0);
 #else
 	if(diggXmllist.size())
 	{

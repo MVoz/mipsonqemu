@@ -336,7 +336,7 @@ public:
 #endif
 #ifdef CONFIG_DIGG_XML
 	QTextBrowser *diggxmloutput;
-	diggXmler*   diggxmler;
+//	diggXmler*   diggxmler;
 #endif
 	QString outputFormat;
 	QTimer* dropTimer;	
@@ -375,7 +375,7 @@ public:
 	int syncMode;
 	QList<DoNetThread*> getfavicolist;
 
-	shared_ptr < synchronizeDlg> syncDlg;
+	synchronizeDlg* syncDlg;
 	shared_ptr < synchronizeDlg> testAccountDlg;
 	void connectAlpha();
 	QIcon getIcon(CatItem * item);
