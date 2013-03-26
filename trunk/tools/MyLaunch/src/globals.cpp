@@ -34,11 +34,11 @@ QWidget *gMainWidget;
 
 QSettings *gSettings;
 QString gSearchTxt;
-shared_ptr < CatBuilder > gBuilder;
-shared_ptr < bmSync> gSyncer;
+CatBuilder* gBuilder;
+bmSync* gSyncer=NULL;
 shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML
-shared_ptr < bmSync> gDiggXmler;
+ bmSync* gDiggXmler=NULL;
 #endif
 /*
 	use gSemaphore to separate syner from catabuilder
