@@ -2943,7 +2943,7 @@ void MyWidget::bmSyncerFinished()
 	//gSyncer=NULL;
 	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer.get());
 	gSemaphore.release(1);
-	//scanDbFavicon();
+	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
 	if(maincloseflag)
 		close();

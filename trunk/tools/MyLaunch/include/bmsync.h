@@ -54,7 +54,8 @@ public:
 	QString password;
 
 	volatile bool needwatchchild;	
-	
+
+	DoNetThread *doTestNetThread;
 	DoNetThread *donetThread;
 	bmMerge *mgthread;
 
