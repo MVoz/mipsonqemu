@@ -1770,6 +1770,7 @@ void MyWidget::catalogBuilt(int type,int status)
 #endif
 	if(maincloseflag)
 		close();
+	gBuilder->finish_flag=true;
 }
 #ifdef CONFIG_SKIN_CONFIGURABLE
 void MyWidget::setSkin(QString dir, QString name)
@@ -2823,7 +2824,6 @@ void MyWidget::_startTestAccount(const QString& testAccountName,const QString& t
 
 void MyWidget::_startSync(int mode,int silence)      
 {
-	QDEBUG_LINE;
 	QString localBmFullPath;
 	QString url;
 	QString auth_encrypt_str;
@@ -2846,7 +2846,6 @@ void MyWidget::_startSync(int mode,int silence)
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
 	silence = SYN_MODE_NOSILENCE;
-	QDEBUG_LINE;
 	if(THREAD_IS_FINISHED(gSyncer)){
 		delete gSyncer ;
 		gSyncer=NULL;
@@ -2866,7 +2865,6 @@ void MyWidget::_startSync(int mode,int silence)
 		}
 		return;
 	}
-	QDEBUG_LINE;
 
 	qsrand((unsigned) NOW_SECONDS);
 	key=qrand()%(getkeylength());
@@ -2896,14 +2894,14 @@ void MyWidget::_startSync(int mode,int silence)
 			}
 			connect(syncDlg,SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 			connect(syncDlg,SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
+			//connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)),Qt::QueuedConnection);
 			connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
 			gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
 	}
-	QDEBUG_LINE;
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
-	connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()));	
-
+	//connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()),Qt::QueuedConnection);	
+	connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()));
 	syncAction->setDisabled(TRUE);
 	gSyncer->setUrl(url);
 	gSyncer->start(QThread::IdlePriority);
@@ -2924,7 +2922,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncerFinished()
 {	
-	QDEBUG_LINE;
+	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
 	bmSyncFinishedStatus(gSyncer->statusCode);
 /*
 	if(gSyncer->terminateFlag)
@@ -2939,17 +2937,20 @@ void MyWidget::bmSyncerFinished()
 	}
 */
 	disconnect(gSyncer, 0, 0, 0);
-	gSyncer->wait();								
+	gSyncer->wait();
+	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
 	//delete gSyncer;
 	//gSyncer=NULL;
+	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer.get());
 	gSemaphore.release(1);
-	scanDbFavicon();
+	//scanDbFavicon();
 	syncAction->setDisabled(FALSE);
 	if(maincloseflag)
 		close();
 	else{
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 	}	
+	gSyncer->finish_flag=true;
 	QDEBUG_LINE;
 }
 
@@ -3025,17 +3026,25 @@ void MyWidget::syncStatusTimeout()
 }
 void MyWidget::monitorTimerTimeout()
 {	
+	//TD(DEBUG_LEVEL_NORMAL,gSyncer<<gBuilder);
 	if(THREAD_IS_FINISHED(gSyncer)){
-		delete gSyncer;
-		gSyncer=NULL;
+		//TD(DEBUG_LEVEL_NORMAL,gSyncer);
+		if(gSyncer->finish_flag){
+			delete gSyncer;
+			gSyncer=NULL;
+		}
 	}
 	if(THREAD_IS_FINISHED(gDiggXmler)){
-		delete gDiggXmler ;
-		gDiggXmler=NULL;
+		if(gDiggXmler->finish_flag){
+			delete gDiggXmler ;
+			gDiggXmler=NULL;
+		}
 	}
 	if(THREAD_IS_FINISHED(gBuilder)){
-		delete gBuilder ;
-		gBuilder=NULL;
+		if(gBuilder->finish_flag){
+			delete gBuilder ;
+			gBuilder=NULL;
+		}
 	}
 	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
 		if(!(timer_actionlist[i].enable&0x01))//enable ?
@@ -3198,6 +3207,7 @@ void MyWidget::monitorTimerTimeout()
 		default:
 			if(syncDlg->status==UPDATE_SUCCESSFUL||syncDlg->status==HTTP_TEST_ACCOUNT_SUCCESS||syncDlg->status==BM_SYNC_SUCCESS_NO_MODIFY)
 			{
+				QDEBUG_LINE;
 				if((NOW_SECONDS-syncDlg->statusTime)>10)
 				{
 					//DELETE_SHAREOBJ(syncDlg);
@@ -3284,6 +3294,7 @@ void MyWidget::diggXmlFinished()
 	}
 	gDiggXmler->wait();								
 	//gDiggXmler.reset();
+	gDiggXmler->finish_flag = true;
 }
 void MyWidget::displayDiggxml(QString s)
 {
@@ -3301,7 +3312,7 @@ void MyWidget::startDiggXml()
 	}
 	
 	gDiggXmler=new bmSync(NULL,gSettings,&db,NULL,SYNC_DO_DIGG);
-	connect(gDiggXmler, SIGNAL(finished()), this, SLOT(diggXmlFinished()));
+	connect(gDiggXmler, SIGNAL(finished()), this, SLOT(diggXmlFinished()),Qt::QueuedConnection);
 	gDiggXmler->setUrl(BM_SERVER_GET_DIGGXML_URL);
 #if 1
 	//gDiggXmler->setDiggId(diggxmler->getMaxDiggid());

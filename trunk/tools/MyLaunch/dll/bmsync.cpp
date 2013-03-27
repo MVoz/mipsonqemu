@@ -96,14 +96,16 @@ void bmSync::monitorTimeout()
 	NetThread::monitorTimeout();
 }
 void bmSync::cleanObjects(){
-	QDEBUG_LINE;
+	if(mgthread)
+		disconnect(mgthread,0,0,0);
 	DELETE_THREAD(mgthread);
-	DELETE_THREAD(donetThread);
+	if(donetThread)
+		disconnect(donetThread,0,0,0);
+	DELETE_THREAD(donetThread);	
 	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
 		QFile::remove(fileWithFullpath);
 	}
-	NetThread::cleanObjects();
-	QDEBUG_LINE;
+	NetThread::cleanObjects();	
 }
 
 void bmSync::run()
@@ -130,8 +132,8 @@ void bmSync::run()
 	}
 	
 
-	donetThread->moveToThread(this);		
-	connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+	//donetThread->moveToThread(this);		
+	connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
 	donetThread->start(QThread::IdlePriority);
 		
 	int ret=exec();
@@ -144,7 +146,7 @@ void bmSync::bmxmlGetFinished(int status)
 	if(status==DOWHAT_GET_FILE_SUCCESS){
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
 		mgthread->setRandomFileFromserver(fileWithFullpath);
-		connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+		connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
 		mgthread->start(QThread::IdlePriority);
 		return;
 	}

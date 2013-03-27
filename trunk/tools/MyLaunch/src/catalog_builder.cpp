@@ -54,6 +54,7 @@ buildWithStart(fromArchive),buildMode(mode),db(dbs)
 {
 	cat.reset((Catalog *) new SlowCatalog(gSettings,gSearchResult,db));
 	terminateflag=0;
+	finish_flag = false;
 }
 #ifdef CONFIG_ACTION_LIST
 void CatBuilder::importNetBookmark()
