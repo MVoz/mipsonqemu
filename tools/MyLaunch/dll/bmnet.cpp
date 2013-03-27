@@ -8,6 +8,7 @@ NetThread::NetThread(QObject * parent,QSettings* s,int m):QThread(parent),settin
 	monitorTimer=NULL;
 	header = NULL;
 	file = NULL;
+	finish_flag = false;
 	
 	http_state = 0;
 	http_timeout = 0;

@@ -46,7 +46,7 @@ public:
 	QString destDirectory;
 //	QString branch;
 	QString savefilename;
-	
+	bool finish_flag;
 public slots:
 	virtual void monitorTimeout();
 	void httpstateChanged(int state){

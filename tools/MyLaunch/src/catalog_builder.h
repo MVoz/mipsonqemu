@@ -41,7 +41,7 @@ private:
 	shared_ptr<Catalog> curcat;
 	//PluginHandler* plugins;
 	bool buildWithStart;
-
+	
 
 	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
@@ -49,6 +49,7 @@ private:
 	CATBUILDMODE buildMode;
 public:
 	bool terminateflag;
+	bool finish_flag;
 	uint browserid;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 	uint clean;//0--delete all 1--auto learn  2--remove the garbage

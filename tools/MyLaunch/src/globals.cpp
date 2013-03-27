@@ -34,7 +34,7 @@ QWidget *gMainWidget;
 
 QSettings *gSettings;
 QString gSearchTxt;
-CatBuilder* gBuilder;
+CatBuilder* gBuilder=NULL;
 bmSync* gSyncer=NULL;
 shared_ptr < bmSync> gTestAccounter;
 #ifdef CONFIG_DIGG_XML

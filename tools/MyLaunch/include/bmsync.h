@@ -59,7 +59,7 @@ public:
 	bmMerge *mgthread;
 
 	uint bmSyncMode;
-	uint diggid;
+	uint diggid;	
 	
 public:
 	bmSync(QObject * parent = 0,QSettings* s=0,QSqlDatabase *db=0,QSemaphore* p=NULL,int m=SYNC_DO_BOOKMARK);
@@ -77,11 +77,11 @@ public slots:
 	void terminateThread();
 	void monitorTimeout();
 	virtual void cleanObjects();
-	virtual void sendUpdateStatusNotify(int status){
-		TD(DEBUG_LEVEL_NORMAL,status<<tz::getstatusstring(status));
+	virtual void sendUpdateStatusNotify(int status){		
 		statusCode = status;
 		if(doWhat==SYNC_DO_BOOKMARK&&bmSyncMode==SYN_MODE_SILENCE) 
-			return;		
+			return;	
+		//TD(DEBUG_LEVEL_NORMAL,status<<tz::getstatusstring(status));
 		emit updateStatusNotify(status);
 	}
 signals:
