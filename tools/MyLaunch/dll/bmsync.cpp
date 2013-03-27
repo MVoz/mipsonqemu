@@ -6,6 +6,7 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 {
 	this->db=db;
 	donetThread = NULL;
+	doTestNetThread=NULL;
 	mgthread=NULL;
 	needwatchchild = false;
 	bmSyncMode = SYN_MODE_SILENCE;
@@ -13,6 +14,7 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 void bmSync::testNetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
+	doTestNetThread->finish_flag = true;
          TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 	switch(status)
 	{
@@ -30,7 +32,8 @@ void bmSync::testNetFinished(int status)
 			}
 			donetThread->moveToThread(this);	
 			donetThread->setUrl(url);
-			connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+			connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
+			//connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
 			donetThread->start(QThread::IdlePriority);
 		}						
 		break;
@@ -63,22 +66,34 @@ void bmSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
+	if(THREAD_IS_FINISHED(doTestNetThread))
+	{
+		if(!doTestNetThread->finish_flag){
+			int d = doTestNetThread->doWhat;
+			int s = doTestNetThread->statusCode;
+		//	DELETE_THREAD(donetThread);
+			switch(d){
+				case DOWHAT_TEST_SERVER_NET:
+				case DOWHAT_TEST_SERVER_DIGG_XML:
+					testNetFinished(s);
+				break;
+			}
+		}
+	}
 	if(THREAD_IS_FINISHED(donetThread))
 	{
-		int d = donetThread->doWhat;
-		int s = donetThread->statusCode;
-		DELETE_THREAD(donetThread);
-		switch(d){
-			case DOWHAT_TEST_SERVER_NET:
-			case DOWHAT_TEST_SERVER_DIGG_XML:
-				testNetFinished(s);
-			break;
-			case DOWHAT_GET_DIGGXML_FILE:
-				diggxmlGetFinished(s);
-			break;
-			case DOWHAT_GET_BMXML_FILE:
-				bmxmlGetFinished(s);
-			break;
+		if(!donetThread->finish_flag){
+			int d = donetThread->doWhat;
+			int s = donetThread->statusCode;
+		//	DELETE_THREAD(donetThread);
+			switch(d){
+				case DOWHAT_GET_DIGGXML_FILE:
+					diggxmlGetFinished(s);
+				break;
+				case DOWHAT_GET_BMXML_FILE:
+					bmxmlGetFinished(s);
+				break;
+			}
 		}
 		
 	}
@@ -102,6 +117,9 @@ void bmSync::cleanObjects(){
 	if(donetThread)
 		disconnect(donetThread,0,0,0);
 	DELETE_THREAD(donetThread);	
+	if(doTestNetThread)
+		disconnect(doTestNetThread,0,0,0);
+	DELETE_THREAD(doTestNetThread);	
 	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
 		QFile::remove(fileWithFullpath);
 	}
@@ -120,12 +138,12 @@ void bmSync::run()
 	switch(doWhat){
 		case SYNC_DO_BOOKMARK:
 		case SYNC_DO_TESTACCOUNT:
-			donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
-			donetThread->setUrl(TEST_NET_URL);
+			doTestNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
+			doTestNetThread->setUrl(TEST_NET_URL);
 		break;
 		case SYNC_DO_DIGG:
-			donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
-			donetThread->setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(diggid)));
+			doTestNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
+			doTestNetThread->setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(diggid)));
 		break;
 		default:
 		break;
@@ -133,14 +151,15 @@ void bmSync::run()
 	
 
 	//donetThread->moveToThread(this);		
-	connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
-	donetThread->start(QThread::IdlePriority);
+	connect(doTestNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
+	doTestNetThread->start(QThread::IdlePriority);
 		
 	int ret=exec();
 	cleanObjects();
 }
 void bmSync::bmxmlGetFinished(int status)
 {
+	donetThread->finish_flag = true;
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status)<<fileWithFullpath);
 	THREAD_MONITOR_POINT;
 	if(status==DOWHAT_GET_FILE_SUCCESS){
@@ -155,6 +174,7 @@ void bmSync::bmxmlGetFinished(int status)
 void bmSync::diggxmlGetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
+	donetThread->finish_flag = true;
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status) );
 	statusCode = status;
 	exit(-1);	
