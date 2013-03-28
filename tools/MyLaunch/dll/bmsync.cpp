@@ -85,7 +85,7 @@ void bmSync::monitorTimeout()
 */
 	if(THREAD_IS_FINISHED(doNetThread))
 	{
-		TD(DEBUG_LEVEL_NORMAL,doNetThread->doWhat);
+		//TD(DEBUG_LEVEL_NORMAL,doNetThread->doWhat);
 		if(!doNetThread->finish_flag){
 			doNetThread->finish_flag=true;
 			int d = doNetThread->doWhat;

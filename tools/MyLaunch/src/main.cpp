@@ -616,7 +616,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",15,(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS));
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",20,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",25,(24*HOURS)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",5,(24*SECONDS)/(SECONDS));
 #endif
 	
 	slientUpdate =NULL;
@@ -692,7 +692,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	syncStatusTimer->start(200);
 #endif
 	updateDisplay();
-	QDEBUG_LINE;
+//	QDEBUG_LINE;
 
 }
 
@@ -2954,7 +2954,7 @@ void MyWidget::bmSyncerFinished()
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 	}	
 	//gSyncer->finish_flag=true;
-	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
+	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
 	//delete gSyncer;
 	//gSyncer=NULL;;
 	DELETE_THREAD(gSyncer);
@@ -3032,6 +3032,7 @@ void MyWidget::syncStatusTimeout()
 }
 void MyWidget::monitorTimerTimeout()
 {	
+		STOP_TIMER(monitorTimer);
 #if 0
 
 	//TD(DEBUG_LEVEL_NORMAL,gSyncer<<gBuilder);
@@ -3071,14 +3072,17 @@ void MyWidget::monitorTimerTimeout()
 		//if((((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) <(2*timer_actionlist[i].interval))&&(timer_actionlist[i].enable&0x02))//in queue?
 		if((timer_actionlist[i].enable&0x02))//in queue?			
 			continue;
+		
 	
 		if(!(rebuildAll&(1<<i))){
 			
 			if(((uint)(NOW_SECONDS-runseconds)) < timer_actionlist[i].startAfterRun)
 				continue;
+
 			if(((uint)(NOW_SECONDS-timer_actionlist[i].lastActionSeconds)) < (((timer_actionlist[i].faileds>=10)?(10+2):(timer_actionlist[i].faileds+2))*(timer_actionlist[i].interval)/2))
 				continue;
 		}
+
 		timer_actionlist[i].enable|=0x02 ;//in queue
 		switch(i){
 			case TIMER_ACTION_BMSYNC:
@@ -3115,7 +3119,7 @@ void MyWidget::monitorTimerTimeout()
 		
 	}
 	
-	STOP_TIMER(monitorTimer);
+
 	//processing ........
 #ifdef CONFIG_ACTION_LIST
 	struct ACTION_LIST item;
@@ -3757,12 +3761,16 @@ void MyWidget::silentUpdateFinished()
 }
 void MyWidget::startSilentUpdate()
 {
-	QDEBUG_LINE;
+	TD(DEBUG_LEVEL_NORMAL,"########################################");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 		return;
 	if(slientUpdate)
 		return;
+#ifdef QT_NO_DEBUG
+#else
+	tz::deleteDirectory(UPDATE_DIRECTORY);
+#endif
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
 
 	slientUpdate=new appUpdater(this,gSettings); 

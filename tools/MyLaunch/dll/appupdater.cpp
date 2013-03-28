@@ -27,6 +27,7 @@ void appUpdater::testNetFinished(int status)
 		}
 		break;
 	default:
+		QDEBUG_LINE;
 		exit(-1);
 		break;
 	}	
@@ -68,7 +69,8 @@ void appUpdater::monitorTimeout()
 	monitorTimer->start(tz::getParameterMib(SYS_MONITORTIMEOUT));	
 }
 void appUpdater::cleanObjects(){
-	DELETE_THREAD(doNetThread);
+	QDEBUG_LINE;
+//	DELETE_THREAD(doNetThread);
 	DELETE_OBJECT(localSettings);
 	DELETE_OBJECT(serverSettings);
 	NetThread::cleanObjects();
@@ -97,6 +99,7 @@ int appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m
 {
 	//merge local with server
 	int count = srcSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
+	TD(DEBUG_LEVEL_NORMAL,count);
 	for (int i = 0; i < count; i++)
 	{
 		if(terminateFlag||error)
@@ -120,6 +123,7 @@ int appUpdater::mergeSettings(QSettings* srcSettings,QSettings* dstSetting,int m
 				  )
 				{
 					needed=1;
+					QDEBUG_LINE;
 					downloadFileFromServer(f,DOWHAT_GET_COMMON_FILE,md5);	
 
 				}
@@ -142,7 +146,7 @@ void  appUpdater::checkSilentUpdateApp()
 	}
 }
 void appUpdater::getUpdateINIDone(int status)
-{
+{	
 	THREAD_MONITOR_POINT;
 	if(terminateFlag||(status!=DOWHAT_GET_FILE_SUCCESS))
 		goto end;
@@ -248,9 +252,11 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	switch(dlgmode)
 	{
 	case UPDATE_DLG_MODE:
+		doNetThread->setFileWithFullpath(QString("setup/").append(pathname));
 		doNetThread->setUrl(QString("/download/setup/").append(pathname));
 		break;
 	case UPDATE_SILENT_MODE:
+		doNetThread->setFileWithFullpath(QString("portable/").append(pathname));
 		doNetThread->setUrl(QString("/download/portable/").append(pathname));
 		break;
 	}
