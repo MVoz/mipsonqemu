@@ -2,8 +2,11 @@
 #define CONFIG_H_
 
 #ifdef QT_NO_DEBUG
+//#undef TOUCH_ANY_DEBUG
+//#define CONFIG_RELEASE
 #undef TOUCH_ANY_DEBUG
 #define CONFIG_RELEASE
+
 #else
 #define TOUCH_ANY_DEBUG
 #undef CONFIG_RELEASE
@@ -357,7 +360,7 @@ enum{
 
 
 #define DELETE_OBJECT(x) if(x){	delete (x);(x)=NULL;}
-#define DELETE_THREAD(x) if(x){	(x)->wait();delete (x);(x)=NULL;}
+#define DELETE_THREAD(x) if(x){	(x)->wait(); disconnect(x,0,0,0);delete (x); (x)=NULL;}
 
 #define STOP_TIMER(x) if((x)&&(x)->isActive()) {(x)->stop();}
 #define DELETE_SHAREOBJ(x) if(x) (x).reset();

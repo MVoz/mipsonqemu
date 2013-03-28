@@ -44,10 +44,10 @@ Source: ..\..\release\bmsync.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\baseitem.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\bmmerge.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\optionUI.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\bmpost.dll; DestDir: {app}; Flags: ignoreversion
+;Source: ..\..\release\bmpost.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\appupdater.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\bmnet.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\fileget.dll; DestDir: {app}; Flags: ignoreversion
+;Source: ..\..\release\fileget.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\bmxml.dll; DestDir: {app}; Flags: ignoreversion
 
 ; rcc
@@ -169,6 +169,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
 
 

@@ -47,6 +47,7 @@ public:
 //	QString branch;
 	QString savefilename;
 	bool finish_flag;
+	QList<QThread*> threadList;
 public slots:
 	virtual void monitorTimeout();
 	void httpstateChanged(int state){
@@ -68,8 +69,8 @@ public slots:
 		//TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<http_rcv_len);
 	}
 	virtual void sendUpdateStatusNotify(int status){
-		//if(dlgmode!=UPDATE_DLG_MODE) 
-		//	return;
+		if(dlgmode!=UPDATE_DLG_MODE) 
+			return;
 		statusCode = status;
 		emit updateStatusNotify(status);
 	}

@@ -5,8 +5,8 @@
 bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m): NetThread(parent,s,m),semaphore(p)
 {
 	this->db=db;
-	donetThread = NULL;
-	doTestNetThread=NULL;
+	doNetThread = NULL;
+	//doTestNetThread=NULL;
 	mgthread=NULL;
 	needwatchchild = false;
 	bmSyncMode = SYN_MODE_SILENCE;
@@ -14,7 +14,7 @@ bmSync::bmSync(QObject* parent,QSettings* s,QSqlDatabase* db,QSemaphore* p,int m
 void bmSync::testNetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
-	doTestNetThread->finish_flag = true;
+//	doTestNetThread->finish_flag = true;
          TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 	switch(status)
 	{
@@ -22,27 +22,29 @@ void bmSync::testNetFinished(int status)
 		{
 			if(doWhat==SYNC_DO_BOOKMARK)	
 			{				
-				donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_BMXML_FILE,0);
-				donetThread->setFileWithFullpath(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
-				setFileWithFullpath(donetThread->fileWithFullpath);
+				doNetThread = new DoNetThread(NULL,settings,DOWHAT_GET_BMXML_FILE,0);
+				doNetThread->setFileWithFullpath(tz::getUserFullpath(NULL,LOCAL_FULLPATH_TEMP)+QString(FROMSERVER_XML_PREFIX"%1.xml").arg(tz::qhashEx(QTime::currentTime().toString("hh:mm:ss.zzz"))));
+				setFileWithFullpath(doNetThread->fileWithFullpath);
 				sendUpdateStatusNotify(BM_SYNC_START);
 			}else if(doWhat==SYNC_DO_TESTACCOUNT){
-				donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_ACCOUNT,0);
+				doNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_ACCOUNT,0);
 				sendUpdateStatusNotify(BM_TESTACCOUNT_START);
 			}
-			donetThread->moveToThread(this);	
-			donetThread->setUrl(url);
-			connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
-			//connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
-			donetThread->start(QThread::IdlePriority);
+			doNetThread->moveToThread(this);	
+			doNetThread->setUrl(url);
+			threadList.append((QThread*)doNetThread);
+			connect(doNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
+			//connect(doNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+			doNetThread->start(QThread::IdlePriority);
 		}						
 		break;
 	case TEST_DIGGXML_SUCCESS:
-		donetThread = new DoNetThread(NULL,settings,DOWHAT_GET_DIGGXML_FILE,0);
-		donetThread->setFileWithFullpath(DIGG_XML_LOCAL_FILE_TMP);
-		donetThread->moveToThread(this);	
-		donetThread->setUrl(url);
-		donetThread->start(QThread::IdlePriority);
+		doNetThread = new DoNetThread(NULL,settings,DOWHAT_GET_DIGGXML_FILE,0);
+		doNetThread->setFileWithFullpath(DIGG_XML_LOCAL_FILE_TMP);
+		doNetThread->moveToThread(this);	
+		doNetThread->setUrl(url);
+		threadList.append((QThread*)doNetThread);
+		doNetThread->start(QThread::IdlePriority);
 		break;
 	default:
 		exit(-1);
@@ -52,8 +54,8 @@ void bmSync::testNetFinished(int status)
 void bmSync::terminateThread()
 {
 	THREAD_MONITOR_POINT;
-	if(THREAD_IS_RUNNING(donetThread))
-		donetThread->setTerminateFlag(1);
+	if(THREAD_IS_RUNNING(doNetThread))
+		doNetThread->setTerminateFlag(1);
 
 	if(THREAD_IS_RUNNING(mgthread))
 	{
@@ -66,12 +68,12 @@ void bmSync::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
+/*
 	if(THREAD_IS_FINISHED(doTestNetThread))
 	{
 		if(!doTestNetThread->finish_flag){
 			int d = doTestNetThread->doWhat;
 			int s = doTestNetThread->statusCode;
-		//	DELETE_THREAD(donetThread);
 			switch(d){
 				case DOWHAT_TEST_SERVER_NET:
 				case DOWHAT_TEST_SERVER_DIGG_XML:
@@ -80,13 +82,19 @@ void bmSync::monitorTimeout()
 			}
 		}
 	}
-	if(THREAD_IS_FINISHED(donetThread))
+*/
+	if(THREAD_IS_FINISHED(doNetThread))
 	{
-		if(!donetThread->finish_flag){
-			int d = donetThread->doWhat;
-			int s = donetThread->statusCode;
-		//	DELETE_THREAD(donetThread);
+		TD(DEBUG_LEVEL_NORMAL,doNetThread->doWhat);
+		if(!doNetThread->finish_flag){
+			doNetThread->finish_flag=true;
+			int d = doNetThread->doWhat;
+			int s = doNetThread->statusCode;
 			switch(d){
+				case DOWHAT_TEST_SERVER_NET:
+				case DOWHAT_TEST_SERVER_DIGG_XML:
+					testNetFinished(s);
+				break;
 				case DOWHAT_GET_DIGGXML_FILE:
 					diggxmlGetFinished(s);
 				break;
@@ -99,8 +107,10 @@ void bmSync::monitorTimeout()
 	}
 	if(THREAD_IS_FINISHED(mgthread))
 	{
-		mergeDone();
-		return;
+		//if(!mgthread->finish_flag){
+			mergeDone();
+			return;
+		//}
 	}
 
 	if(!needwatchchild&&terminateFlag)
@@ -111,21 +121,16 @@ void bmSync::monitorTimeout()
 	NetThread::monitorTimeout();
 }
 void bmSync::cleanObjects(){
-	if(mgthread)
-		disconnect(mgthread,0,0,0);
-	DELETE_THREAD(mgthread);
-	if(donetThread)
-		disconnect(donetThread,0,0,0);
-	DELETE_THREAD(donetThread);	
-	if(doTestNetThread)
-		disconnect(doTestNetThread,0,0,0);
-	DELETE_THREAD(doTestNetThread);	
+	
 	if(!fileWithFullpath.isEmpty()&&QFile::exists(fileWithFullpath)){
 		QFile::remove(fileWithFullpath);
 	}
 	NetThread::cleanObjects();	
 }
-
+void bmSync::doTestNetFinished(){
+	THREAD_MONITOR_POINT;	
+//	TD(DEBUG_LEVEL_NORMAL, "######"<<doTestNetThread->isFinished());
+}
 void bmSync::run()
 {
 	THREAD_MONITOR_POINT;
@@ -134,37 +139,37 @@ void bmSync::run()
 	NetThread::run();
 	sendUpdateStatusNotify(TRY_CONNECT_SERVER);
 
-
 	switch(doWhat){
 		case SYNC_DO_BOOKMARK:
 		case SYNC_DO_TESTACCOUNT:
-			doTestNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
-			doTestNetThread->setUrl(TEST_NET_URL);
+			doNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
+			doNetThread->setUrl(TEST_NET_URL);
 		break;
 		case SYNC_DO_DIGG:
-			doTestNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
-			doTestNetThread->setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(diggid)));
+			doNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_DIGG_XML,diggid);
+			doNetThread->setUrl(QString(TEST_DIGGXML_URL).append(QString("&id=%1").arg(diggid)));
 		break;
 		default:
 		break;
-	}
-	
-
-	//donetThread->moveToThread(this);		
-	connect(doTestNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
-	doTestNetThread->start(QThread::IdlePriority);
+	}	
+	threadList.append((QThread*)doNetThread);
+	//doNetThread->moveToThread(this);		
+	connect(doNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
+	//connect(doTestNetThread, SIGNAL(finished()), this, SLOT(doTestNetFinished()),Qt::DirectConnection);
+	doNetThread->start(QThread::IdlePriority);
 		
-	int ret=exec();
+	exec();
 	cleanObjects();
 }
 void bmSync::bmxmlGetFinished(int status)
 {
-	donetThread->finish_flag = true;
+	//doNetThread->finish_flag = true;
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status)<<fileWithFullpath);
 	THREAD_MONITOR_POINT;
 	if(status==DOWHAT_GET_FILE_SUCCESS){
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
 		mgthread->setRandomFileFromserver(fileWithFullpath);
+		threadList.append((QThread*)mgthread);
 		connect(mgthread, SIGNAL(mergeStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)),Qt::DirectConnection);
 		mgthread->start(QThread::IdlePriority);
 		return;
@@ -174,7 +179,7 @@ void bmSync::bmxmlGetFinished(int status)
 void bmSync::diggxmlGetFinished(int status)
 {
 	THREAD_MONITOR_POINT;
-	donetThread->finish_flag = true;
+	//doNetThread->finish_flag = true;
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status) );
 	statusCode = status;
 	exit(-1);	

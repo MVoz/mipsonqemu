@@ -12,12 +12,13 @@ void appUpdater::testNetFinished(int status)
 	{
 	case TEST_NET_SUCCESS:
 		{
-			donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_VERSION,0);
+			doNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_VERSION,0);
+			threadList.append((QThread*)doNetThread);
 			sendUpdateStatusNotify(BM_TESTVERSION_START);	
-			donetThread->moveToThread(this);	
-			donetThread->setUrl(TOUCHANY_VERSION_URL);
-			connect(donetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
-			donetThread->start(QThread::IdlePriority);
+			doNetThread->moveToThread(this);	
+			doNetThread->setUrl(TOUCHANY_VERSION_URL);
+			connect(doNetThread, SIGNAL(doNetStatusNotify(int)), this, SLOT(sendUpdateStatusNotify(int)));
+			doNetThread->start(QThread::IdlePriority);
 		}						
 		break;
 	case TEST_VERSION_SUCCESS:
@@ -34,8 +35,8 @@ void appUpdater::terminateThread()
 {	
 	QDEBUG_LINE;
 	STOP_TIMER(monitorTimer);
-	if(THREAD_IS_RUNNING(donetThread))
-		donetThread->setTerminateFlag(1);
+	if(THREAD_IS_RUNNING(doNetThread))
+		doNetThread->setTerminateFlag(1);
 //	if(THREAD_IS_RUNNING(fh))
 //		fh->setTerminateFlag(1);
 }
@@ -43,36 +44,22 @@ void appUpdater::monitorTimeout()
 {
 	THREAD_MONITOR_POINT;
 	STOP_TIMER(monitorTimer);
-	 if(THREAD_IS_FINISHED(donetThread))
+	 if(THREAD_IS_FINISHED(doNetThread))
 	 {
-	 	int d = donetThread->doWhat;
-		int s = donetThread->statusCode;		
+	 	int d = doNetThread->doWhat;
+		int s = doNetThread->statusCode;		
 		switch(d){
 			case DOWHAT_TEST_SERVER_VERSION:
 			case DOWHAT_TEST_SERVER_NET:
-				DELETE_THREAD(donetThread);
 				testNetFinished(s);
 				break;
 			case DOWHAT_GET_UPDATEINI_FILE:
-				DELETE_THREAD(donetThread);
 				getUpdateINIDone(s);
 				break;
 			case DOWHAT_GET_COMMON_FILE:
 				break;
 			}
 	 }
-#if 0
-	 if(THREAD_IS_FINISHED(fh))
-	 {
-		if(fh->doWhat==DOWHAT_GET_UPDATEINI_FILE)
-			{
-				int err = fh->errCode;
-				fh->wait();
-				DELETE_OBJECT(fh);
-				getIniDone(err);
-			}
-	 }
-#endif
 	if(!needwatchchild&&terminateFlag)
 	{
 		needwatchchild = true;
@@ -81,10 +68,7 @@ void appUpdater::monitorTimeout()
 	monitorTimer->start(tz::getParameterMib(SYS_MONITORTIMEOUT));	
 }
 void appUpdater::cleanObjects(){
-	DELETE_THREAD(donetThread);
-	//if(fh)
-	//	fh->wait();
-	//DELETE_OBJECT(fh);
+	DELETE_THREAD(doNetThread);
 	DELETE_OBJECT(localSettings);
 	DELETE_OBJECT(serverSettings);
 	NetThread::cleanObjects();
@@ -96,10 +80,11 @@ void appUpdater::run()
 	if(dlgmode == UPDATE_DLG_MODE )
 		connect(this, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
 	
-	donetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
-	donetThread->setUrl(TEST_NET_URL);
-	donetThread->moveToThread(this);
-	donetThread->start(QThread::IdlePriority);	
+	doNetThread = new DoNetThread(NULL,settings,DOWHAT_TEST_SERVER_NET,0);
+	threadList.append((QThread*)doNetThread);
+	doNetThread->setUrl(TEST_NET_URL);
+	doNetThread->moveToThread(this);
+	doNetThread->start(QThread::IdlePriority);	
 	exec();
 	cleanObjects();
 }
@@ -249,29 +234,30 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	if(terminateFlag||error)
 		return;
 	TD(DEBUG_LEVEL_NORMAL,"download......"<<pathname<<"md5:"<<md5);
-	DELETE_THREAD(donetThread);	
-	donetThread=new DoNetThread(NULL,settings,m,0);
-	donetThread->setMD5Key(md5);
+	//DELETE_THREAD(doNetThread);	
+	doNetThread=new DoNetThread(NULL,settings,m,0);
+	threadList.append((QThread*)doNetThread);
+	doNetThread->setMD5Key(md5);
 	if(dlgmode==UPDATE_DLG_MODE) {
-		connect(donetThread, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
+		connect(doNetThread, SIGNAL(updateStatusNotify(int)), this->parent(), SLOT(updateStatus(int)));
 	}
-	donetThread->setDestDirectory(UPDATE_DIRECTORY);
-	//donetThread->setServerBranch("/download");
+	doNetThread->setDestDirectory(UPDATE_DIRECTORY);
+	//doNetThread->setServerBranch("/download");
 	//htttp://www.tanzhi.com/download/setup/tanzhi.exe
 	//htttp://www.tanzhi.com/download/portable/tanzhi.exe
 	switch(dlgmode)
 	{
 	case UPDATE_DLG_MODE:
-		donetThread->setUrl(QString("/download/setup/").append(pathname));
+		doNetThread->setUrl(QString("/download/setup/").append(pathname));
 		break;
 	case UPDATE_SILENT_MODE:
-		donetThread->setUrl(QString("/download/portable/").append(pathname));
+		doNetThread->setUrl(QString("/download/portable/").append(pathname));
 		break;
 	}
 
-	donetThread->start(QThread::IdlePriority);
-	if(donetThread&&(donetThread->doWhat==DOWHAT_GET_COMMON_FILE))
-		donetThread->wait();
+	doNetThread->start(QThread::IdlePriority);
+	if(doNetThread&&(doNetThread->doWhat==DOWHAT_GET_COMMON_FILE))
+		doNetThread->wait();
 //	 error = fh->errCode;
 //	 qDebug()<<pathname<<" error code:"<<error;
 }
