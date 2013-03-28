@@ -79,11 +79,15 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 	}
 	if(needFile){
 		QDir dir(".");
+		QStringList na;
 		if(fileWithFullpath.isNull())
 		{
 			//destdir ----------download
 			//savefilename----real file name
-			QStringList na = url.split("/");
+			na = url.split("/");
+		}else{
+			na = fileWithFullpath.split("/");
+		}
 			if(!dir.exists(destDirectory))
 					dir.mkdir(destDirectory);	
 			QString  dirPath=QString(destDirectory).append("\\");
@@ -101,7 +105,7 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 				fileWithFullpath=QString(dirPath.append(na.at(count-1)));//real filename
 			else
 				fileWithFullpath=QString(dirPath.append(savefilename));//real filename
-		}		
+		
 		file = new QFile(fileWithFullpath);
 		if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 			if(hidden)

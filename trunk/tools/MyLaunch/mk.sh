@@ -33,7 +33,9 @@ mkdir $obj
 makefunc './version/version'
 
 if [ $obj ==  "release" ];then
-cmd /c include/version.exe
+cd include
+./version.exe
+cd ..
 fi
 
 actions=(./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmmerge ./dll/bmsync ./dll/appupdater  ./dll/optionUI  ./platforms/win/win ./src/src)
@@ -81,9 +83,32 @@ cp ./win/QtCore4.dll ./release
 cp ./win/QtWebKit4.dll ./release
 #cp ./update/updater/release\updater.exe ./release
 cp -fr ./win/Microsoft.VC80.CRT ./release/Microsoft.VC80.CRT
-fi
+
 
 find $obj -name ".svn"|xargs rm -fr
+
+rm -fr  ./win/installer/release/touchany_setup.exe
+rm -fr  ./win/installer/release/touchAny.rar
+rm -fr  ./download/setup/touchany_setup.exe
+rm -fr  ./download/touchAny.rar
+cmd /c @ 'd:\\Program Files\\Inno Setup 5\\Compil32.exe'  /cc '.\\win\\installer\\SETUP.iss'
+cp ./win/installer/release/touchany_setup.exe ./download/setup/touchany_setup.exe 
+cmd /c @ 'D:\\Program Files\\WinRAR\\WinRAR.exe' a -as -r  -EP1 '.\\download\\touchAny.rar' '.\\release'
+
+mv  -f ./include/index.php ./download/index.php 
+
+rm -fr ./download/portable/*
+cp -fr release/* ./download/portable
+cd  ./download/portable
+cmd /c @ .\\..\\..\\resource\\fmd5.exe -p
+
+cp update.ini ./../../release
+cd ..
+cd setup
+cmd /c @ .\\..\\..\\resource\\fmd5.exe -s
+cd ..
+cd ..
+fi
 cd $obj
 echo "runing touchany.................."
 ./touchany.exe

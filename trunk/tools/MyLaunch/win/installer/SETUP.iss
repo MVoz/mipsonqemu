@@ -20,7 +20,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 LicenseFile=..\..\license.txt
 OutputDir=Release\
-OutputBaseFilename=setup
+OutputBaseFilename={#MyAppName}_setup
 SetupIconFile=..\touchAny.ico
 Compression=lzma
 SolidCompression=true
@@ -53,7 +53,7 @@ Source: ..\..\release\bmxml.dll; DestDir: {app}; Flags: ignoreversion
 ; rcc
 Source: ..\..\release\options.rcc; DestDir: {app}; Flags: ignoreversion
 ;ini
-Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
+;Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
 ; Plugins
 ;Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 ;Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
@@ -69,18 +69,18 @@ Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
 
 ; Documentation
 ;Source: ..\touchAny.ico; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
+;Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
+;Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 
 ; Skins
-Source: ..\..\release\Skins\Default\alpha.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\background.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\down_arrow.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\mask.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\pos.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\release\Skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\alpha.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\background.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\down_arrow.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\mask.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\release\Skins\Default\pos.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\release\Skins\default.rcc; DestDir: {app}\skins\; Flags: ignoreversion
 
 ;Source: ..\..\skins\Quicksilver2\alpha.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 ;Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
@@ -90,22 +90,27 @@ Source: ..\..\release\Skins\Default\style.qss; DestDir: {app}\skins\Default\; Fl
 ;Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 
 ;data
-Source: ..\..\release\data\defines.db; DestDir: {app}\data\; Flags: ignoreversion
+;Source: ..\..\release\data\defines.db; DestDir: {app}\data\; Flags: ignoreversion
 Source: ..\..\release\data\language.dat; DestDir: {app}\data\; Flags: ignoreversion
 Source: ..\..\release\data\pinyin.db; DestDir: {app}\data\; Flags: ignoreversion
 
 ;html
-Source: ..\..\release\html\about.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\advance.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\Common.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\command.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\network.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\Custom.html; DestDir: {app}\html\; Flags: ignoreversion
-Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\about.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\advance.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\Common.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\command.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\network.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\Custom.html; DestDir: {app}\html\; Flags: ignoreversion
+;Source: ..\..\release\html\processDlg.html; DestDir: {app}\html\; Flags: ignoreversion
 
 ;images
 Source: ..\..\release\images\touchAny.png; DestDir: {app}\images\; Flags: ignoreversion
-Source: ..\..\release\images\touchAny_gray.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_1.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_2.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_failed.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\touchAny_successful.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\baidu_icon.png; DestDir: {app}\images\; Flags: ignoreversion
+Source: ..\..\release\images\google_icon.png; DestDir: {app}\images\; Flags: ignoreversion
 
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
@@ -169,6 +174,8 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
+
 
 
 
