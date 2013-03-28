@@ -65,13 +65,25 @@ clean_dirs=($obj include resource)
 
 for dir in ${clean_dirs[*]}
 do
-rm -fr $dir/*.exp  $dir/*.lib  $dir/*.manifest $dir/*.ilk $dir/*.pdb
+	rm -fr $dir/*.exp  $dir/*.lib  $dir/*.manifest $dir/*.ilk $dir/*.pdb
 done
 
-find $obj -name ".svn"|xargs rm -fr
+
 
 rm -fr Makefile Makefile.Debug Makefile.Release
 
+if [ $obj ==  "release" ];then
+cp ./win/QtXml4.dll ./release
+cp ./win/QtNetwork4.dll ./release
+cp ./win/QtGui4.dll ./release
+cp ./win/QtSql4.dll ./release
+cp ./win/QtCore4.dll ./release
+cp ./win/QtWebKit4.dll ./release
+#cp ./update/updater/release\updater.exe ./release
+cp -fr ./win/Microsoft.VC80.CRT ./release/Microsoft.VC80.CRT
+fi
+
+find $obj -name ".svn"|xargs rm -fr
 cd $obj
 echo "runing touchany.................."
 ./touchany.exe

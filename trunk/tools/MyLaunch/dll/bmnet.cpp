@@ -119,6 +119,12 @@ void NetThread::cleanObjects(){
 	DELETE_OBJECT(header);	
 	DELETE_BUFFER(resultBuffer);
 	DELETE_FILE(file);
+	int i =threadList.size();
+	while((--i)>=0){
+		QThread* t = threadList.at(i);
+		DELETE_THREAD(t);
+		threadList.removeAt(i);	
+	}
 }
 
 

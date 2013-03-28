@@ -2846,10 +2846,12 @@ void MyWidget::_startSync(int mode,int silence)
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
 	silence = SYN_MODE_NOSILENCE;
+/*	
 	if(THREAD_IS_FINISHED(gSyncer)){
 		delete gSyncer ;
 		gSyncer=NULL;
 	}
+*/
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE))
 		{
@@ -2922,7 +2924,8 @@ SYNCOUT:
 }
 void MyWidget::bmSyncerFinished()
 {	
-	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
+	//THREAD_MONITOR_POINT;
+	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
 	bmSyncFinishedStatus(gSyncer->statusCode);
 /*
 	if(gSyncer->terminateFlag)
@@ -2936,9 +2939,9 @@ void MyWidget::bmSyncerFinished()
 		DELETE_SHAREOBJ(syncDlg);
 	}
 */
-	disconnect(gSyncer, 0, 0, 0);
-	gSyncer->wait();
-	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
+	//disconnect(gSyncer, 0, 0, 0);
+	//gSyncer->wait();
+	
 	//delete gSyncer;
 	//gSyncer=NULL;
 	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer.get());
@@ -2950,8 +2953,11 @@ void MyWidget::bmSyncerFinished()
 	else{
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 	}	
-	gSyncer->finish_flag=true;
-	QDEBUG_LINE;
+	//gSyncer->finish_flag=true;
+	 TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
+	//delete gSyncer;
+	//gSyncer=NULL;;
+	DELETE_THREAD(gSyncer);
 }
 
 void MyWidget::bmSyncFinishedStatus(int status)
@@ -3026,6 +3032,8 @@ void MyWidget::syncStatusTimeout()
 }
 void MyWidget::monitorTimerTimeout()
 {	
+#if 0
+
 	//TD(DEBUG_LEVEL_NORMAL,gSyncer<<gBuilder);
 	if(THREAD_IS_FINISHED(gSyncer)){
 		//TD(DEBUG_LEVEL_NORMAL,gSyncer);
@@ -3034,18 +3042,29 @@ void MyWidget::monitorTimerTimeout()
 			gSyncer=NULL;
 		}
 	}
+
 	if(THREAD_IS_FINISHED(gDiggXmler)){
 		if(gDiggXmler->finish_flag){
 			delete gDiggXmler ;
 			gDiggXmler=NULL;
 		}
 	}
+	if(THREAD_IS_FINISHED(slientUpdate)){
+		if(slientUpdate->finish_flag){
+			delete slientUpdate ;
+			slientUpdate=NULL;
+		}
+	}
+#endif
+
 	if(THREAD_IS_FINISHED(gBuilder)){
 		if(gBuilder->finish_flag){
 			delete gBuilder ;
 			gBuilder=NULL;
 		}
 	}
+
+
 	for(int i = 0 ; i < TIMER_ACTION_MAX; i++ ){
 		if(!(timer_actionlist[i].enable&0x01))//enable ?
 			continue;
@@ -3292,9 +3311,14 @@ void MyWidget::diggXmlFinished()
 			emit diggXmlNewSignal();
 		}
 	}
-	gDiggXmler->wait();								
-	//gDiggXmler.reset();
 	gDiggXmler->finish_flag = true;
+	DELETE_THREAD(gDiggXmler);
+	//gDiggXmler->wait();								
+	//gDiggXmler.reset();
+	//gDiggXmler->finish_flag = true;
+	//delete gDiggXmler ;
+	//gDiggXmler=NULL;
+	
 }
 void MyWidget::displayDiggxml(QString s)
 {
@@ -3703,7 +3727,8 @@ void MyWidget::silentUpdateFinished()
 	//qDebug("silent update finished!!!!!");
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	SAVE_TIMER_ACTION(TIMER_ACTION_SILENTUPDATER,"silentupdate",TRUE);
-	DELETE_THREAD(slientUpdate);
+	//slientUpdate->wait();
+	
 	/*
 	if(slientUpdate)
 	{
@@ -3727,6 +3752,8 @@ void MyWidget::silentUpdateFinished()
 		//silentupdateTimer->start(100*SECONDS);	
 #endif	
 	}
+	//slientUpdate->finish_flag=true;
+	DELETE_THREAD(slientUpdate);
 }
 void MyWidget::startSilentUpdate()
 {
@@ -3734,15 +3761,16 @@ void MyWidget::startSilentUpdate()
 	//qDebug("%s %d currentthreadid=0x%08x this=0x%08x",__FUNCTION__,__LINE__,QThread::currentThread(),this);
 	if(tz::GetCpuUsage()>CPU_USAGE_THRESHOLD)
 		return;
-
+	if(slientUpdate)
+		return;
 	//qDebug("slientUpdate=0x%08x,isFinished=%d",slientUpdate,(slientUpdate)?slientUpdate->isFinished():0);
-	if(!slientUpdate||slientUpdate->isFinished()){
-		slientUpdate=new appUpdater(this,gSettings); 
-		slientUpdate->dlgmode = UPDATE_SILENT_MODE;
-		connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));		
-		//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
-		slientUpdate->start(QThread::IdlePriority);		
-	}
+
+	slientUpdate=new appUpdater(this,gSettings); 
+	slientUpdate->dlgmode = UPDATE_SILENT_MODE;
+	connect(slientUpdate,SIGNAL(finished()),this,SLOT(silentUpdateFinished()));		
+	//connect(this,SIGNAL(silentUpdateTerminateNotify()),slientUpdate,SLOT(terminateThread()));
+	slientUpdate->start(QThread::IdlePriority);		
+
 }
 void MyWidget::getFavicoFinished()
 {
@@ -3811,6 +3839,7 @@ void MyWidget::dumpBuffer(char* addr,int length)
 	qDebug("\n");
 }
 
+
 void touchAnyDebugOutput(QtMsgType type, const char *msg)
 {
 	switch (type) {
@@ -3846,6 +3875,7 @@ void touchAnyDebugOutput(QtMsgType type, const char *msg)
 	}
 }
 #endif
+
 void kickoffSilentUpdate()
 {
 	if(QFile::exists(APP_SILENT_UPDATE_NAME))
@@ -3968,7 +3998,7 @@ int main(int argc, char *argv[])
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
 
- #ifdef TOUCH_ANY_DEBUG
+#ifdef TOUCH_ANY_DEBUG
 	qInstallMsgHandler(touchAnyDebugOutput);
  #endif
 	//HANDLE hProcessThis=GetCurrentProcess();

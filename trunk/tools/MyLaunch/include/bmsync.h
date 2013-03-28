@@ -55,10 +55,9 @@ public:
 
 	volatile bool needwatchchild;	
 
-	DoNetThread *doTestNetThread;
-	DoNetThread *donetThread;
-	bmMerge *mgthread;
-
+	//DoNetThread *doTestNetThread;
+	DoNetThread *doNetThread;
+	bmMerge *mgthread;	
 	uint bmSyncMode;
 	uint diggid;	
 	
@@ -72,6 +71,7 @@ public:
 public slots: 
 	void bmxmlGetFinished(int status);
 	void diggxmlGetFinished(int);
+	void doTestNetFinished();
 //	void testAccountFinished(bool error);
 	void mergeDone();
 	void testNetFinished(int status);

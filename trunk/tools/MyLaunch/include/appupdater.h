@@ -24,7 +24,7 @@ public:
 	QSettings *localSettings;
 	QSettings *serverSettings;
 	int timers;
-	DoNetThread *donetThread;
+	DoNetThread *doNetThread;
 //	GetFileHttp *fh;
 	int needed;
 	int error;
@@ -38,7 +38,7 @@ public:
 		error=0;
 		localSettings =NULL;
 		serverSettings =NULL;
-		donetThread =NULL;
+		doNetThread =NULL;
 		needwatchchild = false;
 	}
 	~appUpdater();
