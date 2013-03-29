@@ -369,7 +369,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 
 	gMainWidget = this;
 	menuOpen = false;
-	optionsOpen = false;
+//	optionsOpen = false;
 	gSearchTxt = "";
 	iconOnLabel="";
 	pathOnoutput="";
@@ -468,7 +468,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
 	licon = new QLabel(label);
-	ops = NULL;
+	optionDlg = NULL;
 
 	tz::getUserIniDir(SET_MODE,dirs["userdir"][0]);
 #ifdef CONFIG_LOG_ENABLE
@@ -611,12 +611,12 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",120,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",150,(24*HOURS)/(SECONDS));
 #else
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_BMSYNC,"bmsync",5,(SILENT_SYNC_INTERVAL*SILENT_SYNC_INTERVAL_UNIT)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_BMSYNC,"bmsync",5,(SILENT_SYNC_INTERVAL*HOURS)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_CATBUILDER,"catbuilder",10,(CATALOG_BUILDER_INTERVAL*CATALOG_BUILDER_INTERVAL_UNIT)/(SECONDS));
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",15,(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS));
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",20,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",5,(24*SECONDS)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",150,(24*HOURS)/(SECONDS));
 #endif
 	
 	slientUpdate =NULL;
@@ -972,10 +972,10 @@ void MyWidget::launchObject()
 	}
 	else {
 #if 0
-		int ops = plugins.execute(&inputData, &res);
-		if (ops > 1)
+		int optionDlg = plugins.execute(&inputData, &res);
+		if (optionDlg > 1)
 		{
-			switch (ops)
+			switch (optionDlg)
 			{
 			case MSG_CONTROL_EXIT:
 				close();
@@ -1011,7 +1011,7 @@ void MyWidget::focusOutEvent(QFocusEvent * evt)
 	if (evt->reason() == Qt::ActiveWindowFocusReason)
 	{
 		if (gSettings->value("hideiflostfocus", false).toBool())
-			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen)
+			if (!this->isActiveWindow() && !alternatives->isActiveWindow() /*&& !optionsOpen*/)
 			{
 				hideLaunchy();
 			}
@@ -1739,8 +1739,8 @@ void MyWidget::catalogBuilt(int type,int status)
 		case CAT_BUILDMODE_COMMAND:
 		break;
 		case CAT_BUILDMODE_IMPORT_NETBOOKMARK:
-		if(ops)
-			ops->importNetBookmarkFinished(status);
+		if(optionDlg)
+			optionDlg->importNetBookmarkFinished(status);
 		break;
 #ifdef CONFIG_AUTO_LEARN_PROCESS
 		case CAT_BUILDMODE_LEARN_PROCESS:
@@ -2576,8 +2576,8 @@ void MyWidget::importNetBookmarkFinished(int status)
 	gBuilder->wait();
 	gBuilder.reset();
 	//emit importNetBookmarkFinishedSignal(status);
-	if(ops)
-		ops->importNetBookmarkFinished(status);
+	if(optionDlg)
+		optionDlg->importNetBookmarkFinished(status);
 	gSemaphore.release(1);
 }
 
@@ -2589,8 +2589,8 @@ void MyWidget::importNetBookmark(CATBUILDMODE mode,uint browserid)
 		gBuilder.reset(new CatBuilder(true,mode,&db));
 		gBuilder->browserid = browserid;
 		connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), this, SLOT(importNetBookmarkFinished(int)));
-		//if(ops)
-		//	connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), ops, SLOT(importNetBookmarkFinished(int)));
+		//if(optionDlg)
+		//	connect(gBuilder.get(), SIGNAL(importNetBookmarkFinishedSignal(int)), optionDlg, SLOT(importNetBookmarkFinished(int)));
 		gBuilder->start(QThread::IdlePriority);
 	}
 }
@@ -2783,7 +2783,7 @@ void MyWidget::startSync()
 }
 void MyWidget::_startTestAccount(const QString& testAccountName,const QString& testAccountPassword) 
 {
-	QDEBUG_LINE;
+	TD(DEBUG_LEVEL_NORMAL,gTestAccounter<<testAccountDlg);
 	QString auth_encrypt_str;
 	uint key;
 
@@ -2801,11 +2801,11 @@ void MyWidget::_startTestAccount(const QString& testAccountName,const QString& t
 		connect(testAccountDlg.get(),SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 		connect(testAccountDlg.get(),SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
 	}else{
-		testAccountDlg->status=HTTP_UNCONNECTED;
+		testAccountDlg->status=HTTP_UNCONNECTED;		
 	}
+	testAccountDlg->setResult(-1);
 	testAccountDlg->setModal(1);
 	testAccountDlg->show();	
-
 	qsrand((unsigned) NOW_SECONDS);
 	key=qrand()%(getkeylength());
 	auth_encrypt_str=tz::encrypt(QString("username=%1 password=%2").arg(testAccountName).arg(testAccountPassword),key);
@@ -2845,13 +2845,14 @@ void MyWidget::_startSync(int mode,int silence)
 	password=tz::decrypt(gSettings->value("Account/Userpasswd","").toString(),PASSWORD_ENCRYPT_KEY);					
 	if(name.isEmpty()||password.isEmpty())
 		goto	SYNCOUT;
-	silence = SYN_MODE_NOSILENCE;
+	//silence = SYN_MODE_NOSILENCE;
 /*	
 	if(THREAD_IS_FINISHED(gSyncer)){
 		delete gSyncer ;
 		gSyncer=NULL;
 	}
 */
+	TD(DEBUG_LEVEL_NORMAL,gSyncer<<syncDlg);
 	if(gSyncer){
 		if((silence ==SYN_MODE_NOSILENCE))
 		{
@@ -2900,6 +2901,7 @@ void MyWidget::_startSync(int mode,int silence)
 			connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
 			gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
 	}
+	TD(DEBUG_LEVEL_NORMAL,syncDlg->result());
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
 	//connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()),Qt::QueuedConnection);	
@@ -2924,27 +2926,7 @@ SYNCOUT:
 }
 void MyWidget::bmSyncerFinished()
 {	
-	//THREAD_MONITOR_POINT;
-	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
 	bmSyncFinishedStatus(gSyncer->statusCode);
-/*
-	if(gSyncer->terminateFlag)
-	{
-		if(syncDlg)
-			syncDlg->done(0);
-		//DELETE_SHAREOBJ(syncDlg);
-	}
-	if(syncDlg&&syncDlg->isHidden()){
-		syncDlg->done(0);
-		DELETE_SHAREOBJ(syncDlg);
-	}
-*/
-	//disconnect(gSyncer, 0, 0, 0);
-	//gSyncer->wait();
-	
-	//delete gSyncer;
-	//gSyncer=NULL;
-	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer.get());
 	gSemaphore.release(1);
 	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
@@ -2953,10 +2935,6 @@ void MyWidget::bmSyncerFinished()
 	else{
 		 SAVE_TIMER_ACTION(TIMER_ACTION_BMSYNC,"bmsync",TRUE);
 	}	
-	//gSyncer->finish_flag=true;
-	// TD(DEBUG_LEVEL_NORMAL,"gSyncer="<<gSyncer);
-	//delete gSyncer;
-	//gSyncer=NULL;;
 	DELETE_THREAD(gSyncer);
 }
 
@@ -2965,9 +2943,9 @@ void MyWidget::bmSyncFinishedStatus(int status)
 //	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status));
 
 	if(status==BM_SYNC_SUCCESS_NO_MODIFY||status==BM_SYNC_SUCCESS_WITH_MODIFY){
-			gSettings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
-	}else{
 			gSettings->setValue("lastsyncstatus",SYNC_STATUS_SUCCESSFUL);
+	}else{
+			gSettings->setValue("lastsyncstatus",SYNC_STATUS_FAILED);
 	}
 	gSettings->sync();
 
@@ -3011,6 +2989,7 @@ void MyWidget::testAccountFinished()
 {
 	gTestAccounter->wait();								
 	gTestAccounter.reset();
+	TD(DEBUG_LEVEL_NORMAL,gTestAccounter);
 }
 
 void MyWidget::syncStatusTimeout()
@@ -3217,9 +3196,7 @@ void MyWidget::monitorTimerTimeout()
 	}
 #endif
 	if(syncDlg){
-		//qDebug()<<__FUNCTION__<<syncDlg;
-		switch(syncDlg->result())
-		{
+		switch(syncDlg->result()){
 		case QDialog::Accepted:				
 		case QDialog::Rejected:
 			//DELETE_SHAREOBJ(syncDlg);
@@ -3242,8 +3219,27 @@ void MyWidget::monitorTimerTimeout()
 				}
 			}
 			break;
-		}		
-
+		}
+	}
+	if(testAccountDlg){
+		switch(testAccountDlg->result()){
+		case QDialog::Accepted:				
+		case QDialog::Rejected:			
+			QDEBUG_LINE;
+			DELETE_SHAREOBJ(testAccountDlg);
+			break;
+		}
+	}
+	//TD(DEBUG_LEVEL_NORMAL,optionDlg);
+	if(optionDlg){
+		switch(optionDlg->result()){
+		case QDialog::Accepted:				
+		case QDialog::Rejected:			
+			QDEBUG_LINE;
+			delete optionDlg;
+			optionDlg=NULL;
+			break;
+		}
 	}
 	//clear user directory	
 	monitorTimer->start((tz::getParameterMib(SYS_MONITORTIMEOUT)));
@@ -3391,23 +3387,26 @@ void MyWidget::minBtnPressed()
 
 void MyWidget::menuOptions()
 {
-	if (optionsOpen == true && ops)
+	if (optionDlg)
 	{
-		ops->activateWindow();
+		//TD(DEBUG_LEVEL_NORMAL,optionDlg->result());
+		//optionDlg->activateWindow();
+		optionDlg->show();	
 		return;
 	}
-	optionsOpen = true;
-	ops = new OptionsDlg(this,gSettings,&db);
-	connect(ops, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
-	connect(ops, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
-	connect(ops, SIGNAL(configModifyNotify(int)), this, SLOT(configModify(int)));
-	connect(ops, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(_startTestAccount(const QString&,const QString&)));	
-
-	ops->setModal(0);
-	ops->setObjectName("options");
-	ops->exec();
-	DELETE_OBJECT(ops);
-	freeOccupyMemeory();
+//	optionsOpen = true;
+	optionDlg = new OptionsDlg(this,gSettings,&db);
+	connect(optionDlg, SIGNAL(rebuildcatalogSignal()), this, SLOT(buildCatalog()));
+	connect(optionDlg, SIGNAL(optionStartSyncNotify()), this, SLOT(startSync()));
+	connect(optionDlg, SIGNAL(configModifyNotify(int)), this, SLOT(configModify(int)));
+	connect(optionDlg, SIGNAL(testAccountNotify(const QString&,const QString&)), this, SLOT(_startTestAccount(const QString&,const QString&)));	
+	TD(DEBUG_LEVEL_NORMAL,optionDlg->result());
+	optionDlg->setModal(1);
+	optionDlg->setObjectName("options");
+	optionDlg->show();	
+	//optionDlg->exec();
+	//DELETE_OBJECT(optionDlg);
+	//freeOccupyMemeory();
 }
 
 

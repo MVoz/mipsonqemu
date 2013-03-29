@@ -101,6 +101,10 @@ void bmSync::monitorTimeout()
 				case DOWHAT_GET_BMXML_FILE:
 					bmxmlGetFinished(s);
 				break;
+				case DOWHAT_TEST_ACCOUNT:
+					statusCode = s;
+					exit(-1);
+				break;
 			}
 		}
 		

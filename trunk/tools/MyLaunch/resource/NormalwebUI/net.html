@@ -40,7 +40,16 @@
 
 				//OptionsDlg.accept();
 		});
-
+		$('#accountTestButton a').click(function(){
+				//OptionsDlg.accountTestClick($('#Username').val(),$('#Userpasswd').val());
+		});
+		$('#syncButton a').click(function(){
+				//OptionsDlg.startSync();
+		});
+		$('#appupdaterButton a').click(function(){
+				//OptionsDlg.startUpdater();
+		});
+				
 		//OptionsDlgOuput.loading('net');
 		
 		//proxy
@@ -89,8 +98,8 @@
 				<dd id="lastsyncstatus"></dd>
 			</dl>
 			<ul class="btn">
-					<li><a href="#" onclick="accountTestClick();">测试</a> </li>
-					<li><a href="#" onclick="syncClick();">同步</a></li>
+					<li id="accountTestButton"><a href="#">测试</a> </li>
+					<li id="syncButton"><a href="#">同步</a></li>
 			</ul>
 		</fieldset>
 
@@ -131,7 +140,7 @@
 				<dt><label></label></dt>
 				<dl>
 				    <ul class="btn">
-						<li><a href="#" onclick="accountTestClick();">立即更新</a></li>
+						<li id="appupdaterButton"><a href="#">立即更新</a></li>
 					</ul>
 				</dl>
 			</dl>

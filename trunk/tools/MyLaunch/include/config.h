@@ -728,7 +728,7 @@ enum{
 #define TD(level,y) do{\
 	      QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));\
 	      QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));\
-	     qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<__FUNCTION__<<__LINE__<<y;\
+	      qDebug()<<(level)<<":"<< "["<< QDateTime::currentDateTime().toString("hh:mm:ss")<< "]"<<__FUNCTION__<<__LINE__<<y;\
           }while(0);
 #else
 #define TD(level,y) do{}while(0);
@@ -798,7 +798,6 @@ enum {
 
 #define BROWSER_BM_MAX_TOTAL_COUNT   512
 
-#define CONFIG_HTML_FROM_RESOURCE
 #define CONFIG_SKIN_FROM_RESOURCE
 #endif
 

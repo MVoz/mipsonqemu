@@ -365,7 +365,7 @@ public:
 	bool visible;
 	bool alwaysShowLaunchy;
 	bool menuOpen;
-	bool optionsOpen;
+//	bool optionsOpen;
 	uint rebuildAll;
 	uint updateTimes;// update times
 	//	QTimer* syncDlgTimer;
@@ -444,7 +444,7 @@ private:
 	appUpdater *slientUpdate;
 	volatile int maincloseflag;
 	QTimer* monitorTimer;
-	OptionsDlg *ops;
+	OptionsDlg *optionDlg;
 	QString shortkeyString;
 	uint syncStatus;
 	QString iconOnLabel;
