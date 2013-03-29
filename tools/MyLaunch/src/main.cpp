@@ -616,7 +616,7 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_AUTOLEARNPROCESS,"autolearnprocess",15,(AUTO_LEARN_PROCESS_INTERVAL*AUTO_LEARN_PROCESS_INTERVAL_UNIT)/(SECONDS));
 	timer_actionlist[TIMER_ACTION_AUTOLEARNPROCESS].enable = 1;//special
 	INIT_TIMER_ACTION_LIST(TIMER_ACTION_DIGGXML,"diggxml",20,(DIGG_XML_INTERVAL*DIGG_XML_INTERVAL_UNIT)/(SECONDS));
-	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",150,(24*HOURS)/(SECONDS));
+	INIT_TIMER_ACTION_LIST(TIMER_ACTION_SILENTUPDATER,"silentupdate",15,(24*HOURS)/(SECONDS));
 #endif
 	
 	slientUpdate =NULL;
@@ -2927,7 +2927,7 @@ void MyWidget::bmSyncerFinished()
 {	
 	bmSyncFinishedStatus(gSyncer->statusCode);
 	gSemaphore.release(1);
-	//scanDbFavicon();
+	scanDbFavicon();
 	syncAction->setDisabled(FALSE);
 	if(maincloseflag)
 		close();
