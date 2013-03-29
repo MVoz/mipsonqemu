@@ -40,7 +40,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	webView->setMaximumSize(QSize(OPTION_DLG_WIDTH, 16777215));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
-	QResource::registerResource("options.rcc");
+	QResource::registerResource(OPTION_DLG_RCC_FILE);
 	setFixedSize(OPTION_DLG_WIDTH, 550);
 	metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
 	iMetaKeys << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
@@ -73,7 +73,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 }
 OptionsDlg::~OptionsDlg()
 {
-	QResource::unregisterResource("options.rcc");
+	QResource::unregisterResource(OPTION_DLG_RCC_FILE);
 	if(testproxying){
 		disconnect(manager, 0, 0, 0);
 		proxyTestTimeout();
@@ -854,7 +854,7 @@ synchronizeDlg parts
 
 synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFixedSizeDialogHint|Qt::WindowTitleHint)
 {
-	QResource::registerResource("options.rcc");
+	QResource::registerResource(OPTION_DLG_RCC_FILE);
 	setResult(2);
 	webView = new QWebView(this);
 	webView->setObjectName(QString::fromUtf8("webView"));
@@ -875,7 +875,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFix
 
 synchronizeDlg::~synchronizeDlg()
 {
-	QResource::unregisterResource("options.rcc");
+	QResource::unregisterResource(OPTION_DLG_RCC_FILE);
 	DELETE_OBJECT(webView);
 //	statusMap.clear();
 }

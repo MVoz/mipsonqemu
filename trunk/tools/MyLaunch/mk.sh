@@ -54,9 +54,6 @@ cd ./resource/NormalwebUI/
 ./tr.sh
 cd ../..
 
-cmd /c @rcc -binary resource/webUI/optionUI.qrc -o $obj/options.rcc
-
-rm -fr resource/webUI
 
 mkdir $obj/skins
 cmd /c @rcc -binary resource/skins/Default/default.qrc -o $obj/skins/default.rcc
@@ -66,6 +63,11 @@ cmd /c @.\\resource\\sqlite3.exe  $obj/data/defines.db < ./resource/readsql.bat
 
 cp -fr ./resource/data $obj/
 cp -fr ./resource/images $obj/
+
+cp -fr ./resource/NormalwebUI/  ./resource/webUI
+cmd /c @rcc -binary resource/webUI/optionUI.qrc -o $obj/data/options.rcc
+
+rm -fr resource/webUI
 
 clean_dirs=($obj include resource)
 
