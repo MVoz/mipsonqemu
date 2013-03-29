@@ -252,11 +252,11 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	switch(dlgmode)
 	{
 	case UPDATE_DLG_MODE:
-		doNetThread->setFileWithFullpath(QString("setup/").append(pathname));
+		doNetThread->setFileWithFullpath(QString("setup\\").append(pathname).replace("/","\\"));
 		doNetThread->setUrl(QString("/download/setup/").append(pathname));
 		break;
 	case UPDATE_SILENT_MODE:
-		doNetThread->setFileWithFullpath(QString("portable/").append(pathname));
+		doNetThread->setFileWithFullpath(QString("portable\\").append(pathname).replace("/","\\"));
 		doNetThread->setUrl(QString("/download/portable/").append(pathname));
 		break;
 	}
