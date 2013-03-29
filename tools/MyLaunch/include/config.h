@@ -371,7 +371,7 @@ enum{
 #define DELETE_TIMER(x) \
 	STOP_TIMER(x)\
 	DELETE_OBJECT(x)
-#define DELETE_FILE(x)	if(x){ if((x)->isOpen()) (x)->flush();(x)->close();delete (x);(x)=NULL; }
+#define DELETE_FILE(x)	if(x){ if((x)->isOpen()) {(x)->flush();(x)->close();}delete (x);(x)=NULL; }
 
 #define DELETE_BUFFER(x)	if(x){ if((x)->isOpen()) (x)->close();delete (x);(x)=NULL; }
 

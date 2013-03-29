@@ -163,7 +163,7 @@ void appUpdater::getUpdateINIDone(int status)
 					checkSilentUpdateApp();
 					tz::registerInt(REGISTER_SET_MODE,APP_HKEY_PATH,APP_HEKY_UPDATE_ITEM,1);
 					//write update.ini
-					/*
+					
 					int count = serverSettings->beginReadArray(UPDATE_PORTABLE_KEYWORD);
 					localSettings->beginWriteArray(UPDATE_PORTABLE_KEYWORD);
 					for (int i = 0; i < count; i++)
@@ -176,7 +176,7 @@ void appUpdater::getUpdateINIDone(int status)
 					serverSettings->endArray();
 					localSettings->endArray();
 					localSettings->sync();
-					*/
+					
 				}
 			break;
 		case UPDATE_DLG_MODE:
@@ -184,6 +184,7 @@ void appUpdater::getUpdateINIDone(int status)
 				serverSettings = new QSettings(QString(UPDATE_SETUP_DIRECTORY).append(UPDATE_FILE_NAME), QSettings::IniFormat, NULL);
 				QString f = serverSettings->value("setup/name", "").toString();
 				QString servermd5 = serverSettings->value("setup/md5", "").toString();
+				TD(DEBUG_LEVEL_NORMAL,f<<servermd5);
 				if(f.isEmpty()||servermd5.isEmpty())
 				{
 					//get wrong content form server
@@ -191,6 +192,14 @@ void appUpdater::getUpdateINIDone(int status)
 					error = 1;
 					goto end;
 				}
+#if 1
+				if(QFile::exists(QString(UPDATE_DIRECTORY).append("\\setup\\").append(f))&&servermd5==tz::fileMd5(QString(UPDATE_DIRECTORY).append("\\setup\\").append(f))){
+						sendUpdateStatusNotify(UPDATE_NO_NEED);					
+						quit();
+						return;
+				}
+#else
+				QDEBUG_LINE;
 				if (QFile::exists(UPDATE_FILE_NAME))
 				{
 					localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
@@ -198,34 +207,42 @@ void appUpdater::getUpdateINIDone(int status)
 					if( servermd5 == localmd5)
 					{
 						sendUpdateStatusNotify(UPDATE_NO_NEED);					
-						goto end;
+						quit();
+						return;
 					}
 				}
+#endif
+				TD(DEBUG_LEVEL_NORMAL,error<<needed);
 				//start download setup.exe
 				if(!f.isEmpty()&&!servermd5.isEmpty())
 				{
 					needed = 1;
 					downloadFileFromServer(f,DOWHAT_GET_COMMON_FILE,servermd5);
 				}
+				TD(DEBUG_LEVEL_NORMAL,error<<needed);
 				if(terminateFlag||error)
 					goto end;
+				TD(DEBUG_LEVEL_NORMAL,error<<needed);
 				if(error){
 					sendUpdateStatusNotify(UPDATE_FAILED);
-				}else if(needed) 
-				{
+				}else if(needed) {
 					sendUpdateStatusNotify(UPDATE_SUCCESSFUL);
+#if 0
 					//write update.ini
 					if(!localSettings)
 						localSettings = new QSettings(UPDATE_FILE_NAME, QSettings::IniFormat, NULL);
 					localSettings->setValue("setup/name",f);
 					localSettings->setValue("setup/md5",servermd5);
 					localSettings->sync();
+#endif
 				}	
 			}
 			break;
 		default:
 			break;
 	}
+	quit();
+	return;
 end:
 	if(dlgmode == UPDATE_DLG_MODE)		
 		sendUpdateStatusNotify(UPDATE_FAILED);
@@ -262,8 +279,14 @@ void appUpdater::downloadFileFromServer(QString pathname,int m,QString md5)
 	}
 
 	doNetThread->start(QThread::IdlePriority);
-	if(doNetThread&&(doNetThread->doWhat==DOWHAT_GET_COMMON_FILE))
+	if(doNetThread&&(doNetThread->doWhat==DOWHAT_GET_COMMON_FILE)){
 		doNetThread->wait();
+		//check file
+		if(doNetThread->statusCode != DOWHAT_GET_FILE_SUCCESS)
+			error=1;
+		
+	}
+	
 //	 error = fh->errCode;
 //	 qDebug()<<pathname<<" error code:"<<error;
 }

@@ -133,17 +133,10 @@ void NetThread::cleanObjects(){
 	}
 }
 
-
-
-
-
-
-
 DoNetThread::DoNetThread(QObject * parent ,QSettings* s,int m,int d):NetThread(parent,s,m),id(d)
 {
 	retryTime = 0;
 }
-
 
 void DoNetThread::monitorTimeout(){
 	STOP_TIMER(monitorTimer);
@@ -255,9 +248,12 @@ void DoNetThread::doHttpFinished(bool error){
 			case DOWHAT_GET_UPDATEINI_FILE:
 			case DOWHAT_GET_DIGGXML_FILE:
 			case DOWHAT_GET_BMXML_FILE:
-	//			 TD(DEBUG_LEVEL_NORMAL,__FUNCTION__<<__LINE__<<fileWithFullpath<<md5key);
-				//if(md5key.isEmpty()||(md5key==tz::fileMd5(filename)))
-				if(1){
+				if(file&&file->isOpen()){
+					file->flush();
+					file->close();
+				}
+			    TD(DEBUG_LEVEL_NORMAL,fileWithFullpath<<md5key<<tz::fileMd5(fileWithFullpath));
+				if(md5key.isEmpty()||(md5key==tz::fileMd5(fileWithFullpath))){				
 						statusCode = DOWHAT_GET_FILE_SUCCESS;
 				}else{
 						statusCode = DOWHAT_GET_FILE_FAIL;
@@ -355,25 +351,8 @@ void DoNetThread::run()
 		case DOWHAT_GET_DIGGXML_FILE:
 		case DOWHAT_GET_BMXML_FILE:		
 		case DOWHAT_GET_UPDATEINI_FILE:
-#if 1
-			doFetchHttpFile();
-#else
-			NetThread::newHttp(FALSE,FALSE,TRUE,TRUE);
-			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
-			if(doWhat==DOWHAT_GET_BMXML_FILE)
-				sendUpdateStatusNotify(BM_SYNC_START);
-			http->get(url, file);
-#endif
-		break;
 		case DOWHAT_GET_COMMON_FILE:
-#if 1
 			doFetchHttpFile();
-#else
-
-			NetThread::newHttp(FALSE,FALSE,TRUE,FALSE);
-			connect(http, SIGNAL(done(bool)), this, SLOT(doHttpFinished(bool)),Qt::DirectConnection);
-			http->get(url, file);
-#endif
 			break;
 		case DOWHAT_POST_ITEM:
 			{

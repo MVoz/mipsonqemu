@@ -693,7 +693,6 @@ platform(plat),  dropTimer(NULL), alternatives(NULL)
 #endif
 	updateDisplay();
 //	QDEBUG_LINE;
-
 }
 
 void MyWidget::setCondensed(int condensed)
@@ -2928,7 +2927,7 @@ void MyWidget::bmSyncerFinished()
 {	
 	bmSyncFinishedStatus(gSyncer->statusCode);
 	gSemaphore.release(1);
-	scanDbFavicon();
+	//scanDbFavicon();
 	syncAction->setDisabled(FALSE);
 	if(maincloseflag)
 		close();
