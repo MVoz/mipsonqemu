@@ -301,7 +301,7 @@ int dirMd5(QString path,int root,int mode,QSettings* s,QSettings* tmps)
 		{
 			if(root&&(files[i]==APP_SILENT_UPDATE_NAME||files[i]==APP_FILEMD5_NAME||files[i]==UPDATE_FILE_NAME||files[i]==TEMP_UPDATE_FILE_NAME))
 					continue;
-			if((mode==FMD5_MODE_SETUP)&&(files[i]!=APP_SETUP_NAME))
+			if((mode==FMD5_MODE_SETUP)&&(QString::compare(files[i],APP_SETUP_NAME,Qt::CaseInsensitive)))
 					continue;
 			if(mode==FMD5_MODE_PORTABLE)
 			{
