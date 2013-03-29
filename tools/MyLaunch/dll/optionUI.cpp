@@ -57,18 +57,9 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 	// Find the current hotkey
 	//QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier + Qt::Key_Space)).value < QKeySequence > ();
 	show_tab = SHOW_TAB_DIR;
-	//getHtml("./html/Customx.html");
-#ifdef CONFIG_OPTION_NEWUI
 	getHtml(":index.html");
-#elif CONFIG_HTML_FROM_RESOURCE
-	getHtml(":/html/Common.html");
-#else
-	getHtml("./html/Common.html");
-#endif
-
 	QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();
 	move((desktop->width() - width())/2,(desktop->height() - height())/2); 
-
 
 }
 OptionsDlg::~OptionsDlg()
@@ -191,8 +182,6 @@ QString OptionsDlg::tr(const QString & s){
 }
 void OptionsDlg::getHtml(const QString & path)
 {
-	QDEBUG_LINE;
-#ifdef CONFIG_OPTION_NEWUI
 	#define JS_PARSE_FUNCTION "//OptionsDlgOuput."
 	#define HTML_PARSE_FUNCTION "<!--OptionsDlgOuput."
 	#define JS_PARSE_CALL "//OptionsDlg."
@@ -243,16 +232,6 @@ void OptionsDlg::getHtml(const QString & path)
 	//webView->setHtml(trUtf8(htmlcontent.toLocal8Bit()));
 	webView->setHtml(htmlcontent);
 	htmlFile.close();
-
-#else
-	QFile htmlFile(path);
-	if (!htmlFile.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-	
-	webView->setHtml(trUtf8(htmlFile.readAll()));
-	
-	htmlFile.close();
-#endif
 }
 void OptionsDlg::gohref(const QString & url)
 {
@@ -260,7 +239,6 @@ void OptionsDlg::gohref(const QString & url)
 }
 void OptionsDlg::loading(const QString & name,QString* c)
 {
-#ifdef CONFIG_OPTION_NEWUI
 	c->clear();
 	if (name == "index"){
 		JS_APPEND_CHECKED(c,settings,"","ckStartWithSystem",false);
@@ -370,236 +348,6 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		}
 		q.clear();
 	}
-	//TD(DEBUG_LEVEL_NORMAL,*c);
-#else
-	QString jsStr;
-	//menu
-	QString menustring;
-	//menustring.append("<ul>");
-	QStringList menulsit;
-	menulsit<<"Common"<<"Bookmark"<<"Custom"<<"Command"<<"Advance"<<"Network"<<"About";
-	foreach (QString m, menulsit) {
-		menustring.append("<li>");
-#ifdef CONFIG_HTML_FROM_RESOURCE	
-		menustring.append("<a href=\"#\" onclick=\"getHtml(':/html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
-#else
-    		menustring.append("<a href=\"#\" onclick=\"getHtml('./html/"+m+".html');\""+((m==name)?"class=\"current\"":"")+">"+tz::tr(TOCHAR(m))+"</a>");
-#endif
-		menustring.append("</li>");
-        }
-	//menustring.append("</ul>");
-	menustring.replace("\"","\\\"");
-	jsStr.append("$('#tmenu').html(\""+menustring+"\");");
-	//footer
-	QString footerstring;
-	footerstring.append("<div class=\"btn\">");
-	footerstring.append("<a href=\"#\"  onclick=\"reject();\" >"+tz::tr("cancel")+"</a>");
-	footerstring.append("</div >");
-	footerstring.append("<div  class=\"btn\">");
-	footerstring.append("<a href=\"#\"  onclick=\"apply('"+name+"');\" >"+tz::tr("apply")+"</a>");
-	footerstring.append("</div >");
-	footerstring.append("<p style=\"margin-left:300px;\">");
-	footerstring.append("Copyright 2010 ");
-	footerstring.append("<a  href=\"#\" class=\"appname\" onclick=\"gohref('"HTTP_SERVER_URL"');\">"+tz::tr(APP_NAME)+"</a>");
-	footerstring.append("</p>");
-	footerstring.replace("\"","\\\"");
-	jsStr.append("$('#footer').html(\""+footerstring+"\");");
-
-	if (name == "Common")
-	{
-		JS_APPEND_CHECKED("ckStartWithSystem","",false);
-		JS_APPEND_CHECKED("ckShowTray","",true);
-		JS_APPEND_CHECKED("ckShowMainwindow","",false);
-		JS_APPEND_CHECKED("ckAutoUpdate","",false);
-		JS_APPEND_CHECKED("ckScanDir","",false);
-		JS_APPEND_VALUE("Username","Account","");
-		JS_APPEND_PASSWD("Userpasswd","Account","");
-		//lastsynctime
-		QDateTime lastsynctime=QDateTime::fromTime_t(settings->value("lastbmsync", 0).toUInt());
-		uint lastsyncstatus=settings->value("lastsyncstatus", SYNC_STATUS_FAILED).toUInt();
-		jsStr.append(QString("$obj('lastbmsync').innerHTML ='%1';").arg(lastsynctime.toString(Qt::SystemLocaleShortDate)));
-		switch(lastsyncstatus){
-			case SYNC_STATUS_FAILED:
-				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='failed';"));	
-				jsStr.append(QString("$obj('lastsyncstatus').className ='ip fail';"));	
-				break;
-			case SYNC_STATUS_SUCCESSFUL:
-				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='successful';"));	
-				jsStr.append(QString("$obj('lastsyncstatus').className ='ip success';"));	
-				break;
-			case SYNC_STATUS_PROCESSING:
-				jsStr.append(QString("$obj('lastsyncstatus').className ='ip';"));	
-				jsStr.append(QString("$obj('lastsyncstatus').innerHTML ='processing...';"));	
-				break;
-		}		
-		
-		int curMeta = settings->value("hotkeyModifier", HOTKEY_PART_0).toInt();
-		int curAction = settings->value("hotkeyAction", HOTKEY_PART_1).toInt();
-		jsStr.append(QString("set_selected('%1','hotkey_0');").arg(curMeta));
-		jsStr.append(QString("set_selected('%1','hotkey_1');").arg(curAction));
-	}else if (name == "Bookmark"){
-		jsStr.append("$('#menu').html('");
-		netbookmarkmenu(COME_FROM_MYBOOKMARK,0,"getbmfromid",jsStr);
-		getbmfromid(0,COME_FROM_MYBOOKMARK,"root",1);
-		jsStr.append("');");
-		
-		JS_APPEND_VALUE("netbookmarkbrowser","","");
-		//qDebug()<<jsStr;
-	}else if (name == "Network"){
-		JS_APPEND_CHECKED("proxyEnable","HttpProxy",false);
-		JS_APPEND_VALUE("proxyAddress","HttpProxy","");
-		JS_APPEND_VALUE("proxyPort","HttpProxy","");
-		JS_APPEND_VALUE("proxyUsername","HttpProxy","");
-		JS_APPEND_PASSWD("proxyPassword","HttpProxy","");
-		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
-		jsStr.append(QString("proxyEnableClick();"));
-
-	} else if (name == "Command"){
-		jsStr.append("$('#cmdlist').html('");
-		//cmdLists.clear();
-		QSqlQuery q("",*db);
-		QString  s=QString("SELECT * FROM %1 ").arg(DBTABLEINFO_NAME(COME_FROM_COMMAND));
-		int i = 0;
-		if(q.exec(s))
-		{
-			while(q.next()) {
-				qDebug()<<Q_VALUE_STRING(q,"shortName")<<":"<<Q_VALUE_STRING(q,"fullPath");
-				jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
-				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"shortName")+"</td>");
-				jsStr.append("<td >"+Q_VALUE_STRING_HTML(q,"fullPath")+"</td>");
-				jsStr.append("<td >"+Q_VALUE_STRING(q,"args")+"</td>");
-
-				//action
-				jsStr.append(QString("<td > <a class=\"thickbox  editicon\"  name=\"edit&raquo;\""));
-				jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',\\'%3\\',\\'%4\\');\" ").arg(Q_VALUE_STRING_HTML_P(q,"shortName")).arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_STRING(q,"args")).arg(Q_VALUE_UINT(q,"id")));
-				jsStr.append(QString("href=\"qrc:editcmd\" rel=\"width=540&height=100\">&nbsp;</a> "));
-				
-				jsStr.append(QString("<a class=\"thickbox delicon\" name=\"delete&raquo;\"")); 
-				jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(Q_VALUE_STRING_HTML_P(q,"fullPath")).arg(Q_VALUE_UINT(q,"id")));					
-				jsStr.append(QString("href=\"qrc:deletecmd\" rel=\"width=540&height=90\">&nbsp;</a>"));
-				
-				jsStr.append(QString("</td >"));
-				i++;
-			}
-
-		}
-		q.clear();
-		jsStr.append("');");
-		//jsStr.append(QString("</table>';"));
-
-	} else if (name == "Custom")
-	{
-#ifdef CONFIG_OPTION_NEWUI
-		dirLists.clear();
-		int count = settings->beginReadArray("directories");
-		jsStr.append("$('#dirlist').html('");
-		for (int i = 0; i < count; ++i)
-		{
-			settings->setArrayIndex(i);
-			Directory tmp;
-			tmp.name = QSETTING_VALUE_STRING(settings,"name");
-			tmp.types =  QSETTING_VALUE_STRINGLIST(settings,"types");
-			tmp.indexDirs = QSETTING_VALUE_BOOL(settings,"indexDirs", false);
-			//tmp.indexExe = settings->value("indexExes", false).toBool();
-			tmp.depth =QSETTING_VALUE_UINT(settings,"depth", 100);
-			dirLists.append(tmp);
-
-			QString typesResult;
-			for (int j = 0; j < tmp.types.size(); j++)
-			{
-				typesResult += tmp.types.at(j);
-				if (j != (tmp.types.size() - 1))
-					typesResult += ";";
-			}
-			jsStr.append(QString("<tr class=\"%1\">").arg((i%2)?("even"):("odd")));
-/*
-			jsStr.append("<td><input type=\"radio\" name=\"select\" ");
-			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\">").arg(settings->value("name").toString().replace("\\", "\\\\\\\\")).arg(typesResult).arg(settings->value("indexDirs", false).toBool()).arg(settings->value("depth", 100).toInt()).arg(i));
-			jsStr.append("</td>");
-*/
-			jsStr.append("<td >"+(QSETTING_VALUE_STRING_HTML(settings,"name"))+"</td>");
-			jsStr.append("<td >"+typesResult+"</td>");
-			jsStr.append(QString("<td ><span class=\"%1\">&nbsp;</span></td>").arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)?"inc":"exc"));
-			jsStr.append(QString("<td >%1</td>").arg(QSETTING_VALUE_UINT(settings,"depth", 100)));
-			jsStr.append(QString("<td > <a class=\"thickbox  editicon\"  name=\"edit&raquo;\""));
-			jsStr.append(QString("onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\" ").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)).arg(i));
-			
-			jsStr.append(QString("href=\"qrc:editdir\" rel=\"width=540&height=100\">&nbsp;</a> "));
-			jsStr.append(QString("<a class=\"thickbox delicon\" name=\"delete&raquo;\"")); 
-			jsStr.append(QString("onclick=\"postDelItem(\\'%1\\',%2);\" ").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(i));
-				
-			jsStr.append(QString("href=\"qrc:deletedir\" rel=\"width=540&height=90\">&nbsp;</a>"));
-			jsStr.append(QString("</td >"));
-
-		}
-		jsStr.append("');");
-		settings->endArray();
-#else
-		jsStr.append(QString("$('list_table').innerHTML='<table width=\"580\" align=\"center\" cellspacing=\"1\" >\
-							 <tr bgcolor=\"#ffffff\" align=\"center\">\
-							 <td width=\"5%\">"+tz::tr("html_select")+"</td>\
-							 <td width=\"61%\">"+tz::tr("html_path")+"</td>\
-							 <td width=\"20%\">"+tz::tr("html_suffix")+"</td>\
-							 <td width=\"7%\">"+tz::tr("html_childdir")+"</td>\
-							 <td width=\"7%\">"+tz::tr("html_depth")+"</td>\
-							 </tr>"));
-		dirLists.clear();
-		int count = settings->beginReadArray("directories");
-		for (int i = 0; i < count; ++i)
-		{
-			settings->setArrayIndex(i);
-			Directory tmp;
-			tmp.name = settings->value("name").toString();
-			tmp.types = settings->value("types").toStringList();
-			tmp.indexDirs = settings->value("indexDirs", false).toBool();
-			//tmp.indexExe = settings->value("indexExes", false).toBool();
-			tmp.depth = settings->value("depth", 100).toInt();
-			dirLists.append(tmp);
-
-			QString typesResult;
-			for (int j = 0; j < tmp.types.size(); j++)
-			{
-				//foreach (QString str, tmp.types) {
-				typesResult += tmp.types.at(j);
-				if (j != (tmp.types.size() - 1))
-					typesResult += ";";
-			}
-			jsStr.append(QString("<tr bgcolor=\"#ffffff\" align=\"center\">\
-								 <td width=\"5%\"><input type=\"radio\" name=\"select\" value=\"0\" );\" onclick=\"postItem(\\'%1\\',\\'%2\\',%3,%4,%5);\"></td>\
-								 <td width=\"61%\" style=\"font-size:10;\" align=\"left\">%6</td>\
-								 <td width=\"20%\" style=\"font-size:10;\">%7</td>\
-								 <td width=\"7%\">%8</td>\
-								 <td width=\"7%\">%9</td>\
-								 </tr>").arg(QSETTING_VALUE_STRING_HTML_P(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)).arg(i).arg(QSETTING_VALUE_STRING_HTML(settings,"name")).arg(typesResult).arg(QSETTING_VALUE_BOOL(settings,"indexDirs", false)).arg(QSETTING_VALUE_UINT(settings,"depth", 100)));
-
-		}
-
-		settings->endArray();
-
-		jsStr.append(QString("</table>';"));
-#endif
-
-	}else if(name == "Advance"){
-		JS_APPEND_CHECKED("ckFuzzyMatch","adv",false);
-		JS_APPEND_CHECKED("ckCaseSensitive","adv",false);
-		JS_APPEND_CHECKED("ckRebuilderCatalogTimer","adv",false);
-		JS_APPEND_CHECKED("ckSupportIe","adv",true);
-		JS_APPEND_CHECKED("ckSupportFirefox","adv",false);
-		JS_APPEND_CHECKED("ckSupportOpera","adv",false);
-		JS_APPEND_CHECKED("baidu","netfinder",true);
-		JS_APPEND_CHECKED("google","netfinder",true);
-		JS_APPEND_VALUE("netsearchbrowser","","");		
-	}else if(name=="About"){
-		jsStr.append(QString("$('#version').html('%1');").arg(APP_VERSION));
-		jsStr.append(QString("$('#buildtime').html('%1');").arg(QDateTime::fromTime_t(APP_BUILD_TIME).toString(Qt::SystemLocaleShortDate)));
-	}
-
-	if(name =="Bookmark"){
-		jsStr.append("$(function(){initMenuEx();});");
-	}
-	TD(DEBUG_LEVEL_NORMAL,"jsStr:"<<jsStr);
-	webView->page()->mainFrame()->evaluateJavaScript(jsStr);
-#endif
 }
 
 void OptionsDlg::accept()
@@ -861,14 +609,7 @@ synchronizeDlg::synchronizeDlg(QWidget * parent):QDialog(parent,Qt::MSWindowsFix
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
 	connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(populateJavaScriptWindowObject()));
 	setFixedSize(620, 160);
-#ifdef CONFIG_OPTION_NEWUI
 	getHtml(":processDlg.html");
-
-#elif CONFIG_HTML_FROM_RESOURCE
-	getHtml(":/html/processDlg.html");
-#else
-	getHtml("./html/processDlg.html");	
-#endif
 	status=0;
 }
 
