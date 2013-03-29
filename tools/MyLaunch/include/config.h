@@ -194,17 +194,21 @@ enum{
 #define PINYIN_DB_TABLENAME "pytable"
 #define DIGG_XML_LOCAL_FILE "./data/digg.xml"
 #define DIGG_XML_LOCAL_FILE_TMP DIGG_XML_LOCAL_FILE".tmp"
-#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\zhiqiu\\launchy"
+#define APP_HKEY_PATH "HKEY_LOCAL_MACHINE\\Software\\touchAny\\launchy"
 #define APP_HEKY_UPDATE_ITEM "updaterflag"
 #define APP_SILENT_UPDATE_NAME "updater.exe"
-#define APP_PROGRAM_NAME  "tanzhi.exe"
+#define APP_PROGRAM_NAME  "touchAny.exe"
 #define APP_SETUP_NAME "setup.exe"
 #define APP_FILEMD5_NAME "fmd5.exe"
 #define APP_DATA_PATH "data"
 #define APP_DEFINE_DB_NAME "defines.db"
 #define UPDATE_SERVER_HOST HTTP_SERVER_HOST
 #define TEST_NET_URL "/testnet.php"
-#define TOUCHANY_VERSION_URL "/download/index.php"
+#define TOUCHANY_UPDATE_SERVER_DIR "/download"
+#define TOUCHANY_VERSION_URL TOUCHANY_UPDATE_SERVER_DIR"/index.php"
+#define TOUCHANY_UPDATE_SERVER_SETUP_URL TOUCHANY_UPDATE_SERVER_DIR"/setup/"
+#define TOUCHANY_UPDATE_SERVER_PORTABLE_URL TOUCHANY_UPDATE_SERVER_DIR"/portable/"
+
 #define TEST_DIGGXML_URL  "/do.php?ac=testdiggxml"
 #define UPDATE_DIRECTORY "temp"
 #define UPDATE_DIRECTORY_SUFFIX UPDATE_DIRECTORY"/"
@@ -220,6 +224,7 @@ enum{
 #define FROMSERVER_XML_PREFIX "from_server_xml_"
 #define BROKEN_TOKEN_STR "$#@#$"
 
+#define OPTION_DLG_RCC_FILE "./data/options.rcc"
 
 /**************code*******************/
 
