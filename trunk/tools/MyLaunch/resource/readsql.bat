@@ -1,1 +1,1 @@
-.read defines.sql
+.read ./resource/defines.sql
