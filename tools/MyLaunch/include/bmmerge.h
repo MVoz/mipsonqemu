@@ -104,7 +104,7 @@ signals:
 	void mergeStatusNotify(int);
 public:
 	DoNetThread* postHttp;
-	
+	QList<QThread*> threadList;
 	QFile *file;
 	QSettings* settings;	
 	

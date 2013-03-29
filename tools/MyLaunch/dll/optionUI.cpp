@@ -26,6 +26,7 @@ OptionsDlg::OptionsDlg(QWidget * parent,QSettings *s,QSqlDatabase *b):QDialog(pa
 | Qt::WindowTitleHint),settings(s),db(b)
 {
 	#define  OPTION_DLG_WIDTH 800
+	setResult(2);
 	manager=NULL;
 	reply=NULL;
 	updaterDlg=NULL;
@@ -174,7 +175,7 @@ void OptionsDlg::proxyTestClick(const QString& proxyAddr,const QString& proxyPor
 }
 void OptionsDlg::accountTestClick(const QString& name,const QString& password)
 {
-	qDebug("username=%s password=%s......",qPrintable(name),qPrintable(password));
+	TD(DEBUG_LEVEL_NORMAL,name<<password);	
 	emit testAccountNotify(name,password);
 }
 QString OptionsDlg::tr(const QString & s){
@@ -194,7 +195,7 @@ void OptionsDlg::getHtml(const QString & path)
 		QString line = htmlFile.readLine();
 		QString xline=line.simplified();
 		if (xline.startsWith(JS_PARSE_FUNCTION)) {
-			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+//			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
 			 xline.remove(JS_PARSE_FUNCTION);
 			 xline.replace(QString(";"), QString(" "));
 			 xline.replace(QString("("), QString(" "));
@@ -207,7 +208,7 @@ void OptionsDlg::getHtml(const QString & path)
 			 	loading(func_args.at(1),&line);
 			 }
 		}else if (xline.startsWith(HTML_PARSE_FUNCTION)) {
-			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
+//			TD(DEBUG_LEVEL_NORMAL,"xline:"<<xline);
 			 xline.remove(HTML_PARSE_FUNCTION);
 			 xline.replace(QString("-->"), QString(" "));
 			 xline.replace(QString(";"), QString(" "));
@@ -253,7 +254,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 
 
 
-                   JS_APPEND_CHECKED(c,settings,"adv","ckalwaystop",false);
+                JS_APPEND_CHECKED(c,settings,"adv","ckalwaystop",false);
 		JS_APPEND_CHECKED(c,settings,"adv","ckalwayscenter",false);
 		JS_APPEND_CHECKED(c,settings,"adv","cktransparent",false);
 		JS_APPEND_CHECKED(c,settings,"adv","ckfade",false);
@@ -297,7 +298,7 @@ void OptionsDlg::loading(const QString & name,QString* c)
 		
 	}else if(name == "footer"){
 		c->append(QString("$('#footer ul').append(\"<li>&copy; 2012 - <a href='#' onclick=gohref('%1')>%2</a> &nbsp;/&nbsp; <a href='#' onclick=gohref('%3%4')>Help</a></li>\");").arg(HTTP_SERVER_URL).arg(APP_NAME).arg(HTTP_SERVER_URL).arg(HTTP_SERVER_URL_HELP));	
-		TD(DEBUG_LEVEL_NORMAL,(*c));
+//		TD(DEBUG_LEVEL_NORMAL,(*c));
 	}else if(name == "dirlist"){
 		dirLists.clear();
 		int count = settings->beginReadArray("directories");
@@ -556,13 +557,13 @@ void OptionsDlg::rebuildcatalog()
 
 void OptionsDlg::startUpdater()
 {
+	QDEBUG_LINE;
 	if(!updaterDlg){
 		updaterDlg = new synchronizeDlg(this);
 		updaterDlg->mode = SYNC_MODE_UPGRADE;
 	}
-	qDebug("updaterthread=0x%08x,isFinished=%d",updaterthread,(updaterthread)?updaterthread->isFinished():0);
 	if(!updaterthread||updaterthread->isFinished()){
-		appUpdater* updaterthread=new appUpdater(updaterDlg,settings);
+		updaterthread=new appUpdater(updaterDlg,settings);
 		updaterthread->dlgmode = UPDATE_DLG_MODE;
 		connect(updaterDlg,SIGNAL(updateSuccessNotify()),this->parent(),SLOT(updateSuccess()));
 		connect(updaterDlg,SIGNAL(reSyncNotify()),this,SLOT(startUpdater()));
@@ -633,7 +634,7 @@ void synchronizeDlg::accept()
 {
 	if(status==UPDATE_SUCCESSFUL)
 		emit updateSuccessNotify();
-	qDebug("synchronizeDlg::accept() status=%d UPDATE_SUCCESSFUL=%d",status,UPDATE_SUCCESSFUL);
+	TD(DEBUG_LEVEL_NORMAL,status);
 	QDialog::accept();
 }
 
