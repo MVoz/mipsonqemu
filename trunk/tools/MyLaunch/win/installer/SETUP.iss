@@ -25,7 +25,7 @@ SetupIconFile=..\touchAny.ico
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
-AppID=touchAny_21344213
+AppID=touchAny_20070316
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -51,7 +51,7 @@ Source: ..\..\release\bmnet.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\bmxml.dll; DestDir: {app}; Flags: ignoreversion
 
 ; rcc
-Source: ..\..\release\options.rcc; DestDir: {app}; Flags: ignoreversion
+
 ;ini
 ;Source: ..\..\release\update.ini; DestDir: {app}; Flags: ignoreversion
 ; Plugins
@@ -91,6 +91,7 @@ Source: ..\..\release\Skins\default.rcc; DestDir: {app}\skins\; Flags: ignorever
 
 ;data
 ;Source: ..\..\release\data\defines.db; DestDir: {app}\data\; Flags: ignoreversion
+Source: ..\..\release\data\options.rcc; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\data\language.dat; DestDir: {app}\data\; Flags: ignoreversion
 Source: ..\..\release\data\pinyin.db; DestDir: {app}\data\; Flags: ignoreversion
 
@@ -174,6 +175,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Tanzhi now (bring Tanzhi forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Tanzhi before running this installer!
+
 
 
 
