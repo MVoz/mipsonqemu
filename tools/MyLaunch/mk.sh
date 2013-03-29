@@ -21,7 +21,7 @@ else
 fi
 
 if [ $obj ==  "clean" ];then
-rm -fr debug release tmp
+rm -fr debug release tmp download
 exit 0
 fi
 
@@ -33,9 +33,13 @@ mkdir $obj
 makefunc './version/version'
 
 if [ $obj ==  "release" ];then
+rm -fr debug release tmp download
 cd include
 ./version.exe
 cd ..
+mkdir download
+mkdir download/setup
+mkdir download/portable
 fi
 
 actions=(./fmd5/fmd5 ./dll/bmapi ./dll/bmnet ./dll/catalog ./dll/bmxml  ./dll/bmmerge ./dll/bmsync ./dll/appupdater  ./dll/optionUI  ./platforms/win/win ./src/src)

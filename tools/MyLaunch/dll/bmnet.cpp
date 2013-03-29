@@ -86,26 +86,28 @@ void NetThread::newHttp(bool needHeader,bool needBuffer,bool needFile,bool hidde
 			//savefilename----real file name
 			na = url.split("/");
 		}else{
-			na = fileWithFullpath.split("/");
+			na = fileWithFullpath.split("\\");
 		}
-			if(!dir.exists(destDirectory))
-					dir.mkdir(destDirectory);	
-			QString  dirPath=QString(destDirectory).append("\\");
-			int i=0;
-			int count=na.count();
-			//TD(DEBUG_LEVEL_NORMAL,url<<destDirectory<<count<<savefilename);
-			for(i=0;i<count-1&&count>1;i++)
-			{
-				dirPath.append(na.at(i));
-				if(!dir.exists(dirPath))
-					dir.mkdir(dirPath);		
-				dirPath.append("\\");
-			}
-			if(savefilename.isEmpty())
-				fileWithFullpath=QString(dirPath.append(na.at(count-1)));//real filename
-			else
-				fileWithFullpath=QString(dirPath.append(savefilename));//real filename
-		
+		if(!destDirectory.isEmpty()&&!dir.exists(destDirectory))
+				dir.mkdir(destDirectory);	
+		QString  dirPath;
+		if(!destDirectory.isEmpty())
+		  	dirPath=QString(destDirectory).append("\\");
+		int i=0;
+		int count=na.count();
+		//TD(DEBUG_LEVEL_NORMAL,url<<destDirectory<<count<<savefilename);
+		for(i=0;i<count-1&&count>1;i++)
+		{
+			dirPath.append(na.at(i));
+			if(!dir.exists(dirPath))
+				dir.mkdir(dirPath);		
+			dirPath.append("\\");
+		}
+		if(savefilename.isEmpty())
+			fileWithFullpath=QString(dirPath.append(na.at(count-1)));//real filename
+		else
+			fileWithFullpath=QString(dirPath.append(savefilename));//real filename
+		TD(DEBUG_LEVEL_NORMAL,fileWithFullpath);
 		file = new QFile(fileWithFullpath);
 		if(file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
 			if(hidden)
