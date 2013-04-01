@@ -2894,6 +2894,7 @@ void MyWidget::_startSync(int mode,int silence)
 				syncDlg->setModal(1);
 				syncDlg->show();				
 			}
+			syncDlg->activateWindow();
 			connect(syncDlg,SIGNAL(reSyncNotify()),this,SLOT(reSync()));
 			connect(syncDlg,SIGNAL(stopSyncNotify()),this,SLOT(stopSync()));
 			//connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)),Qt::QueuedConnection);
@@ -3388,7 +3389,7 @@ void MyWidget::menuOptions()
 	if (optionDlg)
 	{
 		//TD(DEBUG_LEVEL_NORMAL,optionDlg->result());
-		//optionDlg->activateWindow();
+		optionDlg->activateWindow();
 		optionDlg->show();	
 		return;
 	}
@@ -3402,9 +3403,10 @@ void MyWidget::menuOptions()
 	optionDlg->setModal(1);
 	optionDlg->setObjectName("options");
 	optionDlg->show();	
+	optionDlg->activateWindow();
 	//optionDlg->exec();
 	//DELETE_OBJECT(optionDlg);
-	//freeOccupyMemeory();
+	freeOccupyMemeory();
 }
 
 
