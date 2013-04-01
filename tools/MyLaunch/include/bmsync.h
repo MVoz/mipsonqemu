@@ -82,7 +82,7 @@ public slots:
 		statusCode = status;
 		if(doWhat==SYNC_DO_BOOKMARK&&bmSyncMode==SYN_MODE_SILENCE) 
 			return;	
-		//TD(DEBUG_LEVEL_NORMAL,status<<tz::getstatusstring(status));
+		TD(DEBUG_LEVEL_NORMAL,status<<tz::getstatusstring(status));
 		emit updateStatusNotify(status);
 	}
 signals:
