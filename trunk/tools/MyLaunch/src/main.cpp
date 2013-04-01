@@ -1419,7 +1419,7 @@ void MyWidget::searchOnInput()
 		return;
 	}
 	gSearchTxt = inputData.count() > 0 ? inputData.last().getText() : "";
-	TD(DEBUG_LEVEL_NORMAL,inputData.count() <<"  : "<<input->text());
+	//TD(DEBUG_LEVEL_NORMAL,inputData.count() <<"  : "<<input->text());
 	if (inputData.count() <= 1)
 		catalog->searchCatalogs(gSearchTxt, searchResults);
 
@@ -2900,7 +2900,6 @@ void MyWidget::_startSync(int mode,int silence)
 			connect(gSyncer, SIGNAL(updateStatusNotify(int)), syncDlg, SLOT(updateStatus(int)));
 			gSyncer->bmSyncMode = SYN_MODE_NOSILENCE;
 	}
-	TD(DEBUG_LEVEL_NORMAL,syncDlg->result());
 	gSyncer->setUsername(name);
 	gSyncer->setPassword(password);
 	//connect(gSyncer, SIGNAL(finished()), this, SLOT(bmSyncerFinished()),Qt::QueuedConnection);	

@@ -580,6 +580,7 @@ void bmMerge::postItemToHttpServer(bookmark_catagory * bc, int action, int paren
 		bc->groupId= 0;
 		//bc->bmid= getBmId();
 		bc->bmid=GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID);
+		TD(DEBUG_LEVEL_NORMAL,GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR));
 		if(GET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR))
 		{
 			setMergeStatus(bc->name,bc->link,postHttp->browserid,action?(POST_HTTP_ACTION_ADD_ITEM):(POST_HTTP_ACTION_ADD_DIR),BM_SYNC_FAIL_POST_HTTP);
@@ -616,6 +617,7 @@ void bmMerge::setMergeStatus(QString& n,QString& f,uint i,uint a,uint s)
 	setHandleItemInfo(n,f,i,a);
 	mergestatus = s;
 	emit mergeStatusNotify(mergestatus);
+	TD(DEBUG_LEVEL_NORMAL,mergestatus);
 	if((s!=BM_SYNC_SUCCESS_NO_MODIFY)&&(s!=BM_SYNC_SUCCESS_WITH_MODIFY))
 		terminatedFlag = 1;
 }
@@ -910,7 +912,7 @@ void bmMerge::handleItem(
 			item->addDate=QDateTime::currentDateTime();
 			productFFId(item->id,6);
 		}	  	 
-		qDebug()<<"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId;
+		TD(DEBUG_LEVEL_NORMAL,"Down to Local[add]:name:"<<item->name<<" local_parentId:"<<local_parentId);
 #ifdef POST_DOWN_AFTER_MERGE
 		if(doit)
 #endif
@@ -920,14 +922,14 @@ void bmMerge::handleItem(
 	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_0:		//only exist in lastupdate,do nothing
 		break;
 	case MERGE_STATUS_LOCAL_0_LAST_1_SERVER_1:		//exist in server&lastupdate,need to delete from server
-		qDebug()<<"Post to Server[delete]:name:"<<item->name;
+		TD(DEBUG_LEVEL_NORMAL,"Post to Server[delete]:name:"<<item->name);
 #ifdef POST_DOWN_AFTER_MERGE
 		if(doit)
 #endif
 			postItemToHttpServer(item, ACTION_ITEM_DELETE, parentId,browserType);
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_0_SERVER_0:		//only exist in local,need post to server
-		qDebug()<<"Post to Server[add]:name="<<item->name<<" parentid:"<<parentId<<" hr:"<<item->hr;	
+		TD(DEBUG_LEVEL_NORMAL,"Post to Server[add]:name="<<item->name<<" parentid:"<<parentId<<" hr:"<<item->hr);	
 #ifdef POST_DOWN_AFTER_MERGE
 		if(doit)
 #endif
@@ -940,7 +942,7 @@ void bmMerge::handleItem(
 		//  		list->push_back(*item);
 		break;
 	case MERGE_STATUS_LOCAL_1_LAST_1_SERVER_0:		//exist in local&lastupdate,need delete from local
-		qDebug()<<"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<path ;
+		TD(DEBUG_LEVEL_NORMAL,"Down to Local[delete]:name"<<item->name<<" local_parentId:"<<local_parentId<<" path:"<<path);
 #ifdef POST_DOWN_AFTER_MERGE
 		if(doit)
 #endif
@@ -1161,8 +1163,8 @@ void bmMerge::run()
 	handleBmData();
 	exit();
 	emit done(terminatedFlag);
-	if(mergestatus==BM_SYNC_SUCCESS_NO_MODIFY)
-		emit mergeStatusNotify(BM_SYNC_SUCCESS_NO_MODIFY);
+	if(mergestatus==BM_SYNC_SUCCESS_NO_MODIFY||mergestatus==BM_SYNC_SUCCESS_WITH_MODIFY)
+		emit mergeStatusNotify(mergestatus);
 	clearObjects();
 }
 void bmMerge::productFFId(QString & randString,int length){   

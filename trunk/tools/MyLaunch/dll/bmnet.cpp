@@ -144,6 +144,7 @@ void DoNetThread::monitorTimeout(){
 }
 void DoNetThread::doPostItemDone(bool error){
 	THREAD_MONITOR_POINT;
+	TD(DEBUG_LEVEL_NORMAL,error);
 	if(!error)
 	{
 		uint newgroupid=0;
@@ -193,6 +194,7 @@ void DoNetThread::doPostItemDone(bool error){
 		DELETE_OBJECT(resultXml);
 		//qDebug("%s resultBuffer=%s gMaxGroupId=%u lastModified=%s bmid=%u",__FUNCTION__,qPrintable( QString(resultBuffer->data())),GET_RUN_PARAMETER(RUN_PARAMETER_POST_MAX_GROUPID),qPrintable(lastModified),GET_RUN_PARAMETER(RUN_PARAMETER_POST_BMID));
 	}
+	TD(DEBUG_LEVEL_NORMAL,error);
 	SET_RUN_PARAMETER(RUN_PARAMETER_POST_ERROR,error);
 	exit(error);
 }
@@ -381,6 +383,7 @@ void DoNetThread::run()
 	}
 	TD(DEBUG_LEVEL_NORMAL,QString("http://"+(host.isEmpty()?(BM_SERVER_ADDRESS):(host))+url));
 	exec();
+	TD(DEBUG_LEVEL_NORMAL,statusCode);
 	emit doNetStatusNotify(statusCode);
 	cleanObjects();
 }
