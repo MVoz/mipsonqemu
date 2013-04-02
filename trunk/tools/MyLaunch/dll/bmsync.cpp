@@ -171,6 +171,7 @@ void bmSync::bmxmlGetFinished(int status)
 	TD(DEBUG_LEVEL_NORMAL, tz::getstatusstring(status)<<fileWithFullpath);
 	THREAD_MONITOR_POINT;
 	if(status==DOWHAT_GET_FILE_SUCCESS){
+		sendUpdateStatusNotify(BM_MERGE_START);
 		mgthread = new bmMerge(NULL,db,settings,username,password);		
 		mgthread->setRandomFileFromserver(fileWithFullpath);
 		threadList.append((QThread*)mgthread);

@@ -3691,7 +3691,7 @@ void MyWidget::setIcon(int type,const QString& tip)
 
 void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	qDebug()<<__FUNCTION__<<reason;
+	TD(DEBUG_LEVEL_NORMAL,reason);
 	switch (reason)
 	{
 	case QSystemTrayIcon::Trigger:
@@ -3705,6 +3705,7 @@ void MyWidget::iconActivated(QSystemTrayIcon::ActivationReason reason)
 		break;
 	case QSystemTrayIcon::Context:
 		//this->trayIcon->contextMenu()->exec(QCursor::pos());
+		this->trayIcon->contextMenu()->showNormal();
 		break;
 	default:
 		;
