@@ -1,0 +1,1 @@
+build a micro linux-2.6.x operation system for mips-qemu
